@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Tags Plug-in
+Bundle-SymbolicName: org.rifidi.emulator.tags
+Bundle-Version: 2.0.0
+Bundle-Activator: org.rifidi.emulator.tags.activator.Activator
+Bundle-Vendor: Pramari LLC
+Require-Bundle: org.eclipse.core.runtime,
+ org.rifidi.dependencies,
+ org.rifidi.common.utilities
+Eclipse-LazyStart: true
