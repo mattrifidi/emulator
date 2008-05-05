@@ -1,0 +1,19 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Symbol Plug-in
+Bundle-SymbolicName: org.rifidi.emulator.reader.symbol
+Bundle-Version: 1.0.0
+Bundle-Activator: org.rifidi.emulator.reader.symbol.Activator
+Bundle-Vendor: Pramari, LLC
+Bundle-Localization: plugin
+Import-Package: org.osgi.framework;version="1.3.0"
+Require-Bundle: org.rifidi.dependencies,
+ org.rifidi.emulator,
+ org.rifidi.common.utilities,
+ org.rifidi.emulator.tags
+Export-Package: org.rifidi.emulator.reader.symbol,
+ org.rifidi.emulator.reader.symbol.command.exception,
+ org.rifidi.emulator.reader.symbol.commandhandler,
+ org.rifidi.emulator.reader.symbol.formatter,
+ org.rifidi.emulator.reader.symbol.module,
+ org.rifidi.emulator.reader.symbol.tagbuffer
