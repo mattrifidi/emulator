@@ -1,0 +1,13 @@
+<reader>
+	<readerclassname>org.rifidi.emulator.reader.epc.module.EPCReaderModule</readerclassname>
+	<description>Emulator for an EPC RP 1.1 conforming reader</description>
+	<maxantennas>4</maxantennas>
+	<property>
+		<required>1</required>
+		<name>inet_address</name>
+		<display>ip address</display>
+		<tooltip>The address the reader should be reachable through</tooltip>
+		<defaultvalue>127.0.0.1:10000</defaultvalue>		
+		<validatorclassname>IpAddressValidator</validatorclassname>
+	</property>
+</reader>
