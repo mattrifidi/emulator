@@ -12,7 +12,8 @@
  */
 package org.rifidi.emulator.io.comm.logFormatter;
 
-import org.rifidi.utilities.formatting.ByteAndHexConvertingUtility;
+import org.rifidi.common.utilities.ByteAndHexConvertingUtility;
+
 
 /**
  * @author Kyle Neumeier - kyle@pramari.com

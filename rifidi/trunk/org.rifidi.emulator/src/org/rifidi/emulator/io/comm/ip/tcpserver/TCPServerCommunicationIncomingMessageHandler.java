@@ -23,10 +23,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.rifidi.emulator.common.DataBufferInterruptedException;
 import org.rifidi.emulator.io.comm.streamreader.AbstractStreamReader;
-import org.rifidi.emulator.io.comm.streamreader.GenericByteStreamReader;
-import org.rifidi.emulator.io.comm.streamreader.GenericCharStreamReader;
 import org.rifidi.emulator.io.protocol.ProtocolValidationException;
-import org.rifidi.utilities.formatting.ByteAndHexConvertingUtility;
 
 /**
  * A runnable which monitors for incoming messages from a

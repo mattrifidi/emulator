@@ -39,7 +39,7 @@ public class TagViewLabelProvider implements ITableLabelProvider {
 		if(element instanceof RifidiTag)
 		{
 			if (columnIndex == 0) {
-				TagGen type = ((RifidiTag) element).getTagType();
+				TagGen type = ((RifidiTag) element).getTagGen();
 				if (type == TagGen.GEN1)
 					return "GEN1";
 				if (type == TagGen.GEN2)

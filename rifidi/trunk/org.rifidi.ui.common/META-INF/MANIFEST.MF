@@ -8,7 +8,8 @@ Bundle-Vendor: Pramari, LLC
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.rifidi.dependencies,
- org.rifidi.emulator
+ org.rifidi.emulator,
+ org.rifidi.emulator.tags
 Eclipse-LazyStart: true
 Export-Package: org.rifidi.ui.common,
  org.rifidi.ui.common.reader,

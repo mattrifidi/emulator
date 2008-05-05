@@ -19,8 +19,6 @@ import java.io.OutputStream;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.rifidi.emulator.common.DataBufferInterruptedException;
-import org.rifidi.emulator.io.comm.streamreader.GenericCharStreamReader;
-import org.rifidi.utilities.formatting.ByteAndHexConvertingUtility;
 
 /**
  * Monitors the current send buffer for incoming data. As long as the connection

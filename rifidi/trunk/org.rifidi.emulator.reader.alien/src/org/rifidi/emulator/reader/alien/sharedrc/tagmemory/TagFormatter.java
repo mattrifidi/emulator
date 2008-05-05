@@ -10,6 +10,7 @@ import org.apache.commons.logging.LogFactory;
 import org.rifidi.emulator.tags.enums.TagGen;
 import org.rifidi.emulator.tags.impl.RifidiTag;
 
+
 /**
  * This class is used to format a Tag class in to a specified custom format.
  * INPUT - A Tag object, Additional Tag Information Object and the Regular
@@ -72,13 +73,13 @@ public class TagFormatter {
 				.getAntennaLastSeen()));
 		
 		String tagProtocol;
-		if(aTag.getTagType().equals(TagGen.GEN1)) tagProtocol="1";
-		else if(aTag.getTagType().equals(TagGen.GEN2)) tagProtocol="2";
+		if(aTag.getTagGen().equals(TagGen.GEN1)) tagProtocol="1";
+		else if(aTag.getTagGen().equals(TagGen.GEN2)) tagProtocol="2";
 		else tagProtocol="0";
 		
 		regExToken = regExToken.replaceAll("%p", tagProtocol);
 		
-		regExToken = regExToken.replaceAll("%P", aTag.getTagType().toString());
+		regExToken = regExToken.replaceAll("%P", aTag.getTagGen().toString());
 
 		String formatted_tag = regExToken;
 		

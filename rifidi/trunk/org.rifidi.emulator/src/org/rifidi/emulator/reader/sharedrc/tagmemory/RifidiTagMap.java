@@ -21,8 +21,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.rifidi.common.utilities.ByteAndHexConvertingUtility;
 import org.rifidi.emulator.tags.impl.RifidiTag;
-import org.rifidi.utilities.formatting.ByteAndHexConvertingUtility;
 
 /**
  * This data structure provides a convienient way to store RifidiTags. Its

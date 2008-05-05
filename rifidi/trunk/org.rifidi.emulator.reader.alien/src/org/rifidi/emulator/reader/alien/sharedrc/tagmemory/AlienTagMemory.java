@@ -136,7 +136,7 @@ public class AlienTagMemory implements TagMemory {
 			// we only need to add the new tags, because the old
 			// ones will be removed when their persist time is up
 			for (RifidiTag t : tagsToAdd) {
-				if (typeFilter.contains(t.getTagType())) {
+				if (typeFilter.contains(t.getTagGen())) {
 					this.tagList.addTag(t);
 				}
 			}

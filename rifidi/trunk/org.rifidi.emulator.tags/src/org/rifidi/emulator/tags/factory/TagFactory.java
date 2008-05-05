@@ -11,6 +11,7 @@
 package org.rifidi.emulator.tags.factory;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -43,6 +44,26 @@ public class TagFactory {
 		return ret;
 	}
 
+	public static RifidiTag copyTag(RifidiTag tag){
+		TagCreationPattern tagCreationPattern = new TagCreationPattern();
+		tagCreationPattern.setTagGeneration(tag.getTagGen());
+		if(tag.getTagGen() == TagGen.GEN2){
+			tagCreationPattern.setAccessPass(((C1G2Tag)tag.getTag()).getAccessPass());
+			tagCreationPattern.setLockPass(((C1G2Tag)tag.getTag()).getLockPass());
+		}
+		
+		Gen1Tag gen1Tag= createTag(tagCreationPattern, tag.getTag().getId());
+		
+		RifidiTag copy = new RifidiTag(gen1Tag);
+		copy.setAntennaLastSeen(tag.getAntennaLastSeen());
+		copy.setDiscoveryDate((Date)tag.getDiscoveryDate().clone());
+		copy.setIdFormat(new String(tag.getIdFormat()));
+		copy.setLastSeenDate((Date)tag.getLastSeenDate().clone());
+		copy.setQualityRating(tag.getQualityRating());
+		copy.setTagEntitiyID(tag.getTagEntitiyID());
+		return copy;
+	}
+
 	public static List<RifidiTag> generateTags(
 			TagCreationPattern tagCreationPattern) {
 
@@ -72,23 +93,31 @@ public class TagFactory {
 				// throw exception
 			}
 
-			Gen1Tag tag = null;
-			if (tagCreationPattern.getTagGeneration() == TagGen.GEN1) {
-				tag = new C1G1Tag(tagID);
-			} else if (tagCreationPattern.getTagGeneration() == TagGen.GEN2) {
-				tag =new C1G2Tag(tagID, tagCreationPattern
-						.getAccessPass(), tagCreationPattern.getLockPass());
-			} else {
-				// throw exception;
-			}
-			
-			if(tag!=null){
+			Gen1Tag tag = createTag(tagCreationPattern, tagID);
+
+			if (tag != null) {
 				ids.put(tagID, new RifidiTag(tag));
 			}
 
 		}
-		
+
 		return new ArrayList<RifidiTag>(ids.values());
 
-	}	
+	}
+
+	private static Gen1Tag createTag(TagCreationPattern tagCreationPattern,
+			byte[] tagID) {
+		Gen1Tag tag = null;
+
+		if (tagCreationPattern.getTagGeneration() == TagGen.GEN1) {
+			tag = new C1G1Tag(tagID);
+		} else if (tagCreationPattern.getTagGeneration() == TagGen.GEN2) {
+			tag = new C1G2Tag(tagID, tagCreationPattern.getAccessPass(),
+					tagCreationPattern.getLockPass());
+		} else {
+			// throw exception;
+		}
+
+		return tag;
+	}
 }

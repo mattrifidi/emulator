@@ -18,17 +18,17 @@ import javax.naming.AuthenticationException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.rifidi.common.utilities.ByteAndHexConvertingUtility;
 import org.rifidi.emulator.reader.alien.command.exception.AlienExceptionHandler;
 import org.rifidi.emulator.reader.alien.sharedrc.tagmemory.AlienTagMemory;
 import org.rifidi.emulator.reader.command.CommandObject;
 import org.rifidi.emulator.reader.module.abstract_.AbstractReaderSharedResources;
 import org.rifidi.emulator.reader.sharedrc.properties.IntegerReaderProperty;
+import org.rifidi.emulator.reader.sharedrc.radio.C1G2Operations;
 import org.rifidi.emulator.tags.enums.TagGen;
 import org.rifidi.emulator.tags.exceptions.InvalidMemoryAccessException;
 import org.rifidi.emulator.tags.impl.C1G2Tag;
 import org.rifidi.emulator.tags.impl.RifidiTag;
-import org.rifidi.emulator.tags.utils.C1G2Operations;
-import org.rifidi.utilities.formatting.ByteAndHexConvertingUtility;
 
 /**
  * This class handles alien commands that have to do with programming (writing,
@@ -120,7 +120,7 @@ public class AlienProgram {
 
 			// make sure there is only one tag on the antenna and it is a GEN2
 			// tag
-			if (tags.size() == 1 && tags.get(0).getTagType() == TagGen.GEN2) {
+			if (tags.size() == 1 && tags.get(0).getTagGen() == TagGen.GEN2) {
 				C1G2Tag tag = (C1G2Tag) tags.get(0).getTag();
 
 				try {

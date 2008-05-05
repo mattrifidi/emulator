@@ -2,7 +2,6 @@ package org.rifidi.emulator.tags.impl;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -17,6 +16,13 @@ import org.rifidi.emulator.tags.Gen1Tag;
 import org.rifidi.emulator.tags.enums.TagGen;
 
 /**
+ * RifidiTag is a wrapper aound Gen1Tag that stores extra information about a
+ * RFID tag that is not part of the EPCGlobal Gen1 or Gen2 spec, such as
+ * discovery date, readcount, etc. A tag is identified internally through a long
+ * value (tagEntitiyID), and not through its EPCGlobal byte id. This allows us
+ * to separate the physical tag from the EPCGlobal ID, which is especially
+ * necessary when writing to a tag
+ * 
  * @author Andreas Huebner - andreas@pramari.com
  */
 @XmlAccessorType(XmlAccessType.NONE)
@@ -31,9 +37,9 @@ public class RifidiTag implements Serializable {
 	 * The unique ID for identify this tag internally
 	 */
 	private long tagEntitiyID;
-	
-	/** 
-	 * The Tag to whom this information belong 
+
+	/**
+	 * The Tag to whom this information belong
 	 */
 	private Gen1Tag tag;
 
@@ -60,7 +66,7 @@ public class RifidiTag implements Serializable {
 	 * Status of this tag. Could be disabled and only seen by the IDE.
 	 */
 	public boolean isVisbile = true;
-	
+
 	/**
 	 * The quality rating of the tag. A quality rating is from 0 to 100 and
 	 * correlates to how well the tag may be read compared to a perfect tag (as
@@ -134,7 +140,7 @@ public class RifidiTag implements Serializable {
 		this.qualityRating = qualityRating;
 	}
 
-	public TagGen getTagType() {
+	public TagGen getTagGen() {
 		return tag.getTagGeneration();
 	}
 
@@ -174,7 +180,7 @@ public class RifidiTag implements Serializable {
 	 * Overides the Object's hashCode() method for easier storing in a hashtable
 	 */
 	public int hashCode() {
-		return Arrays.hashCode(tag.readId());
+		return new Long(tagEntitiyID).hashCode();
 	}
 
 	public String toString() {
@@ -188,27 +194,29 @@ public class RifidiTag implements Serializable {
 	@XmlElementWrapper
 	public List<MapElement> getTagProperty() {
 		List<MapElement> map = new ArrayList<MapElement>();
-		if ( tag != null ) {
-			map.add( new MapElement( "id", ByteAndHexConvertingUtility.toHexString(tag.getId()) ) );
-			map.add( new MapElement( "gen", tag.getTagGeneration().toString() ) );
+		if (tag != null) {
+			map.add(new MapElement("id", ByteAndHexConvertingUtility
+					.toHexString(tag.getId())));
+			map.add(new MapElement("gen", tag.getTagGeneration().toString()));
 		}
 		return map;
 	}
 
-	public void setTagProperty( List<MapElement> values ) {
+	public void setTagProperty(List<MapElement> values) {
 		String id, gen;
 		id = gen = null;
-		for ( MapElement e : values ) {
-			if ( e.key.equals("id") )
+		for (MapElement e : values) {
+			if (e.key.equals("id"))
 				id = e.val;
-			if ( e.key.equals("gen") )
+			if (e.key.equals("gen"))
 				gen = e.val;
 		}
 
-		if (TagGen.valueOf(gen) == TagGen.GEN2){
-			byte[] pass = {0x00, 0x00, 0x00, 0x00};
-			tag = new C1G2Tag(ByteAndHexConvertingUtility.fromHexString(id), pass, pass.clone());
-		}else{
+		if (TagGen.valueOf(gen) == TagGen.GEN2) {
+			byte[] pass = { 0x00, 0x00, 0x00, 0x00 };
+			tag = new C1G2Tag(ByteAndHexConvertingUtility.fromHexString(id),
+					pass, pass.clone());
+		} else {
 			tag = new C1G1Tag(ByteAndHexConvertingUtility.fromHexString(id));
 		}
 	}

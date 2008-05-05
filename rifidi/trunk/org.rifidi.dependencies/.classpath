@@ -19,9 +19,6 @@
 	<classpathentry exported="true" kind="lib" path="ws-commons-util-1.0.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="xercesImpl.jar"/>
 	<classpathentry exported="true" kind="lib" path="xml-apis.jar"/>
-	<classpathentry exported="true" kind="lib" path="xmlrpc-client-3.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="xmlrpc-common-3.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="xmlrpc-server-3.0.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="output" path="bin"/>

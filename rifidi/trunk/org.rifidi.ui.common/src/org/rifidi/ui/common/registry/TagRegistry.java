@@ -5,8 +5,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.rifidi.emulator.tags.factory.TagFactory;
 import org.rifidi.emulator.tags.impl.RifidiTag;
-import org.rifidi.emulator.tags.utils.RifidiTagFactory;
 
 /**
  * Container for all tags
@@ -97,10 +97,7 @@ public class TagRegistry {
 	 */
 	public RifidiTag getTagByString(String tagID) {
 		RifidiTag tag = tagRegistry.get(tagID);
-		RifidiTag copy = RifidiTagFactory.createTag(tag.getTagType(), tag
-				.getTag().readId());
-		copy.setIdFormat(tag.getIdFormat());
-		return copy;
+		return TagFactory.copyTag(tag);
 	}
 
 	/**

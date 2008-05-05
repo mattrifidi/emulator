@@ -9,3 +9,13 @@ Require-Bundle: org.eclipse.core.runtime,
  org.rifidi.dependencies,
  org.rifidi.common.utilities
 Eclipse-LazyStart: true
+Export-Package: org.rifidi.emulator.tags,
+ org.rifidi.emulator.tags.activator,
+ org.rifidi.emulator.tags.enums,
+ org.rifidi.emulator.tags.exceptions,
+ org.rifidi.emulator.tags.factory,
+ org.rifidi.emulator.tags.id,
+ org.rifidi.emulator.tags.impl,
+ org.rifidi.emulator.tags.sandbox,
+ org.rifidi.emulator.tags.service,
+ org.rifidi.emulator.tags.utils

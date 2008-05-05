@@ -11,6 +11,7 @@
  */
 package org.rifidi.ui.common.wizards.tag.pages;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -29,9 +30,11 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Text;
 import org.rifidi.emulator.tags.enums.TagGen;
+import org.rifidi.emulator.tags.factory.TagCreationPattern;
+import org.rifidi.emulator.tags.factory.TagFactory;
 import org.rifidi.emulator.tags.id.CustomEPC96;
+import org.rifidi.emulator.tags.id.TagType;
 import org.rifidi.emulator.tags.impl.RifidiTag;
-import org.rifidi.emulator.tags.utils.RifidiTagFactory;
 import org.rifidi.ui.common.validators.HexValidator;
 
 /**
@@ -66,8 +69,7 @@ public class MultipleNewTagsWizardPage extends WizardPage {
 
 	private HexValidator hexValidator = new HexValidator();
 
-	private List<String> supportedFormats = RifidiTagFactory
-			.getSupportedTagFormats();
+	private List<String> supportedFormats = TagFactory.getSupportedTagFormats();
 
 	public MultipleNewTagsWizardPage(String pageName) {
 		super(pageName);
@@ -187,24 +189,29 @@ public class MultipleNewTagsWizardPage extends WizardPage {
 	}
 
 	public void createTags(List<RifidiTag> taglist) {
-		TagGen tagType = null;
-		String selectedTagType = generationCombo.getItem(generationCombo
+		TagGen tagGen = null;
+		String selectedTagGen = generationCombo.getItem(generationCombo
 				.getSelectionIndex());
-		String selectedTagFormat = tagFormatCombo.getItem(tagFormatCombo
+		String selectedTagType = tagFormatCombo.getItem(tagFormatCombo
 				.getSelectionIndex());
 		String prefix = tagPrefixText.getText();
 		int number = tagNrSpinner.getSelection();
-		if (selectedTagType.equals("GEN2"))
-			tagType = TagGen.GEN2;
-		if (selectedTagType.equals("GEN1"))
-			tagType = TagGen.GEN1;
+		if (selectedTagGen.equals("GEN2"))
+			tagGen = TagGen.GEN2;
+		if (selectedTagGen.equals("GEN1"))
+			tagGen = TagGen.GEN1;
 
 		taglist.clear();
-		for (int i = 0; i < number; i++) {
-			RifidiTag tag = RifidiTagFactory.createTag(tagType,
-					selectedTagFormat, prefix);
-			taglist.add(tag);
-		}
+		
+		List<RifidiTag> newTags= new ArrayList<RifidiTag>(number);
+		TagCreationPattern pattern = new TagCreationPattern();
+		pattern.setNumberOfTags(number);
+		pattern.setTagGeneration(tagGen);
+		pattern.setTagType(TagType.valueOf(selectedTagType));
+		pattern.setPrefix(prefix);
+		newTags = TagFactory.generateTags(pattern);
+		taglist.addAll(newTags);
+		
 		logger.debug("Wizard created " + taglist.size() + " tags.");
 	}
 }

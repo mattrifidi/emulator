@@ -8,7 +8,9 @@ Bundle-Vendor: Pramari, LLC
 Import-Package: org.osgi.framework;version="1.3.0"
 Eclipse-BuddyPolicy: global
 Bundle-ClassPath: .
-Require-Bundle: org.rifidi.dependencies
+Require-Bundle: org.rifidi.dependencies,
+ org.rifidi.emulator.tags,
+ org.rifidi.common.utilities
 Export-Package: org.rifidi.emulator;uses:="org.osgi.framework",
  org.rifidi.emulator.common;uses:="junit.framework",
  org.rifidi.emulator.common.math,
@@ -33,7 +35,6 @@ Export-Package: org.rifidi.emulator;uses:="org.osgi.framework",
  org.rifidi.emulator.io.comm.ip.tcpserver;uses:="org.rifidi.emulator.common,org.rifidi.emulator.io.comm.abstract_,junit.framework",
  org.rifidi.emulator.io.comm.ip.udp;uses:="junit.framework",
  org.rifidi.emulator.io.comm.logFormatter,
- org.rifidi.emulator.io.comm.manager;uses:="org.apache.xmlrpc.webserver",
  org.rifidi.emulator.io.comm.serial;uses:="junit.framework",
  org.rifidi.emulator.io.comm.streamreader,
  org.rifidi.emulator.io.comm.tcpclient,
@@ -76,16 +77,6 @@ Export-Package: org.rifidi.emulator;uses:="org.osgi.framework",
  org.rifidi.emulator.reader.source,
  org.rifidi.emulator.rmi.client;uses:="gnu.cajo.utils.extra,gnu.cajo.invoke,org.rifidi.emulator.tags",
  org.rifidi.emulator.rmi.server;uses:="org.rifidi.emulator.reader.module,gnu.cajo.invoke",
- org.rifidi.emulator.tags,
- org.rifidi.emulator.tags.enums,
- org.rifidi.emulator.tags.exceptions;uses:="org.rifidi.emulator.tags.enums",
- org.rifidi.emulator.tags.id,
- org.rifidi.emulator.tags.impl;uses:="org.rifidi.emulator.tags.enums,org.rifidi.emulator.tags",
- org.rifidi.emulator.tags.utils;
-  uses:="org.rifidi.emulator.tags.impl,
-   org.rifidi.emulator.tags.enums,
-   org.rifidi.emulator.rmi.client,
-   org.rifidi.emulator.reader.sharedrc.radio",
  org.rifidi.emulator.xml;uses:="org.rifidi.emulator.reader.command,junit.framework",
  org.rifidi.utilities,
  org.rifidi.utilities.comm.CRC,

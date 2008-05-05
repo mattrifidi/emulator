@@ -22,7 +22,6 @@ import org.rifidi.emulator.common.PowerState;
 import org.rifidi.emulator.io.comm.ip.tcpclient.TCPClientCommunication;
 import org.rifidi.emulator.io.comm.ip.tcpserver.TCPServerCommunication;
 import org.rifidi.emulator.io.comm.logFormatter.GenericStringLogFormatter;
-import org.rifidi.emulator.io.comm.manager.TagManager;
 import org.rifidi.emulator.io.comm.streamreader.GenericCharStreamReader;
 import org.rifidi.emulator.io.protocol.RawProtocol;
 import org.rifidi.emulator.reader.alien.autonomous.NotifyController;
@@ -71,8 +70,6 @@ public class AlienReaderModule extends AbstractPowerModule implements
 	public static final String READERTYPE = "AlienALR9800";
 
 	public static final String XMLLOCATION = "org/rifidi/emulator/reader/alien/module/";
-
-	private TagManager tagManager;
 
 	/**
 	 * Exposes the underlying method to package members.
@@ -471,7 +468,6 @@ public class AlienReaderModule extends AbstractPowerModule implements
 	 * Finalize the reader
 	 */
 	public void finalize() {
-		tagManager.stop();
 	}
 
 }

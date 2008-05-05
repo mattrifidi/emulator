@@ -54,8 +54,8 @@ public class AntennViewTagSorter extends ViewerSorter {
 					.getSortColumn())) {
 				if (tableColumns.indexOf(tableColumn) == TagViewer.Columns.GEN
 						.ordinal()) {
-					return (((RifidiTag) e1).getTagType())
-							.compareTo(((RifidiTag) e2).getTagType());
+					return (((RifidiTag) e1).getTagGen())
+							.compareTo(((RifidiTag) e2).getTagGen());
 				} else if (tableColumns.indexOf(tableColumn) == TagViewer.Columns.DATATYPE
 						.ordinal()) {
 					return (((RifidiTag) e1).getIdFormat())

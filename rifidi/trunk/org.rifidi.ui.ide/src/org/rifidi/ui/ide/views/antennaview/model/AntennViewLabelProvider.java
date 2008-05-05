@@ -65,7 +65,7 @@ public class AntennViewLabelProvider implements ITableLabelProvider {
 			RifidiTag tag = (RifidiTag) element;
 			if (columnIndex == 1) {
 				// Generation
-				TagGen t = tag.getTagType();
+				TagGen t = tag.getTagGen();
 				if (t == TagGen.GEN1)
 					return "GEN1";
 				if (t == TagGen.GEN2)
