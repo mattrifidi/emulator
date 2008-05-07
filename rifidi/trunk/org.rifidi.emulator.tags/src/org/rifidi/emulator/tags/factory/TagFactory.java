@@ -44,21 +44,25 @@ public class TagFactory {
 		return ret;
 	}
 
-	public static RifidiTag copyTag(RifidiTag tag){
+	// TODO: odd method. Delete that method once we know what it was used for
+	// and we have the new TagRegsityService
+	public static RifidiTag copyTag(RifidiTag tag) {
 		TagCreationPattern tagCreationPattern = new TagCreationPattern();
 		tagCreationPattern.setTagGeneration(tag.getTagGen());
-		if(tag.getTagGen() == TagGen.GEN2){
-			tagCreationPattern.setAccessPass(((C1G2Tag)tag.getTag()).getAccessPass());
-			tagCreationPattern.setLockPass(((C1G2Tag)tag.getTag()).getLockPass());
+		if (tag.getTagGen() == TagGen.GEN2) {
+			tagCreationPattern.setAccessPass(((C1G2Tag) tag.getTag())
+					.getAccessPass());
+			tagCreationPattern.setLockPass(((C1G2Tag) tag.getTag())
+					.getLockPass());
 		}
-		
-		Gen1Tag gen1Tag= createTag(tagCreationPattern, tag.getTag().getId());
-		
+
+		Gen1Tag gen1Tag = createTag(tagCreationPattern, tag.getTag().getId());
+
 		RifidiTag copy = new RifidiTag(gen1Tag);
 		copy.setAntennaLastSeen(tag.getAntennaLastSeen());
-		copy.setDiscoveryDate((Date)tag.getDiscoveryDate().clone());
+		copy.setDiscoveryDate((Date) tag.getDiscoveryDate().clone());
 		copy.setIdFormat(new String(tag.getIdFormat()));
-		copy.setLastSeenDate((Date)tag.getLastSeenDate().clone());
+		copy.setLastSeenDate((Date) tag.getLastSeenDate().clone());
 		copy.setQualityRating(tag.getQualityRating());
 		copy.setTagEntitiyID(tag.getTagEntitiyID());
 		return copy;
