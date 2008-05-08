@@ -130,7 +130,7 @@ public class C1G2Operations {
 
 		c1g2tag.kill(killPassword);
 		eventLogger.info("[TAG EVENT]: Tag with ID "
-				+ ByteAndHexConvertingUtility.toHexString(c1g2tag.getId())
+				+ ByteAndHexConvertingUtility.toHexString(c1g2tag.readId())
 				+ " killed");
 
 	}
@@ -170,7 +170,7 @@ public class C1G2Operations {
 		tag.sendPassword(password);
 		tag.lock(mb, ls);
 		eventLogger.info("[TAG EVENT]: Tag with ID "
-				+ ByteAndHexConvertingUtility.toHexString(tag.getId())
+				+ ByteAndHexConvertingUtility.toHexString(tag.readId())
 				+ " state changed to " + ls + " state");
 
 	}

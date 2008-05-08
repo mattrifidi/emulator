@@ -40,11 +40,11 @@ public interface Gen1Tag extends Serializable{
 	public void writeId(byte[] id) throws InvalidMemoryAccessException;
 
 	/**
-	 * Accessor for tag ID (needed by jaxb)
+	 * Accessor for tag ID (needed by jaxb).  Other methods should not use this method
 	 */
 	public byte[] getId();
 	/**
-	 * Setter for tagID (needed by jaxb)
+	 * Setter for tagID (needed by jaxb).  Other methods should not use this method.
 	 */
 	public void setId( byte[] id ) throws InvalidMemoryAccessException;
 }

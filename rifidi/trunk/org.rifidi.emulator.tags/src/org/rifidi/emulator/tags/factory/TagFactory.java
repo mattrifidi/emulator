@@ -40,12 +40,14 @@ public class TagFactory {
 					.getLockPass());
 		}
 
-		Gen1Tag gen1Tag = createTag(tagCreationPattern, tag.getTag().getId());
+		Gen1Tag gen1Tag = createTag(tagCreationPattern, tag.getTag().readId());
 
 		RifidiTag copy = new RifidiTag(gen1Tag);
 		copy.setAntennaLastSeen(tag.getAntennaLastSeen());
+		if(tag.getDiscoveryDate()!=null)
 		copy.setDiscoveryDate((Date) tag.getDiscoveryDate().clone());
 		copy.setTagType(tag.getTagType());
+		if(tag.getLastSeenDate()!=null)
 		copy.setLastSeenDate((Date) tag.getLastSeenDate().clone());
 		copy.setQualityRating(tag.getQualityRating());
 		copy.setTagEntitiyID(tag.getTagEntitiyID());
