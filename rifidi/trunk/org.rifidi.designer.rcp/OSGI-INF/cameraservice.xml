@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<component name="cameraservice">
+	<implementation
+		class="org.rifidi.designer.services.core.camera.CameraServiceImpl" />
+	<service>
+		<provide
+			interface="org.rifidi.designer.services.core.camera.CameraService" />
+	</service>
+	<reference name="scenedataserviceref" interface="org.rifidi.designer.services.core.scenedata.SceneDataService"
+		bind="setSceneDataService" unbind="unsetSceneDataService" cardinality="0..1"
+		policy="dynamic" />
+</component>

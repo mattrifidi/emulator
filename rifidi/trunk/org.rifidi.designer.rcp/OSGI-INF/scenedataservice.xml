@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<component name="scenedataservice">
+	<implementation
+		class="org.rifidi.designer.services.core.scenedata.SceneDataServiceImpl" />
+	<service>
+		<provide
+			interface="org.rifidi.designer.services.core.scenedata.SceneDataService" />
+	</service>
+	<reference name="cablingserviceref" interface="org.rifidi.designer.services.core.cabling.CablingService"
+		bind="setCablingService" unbind="unsetCablingService" cardinality="0..1"
+		policy="dynamic" />
+	<reference name="selectionserviceref" interface="org.rifidi.designer.services.core.selection.SelectionService"
+		bind="setSelectionService" unbind="unsetSelectionService" cardinality="0..1"
+		policy="dynamic" />
+</component>

@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<component name="entitiesservice">
+	<implementation
+		class="org.rifidi.designer.services.core.entities.EntitiesServiceImpl" />
+	<service>
+		<provide
+			interface="org.rifidi.designer.services.core.entities.EntitiesService" />
+		<provide
+			interface="org.rifidi.designer.services.core.entities.ProductService" />
+		<provide
+			interface="org.rifidi.designer.services.core.entities.FinderService" />
+	</service>
+	<reference name="cablingserviceref" interface="org.rifidi.designer.services.core.cabling.CablingService"
+		bind="setCablingService" unbind="unsetCablingService" cardinality="0..1"
+		policy="dynamic" />
+	<reference name="scenedataserviceref" interface="org.rifidi.designer.services.core.scenedata.SceneDataService"
+		bind="setSceneDataService" unbind="unsetSceneDataService" cardinality="0..1"
+		policy="dynamic" />
+	<reference name="fieldserviceref" interface="org.rifidi.designer.services.core.cabling.CablingService"
+		bind="setCablingService" unbind="unsetCablingService" cardinality="0..1"
+		policy="dynamic" />		
+	<reference name="eventsserviceref" interface="org.rifidi.designer.services.core.events.EventsService"
+		bind="setEventsService" unbind="unsetEventsService" cardinality="0..1"
+		policy="dynamic" />	
+</component>

@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<component name="fieldservice">
+	<implementation
+		class="org.rifidi.designer.services.core.collision.FieldServiceImpl" />
+	<service>
+		<provide
+			interface="org.rifidi.designer.services.core.collision.FieldService" />
+	</service>
+	<reference name="finderserviceref" interface="org.rifidi.designer.services.core.entities.FinderService"
+		bind="setFinderService" unbind="unsetFinderService" cardinality="0..1"
+		policy="dynamic" />
+	<reference name="scenedataserviceref" interface="org.rifidi.designer.services.core.scenedata.SceneDataService"
+		bind="setSceneDataService" unbind="unsetSceneDataService" cardinality="0..1"
+		policy="dynamic" />
+</component>

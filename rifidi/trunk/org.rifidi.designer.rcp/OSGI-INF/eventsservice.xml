@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<component name="org.rifidi.designer.services.core.events">
+	<implementation
+		class="org.rifidi.designer.services.core.events.EventsServiceImpl" />
+	<service>
+		<provide
+			interface="org.rifidi.designer.services.core.events.EventsService" />
+	</service>
+	<reference name="finderserviceref" interface="org.rifidi.designer.services.core.entities.FinderService"
+		bind="setFinderService" unbind="unsetFinderService" cardinality="0..1"
+		policy="dynamic" />
+</component>
