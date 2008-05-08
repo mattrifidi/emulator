@@ -74,7 +74,7 @@ public class AntennViewLabelProvider implements ITableLabelProvider {
 			}
 			if (columnIndex == 2) {
 				// DataType
-				return tag.getIdFormat();
+				return tag.getTagType().toString();
 			}
 			if (columnIndex == 3) {
 				// TagID

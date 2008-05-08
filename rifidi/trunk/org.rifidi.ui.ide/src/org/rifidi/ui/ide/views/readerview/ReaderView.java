@@ -15,12 +15,15 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 import org.rifidi.ui.common.reader.UIReader;
 import org.rifidi.ui.common.registry.ReaderRegistry;
 import org.rifidi.ui.common.registry.RegistryChangeListener;
-import org.rifidi.ui.ide.views.antennaview.AntennaView;
+import org.rifidi.ui.ide.editors.ReaderEditor;
+import org.rifidi.ui.ide.editors.ReaderEditorInput;
+import org.rifidi.ui.ide.views.consoleview.ConsoleView;
 import org.rifidi.ui.ide.views.readerview.model.ReaderViewContentProvider;
 import org.rifidi.ui.ide.views.readerview.model.ReaderViewLabelProvider;
 import org.rifidi.ui.ide.views.readerview.model.UIReaderAdapterFactory;
@@ -39,7 +42,9 @@ public class ReaderView extends ViewPart implements RegistryChangeListener {
 	public static final String ID = "org.rifidi.ui.ide.views.readerview.ReaderView";
 	private TreeViewer treeViewer = null;
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.ui.part.WorkbenchPart#createPartControl(org.eclipse.swt.widgets.Composite)
 	 */
 	@Override
@@ -72,14 +77,16 @@ public class ReaderView extends ViewPart implements RegistryChangeListener {
 		// Register menu for extension.
 		getSite().registerContextMenu(menuMgr, treeViewer);
 
-		//getSite().getPage().
-		
+		// getSite().getPage().
+
 		ReaderRegistry registry = ReaderRegistry.getInstance();
 		registry.addListener(this);
 		treeViewer.setInput(registry);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.ui.part.WorkbenchPart#setFocus()
 	 */
 	@Override
@@ -98,7 +105,9 @@ public class ReaderView extends ViewPart implements RegistryChangeListener {
 		return treeViewer;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.rifidi.ui.common.registry.RegistryChangeListener#add(java.lang.Object)
 	 */
 	public void add(Object event) {
@@ -111,7 +120,9 @@ public class ReaderView extends ViewPart implements RegistryChangeListener {
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.rifidi.ui.common.registry.RegistryChangeListener#remove(java.lang.Object)
 	 */
 	public void remove(Object event) {
@@ -119,7 +130,9 @@ public class ReaderView extends ViewPart implements RegistryChangeListener {
 		treeViewer.refresh();
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.rifidi.ui.common.registry.RegistryChangeListener#update(java.lang.Object)
 	 */
 	public void update(Object event) {
@@ -132,12 +145,17 @@ public class ReaderView extends ViewPart implements RegistryChangeListener {
 					new Object[] { event }));
 			treeViewer.setSelection(selection, true);
 		}
-		IViewReference antennaRef = workbenchPage.findViewReference(
-				AntennaView.ID, ((UIReader) event).getReaderName());
-		IViewReference consoleRef = workbenchPage.findViewReference(
-				AntennaView.ID, ((UIReader) event).getReaderName());
+		try {
+			workbenchPage.openEditor(new ReaderEditorInput((UIReader) event),
+					ReaderEditor.ID);
+		} catch (PartInitException e) {
+			// Think about handling that Exception
+			e.printStackTrace();
+		}
 
-		antennaRef.getView(false);
+		IViewReference consoleRef = workbenchPage.findViewReference(
+				ConsoleView.ID, ((UIReader) event).getReaderName());
+
 		consoleRef.getView(false);
 	}
 }

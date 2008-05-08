@@ -14,6 +14,8 @@ import org.eclipse.ui.PartInitException;
 import org.rifidi.ui.common.reader.UIReader;
 import org.rifidi.ui.common.registry.ReaderRegistry;
 import org.rifidi.ui.common.registry.RegistryChangeListener;
+import org.rifidi.ui.ide.editors.ReaderEditor;
+import org.rifidi.ui.ide.editors.ReaderEditorInput;
 import org.rifidi.ui.ide.views.antennaview.AntennaView;
 import org.rifidi.ui.ide.views.consoleview.ConsoleView;
 import org.rifidi.ui.ide.views.readerview.ReaderView;
@@ -80,10 +82,12 @@ public class ViewManager implements RegistryChangeListener {
 	public void add(Object event) {
 		UIReader reader = (UIReader) event;
 
-		// Initialize or show the AntennaView for this reader
+		// Initialize or show the ReaderEditor for this reader
 		try {
-			window.getActivePage().showView(AntennaView.ID,
-					reader.getReaderName(), IWorkbenchPage.VIEW_ACTIVATE);
+//			window.getActivePage().showView(AntennaView.ID,
+//					reader.getReaderName(), IWorkbenchPage.VIEW_ACTIVATE);
+			window.getActivePage().openEditor(new ReaderEditorInput((UIReader) event),
+					ReaderEditor.ID);
 		} catch (PartInitException e) {
 			e.printStackTrace();
 		}

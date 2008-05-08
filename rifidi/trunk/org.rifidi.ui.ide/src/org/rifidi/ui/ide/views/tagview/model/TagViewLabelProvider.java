@@ -46,7 +46,7 @@ public class TagViewLabelProvider implements ITableLabelProvider {
 					return "GEN2";
 			}
 			if (columnIndex == 1) {
-				return ((RifidiTag) element).getIdFormat();
+				return ((RifidiTag) element).getTagType().toString();
 			}
 			if (columnIndex == 2) {
 				return ((RifidiTag) element).toString();

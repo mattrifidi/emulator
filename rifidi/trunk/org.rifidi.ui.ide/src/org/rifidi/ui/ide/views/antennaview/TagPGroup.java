@@ -19,7 +19,7 @@ public class TagPGroup extends PGroup {
 	public TagPGroup(Composite parent, int style, UIAntenna antenna) {
 		super(parent, style);
 		FillLayout layout = new FillLayout();
-		layout.type = SWT.HORIZONTAL;
+		//layout.type = SWT.HORIZONTAL;
 		setLayout(layout);
 		setText("Antenna " + antenna.getId());
 		setForeground(getShell().getDisplay().getSystemColor(SWT.COLOR_WHITE));
