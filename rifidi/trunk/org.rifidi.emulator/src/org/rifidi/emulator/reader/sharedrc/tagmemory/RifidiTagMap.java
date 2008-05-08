@@ -82,14 +82,14 @@ public class RifidiTagMap {
 	 * @return
 	 */
 	public boolean removeTag(Long tagID) {
-		if (!tags.containsKey(tagID)) {
+		if (!tags.containsKey(tagID.hashCode())) {
 
-			logger.debug("Tag that is trying to be removed (ID: )"+tagID
-					+ " does not exist in the array, whose size is "
+			logger.debug("Tag that is trying to be removed (ID: "+tagID
+					+ ") does not exist in the array, whose size is "
 					+ tags.size());
 		}
 
-		if (tags.remove(tagID) == null) {
+		if (tags.remove(tagID.hashCode()) == null) {
 			return false;
 		} else {
 			return true;
@@ -97,13 +97,13 @@ public class RifidiTagMap {
 	}
 
 	/**
-	 * Returns true if a tag with the ID is found in the hashmap
+	 * Returns true if a tag with the tag entity ID is found in the hashmap
 	 * 
 	 * @param tagID
 	 * @return
 	 */
-	public boolean contains(byte[] tagID) {
-		return this.tags.containsKey(Arrays.hashCode(tagID));
+	public boolean contains(Long tagID) {
+		return this.tags.containsKey(tagID.hashCode());
 	}
 
 	/**

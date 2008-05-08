@@ -210,60 +210,6 @@ public class GenericRadio implements Observer {
 	}
 
 	/**
-	 * This method should only be used by XMLRPC. It should be gotten rid of
-	 * once we get rid of XMLRPC.
-	 */
-	public Boolean addTagToField(Integer antNum, String data, Integer generation) {
-		byte[] accessPass = { 0x00, 0x00, 0x00, 0x00 };
-		byte[] killPass = { 0x00, 0x00, 0x00, 0x00 };
-		return addTagToField(antNum, ByteAndHexConvertingUtility
-				.fromHexString(data), generation, accessPass, killPass);
-	}
-
-	/**
-	 * Use this method to add tags to the field for now. It is here now because
-	 * xmlrpc adds tags using the radio. However, once we change over so that
-	 * every reader is using the new radio, xmlrpc will add tags using the
-	 * antenna
-	 * 
-	 * @param antNum
-	 * @param data
-	 *            the tag ID in bytes
-	 * @param generation
-	 *            1 if gen1, 2 if gen2
-	 * @return true if sucessful, false otherwise
-	 */
-	public boolean addTagToField(int antennaID, byte[] data,
-			Integer generation, byte[] accessPassword, byte[] killPassword) {
-		RifidiTag container = generateTag(data, generation, accessPassword,
-				killPassword);
-		ArrayList<RifidiTag> tags = new ArrayList<RifidiTag>();
-		tags.add(container);
-		return this.antennas.get(antennaID).addTags(tags);
-
-	}
-
-	/**
-	 * This method should only be temporary until there is a way to generate
-	 * GEN2Tags in the UI.
-	 */
-	private RifidiTag generateTag(byte[] data, Integer generation,
-			byte[] accessPass, byte[] killPass) {
-		RifidiTag container = null;
-		Gen1Tag tag;
-		if (generation == 1) {
-
-			tag = new C1G1Tag(data);
-			container = new RifidiTag(tag);
-		}
-		if (generation == 2) {
-			tag = new C1G2Tag(data, accessPass, killPass);
-			container = new RifidiTag(tag);
-		}
-		return container;
-	}
-
-	/**
 	 * This method sets the antennas to scan for "automatic" mode. If null is
 	 * passed in, all antennas will scan. If an empty set is passed in, no
 	 * antennas will be scanned. Otherwise it will scan the antennas in the set.
