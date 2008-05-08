@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<component name="tagsservice">
+	<implementation
+		class="org.rifidi.services.tags.impl.TagServiceImpl" />
+	<service>
+		<provide
+			interface="org.rifidi.services.tags.TagService" />
+	</service>
+</component>
