@@ -15,6 +15,9 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /**
  * This class is a general-purpose holder class for all of the properties one
  * would need in creating a reader.
@@ -23,6 +26,9 @@ import java.util.Map;
  * @author Andreas Huebner - andreas@pramari.com
  */
 public class GeneralReaderPropertyHolder implements Cloneable, Serializable {
+
+	private static Log logger = LogFactory
+			.getLog(GeneralReaderPropertyHolder.class);
 
 	/**
 	 * 
@@ -83,7 +89,8 @@ public class GeneralReaderPropertyHolder implements Cloneable, Serializable {
 
 	/**
 	 * @param readerClassName
-	 *            the readerClassName to set
+	 *            The class name of the Module, for example
+	 *            org.rifidi.emulator.reader.alien.module.AlienReaderModule
 	 */
 	public void setReaderClassName(String readerClassName) {
 		this.readerClassName = readerClassName;
@@ -161,11 +168,10 @@ public class GeneralReaderPropertyHolder implements Cloneable, Serializable {
 	 * @param property
 	 * @return
 	 */
-	public String getProperty(String property)
-	{
+	public String getProperty(String property) {
 		return this.propertiesMap.get(property);
 	}
-	
+
 	/**
 	 * Default Constructor for GeneralReaderPropertyHolder.
 	 * 

@@ -51,6 +51,7 @@ public class ReaderModuleManager implements ReaderModuleManagerInterface {
 	 *      java.util.Collection)
 	 */
 	public void addTags(int antennaNum, Collection<RifidiTag> tagsToAdd) {
+		logger.info("Adding " + tagsToAdd.size() + " tags to antenna " + antennaNum + " on " + reader.getName());
 		GenericRadio r = (GenericRadio) reader.getSharedResources().getRadio();
 		r.getAntennas().get(antennaNum).addTags(tagsToAdd);
 
@@ -97,7 +98,8 @@ public class ReaderModuleManager implements ReaderModuleManagerInterface {
 	 * @see org.rifidi.sandbox.cajo.test.ReaderModuleInterface#removeTags(int,
 	 *      java.util.Collection)
 	 */
-	public void removeTags(int antennaNum, Collection<byte[]> tagIDsToRemove) {
+	public void removeTags(int antennaNum, Collection<Long> tagIDsToRemove) {
+		logger.info("Removing " + tagIDsToRemove.size() + " tags on antenna " + antennaNum + " on " + reader.getName());
 		GenericRadio r = (GenericRadio) reader.getSharedResources().getRadio();
 		boolean lol = r.getAntennas().get(antennaNum)
 				.removeTags(tagIDsToRemove);

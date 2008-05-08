@@ -171,7 +171,7 @@ public class AlienTagMemory implements TagMemory {
 		for (RifidiTag t : currentTags) {
 			long seenTime = currentTime - t.getLastSeenDate().getTime();
 			if (seenTime > persistTime) {
-				tagList.removeTag(t.getTag().readId());
+				tagList.removeTag(t.getTagEntitiyID());
 				removedTags++;
 			}
 		}

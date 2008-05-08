@@ -121,9 +121,4 @@ public class LLRPTagMemory implements TagMemory {
 		this.tagBuffer.clear();
 		this.newTagsInLatestScan.clear();
 	}
-
-	public void removeTag(byte[] id) {
-		this.tagBuffer.removeTag(id);
-
-	}
 }

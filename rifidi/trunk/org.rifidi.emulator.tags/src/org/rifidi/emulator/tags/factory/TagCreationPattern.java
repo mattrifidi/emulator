@@ -57,29 +57,37 @@ public class TagCreationPattern {
 	}
 
 	public byte[] getAccessPass() {
-		return accessPass;
+		if (accessPass != null) {
+			return accessPass;
+		} else {
+			byte[] pass = { 0x00, 0x00, 0x00, 0x00 };
+			this.accessPass = pass;
+			return accessPass;
+		}
 	}
 
 	public void setAccessPass(byte[] accessPass) {
-		if(accessPass!=null){
+		if (accessPass != null) {
 			this.accessPass = accessPass;
-		}else{
-			byte[] pass ={0x00, 0x00, 0x00, 0x00};
-			this.accessPass = pass;
 		}
 	}
 
 	public byte[] getLockPass() {
-		return lockPass;
+		if (this.lockPass != null) {
+			return lockPass;
+		} else {
+			byte[] pass = { 0x00, 0x00, 0x00, 0x00 };
+			this.lockPass = pass;
+			return lockPass;
+		}
 	}
 
 	public void setLockPass(byte[] lockPass) {
-		if(lockPass!=null){
+		if (lockPass != null) {
 			this.lockPass = lockPass;
-		}else{
-			byte[] pass ={0x00, 0x00, 0x00, 0x00};
-			this.lockPass = pass;
+
 		}
+
 	}
 
 	public int getNumberOfTags() {
@@ -89,7 +97,5 @@ public class TagCreationPattern {
 	public void setNumberOfTags(int numberOfTags) {
 		this.numberOfTags = numberOfTags;
 	}
-	
-	
 
 }

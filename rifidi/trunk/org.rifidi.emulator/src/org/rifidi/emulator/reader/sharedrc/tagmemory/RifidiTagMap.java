@@ -81,47 +81,18 @@ public class RifidiTagMap {
 	 *            The ID of the tag to remove
 	 * @return
 	 */
-	public boolean removeTag(byte[] tagID) {
-		if (!tags.containsKey(Arrays.hashCode(tagID))) {
+	public boolean removeTag(Long tagID) {
+		if (!tags.containsKey(tagID)) {
 
-			logger.debug("Tag that is trying to be removed"
+			logger.debug("Tag that is trying to be removed (ID: )"+tagID
 					+ " does not exist in the array, whose size is "
 					+ tags.size());
-
-			logger.debug("Tag that we are trying to remove: "
-					+ ByteAndHexConvertingUtility.toHexString(tagID));
 		}
 
-		if (tags.remove(Arrays.hashCode(tagID)) == null) {
+		if (tags.remove(tagID) == null) {
 			return false;
 		} else {
 			return true;
-		}
-	}
-
-	/**
-	 * Remove tags from the hashmap using ids
-	 * 
-	 * @param tagID
-	 *            The ID of the tag to remove
-	 * @return
-	 */
-	public void removeTags_ID(Collection<byte[]> tagIDs) {
-		for (byte[] id : tagIDs) {
-			removeTag(id);
-		}
-	}
-
-	/**
-	 * Remove tag from the hashmap using rifidi tags
-	 * 
-	 * @param tagID
-	 *            The ID of the tag to remove
-	 * @return
-	 */
-	public void removeTags_tag(Collection<RifidiTag> tagIDs) {
-		for (RifidiTag t : tagIDs) {
-			removeTag(t.getTag().readId());
 		}
 	}
 

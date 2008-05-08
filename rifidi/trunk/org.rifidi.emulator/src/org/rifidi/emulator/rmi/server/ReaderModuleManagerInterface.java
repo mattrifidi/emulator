@@ -70,17 +70,19 @@ public interface ReaderModuleManagerInterface {
 	 * @param antennaNum
 	 *            Antenna number the tags should be removed
 	 * @param tagIDsToRemove
-	 *            Collection of byte[] representing the EPC ID of the tags to
-	 *            delete
+	 *            Collection of EntitiyTagIDs to remove. EntityTagIDs are
+	 *            internal long values that identify tags without using the EPC
+	 *            ID
 	 * @throws Exception
 	 *             will be thrown if errors in the RMI communication occur
 	 */
-	public void removeTags(int antennaNum, Collection<byte[]> tagIDsToRemove)
+	public void removeTags(int antennaNum, Collection<Long> tagIDsToRemove)
 			throws Exception;
 
-	// TODO Suggestion to add this method for convenience 
-	//public void removeTags(int antennaNum, List<RifidiTag> tagsToRemove) throws Exception;
-	
+	// TODO Suggestion to add this method for convenience
+	// public void removeTags(int antennaNum, List<RifidiTag> tagsToRemove)
+	// throws Exception;
+
 	/**
 	 * Get a list of tags in the field of the readers antenna
 	 * 
@@ -155,6 +157,7 @@ public interface ReaderModuleManagerInterface {
 	public String getReaderProperty(String propertyName) throws Exception;
 
 	// TODO Implemented because of PropertiesView
-	public Boolean setReaderProperty(String propertyName, String propertyValue) throws Exception;
+	public Boolean setReaderProperty(String propertyName, String propertyValue)
+			throws Exception;
 
 }

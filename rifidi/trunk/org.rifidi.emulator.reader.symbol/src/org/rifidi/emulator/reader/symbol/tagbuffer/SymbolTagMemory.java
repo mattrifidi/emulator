@@ -65,7 +65,7 @@ public class SymbolTagMemory implements TagMemory {
 	 */
 	private void addTagVisible(RifidiTag newTag) {
 		this.tagBufferVisible.addTag(newTag);
-		this.tagBufferInvisible.removeTag(newTag.getTag().readId());
+		this.tagBufferInvisible.removeTag(newTag.getTagEntitiyID());
 	}
 
 	/**
@@ -119,7 +119,10 @@ public class SymbolTagMemory implements TagMemory {
 			//move old tags to invisible tags
 			Collection<RifidiTag>diff = tagBufferVisible.generateSetDiff(tagsSeen);
 			tagBufferInvisible.addTags(diff);
-			tagBufferVisible.removeTags_tag(diff);
+			for(RifidiTag t : tagsSeen){
+				tagBufferVisible.removeTag(t.getTagEntitiyID());
+			}
+			
 		}
 	}
 }

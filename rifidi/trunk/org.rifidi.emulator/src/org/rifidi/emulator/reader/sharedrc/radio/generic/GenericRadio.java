@@ -244,34 +244,6 @@ public class GenericRadio implements Observer {
 	}
 
 	/**
-	 * This method should only be used by xmlrpc and should be gotten rid of
-	 * once we get rid of xmlrpc
-	 */
-	public Boolean removeTagFromField(Integer antennaID, String data) {
-
-		return removeTagFromField(antennaID, ByteAndHexConvertingUtility
-				.fromHexString(data));
-	}
-
-	/**
-	 * Use this method to get rid of tags. It is here now because xmlrpc adds
-	 * tags using the radio. However, once we change over so that every reader
-	 * is using the new radio, xmlrpc will add tags using the
-	 * 
-	 * @param antNum
-	 * @param data
-	 * @return
-	 */
-	public boolean removeTagFromField(Integer antenna, byte[] data) {
-
-		ArrayList<byte[]> tags = new ArrayList<byte[]>();
-		tags.add(data);
-
-		return this.antennas.get(antenna).removeTags(tags);
-
-	}
-
-	/**
 	 * This method should only be temporary until there is a way to generate
 	 * GEN2Tags in the UI.
 	 */

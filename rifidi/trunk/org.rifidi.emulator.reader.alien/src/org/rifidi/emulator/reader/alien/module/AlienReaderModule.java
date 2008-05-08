@@ -333,21 +333,24 @@ public class AlienReaderModule extends AbstractPowerModule implements
 		int count = ((IntegerReaderProperty) alienSharedResources
 				.getPropertyMap().get("heartbeatcount")).getValue();
 
-		String heartbeatPower;
-		try {
+		String heartbeatPower = "";
+
 			heartbeatPower = properties.getPropertiesMap().get(
 					"heartbeat_power");
-		} catch (Exception e) {
-			heartbeatPower = "false";
-		}
+			if(heartbeatPower==null){
+				heartbeatPower="false";
+			}
 
-		int heartbeatBindingPort;
-		try {
-			heartbeatBindingPort = Integer.parseInt(properties
-					.getPropertiesMap().get("heartbeat_power"));
-		} catch (Exception e) {
+
+		Integer heartbeatBindingPort = 3989;
+
+		try{
+		heartbeatBindingPort = Integer.parseInt(properties
+					.getPropertiesMap().get("heartbeat_port"));
+		}catch(NumberFormatException ex){
 			heartbeatBindingPort = 3989;
 		}
+		
 
 		boolean power;
 		if (heartbeatPower.equalsIgnoreCase("true")) {

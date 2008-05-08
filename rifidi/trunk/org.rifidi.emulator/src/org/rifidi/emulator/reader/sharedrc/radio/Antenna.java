@@ -83,11 +83,6 @@ public class Antenna extends Observable {
 		return this.ID;
 	}
 
-	@SuppressWarnings("unused")
-	private boolean removeTag(byte[] id) {
-		return this.tagList.removeTag(id);
-	}
-
 	/**
 	 * Remove a collection of tags from this anntenna. It will remove each tag
 	 * individually, then notify the listening radio that the antenna has
@@ -103,14 +98,14 @@ public class Antenna extends Observable {
 	 *         tag failed. Note that the successful tags still will have been
 	 *         deleted
 	 */
-	public boolean removeTags(Collection<byte[]> ids) {
+	public boolean removeTags(Collection<Long> ids) {
 		// tell the radio to scan before tag removal
 		this.setChanged();
 		this.notifyObservers();
 		
 		//remove tags
 		boolean success = true;
-		for (byte[] id : ids) {
+		for (Long id : ids) {
 			if (!tagList.removeTag(id)) {
 				success = false;
 			}
