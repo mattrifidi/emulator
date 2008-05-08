@@ -17,6 +17,7 @@
 	<classpathentry exported="true" kind="lib" path="resolver.jar"/>
 	<classpathentry exported="true" kind="lib" path="RXTXcomm.jar"/>
 	<classpathentry exported="true" kind="lib" path="ws-commons-util-1.0.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="xercesImpl.jar"/>
 	<classpathentry exported="true" kind="lib" path="xml-apis.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
