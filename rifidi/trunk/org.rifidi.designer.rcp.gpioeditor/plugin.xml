@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="org.rifidi.designer.rcp.gpioeditor.GPIOEditor"
+            icon="icons/camera_edit.png"
+            id="org.rifidi.designer.rcp.gpioeditor.editor"
+            name="GPIO Editor">
+      </editor>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            class="org.rifidi.designer.rcp.gpioeditor.perspectives.GPIOPerspective"
+            id="org.rifidi.designer.rcp.perspectives.gpio"
+            name="GPIO Perspective">
+      </perspective>
+   </extension>
+</plugin>
