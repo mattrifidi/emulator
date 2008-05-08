@@ -12,6 +12,7 @@
 package org.rifidi.ui.common.wizards.tag.pages;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -51,7 +52,7 @@ public class MultipleNewTagsWizardPage extends WizardPage {
 	/**
 	 * combobox containing the available tagformats
 	 */
-	private Combo tagFormatCombo;
+	private Combo tagTypeCombo;
 
 	/**
 	 * combobox for selecting the generation of the tag
@@ -69,7 +70,7 @@ public class MultipleNewTagsWizardPage extends WizardPage {
 
 	private HexValidator hexValidator = new HexValidator();
 
-	private List<String> supportedFormats = TagFactory.getSupportedTagFormats();
+	private List<TagType> supportedFormats = Arrays.asList(TagType.values());
 
 	public MultipleNewTagsWizardPage(String pageName) {
 		super(pageName);
@@ -97,12 +98,12 @@ public class MultipleNewTagsWizardPage extends WizardPage {
 
 		// create the label and combo for the datatype
 		dataTypeLabel.setText("Select the tag datatype");
-		tagFormatCombo = new Combo(composite, SWT.BORDER | SWT.READ_ONLY);
-		tagFormatCombo.setLayoutData(gridData);
-		for (String value : supportedFormats) {
-			tagFormatCombo.add(value);
+		tagTypeCombo = new Combo(composite, SWT.BORDER | SWT.READ_ONLY);
+		tagTypeCombo.setLayoutData(gridData);
+		for (TagType value : supportedFormats) {
+			tagTypeCombo.add(value.toString());
 		}
-		tagFormatCombo.addSelectionListener(new SelectionListener() {
+		tagTypeCombo.addSelectionListener(new SelectionListener() {
 			public void widgetDefaultSelected(SelectionEvent e) {
 
 			}
@@ -161,12 +162,12 @@ public class MultipleNewTagsWizardPage extends WizardPage {
 	 * 
 	 */
 	private void dialogChanged() {
-		if (tagFormatCombo.getSelectionIndex() > -1) {
+		if (tagTypeCombo.getSelectionIndex() > -1) {
 			generationCombo.setEnabled(true);
 			if (generationCombo.getSelectionIndex() > -1) {
 				tagNrSpinner.setEnabled(true);
 				if (tagNrSpinner.getSelection() > 0) {
-					if (tagFormatCombo.getText().equals(CustomEPC96.tagFormat)) {
+					if (tagTypeCombo.getText().equals(TagType.CustomEPC96.toString())) {
 						tagPrefixText.setEnabled(true);
 						if (tagPrefixText.getText().length() < 24) {
 							String errorString = hexValidator
@@ -189,10 +190,11 @@ public class MultipleNewTagsWizardPage extends WizardPage {
 	}
 
 	public void createTags(List<RifidiTag> taglist) {
+		logger.debug("Create Tags was called");
 		TagGen tagGen = null;
 		String selectedTagGen = generationCombo.getItem(generationCombo
 				.getSelectionIndex());
-		String selectedTagType = tagFormatCombo.getItem(tagFormatCombo
+		String selectedTagType = tagTypeCombo.getItem(tagTypeCombo
 				.getSelectionIndex());
 		String prefix = tagPrefixText.getText();
 		int number = tagNrSpinner.getSelection();

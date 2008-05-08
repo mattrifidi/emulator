@@ -173,9 +173,9 @@ public class UIAntenna {
 	public void removeTag(List<RifidiTag> tagsToRemove) {
 		if (readerManager == null)
 			getManager();
-		ArrayList<byte[]> list = new ArrayList<byte[]>(tagsToRemove.size());
+		ArrayList<Long> list = new ArrayList<Long>(tagsToRemove.size());
 		for (RifidiTag tag : tagsToRemove) {
-			list.add(tag.toByte());
+			list.add(tag.getTagEntitiyID());
 		}
 		try {
 			readerManager.removeTags(id, list);
