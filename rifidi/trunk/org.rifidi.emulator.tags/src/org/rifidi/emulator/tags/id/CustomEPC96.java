@@ -17,7 +17,6 @@ import org.rifidi.common.utilities.ByteAndHexConvertingUtility;
  */
 public class CustomEPC96 {
 
-	public static final String tagFormat = "CustomEPC96";
 	public static String header = "00";
 
 	private static SecureRandom secureRandom = new SecureRandom();
@@ -27,6 +26,10 @@ public class CustomEPC96 {
 	 */
 	public static byte[] getRandomTagData(String prefix) {
 
+		if(prefix == null)
+		{
+			prefix = "";
+		}
 		BigInteger random;
 		// if the header is 0, we must generate a header to be used because
 		// otherwise random will be 0 after the first step

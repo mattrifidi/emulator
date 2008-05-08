@@ -31,13 +31,11 @@ import java.security.SecureRandom;
  */
 public class SSCC96 {
 
-	public static final String tagFormat = "SSCC-96";
-
 	public static final String header = "31";
 	
 	private static SecureRandom secureRandom = new SecureRandom();
 
-	public static byte[] getRandomTagData() {
+	protected static byte[] getRandomTagData(String prefix) {
 		BigInteger random=new BigInteger("310000000000000000000000",16);
 //		BigInteger filter=new BigInteger(2,secureRandom);
 //		if(filter.intValue()>2){

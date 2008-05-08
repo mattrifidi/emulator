@@ -27,13 +27,11 @@ import java.security.SecureRandom;
  */
 public class SGTIN96 {
 
-	public static final String tagFormat = "SGTIN-96";
-
 	public static final String header = "30";
 
 	private static SecureRandom secureRandom = new SecureRandom();
 
-	public static byte[] getRandomTagData() {
+	protected static byte[] getRandomTagData(String prefix) {
 		BigInteger random = new BigInteger("300000000000000000000000", 16);
 		random = random.or(new BigInteger(3, secureRandom).shiftLeft(85));
 		BigInteger part = new BigInteger(3, secureRandom);

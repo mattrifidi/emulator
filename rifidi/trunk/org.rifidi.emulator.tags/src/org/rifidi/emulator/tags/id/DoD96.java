@@ -24,11 +24,10 @@ import java.security.SecureRandom;
  */
 public class DoD96 {
 
-	public static final String tagFormat = "DoD-96";
 	public static final String header = "2F";
 	private static SecureRandom secureRandom = new SecureRandom();
 
-	public static byte[] getRandomTagData() {
+	protected static byte[] getRandomTagData(String prefix) {
 		BigInteger random = new BigInteger("2F0000000000000000000000", 16);
 		random = random.or(new BigInteger(4, secureRandom).shiftLeft(84));
 		random = random.or(new BigInteger(48, secureRandom).shiftLeft(36));
@@ -36,7 +35,7 @@ public class DoD96 {
 		return random.toByteArray();
 	}
 
-	public BigInteger parseEncoding(String encoding)
+	protected BigInteger parseEncoding(String encoding)
 			throws NumberFormatException {
 		if (!encoding.substring(0, 2).equals("2F")) {
 			throw new NumberFormatException("Not a DoD-96 Tag header.");

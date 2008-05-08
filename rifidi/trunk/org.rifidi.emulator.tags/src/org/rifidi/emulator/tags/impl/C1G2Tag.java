@@ -449,8 +449,8 @@ public class C1G2Tag implements Gen2Tag {
 	
 	public byte[] getLockPass(){
 		byte retval[] = new byte[4];
-		for(int i=4; i<8; i++){
-			retval[i]=this.mem.get(TagConstants.MemoryReserved)[i];
+		for(int i=0; i<4; i++){
+			retval[i]=this.mem.get(TagConstants.MemoryReserved)[i + 4];
 		}
 		return retval;
 	}

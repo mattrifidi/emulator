@@ -14,6 +14,7 @@ import org.rifidi.common.utilities.ByteAndHexConvertingUtility;
 import org.rifidi.common.utilities.jaxb.map.MapElement;
 import org.rifidi.emulator.tags.Gen1Tag;
 import org.rifidi.emulator.tags.enums.TagGen;
+import org.rifidi.emulator.tags.id.TagType;
 
 /**
  * RifidiTag is a wrapper aound Gen1Tag that stores extra information about a
@@ -46,7 +47,7 @@ public class RifidiTag implements Serializable {
 	/**
 	 * What type is the TagId (DoD, Custom96, ...)
 	 */
-	private String idFormat;
+	private TagType tagType;
 
 	/** Antenna the tag was last seen at */
 	private int antennaLastSeen;
@@ -89,16 +90,16 @@ public class RifidiTag implements Serializable {
 	 * @return the idFormat
 	 */
 	@XmlElement
-	public String getIdFormat() {
-		return idFormat;
+	public TagType getTagType() {
+		return tagType;
 	}
 
 	/**
 	 * @param idFormat
 	 *            the idFormat to set
 	 */
-	public void setIdFormat(String idFormat) {
-		this.idFormat = idFormat;
+	public void setTagType(TagType tagType) {
+		this.tagType = tagType;
 	}
 
 	public Integer getAntennaLastSeen() {
