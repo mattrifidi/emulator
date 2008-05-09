@@ -16,7 +16,6 @@ import org.rifidi.designer.entities.interfaces.GPI;
 import org.rifidi.designer.entities.interfaces.GPO;
 import org.rifidi.designer.entities.internal.CableEntity;
 import org.rifidi.designer.services.core.cabling.CablingService;
-import org.rifidi.services.registry.ServiceRegistry;
 
 /**
  * Command for creating a cable.
