@@ -9,7 +9,7 @@
 	<reference name="finderserviceref" interface="org.rifidi.designer.services.core.entities.FinderService"
 		bind="setFinderService" unbind="unsetFinderService" cardinality="0..1"
 		policy="dynamic" />
-	<reference name="scenedataserviceref" interface="org.rifidi.designer.services.core.scenedata.SceneDataService"
+	<reference name="scenedataserviceref" interface="org.rifidi.designer.services.core.entities.SceneDataService"
 		bind="setSceneDataService" unbind="unsetSceneDataService" cardinality="0..1"
 		policy="dynamic" />
 </component>

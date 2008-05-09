@@ -37,7 +37,7 @@ import org.eclipse.ui.PlatformUI;
 import org.rifidi.designer.rcp.gpioeditor.factory.GPIOEditPartFactory;
 import org.rifidi.designer.rcp.gpioeditor.parts.GPIORootEditPart;
 import org.rifidi.designer.services.core.entities.FinderService;
-import org.rifidi.designer.services.core.scenedata.SceneDataService;
+import org.rifidi.designer.services.core.entities.SceneDataService;
 import org.rifidi.services.annotations.Inject;
 import org.rifidi.services.registry.ServiceRegistry;
 

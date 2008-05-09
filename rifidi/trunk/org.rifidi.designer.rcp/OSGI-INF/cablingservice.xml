@@ -6,7 +6,7 @@
 		<provide
 			interface="org.rifidi.designer.services.core.cabling.CablingService" />
 	</service>
-	<reference name="scenedataref" interface="org.rifidi.designer.services.core.scenedata.SceneDataService"
+	<reference name="scenedataref" interface="org.rifidi.designer.services.core.entities.SceneDataService"
 		bind="setSceneDataService" unbind="unsetSceneDataService" cardinality="0..1"
 		policy="dynamic" />
 </component>

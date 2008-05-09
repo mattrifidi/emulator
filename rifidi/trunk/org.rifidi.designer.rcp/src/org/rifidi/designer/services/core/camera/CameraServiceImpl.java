@@ -14,7 +14,7 @@ import java.util.concurrent.Callable;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.rifidi.designer.services.core.scenedata.SceneDataService;
+import org.rifidi.designer.services.core.entities.SceneDataService;
 
 import com.jme.math.Vector3f;
 import com.jme.renderer.Camera;

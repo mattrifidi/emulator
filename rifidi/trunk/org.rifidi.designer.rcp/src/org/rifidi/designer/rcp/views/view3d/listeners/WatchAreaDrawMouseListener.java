@@ -18,7 +18,7 @@ import org.eclipse.swt.events.MouseMoveListener;
 import org.rifidi.designer.entities.internal.WatchAreaEntity;
 import org.rifidi.designer.rcp.views.view3d.View3D;
 import org.rifidi.designer.services.core.entities.EntitiesService;
-import org.rifidi.designer.services.core.scenedata.SceneDataService;
+import org.rifidi.designer.services.core.entities.SceneDataService;
 import org.rifidi.designer.utils.Helpers;
 import org.rifidi.jmonkey.SWTDisplaySystem;
 import org.rifidi.services.annotations.Inject;

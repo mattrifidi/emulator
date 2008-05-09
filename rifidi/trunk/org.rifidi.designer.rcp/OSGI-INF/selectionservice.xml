@@ -6,7 +6,7 @@
 		<provide
 			interface="org.rifidi.designer.services.core.selection.SelectionService" />
 	</service>
-	<reference name="scenedataserviceref" interface="org.rifidi.designer.services.core.scenedata.SceneDataService"
+	<reference name="scenedataserviceref" interface="org.rifidi.designer.services.core.entities.SceneDataService"
 		bind="setSceneDataService" unbind="unsetSceneDataService" cardinality="0..1"
 		policy="dynamic" />
 	<reference name="worldserviceref" interface="org.rifidi.designer.services.core.world.WorldService"

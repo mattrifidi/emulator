@@ -19,11 +19,9 @@ import org.rifidi.designer.entities.Entity;
 import org.rifidi.designer.entities.SceneData;
 import org.rifidi.designer.entities.interfaces.GPI;
 import org.rifidi.designer.entities.interfaces.GPO;
-import org.rifidi.designer.services.core.cabling.CableChangeListener;
-import org.rifidi.designer.services.core.cabling.CablingService;
 import org.rifidi.designer.services.core.entities.EntitiesService;
-import org.rifidi.designer.services.core.scenedata.SceneDataChangedListener;
-import org.rifidi.designer.services.core.scenedata.SceneDataService;
+import org.rifidi.designer.services.core.entities.SceneDataChangedListener;
+import org.rifidi.designer.services.core.entities.SceneDataService;
 import org.rifidi.services.annotations.Inject;
 
 /**

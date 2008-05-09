@@ -28,9 +28,9 @@ import org.rifidi.designer.rcp.views.view3d.threads.RenderThread;
 import org.rifidi.designer.rcp.views.view3d.threads.UpdateThread;
 import org.rifidi.designer.services.core.camera.CameraService;
 import org.rifidi.designer.services.core.collision.FieldService;
+import org.rifidi.designer.services.core.entities.SceneDataChangedListener;
+import org.rifidi.designer.services.core.entities.SceneDataService;
 import org.rifidi.designer.services.core.messaging.MessagingService;
-import org.rifidi.designer.services.core.scenedata.SceneDataChangedListener;
-import org.rifidi.designer.services.core.scenedata.SceneDataService;
 import org.rifidi.designer.utils.Helpers;
 import org.rifidi.jmonkey.SWTDisplaySystem;
 
@@ -213,7 +213,8 @@ public class WorldServiceImpl implements WorldService, CommandStateService,
 
 		displaySys.switchContext(glCanvas);
 		if (renderThread != null) {
-			renderThread = new RenderThread(lock, display, glCanvas, sceneData, messagingService);
+			renderThread = new RenderThread(lock, display, glCanvas, sceneData,
+					messagingService);
 			renderThread.start();
 		}
 	}
@@ -230,12 +231,14 @@ public class WorldServiceImpl implements WorldService, CommandStateService,
 
 		lock = new ReentrantLock();
 		// create the render thread
-		renderThread = new RenderThread(lock, display, glCanvas, sceneData, messagingService);
+		renderThread = new RenderThread(lock, display, glCanvas, sceneData,
+				messagingService);
 
 		// create the update thread
 		if (updateThread != null)
 			glCanvas.removeKeyListener(updateThread);
-		updateThread = new UpdateThread(lock, sceneData, repeatedActions, fieldService, cameraService);
+		updateThread = new UpdateThread(lock, sceneData, repeatedActions,
+				fieldService, cameraService);
 		updateThread.setPaused(true);
 		glCanvas.addKeyListener(updateThread);
 
@@ -357,7 +360,7 @@ public class WorldServiceImpl implements WorldService, CommandStateService,
 	public void unsetFieldService(FieldService fieldService) {
 		this.fieldService = null;
 	}
-	
+
 	/**
 	 * @param display
 	 *            the display to set
@@ -365,16 +368,18 @@ public class WorldServiceImpl implements WorldService, CommandStateService,
 	public void setDisplay(Display display) {
 		this.display = display;
 	}
-	
+
 	/**
-	 * @param cameraService the cameraService to set
+	 * @param cameraService
+	 *            the cameraService to set
 	 */
 	public void setCameraService(CameraService cameraService) {
 		this.cameraService = cameraService;
 	}
 
 	/**
-	 * @param cameraService the cameraService to unset
+	 * @param cameraService
+	 *            the cameraService to unset
 	 */
 	public void unsetCameraService(CameraService cameraService) {
 		this.cameraService = null;

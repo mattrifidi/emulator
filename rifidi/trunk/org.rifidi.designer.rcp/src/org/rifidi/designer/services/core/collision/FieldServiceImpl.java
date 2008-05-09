@@ -25,8 +25,7 @@ import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.interfaces.Field;
 import org.rifidi.designer.entities.interfaces.ParentEntity;
 import org.rifidi.designer.services.core.entities.FinderService;
-import org.rifidi.designer.services.core.scenedata.SceneDataService;
-import org.rifidi.services.annotations.Inject;
+import org.rifidi.designer.services.core.entities.SceneDataService;
 
 import com.jme.input.action.InputAction;
 import com.jme.input.action.InputActionEvent;
@@ -66,7 +65,7 @@ public class FieldServiceImpl implements FieldService {
 	 * Reference to the scenedataservice.
 	 */
 	private SceneDataService sceneDataService;
-	
+
 	/**
 	 * Constructor.
 	 */
@@ -157,12 +156,12 @@ public class FieldServiceImpl implements FieldService {
 		for (Entity entity : sceneData.getSearchableEntities()) {
 			if (entity instanceof Field) {
 				registerField((Field) entity);
-			}
-			else if (entity instanceof ParentEntity) {
-				for(VisualEntity ve:((ParentEntity)entity).getChildEntites()){
+			} else if (entity instanceof ParentEntity) {
+				for (VisualEntity ve : ((ParentEntity) entity)
+						.getChildEntites()) {
 					if (ve instanceof Field) {
 						registerField((Field) ve);
-					}		
+					}
 				}
 			}
 		}
@@ -195,7 +194,7 @@ public class FieldServiceImpl implements FieldService {
 	public void setFinderService(FinderService finderService) {
 		this.finderService = finderService;
 	}
-	
+
 	/**
 	 * @param finderService
 	 *            the finderService to unset
@@ -203,9 +202,10 @@ public class FieldServiceImpl implements FieldService {
 	public void unsetFinderService(FinderService finderService) {
 		this.finderService = null;
 	}
-	
+
 	/**
-	 * @param sceneDataService the sceneDataService to set
+	 * @param sceneDataService
+	 *            the sceneDataService to set
 	 */
 	public void setSceneDataService(SceneDataService sceneDataService) {
 		this.sceneDataService = sceneDataService;
@@ -213,7 +213,8 @@ public class FieldServiceImpl implements FieldService {
 	}
 
 	/**
-	 * @param sceneDataService the sceneDataService to unset
+	 * @param sceneDataService
+	 *            the sceneDataService to unset
 	 */
 	public void unsetSceneDataService(SceneDataService sceneDataService) {
 		this.sceneDataService = null;

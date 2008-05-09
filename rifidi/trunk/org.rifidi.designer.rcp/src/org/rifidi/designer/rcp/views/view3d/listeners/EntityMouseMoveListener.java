@@ -25,7 +25,7 @@ import org.rifidi.designer.entities.interfaces.VisualEntityHolder;
 import org.rifidi.designer.rcp.views.view3d.View3D;
 import org.rifidi.designer.services.core.camera.CameraService;
 import org.rifidi.designer.services.core.entities.FinderService;
-import org.rifidi.designer.services.core.scenedata.SceneDataService;
+import org.rifidi.designer.services.core.entities.SceneDataService;
 import org.rifidi.designer.utils.Helpers;
 import org.rifidi.jmonkey.SWTDisplaySystem;
 import org.rifidi.services.annotations.Inject;

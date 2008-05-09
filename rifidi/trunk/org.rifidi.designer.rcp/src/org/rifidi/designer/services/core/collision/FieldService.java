@@ -14,7 +14,7 @@ import java.util.List;
 
 import org.rifidi.designer.entities.interfaces.Field;
 import org.rifidi.designer.rcp.views.view3d.threads.UpdateThread;
-import org.rifidi.designer.services.core.scenedata.SceneDataChangedListener;
+import org.rifidi.designer.services.core.entities.SceneDataChangedListener;
 
 /**
  * This service is responsible for monitoring entities for collisions. The

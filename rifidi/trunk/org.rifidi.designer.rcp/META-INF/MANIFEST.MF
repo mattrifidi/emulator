@@ -41,12 +41,10 @@ Export-Package: org.rifidi.designer.annotations,
  org.rifidi.designer.services.core.entities,
  org.rifidi.designer.services.core.events,
  org.rifidi.designer.services.core.messaging,
- org.rifidi.designer.services.core.scenedata,
  org.rifidi.designer.services.core.selection,
  org.rifidi.designer.services.core.world
 Eclipse-BuddyPolicy: dependent
-Service-Component: OSGI-INF/scenedataservice.xml,
- OSGI-INF/messagingservice.xml,
+Service-Component: OSGI-INF/messagingservice.xml,
  OSGI-INF/cameraservice.xml,
  OSGI-INF/selectionservice.xml,
  OSGI-INF/entitiesservice.xml, 

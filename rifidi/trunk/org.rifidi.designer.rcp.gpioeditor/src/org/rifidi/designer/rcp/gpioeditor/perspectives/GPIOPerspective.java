@@ -22,8 +22,8 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.rifidi.designer.entities.SceneData;
 import org.rifidi.designer.rcp.gpioeditor.GPIOEditor;
-import org.rifidi.designer.services.core.scenedata.SceneDataChangedListener;
-import org.rifidi.designer.services.core.scenedata.SceneDataService;
+import org.rifidi.designer.services.core.entities.SceneDataChangedListener;
+import org.rifidi.designer.services.core.entities.SceneDataService;
 import org.rifidi.services.annotations.Inject;
 import org.rifidi.services.registry.ServiceRegistry;
 

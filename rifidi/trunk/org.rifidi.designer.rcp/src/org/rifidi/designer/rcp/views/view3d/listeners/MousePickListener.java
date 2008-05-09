@@ -18,10 +18,9 @@ import org.eclipse.swt.events.MouseListener;
 import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.rcp.views.view3d.View3D;
 import org.rifidi.designer.services.core.entities.FinderService;
-import org.rifidi.designer.services.core.scenedata.SceneDataService;
+import org.rifidi.designer.services.core.entities.SceneDataService;
 import org.rifidi.designer.services.core.selection.SelectionService;
 import org.rifidi.jmonkey.SWTDisplaySystem;
-import org.rifidi.services.registry.ServiceRegistry;
 
 import com.jme.intersection.BoundingPickResults;
 import com.jme.intersection.PickResults;

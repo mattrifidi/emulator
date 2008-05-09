@@ -8,7 +8,7 @@
 		<provide
 			interface="org.rifidi.designer.services.core.world.CommandStateService" />
 	</service>
-	<reference name="scenedataserviceref" interface="org.rifidi.designer.services.core.scenedata.SceneDataService"
+	<reference name="scenedataserviceref" interface="org.rifidi.designer.services.core.entities.SceneDataService"
 		bind="setSceneDataService" unbind="unsetSceneDataService" cardinality="0..1"
 		policy="dynamic" />
 	<reference name="messagingserviceref" interface="org.rifidi.designer.services.core.messaging.MessagingService"
