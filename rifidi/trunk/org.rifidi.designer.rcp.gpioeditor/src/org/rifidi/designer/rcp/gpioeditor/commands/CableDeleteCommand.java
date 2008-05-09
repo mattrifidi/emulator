@@ -11,7 +11,7 @@
 package org.rifidi.designer.rcp.gpioeditor.commands;
 
 import org.eclipse.gef.commands.Command;
-import org.rifidi.designer.entities.CableEntity;
+import org.rifidi.designer.entities.internal.CableEntity;
 import org.rifidi.designer.services.core.cabling.CablingService;
 import org.rifidi.services.registry.ServiceRegistry;
 

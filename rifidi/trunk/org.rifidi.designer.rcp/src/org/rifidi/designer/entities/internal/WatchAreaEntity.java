@@ -21,6 +21,9 @@ import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.interfaces.Field;
 import org.rifidi.designer.entities.interfaces.NeedsPhysics;
 import org.rifidi.designer.entities.interfaces.Switch;
+import org.rifidi.designer.services.core.collision.FieldService;
+import org.rifidi.designer.services.core.events.EventsService;
+import org.rifidi.services.annotations.Inject;
 
 import com.jme.input.InputHandler;
 import com.jme.renderer.ColorRGBA;
@@ -68,7 +71,18 @@ public class WatchAreaEntity extends VisualEntity implements NeedsPhysics,
 	 * Running state of this entity.
 	 */
 	private boolean running = false;
+	/**
+	 * Reference to the events service.
+	 */
+	private EventsService eventsService;
+	/**
+	 * Reference to the field service
+	 */
+	private FieldService fieldService;
 
+	/**
+	 * Constructor.
+	 */
 	public WatchAreaEntity() {
 		setName("Watch Area");
 	}
@@ -92,6 +106,7 @@ public class WatchAreaEntity extends VisualEntity implements NeedsPhysics,
 			setNode(phys);
 			phys.generatePhysicsGeometry();
 			loaded();
+			fieldService.registerField(this);
 		}
 	}
 
@@ -138,6 +153,7 @@ public class WatchAreaEntity extends VisualEntity implements NeedsPhysics,
 		else{
 			turnOff();
 		}
+		fieldService.registerField(this);
 	}
 
 	/*
@@ -147,6 +163,7 @@ public class WatchAreaEntity extends VisualEntity implements NeedsPhysics,
 	 */
 	@Override
 	public void destroy() {
+		fieldService.unregisterField(this);
 		((PhysicsNode) getNode()).delete();
 	}
 
@@ -234,7 +251,7 @@ public class WatchAreaEntity extends VisualEntity implements NeedsPhysics,
 	 */
 	@Override
 	public void fieldEntered(Entity entity) {
-		getEventsService().publish(
+		eventsService.publish(
 				new WatchAreaEvent(true, this, entity));
 	}
 
@@ -245,8 +262,24 @@ public class WatchAreaEntity extends VisualEntity implements NeedsPhysics,
 	 */
 	@Override
 	public void fieldLeft(Entity entity) {
-		getEventsService().publish(
+		eventsService.publish(
 				new WatchAreaEvent(false, this, entity));
 	}
 
+	/**
+	 * @param eventsService the eventsService to set
+	 */
+	@Inject
+	public void setEventsService(EventsService eventsService) {
+		this.eventsService = eventsService;
+	}
+	
+	/**
+	 * @param fieldService the fieldService to set
+	 */
+	@Inject
+	public void setFieldService(FieldService fieldService) {
+		this.fieldService = fieldService;
+	}
+	
 }

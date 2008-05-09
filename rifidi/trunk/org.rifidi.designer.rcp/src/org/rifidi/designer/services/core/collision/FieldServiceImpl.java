@@ -23,7 +23,6 @@ import org.rifidi.designer.entities.Entity;
 import org.rifidi.designer.entities.SceneData;
 import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.interfaces.Field;
-import org.rifidi.designer.entities.interfaces.ParentEntity;
 import org.rifidi.designer.services.core.entities.FinderService;
 import org.rifidi.designer.services.core.entities.SceneDataService;
 
@@ -83,10 +82,14 @@ public class FieldServiceImpl implements FieldService {
 	@Override
 	public void registerField(Field field) {
 		fields.put(field, new ColliderInputAction(field));
-		SyntheticButton intersect = ((PhysicsNode) ((VisualEntity) field)
-				.getNode()).getCollisionEventHandler();
-		sceneData.getCollisionHandler().addAction(fields.get(field), intersect,
-				false);
+		// Might be that we are loading a new scene data and entities are
+		// registering themselves, deferr init uuntil the scenedata is set.
+		if (sceneData != null) {
+			SyntheticButton intersect = ((PhysicsNode) ((VisualEntity) field)
+					.getNode()).getCollisionEventHandler();
+			sceneData.getCollisionHandler().addAction(fields.get(field),
+					intersect, false);
+		}
 	}
 
 	/*
@@ -153,17 +156,11 @@ public class FieldServiceImpl implements FieldService {
 	@Override
 	public void sceneDataChanged(SceneData sceneData) {
 		this.sceneData = sceneData;
-		for (Entity entity : sceneData.getSearchableEntities()) {
-			if (entity instanceof Field) {
-				registerField((Field) entity);
-			} else if (entity instanceof ParentEntity) {
-				for (VisualEntity ve : ((ParentEntity) entity)
-						.getChildEntites()) {
-					if (ve instanceof Field) {
-						registerField((Field) ve);
-					}
-				}
-			}
+		for (Field field : fields.keySet()) {
+			SyntheticButton intersect = ((PhysicsNode) ((VisualEntity) field)
+					.getNode()).getCollisionEventHandler();
+			sceneData.getCollisionHandler().addAction(fields.get(field),
+					intersect, false);
 		}
 	}
 

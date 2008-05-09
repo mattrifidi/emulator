@@ -32,9 +32,12 @@ import org.rifidi.designer.entities.interfaces.NeedsPhysics;
 import org.rifidi.designer.entities.interfaces.Switch;
 import org.rifidi.designer.entities.placement.BinaryPattern;
 import org.rifidi.designer.library.basemodels.gate.GateEntity;
+import org.rifidi.designer.services.core.collision.FieldService;
+import org.rifidi.designer.services.core.events.EventsService;
 import org.rifidi.designer.services.core.events.TagEvent;
 import org.rifidi.emulator.rmi.server.ReaderModuleManagerInterface;
 import org.rifidi.emulator.tags.impl.RifidiTag;
+import org.rifidi.services.annotations.Inject;
 
 import com.jme.bounding.BoundingBox;
 import com.jme.input.InputHandler;
@@ -83,7 +86,15 @@ public class AntennaFieldEntity extends VisualEntity implements Switch,
 	private MaterialState ms;
 
 	private AntennaFieldThread antennaFieldThread;
-
+	/**
+	 * Reference to the events service.
+	 */
+	private EventsService eventsService;
+	/**
+	 * Reference to the field service.
+	 */
+	private FieldService fieldService;
+	
 	/**
 	 * Default constructor (used by JAXB)
 	 */
@@ -128,6 +139,7 @@ public class AntennaFieldEntity extends VisualEntity implements Switch,
 		loaded();
 
 		running = false;
+		fieldService.registerField(this);
 	}
 
 	/*
@@ -149,6 +161,7 @@ public class AntennaFieldEntity extends VisualEntity implements Switch,
 		// set up the collision properties for the field
 		((PhysicsNode) getNode()).generatePhysicsGeometry();
 		((StaticPhysicsNode) getNode()).setMaterial(Material.GHOST);
+		fieldService.registerField(this);
 	}
 
 	private void prepare() {
@@ -261,7 +274,7 @@ public class AntennaFieldEntity extends VisualEntity implements Switch,
 		if (entity.getUserData() instanceof RifidiTag) {
 			antennaFieldThread.addAction(new AntennaFieldAction(true,
 					(RifidiTag) entity.getUserData()));
-			getEventsService().publish(
+			eventsService.publish(
 					new TagEvent((RifidiTag) entity.getUserData(),
 							readerInterface, antennaNum, true));
 		}
@@ -278,7 +291,7 @@ public class AntennaFieldEntity extends VisualEntity implements Switch,
 		if (entity.getUserData() instanceof RifidiTag) {
 			antennaFieldThread.addAction(new AntennaFieldAction(false,
 					(RifidiTag) entity.getUserData()));
-			getEventsService().publish(
+			eventsService.publish(
 					new TagEvent((RifidiTag) entity.getUserData(),
 							readerInterface, antennaNum, false));
 		}
@@ -306,6 +319,7 @@ public class AntennaFieldEntity extends VisualEntity implements Switch,
 	 */
 	@Override
 	public void destroy() {
+		fieldService.unregisterField(this);
 		((PhysicsNode) getNode()).delete();
 	}
 
@@ -435,5 +449,21 @@ public class AntennaFieldEntity extends VisualEntity implements Switch,
 	@XmlTransient
 	public void setReaderInterface(ReaderModuleManagerInterface readerInterface) {
 		this.readerInterface = readerInterface;
+	}
+
+	/**
+	 * @param eventsService the eventsService to set
+	 */
+	@Inject
+	public void setEventsService(EventsService eventsService) {
+		this.eventsService = eventsService;
+	}
+
+	/**
+	 * @param fieldService the fieldService to set
+	 */
+	@Inject
+	public void setFieldService(FieldService fieldService) {
+		this.fieldService = fieldService;
 	}
 }

@@ -12,8 +12,8 @@ package org.rifidi.designer.entities.adapters;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.model.IWorkbenchAdapter;
-import org.rifidi.designer.entities.CableEntity;
 import org.rifidi.designer.entities.Entity;
+import org.rifidi.designer.entities.internal.CableEntity;
 
 /**
  * WorkbenchAdapter for IDGenerators.

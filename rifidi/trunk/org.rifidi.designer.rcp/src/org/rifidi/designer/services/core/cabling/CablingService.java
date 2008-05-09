@@ -11,9 +11,9 @@
 package org.rifidi.designer.services.core.cabling;
 import java.util.List;
 
-import org.rifidi.designer.entities.CableEntity;
 import org.rifidi.designer.entities.interfaces.GPI;
 import org.rifidi.designer.entities.interfaces.GPO;
+import org.rifidi.designer.entities.internal.CableEntity;
 
 /**
  * A CablingService is responsible for handling the virtual cables between GPIO

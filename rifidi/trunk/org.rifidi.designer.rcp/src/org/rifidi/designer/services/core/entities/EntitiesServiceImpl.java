@@ -34,18 +34,16 @@ import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.swt.graphics.Point;
-import org.rifidi.designer.entities.CableEntity;
 import org.rifidi.designer.entities.Entity;
 import org.rifidi.designer.entities.SceneData;
 import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.grouping.EntityGroup;
 import org.rifidi.designer.entities.interfaces.ChildEntity;
-import org.rifidi.designer.entities.interfaces.Field;
-import org.rifidi.designer.entities.interfaces.GPO;
 import org.rifidi.designer.entities.interfaces.NeedsPhysics;
 import org.rifidi.designer.entities.interfaces.ParentEntity;
 import org.rifidi.designer.entities.interfaces.RifidiEntity;
 import org.rifidi.designer.entities.interfaces.VisualEntityHolder;
+import org.rifidi.designer.entities.internal.CableEntity;
 import org.rifidi.designer.entities.placement.BitMap;
 import org.rifidi.designer.library.EntityLibraryRegistry;
 import org.rifidi.designer.rcp.Activator;
@@ -154,9 +152,6 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 		if (ent instanceof VisualEntity) {
 			Helpers.waitOnCallabel(new UpdateCallable(sceneData.getRootNode(),
 					(VisualEntity) ent, center, null));
-			if (ent instanceof Field) {
-				fieldService.registerField((Field) ent);
-			}
 		}
 		if (ent instanceof ParentEntity) {
 			for (VisualEntity child : ((ParentEntity) ent).getChildEntites()) {
@@ -168,13 +163,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 				Helpers.waitOnCallabel(new UpdateCallable(((VisualEntity) ent)
 						.getNode(), (VisualEntity) child, false, null));
 				child.setEntityId(sceneData.getNextID().toString());
-				if (child instanceof Field) {
-					fieldService.registerField((Field) child);
-				}
 			}
-		}
-		if (ent instanceof GPO) {
-			((GPO) ent).setCablingService(cablingService);
 		}
 		ent.setEntityId(sceneData.getNextID().toString());
 	}
@@ -511,7 +500,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 					.getEntityClasses();
 			classes.add(org.rifidi.designer.entities.SceneData.class);
 			classes.add(org.rifidi.designer.entities.VisualEntity.class);
-			classes.add(org.rifidi.designer.entities.CableEntity.class);
+			classes.add(org.rifidi.designer.entities.internal.CableEntity.class);
 			classes.add(org.rifidi.emulator.tags.impl.C0G1Tag.class);
 			classes.add(org.rifidi.emulator.tags.impl.C1G1Tag.class);
 			classes.add(org.rifidi.emulator.tags.impl.C1G2Tag.class);
@@ -624,20 +613,11 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 		if (entity instanceof CableEntity) {
 			cablingService.recreateCable((CableEntity) entity);
 		}
-		if (entity instanceof GPO) {
-			((GPO) entity).setCablingService(cablingService);
-		}
-		if (entity instanceof ParentEntity) {
-			for (Entity ent : ((ParentEntity) entity).getChildEntites()) {
-				ServiceRegistry.getInstance().service(ent);
-			}
-		}
+		ServiceRegistry.getInstance().service(entity);
 		// has to be the last step!!!
 		if (!isNew && entity instanceof VisualEntity) {
 			((VisualEntity) entity).loaded();
 		}
-		entity.setEventsService(eventsService);
-		ServiceRegistry.getInstance().service(entity);
 	}
 
 	/*
@@ -782,7 +762,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 					.getEntityClasses();
 			classes.add(org.rifidi.designer.entities.SceneData.class);
 			classes.add(org.rifidi.designer.entities.VisualEntity.class);
-			classes.add(org.rifidi.designer.entities.CableEntity.class);
+			classes.add(org.rifidi.designer.entities.internal.CableEntity.class);
 			classes.add(org.rifidi.emulator.tags.impl.C0G1Tag.class);
 			classes.add(org.rifidi.emulator.tags.impl.C1G1Tag.class);
 			classes.add(org.rifidi.emulator.tags.impl.C1G2Tag.class);

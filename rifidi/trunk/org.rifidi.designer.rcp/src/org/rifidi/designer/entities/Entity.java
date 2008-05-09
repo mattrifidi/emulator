@@ -30,7 +30,7 @@ import org.rifidi.services.annotations.Inject;
  */
 @XmlSeeAlso( {
 		org.rifidi.designer.entities.internal.WatchAreaEntity.class,
-		org.rifidi.designer.entities.CableEntity.class})
+		org.rifidi.designer.entities.internal.CableEntity.class})
 public abstract class Entity {
 
 	/**
@@ -50,11 +50,6 @@ public abstract class Entity {
 	 * The user data object for this entity.
 	 */
 	private Object userData;
-
-	/**
-	 * Reference to the events service.
-	 */
-	private EventsService eventsService;
 
 	/**
 	 * @return the entityId
@@ -139,21 +134,5 @@ public abstract class Entity {
 	 */
 	public void setUserData(Object userData) {
 		this.userData = userData;
-	}
-
-	/**
-	 * @return the eventsService
-	 */
-	protected EventsService getEventsService() {
-		return this.eventsService;
-	}
-
-	/**
-	 * @param eventsService the eventsService to set
-	 */
-	@XmlTransient
-	@Inject
-	public void setEventsService(EventsService eventsService) {
-		this.eventsService = eventsService;
 	}
 }

@@ -14,11 +14,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.rifidi.designer.entities.CableEntity;
 import org.rifidi.designer.entities.Entity;
 import org.rifidi.designer.entities.SceneData;
 import org.rifidi.designer.entities.interfaces.GPI;
 import org.rifidi.designer.entities.interfaces.GPO;
+import org.rifidi.designer.entities.internal.CableEntity;
 import org.rifidi.designer.services.core.entities.EntitiesService;
 import org.rifidi.designer.services.core.entities.SceneDataChangedListener;
 import org.rifidi.designer.services.core.entities.SceneDataService;
@@ -243,11 +243,18 @@ public class CablingServiceImpl implements CablingService,
 	 * @param entitiesService
 	 *            the entitiesService to set
 	 */
-	@Inject
 	public void setEntitiesService(EntitiesService entitiesService) {
 		this.entitiesService = entitiesService;
 	}
 
+	/**
+	 * @param entitiesService
+	 *            the entitiesService to unset
+	 */
+	public void unsetEntitiesService(EntitiesService entitiesService) {
+		this.entitiesService = null;
+	}
+	
 	/**
 	 * @param sceneDataService
 	 *            the sceneDataService to set

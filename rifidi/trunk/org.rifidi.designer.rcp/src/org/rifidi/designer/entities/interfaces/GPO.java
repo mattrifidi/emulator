@@ -19,9 +19,4 @@ import org.rifidi.designer.services.core.cabling.CablingService;
  * 
  */
 public interface GPO {
-	/**
-	 * Set the cabling service.
-	 * @param cablingService
-	 */
-	public void setCablingService(CablingService cablingService);
 }

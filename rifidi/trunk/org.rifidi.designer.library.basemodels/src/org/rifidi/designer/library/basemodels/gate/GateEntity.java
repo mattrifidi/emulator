@@ -38,6 +38,7 @@ import org.rifidi.designer.entities.placement.BinaryPattern;
 import org.rifidi.designer.library.basemodels.antennafield.AntennaFieldEntity;
 import org.rifidi.designer.services.core.cabling.CablingService;
 import org.rifidi.emulator.rmi.server.ReaderModuleManagerInterface;
+import org.rifidi.services.annotations.Inject;
 import org.rifidi.ui.common.reader.UIReader;
 
 import com.jme.math.Vector3f;
@@ -452,12 +453,7 @@ public class GateEntity extends VisualEntity implements RifidiEntity, Switch,
 		return reader.getReaderType();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.rifidi.designer.entities.interfaces.GPO#setCablingService(org.rifidi.services.registry.core.cabling.CablingService)
-	 */
-	@Override
+	@Inject
 	public void setCablingService(CablingService cablingService) {
 		this.cablingService = cablingService;
 	}

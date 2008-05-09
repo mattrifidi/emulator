@@ -13,6 +13,7 @@ package org.rifidi.designer.services.core.events;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
@@ -23,6 +24,11 @@ import javax.xml.bind.Marshaller;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.console.ConsolePlugin;
+import org.eclipse.ui.console.IConsole;
+import org.eclipse.ui.console.MessageConsole;
 import org.eclipse.ui.console.MessageConsoleStream;
 import org.rifidi.designer.entities.Entity;
 import org.rifidi.designer.entities.interfaces.RifidiEntity;
@@ -85,24 +91,23 @@ public class EventsServiceImpl implements EventsService {
 	public EventsServiceImpl() {
 		eventStack = new Stack<WorldEvent>();
 		eventTypes = Collections.synchronizedList(new ArrayList<Class>());
-		// MessageConsole fMessageConsole = new MessageConsole("TagMessages",
-		// null);
-		// ConsolePlugin.getDefault().getConsoleManager().addConsoles(
-		// new IConsole[] { fMessageConsole });
-		// msgConsoleStreamRed = fMessageConsole.newMessageStream();
-		// msgConsoleStreamRed.setColor(Display.getCurrent().getSystemColor(
-		// SWT.COLOR_RED));
-		// msgConsoleStreamBlack = fMessageConsole.newMessageStream();
-		// msgConsoleStreamBlack.setColor(Display.getCurrent().getSystemColor(
-		// SWT.COLOR_BLACK));
-		// msgConsoleStreamGreen = fMessageConsole.newMessageStream();
-		// msgConsoleStreamGreen.setColor(Display.getCurrent().getSystemColor(
-		// SWT.COLOR_GREEN));
-		// recordedEvents = new HashMap<Long, WorldEvent>();
-		// thread = new ProcessingThread("eventProcessingThread", eventStack,
-		// eventTypes, msgConsoleStreamRed, msgConsoleStreamBlack,
-		// msgConsoleStreamGreen);
-		// thread.start();
+		MessageConsole fMessageConsole = new MessageConsole("TagMessages", null);
+		ConsolePlugin.getDefault().getConsoleManager().addConsoles(
+				new IConsole[] { fMessageConsole });
+		msgConsoleStreamRed = fMessageConsole.newMessageStream();
+		msgConsoleStreamRed.setColor(Display.getCurrent().getSystemColor(
+				SWT.COLOR_RED));
+		msgConsoleStreamBlack = fMessageConsole.newMessageStream();
+		msgConsoleStreamBlack.setColor(Display.getCurrent().getSystemColor(
+				SWT.COLOR_BLACK));
+		msgConsoleStreamGreen = fMessageConsole.newMessageStream();
+		msgConsoleStreamGreen.setColor(Display.getCurrent().getSystemColor(
+				SWT.COLOR_GREEN));
+		recordedEvents = new HashMap<Long, WorldEvent>();
+		thread = new ProcessingThread("eventProcessingThread", eventStack,
+				eventTypes, msgConsoleStreamRed, msgConsoleStreamBlack,
+				msgConsoleStreamGreen);
+		thread.start();
 	}
 
 	/*

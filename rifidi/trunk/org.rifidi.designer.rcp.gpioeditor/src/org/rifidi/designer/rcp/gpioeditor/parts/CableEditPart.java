@@ -20,7 +20,7 @@ import org.eclipse.gef.editparts.AbstractConnectionEditPart;
 import org.eclipse.gef.editpolicies.ConnectionEditPolicy;
 import org.eclipse.gef.editpolicies.ConnectionEndpointEditPolicy;
 import org.eclipse.gef.requests.GroupRequest;
-import org.rifidi.designer.entities.CableEntity;
+import org.rifidi.designer.entities.internal.CableEntity;
 import org.rifidi.designer.rcp.gpioeditor.commands.CableDeleteCommand;
 import org.rifidi.designer.services.core.cabling.CablingService;
 import org.rifidi.services.annotations.Inject;

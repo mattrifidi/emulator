@@ -12,10 +12,10 @@ package org.rifidi.designer.rcp.gpioeditor.factory;
 
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartFactory;
-import org.rifidi.designer.entities.CableEntity;
 import org.rifidi.designer.entities.Entity;
 import org.rifidi.designer.entities.interfaces.GPI;
 import org.rifidi.designer.entities.interfaces.GPO;
+import org.rifidi.designer.entities.internal.CableEntity;
 import org.rifidi.designer.rcp.gpioeditor.parts.CableEditPart;
 import org.rifidi.designer.rcp.gpioeditor.parts.GPIEditPart;
 import org.rifidi.designer.rcp.gpioeditor.parts.GPIOEditPart;

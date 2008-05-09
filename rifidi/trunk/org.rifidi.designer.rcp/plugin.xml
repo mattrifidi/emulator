@@ -81,7 +81,7 @@
          </adapter>
       </factory>
    <factory
-         adaptableType="org.rifidi.designer.entities.CableEntity"
+         adaptableType="org.rifidi.designer.entities.internal.CableEntity"
          class="org.rifidi.designer.entities.adapters.DefaultAdapterFactory">
       <adapter
             type="org.eclipse.ui.model.IWorkbenchAdapter">

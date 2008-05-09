@@ -13,8 +13,8 @@ package org.rifidi.designer.entities.adapters;
 import org.eclipse.core.runtime.IAdapterFactory;
 import org.eclipse.ui.IActionFilter;
 import org.eclipse.ui.model.IWorkbenchAdapter;
-import org.rifidi.designer.entities.CableEntity;
 import org.rifidi.designer.entities.Entity;
+import org.rifidi.designer.entities.internal.CableEntity;
 
 /**
  * Factory for creating the default adapters.

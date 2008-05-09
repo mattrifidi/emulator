@@ -9,4 +9,7 @@
 	<reference name="scenedataref" interface="org.rifidi.designer.services.core.entities.SceneDataService"
 		bind="setSceneDataService" unbind="unsetSceneDataService" cardinality="0..1"
 		policy="dynamic" />
+	<reference name="entitiesref" interface="org.rifidi.designer.services.core.entities.EntitiesService"
+		bind="setEntitiesService" unbind="unsetEntitiesService" cardinality="0..1"
+		policy="dynamic" />
 </component>
