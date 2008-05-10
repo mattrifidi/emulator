@@ -39,11 +39,13 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.rifidi.emulator.tags.Gen1Tag;
 import org.rifidi.emulator.tags.impl.RifidiTag;
+import org.rifidi.emulator.tags.service.TagRegistryService;
+import org.rifidi.services.annotations.Inject;
+import org.rifidi.services.registry.ServiceRegistry;
 import org.rifidi.ui.common.reader.UIAntenna;
 import org.rifidi.ui.common.reader.UIReader;
 import org.rifidi.ui.common.reader.callback.TagIDChangedCallbackInterface;
 import org.rifidi.ui.common.registry.RegistryChangeListener;
-import org.rifidi.ui.common.registry.TagRegistry;
 import org.rifidi.ui.ide.views.antennaview.model.AntennViewLabelProvider;
 import org.rifidi.ui.ide.views.antennaview.model.AntennaViewContentProvider;
 
@@ -296,9 +298,7 @@ public class TagViewer extends TableViewer implements RegistryChangeListener,
 						String text = (String) event.data;
 						String[] textArray = text.split("\n");
 						for (String i : textArray) {
-							RifidiTag tag = (RifidiTag) TagRegistry
-									.getInstance().getTagByString(i);
-							list.add(tag);
+							//list.add(tag);
 							logger.debug("Drag and Drop " + i);
 						}
 						getAntenna().addTag(list);
@@ -314,7 +314,7 @@ public class TagViewer extends TableViewer implements RegistryChangeListener,
 					}
 
 				});
-		TagRegistry.getInstance().addListener(this);
+		//TagRegistry.getInstance().addListener(this);
 	}
 
 	/*
@@ -371,7 +371,7 @@ public class TagViewer extends TableViewer implements RegistryChangeListener,
 	 * Unregister the Listener this Antenna is associated with
 	 */
 	public void dispose() {
-		TagRegistry.getInstance().removeListener(this);
+	//	TagRegistry.getInstance().removeListener(this);
 	}
 
 	/**
@@ -409,5 +409,4 @@ public class TagViewer extends TableViewer implements RegistryChangeListener,
 
 		});
 	}
-
 }

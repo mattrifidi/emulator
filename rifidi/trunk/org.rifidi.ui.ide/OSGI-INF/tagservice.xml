@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<component name="tagservice">
+	<implementation
+		class="org.rifidi.emulator.tags.service.TagRegistryServiceImpl" />
+	<service>
+		<provide
+			interface="org.rifidi.emulator.tags.service.TagRegistryService" />
+	</service>
+</component>
+

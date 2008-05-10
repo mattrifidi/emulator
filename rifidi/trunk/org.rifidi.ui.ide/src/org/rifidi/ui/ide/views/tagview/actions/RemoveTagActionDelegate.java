@@ -15,7 +15,6 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.ui.IViewActionDelegate;
 import org.eclipse.ui.IViewPart;
 import org.rifidi.emulator.tags.impl.RifidiTag;
-import org.rifidi.ui.common.registry.TagRegistry;
 import org.rifidi.ui.ide.views.tagview.TagView;
 
 /**
@@ -83,7 +82,7 @@ public class RemoveTagActionDelegate implements IViewActionDelegate {
 		messageBox.setText("Warning");
 
 		if (messageBox.open() == SWT.OK) {
-			TagRegistry.getInstance().removeTag(currentSelection);
+			// TagRegistry.getInstance().removeTag(currentSelection);
 			((TagView) view).refresh();
 		}
 	}

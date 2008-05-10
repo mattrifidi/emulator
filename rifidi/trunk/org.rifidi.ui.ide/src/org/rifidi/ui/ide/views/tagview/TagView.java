@@ -21,7 +21,9 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.part.ViewPart;
 import org.rifidi.emulator.tags.impl.RifidiTag;
-import org.rifidi.ui.common.registry.TagRegistry;
+import org.rifidi.emulator.tags.service.TagRegistryService;
+import org.rifidi.services.annotations.Inject;
+import org.rifidi.services.registry.ServiceRegistry;
 import org.rifidi.ui.ide.views.tagview.model.TagViewContentProvider;
 import org.rifidi.ui.ide.views.tagview.model.TagViewLabelProvider;
 
@@ -46,7 +48,8 @@ public class TagView extends ViewPart {
 	};
 
 	public TagView() {
-		// TODO Auto-generated constructor stub
+		System.out.println("Initializing the Tag Service");
+		ServiceRegistry.getInstance().service(this);
 	}
 
 	@Override
@@ -120,7 +123,7 @@ public class TagView extends ViewPart {
 		tableViewer.setLabelProvider(new TagViewLabelProvider());
 		tableViewer.setContentProvider(new TagViewContentProvider());
 
-		tableViewer.setInput(TagRegistry.getInstance());
+		//tableViewer.setInput(TagRegistry.getInstance());
 
 		getSite().setSelectionProvider(tableViewer);
 
@@ -142,4 +145,15 @@ public class TagView extends ViewPart {
 		return tableViewer;
 	}
 
+	@Inject
+	public void setTagRegistryService(TagRegistryService tagRegisrty)
+	{
+		System.out.println("fuck you kyle");
+		TagRegistryService service = tagRegisrty;
+		if(tagRegisrty != null)
+		{
+			System.out.println("Service set");
+		}
+		
+	}
 }

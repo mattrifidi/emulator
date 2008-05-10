@@ -77,6 +77,7 @@ Or download it from http://sourceforge.net/project/showfiles.php?group_id=170933
       <plugin id="org.rifidi.emulator.reader.symbol"/>
       <plugin id="org.rifidi.emulator.tags"/>
       <plugin id="org.rifidi.log4j.developer" fragment="true"/>
+      <plugin id="org.rifidi.services"/>
       <plugin id="org.rifidi.ui.common"/>
       <plugin id="org.rifidi.ui.ide"/>
    </plugins>

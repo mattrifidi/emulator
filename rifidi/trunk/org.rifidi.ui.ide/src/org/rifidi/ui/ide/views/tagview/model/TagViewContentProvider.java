@@ -2,7 +2,6 @@ package org.rifidi.ui.ide.views.tagview.model;
 
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
-import org.rifidi.ui.common.registry.TagRegistry;
 
 /**
  * This is providing the information about the structure of the TagRegistry Object. 
@@ -16,9 +15,9 @@ public class TagViewContentProvider implements IStructuredContentProvider {
 	 * @see org.eclipse.jface.viewers.IStructuredContentProvider#getElements(java.lang.Object)
 	 */
 	public Object[] getElements(Object inputElement) {
-		if (inputElement instanceof TagRegistry) {
-			return ((TagRegistry) inputElement).getTagList().toArray();
-		}
+		// if (inputElement instanceof TagRegistry) {
+		// return ((TagRegistry) inputElement).getTagList().toArray();
+		//		}
 		return null;
 	}
 
