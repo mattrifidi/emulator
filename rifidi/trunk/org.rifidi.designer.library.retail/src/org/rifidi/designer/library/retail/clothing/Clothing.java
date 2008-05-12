@@ -25,6 +25,7 @@ import com.jme.math.Vector3f;
 import com.jme.scene.Node;
 import com.jme.util.export.binary.BinaryImporter;
 import com.jmex.physics.DynamicPhysicsNode;
+import com.jmex.physics.PhysicsNode;
 import com.jmex.physics.PhysicsSpace;
 
 /**
@@ -63,7 +64,8 @@ public class Clothing extends VisualEntity implements NeedsPhysics {
 	 */
 	@Override
 	public void destroy() {
-
+		((PhysicsNode)getNode()).setActive(false);
+		((PhysicsNode)getNode()).delete();
 	}
 
 	/*

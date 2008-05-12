@@ -95,7 +95,11 @@ public class ClothingRack extends VisualEntity implements VisualEntityHolder,
 	 */
 	@Override
 	public void destroy() {
-
+		for(VisualEntity child:getVisualEntityList()){
+			if(child!=null){
+				child.destroy();	
+			}
+		}
 	}
 
 	/*
