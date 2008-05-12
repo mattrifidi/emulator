@@ -56,10 +56,6 @@ public class BoxproducerEntityThread extends Thread {
 	 */
 	private ProductService productService;
 	/**
-	 * Counter for boxes
-	 */
-	private int counter;
-	/**
 	 * Constructor.
 	 * 
 	 * @param entity
@@ -90,7 +86,6 @@ public class BoxproducerEntityThread extends Thread {
 				RifidiTag name = entity.getTagService().getRifidiTag(
 						entity.getTagService().getTagSourceNames().get(0));
 				if (name != null) {
-					System.out.println(counter++);
 					CardboxEntity ca = new CardboxEntity();
 					ca.setBaseRotation(slightRotMtx);
 					ca.setName(name.toString());
