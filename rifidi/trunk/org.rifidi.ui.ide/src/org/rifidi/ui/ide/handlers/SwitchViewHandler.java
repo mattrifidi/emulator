@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.rifidi.ui.ide.editors.handlers;
+package org.rifidi.ui.ide.handlers;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

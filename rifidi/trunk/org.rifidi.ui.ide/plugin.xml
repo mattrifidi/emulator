@@ -346,7 +346,7 @@
    <extension
          point="org.eclipse.ui.handlers">
       <handler
-            class="org.rifidi.ui.ide.editors.handlers.SwitchViewHandler"
+            class="org.rifidi.ui.ide.handlers.SwitchViewHandler"
             commandId="org.rifidi.ui.ide.editors.commands.switchView">
       </handler>
    </extension>
