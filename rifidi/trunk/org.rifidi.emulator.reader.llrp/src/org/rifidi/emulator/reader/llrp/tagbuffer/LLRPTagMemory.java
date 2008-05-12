@@ -79,7 +79,7 @@ public class LLRPTagMemory implements TagMemory {
 			this.newTagsInLatestScan.clear();
 			for (RifidiTag t : tagsInLatestScan) {
 				//add new tags -- first check if the tag has been seen before.  If not, add it to the new
-				if (!this.tagBuffer.contains(t.getTag().readId())) {
+				if (!this.tagBuffer.contains(t.getTagEntitiyID())) {
 					logger.debug("Adding new tag: "
 							+ ByteAndHexConvertingUtility.toHexString(t
 									.getTag().readId()));
