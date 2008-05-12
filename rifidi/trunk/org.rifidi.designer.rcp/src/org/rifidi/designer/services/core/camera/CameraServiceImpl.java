@@ -52,6 +52,7 @@ public class CameraServiceImpl implements CameraService {
 	 * Default constructor.
 	 */
 	public CameraServiceImpl() {
+		logger.debug("CamerService created");
 	}
 
 	/*
@@ -225,6 +226,7 @@ public class CameraServiceImpl implements CameraService {
 	 *            the sceneDataService to set
 	 */
 	public void setSceneDataService(SceneDataService sceneDataService) {
+		logger.debug("CamerService got SceneDataService");
 		this.sceneDataService = sceneDataService;
 	}
 

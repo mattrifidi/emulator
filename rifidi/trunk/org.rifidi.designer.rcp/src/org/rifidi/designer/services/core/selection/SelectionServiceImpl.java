@@ -15,6 +15,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
@@ -28,7 +30,6 @@ import org.rifidi.designer.services.core.entities.SceneDataService;
 import org.rifidi.designer.services.core.world.RepeatedUpdateAction;
 import org.rifidi.designer.services.core.world.WorldService;
 import org.rifidi.designer.utils.Helpers;
-import org.rifidi.services.annotations.Inject;
 
 import com.jme.scene.state.AlphaState;
 import com.jme.scene.state.FragmentProgramState;
@@ -45,6 +46,10 @@ import com.jme.util.GameTaskQueueManager;
  */
 public class SelectionServiceImpl implements SelectionService,
 		SceneDataChangedListener {
+	/**
+	 * Logger for this class.
+	 */
+	private static Log logger=LogFactory.getLog(SelectionServiceImpl.class);
 	/**
 	 * Alpha state used for highlighting.
 	 */
@@ -89,6 +94,7 @@ public class SelectionServiceImpl implements SelectionService,
 	 * Constructor.
 	 */
 	public SelectionServiceImpl() {
+		logger.debug("SelectionService created");
 	}
 
 	/*
@@ -291,8 +297,8 @@ public class SelectionServiceImpl implements SelectionService,
 	/**
 	 * @param cameraService the cameraService to set
 	 */
-	@Inject
 	public void setCameraService(CameraService cameraService) {
+		logger.debug("SelectionService got CameraService");
 		this.cameraService = cameraService;
 	}
 
@@ -352,6 +358,7 @@ public class SelectionServiceImpl implements SelectionService,
 	 * @param sceneDataService the sceneDataService to set
 	 */
 	public void setSceneDataService(SceneDataService sceneDataService) {
+		logger.debug("SelectionService got SceneDataService");
 		sceneDataService.addSceneDataChangedListener(this);
 	}
 
@@ -366,6 +373,7 @@ public class SelectionServiceImpl implements SelectionService,
 	 * @param worldService the worldService to set
 	 */
 	public void setWorldService(WorldService worldService) {
+		logger.debug("SelectionService got WorldService");
 		this.worldService = worldService;
 	}
 	

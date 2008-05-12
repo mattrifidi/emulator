@@ -85,10 +85,16 @@ public class EventsServiceImpl implements EventsService {
 
 	private boolean recording = false;
 
+	private boolean inited = false;
 	/**
 	 * Constructor.
 	 */
 	public EventsServiceImpl() {
+		logger.debug("EventsService created");
+
+	}
+
+	private void init(){
 		eventStack = new Stack<WorldEvent>();
 		eventTypes = Collections.synchronizedList(new ArrayList<Class>());
 		MessageConsole fMessageConsole = new MessageConsole("TagMessages", null);
@@ -109,7 +115,6 @@ public class EventsServiceImpl implements EventsService {
 				msgConsoleStreamGreen);
 		thread.start();
 	}
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -117,6 +122,9 @@ public class EventsServiceImpl implements EventsService {
 	 */
 	@Override
 	public void publish(WorldEvent worldEvent) {
+		if(!inited){
+			init();
+		}
 		eventStack.push(worldEvent);
 		if (eventTypes.contains(worldEvent.getClass())) {
 			recordedEvents.put(System.currentTimeMillis(), worldEvent);
@@ -197,6 +205,7 @@ public class EventsServiceImpl implements EventsService {
 	 *            the finderService to set
 	 */
 	public void setFinderService(FinderService finderService) {
+		logger.debug("EventsService got FinderService");
 		this.finderService = finderService;
 	}
 

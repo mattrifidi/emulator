@@ -704,14 +704,6 @@
             </visibleWhen>
          </menu>
          <menu
-               id="org.rifidi.designer.rcp.menus.help"
-               label="Help">
-            <command
-                  commandId="org.eclipse.ui.help.aboutAction"
-                  label="About">
-            </command>
-         </menu>
-         <menu
                id="org.rifidi.designer.rcp.menus.perspectives"
                label="Perspectives">
             <command
@@ -745,6 +737,14 @@
                </parameter>
             </command>
          </menu>
+         <menu
+               id="org.rifidi.designer.rcp.menus.help"
+               label="Help">
+            <command
+                  commandId="org.eclipse.ui.help.aboutAction"
+                  label="About">
+            </command>
+         </menu>
       </menuContribution>
       <menuContribution
             locationURI="popup:org.eclipse.ui.popup.any?after=additions">
@@ -764,6 +764,9 @@
                            value="org.rifidi.designer.entities.grouping.EntityGroup">
                      </instanceof>
                   </iterate>
+                  <test
+                        property="org.rifidi.designer.rcp.entitygroups.switch">
+                  </test>
                </and>
             </visibleWhen>
          </command>
@@ -805,6 +808,9 @@
                            value="org.rifidi.designer.entities.grouping.EntityGroup">
                      </instanceof>
                   </iterate>
+                  <test
+                        property="org.rifidi.designer.rcp.entitygroups.switch">
+                  </test>
                </and>
             </visibleWhen>
          </command>
@@ -970,7 +976,7 @@
             class="org.rifidi.designer.rcp.propertytesters.EntityGroupPropertyTester"
             id="org.rifidi.designer.rcp.entitygroups"
             namespace="org.rifidi.designer.rcp.entitygroups"
-            properties="locked"
+            properties="locked, switch"
             type="java.lang.Object">
       </propertyTester>
    </extension>

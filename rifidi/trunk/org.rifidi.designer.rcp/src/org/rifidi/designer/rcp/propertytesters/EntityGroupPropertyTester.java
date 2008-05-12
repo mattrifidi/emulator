@@ -11,15 +11,14 @@
 package org.rifidi.designer.rcp.propertytesters;
 
 import java.util.Collection;
-import java.util.List;
 
 import org.eclipse.core.expressions.PropertyTester;
 import org.rifidi.designer.entities.grouping.EntityGroup;
-import org.rifidi.designer.services.core.entities.FinderService;
-import org.rifidi.services.registry.ServiceRegistry;
 
 /**
  * Property tester for EntityGroups.
+ * Supports locked to check if the entity group is locked.
+ * Supports switch to check if a switch is contained in the entity group.
  * 
  * @author Jochen Mader - jochen@pramari.com - Feb 18, 2008
  * 
@@ -45,6 +44,11 @@ public class EntityGroupPropertyTester extends PropertyTester {
 		if ("locked".equals(property)) {
 			for (Object test : (Collection) receiver) {
 				return ((EntityGroup) test).getLocked();
+			}
+		}
+		if ("switch".equals(property)) {
+			for (Object test : (Collection) receiver) {
+				return ((EntityGroup) test).hasSwitchables();
 			}
 		}
 		return false;

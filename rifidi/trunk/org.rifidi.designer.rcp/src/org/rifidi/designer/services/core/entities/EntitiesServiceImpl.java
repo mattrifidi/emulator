@@ -125,8 +125,8 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	 * Constructor.
 	 */
 	public EntitiesServiceImpl() {
+		logger.debug("EntitiesService created");
 		listeners = new ArrayList<SceneDataChangedListener>();
-		ServiceRegistry.getInstance().service(this);
 	}
 
 	/*
@@ -183,8 +183,11 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 				if (entity instanceof VisualEntityHolder) {
 					for (VisualEntity ve : ((VisualEntityHolder) entity)
 							.getVisualEntityList()) {
-						nodeToEntity.remove(ve.getNode());
-						sceneData.getSyncedEntities().remove(ve);
+						//not all available spots are taken
+						if(ve!=null){
+							nodeToEntity.remove(ve.getNode());
+							sceneData.getSyncedEntities().remove(ve);	
+						}
 					}
 				}
 				if (((VisualEntity) entity).getPattern() != null) {
@@ -211,11 +214,11 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 				 */
 				public Object call() throws Exception {
 					for (Entity entity : entities) {
-						entity.destroy();
 						if (entity instanceof VisualEntity) {
 							((VisualEntity) entity).getNode()
 									.removeFromParent();
 						}
+						entity.destroy();
 					}
 					return new Object();
 				}
@@ -892,6 +895,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	 *            the cablingService to set
 	 */
 	public void setCablingService(CablingService cablingService) {
+		logger.debug("EntitiesService got CablingService");
 		this.cablingService = cablingService;
 	}
 
@@ -908,6 +912,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	 *            the selectionService to set
 	 */
 	public void setSelectionService(SelectionService selectionService) {
+		logger.debug("EntitiesService got SelectionService");
 		this.selectionService = selectionService;
 	}
 
@@ -924,6 +929,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	 *            the eventsService to set
 	 */
 	public void setEventsService(EventsService eventsService) {
+		logger.debug("EntitiesService got EventsService");
 		this.eventsService = eventsService;
 	}
 

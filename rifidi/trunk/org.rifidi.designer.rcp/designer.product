@@ -29,7 +29,6 @@
       </win>
    </launcher>
 
-
    <vm>
    </vm>
 
@@ -53,6 +52,7 @@
       <plugin id="org.eclipse.core.resources.compatibility" fragment="true"/>
       <plugin id="org.eclipse.core.resources.win32" fragment="true"/>
       <plugin id="org.eclipse.core.runtime"/>
+      <plugin id="org.eclipse.core.runtime.compatibility.auth"/>
       <plugin id="org.eclipse.core.runtime.compatibility.registry" fragment="true"/>
       <plugin id="org.eclipse.core.variables"/>
       <plugin id="org.eclipse.draw2d"/>
@@ -94,7 +94,6 @@
       <plugin id="org.eclipse.update.core.linux" fragment="true"/>
       <plugin id="org.eclipse.update.core.win32" fragment="true"/>
       <plugin id="org.eclipse.update.ui"/>
-      <plugin id="org.rifid_designer.log4j" fragment="true"/>
       <plugin id="org.rifidi.dependencies"/>
       <plugin id="org.rifidi.designer.library.basemodels"/>
       <plugin id="org.rifidi.designer.library.retail"/>
@@ -102,8 +101,8 @@
       <plugin id="org.rifidi.designer.rcp.gpioeditor"/>
       <plugin id="org.rifidi.emulator"/>
       <plugin id="org.rifidi.emulator.reader.alien"/>
-      <plugin id="org.rifidi.emulator.reader.llrp"/>
       <plugin id="org.rifidi.jmeswt"/>
+      <plugin id="org.rifidi.log4j.designer" fragment="true"/>
       <plugin id="org.rifidi.services"/>
       <plugin id="org.rifidi.services.tags"/>
       <plugin id="org.rifidi.streamer.xml"/>

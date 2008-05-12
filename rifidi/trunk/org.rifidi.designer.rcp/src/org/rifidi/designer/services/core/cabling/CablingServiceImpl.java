@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.rifidi.designer.entities.Entity;
 import org.rifidi.designer.entities.SceneData;
 import org.rifidi.designer.entities.interfaces.GPI;
@@ -22,7 +24,6 @@ import org.rifidi.designer.entities.internal.CableEntity;
 import org.rifidi.designer.services.core.entities.EntitiesService;
 import org.rifidi.designer.services.core.entities.SceneDataChangedListener;
 import org.rifidi.designer.services.core.entities.SceneDataService;
-import org.rifidi.services.annotations.Inject;
 
 /**
  * Base implementation.
@@ -32,6 +33,10 @@ import org.rifidi.services.annotations.Inject;
  */
 public class CablingServiceImpl implements CablingService,
 		SceneDataChangedListener {
+	/**
+	 * Logger for this class.
+	 */
+	private static Log logger=LogFactory.getLog(CableChangeListener.class);
 	/**
 	 * Reference to the currently loaded scenedata.
 	 */
@@ -59,6 +64,7 @@ public class CablingServiceImpl implements CablingService,
 	 * Constructor.
 	 */
 	public CablingServiceImpl() {
+		logger.debug("CablingService created");
 		cableList = Collections.synchronizedList(new ArrayList<CableEntity>());
 		cableChangeListeners = new ArrayList<CableChangeListener>();
 	}
@@ -244,6 +250,7 @@ public class CablingServiceImpl implements CablingService,
 	 *            the entitiesService to set
 	 */
 	public void setEntitiesService(EntitiesService entitiesService) {
+		logger.debug("CablingService got EntitiesService");
 		this.entitiesService = entitiesService;
 	}
 
@@ -260,6 +267,7 @@ public class CablingServiceImpl implements CablingService,
 	 *            the sceneDataService to set
 	 */
 	public void setSceneDataService(SceneDataService sceneDataService) {
+		logger.debug("CablingService got SceneDataService");
 		this.sceneDataService = sceneDataService;
 		sceneDataService.addSceneDataChangedListener(this);
 	}

@@ -33,6 +33,7 @@ public class MessagingServiceImpl implements MessagingService, MessageListener {
 	 * Default constructor.
 	 */
 	public MessagingServiceImpl() {
+		logger.debug("MessagingService created");
 		subscribedGroups = new HashMap<String, ArrayList<TextOverlayGroup>>();
 
 		try {
@@ -40,11 +41,11 @@ public class MessagingServiceImpl implements MessagingService, MessageListener {
 			MessagingSystem.getInstance().addCategory("readerEvents");
 			MessagingSystem.getInstance().subscribe("readerEvents", this);
 		} catch (ListenerAlreadySubscribedException e) {
-			e.printStackTrace();
+			logger.error("ListenerAlreadySubscribedException "+e);
 		} catch (CategoryAlreadyExistsException e) {
-			e.printStackTrace();
+			logger.error("CategoryAlreadyExistsException "+e);
 		} catch (NoSuchCategoryException e) {
-			e.printStackTrace();
+			logger.error("NoSuchCategoryException "+e);
 		}
 	}
 

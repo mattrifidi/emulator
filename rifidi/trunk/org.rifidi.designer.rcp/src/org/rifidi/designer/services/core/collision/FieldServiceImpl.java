@@ -189,6 +189,7 @@ public class FieldServiceImpl implements FieldService {
 	 *            the finderService to set
 	 */
 	public void setFinderService(FinderService finderService) {
+		logger.debug("FieldService got FinderService");
 		this.finderService = finderService;
 	}
 
@@ -205,6 +206,7 @@ public class FieldServiceImpl implements FieldService {
 	 *            the sceneDataService to set
 	 */
 	public void setSceneDataService(SceneDataService sceneDataService) {
+		logger.debug("FieldService got SceneDataService");
 		this.sceneDataService = sceneDataService;
 		sceneDataService.addSceneDataChangedListener(this);
 	}

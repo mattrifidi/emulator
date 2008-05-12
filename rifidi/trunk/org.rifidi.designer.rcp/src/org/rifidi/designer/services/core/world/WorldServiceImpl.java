@@ -110,7 +110,7 @@ public class WorldServiceImpl implements WorldService, CommandStateService,
 	 * @param display
 	 */
 	public WorldServiceImpl() {
-		super();
+		logger.debug("WorldService created");
 		repeatedActions = new ArrayList<RepeatedUpdateAction>();
 		worldState = WorldStates.NoSceneDataLoaded;
 		stateMap = new HashMap<WorldStates, List<String>>();
@@ -317,6 +317,7 @@ public class WorldServiceImpl implements WorldService, CommandStateService,
 	 *            the sceneDataService to set
 	 */
 	public void setSceneDataService(SceneDataService sceneDataService) {
+		logger.debug("WorldService got SceneDataService");
 		this.sceneDataService = sceneDataService;
 		sceneDataService.addSceneDataChangedListener(this);
 	}
@@ -334,6 +335,7 @@ public class WorldServiceImpl implements WorldService, CommandStateService,
 	 *            the messagingService to set
 	 */
 	public void setMessagingService(MessagingService messagingService) {
+		logger.debug("WorldService got MessagingService");
 		this.messagingService = messagingService;
 	}
 
@@ -350,6 +352,7 @@ public class WorldServiceImpl implements WorldService, CommandStateService,
 	 *            the fieldService to set
 	 */
 	public void setFieldService(FieldService fieldService) {
+		logger.debug("WorldService got FieldService");
 		this.fieldService = fieldService;
 	}
 
@@ -374,6 +377,7 @@ public class WorldServiceImpl implements WorldService, CommandStateService,
 	 *            the cameraService to set
 	 */
 	public void setCameraService(CameraService cameraService) {
+		logger.debug("WorldService got CameraService");
 		this.cameraService = cameraService;
 	}
 
