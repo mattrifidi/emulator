@@ -179,6 +179,7 @@ public class View3D extends ViewPart implements IPerspectiveListener {
 	 * 
 	 */
 	public View3D() {
+		Activator.display=Display.getCurrent();
 		ServiceRegistry.getInstance().service(this);
 	}
 

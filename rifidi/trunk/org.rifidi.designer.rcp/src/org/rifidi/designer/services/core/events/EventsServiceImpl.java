@@ -25,7 +25,6 @@ import javax.xml.bind.Marshaller;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.console.ConsolePlugin;
 import org.eclipse.ui.console.IConsole;
 import org.eclipse.ui.console.MessageConsole;
@@ -33,6 +32,7 @@ import org.eclipse.ui.console.MessageConsoleStream;
 import org.rifidi.designer.entities.Entity;
 import org.rifidi.designer.entities.interfaces.RifidiEntity;
 import org.rifidi.designer.entities.internal.WatchAreaEvent;
+import org.rifidi.designer.rcp.Activator;
 import org.rifidi.designer.services.core.entities.FinderService;
 import org.rifidi.streamer.xml.ComponentSuite;
 import org.rifidi.streamer.xml.components.ReaderComponent;
@@ -86,6 +86,7 @@ public class EventsServiceImpl implements EventsService {
 	private boolean recording = false;
 
 	private boolean inited = false;
+
 	/**
 	 * Constructor.
 	 */
@@ -94,27 +95,43 @@ public class EventsServiceImpl implements EventsService {
 
 	}
 
-	private void init(){
+	private void init() {
+		inited = true;
 		eventStack = new Stack<WorldEvent>();
 		eventTypes = Collections.synchronizedList(new ArrayList<Class>());
-		MessageConsole fMessageConsole = new MessageConsole("TagMessages", null);
-		ConsolePlugin.getDefault().getConsoleManager().addConsoles(
-				new IConsole[] { fMessageConsole });
-		msgConsoleStreamRed = fMessageConsole.newMessageStream();
-		msgConsoleStreamRed.setColor(Display.getCurrent().getSystemColor(
-				SWT.COLOR_RED));
-		msgConsoleStreamBlack = fMessageConsole.newMessageStream();
-		msgConsoleStreamBlack.setColor(Display.getCurrent().getSystemColor(
-				SWT.COLOR_BLACK));
-		msgConsoleStreamGreen = fMessageConsole.newMessageStream();
-		msgConsoleStreamGreen.setColor(Display.getCurrent().getSystemColor(
-				SWT.COLOR_GREEN));
-		recordedEvents = new HashMap<Long, WorldEvent>();
-		thread = new ProcessingThread("eventProcessingThread", eventStack,
-				eventTypes, msgConsoleStreamRed, msgConsoleStreamBlack,
-				msgConsoleStreamGreen);
-		thread.start();
+		Activator.display.asyncExec(new Runnable() {
+
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see java.lang.Runnable#run()
+			 */
+			@Override
+			public void run() {
+				MessageConsole fMessageConsole = new MessageConsole(
+						"TagMessages", null);
+				ConsolePlugin.getDefault().getConsoleManager().addConsoles(
+						new IConsole[] { fMessageConsole });
+				msgConsoleStreamRed = fMessageConsole.newMessageStream();
+				msgConsoleStreamRed.setColor(Activator.display
+						.getSystemColor(SWT.COLOR_RED));
+				msgConsoleStreamBlack = fMessageConsole.newMessageStream();
+				msgConsoleStreamBlack.setColor(Activator.display
+						.getSystemColor(SWT.COLOR_BLACK));
+				msgConsoleStreamGreen = fMessageConsole.newMessageStream();
+				msgConsoleStreamGreen.setColor(Activator.display
+						.getSystemColor(SWT.COLOR_GREEN));
+				recordedEvents = new HashMap<Long, WorldEvent>();
+				thread = new ProcessingThread("eventProcessingThread",
+						eventStack, eventTypes, msgConsoleStreamRed,
+						msgConsoleStreamBlack, msgConsoleStreamGreen);
+				thread.start();
+			}
+
+		});
+
 	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -122,7 +139,7 @@ public class EventsServiceImpl implements EventsService {
 	 */
 	@Override
 	public void publish(WorldEvent worldEvent) {
-		if(!inited){
+		if (!inited) {
 			init();
 		}
 		eventStack.push(worldEvent);

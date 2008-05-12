@@ -22,8 +22,6 @@ import org.rifidi.designer.entities.SceneData;
 import org.rifidi.designer.services.core.camera.CameraService;
 import org.rifidi.designer.services.core.collision.FieldService;
 import org.rifidi.designer.services.core.world.RepeatedUpdateAction;
-import org.rifidi.services.registry.ServiceRegistry;
-import org.rifidi.utilities.camera.ZoomableCamera;
 import org.rifidi.utilities.text.TextOverlayManager;
 
 import com.jme.math.Vector3f;
@@ -140,8 +138,10 @@ public class UpdateThread extends Thread implements KeyListener {
 			}
 			TextOverlayManager.getInstance().update(dt);
 			float timePassed = currentTime - lasttick;
-			for (RepeatedUpdateAction action : repeatedActions) {
-				action.doUpdate(timePassed);
+			synchronized (repeatedActions) {
+				for (RepeatedUpdateAction action : repeatedActions) {
+					action.doUpdate(timePassed);
+				}
 			}
 
 			if (sceneData.getRootNode() != null) {

@@ -7,6 +7,7 @@ import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -45,6 +46,11 @@ public class Activator extends AbstractUIPlugin {
 	private ActionRegistry actionRegistry;
 
 	/**
+	 * Reference to the current display.
+	 */
+	public static Display display;
+
+	/**
 	 * The constructor.
 	 */
 	public Activator() {
@@ -57,6 +63,8 @@ public class Activator extends AbstractUIPlugin {
 	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
 	 */
 	public void start(BundleContext context) throws Exception {
+		super.start(context);
+		plugin = this;
 		// check workspace for required folders
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
 		IWorkspaceRoot root = workspace.getRoot();
@@ -82,8 +90,6 @@ public class Activator extends AbstractUIPlugin {
 			mb.open();
 			return;
 		}
-		super.start(context);
-		plugin = this;
 	}
 
 	/*
