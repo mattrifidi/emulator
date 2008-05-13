@@ -30,6 +30,7 @@ public class CableEntityWorkbenchAdapter implements IWorkbenchAdapter {
 	 * @see org.eclipse.ui.model.IWorkbenchAdapter#getChildren(java.lang.Object)
 	 */
 	public Object[] getChildren(final Object o) {
+		
 		return new Object[] {};
 	}
 
