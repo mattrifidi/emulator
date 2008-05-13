@@ -18,8 +18,8 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.rifidi.designer.databinding.annotations.MonitoredProperties;
 import org.rifidi.designer.entities.VisualEntity;
+import org.rifidi.designer.entities.databinding.annotations.MonitoredProperties;
 import org.rifidi.designer.entities.interfaces.NeedsPhysics;
 import org.rifidi.designer.entities.placement.BinaryPattern;
 

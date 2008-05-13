@@ -25,10 +25,10 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.rifidi.designer.databinding.annotations.MonitoredProperties;
 import org.rifidi.designer.entities.RMIManager;
 import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.annotations.Property;
+import org.rifidi.designer.entities.databinding.annotations.MonitoredProperties;
 import org.rifidi.designer.entities.interfaces.GPI;
 import org.rifidi.designer.entities.interfaces.GPO;
 import org.rifidi.designer.entities.interfaces.ParentEntity;
