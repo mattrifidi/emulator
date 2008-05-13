@@ -10,3 +10,5 @@ Eclipse-LazyStart: true
 Eclipse-BuddyPolicy: dependent
 Export-Package: org.rifidi.services.annotations,
  org.rifidi.services.registry
+Bundle-ClassPath: asm-3.1.jar,
+ .

@@ -36,7 +36,6 @@ public class ServiceRegistry {
 	 * Singleton pattern.
 	 */
 	private static ServiceRegistry instance;
-	
 	/**
 	 * Map of wanted services. Key: service wanted Value: list of instances that
 	 * needs the service
@@ -63,6 +62,7 @@ public class ServiceRegistry {
 							for(String serviceName:(String[])event.getServiceReference().getProperty("objectClass")){
 								if(wanted.containsKey(serviceName)){
 									for(DeferredInit defInit:wanted.get(serviceName)){
+										System.out.println(defInit.object+" got "+wanted);
 										serviceMethod(defInit.method, defInit.object);
 									}
 									wanted.remove(serviceName);
@@ -130,6 +130,7 @@ public class ServiceRegistry {
 				return;
 			}
 			wanted.get(wantedService.getName()).add(new DeferredInit(object,method));
+			System.out.println(object+" is waiting for "+wanted);
 		}
 	}
 	
