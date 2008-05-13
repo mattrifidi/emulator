@@ -14,7 +14,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.rifidi.designer.annotations.MonitoredProperties;
+import org.rifidi.designer.databinding.annotations.MonitoredProperties;
 import org.rifidi.designer.entities.Entity;
 import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.interfaces.Field;

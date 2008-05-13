@@ -25,10 +25,10 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.rifidi.designer.annotations.MonitoredProperties;
-import org.rifidi.designer.annotations.Property;
+import org.rifidi.designer.databinding.annotations.MonitoredProperties;
 import org.rifidi.designer.entities.RMIManager;
 import org.rifidi.designer.entities.VisualEntity;
+import org.rifidi.designer.entities.annotations.Property;
 import org.rifidi.designer.entities.interfaces.GPI;
 import org.rifidi.designer.entities.interfaces.GPO;
 import org.rifidi.designer.entities.interfaces.ParentEntity;
@@ -205,19 +205,19 @@ public class GateEntity extends VisualEntity implements RifidiEntity, Switch,
 			// getNumGPIs(), getNumGPOs(), getPropertiesMap());
 
 		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+			logger.fatal("Unable to create reader: "+e);
 		} catch (InstantiationException e) {
-			e.printStackTrace();
+			logger.fatal("Unable to create reader: "+e);
 		} catch (IllegalAccessException e) {
-			e.printStackTrace();
+			logger.fatal("Unable to create reader: "+e);
 		} catch (MalformedURLException e) {
-			e.printStackTrace();
+			logger.fatal("Unable to create reader: "+e);
 		} catch (NotBoundException e) {
-			e.printStackTrace();
+			logger.fatal("Unable to create reader: "+e);
 		} catch (RemoteException e) {
-			e.printStackTrace();
+			logger.fatal("Unable to create reader: "+e);
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.fatal("Unable to create reader: "+e);
 		}
 	}
 

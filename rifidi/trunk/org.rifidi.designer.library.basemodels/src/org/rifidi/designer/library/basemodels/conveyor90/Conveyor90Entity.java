@@ -8,8 +8,8 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.rifidi.designer.annotations.Property;
 import org.rifidi.designer.entities.VisualEntity;
+import org.rifidi.designer.entities.annotations.Property;
 import org.rifidi.designer.entities.interfaces.NeedsPhysics;
 import org.rifidi.designer.entities.interfaces.Switch;
 import org.rifidi.designer.entities.placement.BinaryPattern;

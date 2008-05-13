@@ -18,7 +18,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.rifidi.designer.annotations.MonitoredProperties;
+import org.rifidi.designer.databinding.annotations.MonitoredProperties;
 import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.interfaces.NeedsPhysics;
 import org.rifidi.designer.entities.placement.BinaryPattern;
@@ -56,7 +56,7 @@ public class CardboxEntity extends VisualEntity implements NeedsPhysics {
 	/**
 	 * Model for shared meshes.
 	 */
-	private Node model;
+	private static Node model;
 	/**
 	 * Reference to the physics space.
 	 */
@@ -93,8 +93,8 @@ public class CardboxEntity extends VisualEntity implements NeedsPhysics {
 		if(baseRotation!=null){
 			node.getLocalRotation().apply(baseRotation);	
 		}
-		//node.attachChild(new SharedNode("sharedCBox_", model));
-		node.attachChild(model);
+		node.attachChild(new SharedNode("sharedCBox_", model));
+		//node.attachChild(model);
 		node.generatePhysicsGeometry();
 		node.setIsCollidable(true);
 		node.setActive(true);

@@ -19,9 +19,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.rifidi.designer.annotations.MonitoredProperties;
-import org.rifidi.designer.annotations.Property;
+import org.rifidi.designer.databinding.annotations.MonitoredProperties;
 import org.rifidi.designer.entities.VisualEntity;
+import org.rifidi.designer.entities.annotations.Property;
 import org.rifidi.designer.entities.interfaces.Directional;
 import org.rifidi.designer.entities.interfaces.GPI;
 import org.rifidi.designer.entities.interfaces.NeedsPhysics;
@@ -91,7 +91,7 @@ public class ConveyorEntity extends VisualEntity implements Switch,
 	/**
 	 * Model for shared meshes
 	 */
-	private Node model = null;
+	private static Node model = null;
 	/**
 	 * Material for the rollers
 	 */
