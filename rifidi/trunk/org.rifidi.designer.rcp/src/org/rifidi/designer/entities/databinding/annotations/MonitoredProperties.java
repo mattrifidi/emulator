@@ -1,5 +1,5 @@
 /*
- *  MonitorThisList.java
+ *  MonitoredProperties.java
  *
  *  Project:		RiFidi Designer - A Virtualization tool for 3D RFID environments
  *  http://www.rifidi.org
@@ -8,7 +8,7 @@
  *  License:		Lesser GNU Public License (LGPL)
  *  http://www.opensource.org/licenses/lgpl-license.html
  */
-package org.rifidi.designer.databinding.annotations;
+package org.rifidi.designer.entities.databinding.annotations;
 
 import static java.lang.annotation.ElementType.TYPE;
 
@@ -17,17 +17,19 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Annotation for telling the databinding which list to monitor for changes.
+ * Annotation for telling databinding which properties to monitor for changes.
  * 
- * @author Jochen Mader Jan 17, 2008
+ * @author Jochen Mader Jan 31, 2008
+ * @tags
  * 
  */
-@Target({ TYPE })
+@Target( { TYPE })
 @Retention(RetentionPolicy.RUNTIME)
-public @interface MonitorThisList {
+public @interface MonitoredProperties {
 	/**
-	 * Name of the list to monitor.
+	 * The names of the properties to monitor.
+	 * 
 	 * @return
 	 */
-	String name();
+	String[] names();
 }

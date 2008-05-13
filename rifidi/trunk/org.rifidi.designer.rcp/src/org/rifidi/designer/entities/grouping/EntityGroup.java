@@ -23,11 +23,11 @@ import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.ui.IActionFilter;
 import org.eclipse.ui.model.IWorkbenchAdapter;
-import org.rifidi.designer.databinding.annotations.MonitorThisList;
 import org.rifidi.designer.entities.Entity;
 import org.rifidi.designer.entities.SceneData;
 import org.rifidi.designer.entities.adapters.EntityGroupActionFilterAdapter;
 import org.rifidi.designer.entities.adapters.EntityGroupWorkbenchAdapter;
+import org.rifidi.designer.entities.databinding.annotations.MonitorThisList;
 import org.rifidi.designer.entities.interfaces.Switch;
 
 /**

@@ -25,10 +25,10 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.equinox.cm,
  org.eclipse.osgi.util
 Eclipse-LazyStart: true
-Export-Package: org.rifidi.designer.databinding.annotations,
- org.rifidi.designer.entities,
+Export-Package: org.rifidi.designer.entities,
  org.rifidi.designer.entities.adapters,
  org.rifidi.designer.entities.annotations,
+ org.rifidi.designer.entities.databinding.annotations,
  org.rifidi.designer.entities.grouping,
  org.rifidi.designer.entities.interfaces,
  org.rifidi.designer.entities.internal,

@@ -8,7 +8,7 @@
  *  License:		Lesser GNU Public License (LGPL)
  *  http://www.opensource.org/licenses/lgpl-license.html
  */
-package org.rifidi.designer.databinding;
+package org.rifidi.designer.entities.databinding;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -28,10 +28,10 @@ import org.eclipse.jface.viewers.AbstractTreeViewer;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.ui.model.IWorkbenchAdapter;
-import org.rifidi.designer.databinding.annotations.MonitorThisList;
-import org.rifidi.designer.databinding.annotations.MonitoredProperties;
 import org.rifidi.designer.entities.Entity;
 import org.rifidi.designer.entities.SceneData;
+import org.rifidi.designer.entities.databinding.annotations.MonitorThisList;
+import org.rifidi.designer.entities.databinding.annotations.MonitoredProperties;
 
 /**
  * This TreeContentProvider takes advantage of eclipse databinding. An object
