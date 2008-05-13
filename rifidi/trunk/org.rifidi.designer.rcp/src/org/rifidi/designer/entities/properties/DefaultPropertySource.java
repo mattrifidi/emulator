@@ -22,8 +22,8 @@ import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.IPropertySource;
 import org.eclipse.ui.views.properties.PropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
-import org.rifidi.designer.annotations.Property;
 import org.rifidi.designer.entities.Entity;
+import org.rifidi.designer.entities.annotations.Property;
 
 /**
  * This PorpertySource is used by every entity. It uses annotations to get

@@ -8,7 +8,7 @@
  *  License:		Lesser GNU Public License (LGPL)
  *  http://www.opensource.org/licenses/lgpl-license.html
  */
-package org.rifidi.designer.annotations;
+package org.rifidi.designer.databinding.annotations;
 
 import static java.lang.annotation.ElementType.TYPE;
 

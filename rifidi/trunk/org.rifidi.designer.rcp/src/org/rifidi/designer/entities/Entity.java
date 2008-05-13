@@ -15,7 +15,8 @@ import java.beans.PropertyChangeListenerProxy;
 import java.beans.PropertyChangeSupport;
 
 import javax.xml.bind.annotation.XmlID;
-import org.rifidi.designer.annotations.Property;
+
+import org.rifidi.designer.entities.annotations.Property;
 
 /**
  * This is the base class for all entities in the virtualization.

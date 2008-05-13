@@ -22,7 +22,7 @@ import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.model.IWorkbenchAdapter;
-import org.rifidi.designer.annotations.MonitorThisList;
+import org.rifidi.designer.databinding.annotations.MonitorThisList;
 import org.rifidi.designer.entities.grouping.EntityGroup;
 import org.rifidi.designer.entities.grouping.GroupContainer;
 import org.rifidi.designer.entities.placement.BitMap;
