@@ -1,9 +1,0 @@
-<?xml version="1.0"?>
-<component name="cameraservice">
-	<implementation
-		class="org.rifidi.designer.services.core.messaging.MessagingServiceImpl" />
-	<service>
-		<provide
-			interface="org.rifidi.designer.services.core.messaging.MessagingService" />
-	</service>
-</component>

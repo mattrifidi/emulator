@@ -10,8 +10,6 @@
  */
 package org.rifidi.designer.entities.interfaces;
 
-import org.rifidi.designer.services.core.cabling.CablingService;
-
 /**
  * Entities implementing this interface are sources for GPO events.
  * 

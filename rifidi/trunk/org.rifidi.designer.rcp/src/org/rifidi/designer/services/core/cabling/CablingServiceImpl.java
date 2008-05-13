@@ -24,6 +24,8 @@ import org.rifidi.designer.entities.internal.CableEntity;
 import org.rifidi.designer.services.core.entities.EntitiesService;
 import org.rifidi.designer.services.core.entities.SceneDataChangedListener;
 import org.rifidi.designer.services.core.entities.SceneDataService;
+import org.rifidi.services.annotations.Inject;
+import org.rifidi.services.registry.ServiceRegistry;
 
 /**
  * Base implementation.
@@ -67,6 +69,7 @@ public class CablingServiceImpl implements CablingService,
 		logger.debug("CablingService created");
 		cableList = Collections.synchronizedList(new ArrayList<CableEntity>());
 		cableChangeListeners = new ArrayList<CableChangeListener>();
+		ServiceRegistry.getInstance().service(this);
 	}
 
 	/*
@@ -249,6 +252,7 @@ public class CablingServiceImpl implements CablingService,
 	 * @param entitiesService
 	 *            the entitiesService to set
 	 */
+	@Inject
 	public void setEntitiesService(EntitiesService entitiesService) {
 		logger.debug("CablingService got EntitiesService");
 		this.entitiesService = entitiesService;
@@ -266,6 +270,7 @@ public class CablingServiceImpl implements CablingService,
 	 * @param sceneDataService
 	 *            the sceneDataService to set
 	 */
+	@Inject
 	public void setSceneDataService(SceneDataService sceneDataService) {
 		logger.debug("CablingService got SceneDataService");
 		this.sceneDataService = sceneDataService;

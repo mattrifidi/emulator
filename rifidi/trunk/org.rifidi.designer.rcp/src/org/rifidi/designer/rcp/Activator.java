@@ -13,6 +13,26 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 import org.rifidi.designer.entities.RMIManager;
+import org.rifidi.designer.services.core.cabling.CablingService;
+import org.rifidi.designer.services.core.cabling.CablingServiceImpl;
+import org.rifidi.designer.services.core.camera.CameraService;
+import org.rifidi.designer.services.core.camera.CameraServiceImpl;
+import org.rifidi.designer.services.core.collision.FieldService;
+import org.rifidi.designer.services.core.collision.FieldServiceImpl;
+import org.rifidi.designer.services.core.entities.EntitiesService;
+import org.rifidi.designer.services.core.entities.EntitiesServiceImpl;
+import org.rifidi.designer.services.core.entities.FinderService;
+import org.rifidi.designer.services.core.entities.ProductService;
+import org.rifidi.designer.services.core.entities.SceneDataService;
+import org.rifidi.designer.services.core.events.EventsService;
+import org.rifidi.designer.services.core.events.EventsServiceImpl;
+import org.rifidi.designer.services.core.messaging.MessagingService;
+import org.rifidi.designer.services.core.messaging.MessagingServiceImpl;
+import org.rifidi.designer.services.core.selection.SelectionService;
+import org.rifidi.designer.services.core.selection.SelectionServiceImpl;
+import org.rifidi.designer.services.core.world.CommandStateService;
+import org.rifidi.designer.services.core.world.WorldService;
+import org.rifidi.designer.services.core.world.WorldServiceImpl;
 import org.rifidi.emulator.rmi.server.RifidiManager;
 
 /**
@@ -90,6 +110,26 @@ public class Activator extends AbstractUIPlugin {
 			mb.open();
 			return;
 		}
+
+		context.registerService(CablingService.class.getName(),
+				new CablingServiceImpl(), null);
+		context.registerService(CameraService.class.getName(),
+				new CameraServiceImpl(), null);
+		context.registerService(FieldService.class.getName(),
+				new FieldServiceImpl(), null);
+		context.registerService(new String[] { EntitiesService.class.getName(),
+				ProductService.class.getName(), FinderService.class.getName(),
+				SceneDataService.class.getName() }, new EntitiesServiceImpl(),
+				null);
+		context.registerService(EventsService.class.getName(),
+				new EventsServiceImpl(), null);
+		context.registerService(MessagingService.class.getName(),
+				new MessagingServiceImpl(), null);
+		context.registerService(SelectionService.class.getName(),
+				new SelectionServiceImpl(), null);
+		context.registerService(new String[] { WorldService.class.getName(),
+				CommandStateService.class.getName() },
+				new WorldServiceImpl(), null);
 	}
 
 	/*

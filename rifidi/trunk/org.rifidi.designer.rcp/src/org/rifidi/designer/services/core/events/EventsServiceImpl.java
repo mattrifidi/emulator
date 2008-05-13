@@ -34,6 +34,8 @@ import org.rifidi.designer.entities.interfaces.RifidiEntity;
 import org.rifidi.designer.entities.internal.WatchAreaEvent;
 import org.rifidi.designer.rcp.Activator;
 import org.rifidi.designer.services.core.entities.FinderService;
+import org.rifidi.services.annotations.Inject;
+import org.rifidi.services.registry.ServiceRegistry;
 import org.rifidi.streamer.xml.ComponentSuite;
 import org.rifidi.streamer.xml.components.ReaderComponent;
 import org.rifidi.utilities.messaging.MessagingSystem;
@@ -92,7 +94,7 @@ public class EventsServiceImpl implements EventsService {
 	 */
 	public EventsServiceImpl() {
 		logger.debug("EventsService created");
-
+		ServiceRegistry.getInstance().service(this);
 	}
 
 	private void init() {
@@ -221,6 +223,7 @@ public class EventsServiceImpl implements EventsService {
 	 * @param finderService
 	 *            the finderService to set
 	 */
+	@Inject
 	public void setFinderService(FinderService finderService) {
 		logger.debug("EventsService got FinderService");
 		this.finderService = finderService;

@@ -30,6 +30,8 @@ import org.rifidi.designer.services.core.entities.SceneDataService;
 import org.rifidi.designer.services.core.world.RepeatedUpdateAction;
 import org.rifidi.designer.services.core.world.WorldService;
 import org.rifidi.designer.utils.Helpers;
+import org.rifidi.services.annotations.Inject;
+import org.rifidi.services.registry.ServiceRegistry;
 
 import com.jme.scene.state.AlphaState;
 import com.jme.scene.state.FragmentProgramState;
@@ -95,6 +97,7 @@ public class SelectionServiceImpl implements SelectionService,
 	 */
 	public SelectionServiceImpl() {
 		logger.debug("SelectionService created");
+		ServiceRegistry.getInstance().service(this);
 	}
 
 	/*
@@ -357,6 +360,7 @@ public class SelectionServiceImpl implements SelectionService,
 	/**
 	 * @param sceneDataService the sceneDataService to set
 	 */
+	@Inject
 	public void setSceneDataService(SceneDataService sceneDataService) {
 		logger.debug("SelectionService got SceneDataService");
 		sceneDataService.addSceneDataChangedListener(this);
@@ -372,6 +376,7 @@ public class SelectionServiceImpl implements SelectionService,
 	/**
 	 * @param worldService the worldService to set
 	 */
+	@Inject
 	public void setWorldService(WorldService worldService) {
 		logger.debug("SelectionService got WorldService");
 		this.worldService = worldService;

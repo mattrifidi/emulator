@@ -15,12 +15,7 @@ import java.beans.PropertyChangeListenerProxy;
 import java.beans.PropertyChangeSupport;
 
 import javax.xml.bind.annotation.XmlID;
-import javax.xml.bind.annotation.XmlSeeAlso;
-import javax.xml.bind.annotation.XmlTransient;
-
 import org.rifidi.designer.annotations.Property;
-import org.rifidi.designer.services.core.events.EventsService;
-import org.rifidi.services.annotations.Inject;
 
 /**
  * This is the base class for all entities in the virtualization.
@@ -28,9 +23,6 @@ import org.rifidi.services.annotations.Inject;
  * @author Jochen Mader Oct 3, 2007
  * 
  */
-@XmlSeeAlso( {
-		org.rifidi.designer.entities.internal.WatchAreaEntity.class,
-		org.rifidi.designer.entities.internal.CableEntity.class})
 public abstract class Entity {
 
 	/**

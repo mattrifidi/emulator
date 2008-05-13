@@ -25,6 +25,8 @@ import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.interfaces.Field;
 import org.rifidi.designer.services.core.entities.FinderService;
 import org.rifidi.designer.services.core.entities.SceneDataService;
+import org.rifidi.services.annotations.Inject;
+import org.rifidi.services.registry.ServiceRegistry;
 
 import com.jme.input.action.InputAction;
 import com.jme.input.action.InputActionEvent;
@@ -72,6 +74,7 @@ public class FieldServiceImpl implements FieldService {
 		logger.debug("FieldService created");
 		fields = new HashMap<Field, InputAction>();
 		collisions = new HashMap<Field, Set<VisualEntity>>();
+		ServiceRegistry.getInstance().service(this);
 	}
 
 	/*
@@ -188,6 +191,7 @@ public class FieldServiceImpl implements FieldService {
 	 * @param finderService
 	 *            the finderService to set
 	 */
+	@Inject
 	public void setFinderService(FinderService finderService) {
 		logger.debug("FieldService got FinderService");
 		this.finderService = finderService;
@@ -205,6 +209,7 @@ public class FieldServiceImpl implements FieldService {
 	 * @param sceneDataService
 	 *            the sceneDataService to set
 	 */
+	@Inject
 	public void setSceneDataService(SceneDataService sceneDataService) {
 		logger.debug("FieldService got SceneDataService");
 		this.sceneDataService = sceneDataService;

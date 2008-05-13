@@ -45,13 +45,5 @@ Export-Package: org.rifidi.designer.annotations,
  org.rifidi.designer.services.core.selection,
  org.rifidi.designer.services.core.world
 Eclipse-BuddyPolicy: dependent
-Service-Component: OSGI-INF/messagingservice.xml,
- OSGI-INF/cameraservice.xml,
- OSGI-INF/selectionservice.xml,
- OSGI-INF/entitiesservice.xml, 
- OSGI-INF/worldservice.xml,
- OSGI-INF/fieldservice.xml,
- OSGI-INF/eventsservice.xml,
- OSGI-INF/cablingservice.xml
 Bundle-ClassPath: FengGUI.jar,
  .

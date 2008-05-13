@@ -33,6 +33,8 @@ import org.rifidi.designer.services.core.entities.SceneDataService;
 import org.rifidi.designer.services.core.messaging.MessagingService;
 import org.rifidi.designer.utils.Helpers;
 import org.rifidi.jmonkey.SWTDisplaySystem;
+import org.rifidi.services.annotations.Inject;
+import org.rifidi.services.registry.ServiceRegistry;
 
 import com.jme.renderer.ColorRGBA;
 import com.jme.system.DisplaySystem;
@@ -133,6 +135,7 @@ public class WorldServiceImpl implements WorldService, CommandStateService,
 		stateMap.get(WorldStates.Running).add("save");
 		stateMap.get(WorldStates.Running).add("stop");
 		stateMap.get(WorldStates.Running).add("pause");
+		ServiceRegistry.getInstance().service(this);
 	}
 
 	/*
@@ -316,6 +319,7 @@ public class WorldServiceImpl implements WorldService, CommandStateService,
 	 * @param sceneDataService
 	 *            the sceneDataService to set
 	 */
+	@Inject
 	public void setSceneDataService(SceneDataService sceneDataService) {
 		logger.debug("WorldService got SceneDataService");
 		this.sceneDataService = sceneDataService;
@@ -334,6 +338,7 @@ public class WorldServiceImpl implements WorldService, CommandStateService,
 	 * @param messagingService
 	 *            the messagingService to set
 	 */
+	@Inject
 	public void setMessagingService(MessagingService messagingService) {
 		logger.debug("WorldService got MessagingService");
 		this.messagingService = messagingService;
@@ -351,6 +356,7 @@ public class WorldServiceImpl implements WorldService, CommandStateService,
 	 * @param fieldService
 	 *            the fieldService to set
 	 */
+	@Inject
 	public void setFieldService(FieldService fieldService) {
 		logger.debug("WorldService got FieldService");
 		this.fieldService = fieldService;
@@ -376,6 +382,7 @@ public class WorldServiceImpl implements WorldService, CommandStateService,
 	 * @param cameraService
 	 *            the cameraService to set
 	 */
+	@Inject
 	public void setCameraService(CameraService cameraService) {
 		logger.debug("WorldService got CameraService");
 		this.cameraService = cameraService;

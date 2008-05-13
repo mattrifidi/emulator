@@ -53,6 +53,7 @@ import org.rifidi.designer.services.core.collision.FieldService;
 import org.rifidi.designer.services.core.events.EventsService;
 import org.rifidi.designer.services.core.selection.SelectionService;
 import org.rifidi.designer.utils.Helpers;
+import org.rifidi.services.annotations.Inject;
 import org.rifidi.services.registry.ServiceRegistry;
 
 import com.jme.bounding.BoundingBox;
@@ -127,6 +128,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	public EntitiesServiceImpl() {
 		logger.debug("EntitiesService created");
 		listeners = new ArrayList<SceneDataChangedListener>();
+		ServiceRegistry.getInstance().service(this);
 	}
 
 	/*
@@ -501,6 +503,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 			logger.debug("initializing jaxb");
 			List<Class> classes = EntityLibraryRegistry.getInstance()
 					.getEntityClasses();
+			classes.add(org.rifidi.designer.entities.internal.WatchAreaEntity.class);
 			classes.add(org.rifidi.designer.entities.SceneData.class);
 			classes.add(org.rifidi.designer.entities.VisualEntity.class);
 			classes.add(org.rifidi.designer.entities.internal.CableEntity.class);
@@ -770,6 +773,8 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 			classes.add(org.rifidi.emulator.tags.impl.C1G1Tag.class);
 			classes.add(org.rifidi.emulator.tags.impl.C1G2Tag.class);
 			classes.add(org.rifidi.emulator.tags.impl.RifidiTag.class);
+			classes.add(org.rifidi.designer.entities.internal.WatchAreaEntity.class);
+			classes.add(org.rifidi.designer.entities.internal.CableEntity.class);
 			JAXBContext context = JAXBContext.newInstance(classes
 					.toArray(new Class[0]));
 			Marshaller marshaller = context.createMarshaller();
@@ -894,6 +899,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	 * @param cablingService
 	 *            the cablingService to set
 	 */
+	@Inject
 	public void setCablingService(CablingService cablingService) {
 		logger.debug("EntitiesService got CablingService");
 		this.cablingService = cablingService;
@@ -911,6 +917,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	 * @param selectionService
 	 *            the selectionService to set
 	 */
+	@Inject
 	public void setSelectionService(SelectionService selectionService) {
 		logger.debug("EntitiesService got SelectionService");
 		this.selectionService = selectionService;
@@ -928,6 +935,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	 * @param eventsService
 	 *            the eventsService to set
 	 */
+	@Inject
 	public void setEventsService(EventsService eventsService) {
 		logger.debug("EntitiesService got EventsService");
 		this.eventsService = eventsService;

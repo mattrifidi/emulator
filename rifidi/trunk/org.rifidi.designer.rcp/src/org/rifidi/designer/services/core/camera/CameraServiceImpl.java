@@ -15,6 +15,8 @@ import java.util.concurrent.Callable;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.rifidi.designer.services.core.entities.SceneDataService;
+import org.rifidi.services.annotations.Inject;
+import org.rifidi.services.registry.ServiceRegistry;
 
 import com.jme.math.Vector3f;
 import com.jme.renderer.Camera;
@@ -53,6 +55,7 @@ public class CameraServiceImpl implements CameraService {
 	 */
 	public CameraServiceImpl() {
 		logger.debug("CamerService created");
+		ServiceRegistry.getInstance().service(this);
 	}
 
 	/*
@@ -225,6 +228,7 @@ public class CameraServiceImpl implements CameraService {
 	 * @param sceneDataService
 	 *            the sceneDataService to set
 	 */
+	@Inject
 	public void setSceneDataService(SceneDataService sceneDataService) {
 		logger.debug("CamerService got SceneDataService");
 		this.sceneDataService = sceneDataService;
