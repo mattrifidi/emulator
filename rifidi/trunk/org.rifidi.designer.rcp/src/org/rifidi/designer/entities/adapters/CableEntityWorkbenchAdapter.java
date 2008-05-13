@@ -30,7 +30,6 @@ public class CableEntityWorkbenchAdapter implements IWorkbenchAdapter {
 	 * @see org.eclipse.ui.model.IWorkbenchAdapter#getChildren(java.lang.Object)
 	 */
 	public Object[] getChildren(final Object o) {
-		
 		return new Object[] {};
 	}
 
@@ -49,7 +48,8 @@ public class CableEntityWorkbenchAdapter implements IWorkbenchAdapter {
 	 * @see org.eclipse.ui.model.IWorkbenchAdapter#getLabel(java.lang.Object)
 	 */
 	public String getLabel(final Object o) {
-		return ((Entity)(((CableEntity) o).getGpo())).getName()+" > "+((Entity)(((CableEntity) o).getGpi())).getName();
+		return ((Entity) (((CableEntity) o).getGpo())).getName() + " > "
+				+ ((Entity) (((CableEntity) o).getGpi())).getName();
 	}
 
 	/*
