@@ -17,6 +17,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.osgi.framework.BundleEvent;
+import org.osgi.framework.BundleListener;
 import org.osgi.framework.ServiceEvent;
 import org.osgi.framework.ServiceListener;
 import org.osgi.framework.ServiceReference;
@@ -47,7 +49,6 @@ public class ServiceRegistry {
 	 */
 	@SuppressWarnings("unchecked")
 	private ServiceRegistry() {
-
 		Activator.getDefault().getBundle().getBundleContext()
 				.addServiceListener(new ServiceListener() {
 
