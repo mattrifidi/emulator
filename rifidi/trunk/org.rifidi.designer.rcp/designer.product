@@ -95,12 +95,14 @@
       <plugin id="org.eclipse.update.core.win32" fragment="true"/>
       <plugin id="org.eclipse.update.ui"/>
       <plugin id="org.rifidi.dependencies"/>
+      <plugin id="org.rifidi.designer.entities"/>
       <plugin id="org.rifidi.designer.library.basemodels"/>
       <plugin id="org.rifidi.designer.library.retail"/>
       <plugin id="org.rifidi.designer.rcp"/>
       <plugin id="org.rifidi.designer.rcp.gpioeditor"/>
       <plugin id="org.rifidi.emulator"/>
       <plugin id="org.rifidi.emulator.reader.alien"/>
+      <plugin id="org.rifidi.initializer"/>
       <plugin id="org.rifidi.jmeswt"/>
       <plugin id="org.rifidi.log4j.designer" fragment="true"/>
       <plugin id="org.rifidi.services"/>
