@@ -67,11 +67,11 @@ public class ConveyorEntity extends VisualEntity implements Switch,
 	/**
 	 * Node for the directional pointer.
 	 */
-	private Node forwardIndicatorOrig;
+	private static Node forwardIndicatorOrig;
 	/**
 	 * Flipped directional pointer.
 	 */
-	private Node reverseIndicatorOrig;
+	private static Node reverseIndicatorOrig;
 	/**
 	 * Modified forward indicator.
 	 */
@@ -192,7 +192,7 @@ public class ConveyorEntity extends VisualEntity implements Switch,
 								"org/rifidi/designer/library/basemodels/conveyor/conveyor.jme")
 						.toURI();
 			} catch (URISyntaxException e) {
-				e.printStackTrace();
+				logger.debug(e);
 			}
 			try {
 				model = (Node) BinaryImporter.getInstance().load(
@@ -202,9 +202,9 @@ public class ConveyorEntity extends VisualEntity implements Switch,
 				model.getChild("forwardArrows").removeFromParent();
 				model.getChild("backwardArrows").removeFromParent();
 			} catch (MalformedURLException e) {
-				e.printStackTrace();
+				logger.debug(e);
 			} catch (IOException e) {
-				e.printStackTrace();
+				logger.debug(e);
 			}
 		}
 		forwardIndicator = new SharedNode("shared_", forwardIndicatorOrig);
