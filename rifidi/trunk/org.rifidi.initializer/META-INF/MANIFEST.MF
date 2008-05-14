@@ -8,5 +8,6 @@ Bundle-Vendor: Pramari, LLC
 Require-Bundle: org.eclipse.core.runtime,
  org.rifidi.dependencies
 Eclipse-LazyStart: true
+Eclipse-BuddyPolicy: dependent
 Export-Package: org.rifidi.initializer,
  org.rifidi.initializer.exceptions
