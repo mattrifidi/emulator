@@ -275,11 +275,10 @@ public class MiniMapView extends ViewPart {
 			label.setImage(image);
 		}
 		else if(!imageData.equals(img)){
-			image.dispose();
 			imageData = img;
 			image.dispose();
 			graphicsContext.dispose();
-			Image image = new Image(Display.getCurrent(), img);
+			image = new Image(Display.getCurrent(), img);
 			graphicsContext = new GC(image);
 			label.setImage(image);
 		}
