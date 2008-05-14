@@ -23,7 +23,8 @@ Require-Bundle: org.eclipse.ui,
  org.rifidi.streamer.xml,
  org.eclipse.equinox.ds,
  org.eclipse.equinox.cm,
- org.eclipse.osgi.util
+ org.eclipse.osgi.util,
+ org.rifidi.initializer
 Eclipse-LazyStart: true
 Export-Package: org.rifidi.designer.entities,
  org.rifidi.designer.entities.adapters,
