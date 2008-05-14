@@ -64,6 +64,7 @@
       </category>
    </extension>
    <extension-point id="org.rifidi.designer.library" name="Library Extension Point" schema="schema/org.rifidi.designer.library.exsd"/>
+   <extension-point id="org.rifidi.initializer" name="Initializer for custom components" schema="schema/org.rifidi.initializer.exsd"/>
    <extension
          point="org.eclipse.core.runtime.adapters">
       <factory
@@ -1096,6 +1097,15 @@
             id="org.rifidi.designer.rcp.runtimecontext"
             name="Runtime Context">
       </context>
+   </extension>
+   <extension
+         point="org.rifidi.initializer">
+      <Initializer
+            class="org.rifidi.designer.rcp.cable.Initializer">
+         <Initializee
+               class="org.rifidi.designer.entities.internal.CableEntity">
+         </Initializee>
+      </Initializer>
    </extension>
 
 </plugin>

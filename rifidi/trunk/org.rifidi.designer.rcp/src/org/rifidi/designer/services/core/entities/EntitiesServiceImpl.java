@@ -48,11 +48,10 @@ import org.rifidi.designer.entities.placement.BitMap;
 import org.rifidi.designer.library.EntityLibraryRegistry;
 import org.rifidi.designer.rcp.Activator;
 import org.rifidi.designer.rcp.views.view3d.View3D.Direction;
-import org.rifidi.designer.services.core.cabling.CablingService;
-import org.rifidi.designer.services.core.collision.FieldService;
-import org.rifidi.designer.services.core.events.EventsService;
 import org.rifidi.designer.services.core.selection.SelectionService;
 import org.rifidi.designer.utils.Helpers;
+import org.rifidi.initializer.IInitService;
+import org.rifidi.initializer.exceptions.InitializationException;
 import org.rifidi.services.annotations.Inject;
 import org.rifidi.services.registry.ServiceRegistry;
 
@@ -98,18 +97,6 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	 */
 	private Map<Node, VisualEntity> nodeToEntity;
 	/**
-	 * Reference to the field service
-	 */
-	private FieldService fieldService;
-	/**
-	 * Reference to the cabling service
-	 */
-	private CablingService cablingService;
-	/**
-	 * Reference to the events service
-	 */
-	private EventsService eventsService;
-	/**
 	 * the file the scene was loaded from.
 	 */
 	private IFile fileOfCurrentScene;
@@ -121,6 +108,10 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	 * Reference to the selection service.
 	 */
 	private SelectionService selectionService;
+	/**
+	 * Reference to the initservice.
+	 */
+	private IInitService iinitService;
 
 	/**
 	 * Constructor.
@@ -185,10 +176,10 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 				if (entity instanceof VisualEntityHolder) {
 					for (VisualEntity ve : ((VisualEntityHolder) entity)
 							.getVisualEntityList()) {
-						//not all available spots are taken
-						if(ve!=null){
+						// not all available spots are taken
+						if (ve != null) {
 							nodeToEntity.remove(ve.getNode());
-							sceneData.getSyncedEntities().remove(ve);	
+							sceneData.getSyncedEntities().remove(ve);
 						}
 					}
 				}
@@ -452,14 +443,6 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 		return new Point((int) pos.x, (int) pos.z);
 	}
 
-	/**
-	 * @param fieldService
-	 *            the fieldService to set
-	 */
-	public void setCollisionService(FieldService fieldService) {
-		this.fieldService = fieldService;
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -503,10 +486,12 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 			logger.debug("initializing jaxb");
 			List<Class> classes = EntityLibraryRegistry.getInstance()
 					.getEntityClasses();
-			classes.add(org.rifidi.designer.entities.internal.WatchAreaEntity.class);
+			classes
+					.add(org.rifidi.designer.entities.internal.WatchAreaEntity.class);
 			classes.add(org.rifidi.designer.entities.SceneData.class);
 			classes.add(org.rifidi.designer.entities.VisualEntity.class);
-			classes.add(org.rifidi.designer.entities.internal.CableEntity.class);
+			classes
+					.add(org.rifidi.designer.entities.internal.CableEntity.class);
 			classes.add(org.rifidi.emulator.tags.impl.C0G1Tag.class);
 			classes.add(org.rifidi.emulator.tags.impl.C1G1Tag.class);
 			classes.add(org.rifidi.emulator.tags.impl.C1G2Tag.class);
@@ -616,10 +601,14 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 			((NeedsPhysics) entity).setCollisionHandler(sceneData
 					.getCollisionHandler());
 		}
-		if (entity instanceof CableEntity) {
-			cablingService.recreateCable((CableEntity) entity);
-		}
+		
 		ServiceRegistry.getInstance().service(entity);
+		//do custom initialization
+		try {
+			iinitService.init(entity);
+		} catch (InitializationException e) {
+			e.printStackTrace();
+		}
 		// has to be the last step!!!
 		if (!isNew && entity instanceof VisualEntity) {
 			((VisualEntity) entity).loaded();
@@ -768,13 +757,16 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 					.getEntityClasses();
 			classes.add(org.rifidi.designer.entities.SceneData.class);
 			classes.add(org.rifidi.designer.entities.VisualEntity.class);
-			classes.add(org.rifidi.designer.entities.internal.CableEntity.class);
+			classes
+					.add(org.rifidi.designer.entities.internal.CableEntity.class);
 			classes.add(org.rifidi.emulator.tags.impl.C0G1Tag.class);
 			classes.add(org.rifidi.emulator.tags.impl.C1G1Tag.class);
 			classes.add(org.rifidi.emulator.tags.impl.C1G2Tag.class);
 			classes.add(org.rifidi.emulator.tags.impl.RifidiTag.class);
-			classes.add(org.rifidi.designer.entities.internal.WatchAreaEntity.class);
-			classes.add(org.rifidi.designer.entities.internal.CableEntity.class);
+			classes
+					.add(org.rifidi.designer.entities.internal.WatchAreaEntity.class);
+			classes
+					.add(org.rifidi.designer.entities.internal.CableEntity.class);
 			JAXBContext context = JAXBContext.newInstance(classes
 					.toArray(new Class[0]));
 			Marshaller marshaller = context.createMarshaller();
@@ -896,24 +888,6 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	}
 
 	/**
-	 * @param cablingService
-	 *            the cablingService to set
-	 */
-	@Inject
-	public void setCablingService(CablingService cablingService) {
-		logger.debug("EntitiesService got CablingService");
-		this.cablingService = cablingService;
-	}
-
-	/**
-	 * @param cablingService
-	 *            the cablingService to unset
-	 */
-	public void unsetCablingService(CablingService cablingService) {
-		this.cablingService = null;
-	}
-
-	/**
 	 * @param selectionService
 	 *            the selectionService to set
 	 */
@@ -932,21 +906,20 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	}
 
 	/**
-	 * @param eventsService
-	 *            the eventsService to set
+	 * @param initService
+	 *            the initService to set
 	 */
 	@Inject
-	public void setEventsService(EventsService eventsService) {
-		logger.debug("EntitiesService got EventsService");
-		this.eventsService = eventsService;
+	public void setInitService(IInitService iinitService) {
+		this.iinitService = iinitService;
 	}
 
 	/**
-	 * @param eventsService
-	 *            the eventsService to unset
+	 * @param initService
+	 *            the initService to unset
 	 */
-	public void unsetEventsService(EventsService eventsService) {
-		this.eventsService = null;
+	public void unsetIInitService(IInitService initService) {
+		this.iinitService = null;
 	}
 
 	/**

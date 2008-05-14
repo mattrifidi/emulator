@@ -34,6 +34,8 @@ import org.rifidi.designer.services.core.world.CommandStateService;
 import org.rifidi.designer.services.core.world.WorldService;
 import org.rifidi.designer.services.core.world.WorldServiceImpl;
 import org.rifidi.emulator.rmi.server.RifidiManager;
+import org.rifidi.initializer.IInitService;
+import org.rifidi.initializer.InitService;
 
 /**
  * The activator class controls the plug-in life cycle.
@@ -61,11 +63,6 @@ public class Activator extends AbstractUIPlugin {
 	public RMIManager rifidiManager;
 
 	/**
-	 * Registry for all actions.
-	 */
-	private ActionRegistry actionRegistry;
-
-	/**
 	 * Reference to the current display.
 	 */
 	public static Display display;
@@ -74,7 +71,6 @@ public class Activator extends AbstractUIPlugin {
 	 * The constructor.
 	 */
 	public Activator() {
-		actionRegistry = new ActionRegistry();
 	}
 
 	/*
@@ -130,6 +126,7 @@ public class Activator extends AbstractUIPlugin {
 		context.registerService(new String[] { WorldService.class.getName(),
 				CommandStateService.class.getName() },
 				new WorldServiceImpl(), null);
+		context.registerService(IInitService.class.getName(), new InitService(), null);
 	}
 
 	/*
@@ -161,12 +158,5 @@ public class Activator extends AbstractUIPlugin {
 	 */
 	public static ImageDescriptor getImageDescriptor(final String path) {
 		return imageDescriptorFromPlugin(PLUGIN_ID, path);
-	}
-
-	/**
-	 * @return the actionRegistry.
-	 */
-	public ActionRegistry getActionRegistry() {
-		return actionRegistry;
 	}
 }
