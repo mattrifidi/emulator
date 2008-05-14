@@ -14,8 +14,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.rifidi.designer.entities.SceneData.Direction;
 import org.rifidi.designer.rcp.views.view3d.View3D;
-import org.rifidi.designer.rcp.views.view3d.View3D.Direction;
 
 import com.jme.math.Matrix3f;
 import com.jme.math.Quaternion;

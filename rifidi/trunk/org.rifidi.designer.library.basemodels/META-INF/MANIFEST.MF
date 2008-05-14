@@ -15,6 +15,7 @@ Require-Bundle: org.eclipse.ui,
  org.rifidi.emulator,
  org.rifidi.ui.common,
  org.rifidi.services,
- org.rifidi.services.tags
+ org.rifidi.services.tags,
+ org.rifidi.designer.entities
 Eclipse-LazyStart: true
 Eclipse-BuddyPolicy: dependent

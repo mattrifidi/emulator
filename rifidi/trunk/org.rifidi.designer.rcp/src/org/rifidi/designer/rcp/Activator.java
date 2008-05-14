@@ -93,19 +93,6 @@ public class Activator extends AbstractUIPlugin {
 		if (!folder.exists()) {
 			folder.create(true, true, null);
 		}
-		// start rifidi
-		try {
-			RifidiManager.startManager("127.0.0.1", 1198);
-			rifidiManager = RMIManager.getInstance("127.0.0.1");
-		} catch (java.rmi.server.ExportException e) {
-			MessageBox mb = new MessageBox(new Shell(), SWT.OK);
-			mb.setText("Unable to start new instance!");
-			mb
-					.setMessage("Please close all running instances of Rifidi designer"
-							+ "before staring a new one.");
-			mb.open();
-			return;
-		}
 
 		context.registerService(CablingService.class.getName(),
 				new CablingServiceImpl(), null);

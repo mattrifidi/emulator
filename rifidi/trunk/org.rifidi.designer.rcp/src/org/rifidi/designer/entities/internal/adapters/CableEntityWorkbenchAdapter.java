@@ -8,21 +8,21 @@
  *  License:		Lesser GNU Public License (LGPL)
  *  http://www.opensource.org/licenses/lgpl-license.html
  */
-package org.rifidi.designer.entities.adapters;
+package org.rifidi.designer.entities.internal.adapters;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.model.IWorkbenchAdapter;
-import org.rifidi.designer.entities.grouping.EntityGroup;
-import org.rifidi.designer.rcp.Activator;
+import org.rifidi.designer.entities.Entity;
+import org.rifidi.designer.entities.internal.CableEntity;
 
 /**
- * IWorkbenchAdapter for EntityGroups.
+ * WorkbenchAdapter for IDGenerators.
  * 
- * @see EntityGroup
+ * @see IDGenerator
  * @author Jochen Mader Nov 14, 2007
  * 
  */
-public class EntityGroupWorkbenchAdapter implements IWorkbenchAdapter {
+public class CableEntityWorkbenchAdapter implements IWorkbenchAdapter {
 
 	/*
 	 * (non-Javadoc)
@@ -30,7 +30,7 @@ public class EntityGroupWorkbenchAdapter implements IWorkbenchAdapter {
 	 * @see org.eclipse.ui.model.IWorkbenchAdapter#getChildren(java.lang.Object)
 	 */
 	public Object[] getChildren(final Object o) {
-		return ((EntityGroup) o).getEntities().toArray();
+		return new Object[] {};
 	}
 
 	/*
@@ -39,16 +39,7 @@ public class EntityGroupWorkbenchAdapter implements IWorkbenchAdapter {
 	 * @see org.eclipse.ui.model.IWorkbenchAdapter#getImageDescriptor(java.lang.Object)
 	 */
 	public ImageDescriptor getImageDescriptor(final Object object) {
-		if (object instanceof EntityGroup) {
-			if ("Ungrouped Components".equals(((EntityGroup) object).getName())) {
-				return Activator.getImageDescriptor("icons/shape_ungroup.png");
-			} else if ("Generated Components".equals(((EntityGroup) object)
-					.getName())) {
-				return Activator
-						.getImageDescriptor("icons/shape_square_add.png");
-			}
-		}
-		return Activator.getImageDescriptor("icons/shape_square_add.png");
+		return null;
 	}
 
 	/*
@@ -57,7 +48,8 @@ public class EntityGroupWorkbenchAdapter implements IWorkbenchAdapter {
 	 * @see org.eclipse.ui.model.IWorkbenchAdapter#getLabel(java.lang.Object)
 	 */
 	public String getLabel(final Object o) {
-		return ((EntityGroup) o).getName();
+		return ((Entity) (((CableEntity) o).getGpo())).getName() + " > "
+				+ ((Entity) (((CableEntity) o).getGpi())).getName();
 	}
 
 	/*

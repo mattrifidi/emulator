@@ -14,6 +14,7 @@ import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.rifidi.designer.services.core.entities.SceneDataService;
+import org.rifidi.designer.services.core.selection.SelectionService;
 import org.rifidi.services.annotations.Inject;
 import org.rifidi.services.registry.ServiceRegistry;
 
@@ -28,6 +29,10 @@ public class SaveHandler extends AbstractHandler {
 	 * Reference to the scene data service.
 	 */
 	private SceneDataService sceneDataService;
+	/**
+	 * Reference to the selection service.
+	 */
+	private SelectionService selectionService;
 	
 	/**
 	 * Constructor.
@@ -44,6 +49,7 @@ public class SaveHandler extends AbstractHandler {
 	 */
 	@Override
 	public Object execute(ExecutionEvent arg0) throws ExecutionException {
+		selectionService.clearSelection();
 		sceneDataService.saveScene();
 		return null;
 	}
@@ -54,6 +60,14 @@ public class SaveHandler extends AbstractHandler {
 	@Inject
 	public void setSceneDataService(SceneDataService sceneDataService) {
 		this.sceneDataService = sceneDataService;
+	}
+
+	/**
+	 * @param selectionService the selectionService to set
+	 */
+	@Inject
+	public void setSelectionService(SelectionService selectionService) {
+		this.selectionService = selectionService;
 	}
 
 }

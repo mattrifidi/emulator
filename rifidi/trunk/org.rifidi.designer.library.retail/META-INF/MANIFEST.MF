@@ -12,5 +12,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.rifidi.services,
  org.rifidi.emulator,
  org.eclipse.ui,
- org.eclipse.ui.views
+ org.eclipse.ui.views,
+ org.rifidi.designer.entities
 Eclipse-LazyStart: true

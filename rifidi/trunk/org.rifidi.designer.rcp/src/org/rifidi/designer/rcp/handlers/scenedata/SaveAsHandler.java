@@ -16,6 +16,7 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Display;
 import org.rifidi.designer.services.core.entities.SceneDataService;
+import org.rifidi.designer.services.core.selection.SelectionService;
 import org.rifidi.services.annotations.Inject;
 import org.rifidi.services.registry.ServiceRegistry;
 
@@ -30,6 +31,10 @@ public class SaveAsHandler extends AbstractHandler {
 	 * Reference to the scene data service.
 	 */
 	private SceneDataService sceneDataService;
+	/**
+	 * Reference to the selection service.
+	 */
+	private SelectionService selectionService;
 	
 	/**
 	 * Constructor.
@@ -52,6 +57,7 @@ public class SaveAsHandler extends AbstractHandler {
 		int ret = dialog.open();
 		if (WizardDialog.CANCEL != ret) {
 			sceneDataService.setName(wizard.getName());
+			selectionService.clearSelection();
 			sceneDataService.saveScene(wizard.getNewLayout());
 		}
 		return null;
@@ -63,6 +69,14 @@ public class SaveAsHandler extends AbstractHandler {
 	@Inject
 	public void setSceneDataService(SceneDataService sceneDataService) {
 		this.sceneDataService = sceneDataService;
+	}
+
+	/**
+	 * @param selectionService the selectionService to set
+	 */
+	@Inject
+	public void setSelectionService(SelectionService selectionService) {
+		this.selectionService = selectionService;
 	}
 
 }
