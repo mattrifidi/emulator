@@ -158,6 +158,30 @@ public class EntityLibraryRegistry {
 		return classes;
 	}
 
+	public boolean isVisible(Class clazz){
+		IExtensionRegistry registry = Platform.getExtensionRegistry();
+		IExtensionPoint point = registry
+				.getExtensionPoint("org.rifidi.designer.entities.internal");
+		for (IExtension extension : point.getExtensions()) {
+			for (IConfigurationElement configElement : extension
+					.getConfigurationElements()) {
+				try {
+					if(Class.forName(configElement.getAttribute("class")).equals(clazz)){
+						return new Boolean(configElement.getAttribute("visible"));
+					}
+				} catch (InvalidRegistryObjectException e) {
+					logger.error("Exception while loading "
+							+ configElement.getAttribute("class") + "\n"
+							+ e);
+				} catch (ClassNotFoundException e) {
+					logger.error("Exception while loading "
+							+ configElement.getAttribute("class") + "\n"
+							+ e);
+				}
+			}
+		}
+		return true;
+	}
 	/**
 	 * Get the library reference for the specified unique name.
 	 * 

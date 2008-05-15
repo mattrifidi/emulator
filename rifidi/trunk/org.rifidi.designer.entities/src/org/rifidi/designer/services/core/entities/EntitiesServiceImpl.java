@@ -131,9 +131,9 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 		}
 		sceneData.getEntityNames().add(ent.getName());
 		sceneData.getSyncedEntities().add(ent);
-//		if (!(ent instanceof CableEntity)) {
-		sceneData.getDefaultGroup().addEntity(ent);
-//		}
+		if(EntityLibraryRegistry.getInstance().isVisible(ent.getClass())){
+			sceneData.getDefaultGroup().addEntity(ent);	
+		}
 		initEntity(ent, sceneData, true);
 
 		if (ent instanceof VisualEntity) {

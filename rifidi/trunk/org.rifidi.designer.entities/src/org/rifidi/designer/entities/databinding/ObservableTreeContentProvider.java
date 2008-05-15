@@ -84,7 +84,6 @@ public class ObservableTreeContentProvider implements ITreeContentProvider,
 	 * @see org.eclipse.jface.viewers.ITreeContentProvider#getChildren(java.lang.Object)
 	 */
 	public Object[] getChildren(final Object parentElement) {
-		System.out.println("getChildren");
 		monitorElement(parentElement);
 		return getAdapter(parentElement).getChildren(parentElement);
 	}
