@@ -179,7 +179,7 @@ public class CameraServiceImpl implements CameraService {
 		// camera.setLocation(new Vector3f(4, 2, 4));
 		// camera.setDirection(new Vector3f(0f, -1f, -.001f));
 
-		camera.setLocation(new Vector3f(4, 2, 4));
+		camera.setLocation(new Vector3f(4.3f, 2, 4.6f));
 		camera.lookAt(new Vector3f(3.7f, 1, 3), Vector3f.UNIT_Y);
 		// camera.lookAt(new Vector3f(45,0,5), Vector3f.UNIT_Y);
 		// camera.lookAt(Vector3f.ZERO, Vector3f.UNIT_Y);

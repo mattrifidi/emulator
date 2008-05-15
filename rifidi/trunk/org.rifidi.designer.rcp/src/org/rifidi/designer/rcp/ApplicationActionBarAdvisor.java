@@ -38,6 +38,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 	protected void makeActions(IWorkbenchWindow window) {
 		// TODO: only required till 3.3, should work without this in 3.4
 		register(ActionFactory.QUIT.create(window));
+		register(ActionFactory.HELP_CONTENTS.create(window));
 	}
 
 	/**

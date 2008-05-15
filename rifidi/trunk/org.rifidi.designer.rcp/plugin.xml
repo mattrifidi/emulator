@@ -515,7 +515,7 @@
                   </with>
                </visibleWhen>
             </command>
-            <command
+            <!--<command
                   commandId="org.rifidi.designer.rcp.commands.editmode"
                   icon="icons/edit.png"
                   id="org.rifidi.designer.rcp.commands.editmodeBinding"
@@ -533,7 +533,7 @@
                   </with>
                </visibleWhen>
             </command>
-            <!--<command
+            <command
                   commandId="org.rifidi.designer.rcp.commands.cameramode"
                   icon="icons/camera.png"
                   id="org.rifidi.designer.rcp.commands.cameramodeBinding"
@@ -716,6 +716,10 @@
          <menu
                id="org.rifidi.designer.rcp.menus.help"
                label="Help">
+            <command
+                  commandId="org.eclipse.ui.help.helpContents"
+                  label="Help Contents">
+            </command>
             <command
                   commandId="org.eclipse.ui.help.aboutAction"
                   label="About">

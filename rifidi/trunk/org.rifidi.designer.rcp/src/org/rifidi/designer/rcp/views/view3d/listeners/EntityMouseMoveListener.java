@@ -325,7 +325,11 @@ public class EntityMouseMoveListener implements MouseListener,
 			}
 			return;
 		}
-
+		if(e.count>0){
+			cameraService.zoomIn();
+			return;
+		}
+		cameraService.zoomOut();
 		// int newzoom = cameraService.getActiveCamera().getZoom()
 		// + (int) (e.count * 1.5f);
 		// cameraService.getActiveCamera().setZoom(newzoom);
