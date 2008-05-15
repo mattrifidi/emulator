@@ -4,22 +4,11 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/org.eclipse.swt"/>
 	<classpathentry kind="lib" path="/org.rifidi.jmeswt/jinput.jar"/>
-	<classpathentry kind="lib" path="/org.rifidi.jmeswt/jme.jar" sourcepath="/jme"/>
-	<classpathentry kind="lib" path="/org.rifidi.jmeswt/jme-audio.jar"/>
-	<classpathentry kind="lib" path="/org.rifidi.jmeswt/jme-awt.jar"/>
-	<classpathentry kind="lib" path="/org.rifidi.jmeswt/jme-collada.jar"/>
-	<classpathentry kind="lib" path="/org.rifidi.jmeswt/jme-editors.jar"/>
-	<classpathentry kind="lib" path="/org.rifidi.jmeswt/jme-effects.jar"/>
-	<classpathentry kind="lib" path="/org.rifidi.jmeswt/jme-font.jar"/>
-	<classpathentry kind="lib" path="/org.rifidi.jmeswt/jme-gamestates.jar"/>
-	<classpathentry kind="lib" path="/org.rifidi.jmeswt/jme-model.jar"/>
-	<classpathentry kind="lib" path="/org.rifidi.jmeswt/jme-scene.jar"/>
-	<classpathentry kind="lib" path="/org.rifidi.jmeswt/jme-terrain.jar"/>
-	<classpathentry kind="lib" path="/org.rifidi.jmeswt/jme-xml.jar"/>
 	<classpathentry kind="lib" path="/org.rifidi.jmeswt/lwjgl_test.jar"/>
 	<classpathentry kind="lib" path="/org.rifidi.jmeswt/lwjgl_util_applet.jar"/>
 	<classpathentry kind="lib" path="/org.rifidi.jmeswt/lwjgl_util.jar"/>
 	<classpathentry kind="lib" path="/org.rifidi.jmeswt/lwjgl.jar"/>
 	<classpathentry kind="lib" path="commons-logging.jar"/>
+	<classpathentry kind="lib" path="jmonkey.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
