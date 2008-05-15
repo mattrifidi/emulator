@@ -6,9 +6,6 @@ Bundle-Version: 1.0.0
 Bundle-Vendor: Pramari, LLC
 Require-Bundle: org.rifidi.emulator,
  org.rifidi.services,
- org.eclipse.equinox.ds,
- org.eclipse.osgi.util,
- org.eclipse.equinox.cm,
  org.eclipse.core.runtime
 Bundle-Activator: org.rifidi.services.tags.Activator
 Eclipse-LazyStart: true
