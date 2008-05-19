@@ -11,13 +11,11 @@ import java.util.TreeMap;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.rifidi.emulator.reader.thingmagic.commandhandler.RQLEncodedCommands;
 import org.rifidi.emulator.reader.thingmagic.database.IFilter;
 import org.rifidi.emulator.reader.thingmagic.database.MuiltipleFilter;
 import org.rifidi.emulator.reader.thingmagic.database.enums.ETable;
-import org.rifidi.emulator.reader.thingmagic.database.enums.Etag_id;
 import org.rifidi.emulator.reader.thingmagic.database.enums.GenericTableRow;
-import org.rifidi.emulator.tags.impl.RifidiTag;
+import org.rifidi.services.tags.impl.RifidiTag;
 
 /**
  * @author jmaine

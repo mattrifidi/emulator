@@ -1,21 +1,17 @@
 package org.rifidi.emulator.reader.thingmagic.tagbuffer;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.rifidi.emulator.reader.thingmagic.database.*;
+import org.rifidi.emulator.reader.thingmagic.database.DataBaseTable;
+import org.rifidi.emulator.reader.thingmagic.database.IFilter;
 import org.rifidi.emulator.reader.thingmagic.database.enums.Etag_id;
 import org.rifidi.emulator.reader.thingmagic.formatter.ThingMagicRQLCommandFormatter;
-import org.rifidi.emulator.reader.thingmagic.module.*;
-import org.rifidi.emulator.reader.thingmagic.tagbuffer.ThingMagicTagMemory;
-import org.rifidi.emulator.tags.impl.RifidiTag;
+import org.rifidi.emulator.reader.thingmagic.module.ThingMagicReaderSharedResources;
+import org.rifidi.services.tags.impl.RifidiTag;
 
 /**
  * @author jmaine

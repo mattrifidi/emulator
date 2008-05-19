@@ -3,16 +3,14 @@
  */
 package org.rifidi.emulator.reader.thingmagic.commandhandler;
 
+import java.util.ArrayList;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.rifidi.emulator.reader.command.CommandObject;
 import org.rifidi.emulator.reader.module.abstract_.AbstractReaderSharedResources;
-import org.rifidi.emulator.reader.thingmagic.database.IFilter;
-import org.rifidi.emulator.reader.thingmagic.database.MuiltipleFilter;
-import org.rifidi.emulator.reader.thingmagic.database.enums.Etag_id;
 import org.rifidi.emulator.reader.thingmagic.formatter.ParsedCommandObject;
 import org.rifidi.emulator.reader.thingmagic.module.ThingMagicReaderSharedResources;
-import java.util.ArrayList;
 
 /**
  * @author jmaine

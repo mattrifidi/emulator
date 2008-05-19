@@ -9,8 +9,7 @@ import java.util.Collection;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.rifidi.emulator.reader.sharedrc.tagmemory.TagMemory;
-import org.rifidi.emulator.reader.thingmagic.module.ThingMagicReaderModule;
-import org.rifidi.emulator.tags.impl.RifidiTag;
+import org.rifidi.services.tags.impl.RifidiTag;
 
 /**
  * @author jmaine

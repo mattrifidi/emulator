@@ -8,7 +8,7 @@ Bundle-Vendor: Pramari, LLC
 Require-Bundle: org.rifidi.dependencies,
  org.rifidi.emulator,
  org.rifidi.common.utilities,
- org.rifidi.emulator.tags
+ org.rifidi.services.tags;bundle-version="2.0.0"
 Eclipse-LazyStart: true
 Import-Package: org.osgi.framework;version="1.4.0"
 Export-Package: org.rifidi.emulator.reader.thingmagic,
