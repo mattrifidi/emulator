@@ -4,13 +4,9 @@ Bundle-Name: Tags Plug-in
 Bundle-SymbolicName: org.rifidi.services.tags;singleton:=true
 Bundle-Version: 1.0.0
 Bundle-Vendor: Pramari, LLC
-Require-Bundle: org.rifidi.emulator,
- org.rifidi.services,
+Require-Bundle: org.rifidi.services,
  org.eclipse.core.runtime
 Bundle-Activator: org.rifidi.services.tags.Activator
 Eclipse-LazyStart: true
 Eclipse-BuddyPolicy: dependent
 Service-Component: OSGI-INF/tagsservice.xml
-Export-Package: org.rifidi.services.tags,
- org.rifidi.services.tags.impl,
- org.rifidi.services.tags.sources
