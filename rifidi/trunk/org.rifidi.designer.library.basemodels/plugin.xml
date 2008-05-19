@@ -28,6 +28,45 @@
          </adapter>
       </factory>
       <factory
+            adaptableType="org.rifidi.designer.library.basemodels.boxproducerGID96.BoxproducerEntityGID96"
+            class="org.rifidi.designer.library.basemodels.AdapterFactory">
+         <adapter
+               type="org.eclipse.ui.IActionFilter">
+         </adapter>
+         <adapter
+               type="org.eclipse.ui.model.IWorkbenchAdapter">
+         </adapter>
+         <adapter
+               type="org.eclipse.ui.views.properties.IPropertySource">
+         </adapter>
+      </factory>
+      <factory
+            adaptableType="org.rifidi.designer.library.basemodels.boxproducerSGTIN96.BoxproducerEntitySGTIN96"
+            class="org.rifidi.designer.library.basemodels.AdapterFactory">
+         <adapter
+               type="org.eclipse.ui.IActionFilter">
+         </adapter>
+         <adapter
+               type="org.eclipse.ui.model.IWorkbenchAdapter">
+         </adapter>
+         <adapter
+               type="org.eclipse.ui.views.properties.IPropertySource">
+         </adapter>
+      </factory>
+      <factory
+            adaptableType="org.rifidi.designer.library.basemodels.boxproducerSSCC96.BoxproducerEntitySSCC96"
+            class="org.rifidi.designer.library.basemodels.AdapterFactory">
+         <adapter
+               type="org.eclipse.ui.IActionFilter">
+         </adapter>
+         <adapter
+               type="org.eclipse.ui.model.IWorkbenchAdapter">
+         </adapter>
+         <adapter
+               type="org.eclipse.ui.views.properties.IPropertySource">
+         </adapter>
+      </factory>
+      <factory
             adaptableType="org.rifidi.designer.library.basemodels.cardbox.CardboxEntity"
             class="org.rifidi.designer.library.basemodels.AdapterFactory">
          <adapter

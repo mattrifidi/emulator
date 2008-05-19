@@ -73,16 +73,6 @@ public class BasemodelsLibrary implements EntityLibrary {
 		boxRef.setEntityClass(CardboxEntity.class);
 		boxRef.setHidden(false);
 		library.add(boxRef);
-		EntityLibraryReference prodRef = new EntityLibraryReference();
-		prodRef.setId(BoxproducerEntity.class.getName());
-		prodRef.setImageDescriptor(Activator.getDefault().getImageRegistry()
-				.getDescriptor(BoxproducerEntity.class.getName()));
-		prodRef.setLibrary(BasemodelsLibrary.class);
-		prodRef.setName("Producer");
-		prodRef.setWizard(null);
-		prodRef.setEntityClass(BoxproducerEntity.class);
-		prodRef.setHidden(false);
-		library.add(prodRef);
 		EntityLibraryReference gateRef = new EntityLibraryReference();
 		gateRef.setId(GateEntity.class.getName());
 		gateRef.setImageDescriptor(Activator.getDefault().getImageRegistry()
@@ -103,7 +93,6 @@ public class BasemodelsLibrary implements EntityLibrary {
 		antennaRef.setEntityClass(AntennaFieldEntity.class);
 		antennaRef.setHidden(true);
 		library.add(antennaRef);
-
 		EntityLibraryReference infraredRef = new EntityLibraryReference();
 		infraredRef.setId(InfraredEntity.class.getName());
 		infraredRef.setImageDescriptor(Activator.getDefault()
@@ -115,6 +104,46 @@ public class BasemodelsLibrary implements EntityLibrary {
 		infraredRef.setEntityClass(InfraredEntity.class);
 		infraredRef.setHidden(false);
 		library.add(infraredRef);
+		EntityLibraryReference prodRef = new EntityLibraryReference();
+		prodRef.setId(BoxproducerEntity.class.getName());
+		prodRef.setImageDescriptor(Activator.getDefault().getImageRegistry()
+				.getDescriptor(BoxproducerEntity.class.getName()));
+		prodRef.setLibrary(BasemodelsLibrary.class);
+		prodRef.setName("Producer (GID96)");
+		prodRef.setWizard(null);
+		prodRef.setEntityClass(BoxproducerEntity.class);
+		prodRef.setHidden(false);
+		library.add(prodRef);
+		EntityLibraryReference prodSSCC96Ref = new EntityLibraryReference();
+		prodSSCC96Ref.setId(org.rifidi.designer.library.basemodels.boxproducerSSCC96.BoxproducerEntitySSCC96.class.getName());
+		prodSSCC96Ref.setImageDescriptor(Activator.getDefault().getImageRegistry()
+				.getDescriptor(BoxproducerEntity.class.getName()));
+		prodSSCC96Ref.setLibrary(BasemodelsLibrary.class);
+		prodSSCC96Ref.setName("Producer (SSCC96)");
+		prodSSCC96Ref.setWizard(null);
+		prodSSCC96Ref.setEntityClass(org.rifidi.designer.library.basemodels.boxproducerSSCC96.BoxproducerEntitySSCC96.class);
+		prodSSCC96Ref.setHidden(false);
+		library.add(prodSSCC96Ref);
+		EntityLibraryReference prodGID96Ref = new EntityLibraryReference();
+		prodGID96Ref.setId(org.rifidi.designer.library.basemodels.boxproducerGID96.BoxproducerEntityGID96.class.getName());
+		prodGID96Ref.setImageDescriptor(Activator.getDefault().getImageRegistry()
+				.getDescriptor(BoxproducerEntity.class.getName()));
+		prodGID96Ref.setLibrary(BasemodelsLibrary.class);
+		prodGID96Ref.setName("Producer (GID96)");
+		prodGID96Ref.setWizard(null);
+		prodGID96Ref.setEntityClass(org.rifidi.designer.library.basemodels.boxproducerGID96.BoxproducerEntityGID96.class);
+		prodGID96Ref.setHidden(false);
+		library.add(prodGID96Ref);
+		EntityLibraryReference prodSGTIN96Ref = new EntityLibraryReference();
+		prodSGTIN96Ref.setId(org.rifidi.designer.library.basemodels.boxproducerSGTIN96.BoxproducerEntitySGTIN96.class.getName());
+		prodSGTIN96Ref.setImageDescriptor(Activator.getDefault().getImageRegistry()
+				.getDescriptor(BoxproducerEntity.class.getName()));
+		prodSGTIN96Ref.setLibrary(BasemodelsLibrary.class);
+		prodSGTIN96Ref.setName("Producer (SGTIN96)");
+		prodSGTIN96Ref.setWizard(null);
+		prodSGTIN96Ref.setEntityClass(org.rifidi.designer.library.basemodels.boxproducerSGTIN96.BoxproducerEntitySGTIN96.class);
+		prodSGTIN96Ref.setHidden(false);
+		library.add(prodGID96Ref);
 	}
 
 	/*

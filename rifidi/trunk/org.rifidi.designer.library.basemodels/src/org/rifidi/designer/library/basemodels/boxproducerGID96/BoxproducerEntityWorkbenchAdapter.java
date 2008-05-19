@@ -8,11 +8,12 @@
  *  License:		Lesser GNU Public License (LGPL)
  *  http://www.opensource.org/licenses/lgpl-license.html
  */
-package org.rifidi.designer.library.basemodels.boxproducer;
+package org.rifidi.designer.library.basemodels.boxproducerGID96;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.model.IWorkbenchAdapter;
 import org.rifidi.designer.library.basemodels.Activator;
+import org.rifidi.designer.library.basemodels.boxproducer.BoxproducerEntity;
 
 /**
  * IWorkbenchAdapter for the boxproducer.
@@ -39,7 +40,7 @@ public class BoxproducerEntityWorkbenchAdapter implements IWorkbenchAdapter{
 	 * @see org.eclipse.ui.model.IWorkbenchAdapter#getLabel(java.lang.Object)
 	 */
 	public String getLabel(Object o) {
-		return ((BoxproducerEntity)o).getName();
+		return ((BoxproducerEntityGID96)o).getName();
 	}
 
 	/* (non-Javadoc)

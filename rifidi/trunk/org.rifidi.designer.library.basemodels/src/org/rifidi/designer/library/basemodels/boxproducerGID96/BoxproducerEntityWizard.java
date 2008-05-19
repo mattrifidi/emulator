@@ -8,7 +8,7 @@
  *  License:		Lesser GNU Public License (LGPL)
  *  http://www.opensource.org/licenses/lgpl-license.html
  */
-package org.rifidi.designer.library.basemodels.boxproducer;
+package org.rifidi.designer.library.basemodels.boxproducerGID96;
 
 import org.rifidi.designer.entities.Entity;
 import org.rifidi.designer.entities.wizards.RifidiEntityWizard;
@@ -28,7 +28,7 @@ public class BoxproducerEntityWizard extends RifidiEntityWizard implements Entit
 	/**
 	 * The new boxproducer.
 	 */
-	private BoxproducerEntity entity = null;
+	private BoxproducerEntityGID96 entity = null;
 
 	/*
 	 * (non-Javadoc)
@@ -55,7 +55,7 @@ public class BoxproducerEntityWizard extends RifidiEntityWizard implements Entit
 			return false;
 		}
 
-		entity = new BoxproducerEntity();
+		entity = new BoxproducerEntityGID96();
 		entity.setName(boxproducerEntityWizardPage.getName());
 		entity.setSpeed(boxproducerEntityWizardPage.getSpeed());
 		return true;

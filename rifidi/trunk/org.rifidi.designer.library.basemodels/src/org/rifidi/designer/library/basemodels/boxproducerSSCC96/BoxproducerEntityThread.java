@@ -8,7 +8,7 @@
  *  License:		Lesser GNU Public License (LGPL)
  *  http://www.opensource.org/licenses/lgpl-license.html
  */
-package org.rifidi.designer.library.basemodels.boxproducer;
+package org.rifidi.designer.library.basemodels.boxproducerSSCC96;
 
 import java.util.List;
 
@@ -42,7 +42,7 @@ public class BoxproducerEntityThread extends Thread {
 	/**
 	 * Backreference to the producer.
 	 */
-	private BoxproducerEntity entity;
+	private BoxproducerEntitySSCC96 entity;
 	/**
 	 * Production intervall length.
 	 */
@@ -63,7 +63,7 @@ public class BoxproducerEntityThread extends Thread {
 	 * @param productService
 	 *            reference to the product service
 	 */
-	public BoxproducerEntityThread(BoxproducerEntity entity,
+	public BoxproducerEntityThread(BoxproducerEntitySSCC96 entity,
 			ProductService productService, List<CardboxEntity> products) {
 		super();
 		this.entity = entity;
@@ -83,7 +83,7 @@ public class BoxproducerEntityThread extends Thread {
 
 		while (keepRunning) {
 			if(!paused){
-				RifidiTag name = entity.getTagService().getRifidiTag("DoD96");
+				RifidiTag name = entity.getTagService().getRifidiTag("SSCC96");
 				if (name != null) {
 					CardboxEntity ca = new CardboxEntity();
 					ca.setBaseRotation(slightRotMtx);

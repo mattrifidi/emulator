@@ -8,7 +8,7 @@
  *  License:		Lesser GNU Public License (LGPL)
  *  http://www.opensource.org/licenses/lgpl-license.html
  */
-package org.rifidi.designer.library.basemodels.boxproducer;
+package org.rifidi.designer.library.basemodels.boxproducerSSCC96;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -52,12 +52,12 @@ import com.jme.util.export.binary.BinaryImporter;
  * @author Dan West
  */
 @MonitoredProperties(names = { "IDGenerator", "name" })
-public class BoxproducerEntity extends VisualEntity implements SceneControl,
+public class BoxproducerEntitySSCC96 extends VisualEntity implements SceneControl,
 		Switch {
 	/**
 	 * Logger for this class.
 	 */
-	private static Log logger = LogFactory.getLog(BoxproducerEntity.class);
+	private static Log logger = LogFactory.getLog(BoxproducerEntitySSCC96.class);
 	/**
 	 * Seconds per box.
 	 */
@@ -92,9 +92,9 @@ public class BoxproducerEntity extends VisualEntity implements SceneControl,
 	/**
 	 * Constructor
 	 */
-	public BoxproducerEntity(){
+	public BoxproducerEntitySSCC96(){
 		this.speed=2;
-		setName("Boxproducer (DoD96)");
+		setName("Boxproducer (SSCC96)");
 	}
 	/**
 	 * @return the speed
