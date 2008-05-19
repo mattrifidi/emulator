@@ -109,7 +109,7 @@ public class BasemodelsLibrary implements EntityLibrary {
 		prodRef.setImageDescriptor(Activator.getDefault().getImageRegistry()
 				.getDescriptor(BoxproducerEntity.class.getName()));
 		prodRef.setLibrary(BasemodelsLibrary.class);
-		prodRef.setName("Producer (GID96)");
+		prodRef.setName("Producer (DoD96)");
 		prodRef.setWizard(null);
 		prodRef.setEntityClass(BoxproducerEntity.class);
 		prodRef.setHidden(false);
@@ -143,7 +143,7 @@ public class BasemodelsLibrary implements EntityLibrary {
 		prodSGTIN96Ref.setWizard(null);
 		prodSGTIN96Ref.setEntityClass(org.rifidi.designer.library.basemodels.boxproducerSGTIN96.BoxproducerEntitySGTIN96.class);
 		prodSGTIN96Ref.setHidden(false);
-		library.add(prodGID96Ref);
+		library.add(prodSGTIN96Ref);
 	}
 
 	/*
