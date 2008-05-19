@@ -10,7 +10,7 @@ import org.eclipse.ui.IViewActionDelegate;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
-import org.rifidi.emulator.tags.impl.RifidiTag;
+import org.rifidi.services.tags.impl.RifidiTag;
 import org.rifidi.ui.common.wizards.tag.MultipleNewTagsWizard;
 import org.rifidi.ui.ide.views.tagview.TagView;
 

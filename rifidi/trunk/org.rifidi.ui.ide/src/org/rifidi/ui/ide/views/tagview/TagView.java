@@ -20,10 +20,10 @@ import org.eclipse.swt.widgets.Layout;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.part.ViewPart;
-import org.rifidi.emulator.tags.impl.RifidiTag;
-import org.rifidi.emulator.tags.service.TagRegistryService;
 import org.rifidi.services.annotations.Inject;
 import org.rifidi.services.registry.ServiceRegistry;
+import org.rifidi.services.tags.impl.RifidiTag;
+import org.rifidi.services.tags.registry.ITagRegistry;
 import org.rifidi.ui.ide.views.tagview.model.TagViewContentProvider;
 import org.rifidi.ui.ide.views.tagview.model.TagViewLabelProvider;
 
@@ -146,10 +146,10 @@ public class TagView extends ViewPart {
 	}
 
 	@Inject
-	public void setTagRegistryService(TagRegistryService tagRegisrty)
+	public void setTagRegistryService(ITagRegistry tagRegisrty)
 	{
 		System.out.println("fuck you kyle");
-		TagRegistryService service = tagRegisrty;
+		ITagRegistry service = tagRegisrty;
 		if(tagRegisrty != null)
 		{
 			System.out.println("Service set");

@@ -11,7 +11,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.rifidi.dependencies,
  org.rifidi.emulator,
  org.rifidi.ui.common,
- org.rifidi.emulator.tags,
- org.rifidi.services
+ org.rifidi.services,
+ org.rifidi.services.tags
 Eclipse-LazyStart: true
 Service-Component: OSGI-INF/tagservice.xml

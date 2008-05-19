@@ -37,11 +37,8 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
-import org.rifidi.emulator.tags.Gen1Tag;
-import org.rifidi.emulator.tags.impl.RifidiTag;
-import org.rifidi.emulator.tags.service.TagRegistryService;
-import org.rifidi.services.annotations.Inject;
-import org.rifidi.services.registry.ServiceRegistry;
+import org.rifidi.services.tags.IGen1Tag;
+import org.rifidi.services.tags.impl.RifidiTag;
 import org.rifidi.ui.common.reader.UIAntenna;
 import org.rifidi.ui.common.reader.UIReader;
 import org.rifidi.ui.common.reader.callback.TagIDChangedCallbackInterface;
@@ -398,7 +395,7 @@ public class TagViewer extends TableViewer implements RegistryChangeListener,
 	 * @see org.rifidi.ui.common.reader.callback.TagIDChangedCallbackInterface#tagIDChanged(byte[],
 	 *      org.rifidi.emulator.tags.Gen1Tag)
 	 */
-	public void tagIDChanged(final byte[] oldID, final Gen1Tag tag) {
+	public void tagIDChanged(final byte[] oldID, final IGen1Tag tag) {
 		logger.debug("TagID has changed .. plz update");
 		display.syncExec(new Runnable() {
 

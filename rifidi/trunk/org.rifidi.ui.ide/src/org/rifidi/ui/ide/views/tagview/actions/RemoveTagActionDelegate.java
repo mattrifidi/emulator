@@ -14,7 +14,7 @@ import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.ui.IViewActionDelegate;
 import org.eclipse.ui.IViewPart;
-import org.rifidi.emulator.tags.impl.RifidiTag;
+import org.rifidi.services.tags.impl.RifidiTag;
 import org.rifidi.ui.ide.views.tagview.TagView;
 
 /**
