@@ -6,7 +6,7 @@
    <aboutInfo>
       <image path="/org.rifidi.designer.rcp/about.gif"/>
       <text>
-         Version 1.2
+         Version 1.3
       </text>
    </aboutInfo>
 
@@ -28,6 +28,7 @@
          <bmp/>
       </win>
    </launcher>
+
 
    <vm>
    </vm>
