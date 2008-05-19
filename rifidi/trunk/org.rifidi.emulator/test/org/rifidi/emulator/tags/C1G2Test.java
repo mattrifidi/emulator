@@ -23,12 +23,12 @@ import junit.framework.Assert;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.rifidi.emulator.tags.enums.LockStates;
-import org.rifidi.emulator.tags.enums.TagConstants;
-import org.rifidi.emulator.tags.exceptions.InvalidMemoryAccessException;
-import org.rifidi.emulator.tags.impl.C1G2Tag;
-import org.rifidi.emulator.tags.impl.C1G2Tag.states;
-import org.rifidi.emulator.tags.utils.TagDataHelper;
+import org.rifidi.services.tags.enums.LockStates;
+import org.rifidi.services.tags.enums.TagConstants;
+import org.rifidi.services.tags.exceptions.InvalidMemoryAccessException;
+import org.rifidi.services.tags.impl.C1G2Tag;
+import org.rifidi.services.tags.impl.C1G2Tag.states;
+import org.rifidi.services.tags.utils.TagDataHelper;
 
 /**
  * Class to test the Generation 2 Class 1 tag

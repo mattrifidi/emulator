@@ -3,7 +3,7 @@
  */
 package org.rifidi.emulator.rmi.client;
 
-import org.rifidi.emulator.tags.Gen1Tag;
+import org.rifidi.services.tags.IGen1Tag;
 
 /**
  * @author kyle
@@ -13,7 +13,7 @@ public interface ClientCallbackInterface {
 	
 	public void readerTurnedOff();
 	
-	public void tagIDChanged(byte[] oldID, Gen1Tag tag);
+	public void tagIDChanged(byte[] oldID, IGen1Tag tag);
 	
 	public void GPOPortSetHigh(int gpoPortNum);
 	

@@ -17,8 +17,8 @@ import static org.junit.Assert.fail;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.rifidi.emulator.tags.exceptions.InvalidMemoryAccessException;
-import org.rifidi.emulator.tags.impl.C1G1Tag;
+import org.rifidi.services.tags.exceptions.InvalidMemoryAccessException;
+import org.rifidi.services.tags.impl.C1G1Tag;
 
 /**
  * Class to test the Class 1 Generation 1 tag

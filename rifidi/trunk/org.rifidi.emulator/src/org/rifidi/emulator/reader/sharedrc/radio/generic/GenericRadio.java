@@ -15,10 +15,10 @@ import org.apache.commons.logging.LogFactory;
 import org.rifidi.common.utilities.ByteAndHexConvertingUtility;
 import org.rifidi.emulator.reader.sharedrc.radio.Antenna;
 import org.rifidi.emulator.reader.sharedrc.tagmemory.TagMemory;
-import org.rifidi.emulator.tags.Gen1Tag;
-import org.rifidi.emulator.tags.impl.C1G1Tag;
-import org.rifidi.emulator.tags.impl.C1G2Tag;
-import org.rifidi.emulator.tags.impl.RifidiTag;
+import org.rifidi.services.tags.IGen1Tag;
+import org.rifidi.services.tags.impl.C1G1Tag;
+import org.rifidi.services.tags.impl.C1G2Tag;
+import org.rifidi.services.tags.impl.RifidiTag;
 
 /**
  * This is the new GenericRadio for Reader. It's used to scan for tags and to

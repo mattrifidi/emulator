@@ -10,7 +10,7 @@
  */
 package org.rifidi.emulator.reader.sharedrc.tagmemory.tagevent;
 
-import org.rifidi.emulator.tags.impl.RifidiTag;
+import org.rifidi.services.tags.impl.RifidiTag;
 
 /**
  * Class that constitutes an event.
