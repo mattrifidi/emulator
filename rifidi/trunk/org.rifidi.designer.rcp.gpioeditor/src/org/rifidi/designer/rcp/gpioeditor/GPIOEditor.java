@@ -10,6 +10,7 @@
  */
 package org.rifidi.designer.rcp.gpioeditor;
 
+import java.beans.PropertyChangeListener;
 import java.util.EventObject;
 
 import org.eclipse.core.databinding.observable.list.WritableList;
@@ -26,9 +27,11 @@ import org.eclipse.gef.palette.PaletteSeparator;
 import org.eclipse.gef.palette.PanningSelectionToolEntry;
 import org.eclipse.gef.palette.ToolEntry;
 import org.eclipse.gef.requests.CreationFactory;
+import org.eclipse.gef.ui.palette.PaletteViewerPreferences;
 import org.eclipse.gef.ui.parts.GraphicalEditorWithFlyoutPalette;
 import org.eclipse.gef.ui.parts.GraphicalViewerKeyHandler;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.swt.graphics.FontData;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.ISaveablePart2;
 import org.eclipse.ui.IWorkbench;
@@ -131,6 +134,7 @@ public class GPIOEditor extends GraphicalEditorWithFlyoutPalette implements
 		GPIORootEditPart gpioRoot = new GPIORootEditPart(finderService);
 		writty.addChangeListener(gpioRoot);
 		getGraphicalViewer().setContents(gpioRoot);
+		getEditDomain().getPaletteViewer().getPaletteViewerPreferences().setAutoCollapseSetting(PaletteViewerPreferences.COLLAPSE_NEVER);
 	}
 
 	/*
@@ -239,5 +243,4 @@ public class GPIOEditor extends GraphicalEditorWithFlyoutPalette implements
 	public void setSceneDataService(SceneDataService sceneDataService) {
 		this.sceneDataService = sceneDataService;
 	}
-
 }
