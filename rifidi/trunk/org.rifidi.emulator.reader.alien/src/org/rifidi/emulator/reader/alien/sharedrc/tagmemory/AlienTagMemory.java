@@ -13,8 +13,8 @@ import org.rifidi.emulator.reader.alien.module.AlienReaderSharedResources;
 import org.rifidi.emulator.reader.sharedrc.properties.IntegerReaderProperty;
 import org.rifidi.emulator.reader.sharedrc.tagmemory.RifidiTagMap;
 import org.rifidi.emulator.reader.sharedrc.tagmemory.TagMemory;
-import org.rifidi.emulator.tags.enums.TagGen;
-import org.rifidi.emulator.tags.impl.RifidiTag;
+import org.rifidi.services.tags.enums.TagGen;
+import org.rifidi.services.tags.impl.RifidiTag;
 
 /**
  * @author kyle

@@ -26,7 +26,7 @@ import org.rifidi.emulator.reader.command.controller.abstract_.AbstractCommandCo
 import org.rifidi.emulator.reader.command.controller.abstract_.AbstractCommandControllerOperatingState;
 import org.rifidi.emulator.reader.module.abstract_.AbstractReaderSharedResources;
 import org.rifidi.emulator.reader.sharedrc.tagmemory.formatter.OutgoingMessageFormatter;
-import org.rifidi.emulator.tags.impl.RifidiTag;
+import org.rifidi.services.tags.impl.RifidiTag;
 
 /**
  * A generic class which models an autonomous command controller. An autonomous

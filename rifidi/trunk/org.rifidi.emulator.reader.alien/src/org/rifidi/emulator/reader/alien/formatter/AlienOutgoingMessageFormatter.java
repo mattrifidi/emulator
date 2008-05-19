@@ -12,7 +12,6 @@
 package org.rifidi.emulator.reader.alien.formatter;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
@@ -22,7 +21,7 @@ import org.rifidi.emulator.reader.alien.module.AlienReaderSharedResources;
 import org.rifidi.emulator.reader.alien.sharedrc.tagmemory.TagFormatter;
 import org.rifidi.emulator.reader.module.abstract_.AbstractReaderSharedResources;
 import org.rifidi.emulator.reader.sharedrc.tagmemory.formatter.OutgoingMessageFormatter;
-import org.rifidi.emulator.tags.impl.RifidiTag;
+import org.rifidi.services.tags.impl.RifidiTag;
 
 /**
  * The formatter for outgoing messages for an alien reader. Primarily used for

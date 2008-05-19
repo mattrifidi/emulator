@@ -13,7 +13,6 @@ package org.rifidi.emulator.reader.alien.commandhandler;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -26,8 +25,8 @@ import org.rifidi.emulator.reader.module.abstract_.AbstractReaderSharedResources
 import org.rifidi.emulator.reader.sharedrc.properties.StringReaderProperty;
 import org.rifidi.emulator.reader.sharedrc.radio.generic.GenericRadio;
 import org.rifidi.emulator.reader.sharedrc.tagmemory.formatter.TagListFormatReaderProperty;
-import org.rifidi.emulator.tags.enums.TagGen;
-import org.rifidi.emulator.tags.impl.RifidiTag;
+import org.rifidi.services.tags.enums.TagGen;
+import org.rifidi.services.tags.impl.RifidiTag;
 
 /**
  * This Class provides all the commands which are needed for proper operation of

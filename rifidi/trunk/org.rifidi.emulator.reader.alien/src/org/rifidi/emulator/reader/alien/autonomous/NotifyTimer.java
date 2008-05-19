@@ -18,7 +18,7 @@ import java.util.Observer;
 
 import org.rifidi.emulator.reader.alien.commandhandler.AlienTag;
 import org.rifidi.emulator.reader.alien.module.AlienReaderSharedResources;
-import org.rifidi.emulator.tags.impl.RifidiTag;
+import org.rifidi.services.tags.impl.RifidiTag;
 import org.rifidi.utilities.Timer;
 
 /**

@@ -12,7 +12,7 @@ import org.rifidi.emulator.reader.alien.commandhandler.AlienCommon;
 import org.rifidi.emulator.reader.sharedrc.properties.StringReaderProperty;
 import org.rifidi.emulator.reader.sharedrc.tagmemory.formatter.TagListFormatReaderProperty;
 import org.rifidi.emulator.reader.sharedrc.tagmemory.formatter.TagListFormatValues;
-import org.rifidi.emulator.tags.impl.RifidiTag;
+import org.rifidi.services.tags.impl.RifidiTag;
 
 /**
  * This class formats Tags as needed.
