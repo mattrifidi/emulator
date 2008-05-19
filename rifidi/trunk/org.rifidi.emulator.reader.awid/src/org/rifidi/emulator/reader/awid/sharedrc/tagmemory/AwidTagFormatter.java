@@ -13,7 +13,7 @@ package org.rifidi.emulator.reader.awid.sharedrc.tagmemory;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.rifidi.emulator.tags.impl.RifidiTag;
+import org.rifidi.services.tags.impl.RifidiTag;
 
 /**
  * 
