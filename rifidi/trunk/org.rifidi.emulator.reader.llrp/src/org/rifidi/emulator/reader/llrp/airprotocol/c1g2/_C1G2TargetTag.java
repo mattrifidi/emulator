@@ -4,9 +4,9 @@ import java.util.BitSet;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.rifidi.emulator.tags.enums.TagConstants;
-import org.rifidi.emulator.tags.impl.C1G2Tag;
-import org.rifidi.emulator.tags.impl.RifidiTag;
+import org.rifidi.services.tags.enums.TagConstants;
+import org.rifidi.services.tags.impl.C1G2Tag;
+import org.rifidi.services.tags.impl.RifidiTag;
 
 public class _C1G2TargetTag {
 
@@ -35,9 +35,9 @@ public class _C1G2TargetTag {
 	}
 
 	/**
-	 * If bit i in the mask is zero, then bit i of the target tag is a don’t
+	 * If bit i in the mask is zero, then bit i of the target tag is a don't
 	 * care (X); if bit i in the mask is one, then bit i of the target tag is
-	 * bit i of the tag pattern. For example, “all tags” is specified using a
+	 * bit i of the tag pattern. For example, all tags is specified using a
 	 * mask length of zero.
 	 * 
 	 * Each tag pattern has a match or a non-match flag

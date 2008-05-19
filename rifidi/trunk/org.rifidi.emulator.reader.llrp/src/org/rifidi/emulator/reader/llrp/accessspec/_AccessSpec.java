@@ -20,7 +20,7 @@ import org.apache.commons.logging.LogFactory;
 import org.rifidi.emulator.reader.llrp.airprotocol.AirProtocolEnums;
 import org.rifidi.emulator.reader.llrp.module.LLRPReaderSharedResources;
 import org.rifidi.emulator.reader.llrp.report.LLRPReportControllerFactory;
-import org.rifidi.emulator.tags.impl.RifidiTag;
+import org.rifidi.services.tags.impl.RifidiTag;
 
 import edu.uark.csce.llrp.AccessSpec;
 import edu.uark.csce.llrp.AccessSpecID;

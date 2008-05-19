@@ -22,9 +22,9 @@ import org.rifidi.common.utilities.ByteAndHexConvertingUtility;
 import org.rifidi.emulator.reader.llrp.accessspec._OpSpec;
 import org.rifidi.emulator.reader.llrp.accessspec._OpSpecResult;
 import org.rifidi.emulator.reader.sharedrc.radio.C1G2Operations;
-import org.rifidi.emulator.tags.exceptions.InvalidMemoryAccessException;
-import org.rifidi.emulator.tags.impl.C1G2Tag;
-import org.rifidi.emulator.tags.impl.RifidiTag;
+import org.rifidi.services.tags.exceptions.InvalidMemoryAccessException;
+import org.rifidi.services.tags.impl.C1G2Tag;
+import org.rifidi.services.tags.impl.RifidiTag;
 
 /**
  * 

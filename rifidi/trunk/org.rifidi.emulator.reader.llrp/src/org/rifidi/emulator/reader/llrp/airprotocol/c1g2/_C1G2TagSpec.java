@@ -13,7 +13,7 @@
 package org.rifidi.emulator.reader.llrp.airprotocol.c1g2;
 
 import org.rifidi.emulator.reader.llrp.accessspec._TagSpec;
-import org.rifidi.emulator.tags.impl.RifidiTag;
+import org.rifidi.services.tags.impl.RifidiTag;
 
 /**
  * This parameter can carry up to two tag patterns. If more than one pattern is

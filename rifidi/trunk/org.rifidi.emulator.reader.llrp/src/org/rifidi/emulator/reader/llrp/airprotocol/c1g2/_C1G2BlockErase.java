@@ -14,7 +14,7 @@ package org.rifidi.emulator.reader.llrp.airprotocol.c1g2;
 
 import org.rifidi.emulator.reader.llrp.accessspec._OpSpec;
 import org.rifidi.emulator.reader.llrp.accessspec._OpSpecResult;
-import org.rifidi.emulator.tags.impl.RifidiTag;
+import org.rifidi.services.tags.impl.RifidiTag;
 
 /**
  * This class performs the BlockErase access operation on C1G2 Tags

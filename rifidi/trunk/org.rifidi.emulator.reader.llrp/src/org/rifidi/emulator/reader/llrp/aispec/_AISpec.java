@@ -36,7 +36,7 @@ import org.rifidi.emulator.reader.llrp.trigger.TagObservationTrigger;
 import org.rifidi.emulator.reader.llrp.trigger.TimerTrigger;
 import org.rifidi.emulator.reader.llrp.trigger.Trigger;
 import org.rifidi.emulator.reader.llrp.trigger.TriggerObservable;
-import org.rifidi.emulator.tags.impl.RifidiTag;
+import org.rifidi.services.tags.impl.RifidiTag;
 
 import edu.uark.csce.llrp.AISpecEvent;
 import edu.uark.csce.llrp.C1G2SingulationDetails;
