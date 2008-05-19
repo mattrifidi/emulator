@@ -30,12 +30,11 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Text;
-import org.rifidi.emulator.tags.enums.TagGen;
-import org.rifidi.emulator.tags.factory.TagCreationPattern;
-import org.rifidi.emulator.tags.factory.TagFactory;
-import org.rifidi.emulator.tags.id.CustomEPC96;
-import org.rifidi.emulator.tags.id.TagType;
-import org.rifidi.emulator.tags.impl.RifidiTag;
+import org.rifidi.services.tags.enums.TagGen;
+import org.rifidi.services.tags.factory.TagCreationPattern;
+import org.rifidi.services.tags.factory.TagFactory;
+import org.rifidi.services.tags.id.TagType;
+import org.rifidi.services.tags.impl.RifidiTag;
 import org.rifidi.ui.common.validators.HexValidator;
 
 /**

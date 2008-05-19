@@ -5,8 +5,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.rifidi.emulator.tags.factory.TagFactory;
-import org.rifidi.emulator.tags.impl.RifidiTag;
+import org.rifidi.services.tags.factory.TagFactory;
+import org.rifidi.services.tags.impl.RifidiTag;
 
 /**
  * Container for all tags

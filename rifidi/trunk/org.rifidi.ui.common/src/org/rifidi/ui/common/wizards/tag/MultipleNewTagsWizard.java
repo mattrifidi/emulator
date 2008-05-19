@@ -14,7 +14,7 @@ package org.rifidi.ui.common.wizards.tag;
 import java.util.List;
 
 import org.eclipse.jface.wizard.Wizard;
-import org.rifidi.emulator.tags.impl.RifidiTag;
+import org.rifidi.services.tags.impl.RifidiTag;
 import org.rifidi.ui.common.wizards.tag.pages.MultipleNewTagsWizardPage;
 
 /**

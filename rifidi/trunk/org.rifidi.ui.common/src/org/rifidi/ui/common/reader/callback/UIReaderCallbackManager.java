@@ -11,7 +11,7 @@ import java.util.LinkedList;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.rifidi.emulator.rmi.client.ClientCallbackInterface;
-import org.rifidi.emulator.tags.Gen1Tag;
+import org.rifidi.services.tags.IGen1Tag;
 
 /**
  * This is the dispatcher for the ReaderCallback Methods. The reader can send
@@ -93,7 +93,7 @@ public class UIReaderCallbackManager implements ClientCallbackInterface {
 	 * @see org.rifidi.emulator.rmi.client.ClientCallbackInterface#tagIDChanged(byte[],
 	 *      byte[])
 	 */
-	public void tagIDChanged(byte[] oldID, Gen1Tag tag) {
+	public void tagIDChanged(byte[] oldID, IGen1Tag tag) {
 		logger.debug("Tag ID changed");
 		for (TagIDChangedCallbackInterface listener : tagIDChangedListeners) {
 			listener.tagIDChanged(oldID, tag);
