@@ -110,6 +110,9 @@ public class CameraServiceImpl implements CameraService {
 	@Override
 	public void zoomIn() {
 		zoomlevel--;
+		if(zoomlevel<=-44){
+			zoomlevel=-44;
+		}
 		GameTaskQueueManager.getManager().update(new Callable<Object>() {
 
 			/*
@@ -124,6 +127,7 @@ public class CameraServiceImpl implements CameraService {
 						(baseFrustumvalue + zoomlevel) * 4 / 3,
 						-(baseFrustumvalue + zoomlevel),
 						(baseFrustumvalue + zoomlevel));
+				camera.update();
 				return null;
 			}
 
@@ -138,6 +142,9 @@ public class CameraServiceImpl implements CameraService {
 	@Override
 	public void zoomOut() {
 		zoomlevel++;
+		if(zoomlevel>=-1){
+			zoomlevel=-1;
+		}
 		GameTaskQueueManager.getManager().update(new Callable<Object>() {
 
 			/*

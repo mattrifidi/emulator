@@ -112,7 +112,7 @@ public class NewSceneDataWizardPage extends WizardPage {
 		widthCombo = new Combo(container, SWT.NULL);
 		widthCombo.setLayoutData(gd);
 		widthCombo.add("64x64");
-		widthCombo.add("256x256");
+		widthCombo.add("128x128");
 		widthCombo.select(0);
 		setControl(container);
 	}
@@ -123,8 +123,7 @@ public class NewSceneDataWizardPage extends WizardPage {
 	 */
 	public SceneData getSceneData() {
 		sceneData.setHeight(5);
-		sceneData.setWidth((int) Math.pow(4,
-				(widthCombo.getSelectionIndex() + 3)));
+		sceneData.setWidth((int)(widthCombo.getSelectionIndex()+1)*64);
 		sceneData.setName(layoutName.getText());
 		return sceneData;
 	}

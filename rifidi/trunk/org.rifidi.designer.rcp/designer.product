@@ -119,6 +119,11 @@
       <plugin id="org.rifidi.designer.rcp.help"/>
       <plugin id="org.rifidi.emulator"/>
       <plugin id="org.rifidi.emulator.reader.alien"/>
+      <plugin id="org.rifidi.emulator.reader.awid"/>
+      <plugin id="org.rifidi.emulator.reader.epc"/>
+      <plugin id="org.rifidi.emulator.reader.llrp"/>
+      <plugin id="org.rifidi.emulator.reader.symbol"/>
+      <plugin id="org.rifidi.emulator.reader.thingmagic"/>
       <plugin id="org.rifidi.initializer"/>
       <plugin id="org.rifidi.jmeswt"/>
       <plugin id="org.rifidi.log4j.designer" fragment="true"/>
