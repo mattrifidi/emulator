@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Help Plug-in
+Bundle-SymbolicName: org.rifidi.designer.rcp.help; singleton:=true
+Bundle-Version: 1.0.0
+Bundle-Activator: org.rifidi.designer.rcp.help.Activator
+Bundle-Vendor: Pramari, LLC
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime
+Eclipse-LazyStart: true
