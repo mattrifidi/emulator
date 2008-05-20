@@ -1079,12 +1079,10 @@
    <extension
          point="org.rifidi.designer.entities.internal">
       <internalentity
-            class="org.rifidi.designer.entities.internal.CableEntity"
-            visible="false">
+            class="org.rifidi.designer.entities.internal.CableEntity">
       </internalentity>
       <internalentity
-            class="org.rifidi.designer.entities.internal.WatchAreaEntity"
-            visible="true">
+            class="org.rifidi.designer.entities.internal.WatchAreaEntity">
       </internalentity>
    </extension>
    <extension

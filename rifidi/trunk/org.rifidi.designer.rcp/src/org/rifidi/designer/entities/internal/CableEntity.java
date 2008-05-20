@@ -16,6 +16,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.rifidi.designer.entities.Entity;
 import org.rifidi.designer.entities.interfaces.GPI;
 import org.rifidi.designer.entities.interfaces.GPO;
+import org.rifidi.designer.entities.interfaces.InternalEntity;
 
 /**
  * A virtual cabler between a GPO and a GPI.
@@ -24,7 +25,7 @@ import org.rifidi.designer.entities.interfaces.GPO;
  * 
  */
 @XmlRootElement
-public class CableEntity extends Entity {
+public class CableEntity extends Entity implements InternalEntity{
 
 	/**
 	 * GP output.
@@ -166,6 +167,14 @@ public class CableEntity extends Entity {
 	 */
 	public void setTargetPort(int targetPort) {
 		this.targetPort = targetPort;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.rifidi.designer.entities.interfaces.InternalEntity#isVisible()
+	 */
+	@Override
+	public boolean isVisible() {
+		return false;
 	}
 
 }

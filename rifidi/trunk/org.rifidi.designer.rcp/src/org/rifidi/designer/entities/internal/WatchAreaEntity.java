@@ -19,6 +19,7 @@ import org.rifidi.designer.entities.Entity;
 import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.databinding.annotations.MonitoredProperties;
 import org.rifidi.designer.entities.interfaces.Field;
+import org.rifidi.designer.entities.interfaces.InternalEntity;
 import org.rifidi.designer.entities.interfaces.NeedsPhysics;
 import org.rifidi.designer.entities.interfaces.Switch;
 import org.rifidi.designer.services.core.collision.FieldService;
@@ -46,7 +47,7 @@ import com.jmex.physics.material.Material;
  */
 @MonitoredProperties(names = { "name" })
 public class WatchAreaEntity extends VisualEntity implements NeedsPhysics,
-		Field, Switch {
+		Field, Switch, InternalEntity {
 	/**
 	 * logger for this class.
 	 */
@@ -280,6 +281,14 @@ public class WatchAreaEntity extends VisualEntity implements NeedsPhysics,
 	@Inject
 	public void setFieldService(FieldService fieldService) {
 		this.fieldService = fieldService;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.rifidi.designer.entities.interfaces.InternalEntity#isVisible()
+	 */
+	@Override
+	public boolean isVisible() {
+		return true;
 	}
 	
 }
