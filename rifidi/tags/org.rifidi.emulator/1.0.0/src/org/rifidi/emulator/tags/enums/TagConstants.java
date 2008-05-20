@@ -1,0 +1,10 @@
+package org.rifidi.emulator.tags.enums;
+
+public enum TagConstants {
+	MemoryReserved,
+	MemoryEPC,
+	MemoryTID,
+	MemoryUser,
+	PasswordKill,
+	PasswordAccess
+}
