@@ -63,7 +63,6 @@
             name="Designer Views">
       </category>
    </extension>
-   <extension-point id="org.rifidi.initializer" name="Initializer for custom components" schema="schema/org.rifidi.initializer.exsd"/>
    <extension
          id="product"
          point="org.eclipse.core.runtime.products">
@@ -1078,15 +1077,6 @@
       </context>
    </extension>
    <extension
-         point="org.rifidi.initializer">
-      <Initializer
-            class="org.rifidi.designer.rcp.cable.Initializer">
-         <Initializee
-               class="org.rifidi.designer.entities.internal.CableEntity">
-         </Initializee>
-      </Initializer>
-   </extension>
-   <extension
          point="org.rifidi.designer.entities.internal">
       <internalentity
             class="org.rifidi.designer.entities.internal.CableEntity"
@@ -1096,6 +1086,15 @@
             class="org.rifidi.designer.entities.internal.WatchAreaEntity"
             visible="true">
       </internalentity>
+   </extension>
+   <extension
+         point="org.rifidi.services.initializer">
+      <Initializer
+            class="org.rifidi.designer.rcp.cable.Initializer">
+         <Initializee
+               class="org.rifidi.designer.entities.internal.CableEntity">
+         </Initializee>
+      </Initializer>
    </extension>
 </plugin>
 

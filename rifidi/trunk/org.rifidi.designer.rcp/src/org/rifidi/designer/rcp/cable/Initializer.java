@@ -12,9 +12,9 @@ package org.rifidi.designer.rcp.cable;
 
 import org.rifidi.designer.entities.internal.CableEntity;
 import org.rifidi.designer.services.core.cabling.CablingService;
-import org.rifidi.initializer.IInitializer;
-import org.rifidi.initializer.exceptions.InitializationException;
 import org.rifidi.services.annotations.Inject;
+import org.rifidi.services.initializer.IInitializer;
+import org.rifidi.services.initializer.exceptions.InitializationException;
 import org.rifidi.services.registry.ServiceRegistry;
 
 /**
@@ -35,7 +35,7 @@ public class Initializer implements IInitializer {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.rifidi.initializer.IInitializer#init(java.lang.Object)
+	 * @see org.rifidi.services.initializer.IInitializer#init(java.lang.Object)
 	 */
 	@Override
 	public void init(Object initializee) throws InitializationException {

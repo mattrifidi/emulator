@@ -6,10 +6,7 @@ import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.MessageBox;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 import org.rifidi.designer.entities.RMIManager;
@@ -33,9 +30,8 @@ import org.rifidi.designer.services.core.selection.SelectionServiceImpl;
 import org.rifidi.designer.services.core.world.CommandStateService;
 import org.rifidi.designer.services.core.world.WorldService;
 import org.rifidi.designer.services.core.world.WorldServiceImpl;
-import org.rifidi.emulator.rmi.server.RifidiManager;
-import org.rifidi.initializer.IInitService;
-import org.rifidi.initializer.InitService;
+import org.rifidi.services.initializer.IInitService;
+import org.rifidi.services.initializer.InitService;
 import org.rifidi.services.tags.TagService;
 import org.rifidi.services.tags.impl.TagServiceImpl;
 
@@ -113,10 +109,10 @@ public class Activator extends AbstractUIPlugin {
 		context.registerService(SelectionService.class.getName(),
 				new SelectionServiceImpl(), null);
 		context.registerService(new String[] { WorldService.class.getName(),
-				CommandStateService.class.getName() },
-				new WorldServiceImpl(), null);
-		context.registerService(IInitService.class.getName(), new InitService(), null);
-		context.registerService(TagService.class.getName(), new TagServiceImpl(), null);
+				CommandStateService.class.getName() }, new WorldServiceImpl(),
+				null);
+		context.registerService(TagService.class.getName(),
+				new TagServiceImpl(), null);
 	}
 
 	/*
