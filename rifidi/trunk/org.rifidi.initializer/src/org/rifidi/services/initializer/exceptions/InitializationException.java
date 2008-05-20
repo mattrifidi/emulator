@@ -8,7 +8,7 @@
  *  License:		Lesser GNU Public License (LGPL)
  *  http://www.opensource.org/licenses/lgpl-license.html
  */
-package org.rifidi.initializer.exceptions;
+package org.rifidi.services.initializer.exceptions;
 
 /**
  * Exception thrown if something went wrong while initializing an object.

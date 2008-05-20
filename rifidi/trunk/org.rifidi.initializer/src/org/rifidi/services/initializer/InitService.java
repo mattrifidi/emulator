@@ -8,7 +8,7 @@
  *  License:		Lesser GNU Public License (LGPL)
  *  http://www.opensource.org/licenses/lgpl-license.html
  */
-package org.rifidi.initializer;
+package org.rifidi.services.initializer;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,7 +24,7 @@ import org.eclipse.core.runtime.IRegistryChangeEvent;
 import org.eclipse.core.runtime.IRegistryChangeListener;
 import org.eclipse.core.runtime.InvalidRegistryObjectException;
 import org.eclipse.core.runtime.Platform;
-import org.rifidi.initializer.exceptions.InitializationException;
+import org.rifidi.services.initializer.exceptions.InitializationException;
 
 /**
  * 
@@ -55,9 +55,9 @@ public class InitService implements IInitService, IRegistryChangeListener {
 		logger.debug("InitService created");
 		IExtensionRegistry registry = Platform.getExtensionRegistry();
 		registry.addRegistryChangeListener(this);
-		point = registry.getExtensionPoint("org.rifidi.initializer");
+		point = registry.getExtensionPoint("org.rifidi.services.initializer");
 		if (point == null) {
-			logger.fatal("Extension point org.rifidi.initializer missing!!");
+			logger.fatal("Extension point org.rifidi.services.initializer missing!!");
 		}
 		for (IExtension extension : point.getExtensions()) {
 			getInitializers(extension);
@@ -96,7 +96,7 @@ public class InitService implements IInitService, IRegistryChangeListener {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.initializer.IInitService#init(java.lang.Object)
+	 * @see org.rifidi.services.initializer.IInitService#init(java.lang.Object)
 	 */
 	@Override
 	public void init(Object initializee) throws InitializationException {

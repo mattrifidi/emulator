@@ -1,4 +1,4 @@
-package org.rifidi.initializer;
+package org.rifidi.services.initializer;
 
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
@@ -9,7 +9,7 @@ import org.osgi.framework.BundleContext;
 public class Activator extends Plugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.rifidi.initializer";
+	public static final String PLUGIN_ID = "org.rifidi.services.initializer";
 
 	// The shared instance
 	private static Activator plugin;
@@ -26,6 +26,8 @@ public class Activator extends Plugin {
 	 */
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
+		context.registerService(IInitService.class.getName(),
+				new InitService(), null);
 		plugin = this;
 	}
 
