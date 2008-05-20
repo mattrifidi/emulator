@@ -1,0 +1,31 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Entities Plug-in
+Bundle-SymbolicName: org.rifidi.designer.entities;singleton:=true
+Bundle-Version: 1.0.0
+Bundle-Vendor: Pramari, LLC
+Require-Bundle: org.rifidi.services,
+ org.rifidi.jmeswt,
+ org.eclipse.core.databinding,
+ org.eclipse.core.runtime,
+ org.eclipse.ui,
+ org.rifidi.dependencies,
+ org.rifidi.emulator,
+ org.eclipse.ui.views,
+ org.rifidi.services.initializer,
+ org.eclipse.core.resources
+Bundle-Activator: org.rifidi.designer.entities.Activator
+Eclipse-LazyStart: true
+Eclipse-BuddyPolicy: dependent
+Export-Package: org.rifidi.designer.entities,
+ org.rifidi.designer.entities.adapters,
+ org.rifidi.designer.entities.annotations,
+ org.rifidi.designer.entities.databinding,
+ org.rifidi.designer.entities.databinding.annotations,
+ org.rifidi.designer.entities.grouping,
+ org.rifidi.designer.entities.interfaces,
+ org.rifidi.designer.entities.placement,
+ org.rifidi.designer.entities.properties,
+ org.rifidi.designer.entities.wizards,
+ org.rifidi.designer.library,
+ org.rifidi.designer.services.core.entities
