@@ -8,7 +8,7 @@ Require-Bundle: org.rifidi.services,
  org.eclipse.core.runtime,
  org.rifidi.common.utilities,
  org.rifidi.dependencies
-Bundle-Activator: org.rifidi.services.tags.Activator
+Bundle-Activator: org.rifidi.services.tags.activator.Activator
 Eclipse-LazyStart: true
 Eclipse-BuddyPolicy: dependent
 Service-Component: OSGI-INF/tagsservice.xml
@@ -19,4 +19,5 @@ Export-Package: org.rifidi.services.tags,
  org.rifidi.services.tags.id,
  org.rifidi.services.tags.impl,
  org.rifidi.services.tags.registry,
+ org.rifidi.services.tags.registry.impl,
  org.rifidi.services.tags.utils

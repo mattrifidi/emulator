@@ -59,7 +59,7 @@ public class TagRegistryImpl implements ITagRegistry {
 	 */
 	@Override
 	public List<RifidiTag> getTags() {
-		return new ArrayList(this.tags.values());
+		return new ArrayList<RifidiTag>(this.tags.values());
 	}
 
 	/*
@@ -70,6 +70,7 @@ public class TagRegistryImpl implements ITagRegistry {
 	@Override
 	public void initialize() {
 		uniqueIDSeed = 1;
+		tags = new HashMap<Long, RifidiTag>();
 
 	}
 
