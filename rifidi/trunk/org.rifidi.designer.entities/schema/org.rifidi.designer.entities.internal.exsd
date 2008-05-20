@@ -44,13 +44,6 @@
 
    <element name="internalentity">
       <complexType>
-         <attribute name="visible" type="boolean" use="required">
-            <annotation>
-               <documentation>
-                  
-               </documentation>
-            </annotation>
-         </attribute>
          <attribute name="class" type="string" use="required">
             <annotation>
                <documentation>

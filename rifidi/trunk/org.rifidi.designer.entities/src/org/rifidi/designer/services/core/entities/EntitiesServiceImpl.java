@@ -41,6 +41,7 @@ import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.SceneData.Direction;
 import org.rifidi.designer.entities.grouping.EntityGroup;
 import org.rifidi.designer.entities.interfaces.ChildEntity;
+import org.rifidi.designer.entities.interfaces.InternalEntity;
 import org.rifidi.designer.entities.interfaces.NeedsPhysics;
 import org.rifidi.designer.entities.interfaces.ParentEntity;
 import org.rifidi.designer.entities.interfaces.RifidiEntity;
@@ -131,8 +132,10 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 		}
 		sceneData.getEntityNames().add(ent.getName());
 		sceneData.getSyncedEntities().add(ent);
-		if(EntityLibraryRegistry.getInstance().isVisible(ent.getClass())){
-			sceneData.getDefaultGroup().addEntity(ent);	
+		if (!(ent instanceof InternalEntity)
+				|| (ent instanceof InternalEntity && ((InternalEntity) ent)
+						.isVisible())) {
+			sceneData.getDefaultGroup().addEntity(ent);
 		}
 		initEntity(ent, sceneData, true);
 
@@ -591,9 +594,9 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 			((NeedsPhysics) entity).setCollisionHandler(sceneData
 					.getCollisionHandler());
 		}
-		
+
 		ServiceRegistry.getInstance().service(entity);
-		//do custom initialization
+		// do custom initialization
 		try {
 			iinitService.init(entity);
 		} catch (InitializationException e) {

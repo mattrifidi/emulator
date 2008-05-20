@@ -11,6 +11,7 @@
 package org.rifidi.designer.library;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,8 +20,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
+import org.eclipse.core.runtime.IExtensionDelta;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
+import org.eclipse.core.runtime.IRegistryChangeEvent;
+import org.eclipse.core.runtime.IRegistryChangeListener;
 import org.eclipse.core.runtime.InvalidRegistryObjectException;
 import org.eclipse.core.runtime.Platform;
 
@@ -32,28 +36,62 @@ import org.eclipse.core.runtime.Platform;
  * TODO: right now we don't listen for changes like the addition of a new
  * library
  */
-public class EntityLibraryRegistry {
-
+public class EntityLibraryRegistry implements IRegistryChangeListener {
+	/**
+	 * Logger for this class.
+	 */
 	private static Log logger = LogFactory.getLog(EntityLibraryRegistry.class);
 	/**
 	 * Singleton pattern.
 	 */
 	private static EntityLibraryRegistry instance;
 	/**
-	 * All currently known libraries TODO: turn this class into a listener for
-	 * BundleEvents.
+	 * All currently known libraries.
 	 */
-	private ArrayList<EntityLibrary> libraries;
+	private List<EntityLibrary> libraries;
 	/**
-	 * All known entity references.
+	 * All known entity library references.
 	 */
 	private Map<String, EntityLibraryReference> references;
+	/**
+	 * List of available entites.
+	 */
+	private List<Class> entityClasses;
+	/**
+	 * The extension point.
+	 */
+	private IExtensionPoint point;
+	/**
+	 * Extension point for internal entities.
+	 */
+	private IExtensionPoint internalPoint;
 
 	/**
 	 * private constructor Singleton pattern.
 	 * 
 	 */
 	private EntityLibraryRegistry() {
+		libraries = Collections
+				.synchronizedList(new ArrayList<EntityLibrary>());
+		references = Collections
+				.synchronizedMap(new HashMap<String, EntityLibraryReference>());
+		entityClasses = Collections.synchronizedList(new ArrayList<Class>());
+		IExtensionRegistry registry = Platform.getExtensionRegistry();
+		registry.addRegistryChangeListener(this, "org.rifidi.designer.library");
+		point = registry.getExtensionPoint("org.rifidi.designer.library");
+		if (point == null) {
+			logger
+					.fatal("Extension point org.rifidi.designer.library missing!!");
+			return;
+		}
+		for (IExtension extension : point.getExtensions()) {
+			fillLibraries(extension, true);
+		}
+		internalPoint = registry
+				.getExtensionPoint("org.rifidi.designer.entities.internal");
+		for (IExtension extension : internalPoint.getExtensions()) {
+			fillInternalClasses(extension, true);
+		}
 	}
 
 	/**
@@ -64,9 +102,84 @@ public class EntityLibraryRegistry {
 	public static EntityLibraryRegistry getInstance() {
 		if (instance == null) {
 			instance = new EntityLibraryRegistry();
-			instance.getLibraries();
 		}
 		return instance;
+	}
+
+	private void fillInternalClasses(IExtension extension, boolean add) {
+		for (IConfigurationElement configElement : extension
+				.getConfigurationElements()) {
+			try {
+				Class internalentity = Class.forName(configElement
+						.getAttribute("class"));
+				if(add){
+					entityClasses.add(internalentity);
+				}
+				else{
+					entityClasses.remove(internalentity);
+				}
+			} catch (InvalidRegistryObjectException e) {
+				logger.error("Exception while loading "
+						+ configElement.getAttribute("class") + "\n" + e);
+			} catch (ClassNotFoundException e) {
+				logger.error("Exception while loading "
+						+ configElement.getAttribute("class") + "\n" + e);
+			}
+		}
+	}
+
+	private void fillLibraries(IExtension extension, boolean add) {
+		synchronized (libraries) {
+			for (IConfigurationElement configElement : extension
+					.getConfigurationElements()) {
+				try {
+					Class library = Class.forName(configElement
+							.getAttribute("class"));
+					if (add) {
+						EntityLibrary lib = (EntityLibrary) library
+								.newInstance();
+						libraries.add(lib);
+						for (EntityLibraryReference ref : lib
+								.getLibraryReferences()) {
+							references.put(ref.getId(), ref);
+							entityClasses.add(ref.getEntityClass());
+						}
+					} else {
+						EntityLibrary delete = null;
+						for (EntityLibrary searchLib : libraries) {
+
+							if (searchLib.getClass().equals(library)) {
+								delete = searchLib;
+								for (EntityLibraryReference ref : searchLib
+										.getLibraryReferences()) {
+									references.remove(ref.getId());
+									entityClasses.remove(ref.getEntityClass());
+								}
+							}
+						}
+						if (delete != null) {
+							libraries.remove(delete);
+						} else {
+							logger
+									.warn("tried to remove a nonexistend library: "
+											+ library);
+						}
+					}
+				} catch (InvalidRegistryObjectException e) {
+					logger.error("Exception while loading "
+							+ configElement.getAttribute("class") + "\n" + e);
+				} catch (ClassNotFoundException e) {
+					logger.error("Exception while loading "
+							+ configElement.getAttribute("class") + "\n" + e);
+				} catch (InstantiationException e) {
+					logger.error("Exception while loading "
+							+ configElement.getAttribute("class") + "\n" + e);
+				} catch (IllegalAccessException e) {
+					logger.error("Exception while loading "
+							+ configElement.getAttribute("class") + "\n" + e);
+				}
+			}
+		}
 	}
 
 	/**
@@ -76,53 +189,9 @@ public class EntityLibraryRegistry {
 	 */
 	@SuppressWarnings("unchecked")
 	public List<EntityLibrary> getLibraries() {
-		if (libraries == null) {
-			libraries = new ArrayList<EntityLibrary>();
-			references = new HashMap<String, EntityLibraryReference>();
-			IExtensionRegistry registry = Platform.getExtensionRegistry();
-			IExtensionPoint point = registry
-					.getExtensionPoint("org.rifidi.designer.library");
-			if (point == null) {
-				logger
-						.fatal("Extension point org.rifidi.designer.library missing!!");
-			}
-			for (IExtension extension : point.getExtensions()) {
-				for (IConfigurationElement configElement : extension
-						.getConfigurationElements()) {
-					try {
-						Class library = Class.forName(configElement
-								.getAttribute("class"));
-						EntityLibrary lib = (EntityLibrary) library
-								.newInstance();
-						libraries.add(lib);
-						for (EntityLibraryReference ref : lib
-								.getLibraryReferences()) {
-							references.put(ref.getId(), ref);
-						}
-					} catch (InvalidRegistryObjectException e) {
-						logger.error("Exception while loading "
-								+ configElement.getAttribute("class") + "\n"
-								+ e);
-					} catch (ClassNotFoundException e) {
-						logger.error("Exception while loading "
-								+ configElement.getAttribute("class") + "\n"
-								+ e);
-					} catch (InstantiationException e) {
-						logger.error("Exception while loading "
-								+ configElement.getAttribute("class") + "\n"
-								+ e);
-					} catch (IllegalAccessException e) {
-						logger.error("Exception while loading "
-								+ configElement.getAttribute("class") + "\n"
-								+ e);
-					}
-				}
-			}
-		}
-
 		return libraries;
 	}
-	
+
 	/**
 	 * Get a list of all available entites classes.
 	 * 
@@ -130,58 +199,9 @@ public class EntityLibraryRegistry {
 	 */
 	@SuppressWarnings("unchecked")
 	public List<Class> getEntityClasses() {
-		ArrayList<Class> classes = new ArrayList<Class>();
-		for (EntityLibraryReference ref : references.values()) {
-			classes.add(ref.getEntityClass());
-		}
-		IExtensionRegistry registry = Platform.getExtensionRegistry();
-		IExtensionPoint point = registry
-				.getExtensionPoint("org.rifidi.designer.entities.internal");
-		for (IExtension extension : point.getExtensions()) {
-			for (IConfigurationElement configElement : extension
-					.getConfigurationElements()) {
-				try {
-					Class internalentity = Class.forName(configElement
-							.getAttribute("class"));
-					classes.add(internalentity);
-				} catch (InvalidRegistryObjectException e) {
-					logger.error("Exception while loading "
-							+ configElement.getAttribute("class") + "\n"
-							+ e);
-				} catch (ClassNotFoundException e) {
-					logger.error("Exception while loading "
-							+ configElement.getAttribute("class") + "\n"
-							+ e);
-				}
-			}
-		}
-		return classes;
+		return entityClasses;
 	}
 
-	public boolean isVisible(Class clazz){
-		IExtensionRegistry registry = Platform.getExtensionRegistry();
-		IExtensionPoint point = registry
-				.getExtensionPoint("org.rifidi.designer.entities.internal");
-		for (IExtension extension : point.getExtensions()) {
-			for (IConfigurationElement configElement : extension
-					.getConfigurationElements()) {
-				try {
-					if(Class.forName(configElement.getAttribute("class")).equals(clazz)){
-						return new Boolean(configElement.getAttribute("visible"));
-					}
-				} catch (InvalidRegistryObjectException e) {
-					logger.error("Exception while loading "
-							+ configElement.getAttribute("class") + "\n"
-							+ e);
-				} catch (ClassNotFoundException e) {
-					logger.error("Exception while loading "
-							+ configElement.getAttribute("class") + "\n"
-							+ e);
-				}
-			}
-		}
-		return true;
-	}
 	/**
 	 * Get the library reference for the specified unique name.
 	 * 
@@ -191,4 +211,25 @@ public class EntityLibraryRegistry {
 	public EntityLibraryReference getEntityLibraryReference(String name) {
 		return references.get(name);
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.core.runtime.IRegistryChangeListener#registryChanged(org.eclipse.core.runtime.IRegistryChangeEvent)
+	 */
+	@Override
+	public void registryChanged(IRegistryChangeEvent event) {
+		for (IExtensionDelta delta : event.getExtensionDeltas()) {
+			if (delta.getExtensionPoint().equals(point)) {
+				if (delta.getKind() == IExtensionDelta.ADDED) {
+					fillInternalClasses(delta.getExtension(), true);
+					fillLibraries(delta.getExtension(), true);
+				} else {
+					fillInternalClasses(delta.getExtension(), true);
+					fillLibraries(delta.getExtension(), false);
+				}
+			}
+		}
+	}
+
 }
