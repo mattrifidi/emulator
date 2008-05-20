@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Jmeswt Plug-in
 Bundle-SymbolicName: org.rifidi.jmeswt
-Bundle-Version: 1.0.0
+Bundle-Version: 2.0.0
 Bundle-Vendor: Pramari, LLC
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,
