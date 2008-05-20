@@ -10,17 +10,12 @@
  */
 package org.rifidi.designer.services.core.events;
 
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -29,15 +24,11 @@ import org.eclipse.ui.console.ConsolePlugin;
 import org.eclipse.ui.console.IConsole;
 import org.eclipse.ui.console.MessageConsole;
 import org.eclipse.ui.console.MessageConsoleStream;
-import org.rifidi.designer.entities.Entity;
-import org.rifidi.designer.entities.interfaces.RifidiEntity;
 import org.rifidi.designer.entities.internal.WatchAreaEvent;
 import org.rifidi.designer.rcp.Activator;
 import org.rifidi.designer.services.core.entities.FinderService;
 import org.rifidi.services.annotations.Inject;
 import org.rifidi.services.registry.ServiceRegistry;
-import org.rifidi.streamer.xml.ComponentSuite;
-import org.rifidi.streamer.xml.components.ReaderComponent;
 import org.rifidi.utilities.messaging.MessagingSystem;
 import org.rifidi.utilities.messaging.exceptions.NoSuchCategoryException;
 
@@ -173,21 +164,21 @@ public class EventsServiceImpl implements EventsService {
 	 */
 	@Override
 	public void stopRecording() {
-		eventTypes.clear();
-		recording = false;
-		try {
-			List<Class> classes = new ArrayList<Class>();
-			classes.add(ComponentSuite.class);
-			JAXBContext context = JAXBContext.newInstance(classes
-					.toArray(new Class[0]));
-			Marshaller marsh = context.createMarshaller();
-			ByteArrayOutputStream by = new ByteArrayOutputStream();
-			marsh.marshal(assembleReaders(), by);
-			System.out.println(by.toString());
-		} catch (JAXBException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		// eventTypes.clear();
+		// recording = false;
+		// try {
+		// List<Class> classes = new ArrayList<Class>();
+		// classes.add(ComponentSuite.class);
+		// JAXBContext context = JAXBContext.newInstance(classes
+		// .toArray(new Class[0]));
+		// Marshaller marsh = context.createMarshaller();
+		// ByteArrayOutputStream by = new ByteArrayOutputStream();
+		// marsh.marshal(assembleReaders(), by);
+		// System.out.println(by.toString());
+		// } catch (JAXBException e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
 
 	}
 
@@ -227,24 +218,6 @@ public class EventsServiceImpl implements EventsService {
 	public void setFinderService(FinderService finderService) {
 		logger.debug("EventsService got FinderService");
 		this.finderService = finderService;
-	}
-
-	private ComponentSuite assembleReaders() {
-		ComponentSuite suite = new ComponentSuite();
-		List<ReaderComponent> comps = new ArrayList<ReaderComponent>();
-		suite.setReaderComponents(comps);
-		for (Entity entity : finderService
-				.getEntitiesByType(RifidiEntity.class)) {
-			ReaderComponent comp = new ReaderComponent();
-			try {
-				comp.setReader(((RifidiEntity) entity).getReaderInterface()
-						.getReaderProperties());
-				comps.add(comp);
-			} catch (Exception e) {
-				logger.error(e);
-			}
-		}
-		return suite;
 	}
 
 	private class ProcessingThread extends Thread {
