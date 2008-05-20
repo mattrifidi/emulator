@@ -12,7 +12,7 @@ Require-Bundle: org.rifidi.services,
  org.rifidi.dependencies,
  org.rifidi.emulator,
  org.eclipse.ui.views,
- org.rifidi.initializer,
+ org.rifidi.services.initializer,
  org.eclipse.core.resources
 Bundle-Activator: org.rifidi.designer.entities.Activator
 Eclipse-LazyStart: true
