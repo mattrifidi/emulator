@@ -59,11 +59,12 @@ public class InitService implements IInitService, IRegistryChangeListener {
 		initMap = Collections
 				.synchronizedMap(new HashMap<Class, IInitializer>());
 		IExtensionRegistry registry = Platform.getExtensionRegistry();
-		registry.addRegistryChangeListener(this);
+		registry.addRegistryChangeListener(this, "org.rifidi.services.initializer");
 		point = registry.getExtensionPoint("org.rifidi.services.initializer");
 		if (point == null) {
 			logger
 					.fatal("Extension point org.rifidi.services.initializer missing!!");
+			return;
 		}
 		for (IExtension extension : point.getExtensions()) {
 			getInitializers(extension, true);
