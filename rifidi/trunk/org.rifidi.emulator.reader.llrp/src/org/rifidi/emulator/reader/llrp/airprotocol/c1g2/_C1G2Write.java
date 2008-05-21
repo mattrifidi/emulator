@@ -45,7 +45,8 @@ public class _C1G2Write implements _OpSpec {
 
 	byte[] accessPassword;
 	
-	ClientCallbackInterface callback;
+	private ClientCallbackInterface callback;
+	
 	private Antenna antenna;
 
 	/**
@@ -88,7 +89,7 @@ public class _C1G2Write implements _OpSpec {
 
 		try {
 			logger.debug("Attempting to write tag");
-			C1G2Operations.C1G2WriteTagMem(c1g2tag, this.memoryBank, this.wordPtr,
+			C1G2Operations.C1G2WriteTagMem(c1g2tag, tag.getTagEntitiyID(), this.memoryBank, this.wordPtr,
 					writeData, accessPassword, callback, antenna);
 		} catch (AuthenticationException e) {
 			logger.debug("C1G2Write error: " + e.getMessage());
