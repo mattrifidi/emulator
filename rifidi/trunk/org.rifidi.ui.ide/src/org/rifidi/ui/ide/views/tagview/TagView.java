@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
@@ -36,9 +38,13 @@ import org.rifidi.ui.ide.views.tagview.model.TagViewLabelProvider;
  */
 public class TagView extends ViewPart {
 
+	private Log logger = LogFactory.getLog(TagView.class);
+	
 	public static final String ID = "org.rifidi.ui.ide.views.tagsview.TagsView";
 
 	private TableViewer tableViewer = null;
+	
+	private ITagRegistry tagRegistry;
 
 	private Listener selChangeListener = new Listener() {
 		public void handleEvent(Event event) {
@@ -48,7 +54,7 @@ public class TagView extends ViewPart {
 	};
 
 	public TagView() {
-		System.out.println("Initializing the Tag Service");
+		logger.debug("Initializing the Tag Service");
 		ServiceRegistry.getInstance().service(this);
 	}
 
@@ -109,7 +115,7 @@ public class TagView extends ViewPart {
 							.getSelection())).iterator();
 					// get the selected tags and add their ids to a String
 					while (iter.hasNext()) {
-						sb.append(((RifidiTag) iter.next()).toString() + "\n");
+						sb.append(((RifidiTag) iter.next()).getTagEntitiyID() + "\n");
 					}
 					event.data = sb.toString();
 				}
@@ -123,7 +129,7 @@ public class TagView extends ViewPart {
 		tableViewer.setLabelProvider(new TagViewLabelProvider());
 		tableViewer.setContentProvider(new TagViewContentProvider());
 
-		//tableViewer.setInput(TagRegistry.getInstance());
+		tableViewer.setInput(tagRegistry);
 
 		getSite().setSelectionProvider(tableViewer);
 
@@ -144,16 +150,12 @@ public class TagView extends ViewPart {
 	public TableViewer getTableViewer() {
 		return tableViewer;
 	}
-
+	
 	@Inject
 	public void setTagRegistryService(ITagRegistry tagRegisrty)
 	{
-		System.out.println("fuck you kyle");
-		ITagRegistry service = tagRegisrty;
-		if(tagRegisrty != null)
-		{
-			System.out.println("Service set");
-		}
+		this.tagRegistry = tagRegisrty;
 		
 	}
+
 }

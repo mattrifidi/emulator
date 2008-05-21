@@ -37,8 +37,12 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
+import org.rifidi.services.annotations.Inject;
+import org.rifidi.services.registry.ServiceRegistry;
 import org.rifidi.services.tags.IGen1Tag;
 import org.rifidi.services.tags.impl.RifidiTag;
+import org.rifidi.services.tags.registry.ITagRegistry;
+import org.rifidi.services.tags.registry.ITagRegistryListener;
 import org.rifidi.ui.common.reader.UIAntenna;
 import org.rifidi.ui.common.reader.UIReader;
 import org.rifidi.ui.common.reader.callback.TagIDChangedCallbackInterface;
@@ -55,7 +59,7 @@ import org.rifidi.ui.ide.views.antennaview.model.AntennaViewContentProvider;
  * @author Andreas Huebner - andreas@pramari.com
  * 
  */
-public class TagViewer extends TableViewer implements RegistryChangeListener,
+public class TagViewer extends TableViewer implements ITagRegistryListener,
 		TagIDChangedCallbackInterface {
 
 	private static Log logger = LogFactory.getLog(TagViewer.class);
@@ -79,6 +83,8 @@ public class TagViewer extends TableViewer implements RegistryChangeListener,
 	 * The columns used in the the tableviewer
 	 */
 	private List<TableColumn> tableColumns;
+	
+	private ITagRegistry tagRegistry;
 
 	/**
 	 * This is the selection listener to set the sorting column
@@ -109,6 +115,7 @@ public class TagViewer extends TableViewer implements RegistryChangeListener,
 
 	public TagViewer(Composite parent, int style, UIAntenna antenna) {
 		super(parent, style);
+		ServiceRegistry.getInstance().service(this);
 		this.antenna = antenna;
 		this.reader = antenna.getReader();
 		this.display = parent.getShell().getDisplay();
@@ -295,7 +302,8 @@ public class TagViewer extends TableViewer implements RegistryChangeListener,
 						String text = (String) event.data;
 						String[] textArray = text.split("\n");
 						for (String i : textArray) {
-							//list.add(tag);
+							RifidiTag tag = tagRegistry.getTag(Long.parseLong(i));
+							list.add(tag);
 							logger.debug("Drag and Drop " + i);
 						}
 						getAntenna().addTag(list);
@@ -311,7 +319,7 @@ public class TagViewer extends TableViewer implements RegistryChangeListener,
 					}
 
 				});
-		//TagRegistry.getInstance().addListener(this);
+		tagRegistry.addListener(this);
 	}
 
 	/*
@@ -319,7 +327,7 @@ public class TagViewer extends TableViewer implements RegistryChangeListener,
 	 * 
 	 * @see org.rifidi.ide.registry.RegistryChangeListener#add(org.rifidi.ide.registry.RegistryEvent)
 	 */
-	public void add(Object event) {
+	public void addEvent(List<RifidiTag> tags) {
 		logger.debug("recived add Event");
 		try {
 			refresh();
@@ -333,7 +341,7 @@ public class TagViewer extends TableViewer implements RegistryChangeListener,
 	 * 
 	 * @see org.rifidi.ide.registry.RegistryChangeListener#remove(org.rifidi.ide.registry.RegistryEvent)
 	 */
-	public void remove(Object event) {
+	public void removeEvent(List<RifidiTag> tags) {
 		logger.debug("recived remove Event ");
 		try {
 			refresh();
@@ -347,7 +355,7 @@ public class TagViewer extends TableViewer implements RegistryChangeListener,
 	 * 
 	 * @see org.rifidi.ide.registry.RegistryChangeListener#update(org.rifidi.ide.registry.RegistryEvent)
 	 */
-	public void update(Object event) {
+	public void modifyEvent(List<RifidiTag> tags) {
 		logger.debug("recived update Event");
 		try {
 			refresh();
@@ -368,7 +376,7 @@ public class TagViewer extends TableViewer implements RegistryChangeListener,
 	 * Unregister the Listener this Antenna is associated with
 	 */
 	public void dispose() {
-	//	TagRegistry.getInstance().removeListener(this);
+		tagRegistry.removeListener(this);
 	}
 
 	/**
@@ -395,15 +403,23 @@ public class TagViewer extends TableViewer implements RegistryChangeListener,
 	 * @see org.rifidi.ui.common.reader.callback.TagIDChangedCallbackInterface#tagIDChanged(byte[],
 	 *      org.rifidi.emulator.tags.Gen1Tag)
 	 */
-	public void tagIDChanged(final byte[] oldID, final IGen1Tag tag) {
+	public void tagIDChanged(Long tagEntityID, final IGen1Tag tag) {
 		logger.debug("TagID has changed .. plz update");
 		display.syncExec(new Runnable() {
 
 			public void run() {
 				// update will refresh the view and get a new TagList
-				update(null);
+				modifyEvent(null);
 			}
 
 		});
 	}
+	
+	@Inject
+	public void setTagRegistryService(ITagRegistry tagRegisrty)
+	{
+		this.tagRegistry = tagRegisrty;
+		
+	}
+
 }

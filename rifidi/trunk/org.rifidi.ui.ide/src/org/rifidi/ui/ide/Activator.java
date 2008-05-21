@@ -3,6 +3,8 @@ package org.rifidi.ui.ide;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
+import org.rifidi.services.tags.registry.ITagRegistry;
+import org.rifidi.services.tags.registry.impl.TagRegistryImpl;
 
 /**
  * The activator class controls the plug-in life cycle

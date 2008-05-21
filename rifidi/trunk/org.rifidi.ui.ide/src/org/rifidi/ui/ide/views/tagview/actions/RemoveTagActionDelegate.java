@@ -14,7 +14,10 @@ import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.ui.IViewActionDelegate;
 import org.eclipse.ui.IViewPart;
+import org.rifidi.services.annotations.Inject;
+import org.rifidi.services.registry.ServiceRegistry;
 import org.rifidi.services.tags.impl.RifidiTag;
+import org.rifidi.services.tags.registry.ITagRegistry;
 import org.rifidi.ui.ide.views.tagview.TagView;
 
 /**
@@ -29,6 +32,7 @@ public class RemoveTagActionDelegate implements IViewActionDelegate {
 
 	private IViewPart view;
 	private List<RifidiTag> currentSelection;
+	private ITagRegistry tagRegistry;
 
 	/*
 	 * (non-Javadoc)
@@ -37,6 +41,8 @@ public class RemoveTagActionDelegate implements IViewActionDelegate {
 	 */
 	public void init(IViewPart view) {
 		this.view = view;
+		
+		ServiceRegistry.getInstance().service(this);
 
 		((TagView) view).getTableViewer().getControl().addKeyListener(
 				new KeyListener() {
@@ -82,8 +88,15 @@ public class RemoveTagActionDelegate implements IViewActionDelegate {
 		messageBox.setText("Warning");
 
 		if (messageBox.open() == SWT.OK) {
-			// TagRegistry.getInstance().removeTag(currentSelection);
+			tagRegistry.remove(currentSelection);
 			((TagView) view).refresh();
 		}
+	}
+	
+	@Inject
+	public void setTagRegistryService(ITagRegistry tagRegisrty)
+	{
+		this.tagRegistry = tagRegisrty;
+		
 	}
 }

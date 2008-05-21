@@ -22,8 +22,7 @@ import org.rifidi.ui.ide.views.tagview.TagView;
  * @author Andreas Huebner - andreas@pramari.com
  * 
  */
-public class AddMultipleTagsActionDelegate implements IViewActionDelegate,
-		IWorkbenchWindowActionDelegate {
+public class AddMultipleTagsActionDelegate implements IViewActionDelegate, IWorkbenchWindowActionDelegate {
 
 	private static IViewPart view = null;
 
@@ -36,9 +35,7 @@ public class AddMultipleTagsActionDelegate implements IViewActionDelegate,
 		AddMultipleTagsActionDelegate.view = view;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/* (non-Javadoc)
 	 * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#init(org.eclipse.ui.IWorkbenchWindow)
 	 */
 	public void init(IWorkbenchWindow window) {
@@ -51,11 +48,10 @@ public class AddMultipleTagsActionDelegate implements IViewActionDelegate,
 	 */
 	public void run(IAction action) {
 		List<RifidiTag> tagList = new ArrayList<RifidiTag>();
-		MultipleNewTagsWizard wizard = new MultipleNewTagsWizard(tagList);
+		MultipleNewTagsWizard wizard = new MultipleNewTagsWizard();
 		WizardDialog wizardDialog = new WizardDialog(view.getSite().getShell(),
 				wizard);
 		wizardDialog.open();
-		// TagRegistry.getInstance().addTag(tagList);
 		((TagView) view).refresh();
 	}
 
@@ -68,9 +64,7 @@ public class AddMultipleTagsActionDelegate implements IViewActionDelegate,
 	public void selectionChanged(IAction action, ISelection selection) {
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/* (non-Javadoc)
 	 * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#dispose()
 	 */
 	public void dispose() {
