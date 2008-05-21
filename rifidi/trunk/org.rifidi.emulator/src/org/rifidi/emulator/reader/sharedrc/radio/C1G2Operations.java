@@ -67,7 +67,7 @@ public class C1G2Operations {
 		return bytes;
 	}
 
-	public static void C1G2WriteTagMem(C1G2Tag tag, int memoryBank,
+	public static void C1G2WriteTagMem(C1G2Tag tag, Long entityID, int memoryBank,
 			int wordPtr, byte[] writeData, byte[] accessPassword,
 			ClientCallbackInterface callback, Antenna antenna)
 			throws AuthenticationException, InvalidMemoryAccessException {
@@ -110,18 +110,18 @@ public class C1G2Operations {
 			if (mb == TagConstants.MemoryEPC) {
 				antenna.rehash();
 				if (callback != null) {
-					callback.tagIDChanged(old_id, tag);
+					callback.tagIDChanged(entityID, tag);
 				}
 			}
 		}
 
 	}
 
-	public static void C1G2WriteID(C1G2Tag tag, byte[] newID,
+	public static void C1G2WriteID(C1G2Tag tag,  Long tagEntityID, byte[] newID,
 			byte[] accessPassword, ClientCallbackInterface callback, Antenna ant)
 			throws AuthenticationException, InvalidMemoryAccessException {
 
-		C1G2WriteTagMem(tag, 1, 2, newID, accessPassword, callback, ant);
+		C1G2WriteTagMem(tag, tagEntityID, 1, 2, newID, accessPassword, callback, ant);
 
 	}
 

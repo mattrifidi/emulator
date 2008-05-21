@@ -13,7 +13,7 @@ public interface ClientCallbackInterface {
 	
 	public void readerTurnedOff();
 	
-	public void tagIDChanged(byte[] oldID, IGen1Tag tag);
+	public void tagIDChanged(Long UniqueID, IGen1Tag tag);
 	
 	public void GPOPortSetHigh(int gpoPortNum);
 	
