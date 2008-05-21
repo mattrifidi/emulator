@@ -30,6 +30,13 @@ public class TagRegistryImpl implements ITagRegistry {
 
 	private long uniqueIDSeed;
 
+	/**
+	 * 
+	 */
+	public TagRegistryImpl() {
+		tagMap=new RifidiTagMap();
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -99,7 +106,7 @@ public class TagRegistryImpl implements ITagRegistry {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.emulator.tags.service.TagRegistryService#remove(org.rifidi.emulator.tags.impl.RifidiTag)
+	 * @see org.rifidi.emulator.tags.service.TagRegistryService#remove(org.rifidi.services.tags.impl.RifidiTag)
 	 */
 	@Override
 	public void remove(RifidiTag tag) {
