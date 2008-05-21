@@ -16,9 +16,9 @@ import java.util.Collection;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.rifidi.emulator.reader.sharedrc.tagmemory.RifidiTagMap;
 import org.rifidi.emulator.reader.sharedrc.tagmemory.TagMemory;
 import org.rifidi.services.tags.impl.RifidiTag;
+import org.rifidi.services.tags.utils.RifidiTagMap;
 
 /**
  * This is a SymbolTagMemory class that provides a tag memory for symbol. It is taken
