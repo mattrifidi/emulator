@@ -2,6 +2,7 @@ package org.rifidi.ui.common.reader.callback;
 
 import org.rifidi.services.tags.IGen1Tag;
 
+
 /**
  * @author Andreas Huebner - andreas@pramari.com
  *
@@ -13,6 +14,6 @@ public interface TagIDChangedCallbackInterface {
 	 * @param oldID
 	 * @param newID
 	 */
-	public void tagIDChanged(byte[] oldID, IGen1Tag tag);
+	public void tagIDChanged(Long entityID, IGen1Tag tag);
 
 }

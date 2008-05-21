@@ -11,10 +11,10 @@
  */
 package org.rifidi.ui.common.wizards.tag;
 
-import java.util.List;
-
 import org.eclipse.jface.wizard.Wizard;
-import org.rifidi.services.tags.impl.RifidiTag;
+import org.rifidi.services.annotations.Inject;
+import org.rifidi.services.registry.ServiceRegistry;
+import org.rifidi.services.tags.registry.ITagRegistry;
 import org.rifidi.ui.common.wizards.tag.pages.MultipleNewTagsWizardPage;
 
 /**
@@ -26,10 +26,11 @@ import org.rifidi.ui.common.wizards.tag.pages.MultipleNewTagsWizardPage;
 public class MultipleNewTagsWizard extends Wizard {
 
 	private MultipleNewTagsWizardPage multipleNewTagsWizardPage;
-	private List<RifidiTag> taglist;
+	
+	private ITagRegistry tagRegistry;
 
-	public MultipleNewTagsWizard( List<RifidiTag> taglist ) {
-		this.taglist = taglist;
+	public MultipleNewTagsWizard() {
+		ServiceRegistry.getInstance().service(this);
 	}
 
 	/*
@@ -51,9 +52,16 @@ public class MultipleNewTagsWizard extends Wizard {
 	@Override
 	public boolean performFinish() {
 		if ( getPage("wizardPage").isPageComplete() ) {
-			multipleNewTagsWizardPage.createTags(taglist);
+			multipleNewTagsWizardPage.createTags(tagRegistry);
 			return true;
 		}
 		return false;
+	}
+	
+	@Inject
+	public void setTagRegistryService(ITagRegistry tagRegisrty)
+	{
+		this.tagRegistry = tagRegisrty;
+		
 	}
 }

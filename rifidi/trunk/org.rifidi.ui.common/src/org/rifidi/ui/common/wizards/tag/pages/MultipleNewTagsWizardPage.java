@@ -35,6 +35,7 @@ import org.rifidi.services.tags.factory.TagCreationPattern;
 import org.rifidi.services.tags.factory.TagFactory;
 import org.rifidi.services.tags.id.TagType;
 import org.rifidi.services.tags.impl.RifidiTag;
+import org.rifidi.services.tags.registry.ITagRegistry;
 import org.rifidi.ui.common.validators.HexValidator;
 
 /**
@@ -188,8 +189,7 @@ public class MultipleNewTagsWizardPage extends WizardPage {
 		}
 	}
 
-	public void createTags(List<RifidiTag> taglist) {
-		logger.debug("Create Tags was called");
+	public void createTags(ITagRegistry tagRegistry) {
 		TagGen tagGen = null;
 		String selectedTagGen = generationCombo.getItem(generationCombo
 				.getSelectionIndex());
@@ -201,18 +201,15 @@ public class MultipleNewTagsWizardPage extends WizardPage {
 			tagGen = TagGen.GEN2;
 		if (selectedTagGen.equals("GEN1"))
 			tagGen = TagGen.GEN1;
-
-		taglist.clear();
 		
-		List<RifidiTag> newTags= new ArrayList<RifidiTag>(number);
 		TagCreationPattern pattern = new TagCreationPattern();
 		pattern.setNumberOfTags(number);
 		pattern.setTagGeneration(tagGen);
 		pattern.setTagType(TagType.valueOf(selectedTagType));
 		pattern.setPrefix(prefix);
-		newTags = TagFactory.generateTags(pattern);
-		taglist.addAll(newTags);
+		tagRegistry.createTags(pattern);
+
 		
-		logger.debug("Wizard created " + taglist.size() + " tags.");
+		logger.debug("Wizard created " + tagRegistry.getTags().size() + " tags.");
 	}
 }

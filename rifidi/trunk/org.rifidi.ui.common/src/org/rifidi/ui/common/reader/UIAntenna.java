@@ -14,6 +14,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.rifidi.emulator.rmi.server.ReaderModuleManagerInterface;
 import org.rifidi.services.tags.impl.RifidiTag;
+import org.rifidi.services.tags.registry.ITagRegistryListener;
 import org.rifidi.ui.common.registry.RegistryChangeListener;
 
 /**
@@ -55,7 +56,7 @@ public class UIAntenna {
 	 * The list of Listeners to events occurring in the antenna (like add tag or
 	 * remove tag)
 	 */
-	private List<RegistryChangeListener> listeners = new LinkedList<RegistryChangeListener>();
+	private List<ITagRegistryListener> listeners = new LinkedList<ITagRegistryListener>();
 
 	/**
 	 * Default constructor (needed by jaxb)
@@ -226,7 +227,7 @@ public class UIAntenna {
 	 * 
 	 * @param listener
 	 */
-	public void addListener(RegistryChangeListener listener) {
+	public void addListener(ITagRegistryListener listener) {
 		listeners.add(listener);
 	}
 
@@ -235,7 +236,7 @@ public class UIAntenna {
 	 * 
 	 * @param listener
 	 */
-	public void removeListener(RegistryChangeListener listener) {
+	public void removeListener(ITagRegistryListener listener) {
 		listeners.remove(listener);
 	}
 
@@ -244,8 +245,8 @@ public class UIAntenna {
 	 */
 	private void addEvent() {
 		// TODO Event must be set
-		for (RegistryChangeListener r : listeners) {
-			r.add(null);
+		for (ITagRegistryListener r : listeners) {
+			r.addEvent(null);
 		}
 	}
 
@@ -254,8 +255,8 @@ public class UIAntenna {
 	 */
 	private void removeEvent() {
 		// TODO Event must be set
-		for (RegistryChangeListener r : listeners) {
-			r.remove(null);
+		for (ITagRegistryListener r : listeners) {
+			r.removeEvent(null);
 		}
 	}
 
@@ -266,8 +267,8 @@ public class UIAntenna {
 	@SuppressWarnings("unused")
 	private void updateEvent() {
 		// TODO Event must be set
-		for (RegistryChangeListener r : listeners) {
-			r.update(null);
+		for (ITagRegistryListener r : listeners) {
+			r.modifyEvent(null);
 		}
 	}
 

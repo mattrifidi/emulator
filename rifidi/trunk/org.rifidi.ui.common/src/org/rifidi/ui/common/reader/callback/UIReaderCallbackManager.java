@@ -93,10 +93,10 @@ public class UIReaderCallbackManager implements ClientCallbackInterface {
 	 * @see org.rifidi.emulator.rmi.client.ClientCallbackInterface#tagIDChanged(byte[],
 	 *      byte[])
 	 */
-	public void tagIDChanged(byte[] oldID, IGen1Tag tag) {
+	public void tagIDChanged(Long entityID, IGen1Tag tag) {
 		logger.debug("Tag ID changed");
 		for (TagIDChangedCallbackInterface listener : tagIDChangedListeners) {
-			listener.tagIDChanged(oldID, tag);
+			listener.tagIDChanged(entityID, tag);
 		}
 	}
 
