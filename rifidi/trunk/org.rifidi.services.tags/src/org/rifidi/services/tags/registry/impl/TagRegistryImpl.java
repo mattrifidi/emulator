@@ -10,14 +10,14 @@
  */
 package org.rifidi.services.tags.registry.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import org.rifidi.services.tags.factory.TagCreationPattern;
+import org.rifidi.services.tags.factory.TagFactory;
 import org.rifidi.services.tags.impl.RifidiTag;
-import org.rifidi.services.tags.registry.ITagRegistryListener;
 import org.rifidi.services.tags.registry.ITagRegistry;
+import org.rifidi.services.tags.registry.ITagRegistryListener;
+import org.rifidi.services.tags.utils.RifidiTagMap;
 
 /**
  * @author Kyle Neumeier - kyle@pramari.com
@@ -26,7 +26,7 @@ import org.rifidi.services.tags.registry.ITagRegistry;
  */
 public class TagRegistryImpl implements ITagRegistry {
 
-	private HashMap<Long, RifidiTag> tags;
+	private RifidiTagMap tagMap;
 
 	private long uniqueIDSeed;
 
@@ -48,8 +48,13 @@ public class TagRegistryImpl implements ITagRegistry {
 	 */
 	@Override
 	public List<RifidiTag> createTags(TagCreationPattern tagCreationPattern) {
-		// TODO Auto-generated method stub
-		return null;
+		List<RifidiTag> newTags = TagFactory.generateTags(tagCreationPattern);
+		for(RifidiTag t : newTags){
+			t.setTagEntitiyID(this.uniqueIDSeed);
+			uniqueIDSeed++;
+			this.tagMap.addTag(t);
+		}
+		return newTags;
 	}
 
 	/*
@@ -59,7 +64,7 @@ public class TagRegistryImpl implements ITagRegistry {
 	 */
 	@Override
 	public List<RifidiTag> getTags() {
-		return new ArrayList<RifidiTag>(this.tags.values());
+		return tagMap.getTagList();
 	}
 
 	/*
@@ -70,7 +75,7 @@ public class TagRegistryImpl implements ITagRegistry {
 	@Override
 	public void initialize() {
 		uniqueIDSeed = 1;
-		tags = new HashMap<Long, RifidiTag>();
+		tagMap = new RifidiTagMap();
 
 	}
 
@@ -86,7 +91,7 @@ public class TagRegistryImpl implements ITagRegistry {
 			if (uniqueIDSeed < t.getTagEntitiyID()) {
 				uniqueIDSeed = t.getTagEntitiyID();
 			}
-			this.tags.put(t.getTagEntitiyID(), t);
+			this.tagMap.addTag(t);
 		}
 
 	}
@@ -98,7 +103,7 @@ public class TagRegistryImpl implements ITagRegistry {
 	 */
 	@Override
 	public void remove(RifidiTag tag) {
-		tags.remove(tag.getTagEntitiyID());
+		tagMap.removeTag(tag.getTagEntitiyID());
 
 	}
 
@@ -111,7 +116,7 @@ public class TagRegistryImpl implements ITagRegistry {
 	public void remove(List<RifidiTag> tags) {
 
 		for (RifidiTag t : tags) {
-			this.tags.remove(t.getTagEntitiyID());
+			this.tagMap.removeTag(t.getTagEntitiyID());
 		}
 
 	}
@@ -123,7 +128,7 @@ public class TagRegistryImpl implements ITagRegistry {
 	 */
 	@Override
 	public void remove() {
-		this.tags.clear();
+		this.tagMap.clear();
 
 	}
 
