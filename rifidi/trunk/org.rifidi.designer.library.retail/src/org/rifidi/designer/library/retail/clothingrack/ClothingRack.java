@@ -26,7 +26,11 @@ import org.rifidi.designer.entities.placement.BinaryPattern;
 import org.rifidi.designer.library.retail.Position;
 import org.rifidi.designer.library.retail.clothing.Clothing;
 import org.rifidi.services.annotations.Inject;
-import org.rifidi.services.tags.TagService;
+import org.rifidi.services.tags.enums.TagGen;
+import org.rifidi.services.tags.factory.TagCreationPattern;
+import org.rifidi.services.tags.id.TagType;
+import org.rifidi.services.tags.impl.RifidiTag;
+import org.rifidi.services.tags.registry.ITagRegistry;
 
 import com.jme.input.InputHandler;
 import com.jme.math.Quaternion;
@@ -76,10 +80,10 @@ public class ClothingRack extends VisualEntity implements VisualEntityHolder,
 	 */
 	private static Node model = null;
 	/**
-	 * Reference to the tag service.
+	 * Reference to the tag registry. 
 	 */
-	private TagService tagService;
-
+	private ITagRegistry tagRegistry;
+	
 	/**
 	 * Constructor.
 	 */
@@ -151,6 +155,11 @@ public class ClothingRack extends VisualEntity implements VisualEntityHolder,
 		node.attachChild(model);
 		entities = new ArrayList<VisualEntity>(capacity);
 		positions = new ArrayList<Position>(capacity);
+		TagCreationPattern tagpattern=new TagCreationPattern();
+		tagpattern.setTagGeneration(TagGen.GEN2);
+		tagpattern.setTagType(TagType.GID96);
+		tagpattern.setNumberOfTags(capacity);
+		List<RifidiTag> tags=tagRegistry.createTags(tagpattern);
 		for (int count = 0; count < capacity; count++) {
 			Clothing clothing = new Clothing();
 			Position pos = new Position(calcPos(count), calcRot(count));
@@ -158,7 +167,7 @@ public class ClothingRack extends VisualEntity implements VisualEntityHolder,
 			positions.add(pos);
 			clothing.setStartTranslation((Vector3f) pos.translation.clone());
 			clothing.setStartRotation(new Quaternion(pos.rotation));
-			clothing.setUserData(tagService.getRifidiTag(tagService.getTagSourceNames().get(0)));
+			clothing.setUserData(tags.get(count));
 			clothing.setName(clothing.getUserData().toString());
 			itemCount++;
 		}
@@ -340,8 +349,11 @@ public class ClothingRack extends VisualEntity implements VisualEntityHolder,
 		return visualEntity instanceof Clothing;
 	}
 
+	/**
+	 * @param tagRegistry the tagRegistry to set
+	 */
 	@Inject
-	public void setTagService(TagService tagService) {
-		this.tagService = tagService;
+	public void setTagRegistry(ITagRegistry tagRegistry) {
+		this.tagRegistry = tagRegistry;
 	}
 }

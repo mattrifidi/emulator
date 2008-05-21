@@ -14,7 +14,10 @@ import java.util.List;
 
 import org.rifidi.designer.library.basemodels.cardbox.CardboxEntity;
 import org.rifidi.designer.services.core.entities.ProductService;
-import org.rifidi.emulator.tags.impl.RifidiTag;
+import org.rifidi.services.tags.enums.TagGen;
+import org.rifidi.services.tags.factory.TagCreationPattern;
+import org.rifidi.services.tags.id.TagType;
+import org.rifidi.services.tags.impl.RifidiTag;
 
 import com.jme.math.Matrix3f;
 import com.jme.math.Quaternion;
@@ -55,6 +58,7 @@ public class BoxproducerEntityThread extends Thread {
 	 * Reference to the product service.
 	 */
 	private ProductService productService;
+
 	/**
 	 * Constructor.
 	 * 
@@ -80,21 +84,31 @@ public class BoxproducerEntityThread extends Thread {
 		Quaternion rot = new Quaternion();
 		rot.fromAngleAxis(0.001f, Vector3f.UNIT_Y);
 		slightRotMtx = rot.toRotationMatrix();
-
+		TagCreationPattern pattern = new TagCreationPattern();
+		pattern.setNumberOfTags(10);
+		pattern.setTagGeneration(TagGen.GEN2);
+		pattern.setTagType(TagType.DoD96);
+		List<RifidiTag> tagCache = entity.getTagRegistry().createTags(pattern);
+		int counter = 0;
 		while (keepRunning) {
-			if(!paused){
-				RifidiTag name = entity.getTagService().getRifidiTag("DoD96");
-				if (name != null) {
-					CardboxEntity ca = new CardboxEntity();
-					ca.setBaseRotation(slightRotMtx);
-					ca.setName(name.toString());
-					ca.setUserData(name);
-					Vector3f startPos = (Vector3f) entity.getNode()
-							.getLocalTranslation().clone();
-					startPos.setY(10);
-					ca.setStartPos(startPos);
-					productService.addProduct(ca);
-					products.add(ca);
+			if (!paused) {
+				RifidiTag name = null;
+				if (counter != 10) {
+					name = tagCache.get(counter++);
+				}
+				CardboxEntity ca = new CardboxEntity();
+				ca.setBaseRotation(slightRotMtx);
+				ca.setName(name.toString());
+				ca.setUserData(name);
+				Vector3f startPos = (Vector3f) entity.getNode()
+						.getLocalTranslation().clone();
+				startPos.setY(10);
+				ca.setStartPos(startPos);
+				productService.addProduct(ca);
+				products.add(ca);
+				if (counter == 10) {
+					counter = 0;
+					tagCache = entity.getTagRegistry().createTags(pattern);
 				}
 			}
 

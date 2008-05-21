@@ -53,6 +53,10 @@ import org.rifidi.services.annotations.Inject;
 import org.rifidi.services.initializer.IInitService;
 import org.rifidi.services.initializer.exceptions.InitializationException;
 import org.rifidi.services.registry.ServiceRegistry;
+import org.rifidi.services.tags.impl.C0G1Tag;
+import org.rifidi.services.tags.impl.C1G1Tag;
+import org.rifidi.services.tags.impl.C1G2Tag;
+import org.rifidi.services.tags.impl.RifidiTag;
 
 import com.jme.bounding.BoundingBox;
 import com.jme.image.Texture;
@@ -485,10 +489,10 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 					.getEntityClasses();
 			classes.add(org.rifidi.designer.entities.SceneData.class);
 			classes.add(org.rifidi.designer.entities.VisualEntity.class);
-			classes.add(org.rifidi.emulator.tags.impl.C0G1Tag.class);
-			classes.add(org.rifidi.emulator.tags.impl.C1G1Tag.class);
-			classes.add(org.rifidi.emulator.tags.impl.C1G2Tag.class);
-			classes.add(org.rifidi.emulator.tags.impl.RifidiTag.class);
+			classes.add(C0G1Tag.class);
+			classes.add(C1G1Tag.class);
+			classes.add(C1G2Tag.class);
+			classes.add(RifidiTag.class);
 			JAXBContext context = JAXBContext.newInstance(classes
 					.toArray(new Class[0]));
 			logger.debug("loading");
@@ -748,10 +752,10 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 					.getEntityClasses();
 			classes.add(org.rifidi.designer.entities.SceneData.class);
 			classes.add(org.rifidi.designer.entities.VisualEntity.class);
-			classes.add(org.rifidi.emulator.tags.impl.C0G1Tag.class);
-			classes.add(org.rifidi.emulator.tags.impl.C1G1Tag.class);
-			classes.add(org.rifidi.emulator.tags.impl.C1G2Tag.class);
-			classes.add(org.rifidi.emulator.tags.impl.RifidiTag.class);
+			classes.add(C0G1Tag.class);
+			classes.add(C1G1Tag.class);
+			classes.add(C1G2Tag.class);
+			classes.add(RifidiTag.class);
 			JAXBContext context = JAXBContext.newInstance(classes
 					.toArray(new Class[0]));
 			Marshaller marshaller = context.createMarshaller();

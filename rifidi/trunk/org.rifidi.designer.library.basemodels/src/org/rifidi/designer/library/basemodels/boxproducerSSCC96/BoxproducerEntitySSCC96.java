@@ -32,7 +32,7 @@ import org.rifidi.designer.entities.placement.BinaryPattern;
 import org.rifidi.designer.library.basemodels.cardbox.CardboxEntity;
 import org.rifidi.designer.services.core.entities.ProductService;
 import org.rifidi.services.annotations.Inject;
-import org.rifidi.services.tags.TagService;
+import org.rifidi.services.tags.registry.ITagRegistry;
 import org.rifidi.utilities.node.NodeHelper;
 
 import com.jme.bounding.BoundingBox;
@@ -52,12 +52,13 @@ import com.jme.util.export.binary.BinaryImporter;
  * @author Dan West
  */
 @MonitoredProperties(names = { "IDGenerator", "name" })
-public class BoxproducerEntitySSCC96 extends VisualEntity implements SceneControl,
-		Switch {
+public class BoxproducerEntitySSCC96 extends VisualEntity implements
+		SceneControl, Switch {
 	/**
 	 * Logger for this class.
 	 */
-	private static Log logger = LogFactory.getLog(BoxproducerEntitySSCC96.class);
+	private static Log logger = LogFactory
+			.getLog(BoxproducerEntitySSCC96.class);
 	/**
 	 * Seconds per box.
 	 */
@@ -86,16 +87,19 @@ public class BoxproducerEntitySSCC96 extends VisualEntity implements SceneContro
 	 * List of products this producer created.
 	 */
 	private List<CardboxEntity> products = new ArrayList<CardboxEntity>();
-	
-	private TagService tagService;
-	
+	/**
+	 * Reference to the tag registry.
+	 */
+	private ITagRegistry tagRegistry;
+
 	/**
 	 * Constructor
 	 */
-	public BoxproducerEntitySSCC96(){
-		this.speed=2;
+	public BoxproducerEntitySSCC96() {
+		this.speed = 2;
 		setName("Boxproducer (SSCC96)");
 	}
+
 	/**
 	 * @return the speed
 	 */
@@ -303,27 +307,14 @@ public class BoxproducerEntitySSCC96 extends VisualEntity implements SceneContro
 
 	/**
 	 * Set the product service.
+	 * 
 	 * @param productService
 	 */
 	@Inject
 	public void setProductService(ProductService productService) {
 		this.productService = productService;
 	}
-	
-	/**
-	 * @return the tagService
-	 */
-	public TagService getTagService() {
-		return tagService;
-	}
-	/**
-	 * @param tagService the tagService to set
-	 */
-	@XmlTransient
-	@Inject
-	public void setTagService(TagService tagService) {
-		this.tagService = tagService;
-	}
+
 	/**
 	 * @return the products
 	 */
@@ -338,6 +329,23 @@ public class BoxproducerEntitySSCC96 extends VisualEntity implements SceneContro
 	@XmlIDREF
 	public void setProducts(List<CardboxEntity> products) {
 		this.products = products;
+	}
+
+	/**
+	 * @return the tagRegistry
+	 */
+	public ITagRegistry getTagRegistry() {
+		return this.tagRegistry;
+	}
+
+	/**
+	 * @param tagRegistry
+	 *            the tagRegistry to set
+	 */
+	@XmlTransient
+	@Inject
+	public void setTagRegistry(ITagRegistry tagRegistry) {
+		this.tagRegistry = tagRegistry;
 	}
 
 }

@@ -16,7 +16,7 @@ import java.util.Stack;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.rifidi.emulator.rmi.server.ReaderModuleManagerInterface;
-import org.rifidi.emulator.tags.impl.RifidiTag;
+import org.rifidi.services.tags.impl.RifidiTag;
 
 /**
  * Rifidi emulator RMI communication is slow so all communication is done in
@@ -83,9 +83,9 @@ public class AntennaFieldThread extends Thread {
 					}
 					addTags.clear();
 				} else {
-					remTags.add(action.tag.getTag().readId());
+					remTags.add(action.tag.getTag().getId());
 					try {
-						readerInterface.removeTags(antennaNum, remTags);
+//						readerInterface.removeTags(antennaNum, remTags);
 					} catch (Exception e) {
 						logger.error(e);
 					}

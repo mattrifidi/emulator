@@ -32,8 +32,6 @@ import org.rifidi.designer.services.core.world.WorldService;
 import org.rifidi.designer.services.core.world.WorldServiceImpl;
 import org.rifidi.services.initializer.IInitService;
 import org.rifidi.services.initializer.InitService;
-import org.rifidi.services.tags.TagService;
-import org.rifidi.services.tags.impl.TagServiceImpl;
 
 /**
  * The activator class controls the plug-in life cycle.
@@ -111,8 +109,6 @@ public class Activator extends AbstractUIPlugin {
 		context.registerService(new String[] { WorldService.class.getName(),
 				CommandStateService.class.getName() }, new WorldServiceImpl(),
 				null);
-		context.registerService(TagService.class.getName(),
-				new TagServiceImpl(), null);
 	}
 
 	/*

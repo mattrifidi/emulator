@@ -14,15 +14,16 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.ui.console,
  org.eclipse.core.databinding,
  org.eclipse.help.ui,
+ org.eclipse.help.webapp,
  org.rifidi.jmeswt,
  org.rifidi.emulator,
  org.rifidi.services,
- org.eclipse.help.webapp,
  org.rifidi.designer.entities,
  org.rifidi.services.tags,
  org.rifidi.dependencies,
  org.rifidi.designer.rcp.help,
- org.rifidi.services.initializer
+ org.rifidi.services.initializer,
+ org.rifidi.emulator.tags
 Eclipse-LazyStart: true
 Export-Package: org.rifidi.designer.entities.internal,
  org.rifidi.designer.services.core.cabling,

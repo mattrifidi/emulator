@@ -36,8 +36,8 @@ import org.rifidi.designer.services.core.collision.FieldService;
 import org.rifidi.designer.services.core.events.EventsService;
 import org.rifidi.designer.services.core.events.TagEvent;
 import org.rifidi.emulator.rmi.server.ReaderModuleManagerInterface;
-import org.rifidi.emulator.tags.impl.RifidiTag;
 import org.rifidi.services.annotations.Inject;
+import org.rifidi.services.tags.impl.RifidiTag;
 
 import com.jme.bounding.BoundingBox;
 import com.jme.input.InputHandler;

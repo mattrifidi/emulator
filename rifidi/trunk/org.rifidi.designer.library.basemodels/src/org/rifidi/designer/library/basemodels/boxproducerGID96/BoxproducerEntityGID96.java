@@ -32,7 +32,7 @@ import org.rifidi.designer.entities.placement.BinaryPattern;
 import org.rifidi.designer.library.basemodels.cardbox.CardboxEntity;
 import org.rifidi.designer.services.core.entities.ProductService;
 import org.rifidi.services.annotations.Inject;
-import org.rifidi.services.tags.TagService;
+import org.rifidi.services.tags.registry.ITagRegistry;
 import org.rifidi.utilities.node.NodeHelper;
 
 import com.jme.bounding.BoundingBox;
@@ -86,8 +86,10 @@ public class BoxproducerEntityGID96 extends VisualEntity implements SceneControl
 	 * List of products this producer created.
 	 */
 	private List<CardboxEntity> products = new ArrayList<CardboxEntity>();
-	
-	private TagService tagService;
+	/**
+	 * Reference to the tag registry.
+	 */
+	private ITagRegistry tagRegistry;
 	
 	/**
 	 * Constructor
@@ -311,20 +313,6 @@ public class BoxproducerEntityGID96 extends VisualEntity implements SceneControl
 	}
 	
 	/**
-	 * @return the tagService
-	 */
-	public TagService getTagService() {
-		return tagService;
-	}
-	/**
-	 * @param tagService the tagService to set
-	 */
-	@XmlTransient
-	@Inject
-	public void setTagService(TagService tagService) {
-		this.tagService = tagService;
-	}
-	/**
 	 * @return the products
 	 */
 	public List<CardboxEntity> getProducts() {
@@ -338,6 +326,20 @@ public class BoxproducerEntityGID96 extends VisualEntity implements SceneControl
 	@XmlIDREF
 	public void setProducts(List<CardboxEntity> products) {
 		this.products = products;
+	}
+	/**
+	 * @return the tagRegistry
+	 */
+	public ITagRegistry getTagRegistry() {
+		return this.tagRegistry;
+	}
+	/**
+	 * @param tagRegistry the tagRegistry to set
+	 */
+	@Inject
+	@XmlTransient
+	public void setTagRegistry(ITagRegistry tagRegistry) {
+		this.tagRegistry = tagRegistry;
 	}
 
 }

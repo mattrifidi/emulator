@@ -14,7 +14,10 @@ import java.util.List;
 
 import org.rifidi.designer.library.basemodels.cardbox.CardboxEntity;
 import org.rifidi.designer.services.core.entities.ProductService;
-import org.rifidi.emulator.tags.impl.RifidiTag;
+import org.rifidi.services.tags.enums.TagGen;
+import org.rifidi.services.tags.factory.TagCreationPattern;
+import org.rifidi.services.tags.id.TagType;
+import org.rifidi.services.tags.impl.RifidiTag;
 
 import com.jme.math.Matrix3f;
 import com.jme.math.Quaternion;
@@ -80,10 +83,13 @@ public class BoxproducerEntityThread extends Thread {
 		Quaternion rot = new Quaternion();
 		rot.fromAngleAxis(0.001f, Vector3f.UNIT_Y);
 		slightRotMtx = rot.toRotationMatrix();
-
+		TagCreationPattern tagCreationPattern=new TagCreationPattern();
+		tagCreationPattern.setNumberOfTags(1);
+		tagCreationPattern.setTagGeneration(TagGen.GEN2);
+		tagCreationPattern.setTagType(TagType.SSCC96);
 		while (keepRunning) {
 			if(!paused){
-				RifidiTag name = entity.getTagService().getRifidiTag("SSCC96");
+				RifidiTag name = entity.getTagRegistry().createTags(tagCreationPattern).get(0);
 				if (name != null) {
 					CardboxEntity ca = new CardboxEntity();
 					ca.setBaseRotation(slightRotMtx);

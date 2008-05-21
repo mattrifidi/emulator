@@ -11,7 +11,6 @@
 package org.rifidi.designer.entities.interfaces;
 
 import java.util.List;
-import java.util.Set;
 
 import org.rifidi.designer.entities.VisualEntity;
 

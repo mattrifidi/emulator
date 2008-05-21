@@ -13,9 +13,10 @@ Require-Bundle: org.eclipse.ui,
  org.rifidi.dependencies,
  org.rifidi.designer.rcp,
  org.rifidi.emulator,
- org.rifidi.ui.common,
  org.rifidi.services,
  org.rifidi.services.tags,
- org.rifidi.designer.entities
+ org.rifidi.designer.entities,
+ org.rifidi.emulator.tags,
+ org.rifidi.ui.common
 Eclipse-LazyStart: true
 Eclipse-BuddyPolicy: dependent
