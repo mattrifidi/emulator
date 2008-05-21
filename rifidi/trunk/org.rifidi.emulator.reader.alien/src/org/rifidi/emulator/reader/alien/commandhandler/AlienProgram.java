@@ -124,7 +124,7 @@ public class AlienProgram {
 				C1G2Tag tag = (C1G2Tag) tags.get(0).getTag();
 
 				try {
-					C1G2Operations.C1G2WriteID(tag, newID, C1G2Operations
+					C1G2Operations.C1G2WriteID(tag, tags.get(0).getTagEntitiyID(), newID, C1G2Operations
 							.getAccessPass(tag), asr.getCallbackManager(), asr
 							.getRadio().getAntennas().get(progAntenna));
 				} catch (AuthenticationException e) {
