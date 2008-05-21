@@ -70,7 +70,7 @@ public class AntennaFieldThread extends Thread {
 	@Override
 	public void run() {
 		ArrayList<RifidiTag> addTags = new ArrayList<RifidiTag>();
-		ArrayList<byte[]> remTags = new ArrayList<byte[]>();
+		ArrayList<Long> remTags = new ArrayList<Long>();
 		while (keepRunning) {
 			while (!actionStack.isEmpty()) {
 				AntennaFieldAction action = actionStack.pop();
@@ -83,9 +83,9 @@ public class AntennaFieldThread extends Thread {
 					}
 					addTags.clear();
 				} else {
-					remTags.add(action.tag.getTag().getId());
+					remTags.add(action.tag.getTagEntitiyID());
 					try {
-//						readerInterface.removeTags(antennaNum, remTags);
+						readerInterface.removeTags(antennaNum, remTags);
 					} catch (Exception e) {
 						logger.error(e);
 					}
