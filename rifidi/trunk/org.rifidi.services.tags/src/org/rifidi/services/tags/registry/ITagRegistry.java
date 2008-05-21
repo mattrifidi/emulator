@@ -72,6 +72,13 @@ public interface ITagRegistry {
 	 * @return
 	 */
 	public List<RifidiTag> getTags();
+	
+	/**
+	 * Get a single tag using the tagEntityID
+	 * @param tagEntityID
+	 * @return
+	 */
+	public RifidiTag getTag(Long tagEntityID);
 
 	/**
 	 * This method adds a listener to the registry. the listener will be

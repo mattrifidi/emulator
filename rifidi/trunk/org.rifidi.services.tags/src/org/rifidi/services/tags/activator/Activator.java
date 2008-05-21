@@ -35,7 +35,9 @@ public class Activator extends Plugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
-		serviceRegistration=context.registerService(ITagRegistry.class.getName(), new TagRegistryImpl(), null);
+		ITagRegistry tagRegistry = new TagRegistryImpl();
+		tagRegistry.initialize();
+		serviceRegistration=context.registerService(ITagRegistry.class.getName(), tagRegistry, null);
 	}
 
 	/*

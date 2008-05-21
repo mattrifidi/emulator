@@ -150,4 +150,14 @@ public class TagRegistryImpl implements ITagRegistry {
 
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.rifidi.emulator.tags.service.TagRegistryService#getTag(Long)
+	 */
+	@Override
+	public RifidiTag getTag(Long tagEntityID) {
+		return tagMap.getTag(tagEntityID);
+	}
+
 }
