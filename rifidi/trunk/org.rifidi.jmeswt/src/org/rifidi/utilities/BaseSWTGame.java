@@ -54,7 +54,7 @@ public class BaseSWTGame {
 			displaySys = (SWTDisplaySystem) DisplaySystem
 					.getDisplaySystem("SWTDISPLAYSYS");
 			displaySys.setCurrentGLCanvas(canvas);
-			displaySys.createCanvasRenderer(1024, 768, ColorRGBA.lightGray);
+//			displaySys.createCanvasRenderer(1024, 768, ColorRGBA.lightGray);
 			displaySys.switchContext(canvas);
 		} catch (Error err) {
 			logger.fatal("Error: Probably chosen wrong display system. " + err);

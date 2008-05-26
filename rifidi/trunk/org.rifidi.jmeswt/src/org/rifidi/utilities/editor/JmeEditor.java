@@ -99,7 +99,7 @@ public abstract class JmeEditor extends EditorPart {
 		try {			// set up the display system
 			displaySys = (SWTDisplaySystem) DisplaySystem.getDisplaySystem("SWTDISPLAYSYS");
 			displaySys.setCurrentGLCanvas(canvas);
-			displaySys.createCanvasRenderer(1024, 768, ColorRGBA.lightGray);
+//			displaySys.createCanvasRenderer(1024, 768, ColorRGBA.lightGray);
 
 		} catch (Error err) {
 			logger.fatal("Error: Probably chosen wrong display system. " + err);

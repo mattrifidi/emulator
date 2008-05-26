@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry exported="true" kind="lib" path="swtbindings.jar" sourcepath="/org.rifidi.jmonkey"/>
 	<classpathentry exported="true" kind="lib" path="bin/"/>
 	<classpathentry exported="true" kind="lib" path="commons-logging.jar"/>
 	<classpathentry exported="true" kind="lib" path="Jama-1.0.2.jar"/>
@@ -12,7 +13,6 @@
 	<classpathentry exported="true" kind="lib" path="lwjgl_util.jar"/>
 	<classpathentry exported="true" kind="lib" path="lwjgl.jar"/>
 	<classpathentry exported="true" kind="lib" path="odejava-jni.jar"/>
-	<classpathentry exported="true" kind="lib" path="swtbindings.jar"/>
 	<classpathentry exported="true" kind="lib" path="vecmath.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
