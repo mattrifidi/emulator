@@ -67,6 +67,7 @@ import org.rifidi.designer.services.core.entities.FinderService;
 import org.rifidi.designer.services.core.entities.SceneDataService;
 import org.rifidi.designer.services.core.selection.SelectionService;
 import org.rifidi.designer.services.core.world.WorldService;
+import org.rifidi.jmonkey.SWTDisplaySystem;
 import org.rifidi.services.annotations.Inject;
 import org.rifidi.services.registry.ServiceRegistry;
 import org.rifidi.utilities.grid.GridNode;
@@ -196,10 +197,10 @@ public class View3D extends ViewPart implements IPerspectiveListener {
 
 		Composite composite = new Composite(parent, SWT.None);
 		composite.setLayout(new FillLayout());
-		GLData data = new GLData();
-		data.doubleBuffer = true;
-		data.depthSize = 24;
-		glCanvas = new GLCanvas(composite, SWT.NONE, data);
+
+		SWTDisplaySystem displaySys = (SWTDisplaySystem) DisplaySystem
+				.getDisplaySystem("SWTDISPLAYSYS");
+		glCanvas=displaySys.createGLCanvas(754, 584, composite);
 		// let glcanvas have focus by default
 		glCanvas.forceFocus();
 		// create an invisible cursor and store a reference to the default

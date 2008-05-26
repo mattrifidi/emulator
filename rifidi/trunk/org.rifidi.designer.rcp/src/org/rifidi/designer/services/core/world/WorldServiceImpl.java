@@ -209,12 +209,6 @@ public class WorldServiceImpl implements WorldService, CommandStateService,
 	@Override
 	public void setGLCanvas(GLCanvas glCanvas) {
 		this.glCanvas = glCanvas;
-		SWTDisplaySystem displaySys = (SWTDisplaySystem) DisplaySystem
-				.getDisplaySystem("SWTDISPLAYSYS");
-		displaySys.setCurrentGLCanvas(glCanvas);
-		displaySys.createCanvasRenderer(754, 584, ColorRGBA.lightGray);
-
-		displaySys.switchContext(glCanvas);
 		if (renderThread != null) {
 			renderThread = new RenderThread(lock, display, glCanvas, sceneData,
 					messagingService);
