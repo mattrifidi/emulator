@@ -8,7 +8,6 @@
 	<classpathentry kind="lib" path="/org.rifidi.jmeswt/lwjgl_util_applet.jar"/>
 	<classpathentry kind="lib" path="/org.rifidi.jmeswt/lwjgl_util.jar"/>
 	<classpathentry kind="lib" path="/org.rifidi.jmeswt/lwjgl.jar"/>
-	<classpathentry kind="lib" path="commons-logging.jar"/>
 	<classpathentry kind="lib" path="jmonkey.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

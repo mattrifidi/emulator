@@ -1,10 +1,19 @@
+/*
+ *  SWTMouseInput.java
+ *
+ *  Project:		RiFidi Designer - A Virtualization tool for 3D RFID environments
+ *  http://www.rifidi.org
+ *  http://rifidi.sourceforge.net
+ *  Copyright:	    Pramari LLC and the Rifidi Project
+ *  License:		Lesser GNU Public License (LGPL)
+ *  http://www.opensource.org/licenses/lgpl-license.html
+ */
 package org.rifidi.jmonkey;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseMoveListener;
@@ -14,52 +23,64 @@ import com.jme.image.Image;
 import com.jme.input.MouseInput;
 import com.jme.input.MouseInputListener;
 
-public class SWTMouseInput extends MouseInput implements MouseListener, MouseMoveListener {
-	private static Log logger = LogFactory.getLog(SWTMouseInput.class);
+/**
+ * SWT based mouse input to be used with jmonkey.
+ * 
+ * @author Jochen Mader - jochen@pramari.com - August 22, 2008
+ * 
+ */
+public class SWTMouseInput extends MouseInput implements MouseListener,
+		MouseMoveListener {
+	private static final Logger logger = Logger
+	.getLogger(SWTDisplaySystem.class.getName());
 	private int buttonCount = 0;
 
-	private Point lastPos = new Point(0,0);
-	private Point newPos = new Point(0,0);
+	private Point lastPos = new Point(0, 0);
+	private Point newPos = new Point(0, 0);
 
 	private ArrayList<Integer> allowMoveOn = null;
-	private boolean[] buttonStates = null; 
-	
+	private boolean[] buttonStates = null;
+
 	/**
 	 * Default constructor that creates a mouseinput for 3 buttons.
-	 *
+	 * 
 	 */
 	public SWTMouseInput() {
 		super();
-		this.buttonCount=3;
+		this.buttonCount = 3;
 		allowMoveOn = new ArrayList<Integer>();
 		allowMoveOn.add(1);
-		buttonStates=new boolean[buttonCount];
-		for(int count=0;count<buttonCount;count++){
-			buttonStates[count]=false;
-		}		
+		buttonStates = new boolean[buttonCount];
+		for (int count = 0; count < buttonCount; count++) {
+			buttonStates[count] = false;
+		}
 	}
 
-	public void addAllowMoveButton( Integer b ) {
-		if ( b >= -1 && b < buttonCount )
-			if ( !allowMoveOn.contains(b) )
+	public void addAllowMoveButton(Integer b) {
+		if (b >= -1 && b < buttonCount)
+			if (!allowMoveOn.contains(b))
 				allowMoveOn.add(b);
 	}
 
-	public void removeAllowMoveButton( Integer b ) {
-		if ( allowMoveOn.contains(b) )
-			allowMoveOn.remove((Object)b);
+	public void removeAllowMoveButton(Integer b) {
+		if (allowMoveOn.contains(b))
+			allowMoveOn.remove((Object) b);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.jme.input.MouseInput#destroy()
 	 */
 	@Override
 	protected void destroy() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.jme.input.MouseInput#getButtonCount()
 	 */
 	@Override
@@ -67,29 +88,35 @@ public class SWTMouseInput extends MouseInput implements MouseListener, MouseMov
 		return buttonCount;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.jme.input.MouseInput#getButtonIndex(java.lang.String)
 	 */
 	@Override
 	public int getButtonIndex(String buttonName) {
-		String lowerButtonName=buttonName.toLowerCase();
-		if(lowerButtonName.contains("MOUSE")){
-			//TODO: try catch or not try catch that is the question here
+		String lowerButtonName = buttonName.toLowerCase();
+		if (lowerButtonName.contains("MOUSE")) {
+			// TODO: try catch or not try catch that is the question here
 			return Integer.parseInt(lowerButtonName.substring(5));
 		}
-		logger.fatal("Unknown button: "+buttonName);
+		logger.warning("Unknown button: " + buttonName);
 		return -1;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.jme.input.MouseInput#getButtonName(int)
 	 */
 	@Override
 	public String getButtonName(int buttonIndex) {
-		return "MOUSE"+buttonIndex;
+		return "MOUSE" + buttonIndex;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.jme.input.MouseInput#getWheelDelta()
 	 */
 	@Override
@@ -98,7 +125,9 @@ public class SWTMouseInput extends MouseInput implements MouseListener, MouseMov
 		return 0;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.jme.input.MouseInput#getWheelRotation()
 	 */
 	@Override
@@ -107,7 +136,9 @@ public class SWTMouseInput extends MouseInput implements MouseListener, MouseMov
 		return 0;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.jme.input.MouseInput#getXAbsolute()
 	 */
 	@Override
@@ -115,17 +146,21 @@ public class SWTMouseInput extends MouseInput implements MouseListener, MouseMov
 		return newPos.x;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.jme.input.MouseInput#getXDelta()
 	 */
 	@Override
 	public int getXDelta() {
-		int delta=lastPos.x-newPos.x;
-		lastPos.x=newPos.x;
+		int delta = lastPos.x - newPos.x;
+		lastPos.x = newPos.x;
 		return delta;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.jme.input.MouseInput#getYAbsolute()
 	 */
 	@Override
@@ -133,17 +168,21 @@ public class SWTMouseInput extends MouseInput implements MouseListener, MouseMov
 		return newPos.y;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.jme.input.MouseInput#getYDelta()
 	 */
 	@Override
 	public int getYDelta() {
-		int delta=newPos.y-lastPos.y;
-		lastPos.y=newPos.y;
+		int delta = newPos.y - lastPos.y;
+		lastPos.y = newPos.y;
 		return delta;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.jme.input.MouseInput#isButtonDown(int)
 	 */
 	@Override
@@ -151,7 +190,9 @@ public class SWTMouseInput extends MouseInput implements MouseListener, MouseMov
 		return buttonStates[buttonCode];
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.jme.input.MouseInput#isCursorVisible()
 	 */
 	@Override
@@ -160,16 +201,20 @@ public class SWTMouseInput extends MouseInput implements MouseListener, MouseMov
 		return false;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.jme.input.MouseInput#setCursorPosition(int, int)
 	 */
 	@Override
 	public void setCursorPosition(int x, int y) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.jme.input.MouseInput#setCursorVisible(boolean)
 	 */
 	@Override
@@ -177,95 +222,112 @@ public class SWTMouseInput extends MouseInput implements MouseListener, MouseMov
 		// TODO Auto-generated method stub
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.jme.input.MouseInput#setHardwareCursor(java.net.URL, int, int)
 	 */
 	@Override
 	public void setHardwareCursor(URL file, int xHotspot, int yHotspot) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.jme.input.MouseInput#setHardwareCursor(java.net.URL)
 	 */
 	@Override
 	public void setHardwareCursor(URL file) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.jme.input.MouseInput#update()
 	 */
 	@Override
 	public void update() {
-        for (MouseInputListener listener: listeners) {
-        	listener.onMove(newPos.x-lastPos.x, newPos.y-lastPos.y, newPos.x, newPos.y);
-        	for(int count=1;count<getButtonCount();count++){
-        		listener.onButton(count, buttonStates[count], newPos.x, newPos.y);
-        	}
-        }
+		for (MouseInputListener listener : listeners) {
+			listener.onMove(newPos.x - lastPos.x, newPos.y - lastPos.y,
+					newPos.x, newPos.y);
+			for (int count = 1; count < getButtonCount(); count++) {
+				listener.onButton(count, buttonStates[count], newPos.x,
+						newPos.y);
+			}
+		}
 	}
-	
-	
-	//MouseListener methods
-	
-	/* (non-Javadoc)
+
+	// MouseListener methods
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.swt.events.MouseListener#mouseDoubleClick(org.eclipse.swt.events.MouseEvent)
 	 */
 	public void mouseDoubleClick(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.swt.events.MouseListener#mouseDown(org.eclipse.swt.events.MouseEvent)
 	 */
 	public void mouseDown(MouseEvent e) {
-		if(!(buttonStates.length-1>e.button)){
-			buttonStates[e.button]=true;	
+		if (!(buttonStates.length - 1 > e.button)) {
+			buttonStates[e.button] = true;
 		}
-		lastPos.x=e.x;
-		lastPos.y=e.y;
-		newPos.x=lastPos.x;
-		newPos.y=lastPos.y;
+		lastPos.x = e.x;
+		lastPos.y = e.y;
+		newPos.x = lastPos.x;
+		newPos.y = lastPos.y;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.swt.events.MouseListener#mouseUp(org.eclipse.swt.events.MouseEvent)
 	 */
 	public void mouseUp(MouseEvent e) {
-		if(!(buttonStates.length-1>e.button)){
-			buttonStates[e.button]=false;	
+		if (!(buttonStates.length - 1 > e.button)) {
+			buttonStates[e.button] = false;
 		}
-		lastPos.x=0;
-		lastPos.y=0;
-		newPos.x=lastPos.x;
-		newPos.y=lastPos.y;
+		lastPos.x = 0;
+		lastPos.y = 0;
+		newPos.x = lastPos.x;
+		newPos.y = lastPos.y;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.swt.events.MouseMoveListener#mouseMove(org.eclipse.swt.events.MouseEvent)
 	 */
 	public void mouseMove(MouseEvent e) {
-		if( buttonStates[1] ) {
-			lastPos.x=newPos.x;
-			lastPos.y=newPos.y;
-			newPos.x=e.x;
-			newPos.y=e.y;
+		if (buttonStates[1]) {
+			lastPos.x = newPos.x;
+			lastPos.y = newPos.y;
+			newPos.x = e.x;
+			newPos.y = e.y;
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see com.jme.input.MouseInput#setHardwareCursor(java.net.URL, com.jme.image.Image[], int[], int, int)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.jme.input.MouseInput#setHardwareCursor(java.net.URL,
+	 *      com.jme.image.Image[], int[], int, int)
 	 */
 	@Override
 	public void setHardwareCursor(URL file, Image[] images, int[] delays,
 			int hotspot, int hotspot2) {
 		// TODO Auto-generated method stub
-		
-	}	
-	
-}
 
+	}
+
+}

@@ -36,14 +36,14 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.lwjgl.opengl.EXTFramebufferObject;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import org.lwjgl.opengl.GL14;
 import org.lwjgl.opengl.GLContext;
+import org.rifidi.jmonkey.SWTDisplaySystem;
 
 import com.jme.math.Vector3f;
 import com.jme.renderer.Camera;
@@ -66,8 +66,9 @@ import com.jme.util.geom.BufferUtils;
  */
 public class LWJGLOffscreenRenderer implements OffscreenRenderer {
 
-	private static Log logger=LogFactory.getLog(LWJGLOffscreenRenderer.class);
-	
+	private static final Logger logger = Logger
+			.getLogger(SWTDisplaySystem.class.getName());
+
 	private LWJGLCamera camera;
 
 	private ColorRGBA backgroundColor = new ColorRGBA(1, 1, 1, 1);
@@ -83,7 +84,7 @@ public class LWJGLOffscreenRenderer implements OffscreenRenderer {
 
 		isSupported = GLContext.getCapabilities().GL_EXT_framebuffer_object;
 		if (!isSupported) {
-			logger.warn("FBO not supported.");
+			logger.warning("FBO not supported.");
 			// XXX: Fall back to Pbuffer?
 			return;
 		} else {
@@ -101,8 +102,7 @@ public class LWJGLOffscreenRenderer implements OffscreenRenderer {
 		EXTFramebufferObject.glGenFramebuffersEXT(buffer);
 		fboID = buffer.get(0);
 		if (fboID <= 0) {
-			logger.fatal(
-					"Invalid FBO id returned! " + fboID);
+			logger.warning("Invalid FBO id returned! " + fboID);
 			isSupported = false;
 			// XXX: Fall back to Pbuffer?
 			return;
@@ -254,8 +254,8 @@ public class LWJGLOffscreenRenderer implements OffscreenRenderer {
 			deactivate();
 
 		} catch (Exception e) {
-			logger.error(this.getClass().toString()+" "+
-					"render(Spatial) "+e);
+			logger.warning(this.getClass().toString() + " " + "render(Spatial) "
+					+ e);
 			e.printStackTrace();
 		}
 	}
@@ -324,8 +324,8 @@ public class LWJGLOffscreenRenderer implements OffscreenRenderer {
 			deactivate();
 
 		} catch (Exception e) {
-			logger.error(this.getClass().toString()+" "+
-					"render(Spatial, Texture)"+e);
+			logger.warning(this.getClass().toString() + " "
+					+ "render(Spatial, Texture)" + e);
 			e.printStackTrace();
 		}
 	}

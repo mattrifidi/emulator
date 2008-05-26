@@ -1,5 +1,14 @@
+/*
+ *  Mapping.java
+ *
+ *  Project:		RiFidi Designer - A Virtualization tool for 3D RFID environments
+ *  http://www.rifidi.org
+ *  http://rifidi.sourceforge.net
+ *  Copyright:	    Pramari LLC and the Rifidi Project
+ *  License:		Lesser GNU Public License (LGPL)
+ *  http://www.opensource.org/licenses/lgpl-license.html
+ */
 package org.rifidi.jmonkey;
-
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -10,7 +19,9 @@ import org.eclipse.swt.SWT;
 import org.lwjgl.input.Keyboard;
 
 /**
- * @author jochen
+ * Helper class for converting SWT events to LWJGL events.
+ * 
+ * @author Jochen Mader - jochen@pramari.com - August 22, 2007
  * 
  */
 public class Mapping {
@@ -103,22 +114,25 @@ public class Mapping {
 	public static final int KEY_F13 = SWT.F13;
 	public static final int KEY_F14 = SWT.F14;
 	public static final int KEY_F15 = SWT.F15;
-	public static final int KEY_KANA = -1; 				/* (Japanese keyboard) */
-	public static final int KEY_CONVERT = -1; 			/* (Japanese keyboard) */
-	public static final int KEY_NOCONVERT = -1; 		/* (Japanese keyboard) */
-	public static final int KEY_YEN = -1; 				/* (Japanese keyboard) */
+	public static final int KEY_KANA = -1; /* (Japanese keyboard) */
+	public static final int KEY_CONVERT = -1; /* (Japanese keyboard) */
+	public static final int KEY_NOCONVERT = -1; /* (Japanese keyboard) */
+	public static final int KEY_YEN = -1; /* (Japanese keyboard) */
 	public static final int KEY_NUMPADEQUALS = SWT.KEYPAD_EQUAL;
-	public static final int KEY_CIRCUMFLEX = -1; 		/* (Japanese keyboard) */
-	public static final int KEY_AT = -1; 				/* (NEC PC98) */
-	public static final int KEY_COLON = -1; 			/* (NEC PC98) */
-	public static final int KEY_UNDERLINE = -1; 		/* (NEC PC98) */
-	public static final int KEY_KANJI = -1; 			/* (Japanese keyboard) */
-	public static final int KEY_STOP = -1; 				/* (NEC PC98) */
-	public static final int KEY_AX = -1; 				/* (Japan AX) */
-	public static final int KEY_UNLABELED = -1; 		/* (J3100) */
+	public static final int KEY_CIRCUMFLEX = -1; /* (Japanese keyboard) */
+	public static final int KEY_AT = -1; /* (NEC PC98) */
+	public static final int KEY_COLON = -1; /* (NEC PC98) */
+	public static final int KEY_UNDERLINE = -1; /* (NEC PC98) */
+	public static final int KEY_KANJI = -1; /* (Japanese keyboard) */
+	public static final int KEY_STOP = -1; /* (NEC PC98) */
+	public static final int KEY_AX = -1; /* (Japan AX) */
+	public static final int KEY_UNLABELED = -1; /* (J3100) */
 	public static final int KEY_NUMPADENTER = SWT.KEYPAD_CR;
 	public static final int KEY_RCONTROL = SWT.CONTROL;
-	public static final int KEY_NUMPADCOMMA = -1; 		/* = on numeric keypad (NEC PC98) */
+	public static final int KEY_NUMPADCOMMA = -1; /*
+													 * = on numeric keypad (NEC
+													 * PC98)
+													 */
 	public static final int KEY_DIVIDE = SWT.KEYPAD_DIVIDE;
 	public static final int KEY_SYSRQ = -1;
 	public static final int KEY_RMENU = SWT.ALT;
@@ -135,7 +149,7 @@ public class Mapping {
 	public static final int KEY_DELETE = SWT.DEL;
 	public static final int KEY_LWIN = SWT.COMMAND;
 	public static final int KEY_RWIN = SWT.COMMAND;
-	public static final int KEY_APPS = -1; 				/* AppMenu key */
+	public static final int KEY_APPS = -1; /* AppMenu key */
 	public static final int KEY_POWER = -1;
 	public static final int KEY_SLEEP = -1;
 
@@ -158,7 +172,7 @@ public class Mapping {
 
 			}
 		} catch (Exception e) {
-			//TODO: remove after a godd amount of testing :D
+			// TODO: remove after a godd amount of testing :D
 			System.out.println(e);
 		}
 	}
