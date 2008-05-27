@@ -8,7 +8,7 @@
  *  License:		Lesser GNU Public License (LGPL)
  *  http://www.opensource.org/licenses/lgpl-license.html
  */
-package org.rifidi.designer.utils;
+package org.rifidi.jmeswt.utils;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
