@@ -6,8 +6,11 @@ import java.util.concurrent.LinkedBlockingQueue;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.rifidi.emulator.rmi.server.ReaderModuleManagerInterface;
-import org.rifidi.emulator.tags.impl.RifidiTag;
-import org.rifidi.emulator.tags.utils.RifidiTagFactory;
+import org.rifidi.services.annotations.Inject;
+import org.rifidi.services.registry.ServiceRegistry;
+import org.rifidi.services.tags.factory.TagCreationPattern;
+import org.rifidi.services.tags.impl.RifidiTag;
+import org.rifidi.services.tags.registry.ITagRegistry;
 import org.rifidi.streamer.exceptions.NotInitializedException;
 import org.rifidi.streamer.registry.InputObjectRegistry;
 import org.rifidi.streamer.xml.actions.Action;
@@ -39,9 +42,12 @@ public class PathItemExecuter implements Runnable {
 	private PathItemExecuter nextPathItem;
 
 	private String pathItemDescription;
+	
+	private ITagRegistry tagRegistry;
 
 	public PathItemExecuter(int ID, PathItem pathItem,
 			InputObjectRegistry registry, ScenarioExecuter scenario) {
+		ServiceRegistry.getInstance().service(this);
 		this.ID = ID;
 		this.pathItem = pathItem;
 		this.scenario = scenario;
@@ -133,25 +139,26 @@ public class PathItemExecuter implements Runnable {
 		logger.info(pathItemDescription + " - executing TagAction");
 		ArrayList<RifidiTag> tags = null;
 		if (tagAction.isRegenerate()) {
-			tags = new ArrayList<RifidiTag>();
-			for (int i = 0; i < tagAction.getNumber(); i++) {
-				RifidiTag rifidiTag = RifidiTagFactory.createTag(tagAction
-						.getTagGen(), tagAction.getTagType(), null, tagAction
-						.getPrefix());
-				tags.add(rifidiTag);
-			}
+			TagCreationPattern pattern = new TagCreationPattern();
+			pattern.setNumberOfTags(tagAction.getNumber());
+			pattern.setPrefix(tagAction.getPrefix());
+			pattern.setTagGeneration(tagAction.getTagGen());
+			pattern.setTagType(tagAction.getTagType());
+			tags = tagRegistry.createTags(pattern);
+	
 		} else {
 			tags = new ArrayList<RifidiTag>();
 			logger.debug("This feature is not yet implemented");
 		}
+		logger.debug("Adding Tags " + tags.get(0).getTagEntitiyID() +  " - " + tags.get(tags.size() - 1).getTagEntitiyID());
 		int antennaNum = pathItem.getAntennaNum();
 		reader.addTags(antennaNum, tags);
+		
 		Thread.sleep(tagAction.getExecDuration());
-		ArrayList<byte[]> tagsToRemove = new ArrayList<byte[]>();
-		for (RifidiTag tag : tags) {
-			tagsToRemove.add(tag.toByte());
-		}
-		reader.removeTags(antennaNum, tagsToRemove);
+		
+		logger.debug("Removing Tags " + tags.get(0).getTagEntitiyID() +  " - " + tags.get(tags.size() - 1).getTagEntitiyID());
+		reader.removeTags(antennaNum, tags);
+		tagRegistry.remove(tags);
 	}
 
 	private void waitAction(WaitAction waitAction) throws InterruptedException {
@@ -184,5 +191,10 @@ public class PathItemExecuter implements Runnable {
 
 	public int getID() {
 		return ID;
+	}
+	
+	@Inject
+	public void setTagRegistry(ITagRegistry tagRegistry){
+		this.tagRegistry = tagRegistry;
 	}
 }

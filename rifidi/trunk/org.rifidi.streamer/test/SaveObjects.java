@@ -7,8 +7,8 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
 import org.rifidi.emulator.reader.module.GeneralReaderPropertyHolder;
-import org.rifidi.emulator.tags.enums.TagGen;
-import org.rifidi.emulator.tags.id.TagType;
+import org.rifidi.services.tags.enums.TagGen;
+import org.rifidi.services.tags.id.TagType;
 import org.rifidi.streamer.xml.BatchSuite;
 import org.rifidi.streamer.xml.ComponentSuite;
 import org.rifidi.streamer.xml.LoadTestSuite;
