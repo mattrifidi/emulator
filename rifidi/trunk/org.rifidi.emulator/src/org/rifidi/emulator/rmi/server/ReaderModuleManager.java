@@ -32,7 +32,6 @@ public class ReaderModuleManager implements ReaderModuleManagerInterface {
 
 	private static final Log logger = LogFactory
 			.getLog(ReaderModuleManager.class);
-	
 
 	private ReaderModule reader;
 
@@ -51,7 +50,8 @@ public class ReaderModuleManager implements ReaderModuleManagerInterface {
 	 *      java.util.Collection)
 	 */
 	public void addTags(int antennaNum, Collection<RifidiTag> tagsToAdd) {
-		logger.info("Adding " + tagsToAdd.size() + " tags to antenna " + antennaNum + " on " + reader.getName());
+		logger.info("Adding " + tagsToAdd.size() + " tags to antenna "
+				+ antennaNum + " on " + reader.getName());
 		GenericRadio r = (GenericRadio) reader.getSharedResources().getRadio();
 		r.getAntennas().get(antennaNum).addTags(tagsToAdd);
 
@@ -99,10 +99,10 @@ public class ReaderModuleManager implements ReaderModuleManagerInterface {
 	 *      java.util.Collection)
 	 */
 	public void removeTags(int antennaNum, Collection<Long> tagIDsToRemove) {
-		logger.info("Removing " + tagIDsToRemove.size() + " tags on antenna " + antennaNum + " on " + reader.getName());
+		logger.info("Removing " + tagIDsToRemove.size() + " tags on antenna "
+				+ antennaNum + " on " + reader.getName());
 		GenericRadio r = (GenericRadio) reader.getSharedResources().getRadio();
-		boolean lol = r.getAntennas().get(antennaNum)
-				.removeTags(tagIDsToRemove);
+		r.getAntennas().get(antennaNum).removeTags(tagIDsToRemove);
 	}
 
 	/*
@@ -237,6 +237,21 @@ public class ReaderModuleManager implements ReaderModuleManagerInterface {
 			e.printStackTrace();
 			return new ArrayList<RifidiTag>();
 		}
+	}
+
+	@Override
+	public void removeTags(int antennaNum, List<RifidiTag> tagsToRemove)
+			throws Exception {
+		ArrayList<Long> tagEntityIDs = new ArrayList<Long>(tagsToRemove.size());
+		for (RifidiTag t : tagsToRemove) {
+			tagEntityIDs.add(t.getTagEntitiyID());
+		}
+		
+		logger.info("Removing " + tagEntityIDs.size() + " tags on antenna "
+				+ antennaNum + " on " + reader.getName());
+		GenericRadio r = (GenericRadio) reader.getSharedResources().getRadio();
+		r.getAntennas().get(antennaNum).removeTags(tagEntityIDs);
+
 	}
 
 }
