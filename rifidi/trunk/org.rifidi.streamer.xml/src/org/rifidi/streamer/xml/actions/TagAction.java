@@ -12,8 +12,8 @@ package org.rifidi.streamer.xml.actions;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.rifidi.emulator.tags.enums.TagGen;
-import org.rifidi.emulator.tags.id.TagType;
+import org.rifidi.services.tags.enums.TagGen;
+import org.rifidi.services.tags.id.TagType;
 
 /**
  * This ist the TagAction implementation
