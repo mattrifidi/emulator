@@ -10,6 +10,7 @@
  */
 package org.rifidi.services.tags.registry;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.rifidi.services.tags.factory.TagCreationPattern;
@@ -43,7 +44,7 @@ public interface ITagRegistry {
 	 * @param tagCreationPattern
 	 * @return The list of tags that were created
 	 */
-	public List<RifidiTag> createTags(TagCreationPattern tagCreationPattern);
+	public ArrayList<RifidiTag> createTags(TagCreationPattern tagCreationPattern);
 
 	/**
 	 * This method removes the given tag from the registry

@@ -65,7 +65,7 @@ public class TagFactory {
 	 * @param tagCreationPattern
 	 * @return
 	 */
-	public static List<RifidiTag> generateTags(
+	public static ArrayList<RifidiTag> generateTags(
 			TagCreationPattern tagCreationPattern) {
 
 		HashMap<byte[], RifidiTag> ids = new HashMap<byte[], RifidiTag>();

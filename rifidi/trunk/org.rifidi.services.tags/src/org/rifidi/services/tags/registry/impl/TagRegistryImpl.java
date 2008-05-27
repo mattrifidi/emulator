@@ -10,6 +10,7 @@
  */
 package org.rifidi.services.tags.registry.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.rifidi.services.tags.factory.TagCreationPattern;
@@ -54,8 +55,8 @@ public class TagRegistryImpl implements ITagRegistry {
 	 * @see org.rifidi.emulator.tags.service.TagRegistryService#createTags(org.rifidi.emulator.tags.factory.TagCreationPattern)
 	 */
 	@Override
-	public List<RifidiTag> createTags(TagCreationPattern tagCreationPattern) {
-		List<RifidiTag> newTags = TagFactory.generateTags(tagCreationPattern);
+	public ArrayList<RifidiTag> createTags(TagCreationPattern tagCreationPattern) {
+		ArrayList<RifidiTag> newTags = TagFactory.generateTags(tagCreationPattern);
 		for(RifidiTag t : newTags){
 			t.setTagEntitiyID(this.uniqueIDSeed);
 			uniqueIDSeed++;
