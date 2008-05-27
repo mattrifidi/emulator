@@ -1,4 +1,4 @@
-package org.rifidi.utilities.node;
+package org.rifidi.jmeswt.utils;
 
 import java.util.ArrayList;
 import java.util.List;
