@@ -27,7 +27,6 @@ import org.rifidi.designer.rcp.GlobalProperties;
 import org.rifidi.designer.rcp.views.minimapview.MiniMapView;
 import org.rifidi.designer.services.core.messaging.MessagingService;
 import org.rifidi.jmonkey.SWTDisplaySystem;
-import org.rifidi.services.registry.ServiceRegistry;
 import org.rifidi.utilities.text.GroupAlreadyExistsException;
 import org.rifidi.utilities.text.OverlayAlreadyExistsException;
 import org.rifidi.utilities.text.TextOverlay;
@@ -101,7 +100,7 @@ public class RenderThread extends Thread {
 	 * @param sceneData
 	 *            currently loaded scene
 	 * @param messagingService
-	 * 			  current messaging service
+	 *            current messaging service
 	 */
 	public RenderThread(ReentrantLock lock, Display display, GLCanvas glCanvas,
 			SceneData sceneData, MessagingService messagingService) {
@@ -117,12 +116,12 @@ public class RenderThread extends Thread {
 			TextOverlay textOverlay = TextOverlayManager.getInstance()
 					.createOverlay(glCanvas);
 			textOverlayGroup = textOverlay.createGroup("readerEvents");
-			messagingService.subscribeOverlayGroup(
-					"readerEvents", textOverlayGroup);
+			messagingService.subscribeOverlayGroup("readerEvents",
+					textOverlayGroup);
 		} catch (OverlayAlreadyExistsException e) {
-			e.printStackTrace();
+			logger.warn(e);
 		} catch (GroupAlreadyExistsException e) {
-			e.printStackTrace();
+			logger.warn(e);
 		}
 	}
 
@@ -153,7 +152,7 @@ public class RenderThread extends Thread {
 				try {
 					sleep(40);
 				} catch (InterruptedException e) {
-					e.printStackTrace();
+					Thread.currentThread().interrupt();
 				}
 			}
 		} catch (SWTException e) {
@@ -207,7 +206,7 @@ public class RenderThread extends Thread {
 		/**
 		 * Set to true after the first run of the runnable.
 		 */
-		private boolean firstRun=false;
+		private boolean firstRun = false;
 
 		/**
 		 * Constructor.
@@ -285,7 +284,7 @@ public class RenderThread extends Thread {
 					}
 
 					textOverlayGroup.render(displaySys.getRenderer());
-					if(firstRun){
+					if (firstRun) {
 						displaySys.getRenderer().displayBackBuffer();
 						glCanvas.swapBuffers();
 					}
@@ -298,7 +297,8 @@ public class RenderThread extends Thread {
 								.findView(MiniMapView.ID);
 						if (miniMapView != null) {
 
-							firstRun=true;			miniMapView.setMapCamera(offy.getCamera());
+							firstRun = true;
+							miniMapView.setMapCamera(offy.getCamera());
 						}
 					}
 					if (offy.isSupported() && miniMapView != null
@@ -309,7 +309,7 @@ public class RenderThread extends Thread {
 					if (miniMapView != null) {
 						minimapCounter++;
 					}
-					firstRun=true;
+					firstRun = true;
 				} catch (SWTException swte) {
 					// exception occurs if widget is
 					// disposed
@@ -327,12 +327,13 @@ public class RenderThread extends Thread {
 		 * @param rootNode
 		 */
 		ImageData imgData;
+
 		private void renderMinimap() {
 			offy.render(compositeNode);
 			IntBuffer buffer = offy.getImageData();
-			if(imgData==null){
-				imgData = new ImageData(200, 200, 32, new PaletteData(
-						0xFF0000, 0x00FF00, 0x0000FF));
+			if (imgData == null) {
+				imgData = new ImageData(200, 200, 32, new PaletteData(0xFF0000,
+						0x00FF00, 0x0000FF));
 			}
 			for (int y = 0; y < 200; y++) {
 				for (int x = 0; x < 200; x++) {

@@ -154,7 +154,7 @@ public class UpdateThread extends Thread implements KeyListener {
 			try {
 				sleep(10);
 			} catch (InterruptedException e) {
-				// we can ignore this buddy
+				Thread.currentThread().interrupt();
 			}
 			if (isPaused()) {
 				offset += 0.001f;

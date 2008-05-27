@@ -29,7 +29,7 @@ import org.rifidi.designer.services.core.entities.SceneDataChangedListener;
 import org.rifidi.designer.services.core.entities.SceneDataService;
 import org.rifidi.designer.services.core.world.RepeatedUpdateAction;
 import org.rifidi.designer.services.core.world.WorldService;
-import org.rifidi.designer.utils.Helpers;
+import org.rifidi.jmeswt.utils.Helpers;
 import org.rifidi.services.annotations.Inject;
 import org.rifidi.services.registry.ServiceRegistry;
 
