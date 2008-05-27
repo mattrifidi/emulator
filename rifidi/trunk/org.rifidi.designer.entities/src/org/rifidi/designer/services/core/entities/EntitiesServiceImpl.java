@@ -48,7 +48,7 @@ import org.rifidi.designer.entities.interfaces.RifidiEntity;
 import org.rifidi.designer.entities.interfaces.VisualEntityHolder;
 import org.rifidi.designer.entities.placement.BitMap;
 import org.rifidi.designer.library.EntityLibraryRegistry;
-import org.rifidi.designer.utils.Helpers;
+import org.rifidi.jmeswt.utils.Helpers;
 import org.rifidi.services.annotations.Inject;
 import org.rifidi.services.initializer.IInitService;
 import org.rifidi.services.initializer.exceptions.InitializationException;
