@@ -84,7 +84,7 @@ public class RenderThread extends Thread {
 	 * Constructor.
 	 * 
 	 * @param locklock
-	 *            ahred with update thread.
+	 *            shared with update thread.
 	 * @param display
 	 *            default eclipse display
 	 * @param glCanvas
