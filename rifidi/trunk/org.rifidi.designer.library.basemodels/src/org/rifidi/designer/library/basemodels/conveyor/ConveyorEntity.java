@@ -27,7 +27,7 @@ import org.rifidi.designer.entities.interfaces.GPI;
 import org.rifidi.designer.entities.interfaces.NeedsPhysics;
 import org.rifidi.designer.entities.interfaces.Switch;
 import org.rifidi.designer.entities.placement.BinaryPattern;
-import org.rifidi.utilities.node.NodeHelper;
+import org.rifidi.jmeswt.utils.NodeHelper;
 
 import com.jme.bounding.BoundingBox;
 import com.jme.input.InputHandler;
