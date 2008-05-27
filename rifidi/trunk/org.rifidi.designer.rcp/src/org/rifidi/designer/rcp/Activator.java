@@ -23,8 +23,6 @@ import org.rifidi.designer.services.core.entities.ProductService;
 import org.rifidi.designer.services.core.entities.SceneDataService;
 import org.rifidi.designer.services.core.events.EventsService;
 import org.rifidi.designer.services.core.events.EventsServiceImpl;
-import org.rifidi.designer.services.core.messaging.MessagingService;
-import org.rifidi.designer.services.core.messaging.MessagingServiceImpl;
 import org.rifidi.designer.services.core.selection.SelectionService;
 import org.rifidi.designer.services.core.selection.SelectionServiceImpl;
 import org.rifidi.designer.services.core.world.CommandStateService;
@@ -102,8 +100,6 @@ public class Activator extends AbstractUIPlugin {
 				null);
 		context.registerService(EventsService.class.getName(),
 				new EventsServiceImpl(), null);
-		context.registerService(MessagingService.class.getName(),
-				new MessagingServiceImpl(), null);
 		context.registerService(SelectionService.class.getName(),
 				new SelectionServiceImpl(), null);
 		context.registerService(new String[] { WorldService.class.getName(),

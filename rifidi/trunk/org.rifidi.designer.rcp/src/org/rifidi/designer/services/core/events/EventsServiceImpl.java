@@ -29,8 +29,6 @@ import org.rifidi.designer.rcp.Activator;
 import org.rifidi.designer.services.core.entities.FinderService;
 import org.rifidi.services.annotations.Inject;
 import org.rifidi.services.registry.ServiceRegistry;
-import org.rifidi.utilities.messaging.MessagingSystem;
-import org.rifidi.utilities.messaging.exceptions.NoSuchCategoryException;
 
 /**
  * Base implementation of the events service.
@@ -269,21 +267,15 @@ public class EventsServiceImpl implements EventsService {
 					// if (eventTypes.contains(worldEvent.eventType)) {
 					// recorded.add(worldEvent);
 					// }
-					try {
-						if (worldEvent instanceof TagEvent) {
-							msgConsoleStreamGreen
-									.println(worldEvent.toString());
-						} else if (worldEvent instanceof WatchAreaEvent) {
-							msgConsoleStreamRed.println(worldEvent.toString());
-						} else if (worldEvent instanceof WarningEvent) {
-							MessagingSystem.getInstance().postMessage(
-									"readerEvents", worldEvent.toString());
-						} else {
-							msgConsoleStreamBlack
-									.println(worldEvent.toString());
-						}
-					} catch (NoSuchCategoryException e) {
-						e.printStackTrace();
+					if (worldEvent instanceof TagEvent) {
+						msgConsoleStreamGreen.println(worldEvent.toString());
+					} else if (worldEvent instanceof WatchAreaEvent) {
+						msgConsoleStreamRed.println(worldEvent.toString());
+//					} else if (worldEvent instanceof WarningEvent) {
+//						MessagingSystem.getInstance().postMessage(
+//								"readerEvents", worldEvent.toString());
+					} else {
+						msgConsoleStreamBlack.println(worldEvent.toString());
 					}
 				}
 				try {

@@ -30,7 +30,7 @@ import org.rifidi.designer.services.core.camera.CameraService;
 import org.rifidi.designer.services.core.collision.FieldService;
 import org.rifidi.designer.services.core.entities.SceneDataChangedListener;
 import org.rifidi.designer.services.core.entities.SceneDataService;
-import org.rifidi.designer.services.core.messaging.MessagingService;
+import org.rifidi.designer.services.core.messaging.FadingTextNode;
 import org.rifidi.jmeswt.utils.Helpers;
 import org.rifidi.jmonkey.SWTDisplaySystem;
 import org.rifidi.services.annotations.Inject;
@@ -94,10 +94,6 @@ public class WorldServiceImpl implements WorldService, CommandStateService,
 	 */
 	private SceneDataService sceneDataService;
 	/**
-	 * reference to the messaging service.
-	 */
-	private MessagingService messagingService;
-	/**
 	 * Reference to the field service.
 	 */
 	private FieldService fieldService;
@@ -105,6 +101,8 @@ public class WorldServiceImpl implements WorldService, CommandStateService,
 	 * Reference to the camera service.
 	 */
 	private CameraService cameraService;
+
+	private FadingTextNode fadingTextNode;
 
 	/**
 	 * Constructor.
@@ -211,7 +209,7 @@ public class WorldServiceImpl implements WorldService, CommandStateService,
 		this.glCanvas = glCanvas;
 		if (renderThread != null) {
 			renderThread = new RenderThread(lock, display, glCanvas, sceneData,
-					messagingService);
+					fadingTextNode);
 			renderThread.start();
 		}
 	}
@@ -225,17 +223,17 @@ public class WorldServiceImpl implements WorldService, CommandStateService,
 	public void sceneDataChanged(SceneData sceneData) {
 		logger.debug("starting threads");
 		this.sceneData = sceneData;
-
+		fadingTextNode = new FadingTextNode("teeeest", 2);
 		lock = new ReentrantLock();
 		// create the render thread
 		renderThread = new RenderThread(lock, display, glCanvas, sceneData,
-				messagingService);
+				fadingTextNode);
 
 		// create the update thread
 		if (updateThread != null)
 			glCanvas.removeKeyListener(updateThread);
 		updateThread = new UpdateThread(lock, sceneData, repeatedActions,
-				fieldService, cameraService);
+				fieldService, cameraService, fadingTextNode);
 		updateThread.setPaused(true);
 		glCanvas.addKeyListener(updateThread);
 
@@ -318,24 +316,6 @@ public class WorldServiceImpl implements WorldService, CommandStateService,
 		logger.debug("WorldService got SceneDataService");
 		this.sceneDataService = sceneDataService;
 		sceneDataService.addSceneDataChangedListener(this);
-	}
-
-	/**
-	 * @param messagingService
-	 *            the messagingService to unset
-	 */
-	public void unsetMessagingService(MessagingService messagingService) {
-		this.messagingService = null;
-	}
-
-	/**
-	 * @param messagingService
-	 *            the messagingService to set
-	 */
-	@Inject
-	public void setMessagingService(MessagingService messagingService) {
-		logger.debug("WorldService got MessagingService");
-		this.messagingService = messagingService;
 	}
 
 	/**

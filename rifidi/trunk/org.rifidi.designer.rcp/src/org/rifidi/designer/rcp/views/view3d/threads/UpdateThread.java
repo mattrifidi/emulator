@@ -21,8 +21,8 @@ import org.eclipse.swt.events.KeyListener;
 import org.rifidi.designer.entities.SceneData;
 import org.rifidi.designer.services.core.camera.CameraService;
 import org.rifidi.designer.services.core.collision.FieldService;
+import org.rifidi.designer.services.core.messaging.FadingTextNode;
 import org.rifidi.designer.services.core.world.RepeatedUpdateAction;
-import org.rifidi.utilities.text.TextOverlayManager;
 
 import com.jme.math.Vector3f;
 import com.jme.renderer.Camera;
@@ -88,6 +88,7 @@ public class UpdateThread extends Thread implements KeyListener {
 	 */
 	private FieldService fieldService;
 
+	private FadingTextNode fadingTextNode;
 	/**
 	 * 
 	 * @param rootNode
@@ -100,7 +101,7 @@ public class UpdateThread extends Thread implements KeyListener {
 	 * 			  current fieldservice
 	 */
 	public UpdateThread(ReentrantLock lock, SceneData sceneData,
-			List<RepeatedUpdateAction> repeatedActions, FieldService fieldService, CameraService cameraService) {
+			List<RepeatedUpdateAction> repeatedActions, FieldService fieldService, CameraService cameraService, FadingTextNode fadingTextNode) {
 		logger.debug("New UpdateThread instantiated.");
 		timer = Timer.getTimer();
 		this.lock = lock;
@@ -109,6 +110,7 @@ public class UpdateThread extends Thread implements KeyListener {
 		this.repeatedActions = Collections.synchronizedList(repeatedActions);
 		this.fieldService = fieldService;
 		this.cameraService=cameraService;
+		this.fadingTextNode=fadingTextNode;
 	}
 
 	/*
@@ -136,7 +138,7 @@ public class UpdateThread extends Thread implements KeyListener {
 				sceneData.getCollisionHandler().update(dt);
 				sceneData.getPhysicsSpace().update(dt);
 			}
-			TextOverlayManager.getInstance().update(dt);
+			fadingTextNode.update(dt);
 			float timePassed = currentTime - lasttick;
 			synchronized (repeatedActions) {
 				for (RepeatedUpdateAction action : repeatedActions) {

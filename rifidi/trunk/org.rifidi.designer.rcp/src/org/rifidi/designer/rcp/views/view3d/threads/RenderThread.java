@@ -25,13 +25,8 @@ import org.lwjgl.opengl.EXTFramebufferObject;
 import org.rifidi.designer.entities.SceneData;
 import org.rifidi.designer.rcp.GlobalProperties;
 import org.rifidi.designer.rcp.views.minimapview.MiniMapView;
-import org.rifidi.designer.services.core.messaging.MessagingService;
+import org.rifidi.designer.services.core.messaging.FadingTextNode;
 import org.rifidi.jmonkey.SWTDisplaySystem;
-import org.rifidi.utilities.text.GroupAlreadyExistsException;
-import org.rifidi.utilities.text.OverlayAlreadyExistsException;
-import org.rifidi.utilities.text.TextOverlay;
-import org.rifidi.utilities.text.TextOverlayGroup;
-import org.rifidi.utilities.text.TextOverlayManager;
 
 import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
@@ -83,11 +78,8 @@ public class RenderThread extends Thread {
 	 * Is the rendering thread paused?
 	 */
 	private boolean running = false;
-	/**
-	 * Group for textoverlay display.
-	 */
-	private TextOverlayGroup textOverlayGroup;
 
+	private FadingTextNode fadingTextNode;
 	/**
 	 * Constructor.
 	 * 
@@ -103,26 +95,14 @@ public class RenderThread extends Thread {
 	 *            current messaging service
 	 */
 	public RenderThread(ReentrantLock lock, Display display, GLCanvas glCanvas,
-			SceneData sceneData, MessagingService messagingService) {
+			SceneData sceneData, FadingTextNode fadingTextNode) {
 		logger.debug("New RenderThread instantiated.");
+		this.fadingTextNode=fadingTextNode;
 		this.display = display;
 		this.lock = lock;
 		this.glCanvas = glCanvas;
 		this.sceneData = sceneData;
 		this.setName("RenderThread");
-
-		try {
-			TextOverlayManager.create();
-			TextOverlay textOverlay = TextOverlayManager.getInstance()
-					.createOverlay(glCanvas);
-			textOverlayGroup = textOverlay.createGroup("readerEvents");
-			messagingService.subscribeOverlayGroup("readerEvents",
-					textOverlayGroup);
-		} catch (OverlayAlreadyExistsException e) {
-			logger.warn(e);
-		} catch (GroupAlreadyExistsException e) {
-			logger.warn(e);
-		}
 	}
 
 	/*
@@ -140,7 +120,7 @@ public class RenderThread extends Thread {
 		}
 		try {
 			// create the runnable to loop on
-			renderRunnable = new RenderRunnable(lock);
+			renderRunnable = new RenderRunnable(lock, fadingTextNode);
 
 			// start the main render loop
 			logger.debug("RenderThread started!");
@@ -207,19 +187,20 @@ public class RenderThread extends Thread {
 		 * Set to true after the first run of the runnable.
 		 */
 		private boolean firstRun = false;
-
+		private FadingTextNode textNode;
 		/**
 		 * Constructor.
 		 * 
 		 * @param lock
 		 *            shared lock
 		 */
-		public RenderRunnable(ReentrantLock lock) {
+		public RenderRunnable(ReentrantLock lock, FadingTextNode fadingTextNode) {
 			displaySys = (SWTDisplaySystem) DisplaySystem.getDisplaySystem();
 
 			compositeNode = new Node();
 			compositeNode.attachChild(sceneData.getRootNode());
 			compositeNode.attachChild(sceneData.getRoomNode());
+			this.textNode=fadingTextNode;
 		}
 
 		/*
@@ -282,8 +263,8 @@ public class RenderThread extends Thread {
 						Debugger.drawBounds(sceneData.getRootNode(), displaySys
 								.getRenderer());
 					}
-
-					textOverlayGroup.render(displaySys.getRenderer());
+					textNode.update(0);
+					textNode.render(displaySys.getRenderer());
 					if (firstRun) {
 						displaySys.getRenderer().displayBackBuffer();
 						glCanvas.swapBuffers();
