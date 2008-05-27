@@ -227,5 +227,4 @@ Export-Package: Jama,
  org.rifidi.utilities.messaging,
  org.rifidi.utilities.messaging.exceptions,
  org.rifidi.utilities.node,
- org.rifidi.utilities.swt,
  org.rifidi.utilities.text

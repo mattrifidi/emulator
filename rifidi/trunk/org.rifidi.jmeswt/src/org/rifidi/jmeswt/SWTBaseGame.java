@@ -22,9 +22,9 @@ import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.opengl.GLCanvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.rifidi.jmeswt.input.SWTKeyInput;
+import org.rifidi.jmeswt.input.SWTMouseInput;
 import org.rifidi.jmonkey.SWTDisplaySystem;
-import org.rifidi.jmonkey.SWTKeyInput;
-import org.rifidi.jmonkey.SWTMouseInput;
 
 import com.jme.app.AbstractGame;
 import com.jme.input.KeyInput;
@@ -328,7 +328,6 @@ public abstract class SWTBaseGame extends AbstractGame {
 		initSystem();
 		assertDisplayCreated();
 		initGame();
-		simpleInitGame();
 		updateThread = new UpdateThread(this, gameSemaphore, updateResolution);
 		updateThread.start();
 		renderThread = new RenderThread(this, gameSemaphore, renderResolution);
