@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseMoveListener;
+import org.eclipse.swt.events.MouseWheelListener;
 import org.eclipse.swt.graphics.Point;
 
 import com.jme.image.Image;
@@ -30,16 +31,38 @@ import com.jme.input.MouseInputListener;
  * 
  */
 public class SWTMouseInput extends MouseInput implements MouseListener,
-		MouseMoveListener {
+		MouseMoveListener, MouseWheelListener {
+	/**
+	 * Logger for this class.
+	 */
 	private static final Logger logger = Logger
-	.getLogger(SWTDisplaySystem.class.getName());
+			.getLogger(SWTDisplaySystem.class.getName());
+	/**
+	 * Number of availabel buttons.
+	 */
 	private int buttonCount = 0;
-
+	/**
+	 * Last pointer position.
+	 */
 	private Point lastPos = new Point(0, 0);
+	/**
+	 * New pointer position.
+	 */
 	private Point newPos = new Point(0, 0);
 
 	private ArrayList<Integer> allowMoveOn = null;
+	/**
+	 * State array for the buttons (true=pressed).
+	 */
 	private boolean[] buttonStates = null;
+	/**
+	 * The amount the mousewheel has moved.
+	 */
+	private int mouseWheelDelta = 0;
+	/**
+	 * Position where the mousewheel was turned.
+	 */
+	private Point wheelPos = new Point(0, 0);
 
 	/**
 	 * Default constructor that creates a mouseinput for 3 buttons.
@@ -197,7 +220,7 @@ public class SWTMouseInput extends MouseInput implements MouseListener,
 	 */
 	@Override
 	public boolean isCursorVisible() {
-		// TODO Auto-generated method stub
+		logger.warning("isCursorVisible not implemented");
 		return false;
 	}
 
@@ -208,8 +231,8 @@ public class SWTMouseInput extends MouseInput implements MouseListener,
 	 */
 	@Override
 	public void setCursorPosition(int x, int y) {
-		// TODO Auto-generated method stub
-
+		logger
+				.warning("Use Display.getCurrent().setCursorLocation() for positioning the mouse!");
 	}
 
 	/*
@@ -219,7 +242,7 @@ public class SWTMouseInput extends MouseInput implements MouseListener,
 	 */
 	@Override
 	public void setCursorVisible(boolean v) {
-		// TODO Auto-generated method stub
+		logger.warning("Use SWTDisplaySystem.hideMouse/showMouse!");
 	}
 
 	/*
@@ -229,8 +252,7 @@ public class SWTMouseInput extends MouseInput implements MouseListener,
 	 */
 	@Override
 	public void setHardwareCursor(URL file, int xHotspot, int yHotspot) {
-		// TODO Auto-generated method stub
-
+		logger.warning("setHardwareCursor not implemented");
 	}
 
 	/*
@@ -240,8 +262,7 @@ public class SWTMouseInput extends MouseInput implements MouseListener,
 	 */
 	@Override
 	public void setHardwareCursor(URL file) {
-		// TODO Auto-generated method stub
-
+		logger.warning("setHardwareCursor not implemented");
 	}
 
 	/*
@@ -258,7 +279,11 @@ public class SWTMouseInput extends MouseInput implements MouseListener,
 				listener.onButton(count, buttonStates[count], newPos.x,
 						newPos.y);
 			}
+			if(mouseWheelDelta>0){
+				listener.onWheel(mouseWheelDelta, wheelPos.x, wheelPos.y);	
+			}
 		}
+		mouseWheelDelta=0;
 	}
 
 	// MouseListener methods
@@ -269,8 +294,7 @@ public class SWTMouseInput extends MouseInput implements MouseListener,
 	 * @see org.eclipse.swt.events.MouseListener#mouseDoubleClick(org.eclipse.swt.events.MouseEvent)
 	 */
 	public void mouseDoubleClick(MouseEvent e) {
-		// TODO Auto-generated method stub
-
+		logger.warning("mouseDoubleClick not implemented");
 	}
 
 	/*
@@ -279,7 +303,7 @@ public class SWTMouseInput extends MouseInput implements MouseListener,
 	 * @see org.eclipse.swt.events.MouseListener#mouseDown(org.eclipse.swt.events.MouseEvent)
 	 */
 	public void mouseDown(MouseEvent e) {
-		if (!(buttonStates.length - 1 > e.button)) {
+		if (buttonStates.length - 1 > e.button) {
 			buttonStates[e.button] = true;
 		}
 		lastPos.x = e.x;
@@ -294,7 +318,7 @@ public class SWTMouseInput extends MouseInput implements MouseListener,
 	 * @see org.eclipse.swt.events.MouseListener#mouseUp(org.eclipse.swt.events.MouseEvent)
 	 */
 	public void mouseUp(MouseEvent e) {
-		if (!(buttonStates.length - 1 > e.button)) {
+		if (buttonStates.length - 1 > e.button) {
 			buttonStates[e.button] = false;
 		}
 		lastPos.x = 0;
@@ -310,10 +334,12 @@ public class SWTMouseInput extends MouseInput implements MouseListener,
 	 */
 	public void mouseMove(MouseEvent e) {
 		if (buttonStates[1]) {
-			lastPos.x = newPos.x;
-			lastPos.y = newPos.y;
-			newPos.x = e.x;
-			newPos.y = e.y;
+			if (!(newPos.x == e.x && newPos.y == e.y)) {
+				lastPos.x = newPos.x;
+				lastPos.y = newPos.y;
+				newPos.x = e.x;
+				newPos.y = e.y;
+			}
 		}
 	}
 
@@ -326,8 +352,19 @@ public class SWTMouseInput extends MouseInput implements MouseListener,
 	@Override
 	public void setHardwareCursor(URL file, Image[] images, int[] delays,
 			int hotspot, int hotspot2) {
-		// TODO Auto-generated method stub
+		logger.warning("setHardwareCursor not implemented");
+	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.swt.events.MouseWheelListener#mouseScrolled(org.eclipse.swt.events.MouseEvent)
+	 */
+	@Override
+	public void mouseScrolled(MouseEvent e) {
+		mouseWheelDelta = e.count;
+		wheelPos.x = e.x;
+		wheelPos.y = e.y;
 	}
 
 }

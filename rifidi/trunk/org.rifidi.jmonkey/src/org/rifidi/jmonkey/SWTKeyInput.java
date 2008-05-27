@@ -29,8 +29,13 @@ import com.jme.input.KeyInputListener;
  * 
  */
 public class SWTKeyInput extends KeyInput implements KeyListener {
-
+	/**
+	 * Stack for key events.
+	 */
 	private Stack<Object[]> eventStack = new Stack<Object[]>();
+	/**
+	 * Map for holding infos about what keys are currently pressed.
+	 */
 	private Map<Integer, Boolean> keyMap = new HashMap<Integer, Boolean>();
 
 	/*
