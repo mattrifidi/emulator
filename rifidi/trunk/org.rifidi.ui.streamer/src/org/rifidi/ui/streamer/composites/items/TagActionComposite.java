@@ -19,8 +19,8 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Text;
-import org.rifidi.emulator.tags.enums.TagGen;
-import org.rifidi.emulator.tags.id.TagType;
+import org.rifidi.services.tags.enums.TagGen;
+import org.rifidi.services.tags.id.TagType;
 import org.rifidi.streamer.xml.actions.TagAction;
 
 /**
