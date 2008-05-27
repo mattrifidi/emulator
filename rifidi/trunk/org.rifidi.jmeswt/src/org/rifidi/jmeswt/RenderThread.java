@@ -71,6 +71,7 @@ public class RenderThread extends Thread {
 		this.renderQueue = game.getRenderQueue();
 		this.canvas=game.getGlCanvas();
 		this.display = canvas.getDisplay();
+		game.getDisplaySys().setCurrentGLCanvas(canvas);
 	}
 
 	/*

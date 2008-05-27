@@ -10,7 +10,6 @@
  */
 package org.rifidi.jmeswt.input;
 
-import java.util.EmptyStackException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
@@ -91,18 +90,14 @@ public class SWTKeyInput extends KeyInput implements KeyListener {
 	public void update() {
 		if (listeners != null && listeners.size() > 0) {
 			Object[] eventArray = null;
-			try {
-				while ((eventArray = eventStack.pop()) != null) {
-					KeyEvent e = (KeyEvent) eventArray[0];
-					Boolean pressed = (Boolean) eventArray[1];
-					for (KeyInputListener listener : listeners) {
-						System.out.println("listener: "+listener);
-						listener.onKey(e.character, Mapping.SWTtoLWJGL
-								.get(e.keyCode), pressed);
-					}
+			while (!eventStack.isEmpty()) {
+				eventArray = eventStack.pop();
+				KeyEvent e = (KeyEvent) eventArray[0];
+				Boolean pressed = (Boolean) eventArray[1];
+				for (KeyInputListener listener : listeners) {
+					listener.onKey(e.character, Mapping.SWTtoLWJGL
+							.get(e.keyCode), pressed);
 				}
-			} catch (EmptyStackException e) {
-				// we expect this to happen
 			}
 		}
 		eventStack.clear();
