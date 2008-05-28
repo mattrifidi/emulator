@@ -1,6 +1,7 @@
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -8,6 +9,7 @@ import javax.xml.bind.Marshaller;
 
 import org.rifidi.emulator.reader.module.GeneralReaderPropertyHolder;
 import org.rifidi.services.tags.enums.TagGen;
+import org.rifidi.services.tags.factory.TagCreationPattern;
 import org.rifidi.services.tags.id.TagType;
 import org.rifidi.streamer.xml.BatchSuite;
 import org.rifidi.streamer.xml.ComponentSuite;
@@ -40,8 +42,8 @@ public class SaveObjects {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		//save(batch());
-		save(scenario());
+		save(batch());
+		//save(scenario());
 		//save(loadTestSuite());
 		//save(components());
 	}
@@ -194,11 +196,23 @@ public class SaveObjects {
 		
 		TagAction tagAction = new TagAction();
 		tagAction.setExecDuration(2000);
-		tagAction.setNumber(20);
-		tagAction.setPrefix("eef");
 		tagAction.setRegenerate(false);
-		tagAction.setTagGen(TagGen.GEN2);
-		tagAction.setTagType(TagType.CustomEPC96);
+		List<TagCreationPattern> patternList = new ArrayList<TagCreationPattern>();
+		TagCreationPattern pattern1 = new TagCreationPattern();
+		pattern1.setNumberOfTags(20);
+		pattern1.setPrefix("eef");
+		pattern1.setTagGeneration(TagGen.GEN2);
+		pattern1.setTagType(TagType.CustomEPC96);
+		patternList.add(pattern1);
+		
+		TagCreationPattern pattern2 = new TagCreationPattern();
+		pattern2.setNumberOfTags(15);
+		pattern2.setTagGeneration(TagGen.GEN2);
+		pattern2.setTagType(TagType.DoD96);
+		patternList.add(pattern2);
+		
+		
+		tagAction.setTagCreationPattern(patternList);
 		
 		WaitAction waitAction2 = new WaitAction();
 		waitAction2.setMaxWaitTime(2000);

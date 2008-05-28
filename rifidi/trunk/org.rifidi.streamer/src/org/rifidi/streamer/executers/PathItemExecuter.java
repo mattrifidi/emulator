@@ -139,13 +139,11 @@ public class PathItemExecuter implements Runnable {
 		logger.info(pathItemDescription + " - executing TagAction");
 		ArrayList<RifidiTag> tags = null;
 		if (tagAction.isRegenerate()) {
-			TagCreationPattern pattern = new TagCreationPattern();
-			pattern.setNumberOfTags(tagAction.getNumber());
-			pattern.setPrefix(tagAction.getPrefix());
-			pattern.setTagGeneration(tagAction.getTagGen());
-			pattern.setTagType(tagAction.getTagType());
-			tags = tagRegistry.createTags(pattern);
-	
+			tags = new ArrayList<RifidiTag>();
+			for(TagCreationPattern pattern : tagAction.getTagCreationPattern()){
+				tags.addAll(this.tagRegistry.createTags(pattern));
+			}
+			
 		} else {
 			tags = new ArrayList<RifidiTag>();
 			logger.debug("This feature is not yet implemented");
