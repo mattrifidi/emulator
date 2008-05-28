@@ -136,22 +136,30 @@ public abstract class SWTBaseGame extends AbstractGame {
 	 *            initial width
 	 * @param height
 	 *            initial height
-	 * 
+	 * @param single
+	 *            if set to true the game assumes that no other SWTgames are
+	 *            running and that it can use the default queues.
 	 */
 	public SWTBaseGame(String name, int updateResolution, int renderResolution,
-			int width, int height, Composite parent) {
+			int width, int height, Composite parent, boolean single) {
 		super();
 		this.name = name;
 		this.width = width;
 		this.height = height;
 		this.parent = parent;
 		// add our taskqueues for rendering and updating
-		renderQueue = new GameTaskQueue();
-		updateQueue = new GameTaskQueue();
-		GameTaskQueueManager.getManager().addQueue(name + ".render",
-				renderQueue);
-		GameTaskQueueManager.getManager().addQueue(name + ".update",
-				updateQueue);
+		if(single){
+			renderQueue = GameTaskQueueManager.getManager().getQueue(GameTaskQueue.RENDER);
+			updateQueue = GameTaskQueueManager.getManager().getQueue(GameTaskQueue.UPDATE);
+		}
+		else{
+			renderQueue = new GameTaskQueue();
+			updateQueue = new GameTaskQueue();
+			GameTaskQueueManager.getManager().addQueue(name + ".render",
+					renderQueue);
+			GameTaskQueueManager.getManager().addQueue(name + ".update",
+					updateQueue);
+		}
 		this.renderResolution = renderResolution;
 		this.updateResolution = updateResolution;
 	}

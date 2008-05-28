@@ -15,9 +15,7 @@ import java.util.concurrent.Semaphore;
 import org.eclipse.swt.opengl.GLCanvas;
 import org.eclipse.swt.widgets.Display;
 
-import com.jme.app.SimpleGame;
 import com.jme.util.GameTaskQueue;
-import com.jme.util.GameTaskQueueManager;
 
 /**
  * Thread for rendering the scene
@@ -59,6 +57,7 @@ public class RenderThread extends Thread {
 	 * Canvas to render to.
 	 */
 	private GLCanvas canvas;
+
 	/**
 	 * Constructor.
 	 */
@@ -69,7 +68,7 @@ public class RenderThread extends Thread {
 		this.resolution = resolution;
 		this.game = game;
 		this.renderQueue = game.getRenderQueue();
-		this.canvas=game.getGlCanvas();
+		this.canvas = game.getGlCanvas();
 		this.display = canvas.getDisplay();
 		game.getDisplaySys().setCurrentGLCanvas(canvas);
 	}
