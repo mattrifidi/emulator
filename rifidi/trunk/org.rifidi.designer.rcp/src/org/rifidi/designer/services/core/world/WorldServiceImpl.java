@@ -24,7 +24,6 @@ import org.eclipse.swt.widgets.Display;
 import org.rifidi.designer.entities.Entity;
 import org.rifidi.designer.entities.SceneData;
 import org.rifidi.designer.entities.interfaces.SceneControl;
-import org.rifidi.designer.rcp.views.view3d.threads.RenderThread;
 import org.rifidi.designer.rcp.views.view3d.threads.UpdateThread;
 import org.rifidi.designer.services.core.camera.CameraService;
 import org.rifidi.designer.services.core.collision.FieldService;
@@ -32,13 +31,8 @@ import org.rifidi.designer.services.core.entities.SceneDataChangedListener;
 import org.rifidi.designer.services.core.entities.SceneDataService;
 import org.rifidi.designer.services.core.messaging.FadingTextNode;
 import org.rifidi.jmeswt.utils.Helpers;
-import org.rifidi.jmonkey.SWTDisplaySystem;
 import org.rifidi.services.annotations.Inject;
 import org.rifidi.services.registry.ServiceRegistry;
-
-import com.jme.renderer.ColorRGBA;
-import com.jme.system.DisplaySystem;
-import com.jmex.game.state.GameStateManager;
 
 /**
  * Base worldservice implementation.
@@ -61,10 +55,6 @@ public class WorldServiceImpl implements WorldService, CommandStateService,
 	 * currently used scenedata.
 	 */
 	private SceneData sceneData;
-	/**
-	 * The render thread for this world.
-	 */
-	private RenderThread renderThread;
 	/**
 	 * The update thread for this world.
 	 */
@@ -207,11 +197,6 @@ public class WorldServiceImpl implements WorldService, CommandStateService,
 	@Override
 	public void setGLCanvas(GLCanvas glCanvas) {
 		this.glCanvas = glCanvas;
-		if (renderThread != null) {
-			renderThread = new RenderThread(lock, display, glCanvas, sceneData,
-					fadingTextNode);
-			renderThread.start();
-		}
 	}
 
 	/*
@@ -225,9 +210,6 @@ public class WorldServiceImpl implements WorldService, CommandStateService,
 		this.sceneData = sceneData;
 		fadingTextNode = new FadingTextNode("teeeest", 2);
 		lock = new ReentrantLock();
-		// create the render thread
-		renderThread = new RenderThread(lock, display, glCanvas, sceneData,
-				fadingTextNode);
 
 		// create the update thread
 		if (updateThread != null)
@@ -239,7 +221,6 @@ public class WorldServiceImpl implements WorldService, CommandStateService,
 
 		// start the render and update threads
 		updateThread.start();
-		renderThread.start();
 		worldState = WorldStates.Paused;
 	}
 
@@ -250,25 +231,7 @@ public class WorldServiceImpl implements WorldService, CommandStateService,
 	 */
 	@Override
 	public void destroySceneData(SceneData sceneData) {
-		if (updateThread != null) {
-			stop();
-			updateThread.setKeepRunning(false);
-			try {
-				updateThread.join();
-			} catch (InterruptedException e) {
-				logger.debug("Got interrupted while joining on UpdateThread: "
-						+ e);
-			}
 
-			renderThread.setKeepRunning(false);
-			try {
-				renderThread.join();
-			} catch (InterruptedException e) {
-				logger.debug("Got interrupted while joining on RenderThread: "
-						+ e);
-			}
-			GameStateManager.getInstance().cleanup();
-		}
 	}
 
 	/*

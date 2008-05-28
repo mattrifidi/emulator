@@ -27,15 +27,9 @@ import org.eclipse.swt.dnd.DropTarget;
 import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.MouseMoveListener;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Cursor;
-import org.eclipse.swt.graphics.ImageData;
-import org.eclipse.swt.graphics.PaletteData;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.opengl.GLCanvas;
-import org.eclipse.swt.opengl.GLData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
@@ -53,6 +47,7 @@ import org.rifidi.designer.library.EntityLibraryReference;
 import org.rifidi.designer.library.EntityWizardIface;
 import org.rifidi.designer.library.EntityWizardRifidiIface;
 import org.rifidi.designer.rcp.Activator;
+import org.rifidi.designer.rcp.game.DesignerGame;
 import org.rifidi.designer.rcp.views.view3d.listeners.Editor3DDropTargetListener;
 import org.rifidi.designer.rcp.views.view3d.listeners.EntityMouseMoveListener;
 import org.rifidi.designer.rcp.views.view3d.listeners.MouseMoveEntityListener;
@@ -67,23 +62,12 @@ import org.rifidi.designer.services.core.entities.FinderService;
 import org.rifidi.designer.services.core.entities.SceneDataService;
 import org.rifidi.designer.services.core.selection.SelectionService;
 import org.rifidi.designer.services.core.world.WorldService;
-import org.rifidi.jmonkey.SWTDisplaySystem;
 import org.rifidi.services.annotations.Inject;
 import org.rifidi.services.registry.ServiceRegistry;
 import org.rifidi.utilities.grid.GridNode;
 
-import com.jme.light.DirectionalLight;
-import com.jme.light.LightNode;
-import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
-import com.jme.renderer.Renderer;
-import com.jme.scene.Node;
-import com.jme.scene.state.AlphaState;
-import com.jme.scene.state.CullState;
-import com.jme.scene.state.LightState;
 import com.jme.scene.state.MaterialState;
-import com.jme.scene.state.RenderState;
-import com.jme.scene.state.ZBufferState;
 import com.jme.system.DisplaySystem;
 import com.jme.util.TextureManager;
 import com.jmex.game.state.BasicGameState;
@@ -127,24 +111,12 @@ public class View3D extends ViewPart implements IPerspectiveListener {
 	 * Scene related stuff.
 	 */
 	private boolean gridEnabled = true;
-	/**
-	 * Wall transparency. TODO redo trans stuff
-	 */
-	private AlphaState wallAlpha;
+
 	/**
 	 * The rendering canvas.
 	 */
 	private GLCanvas glCanvas;
-	// private Composite composite;
 
-	/**
-	 * Invisible cursor.
-	 */
-	private Cursor invisibleCursor;
-	/**
-	 * Visible cursor.
-	 */
-	private Cursor defaultCursor;
 	/**
 	 * The scenedata service.
 	 */
@@ -174,6 +146,7 @@ public class View3D extends ViewPart implements IPerspectiveListener {
 	private Point oldpos;
 	private GridNode gridNode;
 	private BasicGameState gridState;
+	private DesignerGame designerGame;
 
 	private static boolean initialized = false;
 
@@ -181,7 +154,7 @@ public class View3D extends ViewPart implements IPerspectiveListener {
 	 * 
 	 */
 	public View3D() {
-		Activator.display=Display.getCurrent();
+		Activator.display = Display.getCurrent();
 		ServiceRegistry.getInstance().service(this);
 	}
 
@@ -197,22 +170,12 @@ public class View3D extends ViewPart implements IPerspectiveListener {
 
 		Composite composite = new Composite(parent, SWT.None);
 		composite.setLayout(new FillLayout());
-
-		SWTDisplaySystem displaySys = (SWTDisplaySystem) DisplaySystem
-				.getDisplaySystem("SWTDISPLAYSYS");
-		glCanvas=displaySys.createGLCanvas(754, 584, composite);
+		designerGame=new DesignerGame("designer",10,20,754, 584, composite);
+		designerGame.start();
+		glCanvas = designerGame.getGlCanvas();
+		
 		// let glcanvas have focus by default
 		glCanvas.forceFocus();
-		// create an invisible cursor and store a reference to the default
-		// cursor
-		Color white = Display.getCurrent().getSystemColor(SWT.COLOR_WHITE);
-		Color black = Display.getCurrent().getSystemColor(SWT.COLOR_BLACK);
-		PaletteData palette = new PaletteData(new RGB[] { white.getRGB(),
-				black.getRGB() });
-		ImageData sourceData = new ImageData(16, 16, 1, palette);
-		sourceData.transparentPixel = 0;
-		invisibleCursor = new Cursor(Display.getCurrent(), sourceData, 0, 0);
-		defaultCursor = glCanvas.getCursor();
 
 		glCanvas.addListener(SWT.Resize, new ResizeListener());
 
@@ -227,20 +190,13 @@ public class View3D extends ViewPart implements IPerspectiveListener {
 		dt.setTransfer(transfers);
 		dt.addDropListener(new Editor3DDropTargetListener(this));
 
-		GameStateManager.create();
 
 		worldService.setGLCanvas(glCanvas);
 		worldService.setDisplay(Display.getCurrent());
 
 		getSite().setSelectionProvider(selectionService);
 
-		// alphastate for transparent walls
-		wallAlpha = DisplaySystem.getDisplaySystem().getRenderer()
-				.createAlphaState();
-		wallAlpha.setBlendEnabled(true);
-		wallAlpha.setSrcFunction(AlphaState.SB_SRC_ALPHA);
-		wallAlpha.setDstFunction(AlphaState.DB_ONE_MINUS_SRC_ALPHA);
-		wallAlpha.setEnabled(true);
+
 
 		modeMap = new HashMap<Mode, InteractionMode>();
 		modeMap.put(Mode.PlacementMode, new PlacementMode(this));
@@ -275,42 +231,6 @@ public class View3D extends ViewPart implements IPerspectiveListener {
 	}
 
 	/**
-	 * Sets the renderstates of the given node to those attributed to root-level
-	 * nodes.
-	 * 
-	 * @param rootLevel
-	 *            the node to give root-level renderstates to
-	 */
-	private void initNode(final Node rootLevel) {
-		// create ZBuffer stuff
-		ZBufferState zbufferState = DisplaySystem.getDisplaySystem()
-				.getRenderer().createZBufferState();
-		zbufferState.setFunction(ZBufferState.CF_LEQUAL);
-		zbufferState.setEnabled(true);
-
-		// create cullstate for backface culling
-		CullState cullState = DisplaySystem.getDisplaySystem().getRenderer()
-				.createCullState();
-		cullState.setCullMode(CullState.CS_BACK);
-
-		// create a default light
-		LightState ls = DisplaySystem.getDisplaySystem().getRenderer()
-				.createLightState();
-		LightNode lightNode = new LightNode("Head light", ls);
-		DirectionalLight dl = new DirectionalLight();
-		dl.setDiffuse(new ColorRGBA(1, 1, 1, 1));
-		dl.setAmbient(new ColorRGBA(0.4f, 0.4f, 0.4f, 1));
-		dl.setDirection(new Vector3f(0.1f, -1, 0.1f));
-		dl.setEnabled(true);
-		lightNode.setLight(dl);
-
-		rootLevel.setRenderState(zbufferState);
-		rootLevel.setRenderState(cullState);
-		rootLevel.setRenderState(ls);
-		rootLevel.updateRenderState();
-	}
-
-	/**
 	 * Load a scene from the given IFile.
 	 * 
 	 * @param file
@@ -322,8 +242,6 @@ public class View3D extends ViewPart implements IPerspectiveListener {
 		sceneDataService.loadScene(file);
 		initializeScene();
 		cameraService.centerCamera();
-		hideWall(Direction.SOUTH);
-		hideWall(Direction.EAST);
 	}
 
 	/**
@@ -332,16 +250,12 @@ public class View3D extends ViewPart implements IPerspectiveListener {
 	private void initializeScene() {
 		// create the room and grid
 		createGrid();
-		// set root-level renderstates for the root and room nodes
-		initNode(sceneDataService.getRootNode());
-		initNode(sceneDataService.getRoomNode());
 
 		// enable the grid
 		gridEnabled = false;
 		toggleGrid();
 
 		switchMode(Mode.PickMode);
-		sceneDataService.getRootNode().updateRenderState();
 	}
 
 	/**
@@ -359,9 +273,10 @@ public class View3D extends ViewPart implements IPerspectiveListener {
 				RifidiEntityWizard wizard = (RifidiEntityWizard) ref
 						.getWizard().newInstance();
 				if (wizard instanceof EntityWizardRifidiIface) {
-					//TODO: ugly, fix that
-					((EntityWizardRifidiIface) wizard).setRMIManager(org.rifidi.designer.entities.Activator
-							.getDefault().rifidiManager);
+					// TODO: ugly, fix that
+					((EntityWizardRifidiIface) wizard)
+							.setRMIManager(org.rifidi.designer.entities.Activator
+									.getDefault().rifidiManager);
 				}
 				wizard.setTakenNamesList(entitiesService.getEntityNames());
 				WizardDialog dialog = new WizardDialog(getSite().getShell(),
@@ -423,60 +338,14 @@ public class View3D extends ViewPart implements IPerspectiveListener {
 		return glCanvas;
 	}
 
-	/**
-	 * Make walls (in)visible according to their position relative to the
-	 * camera.
-	 */
-	public void showHideWalls() {
-		// show all walls
-		showWall(Direction.NORTH);
-		showWall(Direction.SOUTH);
-		showWall(Direction.EAST);
-		showWall(Direction.WEST);
-		// hide east/west wall
-		if (cameraService.getMainCamera().getDirection().x > 0) {
-			hideWall(Direction.WEST);
-		} else if (cameraService.getMainCamera().getDirection().x < 0) {
-			hideWall(Direction.EAST);
-		}
 
-		// hide north/south wall
-		if (cameraService.getMainCamera().getDirection().z < 0) {
-			hideWall(Direction.SOUTH);
-		} else if (cameraService.getMainCamera().getDirection().z > 0) {
-			hideWall(Direction.NORTH);
-		}
-	}
-
-	/**
-	 * @param dir
-	 *            direction specifying which wall to hide
-	 */
-	public void hideWall(final Direction dir) {
-		sceneDataService.getWalls().get(dir).setRenderState(wallAlpha);
-		sceneDataService.getWalls().get(dir).setRenderQueueMode(
-				Renderer.QUEUE_OPAQUE);
-		sceneDataService.getWalls().get(dir).updateRenderState();
-	}
-
-	/**
-	 * @param dir
-	 *            direction specifying which wall to show
-	 */
-	public void showWall(Direction dir) {
-		sceneDataService.getWalls().get(dir).clearRenderState(
-				RenderState.RS_ALPHA);
-		sceneDataService.getWalls().get(dir).setRenderQueueMode(
-				Renderer.QUEUE_SKIP);
-		sceneDataService.getWalls().get(dir).updateRenderState();
-	}
 
 	/**
 	 * Hide the mousepointer in this view.
 	 */
 	public void hideMousePointer() {
 		oldpos = Display.getCurrent().getCursorLocation();
-		glCanvas.setCursor(invisibleCursor);
+//		glCanvas.setCursor(invisibleCursor);
 	}
 
 	/**
@@ -487,7 +356,7 @@ public class View3D extends ViewPart implements IPerspectiveListener {
 			Display.getCurrent().setCursorLocation(oldpos);
 		}
 		oldpos = null;
-		glCanvas.setCursor(defaultCursor);
+//		glCanvas.setCursor(defaultCursor);
 	}
 
 	/**
@@ -616,7 +485,8 @@ public class View3D extends ViewPart implements IPerspectiveListener {
 		 *            the view3d this mode is being initialized for
 		 */
 		public PickMode(final View3D view3d) {
-			moveListener = new MouseMoveEntityListener(view3d, selectionService, sceneDataService);
+			moveListener = new MouseMoveEntityListener(view3d,
+					selectionService, sceneDataService);
 			MousePickListener pickListener = new MousePickListener(view3d,
 					selectionService, sceneDataService, finderService);
 			addMouseMoveListener(moveListener);
