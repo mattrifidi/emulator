@@ -263,7 +263,6 @@ public class RenderThread extends Thread {
 						Debugger.drawBounds(sceneData.getRootNode(), displaySys
 								.getRenderer());
 					}
-					textNode.update(0);
 					textNode.render(displaySys.getRenderer());
 					if (firstRun) {
 						displaySys.getRenderer().displayBackBuffer();
