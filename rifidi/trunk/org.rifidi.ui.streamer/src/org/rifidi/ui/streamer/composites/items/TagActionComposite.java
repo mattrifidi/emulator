@@ -145,7 +145,8 @@ public class TagActionComposite extends Composite {
 
 	private void updateWidgets() {
 		execDurationSpinner.setSelection((int) tagAction.getExecDuration());
-		numberSpinner.setSelection(tagAction.getNumber());
+		//TODO: figure out how to add support for TagCreationPatterns
+/*		numberSpinner.setSelection(tagAction.getNumber());
 		if (tagAction.getPrefix() != null)
 			prefixText.setText(tagAction.getPrefix());
 		if (tagAction.getTagGen() != null)
@@ -157,19 +158,20 @@ public class TagActionComposite extends Composite {
 				prefixText.setEnabled(true);
 			tagTypeCombo.select(tagTypeValues.indexOf(tagAction.getTagType()
 					.name()));
-		}
+		}*/
 		regenerateCheckbox.setSelection(tagAction.isRegenerate());
 	}
 
 	private void saveChanges() {
 		tagAction.setExecDuration(new Integer(execDurationSpinner
 				.getSelection()).longValue());
-		tagAction.setNumber(numberSpinner.getSelection());
+		//TODO: figure out how to add support for TagCreationPatterns
+		/*tagAction.setNumber(numberSpinner.getSelection());
 		tagAction.setPrefix(prefixText.getText());
 		if (!tagGenCombo.getText().isEmpty())
 			tagAction.setTagGen(TagGen.valueOf(tagGenCombo.getText()));
 		if (!tagTypeCombo.getText().isEmpty())
-			tagAction.setTagType(TagType.valueOf(tagTypeCombo.getText()));
+			tagAction.setTagType(TagType.valueOf(tagTypeCombo.getText()));*/
 	}
 
 }
