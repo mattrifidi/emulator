@@ -14,7 +14,7 @@ import org.rifidi.services.tags.enums.TagGen;
 import org.rifidi.services.tags.id.TagType;
 
 /**
- * This class contains paramenters required to create a list of tags. The tag
+ * This class contains parameters required to create a list of tags. The tag
  * creation pattern will be given to a tag factory that creates tags based on
  * this pattern
  * 
@@ -54,30 +54,69 @@ public class TagCreationPattern {
 	 */
 	private int numberOfTags;
 
+	/**
+	 * @return the tagGeneration
+	 */
 	public TagGen getTagGeneration() {
 		return tagGeneration;
 	}
 
+	/**
+	 * @param tagGeneration
+	 *            the tagGeneration to set
+	 */
 	public void setTagGeneration(TagGen tagGeneration) {
 		this.tagGeneration = tagGeneration;
 	}
 
+	/**
+	 * @return the tagType
+	 */
 	public TagType getTagType() {
 		return tagType;
 	}
 
+	/**
+	 * @param tagType
+	 *            the tagType to set
+	 */
 	public void setTagType(TagType tagType) {
 		this.tagType = tagType;
 	}
 
+	/**
+	 * @return the prefix
+	 */
 	public String getPrefix() {
 		return prefix;
 	}
 
+	/**
+	 * @param prefix
+	 *            the prefix to set
+	 */
 	public void setPrefix(String prefix) {
 		this.prefix = prefix;
 	}
 
+	/**
+	 * @return the numberOfTags
+	 */
+	public int getNumberOfTags() {
+		return numberOfTags;
+	}
+
+	/**
+	 * @param numberOfTags
+	 *            the numberOfTags to set
+	 */
+	public void setNumberOfTags(int numberOfTags) {
+		this.numberOfTags = numberOfTags;
+	}
+
+	/**
+	 * @return the AccessPass
+	 */
 	public byte[] getAccessPass() {
 		if (accessPass != null) {
 			return accessPass;
@@ -88,12 +127,19 @@ public class TagCreationPattern {
 		}
 	}
 
+	/**
+	 * @param accessPass
+	 *            the access pass to set
+	 */
 	public void setAccessPass(byte[] accessPass) {
 		if (accessPass != null) {
 			this.accessPass = accessPass;
 		}
 	}
 
+	/**
+	 * @return The Lock Pass
+	 */
 	public byte[] getLockPass() {
 		if (this.lockPass != null) {
 			return lockPass;
@@ -104,20 +150,17 @@ public class TagCreationPattern {
 		}
 	}
 
+	/**
+	 * 
+	 * @param lockPass
+	 *            The lockPass to set
+	 */
 	public void setLockPass(byte[] lockPass) {
 		if (lockPass != null) {
 			this.lockPass = lockPass;
 
 		}
 
-	}
-
-	public int getNumberOfTags() {
-		return numberOfTags;
-	}
-
-	public void setNumberOfTags(int numberOfTags) {
-		this.numberOfTags = numberOfTags;
 	}
 
 }
