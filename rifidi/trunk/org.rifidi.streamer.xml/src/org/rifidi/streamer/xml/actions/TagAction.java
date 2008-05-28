@@ -10,15 +10,17 @@
  */
 package org.rifidi.streamer.xml.actions;
 
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.rifidi.services.tags.enums.TagGen;
-import org.rifidi.services.tags.id.TagType;
+import org.rifidi.services.tags.factory.TagCreationPattern;
 
 /**
- * This ist the TagAction implementation
+ * This is the TagAction implementation
  * 
  * @author Andreas Huebner - andreas@pramari.com
+ * @author Kule Neumeier - kyle@pramari.com
  * 
  */
 @XmlRootElement
@@ -26,10 +28,7 @@ public class TagAction extends Action {
 
 	//private Log logger = LogFactory.getLog(GPIAction.class);
 	private long execDuration;
-	private int number;
-	private String prefix;
-	private TagType tagType;
-	private TagGen tagGen;
+	private List<TagCreationPattern> tagCreationPattern;
 	private boolean regenerate;
 
 	/**
@@ -48,51 +47,6 @@ public class TagAction extends Action {
 	}
 
 	/**
-	 * @return the prefix
-	 */
-	public String getPrefix() {
-		return prefix;
-	}
-
-	/**
-	 * @param prefix
-	 *            the prefix to set
-	 */
-	public void setPrefix(String prefix) {
-		this.prefix = prefix;
-	}
-
-	/**
-	 * @return the tagType
-	 */
-	public TagType getTagType() {
-		return tagType;
-	}
-
-	/**
-	 * @param tagType
-	 *            the tagType to set
-	 */
-	public void setTagType(TagType tagType) {
-		this.tagType = tagType;
-	}
-
-	/**
-	 * @return the tagGen
-	 */
-	public TagGen getTagGen() {
-		return tagGen;
-	}
-
-	/**
-	 * @param tagGen
-	 *            the tagGen to set
-	 */
-	public void setTagGen(TagGen tagGen) {
-		this.tagGen = tagGen;
-	}
-
-	/**
 	 * @return the execDuration
 	 */
 	public long getExecDuration() {
@@ -108,18 +62,17 @@ public class TagAction extends Action {
 	}
 
 	/**
-	 * @return the number
+	 * @return the tagCreationPattern
 	 */
-	public int getNumber() {
-		return number;
+	public List<TagCreationPattern> getTagCreationPattern() {
+		return tagCreationPattern;
 	}
 
 	/**
-	 * @param number
-	 *            the number to set
+	 * @param tagCreationPattern the tagCreationPattern to set
 	 */
-	public void setNumber(int number) {
-		this.number = number;
+	public void setTagCreationPattern(List<TagCreationPattern> tagCreationPattern) {
+		this.tagCreationPattern = tagCreationPattern;
 	}
 
 }
