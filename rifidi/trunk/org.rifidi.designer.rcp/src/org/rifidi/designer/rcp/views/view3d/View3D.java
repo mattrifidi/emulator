@@ -63,14 +63,8 @@ import org.rifidi.designer.services.core.selection.SelectionService;
 import org.rifidi.designer.services.core.world.WorldService;
 import org.rifidi.services.annotations.Inject;
 import org.rifidi.services.registry.ServiceRegistry;
-import org.rifidi.utilities.grid.GridNode;
 
-import com.jme.renderer.ColorRGBA;
-import com.jme.scene.state.MaterialState;
-import com.jme.system.DisplaySystem;
 import com.jme.util.TextureManager;
-import com.jmex.game.state.BasicGameState;
-import com.jmex.game.state.GameStateManager;
 
 /**
  * This monster baby is the view that displays the 3d scene.
@@ -106,10 +100,6 @@ public class View3D extends ViewPart implements IPerspectiveListener {
 	 * Logger.
 	 */
 	private static Log logger = LogFactory.getLog(View3D.class);
-	/**
-	 * Scene related stuff.
-	 */
-	private boolean gridEnabled = true;
 
 	/**
 	 * The rendering canvas.
@@ -143,8 +133,6 @@ public class View3D extends ViewPart implements IPerspectiveListener {
 
 	// miscellany & NEW STUFF
 	private Point oldpos;
-	private GridNode gridNode;
-	private BasicGameState gridState;
 	private DesignerGame designerGame;
 
 	private static boolean initialized = false;
@@ -169,11 +157,11 @@ public class View3D extends ViewPart implements IPerspectiveListener {
 
 		Composite composite = new Composite(parent, SWT.None);
 		composite.setLayout(new FillLayout());
-		designerGame=Activator.getDefault().designerGame;
+		designerGame = Activator.getDefault().designerGame;
 		designerGame.setParent(composite);
 		designerGame.start();
 		glCanvas = designerGame.getGlCanvas();
-		
+
 		// let glcanvas have focus by default
 		glCanvas.forceFocus();
 
@@ -192,8 +180,6 @@ public class View3D extends ViewPart implements IPerspectiveListener {
 
 		getSite().setSelectionProvider(selectionService);
 
-
-
 		modeMap = new HashMap<Mode, InteractionMode>();
 		modeMap.put(Mode.PlacementMode, new PlacementMode(this));
 		// modeMap.put(Mode.CameraMode, new CameraMode(this));
@@ -204,8 +190,7 @@ public class View3D extends ViewPart implements IPerspectiveListener {
 		if (!initialized) {
 			cameraService.createCamera();
 		} else {
-			switchMode(currentMode);
-			initializeScene();
+			switchMode(Mode.PickMode);
 		}
 		initialized = true;
 
@@ -236,22 +221,8 @@ public class View3D extends ViewPart implements IPerspectiveListener {
 	public void loadScene(final IFile file) {
 		logger.debug("setting up world");
 		sceneDataService.loadScene(Display.getCurrent(), file);
-		initializeScene();
-		cameraService.centerCamera();
-	}
-
-	/**
-	 * Prepare everything to display the currently loaded scene on the canvas.
-	 */
-	private void initializeScene() {
-		// create the room and grid
-		createGrid();
-
-		// enable the grid
-		gridEnabled = false;
-		toggleGrid();
-
 		switchMode(Mode.PickMode);
+		cameraService.centerCamera();
 	}
 
 	/**
@@ -334,14 +305,12 @@ public class View3D extends ViewPart implements IPerspectiveListener {
 		return glCanvas;
 	}
 
-
-
 	/**
 	 * Hide the mousepointer in this view.
 	 */
 	public void hideMousePointer() {
 		oldpos = Display.getCurrent().getCursorLocation();
-//		glCanvas.setCursor(invisibleCursor);
+		// glCanvas.setCursor(invisibleCursor);
 	}
 
 	/**
@@ -352,44 +321,14 @@ public class View3D extends ViewPart implements IPerspectiveListener {
 			Display.getCurrent().setCursorLocation(oldpos);
 		}
 		oldpos = null;
-//		glCanvas.setCursor(defaultCursor);
+		// glCanvas.setCursor(defaultCursor);
 	}
 
 	/**
 	 * Toggle the state of the grid between enabled and disabled.
 	 */
 	public void toggleGrid() {
-		if (gridEnabled) {
-			gridState.setActive(false);
-			gridEnabled = false;
-		} else {
-			gridState.setActive(true);
-			gridEnabled = true;
-		}
-	}
-
-	/**
-	 * Creates the grid for displaying.
-	 */
-	private void createGrid() {
-		// create the grid
-		logger.debug("creating grid");
-		int sceneWidth = sceneDataService.getWidth();
-		GridNode grid = new GridNode("griddy", sceneWidth, sceneWidth, .1f);
-		grid.setLocalTranslation(sceneWidth / 2, 0.01f, sceneWidth / 2);
-
-		MaterialState ms = DisplaySystem.getDisplaySystem().getRenderer()
-				.createMaterialState();
-		ms.setDiffuse(new ColorRGBA(0.345f, 0.639f, 0.901f, 1.0f));
-		grid.setRenderState(ms);
-
-		gridNode = grid;
-		gridState = new BasicGameState("GridState");
-		gridState.getRootNode().attachChild(grid);
-		gridState.setActive(true);
-		gridNode.updateRenderState();
-		gridNode.updateGeometricState(0, true);
-		GameStateManager.getInstance().attachChild(gridState);
+		designerGame.toggleGrid();
 	}
 
 	/*

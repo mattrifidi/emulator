@@ -36,6 +36,7 @@ import org.rifidi.designer.entities.SceneData.Direction;
 import org.rifidi.designer.entities.interfaces.SceneControl;
 import org.rifidi.designer.rcp.GlobalProperties;
 import org.rifidi.designer.rcp.views.minimapview.MiniMapView;
+import org.rifidi.designer.rcp.views.view3d.View3D.Mode;
 import org.rifidi.designer.services.core.camera.CameraService;
 import org.rifidi.designer.services.core.entities.SceneDataChangedListener;
 import org.rifidi.designer.services.core.entities.SceneDataService;
@@ -49,6 +50,7 @@ import org.rifidi.jmeswt.utils.Helpers;
 import org.rifidi.jmonkey.SWTDisplaySystem;
 import org.rifidi.services.annotations.Inject;
 import org.rifidi.services.registry.ServiceRegistry;
+import org.rifidi.utilities.grid.GridNode;
 
 import com.jme.light.DirectionalLight;
 import com.jme.light.LightNode;
@@ -57,16 +59,16 @@ import com.jme.renderer.Camera;
 import com.jme.renderer.ColorRGBA;
 import com.jme.renderer.OffscreenRenderer;
 import com.jme.renderer.Renderer;
-import com.jme.scene.Node;
-import com.jme.scene.shape.Box;
 import com.jme.scene.state.AlphaState;
 import com.jme.scene.state.CullState;
 import com.jme.scene.state.FragmentProgramState;
 import com.jme.scene.state.LightState;
+import com.jme.scene.state.MaterialState;
 import com.jme.scene.state.RenderState;
 import com.jme.scene.state.ZBufferState;
 import com.jme.system.DisplaySystem;
 import com.jme.util.geom.Debugger;
+import com.jmex.game.state.BasicGameState;
 import com.jmex.game.state.GameStateManager;
 import com.jmex.physics.PhysicsDebugger;
 
@@ -162,6 +164,18 @@ public class DesignerGame extends SWTBaseGame implements
 	 * Boolean indicators for camera directional motion
 	 */
 	private boolean[] updownleftright = new boolean[4];
+	/**
+	 * Scene related stuff.
+	 */
+	private boolean gridEnabled = true;
+	/**
+	 * Node for the grid.
+	 */
+	private GridNode gridNode;
+	/**
+	 * Grid game state.
+	 */
+	private BasicGameState gridState;
 
 	/**
 	 * @param name
@@ -277,9 +291,6 @@ public class DesignerGame extends SWTBaseGame implements
 	@Override
 	protected void render(float interpolation) {
 		if (sceneData != null && !getGlCanvas().isDisposed()) {
-			display.getRenderer().clearBuffers();
-			display.getRenderer().clearStatistics();
-			display.getRenderer().draw(sceneData.getRootNode());
 			GameStateManager.getInstance().render(0);
 			if (GlobalProperties.physicsDebugging) {
 				PhysicsDebugger.drawPhysics(sceneData.getPhysicsSpace(),
@@ -360,6 +371,7 @@ public class DesignerGame extends SWTBaseGame implements
 			}
 
 		});
+		stopRendering();
 	}
 
 	/**
@@ -428,13 +440,8 @@ public class DesignerGame extends SWTBaseGame implements
 			 */
 			@Override
 			public Object call() throws Exception {
-				getRootNode().attachChild(sceneData.getRootNode());
 				sceneData.getRootNode().attachChild(sceneData.getRoomNode());
-				Node room = new Node("rifidi_room_components");
-				Box box = new Box("rifidi_floor_wall", new Vector3f(0, 0, 0),
-				new Vector3f(sceneData.getWidth(), sceneData.getWidth(), sceneData.getWidth()));
-				box.setRandomColors();
-				room.attachChild(box);
+				getRootNode().attachChild(sceneData.getRootNode());
 				showHideWalls();
 				getRootNode().updateRenderState();
 				if (offy.isSupported()) {
@@ -452,10 +459,12 @@ public class DesignerGame extends SWTBaseGame implements
 							-.6f * sceneData.getWidth(),
 							.6f * sceneData.getWidth());
 				}
+				createGrid();
 				return null;
 			}
 
 		});
+		resumeRendering();
 	}
 
 	/*
@@ -601,7 +610,44 @@ public class DesignerGame extends SWTBaseGame implements
 		});
 		worldState = WorldStates.Stopped;
 	}
+	
+	public void toggleGrid() {
+		if (gridEnabled) {
+			gridState.setActive(false);
+			gridEnabled = false;
+		} else {
+			gridState.setActive(true);
+			gridEnabled = true;
+		}
+	}
+	/**
+	 * Creates the grid for displaying.
+	 */
+	private void createGrid() {
+		if(gridState!=null){
+			GameStateManager.getInstance().detachChild(gridState);
+		}
+		// create the grid
+		logger.debug("creating grid");
+		int sceneWidth = sceneDataService.getWidth();
+		GridNode grid = new GridNode("griddy", sceneWidth, sceneWidth, .1f);
+		grid.setLocalTranslation(sceneWidth / 2, 0.01f, sceneWidth / 2);
 
+		MaterialState ms = DisplaySystem.getDisplaySystem().getRenderer()
+				.createMaterialState();
+		ms.setDiffuse(new ColorRGBA(0.345f, 0.639f, 0.901f, 1.0f));
+		grid.setRenderState(ms);
+
+		gridNode = grid;
+		gridState = new BasicGameState("GridState");
+		gridState.getRootNode().attachChild(grid);
+		gridState.setActive(true);
+		gridNode.updateRenderState();
+		gridNode.updateGeometricState(0, true);
+		GameStateManager.getInstance().attachChild(gridState);
+		gridEnabled = false;
+		toggleGrid();
+	}
 	/*
 	 * (non-Javadoc)
 	 * 
