@@ -190,7 +190,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 			sceneData.getEntityNames().remove(entity.getName());
 		}
 		if (visuals.size() > 0) {
-			Helpers.waitOnCallabel(new Callable<Object>() {
+			GameTaskQueueManager.getManager().update(new Callable<Object>() {
 
 				/*
 				 * (non-Javadoc)
@@ -968,7 +968,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 		}
 
 		public Object call() throws Exception {
-			prepareEntity((VisualEntity) newentity);
+			prepareEntity((VisualEntity) newentity, rootNode);
 			if (newentity instanceof ParentEntity) {
 				for (VisualEntity child : ((ParentEntity) newentity)
 						.getChildEntites()) {
@@ -977,7 +977,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 					sceneData.getSyncedEntities().add(child);
 					((ChildEntity) child).setParent((VisualEntity) newentity);
 
-					prepareEntity((VisualEntity) child);
+					prepareEntity((VisualEntity) child, ((VisualEntity)newentity).getNode());
 				}
 			}
 			// center the object in the scene
@@ -1006,7 +1006,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 			return new Object();
 		}
 
-		private void prepareEntity(VisualEntity entity) {
+		private void prepareEntity(VisualEntity entity, Node target) {
 			entity.init();
 			if (entity instanceof VisualEntityHolder) {
 				for (VisualEntity vent : ((VisualEntityHolder) entity)
@@ -1022,7 +1022,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 			}
 			entity.getNode().updateModelBound();
 			entity.getNode().updateWorldData(0);
-			rootNode.attachChild(entity.getNode());
+			target.attachChild(entity.getNode());
 			entity.getNode().updateWorldBound();
 			if (id != null) {
 				entity.getNode().setName(id);
