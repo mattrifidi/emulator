@@ -49,7 +49,6 @@ import org.rifidi.designer.entities.interfaces.RifidiEntity;
 import org.rifidi.designer.entities.interfaces.VisualEntityHolder;
 import org.rifidi.designer.entities.placement.BitMap;
 import org.rifidi.designer.library.EntityLibraryRegistry;
-import org.rifidi.jmeswt.utils.Helpers;
 import org.rifidi.services.annotations.Inject;
 import org.rifidi.services.initializer.IInitService;
 import org.rifidi.services.initializer.exceptions.InitializationException;
@@ -147,7 +146,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 		if (ent instanceof VisualEntity) {
 			GameTaskQueueManager.getManager().update(
 					new UpdateCallable(sceneData.getRootNode(),
-							(VisualEntity) ent, center, null, listener));
+							(VisualEntity) ent, center, listener));
 		} else {
 			ent.setEntityId(sceneData.getNextID().toString());
 		}
@@ -328,8 +327,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 		if (product instanceof VisualEntity) {
 			GameTaskQueueManager.getManager().update(
 					new UpdateCallable(sceneData.getRootNode(),
-							(VisualEntity) product, false, sceneData
-									.getNextID().toString(), null));
+							(VisualEntity) product, false, null));
 		}
 	}
 
@@ -522,8 +520,9 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 
 					sceneData.setRootNode((Node) BinaryImporter.getInstance()
 							.load(sceneData.getNodeBytes()));
-
 					for (Entity entity : sceneData.getEntities()) {
+						System.out.println("Ent: " + entity + " "
+								+ entity.getEntityId());
 						ServiceRegistry.getInstance().service(entity);
 						sceneData.getEntityNames().add(entity.getName());
 						initEntity(entity, sceneData, false);
@@ -940,10 +939,6 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 		 */
 		private boolean center;
 		/**
-		 * The id for the node.
-		 */
-		private String id;
-		/**
 		 * Callback for new entities.
 		 */
 		private NewEntityListener listener;
@@ -959,11 +954,10 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 		 *            center on the entity
 		 */
 		public UpdateCallable(final Node rootNode, final Entity newentity,
-				final boolean center, String id, NewEntityListener listener) {
+				final boolean center, NewEntityListener listener) {
 			this.newentity = newentity;
 			this.rootNode = rootNode;
 			this.center = center;
-			this.id = id;
 			this.listener = listener;
 		}
 
@@ -977,7 +971,8 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 					sceneData.getSyncedEntities().add(child);
 					((ChildEntity) child).setParent((VisualEntity) newentity);
 
-					prepareEntity((VisualEntity) child, ((VisualEntity)newentity).getNode());
+					prepareEntity((VisualEntity) child,
+							((VisualEntity) newentity).getNode());
 				}
 			}
 			// center the object in the scene
@@ -1024,10 +1019,9 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 			entity.getNode().updateWorldData(0);
 			target.attachChild(entity.getNode());
 			entity.getNode().updateWorldBound();
-			if (id != null) {
-				entity.getNode().setName(id);
-				entity.setEntityId(id);
-			}
+			String id = sceneData.getNextID().toString();
+			entity.getNode().setName(id);
+			entity.setEntityId(id);
 			if (entity.getNode() instanceof PhysicsNode) {
 				((PhysicsNode) entity.getNode()).generatePhysicsGeometry();
 			}
@@ -1036,7 +1030,6 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 
 			nodeToEntity.put(((VisualEntity) entity).getNode(),
 					(VisualEntity) entity);
-			entity.setEntityId(sceneData.getNextID().toString());
 		}
 	}
 
