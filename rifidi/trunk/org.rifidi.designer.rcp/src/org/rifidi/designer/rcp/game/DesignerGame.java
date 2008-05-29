@@ -36,8 +36,8 @@ import org.rifidi.designer.entities.SceneData.Direction;
 import org.rifidi.designer.entities.interfaces.SceneControl;
 import org.rifidi.designer.rcp.GlobalProperties;
 import org.rifidi.designer.rcp.views.minimapview.MiniMapView;
-import org.rifidi.designer.rcp.views.view3d.View3D.Mode;
 import org.rifidi.designer.services.core.camera.CameraService;
+import org.rifidi.designer.services.core.collision.FieldService;
 import org.rifidi.designer.services.core.entities.SceneDataChangedListener;
 import org.rifidi.designer.services.core.entities.SceneDataService;
 import org.rifidi.designer.services.core.selection.SelectionService;
@@ -148,6 +148,10 @@ public class DesignerGame extends SWTBaseGame implements
 	 * Reference to the selectionservice.
 	 */
 	private SelectionService selectionService;
+	/**
+	 * Reference to the field service.
+	 */
+	private FieldService fieldService;
 	/**
 	 * List of highlighted entities.
 	 */
@@ -345,6 +349,7 @@ public class DesignerGame extends SWTBaseGame implements
 			if (WorldStates.Running.equals(worldState)) {
 				sceneData.getCollisionHandler().update(interpolation);
 				sceneData.getPhysicsSpace().update(interpolation);
+				fieldService.checkFields();
 			}
 			repeater.doUpdate(interpolation);
 		}
@@ -610,7 +615,7 @@ public class DesignerGame extends SWTBaseGame implements
 		});
 		worldState = WorldStates.Stopped;
 	}
-	
+
 	public void toggleGrid() {
 		if (gridEnabled) {
 			gridState.setActive(false);
@@ -620,11 +625,12 @@ public class DesignerGame extends SWTBaseGame implements
 			gridEnabled = true;
 		}
 	}
+
 	/**
 	 * Creates the grid for displaying.
 	 */
 	private void createGrid() {
-		if(gridState!=null){
+		if (gridState != null) {
 			GameStateManager.getInstance().detachChild(gridState);
 		}
 		// create the grid
@@ -648,6 +654,7 @@ public class DesignerGame extends SWTBaseGame implements
 		gridEnabled = false;
 		toggleGrid();
 	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -685,6 +692,14 @@ public class DesignerGame extends SWTBaseGame implements
 	public void setSelectionService(SelectionService selectionService) {
 		this.selectionService = selectionService;
 		selectionService.addSelectionChangedListener(this);
+	}
+
+	/**
+	 * @param fieldService the fieldService to set
+	 */
+	@Inject
+	public void setFieldService(FieldService fieldService) {
+		this.fieldService = fieldService;
 	}
 
 	/**
