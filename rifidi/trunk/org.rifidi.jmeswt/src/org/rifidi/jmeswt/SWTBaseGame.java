@@ -328,6 +328,10 @@ public abstract class SWTBaseGame extends AbstractGame {
 	 */
 	@Override
 	protected void render(float interpolation) {
+		display.getRenderer().displayBackBuffer();
+		if (!getGlCanvas().isDisposed()) {
+			getGlCanvas().swapBuffers();
+		}
 	}
 
 	/*

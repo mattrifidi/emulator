@@ -81,19 +81,18 @@ public class RenderThread extends Thread {
 	@Override
 	public void run() {
 		while (!game.getGlCanvas().isDisposed() && keepRunning) {
-			if (!renderRunnable.running) {
-				try {
-					semaphore.acquire();
-				} catch (InterruptedException e1) {
-					Thread.currentThread().interrupt();
+			try {
+				semaphore.acquire();
+			} catch (InterruptedException e1) {
+				Thread.currentThread().interrupt();
+			}
+
+			try {
+				if (canvas != null) {
+					display.syncExec(new RenderRunnable());
 				}
-				try {
-					if (canvas != null) {
-						display.asyncExec(new RenderRunnable());
-					}
-				} finally {
-					semaphore.release();
-				}
+			} finally {
+				semaphore.release();
 			}
 			try {
 				Thread.sleep(resolution);
@@ -126,10 +125,6 @@ public class RenderThread extends Thread {
 	 * 
 	 */
 	private class RenderRunnable implements Runnable {
-		/**
-		 * Still running?
-		 */
-		public boolean running;
 
 		/*
 		 * (non-Javadoc)
@@ -138,17 +133,11 @@ public class RenderThread extends Thread {
 		 */
 		@Override
 		public void run() {
-			running = true;
 			renderQueue.execute();
 			game.getDisplaySys().getRenderer().clearBuffers();
 			game.getDisplaySys().getRenderer().clearStatistics();
 			game.getDisplaySys().getRenderer().draw(game.getRootNode());
 			game.render(-1f);
-			game.getDisplaySys().getRenderer().displayBackBuffer();
-			if (!canvas.isDisposed()) {
-				canvas.swapBuffers();
-			}
-			running = false;
 		}
 	}
 }
