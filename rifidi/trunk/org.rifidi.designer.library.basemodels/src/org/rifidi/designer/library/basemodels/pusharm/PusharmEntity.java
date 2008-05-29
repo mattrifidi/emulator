@@ -249,7 +249,7 @@ public class PusharmEntity extends VisualEntity implements SceneControl,
 		if (running)
 			turnOn();
 	}
-
+	private Node oldCol=null;
 	private void prepare() {
 		// set up collisions to trigger the pusharm
 		triggerSpace.generatePhysicsGeometry();
@@ -261,8 +261,12 @@ public class PusharmEntity extends VisualEntity implements SceneControl,
 						.getTriggerData()).getNode2() : ((ContactInfo) evt
 						.getTriggerData()).getNode1();
 
-				if (collider != armPhysics)
+				if (collider != armPhysics && !collider.equals(oldCol)){
+					oldCol=collider;
+					System.out.println("dooooing");
 					trigger(collider);
+				}
+					
 			}
 		};
 		SyntheticButton intersect = triggerSpace.getCollisionEventHandler();
@@ -342,6 +346,7 @@ public class PusharmEntity extends VisualEntity implements SceneControl,
 	 * @see org.rifidi.designer.entities.interfaces.Trigger#trigger(java.lang.Object)
 	 */
 	public void trigger(Object source) {
+		
 		if (running && !paused && !activationStack.isEmpty()
 				&& activationStack.pop()) {
 			if (st.getCurTime() == st.getMaxTime())
