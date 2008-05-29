@@ -249,6 +249,9 @@ public abstract class VisualEntity extends Entity {
 	 * @author dan
 	 */
 	public Point getPositionFromTranslation() {
+		if(getPattern()==null){
+			return new Point(0,0);
+		}
 		return getPositionFromTranslation(getPattern());
 	}
 

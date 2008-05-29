@@ -28,10 +28,14 @@ public interface EntitiesService {
 	 * Add a new entity to the scene.
 	 * 
 	 * @param ent
-	 * @param center true if the entity should be centered in the scene.
+	 * @param center
+	 *            true if the entity should be centered in the scene.
+	 * @param newEntityListener
+	 *            a callback for the submitter of the new entity.
 	 */
-	void addEntity(Entity ent, Boolean center);
-	
+	void addEntity(Entity ent, Boolean center,
+			NewEntityListener newEntityListener);
+
 	/**
 	 * Delete entities from the scene
 	 * 

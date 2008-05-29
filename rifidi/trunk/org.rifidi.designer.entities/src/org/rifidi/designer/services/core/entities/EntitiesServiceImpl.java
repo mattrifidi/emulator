@@ -129,7 +129,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	 *      java.lang.Boolean)
 	 */
 	@Override
-	public void addEntity(Entity ent, Boolean center) {
+	public void addEntity(Entity ent, Boolean center, NewEntityListener listener) {
 		int namecount = 0;
 		String orgName = ent.getName();
 		while (sceneData.getEntityNames().contains(ent.getName())) {
@@ -145,22 +145,12 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 		initEntity(ent, sceneData, true);
 
 		if (ent instanceof VisualEntity) {
-			Helpers.waitOnCallabel(new UpdateCallable(sceneData.getRootNode(),
-					(VisualEntity) ent, center, null));
+			GameTaskQueueManager.getManager().update(
+					new UpdateCallable(sceneData.getRootNode(),
+							(VisualEntity) ent, center, null, listener));
+		} else {
+			ent.setEntityId(sceneData.getNextID().toString());
 		}
-		if (ent instanceof ParentEntity) {
-			for (VisualEntity child : ((ParentEntity) ent).getChildEntites()) {
-				sceneData.getEntityNames().add(child.getName());
-				initEntity(child, sceneData, true);
-				sceneData.getSyncedEntities().add(child);
-				((ChildEntity) child).setParent((VisualEntity) ent);
-
-				Helpers.waitOnCallabel(new UpdateCallable(((VisualEntity) ent)
-						.getNode(), (VisualEntity) child, false, null));
-				child.setEntityId(sceneData.getNextID().toString());
-			}
-		}
-		ent.setEntityId(sceneData.getNextID().toString());
 	}
 
 	/*
@@ -339,7 +329,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 			GameTaskQueueManager.getManager().update(
 					new UpdateCallable(sceneData.getRootNode(),
 							(VisualEntity) product, false, sceneData
-									.getNextID().toString()));
+									.getNextID().toString(), null));
 		}
 	}
 
@@ -642,7 +632,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 			 */
 			@Override
 			public Object call() throws Exception {
-				Node parent=sceneData.getRootNode().getParent();
+				Node parent = sceneData.getRootNode().getParent();
 				sceneData.getRootNode().removeFromParent();
 				sceneData.getRoomNode().removeFromParent();
 
@@ -940,7 +930,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 		/**
 		 * Entity that should be connected to the scenegraph.
 		 */
-		private VisualEntity entity;
+		private Entity newentity;
 		/**
 		 * Root of the scenegraph.
 		 */
@@ -953,28 +943,71 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 		 * The id for the node.
 		 */
 		private String id;
+		/**
+		 * Callback for new entities.
+		 */
+		private NewEntityListener listener;
 
 		/**
 		 * Constructor.
 		 * 
 		 * @param rootNode
 		 *            scene root
-		 * @param entity
+		 * @param newentity
 		 *            entity to add
 		 * @param center
 		 *            center on the entity
 		 */
-		public UpdateCallable(final Node rootNode, final VisualEntity entity,
-				final boolean center, String id) {
-			this.entity = entity;
+		public UpdateCallable(final Node rootNode, final Entity newentity,
+				final boolean center, String id, NewEntityListener listener) {
+			this.newentity = newentity;
 			this.rootNode = rootNode;
 			this.center = center;
 			this.id = id;
+			this.listener = listener;
 		}
 
 		public Object call() throws Exception {
-			entity.init();
+			prepareEntity((VisualEntity) newentity);
+			if (newentity instanceof ParentEntity) {
+				for (VisualEntity child : ((ParentEntity) newentity)
+						.getChildEntites()) {
+					sceneData.getEntityNames().add(child.getName());
+					initEntity(child, sceneData, true);
+					sceneData.getSyncedEntities().add(child);
+					((ChildEntity) child).setParent((VisualEntity) newentity);
 
+					prepareEntity((VisualEntity) child);
+				}
+			}
+			// center the object in the scene
+			if (center) {
+				float halfWidth = sceneData.getWidth() / 2f;
+				((VisualEntity) newentity).getNode().setLocalTranslation(
+						halfWidth,
+						((VisualEntity) newentity).getNode()
+								.getLocalTranslation().y, halfWidth);
+			}
+			if (listener != null) {
+				sceneData.getDisplay().asyncExec(new Runnable() {
+
+					/*
+					 * (non-Javadoc)
+					 * 
+					 * @see java.lang.Runnable#run()
+					 */
+					@Override
+					public void run() {
+						listener.entityAdded((VisualEntity) newentity);
+					}
+
+				});
+			}
+			return new Object();
+		}
+
+		private void prepareEntity(VisualEntity entity) {
+			entity.init();
 			if (entity instanceof VisualEntityHolder) {
 				for (VisualEntity vent : ((VisualEntityHolder) entity)
 						.getVisualEntityList()) {
@@ -999,19 +1032,12 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 				((PhysicsNode) entity.getNode()).generatePhysicsGeometry();
 			}
 
-			// center the object in the scene
-			if (center) {
-				float halfWidth = sceneData.getWidth() / 2f;
-				entity.getNode().setLocalTranslation(halfWidth,
-						entity.getNode().getLocalTranslation().y, halfWidth);
-			}
 			rootNode.updateRenderState();
 
 			nodeToEntity.put(((VisualEntity) entity).getNode(),
 					(VisualEntity) entity);
-			return new Object();
+			entity.setEntityId(sceneData.getNextID().toString());
 		}
-
 	}
 
 }
