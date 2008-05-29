@@ -969,8 +969,8 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 				float halfWidth = sceneData.getWidth() / 2f;
 				entity.getNode().setLocalTranslation(halfWidth,
 						entity.getNode().getLocalTranslation().y, halfWidth);
-				entity.getNode().updateRenderState();
 			}
+			rootNode.updateRenderState();
 
 			nodeToEntity.put(((VisualEntity) entity).getNode(),
 					(VisualEntity) entity);
