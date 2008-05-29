@@ -18,8 +18,8 @@ import org.rifidi.designer.entities.VisualEntity;
 
 /**
  * This service is responsible for handling the selection of entities throughout
- * the application.
- * It is also a selectionprovider to allow easy cahining of views.
+ * the application. It is also a selectionprovider to allow easy cahining of
+ * views.
  * 
  * @author Jochen Mader Jan 24, 2008
  * @tags
@@ -37,8 +37,7 @@ public interface SelectionService extends ISelectionProvider {
 	 * @param informlisteners
 	 *            inform the listeners about this selection
 	 */
-	void select(VisualEntity ent, boolean multiple,
-			boolean informlisteners);
+	void select(VisualEntity ent, boolean multiple, boolean informlisteners);
 
 	/**
 	 * Select the given list of entity.
@@ -47,8 +46,11 @@ public interface SelectionService extends ISelectionProvider {
 	 *            the list of selected visual entity
 	 * @param informlisteners
 	 *            inform the listeners about this selection
+	 * @param source
+	 *            the source of the event
 	 */
-	void select(List<VisualEntity> entities, boolean informlisteners);
+	void select(List<VisualEntity> entities, boolean informlisteners,
+			Object source);
 
 	/**
 	 * Clear selection.

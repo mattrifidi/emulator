@@ -37,6 +37,7 @@ import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 import org.eclipse.ui.part.ViewPart;
+import org.rifidi.designer.entities.Entity;
 import org.rifidi.designer.entities.SceneData;
 import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.databinding.ObservableTreeContentProvider;
@@ -231,7 +232,17 @@ public class EntityView extends ViewPart implements ISelectionChangedListener,
 			if (ob instanceof VisualEntity) {
 				hilit.add((VisualEntity) ob);
 				if(event.getSource().equals(viewer)){
-					selectionService.select(hilit, true);
+					selectionService.select(hilit, true, this);
+				}
+			}
+			if (ob instanceof EntityGroup) {
+				for(Entity ent:((EntityGroup)ob).getEntities()){
+					if(ent instanceof VisualEntity){
+						hilit.add((VisualEntity) ent);		
+					}
+				}
+				if(event.getSource().equals(viewer)){
+					selectionService.select(hilit, true, this);
 				}
 			}
 		}

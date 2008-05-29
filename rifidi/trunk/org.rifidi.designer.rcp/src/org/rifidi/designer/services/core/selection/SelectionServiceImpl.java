@@ -77,7 +77,7 @@ public class SelectionServiceImpl implements SelectionService,
 			}
 			hilited.add(ent);
 			if (informlisteners) {
-				triggerSelection();
+				triggerSelection(null);
 			}
 		}
 	}
@@ -86,17 +86,17 @@ public class SelectionServiceImpl implements SelectionService,
 	 * (non-Javadoc)
 	 * 
 	 * @see org.rifidi.services.registry.core.selection.SelectionService#hilite(java.util.List,
-	 *      boolean)
+	 *      boolean, Object)
 	 */
 	@Override
 	public void select(final List<VisualEntity> entities,
-			boolean informlisteners) {
+			boolean informlisteners, Object source) {
 		hilited.clear();
 		for (VisualEntity entity : entities) {
 			hilited.add(entity);
 		}
 		if (informlisteners) {
-			triggerSelection();
+			triggerSelection(source);
 		}
 	}
 
@@ -105,7 +105,7 @@ public class SelectionServiceImpl implements SelectionService,
 	 */
 	public void clearSelection() {
 		hilited.clear();
-		triggerSelection();
+		triggerSelection(null);
 	}
 
 	/*
@@ -180,11 +180,13 @@ public class SelectionServiceImpl implements SelectionService,
 	 * Triggers a selection event that contains the currently highlighted
 	 * entities.
 	 */
-	public void triggerSelection() {
+	public void triggerSelection(Object source) {
 		for (ISelectionChangedListener listener : selectionListeners) {
 			SelectionChangedEvent event = new SelectionChangedEvent(this,
 					new StructuredSelection(hilited));
-			listener.selectionChanged(event);
+			if(!listener.equals(source)){
+				listener.selectionChanged(event);	
+			}
 		}
 	}
 

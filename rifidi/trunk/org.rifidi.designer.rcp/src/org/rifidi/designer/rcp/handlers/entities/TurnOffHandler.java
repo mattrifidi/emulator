@@ -71,7 +71,7 @@ public class TurnOffHandler extends AbstractHandler {
 				((Switch) sw).turnOff();
 			}
 		}
-		((SelectionServiceImpl) selectionService).triggerSelection();
+		((SelectionServiceImpl) selectionService).triggerSelection(this);
 		return null;
 	}
 

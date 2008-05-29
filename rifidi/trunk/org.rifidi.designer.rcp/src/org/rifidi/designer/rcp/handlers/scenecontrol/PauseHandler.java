@@ -52,7 +52,7 @@ public class PauseHandler extends AbstractHandler {
 	public Object execute(ExecutionEvent arg0) throws ExecutionException {
 		worldService.pause();
 		// TODO: this is sooooo ugly. Revisit in eclipse 3.4!
-		((SelectionServiceImpl) selectionService).triggerSelection();
+		((SelectionServiceImpl) selectionService).triggerSelection(this);
 		return null;
 	}
 

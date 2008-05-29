@@ -214,6 +214,7 @@ public class MiniMapView extends ViewPart {
 		// .getWorldCoordinates(new Vector2f(700, 500), 0));
 		// Vector3f bottomleft = mapCamera.getScreenCoordinates(cameraService
 		// .getMainCamera().getWorldCoordinates(new Vector2f(0, 500), 0));
+		Vector3f delta=new Vector3f(0,0,0);
 		Vector3f topleft = mapCamera.getScreenCoordinates(cameraService
 				.getMainCamera().getLocation());
 		Vector3f topright = mapCamera.getScreenCoordinates(cameraService
@@ -222,7 +223,10 @@ public class MiniMapView extends ViewPart {
 				.getMainCamera().getLocation());
 		Vector3f bottomleft = mapCamera.getScreenCoordinates(cameraService
 				.getMainCamera().getLocation());
-
+		topleft.subtractLocal(delta);
+		topright.subtractLocal(delta);
+		bottomleft.subtractLocal(delta);
+		bottomright.subtractLocal(delta);
 		int[] corners = new int[] { (int) topleft.x - 20,
 				image.getBounds().height - (int) topleft.y - 20,
 				(int) topright.x + 20,

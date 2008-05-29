@@ -594,7 +594,7 @@ public class DesignerGame extends SWTBaseGame implements
 	 */
 	@Override
 	public void stop() {
-		Helpers.waitOnCallabel(new Callable<Object>() {
+		GameTaskQueueManager.getManager().update(new Callable<Object>() {
 
 			/*
 			 * (non-Javadoc)
