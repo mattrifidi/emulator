@@ -21,6 +21,7 @@ import javax.xml.bind.annotation.XmlTransient;
 import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.model.IWorkbenchAdapter;
 import org.rifidi.designer.entities.databinding.annotations.MonitorThisList;
 import org.rifidi.designer.entities.grouping.EntityGroup;
@@ -125,10 +126,18 @@ public class SceneData implements IAdaptable, IWorkbenchAdapter {
 	 * This map conatins the 4 walls that surround the scene.
 	 */
 	private Map<Direction, Node> walls;
-
+	/**
+	 * Container for entity groups.
+	 */
 	private GroupContainer groupedComponentsContainer;
-
+	/**
+	 * Synchronized list of entites.
+	 */
 	private List<Entity> syncedEntities;
+	/**
+	 * Current SWT display.
+	 */
+	private Display display;
 
 	/**
 	 * @return the nodeBytes
@@ -471,5 +480,20 @@ public class SceneData implements IAdaptable, IWorkbenchAdapter {
 	 */
 	public void setCableGroup(EntityGroup cableGroup) {
 		this.cableGroup = cableGroup;
+	}
+
+	/**
+	 * @return the display
+	 */
+	public Display getDisplay() {
+		return this.display;
+	}
+
+	/**
+	 * @param display the display to set
+	 */
+	@XmlTransient
+	public void setDisplay(Display display) {
+		this.display = display;
 	}
 }

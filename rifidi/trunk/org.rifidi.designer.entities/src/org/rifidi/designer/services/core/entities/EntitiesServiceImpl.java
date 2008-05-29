@@ -34,6 +34,7 @@ import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.widgets.Display;
 import org.rifidi.designer.entities.Activator;
 import org.rifidi.designer.entities.Entity;
 import org.rifidi.designer.entities.SceneData;
@@ -472,10 +473,11 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.services.registry.core.scenedata.SceneDataService#loadScene(org.eclipse.core.resources.IFile)
+	 * @see org.rifidi.services.registry.core.scenedata.SceneDataService#loadScene(org.eclipse.swt.widgets.Display,
+	 *      org.eclipse.core.resources.IFile)
 	 */
 	@SuppressWarnings("unchecked")
-	public void loadScene(IFile file) {
+	public void loadScene(Display display, IFile file) {
 		TextureManager.clearCache();
 		// invalidate the current sceneData
 		for (SceneDataChangedListener listener : listeners) {
@@ -501,6 +503,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 			try {
 				Object unm = unmarshaller.unmarshal(file.getContents());
 				sceneData = (SceneData) unm;
+				sceneData.setDisplay(display);
 				sceneData.setPhysicsSpace(PhysicsSpace.create());
 				sceneData.setCollisionHandler(new InputHandler());
 
@@ -619,12 +622,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	 */
 	public void saveScene(IFile file) {
 		fileOfCurrentScene = file;
-		try {
-			file.setContents(new ByteArrayInputStream(toByteArray(sceneData)),
-					IFile.FORCE, null);
-		} catch (CoreException e) {
-			logger.error("Error while saving: " + e);
-		}
+		saveScene();
 	}
 
 	/*
@@ -632,13 +630,47 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	 * 
 	 * @see org.rifidi.services.registry.core.scenedata.SceneDataService#saveScene()
 	 */
+	private ByteArrayInputStream byts = null;
+
 	public void saveScene() {
-		try {
-			fileOfCurrentScene.setContents(new ByteArrayInputStream(
-					toByteArray(sceneData)), IFile.FORCE, null);
-		} catch (CoreException e) {
-			logger.error("Error while saving: " + e);
-		}
+		GameTaskQueueManager.getManager().update(new Callable<Object>() {
+
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see java.util.concurrent.Callable#call()
+			 */
+			@Override
+			public Object call() throws Exception {
+				sceneData.getRoomNode().removeFromParent();
+
+				sceneData.getDisplay().syncExec(new Runnable() {
+
+					/*
+					 * (non-Javadoc)
+					 * 
+					 * @see java.lang.Runnable#run()
+					 */
+					@Override
+					public void run() {
+
+						try {
+							fileOfCurrentScene.setContents(
+									new ByteArrayInputStream(
+											toByteArray(sceneData)),
+									IFile.FORCE, null);
+						} catch (CoreException e) {
+							logger.error("Error while saving: " + e);
+						}
+					}
+
+				});
+				sceneData.getRootNode().attachChild(sceneData.getRoomNode());
+				return null;
+			}
+
+		});
+
 	}
 
 	/*

@@ -13,6 +13,7 @@ package org.rifidi.designer.services.core.entities;
 import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.swt.widgets.Display;
 import org.rifidi.designer.entities.SceneData;
 import org.rifidi.designer.entities.SceneData.Direction;
 
@@ -32,9 +33,11 @@ public interface SceneDataService {
 	/**
 	 * Load a scene from the given IFile.
 	 * 
+	 * @param display
+	 *            the current SWT display
 	 * @param file
 	 */
-	void loadScene(IFile file);
+	void loadScene(Display display, IFile file);
 
 	/**
 	 * Save the currently loaded scene to the given file.
@@ -53,8 +56,8 @@ public interface SceneDataService {
 	void saveScene();
 
 	/**
-	 * Registers a listener to inform objects about changes to scenedata
-	 * to the last loaded scenedata.
+	 * Registers a listener to inform objects about changes to scenedata to the
+	 * last loaded scenedata.
 	 * 
 	 * @param viewer
 	 */
@@ -62,34 +65,39 @@ public interface SceneDataService {
 
 	/**
 	 * Remove a registered viewer from the list of viewers.
+	 * 
 	 * @param listener
 	 */
 	void removeSceneDataChangedListener(SceneDataChangedListener listener);
-	
+
 	/**
 	 * Get the RootNode of the currently loaded scene.
+	 * 
 	 * @return
 	 */
 	Node getRootNode();
-	
+
 	/**
 	 * Get the RoomNode of the currently loaded scene.
+	 * 
 	 * @return
 	 */
 	Node getRoomNode();
-	
+
 	/**
 	 * Get the width of the currently loaded scenedata.
+	 * 
 	 * @return
 	 */
 	Integer getWidth();
-	
+
 	/**
 	 * Get the roomwalls.
+	 * 
 	 * @return
 	 */
 	Map<Direction, Node> getWalls();
-	
+
 	/**
 	 * Get the currently loaded SceneData.
 	 * 
@@ -99,12 +107,14 @@ public interface SceneDataService {
 
 	/**
 	 * Set the name of the currently loaded scene.
+	 * 
 	 * @param name
 	 */
 	void setName(String name);
-	
+
 	/**
 	 * Get the name of the currently loaded scene.
+	 * 
 	 * @return
 	 */
 	String getName();
