@@ -620,6 +620,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	 * 
 	 * @see org.rifidi.services.registry.core.scenedata.SceneDataService#saveScene(org.eclipse.core.resources.IFile)
 	 */
+	@Override
 	public void saveScene(IFile file) {
 		fileOfCurrentScene = file;
 		saveScene();
@@ -630,8 +631,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	 * 
 	 * @see org.rifidi.services.registry.core.scenedata.SceneDataService#saveScene()
 	 */
-	private ByteArrayInputStream byts = null;
-
+	@Override
 	public void saveScene() {
 		GameTaskQueueManager.getManager().update(new Callable<Object>() {
 
@@ -642,6 +642,8 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 			 */
 			@Override
 			public Object call() throws Exception {
+				Node parent=sceneData.getRootNode().getParent();
+				sceneData.getRootNode().removeFromParent();
 				sceneData.getRoomNode().removeFromParent();
 
 				sceneData.getDisplay().syncExec(new Runnable() {
@@ -666,6 +668,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 
 				});
 				sceneData.getRootNode().attachChild(sceneData.getRoomNode());
+				parent.attachChild(sceneData.getRootNode());
 				return null;
 			}
 
@@ -700,7 +703,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	 */
 	@Override
 	public Node getRoomNode() {
-		return sceneData.getRootNode();
+		return sceneData.getRoomNode();
 	}
 
 	/*
@@ -710,7 +713,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	 */
 	@Override
 	public Node getRootNode() {
-		return sceneData.getRoomNode();
+		return sceneData.getRootNode();
 	}
 
 	/*
