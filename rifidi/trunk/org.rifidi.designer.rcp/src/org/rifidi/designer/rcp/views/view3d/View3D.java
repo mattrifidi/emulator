@@ -58,6 +58,7 @@ import org.rifidi.designer.rcp.views.view3d.mode.InteractionMode;
 import org.rifidi.designer.services.core.camera.CameraService;
 import org.rifidi.designer.services.core.entities.EntitiesService;
 import org.rifidi.designer.services.core.entities.FinderService;
+import org.rifidi.designer.services.core.entities.NewEntityListener;
 import org.rifidi.designer.services.core.entities.SceneDataService;
 import org.rifidi.designer.services.core.selection.SelectionService;
 import org.rifidi.designer.services.core.world.WorldService;
@@ -72,7 +73,7 @@ import com.jme.util.TextureManager;
  * @author Jochen Mader Nov 20, 2007
  * @author Dan West
  */
-public class View3D extends ViewPart implements IPerspectiveListener {
+public class View3D extends ViewPart implements IPerspectiveListener, NewEntityListener {
 	/**
 	 * Enum for the different modes the 3dview supports.
 	 */
@@ -236,6 +237,7 @@ public class View3D extends ViewPart implements IPerspectiveListener {
 	public void createNewEntity(final EntityLibraryReference ref) {
 		worldService.pause();
 		try {
+			Entity ent = null;
 			if (ref.getWizard() != null) {
 				RifidiEntityWizard wizard = (RifidiEntityWizard) ref
 						.getWizard().newInstance();
@@ -251,33 +253,32 @@ public class View3D extends ViewPart implements IPerspectiveListener {
 
 				int returnCode = dialog.open();
 				if (returnCode != SWT.CANCEL) {
-					Entity ent = null;
 					if (wizard instanceof EntityWizardRifidiIface) {
 						ent = ((EntityWizardRifidiIface) wizard).getEntity();
 					} else {
 						ent = ((EntityWizardIface) wizard).getEntity();
 					}
-					entitiesService.addEntity(ent, true);
-					if (ent instanceof VisualEntity) {
-						selectionService.select((VisualEntity) ent, false,
-								false);
-						switchMode(Mode.PlacementMode);
-					}
 				}
-				return;
 			}
-			Entity entity = (Entity) ref.getEntityClass().newInstance();
-			entitiesService.addEntity(entity, true);
-			if (entity instanceof VisualEntity) {
-				selectionService.select((VisualEntity) entity, false, false);
-				switchMode(Mode.PlacementMode);
+			else{
+				ent = (Entity) ref.getEntityClass().newInstance();
 			}
+			entitiesService.addEntity(ent, true, this);
 
 		} catch (InstantiationException e) {
 			logger.error("Failed instantiating wizard: \n" + e);
 		} catch (IllegalAccessException e) {
 			logger.error("Failed instantiating wizard: \n" + e);
 		}
+	}
+
+	/* (non-Javadoc)
+	 * @see org.rifidi.designer.services.core.entities.NewEntityListener#entityAdded(org.rifidi.designer.entities.VisualEntity)
+	 */
+	@Override
+	public void entityAdded(VisualEntity ent) {
+		selectionService.select((VisualEntity) ent, false, false);
+		switchMode(Mode.PlacementMode);
 	}
 
 	/**
@@ -310,7 +311,7 @@ public class View3D extends ViewPart implements IPerspectiveListener {
 	 */
 	public void hideMousePointer() {
 		oldpos = Display.getCurrent().getCursorLocation();
-		// glCanvas.setCursor(invisibleCursor);
+		designerGame.hideMouse();
 	}
 
 	/**
@@ -321,7 +322,7 @@ public class View3D extends ViewPart implements IPerspectiveListener {
 			Display.getCurrent().setCursorLocation(oldpos);
 		}
 		oldpos = null;
-		// glCanvas.setCursor(defaultCursor);
+		designerGame.showMouse();
 	}
 
 	/**
