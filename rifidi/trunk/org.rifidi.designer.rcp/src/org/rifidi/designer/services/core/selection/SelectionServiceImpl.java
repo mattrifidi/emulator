@@ -13,7 +13,6 @@ package org.rifidi.designer.services.core.selection;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.Callable;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -24,20 +23,10 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.rifidi.designer.entities.Entity;
 import org.rifidi.designer.entities.SceneData;
 import org.rifidi.designer.entities.VisualEntity;
-import org.rifidi.designer.services.core.camera.CameraService;
 import org.rifidi.designer.services.core.entities.SceneDataChangedListener;
 import org.rifidi.designer.services.core.entities.SceneDataService;
-import org.rifidi.designer.services.core.world.RepeatedUpdateAction;
-import org.rifidi.designer.services.core.world.WorldService;
-import org.rifidi.jmeswt.utils.Helpers;
 import org.rifidi.services.annotations.Inject;
 import org.rifidi.services.registry.ServiceRegistry;
-
-import com.jme.scene.state.AlphaState;
-import com.jme.scene.state.FragmentProgramState;
-import com.jme.system.DisplaySystem;
-import com.jme.util.GameTaskQueue;
-import com.jme.util.GameTaskQueueManager;
 
 /**
  * Selection service implementation.
@@ -51,46 +40,19 @@ public class SelectionServiceImpl implements SelectionService,
 	/**
 	 * Logger for this class.
 	 */
-	private static Log logger=LogFactory.getLog(SelectionServiceImpl.class);
-	/**
-	 * Alpha state used for highlighting.
-	 */
-	private AlphaState alphaState;
-	/**
-	 * Fragment program state used for highlighting.
-	 */
-	private FragmentProgramState fragmentProgramState;
-	/**
-	 * Fragment program used for highlighting.
-	 */
-	private String fragprog = "!!ARBfp1.0"
-			+ "MOV result.color, program.local[0];"
-			+ "MOV result.color.a, program.local[1].a;" + "END";
+	private static Log logger = LogFactory.getLog(SelectionServiceImpl.class);
 	/**
 	 * List of selected entities.
 	 */
 	private List<Entity> hilited = new ArrayList<Entity>();
 	/**
-	 * Action submitted to the update thread for updating the highlight state.
-	 */
-	private HilitedRepeatedUpdateAction repeater;
-
-	/**
 	 * List of registered selection listeners.
 	 */
 	private List<ISelectionChangedListener> selectionListeners = new ArrayList<ISelectionChangedListener>();
 	/**
-	 * Reference to the camera service.
-	 */
-	private CameraService cameraService;
-	/**
 	 * reference to the SceneDataService
 	 */
 	private SceneDataService sceneDataService;
-	/**
-	 * reference to the worldservice
-	 */
-	private WorldService worldService;
 
 	/**
 	 * Constructor.
@@ -113,17 +75,6 @@ public class SelectionServiceImpl implements SelectionService,
 			if (!multiple) {
 				clearSelection();
 			}
-			Helpers.waitOnCallabel(new Callable<Object>() {
-				/*
-				 * (non-Javadoc)
-				 * 
-				 * @see java.util.concurrent.Callable#call()
-				 */
-				public Object call() throws Exception {
-					ent.hilite(fragmentProgramState, alphaState);
-					return null;
-				}
-			});
 			hilited.add(ent);
 			if (informlisteners) {
 				triggerSelection();
@@ -140,30 +91,10 @@ public class SelectionServiceImpl implements SelectionService,
 	@Override
 	public void select(final List<VisualEntity> entities,
 			boolean informlisteners) {
-		// clearSelection();
-		GameTaskQueueManager.getManager().getQueue(GameTaskQueue.UPDATE)
-				.enqueue(new Callable<Object>() {
-					/*
-					 * (non-Javadoc)
-					 * 
-					 * @see java.util.concurrent.Callable#call()
-					 */
-					public Object call() throws Exception {
-						
-//						if(entities.size()==1){
-//							cameraService.positionCamera(entities.get(0).getNode().getWorldTranslation());
-//						}
-						for (Entity ent : hilited) {
-							((VisualEntity)ent).clearHilite();
-						}
-						hilited.clear();
-						for (VisualEntity entity : entities) {
-							entity.hilite(fragmentProgramState, alphaState);
-							hilited.add(entity);
-						}
-						return null;
-					}
-				});
+		hilited.clear();
+		for (VisualEntity entity : entities) {
+			hilited.add(entity);
+		}
 		if (informlisteners) {
 			triggerSelection();
 		}
@@ -173,26 +104,7 @@ public class SelectionServiceImpl implements SelectionService,
 	 * Clear selection.
 	 */
 	public void clearSelection() {
-		if (hilited.size() > 0) {
-			Helpers.waitOnCallabel(new Callable<Object>() {
-
-				/*
-				 * (non-Javadoc)
-				 * 
-				 * @see java.util.concurrent.Callable#call()
-				 */
-				public Object call() throws Exception {
-					for (Entity ent : hilited) {
-						if (ent instanceof VisualEntity) {
-							((VisualEntity) ent).clearHilite();
-						}
-					}
-					hilited.clear();
-					return null;
-				}
-
-			});
-		}
+		hilited.clear();
 		triggerSelection();
 	}
 
@@ -203,27 +115,6 @@ public class SelectionServiceImpl implements SelectionService,
 	 */
 	@Override
 	public void sceneDataChanged(SceneData sceneData) {
-
-		// create alpha state for highlighting
-		alphaState = DisplaySystem.getDisplaySystem().getRenderer()
-				.createAlphaState();
-		alphaState.setBlendEnabled(true);
-		alphaState.setDstFunction(AlphaState.DB_ONE_MINUS_SRC_ALPHA);
-		alphaState.setSrcFunction(AlphaState.SB_SRC_ALPHA);
-		alphaState.setEnabled(true);
-
-		// create fragment program state for highlighting
-		fragmentProgramState = DisplaySystem.getDisplaySystem().getRenderer()
-				.createFragmentProgramState();
-		fragmentProgramState.load(fragprog);
-		fragmentProgramState.setEnabled(true);
-		float[] color4f = new float[] { .45f, .55f, 1f, 0f };
-		fragmentProgramState.setParameter(color4f, 0);
-
-		if (repeater == null) {
-			repeater = new HilitedRepeatedUpdateAction();
-			worldService.addRepeatedUpdateActiom(repeater);
-		}
 	}
 
 	/*
@@ -298,67 +189,8 @@ public class SelectionServiceImpl implements SelectionService,
 	}
 
 	/**
-	 * @param cameraService the cameraService to set
-	 */
-	public void setCameraService(CameraService cameraService) {
-		logger.debug("SelectionService got CameraService");
-		this.cameraService = cameraService;
-	}
-
-	/**
-	 * Action that is submitted to the update thread to keep the highlights
-	 * pulsing.
-	 * 
-	 * 
-	 * @author Jochen Mader Feb 1, 2008
-	 * @tags
-	 * 
-	 */
-	private class HilitedRepeatedUpdateAction implements RepeatedUpdateAction {
-		/**
-		 * Maximum alpha value.
-		 */
-		private Float maxAlpha = 1f;
-		/**
-		 * Minimum alpha value.
-		 */
-		private Float minAlpha = .25f;
-		/**
-		 * Base alpha value
-		 */
-		private Float alpha = 1f;
-		/**
-		 * Signum.
-		 */
-		private Integer sign = 1;
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see org.rifidi.services.registry.core.world.RepeatedUpdateAction#doUpdate(float)
-		 */
-		@Override
-		public void doUpdate(float timePassed) {
-			timePassed *= sign;
-			alpha += timePassed;
-			if (alpha <= minAlpha) {
-				sign = 1;
-				alpha = minAlpha;
-			} else if (alpha >= maxAlpha) {
-				sign = -1;
-				alpha = maxAlpha;
-			}
-			// Dynamic update
-			fragmentProgramState.setParameter(new float[] { 0f, 0f, alpha,
-					alpha }, 1);
-			fragmentProgramState.setNeedsRefresh(true);
-		}
-
-	}
-	
-
-	/**
-	 * @param sceneDataService the sceneDataService to set
+	 * @param sceneDataService
+	 *            the sceneDataService to set
 	 */
 	@Inject
 	public void setSceneDataService(SceneDataService sceneDataService) {
@@ -367,25 +199,10 @@ public class SelectionServiceImpl implements SelectionService,
 	}
 
 	/**
-	 * @param sceneDataService the sceneDataService to unset
+	 * @param sceneDataService
+	 *            the sceneDataService to unset
 	 */
 	public void unsetSceneDataService(SceneDataService sceneDataService) {
-		this.sceneDataService=null;
-	}
-	
-	/**
-	 * @param worldService the worldService to set
-	 */
-	@Inject
-	public void setWorldService(WorldService worldService) {
-		logger.debug("SelectionService got WorldService");
-		this.worldService = worldService;
-	}
-	
-	/**
-	 * @param worldService the worldService to unset
-	 */
-	public void unsetWorldService(WorldService worldService) {
-		this.worldService = null;
+		this.sceneDataService = null;
 	}
 }

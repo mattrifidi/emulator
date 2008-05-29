@@ -11,23 +11,41 @@
 package org.rifidi.designer.rcp.game;
 
 import java.nio.IntBuffer;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Callable;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.PaletteData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.PlatformUI;
 import org.lwjgl.opengl.EXTFramebufferObject;
+import org.rifidi.designer.entities.Entity;
 import org.rifidi.designer.entities.SceneData;
+import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.SceneData.Direction;
+import org.rifidi.designer.entities.interfaces.SceneControl;
 import org.rifidi.designer.rcp.GlobalProperties;
 import org.rifidi.designer.rcp.views.minimapview.MiniMapView;
 import org.rifidi.designer.services.core.camera.CameraService;
 import org.rifidi.designer.services.core.entities.SceneDataChangedListener;
 import org.rifidi.designer.services.core.entities.SceneDataService;
+import org.rifidi.designer.services.core.selection.SelectionService;
+import org.rifidi.designer.services.core.world.CommandStateService;
+import org.rifidi.designer.services.core.world.RepeatedUpdateAction;
+import org.rifidi.designer.services.core.world.WorldService;
+import org.rifidi.designer.services.core.world.WorldStates;
 import org.rifidi.jmeswt.SWTBaseGame;
+import org.rifidi.jmeswt.utils.Helpers;
 import org.rifidi.jmonkey.SWTDisplaySystem;
 import org.rifidi.services.annotations.Inject;
 import org.rifidi.services.registry.ServiceRegistry;
@@ -35,11 +53,13 @@ import org.rifidi.services.registry.ServiceRegistry;
 import com.jme.light.DirectionalLight;
 import com.jme.light.LightNode;
 import com.jme.math.Vector3f;
+import com.jme.renderer.Camera;
 import com.jme.renderer.ColorRGBA;
 import com.jme.renderer.OffscreenRenderer;
 import com.jme.renderer.Renderer;
 import com.jme.scene.state.AlphaState;
 import com.jme.scene.state.CullState;
+import com.jme.scene.state.FragmentProgramState;
 import com.jme.scene.state.LightState;
 import com.jme.scene.state.RenderState;
 import com.jme.scene.state.ZBufferState;
@@ -55,7 +75,7 @@ import com.jmex.physics.PhysicsDebugger;
  * 
  */
 public class DesignerGame extends SWTBaseGame implements
-		SceneDataChangedListener {
+		SceneDataChangedListener, ISelectionChangedListener, KeyListener, WorldService, CommandStateService {
 	private static final Log logger = LogFactory.getLog(DesignerGame.class);
 	/**
 	 * Wall transparency. TODO redo trans stuff
@@ -101,7 +121,45 @@ public class DesignerGame extends SWTBaseGame implements
 	 * ImageData for the minimap.
 	 */
 	private ImageData imgData;
-
+	/**
+	 * Alpha state used for highlighting.
+	 */
+	private AlphaState alphaState;
+	/**
+	 * Fragment program state used for highlighting.
+	 */
+	private FragmentProgramState fragmentProgramState;
+	/**
+	 * Fragment program used for highlighting.
+	 */
+	private String fragprog = "!!ARBfp1.0"
+			+ "MOV result.color, program.local[0];"
+			+ "MOV result.color.a, program.local[1].a;" + "END";
+	/**
+	 * Action submitted to the update thread for updating the highlight state.
+	 */
+	private HilitedRepeatedUpdateAction repeater;
+	/**
+	 * Reference to the selectionservice.
+	 */
+	private SelectionService selectionService;
+	/**
+	 * List of highlighted entities.
+	 */
+	private List<VisualEntity> hilited;
+	/**
+	 * The current state of the world.
+	 */
+	private WorldStates worldState;
+	/**
+	 * Maps WorldStates to command names.
+	 */
+	private Map<WorldStates, List<String>> stateMap;
+	/**
+	 * Boolean indicators for camera directional motion
+	 */
+	private boolean[] updownleftright = new boolean[4];
+	
 	/**
 	 * @param name
 	 * @param updateResolution
@@ -114,6 +172,29 @@ public class DesignerGame extends SWTBaseGame implements
 			int renderResolution, int width, int height, Composite parent) {
 		super(name, updateResolution, renderResolution, width, height, parent,
 				true);
+		hilited = new ArrayList<VisualEntity>();
+		logger.debug("WorldService created");
+		worldState = WorldStates.NoSceneDataLoaded;
+		stateMap = new HashMap<WorldStates, List<String>>();
+		stateMap.put(WorldStates.NoSceneDataLoaded, new ArrayList<String>());
+		stateMap.get(WorldStates.NoSceneDataLoaded).add("newscene");
+		stateMap.put(WorldStates.Paused, new ArrayList<String>());
+		stateMap.get(WorldStates.Paused).add("newscene");
+		stateMap.get(WorldStates.Paused).add("saveas");
+		stateMap.get(WorldStates.Paused).add("save");
+		stateMap.get(WorldStates.Paused).add("start");
+		stateMap.get(WorldStates.Paused).add("stop");
+		stateMap.put(WorldStates.Stopped, new ArrayList<String>());
+		stateMap.get(WorldStates.Stopped).add("newscene");
+		stateMap.get(WorldStates.Stopped).add("saveas");
+		stateMap.get(WorldStates.Stopped).add("save");
+		stateMap.get(WorldStates.Stopped).add("start");
+		stateMap.put(WorldStates.Running, new ArrayList<String>());
+		stateMap.get(WorldStates.Running).add("newscene");
+		stateMap.get(WorldStates.Running).add("saveas");
+		stateMap.get(WorldStates.Running).add("save");
+		stateMap.get(WorldStates.Running).add("stop");
+		stateMap.get(WorldStates.Running).add("pause");
 		ServiceRegistry.getInstance().service(this);
 	}
 
@@ -124,6 +205,7 @@ public class DesignerGame extends SWTBaseGame implements
 	 */
 	@Override
 	protected void simpleInitGame() {
+		getGlCanvas().addKeyListener(this);
 		offy = ((SWTDisplaySystem) display).createOffscreenRenderer(200, 200);
 		if (offy.isSupported()) {
 			EXTFramebufferObject.glBindFramebufferEXT(
@@ -150,6 +232,23 @@ public class DesignerGame extends SWTBaseGame implements
 		CullState cullState = DisplaySystem.getDisplaySystem().getRenderer()
 				.createCullState();
 		cullState.setCullMode(CullState.CS_BACK);
+
+		// create alpha state for highlighting
+		alphaState = DisplaySystem.getDisplaySystem().getRenderer()
+				.createAlphaState();
+		alphaState.setBlendEnabled(true);
+		alphaState.setDstFunction(AlphaState.DB_ONE_MINUS_SRC_ALPHA);
+		alphaState.setSrcFunction(AlphaState.SB_SRC_ALPHA);
+		alphaState.setEnabled(true);
+
+		// create fragment program state for highlighting
+		fragmentProgramState = DisplaySystem.getDisplaySystem().getRenderer()
+				.createFragmentProgramState();
+		fragmentProgramState.load(fragprog);
+		fragmentProgramState.setEnabled(true);
+		float[] color4f = new float[] { .45f, .55f, 1f, 0f };
+		fragmentProgramState.setParameter(color4f, 0);
+		repeater = new HilitedRepeatedUpdateAction();
 
 		// create a default light
 		ls = DisplaySystem.getDisplaySystem().getRenderer().createLightState();
@@ -194,7 +293,7 @@ public class DesignerGame extends SWTBaseGame implements
 		if (offy.isSupported() && miniMapView != null && minimapCounter == 10) {
 			minimapCounter = 0;
 			offy.render(getRootNode());
-			offy.render(sceneData.getRoomNode(),false);
+			offy.render(sceneData.getRoomNode(), false);
 			IntBuffer buffer = offy.getImageData();
 			if (imgData == null) {
 				imgData = new ImageData(200, 200, 32, new PaletteData(0xFF0000,
@@ -216,8 +315,18 @@ public class DesignerGame extends SWTBaseGame implements
 	 */
 	@Override
 	protected void update(float interpolation) {
-		// TODO Auto-generated method stub
 		super.update(interpolation);
+		if (sceneData != null) {
+			performCameraMotion();
+			sceneData.getRoomNode().updateGeometricState(interpolation, true);
+			sceneData.getRootNode().updateGeometricState(interpolation, true);
+			GameStateManager.getInstance().update(interpolation);
+			// pause!!!!
+			sceneData.getCollisionHandler().update(interpolation);
+			sceneData.getPhysicsSpace().update(interpolation);
+			repeater.doUpdate(interpolation);
+			sceneData.getRootNode().updateRenderState();
+		}
 	}
 
 	/*
@@ -241,25 +350,6 @@ public class DesignerGame extends SWTBaseGame implements
 			}
 
 		});
-		// if (updateThread != null) {
-		// stop();
-		// updateThread.setKeepRunning(false);
-		// try {
-		// updateThread.join();
-		// } catch (InterruptedException e) {
-		// logger.debug("Got interrupted while joining on UpdateThread: "
-		// + e);
-		// }
-		//
-		// renderThread.setKeepRunning(false);
-		// try {
-		// renderThread.join();
-		// } catch (InterruptedException e) {
-		// logger.debug("Got interrupted while joining on RenderThread: "
-		// + e);
-		// }
-		// GameStateManager.getInstance().cleanup();
-		// }
 	}
 
 	/**
@@ -318,6 +408,7 @@ public class DesignerGame extends SWTBaseGame implements
 	@Override
 	public void sceneDataChanged(SceneData sceneDataNew) {
 		this.sceneData = sceneDataNew;
+		worldState = WorldStates.Paused;
 		getUpdateQueue().enqueue(new Callable<Object>() {
 
 			/*
@@ -357,6 +448,154 @@ public class DesignerGame extends SWTBaseGame implements
 		});
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.jface.viewers.ISelectionChangedListener#selectionChanged(org.eclipse.jface.viewers.SelectionChangedEvent)
+	 */
+	@Override
+	public void selectionChanged(SelectionChangedEvent event) {
+		List<VisualEntity> newHighlights = ((IStructuredSelection) event
+				.getSelection()).toList();
+		List<VisualEntity> unlit = new ArrayList<VisualEntity>();
+		for (VisualEntity entity : newHighlights) {
+			if (!hilited.contains(entity)) {
+				hilited.add(entity);
+				entity.hilite(fragmentProgramState, alphaState);
+				entity.getNode().updateRenderState();
+			}
+		}
+		for (VisualEntity entity : hilited) {
+			if (!newHighlights.contains(entity)) {
+				unlit.add(entity);
+				entity.clearHilite();
+				entity.getNode().updateRenderState();
+			}
+		}
+		hilited.removeAll(unlit);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.swt.events.KeyListener#keyPressed(org.eclipse.swt.events.KeyEvent)
+	 */
+	public void keyPressed(KeyEvent e) {
+		if (e.character == 'a' || e.character == 'A') {
+			updownleftright[2] = true;
+		} else if (e.character == 'd' || e.character == 'D') {
+			updownleftright[3] = true;
+		} else if (e.character == 'w' || e.character == 'W') {
+			updownleftright[0] = true;
+		} else if (e.character == 's' || e.character == 'S') {
+			updownleftright[1] = true;
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.swt.events.KeyListener#keyReleased(org.eclipse.swt.events.KeyEvent)
+	 */
+	public void keyReleased(KeyEvent e) {
+		updownleftright[0] = false;
+		updownleftright[1] = false;
+		updownleftright[2] = false;
+		updownleftright[3] = false;
+	}
+
+	/**
+	 * Reposition the camera if any motion keys are held down.
+	 */
+	public void performCameraMotion() {
+
+		float keyspeed = 0.5f;
+		Camera cam = DisplaySystem.getDisplaySystem().getRenderer().getCamera();
+		if (updownleftright[2]) {
+			cam.setLocation(cam.getLocation().add(new Vector3f(-keyspeed,0,0)));
+		}
+		if (updownleftright[3]) {
+			cam.setLocation(cam.getLocation().add(new Vector3f(keyspeed,0,0)));
+		}
+		if (updownleftright[0]) {
+			cam.setLocation(cam.getLocation().add(new Vector3f(0,0,-keyspeed)));
+		}
+		if (updownleftright[1]) {
+			cam.setLocation(cam.getLocation().add(new Vector3f(0,0,keyspeed)));
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.rifidi.services.registry.core.world.WorldService#pause()
+	 */
+	@Override
+	public void pause() {
+		// updateThread.setPaused(true);
+		for (Entity entity : sceneData.getSearchableEntities()) {
+			if (entity instanceof SceneControl) {
+				((SceneControl) entity).pause();
+			}
+		}
+		worldState = WorldStates.Paused;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.rifidi.services.registry.core.world.WorldService#run()
+	 */
+	@Override
+	public void run() {
+		for (Entity entity : sceneData.getSearchableEntities()) {
+			if (entity instanceof SceneControl) {
+				((SceneControl) entity).start();
+			}
+		}
+		worldState = WorldStates.Running;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.rifidi.services.registry.core.world.WorldService#stop()
+	 */
+	@Override
+	public void stop() {
+		Helpers.waitOnCallabel(new Callable<Object>() {
+
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see java.util.concurrent.Callable#call()
+			 */
+			public Object call() throws Exception {
+				synchronized (sceneData.getSyncedEntities()) {
+					for (Entity entity : new ArrayList<Entity>(sceneData
+							.getSyncedEntities())) {
+						if (entity instanceof SceneControl) {
+							((SceneControl) entity).reset();
+						}
+					}
+				}
+				return new Object();
+			}
+
+		});
+		worldState = WorldStates.Stopped;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.rifidi.services.registry.core.world.CommandStateService#isEnabled(java.lang.String)
+	 */
+	@Override
+	public boolean isEnabled(String commandName) {
+		return stateMap.get(worldState).contains(commandName);
+	}
+	
 	/**
 	 * @param sceneDataService
 	 *            the sceneDataService to set
@@ -376,4 +615,64 @@ public class DesignerGame extends SWTBaseGame implements
 		this.cameraService = cameraService;
 	}
 
+	/**
+	 * @param selectionService
+	 *            the selectionService to set
+	 */
+	@Inject
+	public void setSelectionService(SelectionService selectionService) {
+		this.selectionService = selectionService;
+		selectionService.addSelectionChangedListener(this);
+	}
+
+	/**
+	 * Action that is submitted to the update thread to keep the highlights
+	 * pulsing.
+	 * 
+	 * 
+	 * @author Jochen Mader Feb 1, 2008
+	 * @tags
+	 * 
+	 */
+	private class HilitedRepeatedUpdateAction implements RepeatedUpdateAction {
+		/**
+		 * Maximum alpha value.
+		 */
+		private Float maxAlpha = 1f;
+		/**
+		 * Minimum alpha value.
+		 */
+		private Float minAlpha = .25f;
+		/**
+		 * Base alpha value
+		 */
+		private Float alpha = 1f;
+		/**
+		 * Signum.
+		 */
+		private Integer sign = 1;
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see org.rifidi.services.registry.core.world.RepeatedUpdateAction#doUpdate(float)
+		 */
+		@Override
+		public void doUpdate(float timePassed) {
+			timePassed *= sign;
+			alpha += timePassed;
+			if (alpha <= minAlpha) {
+				sign = 1;
+				alpha = minAlpha;
+			} else if (alpha >= maxAlpha) {
+				sign = -1;
+				alpha = maxAlpha;
+			}
+			// Dynamic update
+			fragmentProgramState.setParameter(new float[] { 0f, 0f, alpha,
+					alpha }, 1);
+			fragmentProgramState.setNeedsRefresh(true);
+		}
+
+	}
 }

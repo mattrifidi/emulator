@@ -10,9 +10,6 @@
  */
 package org.rifidi.designer.services.core.world;
 
-import org.eclipse.swt.opengl.GLCanvas;
-import org.eclipse.swt.widgets.Display;
-
 /**
  * This service controls the world.
  * 
@@ -24,7 +21,7 @@ public interface WorldService {
 	/**
 	 * Start the world.
 	 */
-	void start();
+	void run();
 
 	/**
 	 * Stop the world.
@@ -35,28 +32,4 @@ public interface WorldService {
 	 * Pause the world.
 	 */
 	void pause();
-
-	/**
-	 * Add a new repeated action.
-	 * 
-	 * @param action
-	 */
-	void addRepeatedUpdateActiom(RepeatedUpdateAction action);
-
-	/**
-	 * Remove repeated action.
-	 * 
-	 * @param action
-	 */
-	void removeRepeatedUpdateActiom(RepeatedUpdateAction action);
-
-	/**
-	 * Set the GLCanvas the world should be rendered to.
-	 */
-	void setGLCanvas(GLCanvas glCanvas);
-
-	/**
-	 * @param display the display to set
-	 */
-	public void setDisplay(Display display);
 }

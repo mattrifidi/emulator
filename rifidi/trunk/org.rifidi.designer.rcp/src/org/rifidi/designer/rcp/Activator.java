@@ -10,6 +10,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 import org.rifidi.designer.entities.RMIManager;
+import org.rifidi.designer.rcp.game.DesignerGame;
 import org.rifidi.designer.services.core.cabling.CablingService;
 import org.rifidi.designer.services.core.cabling.CablingServiceImpl;
 import org.rifidi.designer.services.core.camera.CameraService;
@@ -27,9 +28,6 @@ import org.rifidi.designer.services.core.selection.SelectionService;
 import org.rifidi.designer.services.core.selection.SelectionServiceImpl;
 import org.rifidi.designer.services.core.world.CommandStateService;
 import org.rifidi.designer.services.core.world.WorldService;
-import org.rifidi.designer.services.core.world.WorldServiceImpl;
-import org.rifidi.services.initializer.IInitService;
-import org.rifidi.services.initializer.InitService;
 
 /**
  * The activator class controls the plug-in life cycle.
@@ -60,6 +58,10 @@ public class Activator extends AbstractUIPlugin {
 	 * Reference to the current display.
 	 */
 	public static Display display;
+	/**
+	 * Reference to our game.
+	 */
+	public DesignerGame designerGame;
 
 	/**
 	 * The constructor.
@@ -102,9 +104,9 @@ public class Activator extends AbstractUIPlugin {
 				new EventsServiceImpl(), null);
 		context.registerService(SelectionService.class.getName(),
 				new SelectionServiceImpl(), null);
+		designerGame = new DesignerGame("designer", 10, 20, 754, 584, null);
 		context.registerService(new String[] { WorldService.class.getName(),
-				CommandStateService.class.getName() }, new WorldServiceImpl(),
-				null);
+				CommandStateService.class.getName() }, designerGame, null);
 	}
 
 	/*

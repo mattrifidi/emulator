@@ -170,7 +170,8 @@ public class View3D extends ViewPart implements IPerspectiveListener {
 
 		Composite composite = new Composite(parent, SWT.None);
 		composite.setLayout(new FillLayout());
-		designerGame=new DesignerGame("designer",10,20,754, 584, composite);
+		designerGame=Activator.getDefault().designerGame;
+		designerGame.setParent(composite);
 		designerGame.start();
 		glCanvas = designerGame.getGlCanvas();
 		
@@ -189,10 +190,6 @@ public class View3D extends ViewPart implements IPerspectiveListener {
 		Transfer[] transfers = new Transfer[] { TextTransfer.getInstance() };
 		dt.setTransfer(transfers);
 		dt.addDropListener(new Editor3DDropTargetListener(this));
-
-
-		worldService.setGLCanvas(glCanvas);
-		worldService.setDisplay(Display.getCurrent());
 
 		getSite().setSelectionProvider(selectionService);
 
