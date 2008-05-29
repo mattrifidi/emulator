@@ -13,7 +13,6 @@ package org.rifidi.designer.services.core.collision;
 import java.util.List;
 
 import org.rifidi.designer.entities.interfaces.Field;
-import org.rifidi.designer.rcp.views.view3d.threads.UpdateThread;
 import org.rifidi.designer.services.core.entities.SceneDataChangedListener;
 
 /**

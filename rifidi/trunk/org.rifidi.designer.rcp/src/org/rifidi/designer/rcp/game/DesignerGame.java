@@ -57,6 +57,8 @@ import com.jme.renderer.Camera;
 import com.jme.renderer.ColorRGBA;
 import com.jme.renderer.OffscreenRenderer;
 import com.jme.renderer.Renderer;
+import com.jme.scene.Node;
+import com.jme.scene.shape.Box;
 import com.jme.scene.state.AlphaState;
 import com.jme.scene.state.CullState;
 import com.jme.scene.state.FragmentProgramState;
@@ -75,7 +77,8 @@ import com.jmex.physics.PhysicsDebugger;
  * 
  */
 public class DesignerGame extends SWTBaseGame implements
-		SceneDataChangedListener, ISelectionChangedListener, KeyListener, WorldService, CommandStateService {
+		SceneDataChangedListener, ISelectionChangedListener, KeyListener,
+		WorldService, CommandStateService {
 	private static final Log logger = LogFactory.getLog(DesignerGame.class);
 	/**
 	 * Wall transparency. TODO redo trans stuff
@@ -159,7 +162,7 @@ public class DesignerGame extends SWTBaseGame implements
 	 * Boolean indicators for camera directional motion
 	 */
 	private boolean[] updownleftright = new boolean[4];
-	
+
 	/**
 	 * @param name
 	 * @param updateResolution
@@ -259,7 +262,7 @@ public class DesignerGame extends SWTBaseGame implements
 		dl.setDirection(new Vector3f(0.1f, -1, 0.1f));
 		dl.setEnabled(true);
 		lightNode.setLight(dl);
-
+		display.getRenderer().setBackgroundColor(ColorRGBA.gray.clone());
 		getRootNode().setRenderState(zbufferState);
 		getRootNode().setRenderState(cullState);
 		getRootNode().setRenderState(ls);
@@ -273,38 +276,46 @@ public class DesignerGame extends SWTBaseGame implements
 	 */
 	@Override
 	protected void render(float interpolation) {
-		super.render(interpolation);
-		GameStateManager.getInstance().render(0);
-		display.getRenderer().draw(sceneData.getRoomNode());
-		if (GlobalProperties.physicsDebugging) {
-			PhysicsDebugger.drawPhysics(sceneData.getPhysicsSpace(), display
-					.getRenderer());
-		}
-		if (GlobalProperties.boundingDebugging) {
-			Debugger.drawBounds(sceneData.getRoomNode(), display.getRenderer());
-			Debugger.drawBounds(sceneData.getRootNode(), display.getRenderer());
-		}
-		if (miniMapView == null) {
-			miniMapView = (MiniMapView) PlatformUI.getWorkbench()
-					.getActiveWorkbenchWindow().getActivePage().findView(
-							MiniMapView.ID);
-			miniMapView.setMapCamera(offy.getCamera());
-		}
-		if (offy.isSupported() && miniMapView != null && minimapCounter == 10) {
-			minimapCounter = 0;
-			offy.render(getRootNode());
-			offy.render(sceneData.getRoomNode(), false);
-			IntBuffer buffer = offy.getImageData();
-			if (imgData == null) {
-				imgData = new ImageData(200, 200, 32, new PaletteData(0xFF0000,
-						0x00FF00, 0x0000FF));
+		if (sceneData != null && !getGlCanvas().isDisposed()) {
+			display.getRenderer().clearBuffers();
+			display.getRenderer().clearStatistics();
+			display.getRenderer().draw(sceneData.getRootNode());
+			GameStateManager.getInstance().render(0);
+			if (GlobalProperties.physicsDebugging) {
+				PhysicsDebugger.drawPhysics(sceneData.getPhysicsSpace(),
+						display.getRenderer());
 			}
-			for (int y = 0; y < 200; y++) {
-				for (int x = 0; x < 200; x++) {
-					imgData.setPixel(x, y, buffer.get((199 - y) * 200 + x));
+			if (GlobalProperties.boundingDebugging) {
+				Debugger.drawBounds(sceneData.getRootNode(), display
+						.getRenderer());
+			}
+			if (miniMapView == null) {
+				miniMapView = (MiniMapView) PlatformUI.getWorkbench()
+						.getActiveWorkbenchWindow().getActivePage().findView(
+								MiniMapView.ID);
+				miniMapView.setMapCamera(offy.getCamera());
+			}
+			display.getRenderer().displayBackBuffer();
+			getGlCanvas().swapBuffers();
+			if (offy.isSupported() && miniMapView != null
+					&& minimapCounter == 10) {
+				minimapCounter = 0;
+				offy.render(getRootNode());
+				IntBuffer buffer = offy.getImageData();
+				if (imgData == null) {
+					imgData = new ImageData(200, 200, 32, new PaletteData(
+							0xFF0000, 0x00FF00, 0x0000FF));
 				}
+				for (int y = 0; y < 200; y++) {
+					for (int x = 0; x < 200; x++) {
+						imgData.setPixel(x, y, buffer.get((199 - y) * 200 + x));
+					}
+				}
+				miniMapView.setImage(imgData);
+				((SWTDisplaySystem) display).setCurrentGLCanvas(getGlCanvas());
 			}
-			miniMapView.setImage(imgData);
+			minimapCounter++;
+
 		}
 	}
 
@@ -318,14 +329,13 @@ public class DesignerGame extends SWTBaseGame implements
 		super.update(interpolation);
 		if (sceneData != null) {
 			performCameraMotion();
-			sceneData.getRoomNode().updateGeometricState(interpolation, true);
-			sceneData.getRootNode().updateGeometricState(interpolation, true);
 			GameStateManager.getInstance().update(interpolation);
-			// pause!!!!
-			sceneData.getCollisionHandler().update(interpolation);
-			sceneData.getPhysicsSpace().update(interpolation);
+			sceneData.getRootNode().updateGeometricState(interpolation, true);
+			if (WorldStates.Running.equals(worldState)) {
+				sceneData.getCollisionHandler().update(interpolation);
+				sceneData.getPhysicsSpace().update(interpolation);
+			}
 			repeater.doUpdate(interpolation);
-			sceneData.getRootNode().updateRenderState();
 		}
 	}
 
@@ -419,14 +429,14 @@ public class DesignerGame extends SWTBaseGame implements
 			@Override
 			public Object call() throws Exception {
 				getRootNode().attachChild(sceneData.getRootNode());
+				sceneData.getRootNode().attachChild(sceneData.getRoomNode());
+				Node room = new Node("rifidi_room_components");
+				Box box = new Box("rifidi_floor_wall", new Vector3f(0, 0, 0),
+				new Vector3f(sceneData.getWidth(), sceneData.getWidth(), sceneData.getWidth()));
+				box.setRandomColors();
+				room.attachChild(box);
+				showHideWalls();
 				getRootNode().updateRenderState();
-				sceneData.getRoomNode().setRenderState(zbufferState);
-				sceneData.getRoomNode().setRenderState(cullState);
-				sceneData.getRoomNode().setRenderState(ls);
-				// showHideWalls();
-				hideWall(Direction.SOUTH);
-				hideWall(Direction.EAST);
-				sceneData.getRoomNode().updateRenderState();
 				if (offy.isSupported()) {
 					offy.setBackgroundColor(new ColorRGBA(.667f, .667f, .851f,
 							1f));
@@ -512,16 +522,22 @@ public class DesignerGame extends SWTBaseGame implements
 		float keyspeed = 0.5f;
 		Camera cam = DisplaySystem.getDisplaySystem().getRenderer().getCamera();
 		if (updownleftright[2]) {
-			cam.setLocation(cam.getLocation().add(new Vector3f(-keyspeed,0,0)));
+			cam.setLocation(cam.getLocation()
+					.add(new Vector3f(-keyspeed, 0, 0)));
 		}
 		if (updownleftright[3]) {
-			cam.setLocation(cam.getLocation().add(new Vector3f(keyspeed,0,0)));
+			cam
+					.setLocation(cam.getLocation().add(
+							new Vector3f(keyspeed, 0, 0)));
 		}
 		if (updownleftright[0]) {
-			cam.setLocation(cam.getLocation().add(new Vector3f(0,0,-keyspeed)));
+			cam.setLocation(cam.getLocation()
+					.add(new Vector3f(0, 0, -keyspeed)));
 		}
 		if (updownleftright[1]) {
-			cam.setLocation(cam.getLocation().add(new Vector3f(0,0,keyspeed)));
+			cam
+					.setLocation(cam.getLocation().add(
+							new Vector3f(0, 0, keyspeed)));
 		}
 	}
 
@@ -585,7 +601,7 @@ public class DesignerGame extends SWTBaseGame implements
 		});
 		worldState = WorldStates.Stopped;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -595,7 +611,7 @@ public class DesignerGame extends SWTBaseGame implements
 	public boolean isEnabled(String commandName) {
 		return stateMap.get(worldState).contains(commandName);
 	}
-	
+
 	/**
 	 * @param sceneDataService
 	 *            the sceneDataService to set

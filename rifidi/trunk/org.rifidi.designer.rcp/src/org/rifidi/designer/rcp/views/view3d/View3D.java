@@ -41,7 +41,6 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.part.ViewPart;
 import org.rifidi.designer.entities.Entity;
 import org.rifidi.designer.entities.VisualEntity;
-import org.rifidi.designer.entities.SceneData.Direction;
 import org.rifidi.designer.entities.wizards.RifidiEntityWizard;
 import org.rifidi.designer.library.EntityLibraryReference;
 import org.rifidi.designer.library.EntityWizardIface;
@@ -236,7 +235,7 @@ public class View3D extends ViewPart implements IPerspectiveListener {
 	@SuppressWarnings("unchecked")
 	public void loadScene(final IFile file) {
 		logger.debug("setting up world");
-		sceneDataService.loadScene(file);
+		sceneDataService.loadScene(Display.getCurrent(), file);
 		initializeScene();
 		cameraService.centerCamera();
 	}
