@@ -114,6 +114,13 @@ public class GateEntity extends VisualEntity implements RifidiEntity, Switch,
 	 * 
 	 */
 	public GateEntity() {
+		BinaryPattern pattern = new BinaryPattern();
+		pattern.setPattern(new boolean[][] {
+				{ true, false, false, false, false, true },
+				{ true, false, false, false, false, true },
+				{ true, false, false, false, false, true },
+				{ true, false, false, false, false, true } });
+		setPattern(pattern);
 	}
 
 	/*
@@ -123,13 +130,6 @@ public class GateEntity extends VisualEntity implements RifidiEntity, Switch,
 	 */
 	@Override
 	public void init() {
-		BinaryPattern pattern = new BinaryPattern();
-		pattern.setPattern(new boolean[][] {
-				{ true, false, false, false, false, true },
-				{ true, false, false, false, false, true },
-				{ true, false, false, false, false, true },
-				{ true, false, false, false, false, true } });
-		setPattern(pattern);
 		prepare();
 
 		Node node = new Node();

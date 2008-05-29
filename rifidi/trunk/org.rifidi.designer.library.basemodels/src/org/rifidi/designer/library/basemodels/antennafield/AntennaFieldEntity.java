@@ -114,6 +114,7 @@ public class AntennaFieldEntity extends VisualEntity implements Switch,
 		factor = 1.0f;
 		readerInterface = rmmi;
 		antennaNum = antNum;
+		setCollides(false);
 	}
 
 	/*
