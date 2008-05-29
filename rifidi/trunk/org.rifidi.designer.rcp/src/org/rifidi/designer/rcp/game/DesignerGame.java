@@ -67,6 +67,7 @@ import com.jme.scene.state.MaterialState;
 import com.jme.scene.state.RenderState;
 import com.jme.scene.state.ZBufferState;
 import com.jme.system.DisplaySystem;
+import com.jme.util.GameTaskQueueManager;
 import com.jme.util.geom.Debugger;
 import com.jmex.game.state.BasicGameState;
 import com.jmex.game.state.GameStateManager;

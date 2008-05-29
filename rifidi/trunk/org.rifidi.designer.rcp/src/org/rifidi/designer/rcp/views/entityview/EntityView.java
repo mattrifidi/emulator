@@ -231,7 +231,7 @@ public class EntityView extends ViewPart implements ISelectionChangedListener,
 			if (ob instanceof VisualEntity) {
 				hilit.add((VisualEntity) ob);
 				if(event.getSource().equals(viewer)){
-					selectionService.select(hilit, false);
+					selectionService.select(hilit, true);
 				}
 			}
 		}
