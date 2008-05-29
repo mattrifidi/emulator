@@ -124,7 +124,8 @@ public abstract class SWTBaseGame extends AbstractGame {
 	private int renderResolution;
 
 	/**
-	 * Constructor.
+	 * Constructor. Note: parent can be null as long as setParent() is called
+	 * before the start() method is hit.
 	 * 
 	 * @param updateResolution
 	 *            millisecs between two update runs
@@ -136,6 +137,8 @@ public abstract class SWTBaseGame extends AbstractGame {
 	 *            initial width
 	 * @param height
 	 *            initial height
+	 * @param parent
+	 *            the parent of the glCanvas that will be created
 	 * @param single
 	 *            if set to true the game assumes that no other SWTgames are
 	 *            running and that it can use the default queues.
@@ -148,11 +151,12 @@ public abstract class SWTBaseGame extends AbstractGame {
 		this.height = height;
 		this.parent = parent;
 		// add our taskqueues for rendering and updating
-		if(single){
-			renderQueue = GameTaskQueueManager.getManager().getQueue(GameTaskQueue.RENDER);
-			updateQueue = GameTaskQueueManager.getManager().getQueue(GameTaskQueue.UPDATE);
-		}
-		else{
+		if (single) {
+			renderQueue = GameTaskQueueManager.getManager().getQueue(
+					GameTaskQueue.RENDER);
+			updateQueue = GameTaskQueueManager.getManager().getQueue(
+					GameTaskQueue.UPDATE);
+		} else {
 			renderQueue = new GameTaskQueue();
 			updateQueue = new GameTaskQueue();
 			GameTaskQueueManager.getManager().addQueue(name + ".render",
@@ -451,6 +455,21 @@ public abstract class SWTBaseGame extends AbstractGame {
 	 */
 	public GameTaskQueue getUpdateQueue() {
 		return this.updateQueue;
+	}
+
+	/**
+	 * @return the parent
+	 */
+	public Composite getParent() {
+		return this.parent;
+	}
+
+	/**
+	 * @param parent
+	 *            the parent to set
+	 */
+	public void setParent(Composite parent) {
+		this.parent = parent;
 	}
 
 }

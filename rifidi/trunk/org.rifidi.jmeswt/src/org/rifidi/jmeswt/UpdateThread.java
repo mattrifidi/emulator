@@ -71,8 +71,7 @@ public class UpdateThread extends Thread {
 		this.game = game;
 		/** Get a high resolution timer for FPS updates. */
 		timer = Timer.getTimer();
-		updateQueue = GameTaskQueueManager.getManager().getQueue(
-				game.getName() + ".update");
+		updateQueue = game.getUpdateQueue();
 		this.semaphore = semaphore;
 		this.resolution = resolution;
 	}
