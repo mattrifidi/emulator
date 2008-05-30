@@ -277,7 +277,7 @@ public class View3D extends ViewPart implements IPerspectiveListener, NewEntityL
 	 */
 	@Override
 	public void entityAdded(VisualEntity ent) {
-		selectionService.select((VisualEntity) ent, false, false);
+		selectionService.select((VisualEntity) ent, false, true);
 		switchMode(Mode.PlacementMode);
 	}
 
