@@ -154,7 +154,7 @@ public class EntityMouseMoveListener implements MouseListener,
 			pickedEntity = ((VisualEntityHolder) pickedEntity)
 					.getVisualEntity();
 			if (pickedEntity != null) {
-				Helpers.waitOnCallabel(new Callable<Object>() {
+				GameTaskQueueManager.getManager().update(new Callable<Object>() {
 
 					/*
 					 * (non-Javadoc)
