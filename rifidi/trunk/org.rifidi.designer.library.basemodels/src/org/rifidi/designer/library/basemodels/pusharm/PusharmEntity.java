@@ -263,7 +263,6 @@ public class PusharmEntity extends VisualEntity implements SceneControl,
 
 				if (collider != armPhysics && !collider.equals(oldCol)){
 					oldCol=collider;
-					System.out.println("dooooing");
 					trigger(collider);
 				}
 					
