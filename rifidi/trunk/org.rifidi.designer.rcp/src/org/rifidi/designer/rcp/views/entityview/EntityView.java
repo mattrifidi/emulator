@@ -25,6 +25,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.SWTException;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.DropTargetListener;
@@ -267,7 +268,12 @@ public class EntityView extends ViewPart implements ISelectionChangedListener,
 	 */
 	@Override
 	public void destroySceneData(SceneData sceneData) {
-		viewer.setInput(null);
+		try{
+			viewer.setInput(null);	
+		}
+		catch(SWTException e){
+			logger.warn("Problem "+e);
+		}
 	}
 
 	/*
