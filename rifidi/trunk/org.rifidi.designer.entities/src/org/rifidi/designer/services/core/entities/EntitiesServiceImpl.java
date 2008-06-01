@@ -96,6 +96,11 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	 */
 	private SceneData sceneData;
 	/**
+	 * Reference to the old scene to allow the deletion callable to work while
+	 * the new scene is loaded..
+	 */
+	private SceneData sceneDataOld;
+	/**
 	 * Quickreference list to find entities by their nodes
 	 */
 	private Map<Node, VisualEntity> nodeToEntity;
@@ -466,10 +471,33 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	 */
 	@SuppressWarnings("unchecked")
 	public void loadScene(Display display, IFile file) {
-		TextureManager.clearCache();
 		// invalidate the current sceneData
 		for (SceneDataChangedListener listener : listeners) {
 			listener.destroySceneData(this.sceneData);
+		}
+		TextureManager.clearCache();
+		if (sceneData != null) {
+			sceneDataOld=sceneData;
+			GameTaskQueueManager.getManager().update(new Callable<Object>(){
+
+				/* (non-Javadoc)
+				 * @see java.util.concurrent.Callable#call()
+				 */
+				@Override
+				public Object call() throws Exception {
+					for(Entity entity:sceneDataOld.getEntities()){
+						try{
+							entity.destroy();
+						}
+						catch(Exception e){
+							//THIS MUST RUN THROUGH
+							logger.fatal(e);
+						}
+					}
+					return null;
+				}
+				
+			});
 		}
 		try {
 			// initialize jaxb to know about the classes provided by the
