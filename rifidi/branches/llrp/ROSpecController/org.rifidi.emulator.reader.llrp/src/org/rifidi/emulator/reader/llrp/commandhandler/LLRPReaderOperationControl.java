@@ -20,11 +20,11 @@ import org.rifidi.emulator.reader.llrp.rospec.ROSpecControllerFactory;
 import org.rifidi.emulator.reader.llrp.rospec._ROSpec;
 import org.rifidi.emulator.reader.llrp.trigger.DurationTrigger;
 import org.rifidi.emulator.reader.llrp.trigger.GPIWithTimeoutTrigger;
-import org.rifidi.emulator.reader.llrp.trigger.ImmediateTrigger;
 import org.rifidi.emulator.reader.llrp.trigger.NullTrigger;
 import org.rifidi.emulator.reader.llrp.trigger.PeriodicTrigger;
 import org.rifidi.emulator.reader.llrp.trigger.TagObservationTrigger;
 import org.rifidi.emulator.reader.llrp.trigger.Trigger;
+import org.rifidi.emulator.reader.llrp.trigger.ROSpecStart.ROSpecStartImmediateTrigger;
 import org.rifidi.emulator.reader.module.abstract_.AbstractReaderSharedResources;
 
 import edu.uark.csce.llrp.AISpec;
@@ -134,7 +134,7 @@ public class LLRPReaderOperationControl {
 		} else if (roStartTrigParam.getROSpecStartTriggerType() == 1) {
 			// Imediate Trigger
 			logger.debug("RoSpecStartTrigger is Imediate");
-			roStartTrig = new ImmediateTrigger();
+			roStartTrig = new ROSpecStartImmediateTrigger();
 		} else if (roStartTrigParam.getROSpecStartTriggerType() == 2) {
 			// Periodic Trigger
 			logger.debug("ROSpecStartTrigger is periodic");

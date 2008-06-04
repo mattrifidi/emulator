@@ -22,101 +22,63 @@ import org.rifidi.utilities.Timer;
  * This class wraps the timer class to provide a trigger. It works by listening
  * to a timer. When the timer notifies this object it fires a trigger.
  * 
- * @author Matthew Dean - matt@pramari.com
  * @author kyle - kyle@pramari.com
  */
-public class DurationTrigger implements Observer, TimerTrigger {
-
+public abstract class DurationTrigger implements Trigger, Observer {
+	
 	/**
 	 * The logger for this class.
 	 */
-	@SuppressWarnings("unused")
 	private static Log logger = LogFactory.getLog(DurationTrigger.class);
 
-	TriggerObservable specSignal;
+	private int timeToWait;
 
-	int timeToWait;
-
-	Timer timer;
-
-	boolean fireTrigger;
-
-	boolean suspended = false;
-
+	private Timer timer;
+	
+	private boolean disabled = false;
+	
 	public DurationTrigger(int timeToWait) {
 		this.timeToWait = timeToWait;
-
-	}
-
-	/**
-	 * This mehtod sets the control signal to change when a trigger fires;
-	 * 
-	 * @param specSignal
-	 */
-	public void setTriggerObservable(TriggerObservable specState) {
-		this.specSignal = specState;
 	}
 
 	/**
 	 * Start the timer
 	 */
-	public void startTimer() {
-
-		fireTrigger = true;
-		timer = new Timer(timeToWait);
+	public void enable() {
+		disabled = false;
+		Timer timer = new Timer(timeToWait);
 		timer.addObserver(this);
-		new Thread(timer).start();
-		if (suspended) {
-			// handle the case that the suspend happens before the timer was
-			// started
-			timer.suspend();
-		}
-
+		Thread t = new Thread(timer, "Duration Timer");
+		t.start();
 	}
 
 	/**
 	 * Don't fire the trigger when the timer stops
 	 */
-	public void stopTimer() {
-		fireTrigger = false;
-		this.timer.deleteObserver(this);
-		this.timer = null;
+	public void disable() {
+		disabled = true;
 	}
 
-	/**
-	 * When the timer that this class is listening for notifies, fire a stop
-	 * trigger
-	 */
-	public void update(Observable arg0, Object arg1) {
-		if (fireTrigger) {
-			this.specSignal.fireStopTrigger(this.getClass());
-		}
-		fireTrigger = false;
-	}
 
 	public void cleanUp() {
-		if (timer != null) {
-			timer.deleteObserver(this);
-			timer.stop();
-			timer = null;
-		}
 
 	}
 
 	public void resume() {
-		suspended = false;
-		if (this.timer != null) {
-			this.timer.resume();
-		}
 
 	}
 
 	public void suspend() {
-		suspended = true;
-		if (this.timer != null) {
-			this.timer.suspend();
+		
+	}
+	
+	@Override
+	public void update(Observable o, Object arg) {
+		if(!disabled){
+			logger.debug("Duration Trigger fired");
+			fireTrigger();
 		}
-
+		
 	}
 
 }

@@ -16,16 +16,17 @@ import java.util.Collection;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.rifidi.emulator.reader.llrp.aispec._AISpec;
-import org.rifidi.emulator.reader.llrp.module.LLRPReaderSharedResources;
 import org.rifidi.emulator.reader.llrp.report.ROReportFormat;
 import org.rifidi.emulator.reader.llrp.trigger.Trigger;
+
+import edu.uark.csce.llrp.ROSpec;
 
 /**
  * This class represents an LLRP Reader Operation Specification. A ROSpec is a
  * controller that executes several AISpecs.
  * 
  * @author Matthew Dean - matt@pramari.com
+ * @author Kyle Neumeier - kyle@pramari.com
  */
 public class _ROSpec {
 
@@ -47,12 +48,12 @@ public class _ROSpec {
 	/**
 	 * The specs that this ROSpec will execute.
 	 */
-	private Collection<_AISpec> specsToExecute;
+	private ArrayList<ExecutableSpec> specsToExecute;
 
 	/**
 	 * The current state of this ROSpec.
 	 */
-	private int currentState;
+	private ROSpecState currentState;
 
 	/**
 	 * The startTrigger that this ROSpec has.
@@ -65,24 +66,12 @@ public class _ROSpec {
 	private Trigger stopTrigger;
 
 	/**
-	 * The executer of this ROSpec.
-	 */
-	private ROSpecExecuter exec;
-
-	/**
 	 * A collection of variables that describe what information should be in a
 	 * ROReport. If set to null, use global roReportFormat
 	 */
 	private ROReportFormat roReportFormat = null;
 
-	/**
-	 * The name of the reader.
-	 */
-	private String readerName;
-
-	private LLRPReaderSharedResources llrpsr;
-	
-
+	private Integer currentSpecIndex = null;
 
 	/**
 	 * This class represents an LLRP Reader Operation Specification. A ROSpec is
@@ -97,53 +86,55 @@ public class _ROSpec {
 	 * @param stopTrigger
 	 *            The stopTrigger that this rospec has.
 	 */
-	public _ROSpec(int id, int priority, Trigger startTrigger,
-			Trigger stopTrigger, String readerName,
-			LLRPReaderSharedResources llrpsr) {
-		this(id, priority, startTrigger, stopTrigger, null, readerName, llrpsr);
+	public _ROSpec(ROSpec rospec) throws IllegalArgumentException {
 	}
 
-	/**
-	 * This class represents an LLRP Reader Operation Specification. A ROSpec is
-	 * a controller that executes several AISpecs.
-	 * 
-	 * @param id
-	 *            A unique identification for the ROSpec.
-	 * @param priority
-	 *            The priority of this ROSpec.
-	 * @param startTrigger
-	 *            The startTrigger that this ROSpec has.
-	 * @param stopTrigger
-	 *            The stopTrigger that this rospec has.
-	 * @param roReportFormat
-	 *            Specifies info contained in ROReport
-	 */
-	public _ROSpec(int id, int priority, Trigger startTrigger,
-			Trigger stopTrigger, ROReportFormat roReportFormat,
-			String readerName, LLRPReaderSharedResources llrpsr) {
-		this.id = id;
-		this.priority = priority;
-		this.startTrigger = startTrigger;
-		this.stopTrigger = stopTrigger;
-		this.exec = new ROSpecExecuter(new ArrayList<_AISpec>(), this, llrpsr);
-		this.roReportFormat = roReportFormat;
-		this.readerName = readerName;
-		this.llrpsr = llrpsr;
+	public void toActiveState() {
+		this.currentState = ROSpecState.ACTIVE;
+		this.stopTrigger.enable();
+		currentSpecIndex = -1;
+		executeNextSpec();
+
 	}
 
-	/**
-	 * @return the currentState
-	 */
-	public int getCurrentState() {
-		return currentState;
+	public void toInactiveState() {
+		this.currentState = ROSpecState.INACTIVE;
+		this.startTrigger.enable();
+		this.stopTrigger.disable();
 	}
 
-	/**
-	 * @param currentState
-	 *            the currentState to set
-	 */
-	public void setCurrentState(int currentState) {
-		this.currentState = currentState;
+	public void toDisabledState() {
+		this.currentState = ROSpecState.DISABLED;
+		this.startTrigger.disable();
+		this.stopTrigger.disable();
+		specsToExecute.get(currentSpecIndex).stop();
+	}
+
+	public void delete() {
+		this.currentState = null;
+		this.startTrigger.disable();
+		this.stopTrigger.disable();
+	}
+
+	public void executeNextSpec() {
+		currentSpecIndex++;
+		if (this.specsToExecute.size() < currentSpecIndex) {
+			specsToExecute.get(currentSpecIndex).start();
+		} else {
+			this.getStopTrigger().fireTrigger();
+		}
+	}
+
+	public void stopCurrentSpec(int SpecIndex) {
+		if (this.currentSpecIndex == SpecIndex) {
+			specsToExecute.get(currentSpecIndex).stop();
+			executeNextSpec();
+		}
+
+	}
+
+	public ROSpec toROSpec() {
+		return null;
 	}
 
 	/**
@@ -179,7 +170,7 @@ public class _ROSpec {
 	/**
 	 * @return the specsToExecute
 	 */
-	public Collection<_AISpec> getSpecsToExecute() {
+	public Collection<ExecutableSpec> getSpecsToExecute() {
 		return specsToExecute;
 	}
 
@@ -187,29 +178,23 @@ public class _ROSpec {
 	 * @param specsToExecute
 	 *            the specsToExecute to set
 	 */
-	public void setSpecsToExecute(Collection<_AISpec> specsToExecute) {
+	public void setSpecsToExecute(ArrayList<ExecutableSpec> specsToExecute) {
 		this.specsToExecute = specsToExecute;
-		this.exec.setSpecsToExecute((ArrayList<_AISpec>) this.specsToExecute);
 	}
 
 	/**
-	 * Adds an AISpec from specsToExecute.
-	 * 
-	 * @param newSpec
+	 * @return the currentState
 	 */
-	public void addSpecToExecute(_AISpec newSpec) {
-		this.specsToExecute.add(newSpec);
-		this.exec.setSpecsToExecute((ArrayList<_AISpec>) this.specsToExecute);
+	public ROSpecState getCurrentState() {
+		return currentState;
 	}
 
 	/**
-	 * Remove an AISpec from the list of specs to execute.
-	 * 
-	 * @param specToRemove
+	 * @param currentState
+	 *            the currentState to set
 	 */
-	public void removeSpecsToExecute(_AISpec specToRemove) {
-		this.specsToExecute.remove(specToRemove);
-		this.exec.setSpecsToExecute((ArrayList<_AISpec>) this.specsToExecute);
+	public void setCurrentState(ROSpecState currentState) {
+		this.currentState = currentState;
 	}
 
 	/**
@@ -243,65 +228,6 @@ public class _ROSpec {
 	}
 
 	/**
-	 * Start the ROSpec executer thread.
-	 * 
-	 */
-	public void execute() {
-		/* Create a new thread and kick it off */
-		Thread tempThread = new Thread(exec, "ROSpec Executer");
-		tempThread.start();
-	}
-
-	/**
-	 * Stop the ROSpec executor thread
-	 * 
-	 */
-	public void stop() {
-		exec.stop();
-	}
-
-	protected void cleanUp() {
-		if (this.startTrigger != null) {
-			this.startTrigger.cleanUp();
-			this.startTrigger = null;
-		}
-
-		if (this.stopTrigger != null) {
-			this.stopTrigger.cleanUp();
-			this.stopTrigger = null;
-		}
-		for (_AISpec ais : this.specsToExecute) {
-			ais.getStopTrigger().cleanUp();
-		}
-	}
-	
-	public void suspend(){
-		if (this.startTrigger != null) {
-			this.startTrigger.suspend();
-		}
-
-		if (this.stopTrigger != null) {
-			this.stopTrigger.suspend();
-		}
-		for(_AISpec ais : this.specsToExecute){
-			ais.suspend();
-		}
-	}
-	
-	public void resume(){
-		if (this.startTrigger != null) {
-			this.startTrigger.resume();
-		}
-
-		if (this.stopTrigger != null) {
-			this.stopTrigger.resume();
-		}
-		for(_AISpec ais : this.specsToExecute){
-			ais.resume();
-		}
-	}
-
-	/**
 	 * @return the roReportFormat
 	 */
 	public ROReportFormat getRoReportFormat() {
@@ -309,9 +235,10 @@ public class _ROSpec {
 	}
 
 	/**
-	 * @return the readerName
+	 * @param roReportFormat
+	 *            the roReportFormat to set
 	 */
-	public String getReaderName() {
-		return readerName;
+	public void setRoReportFormat(ROReportFormat roReportFormat) {
+		this.roReportFormat = roReportFormat;
 	}
 }

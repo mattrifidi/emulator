@@ -12,26 +12,43 @@
 package org.rifidi.emulator.reader.llrp.trigger;
 
 /**
- * All triggers need to have a spec state that they can change to true (running)
- * or false(not running)
+ * 
+ * All triggers should implement these methods
  * 
  * @author Kyle Neumeier
  */
 public interface Trigger {
 
 	/**
-	 * This mehtod sets the control signal to change when a trigger fires;
-	 * 
-	 * @param specSignal
+	 * This method is called when the trigger needs to do something, such as
+	 * start a ROSpec.
 	 */
-	public void setTriggerObservable(TriggerObservable triggerObservable);
-	
+	public void fireTrigger();
+
 	/**
-	 * This method should be called after this trigger's associated rospec or AISpec is deleted
+	 * This method sets up the trigger to operate, for example to start a timer
+	 */
+	public void enable();
+
+	/**
+	 * This method disables the trigger, for example to turn off timers
+	 */
+	public void disable();
+
+	/**
+	 * This method should be called after this trigger's associated rospec or
+	 * AISpec is deleted
 	 */
 	public void cleanUp();
-	
+
+	/**
+	 * Suspend the trigger
+	 */
 	public void suspend();
-	
+
+	/**
+	 * Resume a suspended timer
+	 */
 	public void resume();
+
 }

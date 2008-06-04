@@ -13,36 +13,33 @@ package org.rifidi.emulator.reader.llrp.rospec;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Observable;
-import java.util.Observer;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.rifidi.emulator.reader.llrp.trigger.DurationTrigger;
-import org.rifidi.emulator.reader.llrp.trigger.GPIWithTimeoutTrigger;
-import org.rifidi.emulator.reader.llrp.trigger.ImmediateTrigger;
-import org.rifidi.emulator.reader.llrp.trigger.PeriodicTrigger;
-import org.rifidi.emulator.reader.llrp.trigger.TimerTrigger;
-import org.rifidi.emulator.reader.llrp.trigger.TriggerObservable;
+import org.rifidi.emulator.reader.llrp.rospec.execeptions.ROSpecControllerException;
+
+import edu.uark.csce.llrp.ROSpec;
 
 /**
- * This is a controller that manages all of the ROSpecs. It listens for start
- * and stop triggers, and changes the state of rospecs according to the start
- * and stop triggers.
+ * This is a controller that manages all of the ROSpecs.
  * 
  * LLRP defines three states for a ROSpec to be in: 1)Disabled. 2)Inactive
- * 3)Running. When a ROSpec is added, it is in the Disabled Spec. An
+ * 3)Active. When a ROSpec is added, it is in the Disabled Spec. An
  * ENABLE_ROSPEC message moves the ROSpec to the inactive state. Then it waits
- * for a start trigger to put it in the execution state. When it is executing, a
- * stop trigger will move it back to the disabled state. A DISABLE_ROSPEC
- * Message moves it back to the Disabled state. Finally a DELETE_ROSPEC message
- * will remove it completely
+ * for a start trigger to put it in the active (execution) state. When it is
+ * executing, a stop trigger will move it back to the inactive state. A
+ * DISABLE_ROSPEC Message moves it back to the Disabled state. Finally a
+ * DELETE_ROSPEC message will remove it completely. See page 25 of the LLRP spec
+ * for a more detailed description of how the state transitions work
+ * 
+ * It is possible for ROSpecs to have a priority so that ROSpecs with higher
+ * priorities can preempt those with lower priorities. This feature is not yet
+ * implemented.
  * 
  * @author Matthew Dean - matt@pramari.com
  * @author Kyle Neumeier
  */
-public class ROSpecController implements Observer {
+public class ROSpecController {
 
 	/**
 	 * The logger for this class.
@@ -52,410 +49,176 @@ public class ROSpecController implements Observer {
 	/**
 	 * A map of every ROSpec that exists in this reader.
 	 */
-	private HashMap<Integer, _ROSpec> allROSpecs;
+	private HashMap<Integer, _ROSpec> allROSpecs = new HashMap<Integer, _ROSpec>();
 
 	/**
-	 * Queue of disabled rospecs.
+	 * The currently active ROSpec.
 	 */
-	private HashMap<Integer, _ROSpec> disabledList;
+	private Integer activeSpec = null;
 
 	/**
-	 * Queue of active rospects.
-	 */
-	private ArrayList<_ROSpec> activeList;
-
-	/**
-	 * Queue of active rospects.
-	 */
-	private HashMap<Integer, _ROSpec> inactiveList;
-
-	/**
-	 * Hashmap of SpecStates. Each rospec has a spec state that will start and
-	 * stop its execution.
-	 */
-	private HashMap<Integer, TriggerObservable> executionStateList;
-
-	/**
-	 * Hashmap of states where the rospec should go after it gets stopped. The
-	 * key is the ROSpecID and the value is the state
-	 */
-	private HashMap<Integer, Integer> afterStopStateList;
-
-	private static final int STATE_DISABLED = 0;
-
-	private static final int STATE_INACTIVE = 1;
-
-	private static final int STATE_ACTIVE = 2;
-
-	private static final int STATE_DELETED = 3;
-
-	/**
-	 * Private constructor
-	 */
-	ROSpecController() {
-		this.allROSpecs = new HashMap<Integer, _ROSpec>();
-		this.disabledList = new HashMap<Integer, _ROSpec>();
-		this.activeList = new ArrayList<_ROSpec>();
-		this.inactiveList = new HashMap<Integer, _ROSpec>();
-		this.executionStateList = new HashMap<Integer, TriggerObservable>();
-		this.afterStopStateList = new HashMap<Integer, Integer>();
-	}
-
-	/**
-	 * Adds a rospec to the disabled queue. Puts the ROSpec in the disabled
-	 * state.
+	 * This method adds a ROSpec to the LLRP reader.
 	 * 
-	 * @param rospecToAdd
-	 *            ROSpec object to add
-	 * @return
+	 * @param ROSpecToAdd
+	 *            The _ROSpec object to add
+	 * @throws ROSpecControllerException
+	 *             Throws an exception if a ROSpec with the supplied ROSpec id
+	 *             already exists
 	 */
-	public boolean addROSpec(_ROSpec rospecToAdd) {
-		if (allROSpecs.containsKey(rospecToAdd.getId())) {
-			return false;
-		}
-		TriggerObservable ss = new TriggerObservable(false, rospecToAdd.getId());
-		ss.addObserver(this);
-		this.executionStateList.put(rospecToAdd.getId(), ss);
-		this.allROSpecs.put(rospecToAdd.getId(), rospecToAdd);
-		this.disabledList.put(rospecToAdd.getId(), rospecToAdd);
-
-		rospecToAdd.setCurrentState(STATE_DISABLED);
-		
-		if (rospecToAdd.getStartTrigger() instanceof PeriodicTrigger) {
-			PeriodicTrigger pt = (PeriodicTrigger) rospecToAdd
-					.getStartTrigger();
-			pt.setTriggerObservable(ss);
-			pt.startTimer();
-		}
-		if(rospecToAdd.getStartTrigger() instanceof ImmediateTrigger){
-			rospecToAdd.getStartTrigger().setTriggerObservable(ss);
-		}
-		if(rospecToAdd.getStartTrigger() instanceof GPIWithTimeoutTrigger){
-			rospecToAdd.getStartTrigger().setTriggerObservable(ss);
-		}
-		
-		return true;
-	}
-
-	/**
-	 * Moves a ROSpec from the disabled to the inactive queue. Returns false if
-	 * the ROSpec does not exist or if the ROSpec is not in the inactive queue.
-	 * In other words, this method puts the ROSpec into the enabled state
-	 * 
-	 * @param rospecToEnable
-	 *            ID of ROspec
-	 * @return
-	 */
-	public boolean enableROSpec(int rospecToEnable) {
-		if (!disabledList.containsKey(rospecToEnable)) {
-			return false;
-		}
-		_ROSpec spec = this.allROSpecs.get(rospecToEnable);
-
-		this.inactiveList.put(rospecToEnable, allROSpecs.get(rospecToEnable));
-		this.disabledList.remove(rospecToEnable);
-		spec.setCurrentState(STATE_INACTIVE);
-
-		/* If the rospec has an Immediate trigger, start it now */
-		if (spec.getStartTrigger() instanceof ImmediateTrigger) {
-			return startROSpec(rospecToEnable);
-
-		}
-		
-		return true;
-		
-	}
-
-	/**
-	 * Starts the rospec with the given integer ID. If the ROSpec is in the
-	 * inactive state and no other ROSpecs are currently running, it will return
-	 * true. If there is a ROSpec running or the current ROSpec is not in the
-	 * inactive queue, it will return false.
-	 * 
-	 * Currently only one ROSpec can run at a time
-	 * 
-	 * @param rospecToStart
-	 *            ID of ROSPec to start
-	 * @return
-	 */
-	public boolean startROSpec(int rospecToStart) {
-		if (!inactiveList.containsKey(rospecToStart)
-				|| !this.activeList.isEmpty()) {
-			return false;
-		}
-		_ROSpec rs = allROSpecs.get(rospecToStart);
-		TriggerObservable ss = executionStateList.get(rospecToStart);
-
-		/*
-		 * Check to see if the spec state is true. If it is not, fire the start
-		 * trigger, which in turn will notify this object and will immediatly
-		 * call this method again. The next time this method is called however,
-		 * the state will already be true, and it will actually start the ROSpec
-		 */
-
-		if (!ss.getState()) {
-			ss.fireStartTrigger(this.getClass());
-			return true;
+	public void addROSpec(_ROSpec ROSpecToAdd) throws ROSpecControllerException {
+		if (!this.allROSpecs.containsKey(ROSpecToAdd.getId())) {
+			allROSpecs.put(ROSpecToAdd.getId(), ROSpecToAdd);
+			ROSpecToAdd.toDisabledState();
 		} else {
-
-			this.activeList.add(allROSpecs.get(rospecToStart));
-			this.inactiveList.remove(rospecToStart);
-			rs.setCurrentState(STATE_ACTIVE);
-
-			/*
-			 * By default, this rospec should go to the inactive state when
-			 * stopped
-			 */
-			this.afterStopStateList.put(rospecToStart, STATE_INACTIVE);
-
-			/* Set up stop triggers */
-			if (rs.getStopTrigger() instanceof DurationTrigger) {
-				DurationTrigger trig = (DurationTrigger) rs.getStopTrigger();
-				trig.setTriggerObservable(ss);
-			} else if (rs.getStopTrigger() instanceof GPIWithTimeoutTrigger) {
-				GPIWithTimeoutTrigger trig = (GPIWithTimeoutTrigger) rs
-						.getStopTrigger();
-				trig.setTriggerObservable(ss);
-			}
-
-			logger.debug("Starting ROSpec with ID " + rospecToStart);
-			rs.execute();
-
-			return true;
+			throw new ROSpecControllerException("ROSpec with ID "
+					+ ROSpecToAdd.getId() + " already added");
 		}
+
 	}
 
 	/**
-	 * Stops the given ROSpec. Returns true if the ROSpec was currently running
-	 * and is stopped correctly. Returns false if the ROSpec was not running or
-	 * has a problem stopping.
+	 * This method moves the ROSpec from the disabled to the inactive state
 	 * 
-	 * After a rospec is stopped it returns to the inactive state. Then, this
-	 * method checks the afterStopState list to see if it is supposed to make an
-	 * additional transition (either to the disabled or deleted state).
-	 * 
-	 * @param rospecToStop
-	 *            ID of ROSpec to stop
-	 * @return
+	 * @param ROSpecToEnable
+	 *            The ROSpecID of the rospec to enable
+	 * @throws ROSpecControllerException
+	 *             Throws an exception if a rospec with the given Rospec ID is
+	 *             not found or not in the Disabled state
 	 */
-
-	public boolean stopROSpec(int rospecToStop) {
-		if (!allROSpecs.containsKey(rospecToStop)) {
-			return false;
-		}
-		if (!activeList.contains(allROSpecs.get(rospecToStop))) {
-			return false;
-		}
-
-		_ROSpec stopSpec = activeList.get(0);
-
-		TriggerObservable ss = executionStateList.get(stopSpec.getId());
-
-		/*
-		 * Make sure that the control signal is false. If it is true, by setting
-		 * it to false, it will notify the observer (which is this class), and
-		 * this method will be called again, except this time the else part of
-		 * this construct will be run because the control variable will have
-		 * been set to false.
-		 */
-		if (ss.getState()) {
-			ss.fireStopTrigger(this.getClass());
-			return true;
+	public void enableROSpec(int ROSpecToEnable)
+			throws ROSpecControllerException {
+		_ROSpec rospec = allROSpecs.get(ROSpecToEnable);
+		if (rospec != null) {
+			if (rospec.getCurrentState() == ROSpecState.DISABLED) {
+				allROSpecs.get(ROSpecToEnable).toInactiveState();
+			} else {
+				throw new ROSpecControllerException(
+						"Invalid State transition for ROSpec with ID "
+								+ ROSpecToEnable);
+			}
 		} else {
-			logger.debug("stopping ROSpec");
-			stopSpec.stop();
-
-			if (stopSpec.getStopTrigger() instanceof TimerTrigger) {
-				((TimerTrigger) stopSpec.getStopTrigger()).stopTimer();
-			}
-
-			activeList.remove(stopSpec);
-
-			inactiveList.put(stopSpec.getId(), stopSpec);
-			stopSpec.setCurrentState(STATE_INACTIVE);
-
-			int nextState = this.afterStopStateList.get(rospecToStop);
-
-			/*
-			 * If the rospec should make an additional transition, as noted by
-			 * the nextState variable, do it here
-			 */
-			if (nextState == STATE_DISABLED) {
-				return disableROSpec(stopSpec.getId());
-			} else if (nextState == STATE_DELETED) {
-				return deleteROSpec(stopSpec.getId());
-			}
-			
-			return true;
+			throw new ROSpecControllerException("ROSpec ID " + ROSpecToEnable
+					+ " not found");
 		}
 	}
 
 	/**
-	 * Disables the ROSpec, moving it to the disabled state. If the rospec is in
-	 * the active state, the rosoc must be stopped first. Because stopping
-	 * happens asyncronously, the afterStopState hashmap is updated for this
-	 * rospec, and the rospec is stopped using the stopROSpec() method. The
-	 * stopROSpec() method will then call this method again and the rospec will
-	 * be disabled
+	 * This method starts the ROSpec. It is called either by the handler method
+	 * for a START_ROSPEC message or by a trigger.
 	 * 
-	 * @param rospecToDisable
-	 *            ID of ROSpec to disable
+	 * @param ROSpecToStart
+	 *            The ROSpecID of the ROSpec to start
+	 * @throws ROSpecControllerException
+	 *             Throws an exception if a ROSpec with the given ROSpec ID is
+	 *             not found or not in the inactive state
+	 */
+	public void startROSpec(int ROSpecToStart) throws ROSpecControllerException {
+		// TODO: Build support for Priority
+		if (this.allROSpecs.containsKey(ROSpecToStart)) {
+			_ROSpec rospec = this.allROSpecs.get(ROSpecToStart);
+			if (rospec.getCurrentState() == ROSpecState.INACTIVE) {
+				if (this.activeSpec == null) {
+					this.activeSpec = ROSpecToStart;
+					rospec.toActiveState();
+				}
+			} else {
+				throw new ROSpecControllerException(
+						"Invalid state transition for ROSpec with ID "
+								+ ROSpecToStart);
+			}
+		} else {
+			throw new ROSpecControllerException("ROSpec ID " + ROSpecToStart
+					+ " not found");
+		}
+
+	}
+
+	/**
+	 * This method stops a currently running ROSpec. It is called either by the
+	 * handler method for a STOP_ROSPEC method or by a stop trigger.
+	 * 
+	 * @param ROSpecToStop
+	 *            The ROSpec id of the ROSpec to stop
+	 * @throws ROSpecControllerException
+	 *             Throws an exception if a rospec with the given ID has not
+	 *             been added or is not in the active state
+	 */
+	public void stopROSpec(int ROSpecToStop) throws ROSpecControllerException {
+		_ROSpec rospec = this.allROSpecs.get(ROSpecToStop);
+		if (rospec != null) {
+			if (rospec.getCurrentState() == ROSpecState.ACTIVE) {
+				this.activeSpec = null;
+				rospec.toInactiveState();
+			}
+		}
+	}
+
+	/**
+	 * This method moves a ROSpec to the disabled state. It is called by the
+	 * handler method for the DISABLE_ROSPEC message.
+	 * 
+	 * @param ROSpecToDisable
+	 *            The ROSpec ID of the ROSpec to disable
+	 * @throws ROSpecControllerException
+	 *             Throws and exception if a ROSpec with the given ID has not
+	 *             been added or is not in either the Active or Inactive state
+	 */
+	public void disableROSpec(int ROSpecToDisable)
+			throws ROSpecControllerException {
+		_ROSpec rospec = this.allROSpecs.get(ROSpecToDisable);
+		if (rospec != null) {
+			if (rospec.getCurrentState() == ROSpecState.ACTIVE) {
+				this.activeSpec = null;
+				rospec.toDisabledState();
+			} else if (rospec.getCurrentState() == ROSpecState.INACTIVE) {
+				rospec.toDisabledState();
+			} else {
+				throw new ROSpecControllerException(
+						"Invalid state transition for ROSpec with ID "
+								+ ROSpecToDisable);
+			}
+		} else {
+			throw new ROSpecControllerException("ROSpec ID " + ROSpecToDisable
+					+ " not found");
+		}
+	}
+
+	/**
+	 * This method removes a ROSpec. It is called by the handler method for the
+	 * DELETE_ROSPEC message.
+	 * 
+	 * @param ROSpecToDelete
+	 *            The ID of the ROSpec to delete
+	 * @throws ROSpecControllerException
+	 *             Throws an exception if a ROSpec with the supplied ID has not
+	 *             been added
+	 */
+	public void deleteROSpec(int ROSpecToDelete)
+			throws ROSpecControllerException {
+		_ROSpec rospec = this.allROSpecs.get(ROSpecToDelete);
+		if (rospec != null) {
+			if (rospec.getCurrentState() == ROSpecState.ACTIVE) {
+				this.activeSpec = null;
+			}
+			rospec.delete();
+		} else {
+			throw new ROSpecControllerException("ROSpec ID " + ROSpecToDelete
+					+ " not found");
+		}
+
+	}
+
+	/**
+	 * This method returns a list of all ROSpecs that have been added
+	 * 
 	 * @return
 	 */
-	public boolean disableROSpec(int rospecToDisable) {
-
-		if (!allROSpecs.containsKey(rospecToDisable)) {
-			return false;
+	public ArrayList<ROSpec> getAllRoSpecs() {
+		ArrayList<ROSpec> roSpecs = new ArrayList<ROSpec>(allROSpecs.size());
+		for (_ROSpec spec : allROSpecs.values()) {
+			roSpecs.add(spec.toROSpec());
 		}
-		_ROSpec rs = this.allROSpecs.get(rospecToDisable);
-		/* Make sure RoSpec is either in inactive or active queue */
-		if (!inactiveList.containsKey(rospecToDisable)) {
-			if (!activeList.contains(rs)) {
-				return false;
-			}
-		}
-
-		/*
-		 * If the rospec has an Periodic start trigger, stop it so that it
-		 * doesn't fire anymore
-		 */
-		if (rs.getStartTrigger() instanceof PeriodicTrigger) {
-			((PeriodicTrigger) rs.getStartTrigger()).stopTimer();
-		}
-
-		/* If inactive list contains rospec */
-		if (inactiveList.containsKey(rospecToDisable)) {
-
-			this.inactiveList.remove(rospecToDisable);
-			this.disabledList.put(rospecToDisable, allROSpecs
-					.get(rospecToDisable));
-			rs.setCurrentState(STATE_DISABLED);
-			return true;
-		}
-		/* Else active list contains rospec. Must stop it and then disable it. */
-		else {
-			this.afterStopStateList.put(rospecToDisable, STATE_DISABLED);
-			return stopROSpec(rospecToDisable);
-		}
-
+		return roSpecs;
 	}
 
-	/**
-	 * Deletes a ROSpec. Returns false if the ROSpec does not exist. If the
-	 * ROSpec is in the active state, it must be stopped first. Because stopping
-	 * happens asyncronoulsy, the afterStopState hashmap is update for this
-	 * rospec. Then the stopROSpec() method is called. After it stops the
-	 * ROspec, it will call this method again, which will delete it.
-	 * 
-	 * @param rospecToDelete
-	 *            ID of ROSpec to delete
-	 * @return
-	 */
-	public boolean deleteROSpec(int rospecToDelete) {
-		logger.debug("Trying to delete ROSpec of ID: " + rospecToDelete);
-		if (!allROSpecs.containsKey(rospecToDelete)) {
-			return false;
-		}
-
-		_ROSpec rs = allROSpecs.get(rospecToDelete);
-
-		/*
-		 * If rospec is active, stop it first, then delete it
-		 */
-		if (this.activeList.contains(rs)) {
-			afterStopStateList.put(rospecToDelete, STATE_DELETED);
-			return stopROSpec(rospecToDelete);
-		}
-
-		if (this.disabledList.containsKey(rospecToDelete)) {
-			this.disabledList.remove(rospecToDelete);
-		}
-		if (this.inactiveList.containsKey(rospecToDelete)) {
-			this.inactiveList.remove(rospecToDelete);
-		}
-		this.allROSpecs.get(rospecToDelete).cleanUp();
-		this.allROSpecs.remove(rospecToDelete);
-		this.executionStateList.remove(rospecToDelete);
-		this.afterStopStateList.remove(rospecToDelete);
-
-		return true;
-	}
-	
-	public void cleanUp(){
-			Iterator<_ROSpec> iter = allROSpecs.values().iterator();
-			while(iter.hasNext()){
-				_ROSpec current = iter.next();
-				this.deleteROSpec(current.getId());
-			}
-
-	}
-
-	/**
-	 * This is the logic for what happens when a specState that is being
-	 * observed by this object changes. This class should only be notified by
-	 * TriggerObservable objects
-	 */
-	@SuppressWarnings("unchecked")
-	public void update(Observable o, Object arg) {
-
-		ArrayList<Object> extraInfo;
-		boolean newState;
-		Class callingClass;
-		int rospecID;
-
-		try {
-			extraInfo = (ArrayList<Object>) arg;
-			newState = (Boolean) extraInfo.get(0);
-			callingClass = (Class) extraInfo.get(1);
-			rospecID = (Integer) extraInfo.get(2);
-
-			// If rospec stop trigger
-			if (newState == false) {
-				if (callingClass.equals(DurationTrigger.class)) {
-					logger.debug("ROSpec Stop Trigger fired"
-							+ " by Duration Trigger");
-				} else if (callingClass.equals(GPIWithTimeoutTrigger.class)) {
-					logger.debug("ROSpec Stop Trigger fired by GPI Trigger");
-				} else if (callingClass.equals(this.getClass())) {
-					logger.debug("ROSpec Stop Trigger fired "
-							+ "by STOP_ROSPEC Message or because the last "
-							+ "AISpec finished executing");
-				} else {
-					logger.debug("Unidentified class stopped ROSpec: "
-							+ callingClass);
-				}
-				this.stopROSpec(rospecID);
-
-				
-			}
-			// if rospec start trigger
-			else {
-				if (callingClass.equals(this.getClass())) {
-					logger.debug("ROSpec Start Trigger fired by START_ROSPEC "
-							+ "Message or Immediate Trigger");
-				} else if (callingClass.equals(PeriodicTrigger.class)) {
-					logger
-							.debug("ROSpec Start Trigger fired by Periodic Trigger");
-				} else if (callingClass.equals(GPIWithTimeoutTrigger.class)) {
-					logger.debug("ROSpec Start Trigger Fired by GPI Trigger");
-				} else if (callingClass.equals(ImmediateTrigger.class)) {
-					logger.debug("ROSpec Start Trigger Fired by Immediate Trigger");
-				} else {
-					logger.debug("Unidentified class started ROSPec: "
-							+ callingClass);
-				}
-				this.startROSpec(rospecID);
-			}
-
-		} catch (Exception e) {
-			logger.debug("There was an error when trying to update "
-					+ "ROSPec.  Check to make sure the TriggerObservable's "
-					+ "extra informaiton was formed correctly");
-		}
-
-	}
-
-	public HashMap<Integer, _ROSpec> getROSpecs() {
-		return this.allROSpecs;
-	}
 }
