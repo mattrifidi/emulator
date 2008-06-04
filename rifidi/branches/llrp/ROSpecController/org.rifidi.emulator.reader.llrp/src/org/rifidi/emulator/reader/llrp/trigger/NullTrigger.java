@@ -1,30 +1,57 @@
+/**
+ * 
+ */
 package org.rifidi.emulator.reader.llrp.trigger;
 
 /**
- * This trigger does nothing currently and is only used as a check in the
- * ROSpecController and AISpec
- * 
  * @author kyle
- * 
+ *
  */
-public class NullTrigger implements Trigger {
+public abstract class NullTrigger implements Trigger {
 
-	public void setTriggerObservable(TriggerObservable specState) {
-
-	}
-
+	/* (non-Javadoc)
+	 * @see org.rifidi.emulator.reader.llrp.trigger.Trigger#cleanUp()
+	 */
+	@Override
 	public void cleanUp() {
-		
+		// TODO Auto-generated method stub
+
 	}
 
+	/* (non-Javadoc)
+	 * @see org.rifidi.emulator.reader.llrp.trigger.Trigger#disable()
+	 */
+	@Override
+	public void disable() {
+		// TODO Auto-generated method stub
+
+	}
+
+	/* (non-Javadoc)
+	 * @see org.rifidi.emulator.reader.llrp.trigger.Trigger#enable()
+	 */
+	@Override
+	public void enable() {
+		// TODO Auto-generated method stub
+
+	}
+
+	/* (non-Javadoc)
+	 * @see org.rifidi.emulator.reader.llrp.trigger.Trigger#resume()
+	 */
+	@Override
 	public void resume() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
+	/* (non-Javadoc)
+	 * @see org.rifidi.emulator.reader.llrp.trigger.Trigger#suspend()
+	 */
+	@Override
 	public void suspend() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }
