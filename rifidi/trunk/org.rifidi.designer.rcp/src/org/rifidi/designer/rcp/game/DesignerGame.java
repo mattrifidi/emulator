@@ -309,12 +309,12 @@ public class DesignerGame extends SWTBaseGame implements
 				miniMapView = (MiniMapView) PlatformUI.getWorkbench()
 						.getActiveWorkbenchWindow().getActivePage().findView(
 								MiniMapView.ID);
-				miniMapView.setMapCamera(offy.getCamera());
 			}
 			display.getRenderer().displayBackBuffer();
 			getGlCanvas().swapBuffers();
 			if (offy.isSupported() && miniMapView != null
 					&& minimapCounter == 10) {
+				miniMapView.setMapCamera(offy.getCamera());
 				minimapCounter = 0;
 				offy.render(getRootNode());
 				IntBuffer buffer = offy.getImageData();

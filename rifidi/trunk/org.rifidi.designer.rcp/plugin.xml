@@ -766,7 +766,7 @@
 	              </not>
                   <iterate>
                      <instanceof
-                           value="org.rifidi.designer.entities.VisualEntity">
+                           value="org.rifidi.designer.entities.interfaces.Switch">
                      </instanceof>
                   </iterate>
                </and>
@@ -808,7 +808,7 @@
                   </test>
                   <iterate>
                      <instanceof
-                           value="org.rifidi.designer.entities.VisualEntity">
+                           value="org.rifidi.designer.entities.interfaces.Switch">
                      </instanceof>
                   </iterate>
                </and>
