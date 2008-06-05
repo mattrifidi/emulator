@@ -521,6 +521,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 				sceneData = (SceneData) unm;
 				sceneData.setDisplay(display);
 				sceneData.setPhysicsSpace(PhysicsSpace.create());
+				sceneData.getPhysicsSpace().setAutoRestThreshold(2);
 				sceneData.setCollisionHandler(new InputHandler());
 
 				// initialize the JME importer to handle physics
