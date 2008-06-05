@@ -278,6 +278,10 @@ public class GPIOPerspective implements IPerspectiveFactory,
 	@Override
 	public void perspectiveActivated(IWorkbenchPage page,
 			IPerspectiveDescriptor perspective) {
+		if(editor!=null){
+			destroySceneData(null);
+			sceneDataChanged(null);
+		}
 		if(ID.equals(perspective.getId()) && !active){
 			sceneDataService.addSceneDataChangedListener(this);
 			return;
