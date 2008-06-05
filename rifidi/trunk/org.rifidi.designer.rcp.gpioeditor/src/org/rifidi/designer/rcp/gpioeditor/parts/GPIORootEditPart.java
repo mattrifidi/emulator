@@ -93,7 +93,6 @@ public class GPIORootEditPart extends AbstractGraphicalEditPart implements
 
 	@Override
 	public void handleChange(ChangeEvent event) {
-		System.out.println("refreshing");
 		refresh();
 	}
 }
