@@ -549,8 +549,6 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 					sceneData.setRootNode((Node) BinaryImporter.getInstance()
 							.load(sceneData.getNodeBytes()));
 					for (Entity entity : sceneData.getEntities()) {
-						System.out.println("Ent: " + entity + " "
-								+ entity.getEntityId());
 						ServiceRegistry.getInstance().service(entity);
 						sceneData.getEntityNames().add(entity.getName());
 						initEntity(entity, sceneData, false);
