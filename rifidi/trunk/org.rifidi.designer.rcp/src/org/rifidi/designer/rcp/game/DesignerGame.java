@@ -304,13 +304,13 @@ public class DesignerGame extends SWTBaseGame implements
 				Debugger.drawBounds(sceneData.getRootNode(), display
 						.getRenderer());
 			}
+			display.getRenderer().displayBackBuffer();
+			getGlCanvas().swapBuffers();
 			if (miniMapView == null) {
 				miniMapView = (MiniMapView) PlatformUI.getWorkbench()
 						.getActiveWorkbenchWindow().getActivePage().findView(
 								MiniMapView.ID);
 			}
-			display.getRenderer().displayBackBuffer();
-			getGlCanvas().swapBuffers();
 			if (offy.isSupported() && miniMapView != null
 					&& minimapCounter == 10) {
 				miniMapView.setMapCamera(offy.getCamera());
@@ -326,8 +326,7 @@ public class DesignerGame extends SWTBaseGame implements
 						imgData.setPixel(x, y, buffer.get((199 - y) * 200 + x));
 					}
 				}
-				miniMapView.setImage(imgData);
-				((SWTDisplaySystem) display).setCurrentGLCanvas(getGlCanvas());
+				miniMapView.setImage(imgData, sceneData.getWidth());
 			}
 			minimapCounter++;
 

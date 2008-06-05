@@ -91,6 +91,8 @@ public class MiniMapView extends ViewPart {
 
 	private Updater updater;
 
+	private int size = 0;
+
 	/**
 	 * Constructor.
 	 */
@@ -201,48 +203,28 @@ public class MiniMapView extends ViewPart {
 	 *            the coordinate of the bottom-right corner of the frame
 	 */
 	private void drawFrame() {
-		// image.dispose();
-		// graphicsContext.dispose();
-		// image = new Image(Display.getCurrent(), imageData);
-		// graphicsContext = new GC(image);
-		// Vector3f topleft = mapCamera.getScreenCoordinates(cameraService
-		// .getMainCamera().getWorldCoordinates(new Vector2f(0, 0), 0));
-		// Vector3f topright = mapCamera.getScreenCoordinates(cameraService
-		// .getMainCamera().getWorldCoordinates(new Vector2f(700, 0), 0));
-		// Vector3f bottomright = mapCamera
-		// .getScreenCoordinates(cameraService.getMainCamera()
-		// .getWorldCoordinates(new Vector2f(700, 500), 0));
-		// Vector3f bottomleft = mapCamera.getScreenCoordinates(cameraService
-		// .getMainCamera().getWorldCoordinates(new Vector2f(0, 500), 0));
-		Vector3f delta=new Vector3f(0,0,0);
-		Vector3f topleft = mapCamera.getScreenCoordinates(cameraService
-				.getMainCamera().getLocation());
-		Vector3f topright = mapCamera.getScreenCoordinates(cameraService
-				.getMainCamera().getLocation());
-		Vector3f bottomright = mapCamera.getScreenCoordinates(cameraService
-				.getMainCamera().getLocation());
-		Vector3f bottomleft = mapCamera.getScreenCoordinates(cameraService
-				.getMainCamera().getLocation());
-		topleft.subtractLocal(delta);
-		topright.subtractLocal(delta);
-		bottomleft.subtractLocal(delta);
-		bottomright.subtractLocal(delta);
-		int[] corners = new int[] { (int) topleft.x - 20,
-				image.getBounds().height - (int) topleft.y - 20,
-				(int) topright.x + 20,
-				image.getBounds().height - (int) topright.y - 20,
-				(int) topright.x + 20,
-				image.getBounds().height - (int) topright.y - 20,
-				(int) bottomright.x + 20,
-				image.getBounds().height - (int) bottomright.y + 20,
-				(int) bottomright.x + 20,
-				image.getBounds().height - (int) bottomright.y + 20,
-				(int) bottomleft.x - 20,
-				image.getBounds().height - (int) bottomleft.y + 20,
-				(int) bottomleft.x - 20,
-				image.getBounds().height - (int) bottomleft.y + 20,
-				(int) topleft.x - 20,
-				image.getBounds().height - (int) topleft.y - 20 };
+		Vector3f location = cameraService.getMainCamera().getLocation().clone();
+		float factor = image.getBounds().width / size;
+		location.setY(location.getZ());
+		location.multLocal(factor);
+		int delta = 0;
+		if (size == 64) {
+			delta = 20;
+		} else {
+			delta = 43;
+		}
+		Vector3f topleft = location.add(-3 + delta, -3 + delta, 0);
+		Vector3f topright = location.add(3 + delta, -3 + delta, 0);
+		Vector3f bottomright = location.add(3 + delta, 3 + delta, 0);
+		Vector3f bottomleft = location.add(-3 + delta, 3 + delta, 0);
+		int[] corners = new int[] { (int) topleft.x - 20, (int) topleft.y - 20,
+				(int) topright.x + 20, (int) topright.y - 20,
+				(int) topright.x + 20, (int) topright.y - 20,
+				(int) bottomright.x + 20, (int) bottomright.y + 20,
+				(int) bottomright.x + 20, (int) bottomright.y + 20,
+				(int) bottomleft.x - 20, (int) bottomleft.y + 20,
+				(int) bottomleft.x - 20, (int) bottomleft.y + 20,
+				(int) topleft.x - 20, (int) topleft.y - 20 };
 		if (GlobalProperties.windows) {
 			graphicsContext.setLineWidth(2);
 			graphicsContext.setForeground(new Color(null, 255, 0, 0));
@@ -271,14 +253,14 @@ public class MiniMapView extends ViewPart {
 	 * @param img
 	 *            the minimap image data
 	 */
-	public void setImage(ImageData img) {
-		if(imageData==null){
+	public void setImage(ImageData img, int size) {
+		this.size = size;
+		if (imageData == null) {
 			imageData = img;
 			image = new Image(Display.getCurrent(), img);
 			graphicsContext = new GC(image);
 			label.setImage(image);
-		}
-		else if(!imageData.equals(img)){
+		} else if (!imageData.equals(img)) {
 			imageData = img;
 			image.dispose();
 			graphicsContext.dispose();
@@ -383,31 +365,26 @@ public class MiniMapView extends ViewPart {
 		@Override
 		public void run() {
 			while (keepRunning) {
-				if (!running) {
-					running = true;
-					getViewSite().getShell().getDisplay().asyncExec(
-							new Runnable() {
+				getViewSite().getShell().getDisplay().syncExec(new Runnable() {
 
-								/*
-								 * (non-Javadoc)
-								 * 
-								 * @see java.lang.Runnable#run()
-								 */
-								@Override
-								public void run() {
-									try {
-										drawFrame();
-										running = false;
-									} catch (SWTException e) {
-										// should just occur if the widget is
-										// disposed faster than we can shoot
-										// down the thread.
-										logger.debug(e);
-									}
-								}
-							});
-
-				}
+					/*
+					 * (non-Javadoc)
+					 * 
+					 * @see java.lang.Runnable#run()
+					 */
+					@Override
+					public void run() {
+						try {
+							drawFrame();
+							running = false;
+						} catch (SWTException e) {
+							// should just occur if the widget is
+							// disposed faster than we can shoot
+							// down the thread.
+							logger.debug(e);
+						}
+					}
+				});
 				try {
 					Thread.sleep(20);
 				} catch (InterruptedException e) {
