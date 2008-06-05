@@ -55,7 +55,7 @@ import com.jmex.physics.material.Material;
 @XmlRootElement
 @MonitoredProperties(names = { "name" })
 public class ConveyorEntity extends VisualEntity implements Switch,
-		Directional, NeedsPhysics, GPI {
+		Directional, NeedsPhysics {
 	/**
 	 * Logger for this class.
 	 */
@@ -334,28 +334,6 @@ public class ConveyorEntity extends VisualEntity implements Switch,
 	 */
 	public void setPhysicsSpace(PhysicsSpace physicsSpace) {
 		this.physicsSpace = physicsSpace;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.rifidi.designer.entities.interfaces.GPI#setHigh(int)
-	 */
-	@Override
-	public void setHigh(int portNum) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.rifidi.designer.entities.interfaces.GPI#setLow(int)
-	 */
-	@Override
-	public void setLow(int portNum) {
-		// TODO Auto-generated method stub
-
 	}
 	
 }
