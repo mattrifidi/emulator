@@ -16,48 +16,12 @@
          point="org.eclipse.ui.editors">
       <editor
             class="org.rifidi.designer.ide.converter.editor.ColladaEditor"
-            contributorClass="org.rifidi.designer.ide.converter.ActionBarContributor"
             default="false"
             extensions="dae,3ds,obj,md2,md3,ms3d"
             icon="icons/applications-system.png"
             id="org.rifidi.designer.ide.converter.colladaviewer"
             name="Collada Viewer">
       </editor>
-   </extension>
-   <extension
-         point="org.eclipse.ui.commands">
-      <command
-            categoryId="org.rifidi.designer.ide.converter.category1"
-            description="Export the loaded file to JME"
-            id="org.rifidi.designer.ide.converter.exporttojme"
-            name="Export to JME">
-      </command>
-      <category
-            id="org.rifidi.designer.ide.converter.category1"
-            name="name">
-      </category>
-   </extension>
-   <extension
-         point="org.eclipse.ui.handlers">
-      <handler
-            class="org.rifidi.designer.ide.converter.ExportToJMEHandler"
-            commandId="org.rifidi.designer.ide.converter.exporttojme">
-      </handler>
-   </extension>
-   <extension
-         point="org.eclipse.ui.menus">
-      <menuContribution
-            locationURI="toolbar:org.eclipse.ui.main.toolbar?after=additions">
-         <toolbar
-               id="org.rifidi.designer.ide.converter.toolbar2">
-            <command
-                  commandId="org.rifidi.designer.ide.converter.exporttojme"
-                  icon="icons/applications-system.png"
-                  id="cxv2"
-                  label="aaaa">
-            </command>
-         </toolbar>
-      </menuContribution>
    </extension>
 
 </plugin>
