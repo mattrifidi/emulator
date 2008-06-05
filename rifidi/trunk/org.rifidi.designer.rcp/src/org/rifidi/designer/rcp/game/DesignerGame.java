@@ -46,7 +46,6 @@ import org.rifidi.designer.services.core.world.RepeatedUpdateAction;
 import org.rifidi.designer.services.core.world.WorldService;
 import org.rifidi.designer.services.core.world.WorldStates;
 import org.rifidi.jmeswt.SWTBaseGame;
-import org.rifidi.jmeswt.utils.Helpers;
 import org.rifidi.jmonkey.SWTDisplaySystem;
 import org.rifidi.services.annotations.Inject;
 import org.rifidi.services.registry.ServiceRegistry;
@@ -295,7 +294,7 @@ public class DesignerGame extends SWTBaseGame implements
 	 */
 	@Override
 	protected void render(float interpolation) {
-		if (sceneData != null && !getGlCanvas().isDisposed()) {
+		if (sceneData != null && !getGlCanvas().isDisposed() && sceneData.getRootNode().getParent()!=null) {
 			GameStateManager.getInstance().render(0);
 			if (GlobalProperties.physicsDebugging) {
 				PhysicsDebugger.drawPhysics(sceneData.getPhysicsSpace(),
@@ -696,7 +695,8 @@ public class DesignerGame extends SWTBaseGame implements
 	}
 
 	/**
-	 * @param fieldService the fieldService to set
+	 * @param fieldService
+	 *            the fieldService to set
 	 */
 	@Inject
 	public void setFieldService(FieldService fieldService) {
