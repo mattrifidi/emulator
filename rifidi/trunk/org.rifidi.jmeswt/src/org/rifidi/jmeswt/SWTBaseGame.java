@@ -476,4 +476,14 @@ public abstract class SWTBaseGame extends AbstractGame {
 		this.parent = parent;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.jme.app.AbstractGame#finish()
+	 */
+	@Override
+	public void finish() {
+		super.finish();
+		renderThread.setKeepRunning(false);
+		updateThread.setKeepRunning(false);
+	}
+
 }
