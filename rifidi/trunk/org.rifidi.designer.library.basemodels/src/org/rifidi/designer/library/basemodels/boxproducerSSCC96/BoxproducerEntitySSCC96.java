@@ -96,7 +96,7 @@ public class BoxproducerEntitySSCC96 extends VisualEntity implements
 	 * Constructor
 	 */
 	public BoxproducerEntitySSCC96() {
-		this.speed = 2;
+		this.speed = 4;
 		setName("Boxproducer (SSCC96)");
 	}
 

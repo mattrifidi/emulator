@@ -95,7 +95,7 @@ public class BoxproducerEntity extends VisualEntity implements SceneControl,
 	 * Constructor
 	 */
 	public BoxproducerEntity(){
-		this.speed=2;
+		this.speed=4;
 		setName("Boxproducer (DoD96)");
 	}
 	/**

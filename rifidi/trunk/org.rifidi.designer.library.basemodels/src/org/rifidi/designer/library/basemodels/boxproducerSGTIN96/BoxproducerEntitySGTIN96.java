@@ -96,7 +96,7 @@ public class BoxproducerEntitySGTIN96 extends VisualEntity implements
 	 * Constructor
 	 */
 	public BoxproducerEntitySGTIN96() {
-		this.speed = 2;
+		this.speed = 4;
 		setName("Boxproducer (SGTIN96)");
 	}
 

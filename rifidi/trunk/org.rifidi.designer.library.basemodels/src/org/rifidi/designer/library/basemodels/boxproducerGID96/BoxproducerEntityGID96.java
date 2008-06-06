@@ -95,7 +95,7 @@ public class BoxproducerEntityGID96 extends VisualEntity implements SceneControl
 	 * Constructor
 	 */
 	public BoxproducerEntityGID96(){
-		this.speed=2;
+		this.speed=4;
 		setName("Boxproducer (GID96)");
 	}
 	/**
