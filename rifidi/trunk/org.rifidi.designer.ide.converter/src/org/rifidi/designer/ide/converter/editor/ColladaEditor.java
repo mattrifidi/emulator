@@ -27,7 +27,10 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.opengl.GLCanvas;
@@ -224,191 +227,250 @@ public class ColladaEditor extends EditorPart {
 	 */
 	@Override
 	public void createPartControl(Composite parent) {
-		game = new EditorGame("mygame", 640, 480, parent, 10, 20);
+		game = new EditorGame(getPartName(), 640, 480, parent, 10, 20);
 		game.start();
 		glCanvas = game.getGlCanvas();
-		MultiFormatResourceLocator loc2 = null;
-		String nameNoEnding = uri.toString().substring(0,
-				uri.toString().lastIndexOf('.'));
-		try {
-			URL url = new URL(
-					"file:///home/jochen/runtime-EclipseApplication/ss/");
-			loc2 = new MultiFormatResourceLocator(url);
-			ResourceLocatorTool.addResourceLocator(
-					ResourceLocatorTool.TYPE_TEXTURE, loc2);
-
-		} catch (URISyntaxException e1) {
-			logger.warning(e1.toString());
-		} catch (MalformedURLException e) {
-			logger.warning(e.toString());
-		}
 
 		if (!(getEditorInput() instanceof IURIEditorInput)) {
 			logger.warning("Not a IRUIEditorInput: " + getEditorInput());
 		}
-		if (((IURIEditorInput) getEditorInput()).getURI().toString().endsWith(
-				".dae")) {
-			ColladaImporter.load(fileInput,
-					((IURIEditorInput) getEditorInput()).getURI().toString());
-			model = ColladaImporter.getModel();
-			ColladaImporter.cleanUp();
-			if (ResourceLocatorTool.locateResource(
-					ResourceLocatorTool.TYPE_TEXTURE, nameNoEnding) != null) {
-				TextureState ts = game.getDisplaySys().getRenderer()
-						.createTextureState();
-				ts.setEnabled(true);
-				ts.setTexture(TextureManager.loadTexture(ResourceLocatorTool
-						.locateResource(ResourceLocatorTool.TYPE_TEXTURE,
-								nameNoEnding), Texture.MM_LINEAR_LINEAR,
-						Texture.FM_LINEAR));
-				model.setRenderState(ts);
-			}
-		} else if (((IURIEditorInput) getEditorInput()).getURI().toString()
-				.endsWith(".jme")) {
-			BinaryImporter im = new BinaryImporter();
-			try {
-				model = (Node) im.load(fileInput);
-			} catch (IOException e) {
-				logger.warning("Unable to load jme file: " + getEditorInput());
-			}
-		} else if (((IURIEditorInput) getEditorInput()).getURI().toString()
-				.endsWith(".obj")) {
-			ObjToJme objloader = new ObjToJme();
-			try {
-				BinaryImporter im = new BinaryImporter();
-				ByteArrayOutputStream baos = new ByteArrayOutputStream();
-				objloader.convert(fileInput, baos);
-				model = new Node("objmodel");
-				model.attachChild((Spatial) im.load(baos.toByteArray()));
-				if (ResourceLocatorTool.locateResource(
-						ResourceLocatorTool.TYPE_TEXTURE, nameNoEnding) != null) {
-					TextureState ts = game.getDisplaySys().getRenderer()
-							.createTextureState();
-					ts.setEnabled(true);
-					ts.setTexture(TextureManager.loadTexture(ResourceLocatorTool
-							.locateResource(ResourceLocatorTool.TYPE_TEXTURE,
-									nameNoEnding), Texture.MM_LINEAR_LINEAR,
-							Texture.FM_LINEAR));
-					model.setRenderState(ts);
-				}
-			} catch (IOException e) {
-				logger.warning("Unable to load obj file: " + getEditorInput());
-			}
-		} else if (((IURIEditorInput) getEditorInput()).getURI().toString()
-				.endsWith(".3ds")) {
-			MaxToJme objloader = new MaxToJme();
-			try {
-				BinaryImporter im = new BinaryImporter();
-				ByteArrayOutputStream baos = new ByteArrayOutputStream();
-				objloader.convert(fileInput, baos);
-				model = new Node("3dsmodel");
-				model.attachChild((Spatial) im.load(baos.toByteArray()));
-				if (ResourceLocatorTool.locateResource(
-						ResourceLocatorTool.TYPE_TEXTURE, nameNoEnding) != null) {
-					TextureState ts = game.getDisplaySys().getRenderer()
-							.createTextureState();
-					ts.setEnabled(true);
-					ts.setTexture(TextureManager.loadTexture(ResourceLocatorTool
-							.locateResource(ResourceLocatorTool.TYPE_TEXTURE,
-									nameNoEnding), Texture.MM_LINEAR_LINEAR,
-							Texture.FM_LINEAR));
-					model.setRenderState(ts);
-				}
-			} catch (IOException e) {
-				logger.warning("Unable to load 3ds file: " + getEditorInput());
-			}
-		} else if (((IURIEditorInput) getEditorInput()).getURI().toString()
-				.endsWith(".md3")) {
-			Md3ToJme objloader = new Md3ToJme();
-			try {
-				BinaryImporter im = new BinaryImporter();
-				ByteArrayOutputStream baos = new ByteArrayOutputStream();
-				objloader.convert(fileInput, baos);
-				model = new Node("md3model");
-				model.attachChild((Spatial) im.load(baos.toByteArray()));
-				if (ResourceLocatorTool.locateResource(
-						ResourceLocatorTool.TYPE_TEXTURE, nameNoEnding) != null) {
-					TextureState ts = game.getDisplaySys().getRenderer()
-							.createTextureState();
-					ts.setEnabled(true);
-					ts.setTexture(TextureManager.loadTexture(ResourceLocatorTool
-							.locateResource(ResourceLocatorTool.TYPE_TEXTURE,
-									nameNoEnding), Texture.MM_LINEAR_LINEAR,
-							Texture.FM_LINEAR));
-					model.setRenderState(ts);
-				}
-			} catch (IOException e) {
-				logger.warning("Unable to load md3 file: " + getEditorInput());
-			}
-		} else if (((IURIEditorInput) getEditorInput()).getURI().toString()
-				.endsWith(".ms3d")) {
-			MilkToJme objloader = new MilkToJme();
-			try {
-				BinaryImporter im = new BinaryImporter();
-				ByteArrayOutputStream baos = new ByteArrayOutputStream();
-				objloader.convert(fileInput, baos);
-				model = new Node("milkshapemodel");
-				model.attachChild((Spatial) im.load(baos.toByteArray()));
-				if (ResourceLocatorTool.locateResource(
-						ResourceLocatorTool.TYPE_TEXTURE, nameNoEnding) != null) {
-					TextureState ts = game.getDisplaySys().getRenderer()
-							.createTextureState();
-					ts.setEnabled(true);
-					ts.setTexture(TextureManager.loadTexture(ResourceLocatorTool
-							.locateResource(ResourceLocatorTool.TYPE_TEXTURE,
-									nameNoEnding), Texture.MM_LINEAR_LINEAR,
-							Texture.FM_LINEAR));
-					model.setRenderState(ts);
-				}
-			} catch (IOException e) {
-				logger.warning("Unable to load ms3d file: " + getEditorInput());
-			}
-		} else if (((IURIEditorInput) getEditorInput()).getURI().toString()
-				.endsWith(".md2")) {
-			Md2ToJme objloader = new Md2ToJme();
-			try {
-				BinaryImporter im = new BinaryImporter();
-				ByteArrayOutputStream baos = new ByteArrayOutputStream();
-				objloader.convert(fileInput, baos);
-				model = new Node("md2model");
-				model.attachChild((Spatial) im.load(baos.toByteArray()));
-				if (ResourceLocatorTool.locateResource(
-						ResourceLocatorTool.TYPE_TEXTURE, nameNoEnding) != null) {
-					TextureState ts = game.getDisplaySys().getRenderer()
-							.createTextureState();
-					ts.setEnabled(true);
-					ts.setTexture(TextureManager.loadTexture(ResourceLocatorTool
-							.locateResource(ResourceLocatorTool.TYPE_TEXTURE,
-									nameNoEnding), Texture.MM_LINEAR_LINEAR,
-							Texture.FM_LINEAR));
-					model.setRenderState(ts);
-				}
-			} catch (IOException e) {
-				logger.warning("Unable to load md2 file: " + getEditorInput());
-			}
-		}
-		game.getUpdateQueue().enqueue(new Callable<Object>() {
+		Job job = new Job("Load " + getPartName() + " job") {
 
 			/*
 			 * (non-Javadoc)
 			 * 
-			 * @see java.util.concurrent.Callable#call()
+			 * @see org.eclipse.core.runtime.jobs.Job#run(org.eclipse.core.runtime.IProgressMonitor)
 			 */
 			@Override
-			public Object call() throws Exception {
-				game.getRootNode().attachChild(model);
-				// Quaternion q = new Quaternion();
-				// q
-				// .fromAngleAxis((float) (Math.PI / 2), Vector3f.UNIT_X
-				// .negate());
-				// model.setLocalRotation(q);
-				game.getRootNode().updateRenderState();
-				game.getRootNode().updateWorldData(0);
-				return null;
+			protected IStatus run(IProgressMonitor monitor) {
+
+				MultiFormatResourceLocator loc2 = null;
+				String nameNoEnding = uri.toString().substring(0,
+						uri.toString().lastIndexOf('.'));
+				try {
+					URL url = new URL(uri.toString().substring(0,
+							uri.toString().lastIndexOf('/') + 1));
+					loc2 = new MultiFormatResourceLocator(url);
+					ResourceLocatorTool.addResourceLocator(
+							ResourceLocatorTool.TYPE_TEXTURE, loc2);
+
+				} catch (URISyntaxException e1) {
+					logger.warning(e1.toString());
+				} catch (MalformedURLException e) {
+					logger.warning(e.toString());
+				}
+
+				if (((IURIEditorInput) getEditorInput()).getURI().toString()
+						.endsWith(".dae")) {
+					ColladaImporter.load(fileInput,
+							((IURIEditorInput) getEditorInput()).getURI()
+									.toString());
+					model = ColladaImporter.getModel();
+					ColladaImporter.cleanUp();
+					if (ResourceLocatorTool.locateResource(
+							ResourceLocatorTool.TYPE_TEXTURE, nameNoEnding) != null) {
+						TextureState ts = game.getDisplaySys().getRenderer()
+								.createTextureState();
+						ts.setEnabled(true);
+						ts.setTexture(TextureManager.loadTexture(
+								ResourceLocatorTool.locateResource(
+										ResourceLocatorTool.TYPE_TEXTURE,
+										nameNoEnding),
+								Texture.MM_LINEAR_LINEAR, Texture.FM_LINEAR));
+						model.setRenderState(ts);
+					}
+				} else if (((IURIEditorInput) getEditorInput()).getURI()
+						.toString().endsWith(".jme")) {
+					BinaryImporter im = new BinaryImporter();
+					try {
+						model = (Node) im.load(fileInput);
+					} catch (IOException e) {
+						logger.warning("Unable to load jme file: "
+								+ getEditorInput());
+					}
+				} else if (((IURIEditorInput) getEditorInput()).getURI()
+						.toString().endsWith(".obj")) {
+					ObjToJme objloader = new ObjToJme();
+					try {
+						BinaryImporter im = new BinaryImporter();
+						ByteArrayOutputStream baos = new ByteArrayOutputStream();
+						objloader.convert(fileInput, baos);
+						model = new Node("objmodel");
+						model
+								.attachChild((Spatial) im.load(baos
+										.toByteArray()));
+						if (ResourceLocatorTool.locateResource(
+								ResourceLocatorTool.TYPE_TEXTURE, nameNoEnding) != null) {
+							TextureState ts = game.getDisplaySys()
+									.getRenderer().createTextureState();
+							ts.setEnabled(true);
+							ts
+									.setTexture(TextureManager
+											.loadTexture(
+													ResourceLocatorTool
+															.locateResource(
+																	ResourceLocatorTool.TYPE_TEXTURE,
+																	nameNoEnding),
+													Texture.MM_LINEAR_LINEAR,
+													Texture.FM_LINEAR));
+							model.setRenderState(ts);
+						}
+					} catch (IOException e) {
+						logger.warning("Unable to load obj file: "
+								+ getEditorInput());
+					}
+				} else if (((IURIEditorInput) getEditorInput()).getURI()
+						.toString().endsWith(".3ds")) {
+					MaxToJme objloader = new MaxToJme();
+					try {
+						BinaryImporter im = new BinaryImporter();
+						ByteArrayOutputStream baos = new ByteArrayOutputStream();
+						objloader.convert(fileInput, baos);
+						model = new Node("3dsmodel");
+						model
+								.attachChild((Spatial) im.load(baos
+										.toByteArray()));
+						if (ResourceLocatorTool.locateResource(
+								ResourceLocatorTool.TYPE_TEXTURE, nameNoEnding) != null) {
+							TextureState ts = game.getDisplaySys()
+									.getRenderer().createTextureState();
+							ts.setEnabled(true);
+							ts
+									.setTexture(TextureManager
+											.loadTexture(
+													ResourceLocatorTool
+															.locateResource(
+																	ResourceLocatorTool.TYPE_TEXTURE,
+																	nameNoEnding),
+													Texture.MM_LINEAR_LINEAR,
+													Texture.FM_LINEAR));
+							model.setRenderState(ts);
+						}
+					} catch (IOException e) {
+						logger.warning("Unable to load 3ds file: "
+								+ getEditorInput());
+					}
+				} else if (((IURIEditorInput) getEditorInput()).getURI()
+						.toString().endsWith(".md3")) {
+					Md3ToJme objloader = new Md3ToJme();
+					try {
+						BinaryImporter im = new BinaryImporter();
+						ByteArrayOutputStream baos = new ByteArrayOutputStream();
+						objloader.convert(fileInput, baos);
+						model = new Node("md3model");
+						model
+								.attachChild((Spatial) im.load(baos
+										.toByteArray()));
+						if (ResourceLocatorTool.locateResource(
+								ResourceLocatorTool.TYPE_TEXTURE, nameNoEnding) != null) {
+							TextureState ts = game.getDisplaySys()
+									.getRenderer().createTextureState();
+							ts.setEnabled(true);
+							ts
+									.setTexture(TextureManager
+											.loadTexture(
+													ResourceLocatorTool
+															.locateResource(
+																	ResourceLocatorTool.TYPE_TEXTURE,
+																	nameNoEnding),
+													Texture.MM_LINEAR_LINEAR,
+													Texture.FM_LINEAR));
+							model.setRenderState(ts);
+						}
+					} catch (IOException e) {
+						logger.warning("Unable to load md3 file: "
+								+ getEditorInput());
+					}
+				} else if (((IURIEditorInput) getEditorInput()).getURI()
+						.toString().endsWith(".ms3d")) {
+					MilkToJme objloader = new MilkToJme();
+					try {
+						BinaryImporter im = new BinaryImporter();
+						ByteArrayOutputStream baos = new ByteArrayOutputStream();
+						objloader.convert(fileInput, baos);
+						model = new Node("milkshapemodel");
+						model
+								.attachChild((Spatial) im.load(baos
+										.toByteArray()));
+						if (ResourceLocatorTool.locateResource(
+								ResourceLocatorTool.TYPE_TEXTURE, nameNoEnding) != null) {
+							TextureState ts = game.getDisplaySys()
+									.getRenderer().createTextureState();
+							ts.setEnabled(true);
+							ts
+									.setTexture(TextureManager
+											.loadTexture(
+													ResourceLocatorTool
+															.locateResource(
+																	ResourceLocatorTool.TYPE_TEXTURE,
+																	nameNoEnding),
+													Texture.MM_LINEAR_LINEAR,
+													Texture.FM_LINEAR));
+							model.setRenderState(ts);
+						}
+					} catch (IOException e) {
+						logger.warning("Unable to load ms3d file: "
+								+ getEditorInput());
+					}
+				} else if (((IURIEditorInput) getEditorInput()).getURI()
+						.toString().endsWith(".md2")) {
+					Md2ToJme objloader = new Md2ToJme();
+					try {
+						BinaryImporter im = new BinaryImporter();
+						ByteArrayOutputStream baos = new ByteArrayOutputStream();
+						objloader.convert(fileInput, baos);
+						model = new Node("md2model");
+						model
+								.attachChild((Spatial) im.load(baos
+										.toByteArray()));
+						if (ResourceLocatorTool.locateResource(
+								ResourceLocatorTool.TYPE_TEXTURE, nameNoEnding) != null) {
+							TextureState ts = game.getDisplaySys()
+									.getRenderer().createTextureState();
+							ts.setEnabled(true);
+							ts
+									.setTexture(TextureManager
+											.loadTexture(
+													ResourceLocatorTool
+															.locateResource(
+																	ResourceLocatorTool.TYPE_TEXTURE,
+																	nameNoEnding),
+													Texture.MM_LINEAR_LINEAR,
+													Texture.FM_LINEAR));
+							model.setRenderState(ts);
+						}
+					} catch (IOException e) {
+						logger.warning("Unable to load md2 file: "
+								+ getEditorInput());
+					}
+				}
+
+				game.getUpdateQueue().enqueue(new Callable<Object>() {
+
+					/*
+					 * (non-Javadoc)
+					 * 
+					 * @see java.util.concurrent.Callable#call()
+					 */
+					@Override
+					public Object call() throws Exception {
+						game.getRootNode().attachChild(model);
+						// Quaternion q = new Quaternion();
+						// q
+						// .fromAngleAxis((float) (Math.PI / 2), Vector3f.UNIT_X
+						// .negate());
+						// model.setLocalRotation(q);
+						game.getRootNode().updateRenderState();
+						game.getRootNode().updateWorldData(0);
+						return null;
+					}
+
+				});
+				return Status.OK_STATUS;
 			}
 
-		});
-
+		};
+		job.schedule();
 		// create the partlistener for listening to focus events
 		if (partListener == null) {
 			partListener = new IPartListener() {
@@ -534,4 +596,16 @@ public class ColladaEditor extends EditorPart {
 		}
 
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.ui.part.WorkbenchPart#dispose()
+	 */
+	@Override
+	public void dispose() {
+		super.dispose();
+		game.finish();
+	}
+
 }
