@@ -56,8 +56,6 @@ import com.jme.system.DisplaySystem;
 import com.jme.util.TextureManager;
 import com.jme.util.export.binary.BinaryExporter;
 import com.jme.util.export.binary.BinaryImporter;
-import com.jme.util.resource.MultiFormatResourceLocator;
-import com.jme.util.resource.ResourceLocatorTool;
 import com.jmex.model.collada.ColladaImporter;
 import com.jmex.model.converters.MaxToJme;
 import com.jmex.model.converters.Md2ToJme;
@@ -243,23 +241,8 @@ public class ColladaEditor extends EditorPart {
 			 */
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
-
-				MultiFormatResourceLocator loc2 = null;
 				String nameNoEnding = uri.toString().substring(0,
 						uri.toString().lastIndexOf('.'));
-				try {
-					URL url = new URL(uri.toString().substring(0,
-							uri.toString().lastIndexOf('/') + 1));
-					loc2 = new MultiFormatResourceLocator(url);
-					ResourceLocatorTool.addResourceLocator(
-							ResourceLocatorTool.TYPE_TEXTURE, loc2);
-
-				} catch (URISyntaxException e1) {
-					logger.warning(e1.toString());
-				} catch (MalformedURLException e) {
-					logger.warning(e.toString());
-				}
-
 				if (((IURIEditorInput) getEditorInput()).getURI().toString()
 						.endsWith(".dae")) {
 					ColladaImporter.load(fileInput,
@@ -267,15 +250,12 @@ public class ColladaEditor extends EditorPart {
 									.toString());
 					model = ColladaImporter.getModel();
 					ColladaImporter.cleanUp();
-					if (ResourceLocatorTool.locateResource(
-							ResourceLocatorTool.TYPE_TEXTURE, nameNoEnding) != null) {
+					if (MyResourceLocator.findTheCrap(nameNoEnding) != null) {
 						TextureState ts = game.getDisplaySys().getRenderer()
 								.createTextureState();
 						ts.setEnabled(true);
 						ts.setTexture(TextureManager.loadTexture(
-								ResourceLocatorTool.locateResource(
-										ResourceLocatorTool.TYPE_TEXTURE,
-										nameNoEnding),
+								MyResourceLocator.findTheCrap(nameNoEnding),
 								Texture.MM_LINEAR_LINEAR, Texture.FM_LINEAR));
 						model.setRenderState(ts);
 					}
@@ -299,20 +279,15 @@ public class ColladaEditor extends EditorPart {
 						model
 								.attachChild((Spatial) im.load(baos
 										.toByteArray()));
-						if (ResourceLocatorTool.locateResource(
-								ResourceLocatorTool.TYPE_TEXTURE, nameNoEnding) != null) {
+						if (MyResourceLocator.findTheCrap(nameNoEnding) != null) {
 							TextureState ts = game.getDisplaySys()
 									.getRenderer().createTextureState();
 							ts.setEnabled(true);
-							ts
-									.setTexture(TextureManager
-											.loadTexture(
-													ResourceLocatorTool
-															.locateResource(
-																	ResourceLocatorTool.TYPE_TEXTURE,
-																	nameNoEnding),
-													Texture.MM_LINEAR_LINEAR,
-													Texture.FM_LINEAR));
+							ts.setTexture(TextureManager
+									.loadTexture(MyResourceLocator
+											.findTheCrap(nameNoEnding),
+											Texture.MM_LINEAR_LINEAR,
+											Texture.FM_LINEAR));
 							model.setRenderState(ts);
 						}
 					} catch (IOException e) {
@@ -330,20 +305,15 @@ public class ColladaEditor extends EditorPart {
 						model
 								.attachChild((Spatial) im.load(baos
 										.toByteArray()));
-						if (ResourceLocatorTool.locateResource(
-								ResourceLocatorTool.TYPE_TEXTURE, nameNoEnding) != null) {
+						if (MyResourceLocator.findTheCrap(nameNoEnding) != null) {
 							TextureState ts = game.getDisplaySys()
 									.getRenderer().createTextureState();
 							ts.setEnabled(true);
-							ts
-									.setTexture(TextureManager
-											.loadTexture(
-													ResourceLocatorTool
-															.locateResource(
-																	ResourceLocatorTool.TYPE_TEXTURE,
-																	nameNoEnding),
-													Texture.MM_LINEAR_LINEAR,
-													Texture.FM_LINEAR));
+							ts.setTexture(TextureManager
+									.loadTexture(MyResourceLocator
+											.findTheCrap(nameNoEnding),
+											Texture.MM_LINEAR_LINEAR,
+											Texture.FM_LINEAR));
 							model.setRenderState(ts);
 						}
 					} catch (IOException e) {
@@ -361,20 +331,15 @@ public class ColladaEditor extends EditorPart {
 						model
 								.attachChild((Spatial) im.load(baos
 										.toByteArray()));
-						if (ResourceLocatorTool.locateResource(
-								ResourceLocatorTool.TYPE_TEXTURE, nameNoEnding) != null) {
+						if (MyResourceLocator.findTheCrap(nameNoEnding) != null) {
 							TextureState ts = game.getDisplaySys()
 									.getRenderer().createTextureState();
 							ts.setEnabled(true);
-							ts
-									.setTexture(TextureManager
-											.loadTexture(
-													ResourceLocatorTool
-															.locateResource(
-																	ResourceLocatorTool.TYPE_TEXTURE,
-																	nameNoEnding),
-													Texture.MM_LINEAR_LINEAR,
-													Texture.FM_LINEAR));
+							ts.setTexture(TextureManager
+									.loadTexture(MyResourceLocator
+											.findTheCrap(nameNoEnding),
+											Texture.MM_LINEAR_LINEAR,
+											Texture.FM_LINEAR));
 							model.setRenderState(ts);
 						}
 					} catch (IOException e) {
@@ -392,20 +357,15 @@ public class ColladaEditor extends EditorPart {
 						model
 								.attachChild((Spatial) im.load(baos
 										.toByteArray()));
-						if (ResourceLocatorTool.locateResource(
-								ResourceLocatorTool.TYPE_TEXTURE, nameNoEnding) != null) {
+						if (MyResourceLocator.findTheCrap(nameNoEnding) != null) {
 							TextureState ts = game.getDisplaySys()
 									.getRenderer().createTextureState();
 							ts.setEnabled(true);
-							ts
-									.setTexture(TextureManager
-											.loadTexture(
-													ResourceLocatorTool
-															.locateResource(
-																	ResourceLocatorTool.TYPE_TEXTURE,
-																	nameNoEnding),
-													Texture.MM_LINEAR_LINEAR,
-													Texture.FM_LINEAR));
+							ts.setTexture(TextureManager
+									.loadTexture(MyResourceLocator
+											.findTheCrap(nameNoEnding),
+											Texture.MM_LINEAR_LINEAR,
+											Texture.FM_LINEAR));
 							model.setRenderState(ts);
 						}
 					} catch (IOException e) {
@@ -423,20 +383,15 @@ public class ColladaEditor extends EditorPart {
 						model
 								.attachChild((Spatial) im.load(baos
 										.toByteArray()));
-						if (ResourceLocatorTool.locateResource(
-								ResourceLocatorTool.TYPE_TEXTURE, nameNoEnding) != null) {
+						if (MyResourceLocator.findTheCrap(nameNoEnding) != null) {
 							TextureState ts = game.getDisplaySys()
 									.getRenderer().createTextureState();
 							ts.setEnabled(true);
-							ts
-									.setTexture(TextureManager
-											.loadTexture(
-													ResourceLocatorTool
-															.locateResource(
-																	ResourceLocatorTool.TYPE_TEXTURE,
-																	nameNoEnding),
-													Texture.MM_LINEAR_LINEAR,
-													Texture.FM_LINEAR));
+							ts.setTexture(TextureManager
+									.loadTexture(MyResourceLocator
+											.findTheCrap(nameNoEnding),
+											Texture.MM_LINEAR_LINEAR,
+											Texture.FM_LINEAR));
 							model.setRenderState(ts);
 						}
 					} catch (IOException e) {
