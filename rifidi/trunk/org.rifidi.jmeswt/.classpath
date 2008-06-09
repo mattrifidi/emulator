@@ -5,7 +5,7 @@
 	<classpathentry exported="true" kind="lib" path="Jama-1.0.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="jinput.jar"/>
 	<classpathentry exported="true" kind="lib" path="jme-physics.jar"/>
-	<classpathentry exported="true" kind="lib" path="jmonkey.jar"/>
+	<classpathentry exported="true" kind="lib" path="jmonkey.jar" sourcepath="/src"/>
 	<classpathentry exported="true" kind="lib" path="jogg-0.0.7.jar"/>
 	<classpathentry exported="true" kind="lib" path="jorbis-0.0.15.jar"/>
 	<classpathentry exported="true" kind="lib" path="junit-4.1.jar"/>
