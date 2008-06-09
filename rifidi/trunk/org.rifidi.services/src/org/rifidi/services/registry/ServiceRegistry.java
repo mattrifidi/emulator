@@ -87,7 +87,7 @@ public class ServiceRegistry {
 		for (Method method : object.getClass().getDeclaredMethods()) {
 			serviceMethod(method, object);
 		}
-		Class clazz = object.getClass();
+		Class<?> clazz = object.getClass();
 		while (!Object.class.equals(object.getClass().getSuperclass())) {
 			clazz = clazz.getSuperclass();
 			if (clazz == null) {
@@ -102,7 +102,7 @@ public class ServiceRegistry {
 	private void serviceMethod(Method method, Object object) {
 		if (method.isAnnotationPresent(Inject.class)) {
 
-			Class wantedService = method.getParameterTypes()[0];
+			Class<?> wantedService = method.getParameterTypes()[0];
 			ServiceReference ref = Activator.getDefault().getBundle()
 					.getBundleContext().getServiceReference(
 							wantedService.getName());
