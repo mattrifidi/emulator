@@ -9,7 +9,6 @@ import java.util.Observer;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.rifidi.emulator.reader.alien.autonomous.states.AutoStateController;
 import org.rifidi.emulator.reader.alien.autonomous.states.AutoStateEnums;
 import org.rifidi.emulator.reader.alien.module.AlienReaderSharedResources;
 import org.rifidi.emulator.reader.sharedrc.GPIO.GPIOController;

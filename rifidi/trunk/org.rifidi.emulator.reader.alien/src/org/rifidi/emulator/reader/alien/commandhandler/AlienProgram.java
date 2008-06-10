@@ -42,6 +42,7 @@ public class AlienProgram {
 	/**
 	 * Message logger
 	 */
+	@SuppressWarnings("unused")
 	private static Log logger = LogFactory.getLog(AlienProgram.class);
 
 	public CommandObject progAntenna(CommandObject arg,

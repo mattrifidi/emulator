@@ -15,8 +15,6 @@ package org.rifidi.emulator.reader.alien.autonomous;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.rifidi.emulator.common.PowerControllable;
-import org.rifidi.emulator.io.comm.ip.tcpclient.TCPClientCommunication;
-import org.rifidi.emulator.reader.command.controller.abstract_.AbstractOffCommandControllerPowerState;
 import org.rifidi.emulator.reader.command.controller.abstract_.AbstractOnCommandControllerPowerState;
 
 /**

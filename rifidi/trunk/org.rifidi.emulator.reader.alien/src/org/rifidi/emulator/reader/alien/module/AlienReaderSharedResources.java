@@ -42,6 +42,7 @@ public class AlienReaderSharedResources extends AbstractReaderSharedResources {
 	 * The power signal for the reader's HeartbeatCommandProcessor and its
 	 * underlying communication.
 	 */
+	@SuppressWarnings("unused")
 	private ControlSignal<Boolean> heartbeatPowerSignal;
 
 	/**

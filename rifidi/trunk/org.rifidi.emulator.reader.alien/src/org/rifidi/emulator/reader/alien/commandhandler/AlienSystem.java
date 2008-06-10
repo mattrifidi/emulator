@@ -14,12 +14,9 @@ import java.util.ArrayList;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.rifidi.emulator.io.comm.ip.udp.UDPCommunicationIncomingMessageHandler;
 import org.rifidi.emulator.reader.alien.gpio.GPOController;
-import org.rifidi.emulator.reader.alien.module.AlienReaderSharedResources;
 import org.rifidi.emulator.reader.command.CommandObject;
 import org.rifidi.emulator.reader.module.abstract_.AbstractReaderSharedResources;
-import org.rifidi.emulator.reader.sharedrc.GPIO.GPIOController;
 import org.rifidi.emulator.reader.sharedrc.properties.ReaderProperty;
 
 /**

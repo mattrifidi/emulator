@@ -18,7 +18,6 @@ import org.rifidi.emulator.common.ControlSignal;
 import org.rifidi.emulator.reader.alien.command.exception.AlienExceptionHandler;
 import org.rifidi.emulator.reader.alien.module.AlienReaderSharedResources;
 import org.rifidi.emulator.reader.command.CommandObject;
-import org.rifidi.emulator.reader.control.adapter.ReflectiveCommandAdapter;
 import org.rifidi.emulator.reader.module.abstract_.AbstractReaderSharedResources;
 import org.rifidi.emulator.reader.sharedrc.properties.ReaderProperty;
 

@@ -19,6 +19,7 @@ public class GPOController {
 	/**
 	 * Message logger
 	 */
+	@SuppressWarnings("unused")
 	private static Log logger = LogFactory.getLog(GPIController.class);
 
 	private ArrayList<Integer> selectedPorts;

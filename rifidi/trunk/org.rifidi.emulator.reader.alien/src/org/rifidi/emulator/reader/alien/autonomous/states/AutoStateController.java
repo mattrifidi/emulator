@@ -39,6 +39,7 @@ public class AutoStateController implements Runnable {
 	/**
 	 * The shared resources
 	 */
+	@SuppressWarnings("unused")
 	private AlienReaderSharedResources asr;
 
 	/**
