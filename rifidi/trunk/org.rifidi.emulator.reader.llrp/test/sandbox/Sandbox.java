@@ -5,14 +5,6 @@ import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
 
-import edu.uark.csce.llrp.AccessCommand;
-import edu.uark.csce.llrp.AccessReportSpec;
-import edu.uark.csce.llrp.AccessSpec;
-import edu.uark.csce.llrp.AccessSpecStopTrigger;
-import edu.uark.csce.llrp.AddAccessSpec;
-import edu.uark.csce.llrp.C1G2Read;
-import edu.uark.csce.llrp.C1G2TagSpec;
-import edu.uark.csce.llrp.C1G2TargetTag;
 import edu.uark.csce.llrp.Message;
 
 public class Sandbox implements Observer {
@@ -28,6 +20,7 @@ public class Sandbox implements Observer {
 		s.testMessage();
 	}
 
+	@SuppressWarnings("unused")
 	private void timerTest() {
 		TestTimer t = new TestTimer(10000, "testTimer");
 		t.addObserver(this);

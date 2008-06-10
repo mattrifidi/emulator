@@ -60,7 +60,9 @@ public class TestClient {
 	private static Socket connection;
 	private static DataOutputStream out;
 
+	@SuppressWarnings("unused")
 	private static int ROSPEC_ID = 1;
+	@SuppressWarnings("unused")
 	private static int ACCESSSPEC_ID = 4;
 
 	// Reader Thread printing to console and store incoming Messages
