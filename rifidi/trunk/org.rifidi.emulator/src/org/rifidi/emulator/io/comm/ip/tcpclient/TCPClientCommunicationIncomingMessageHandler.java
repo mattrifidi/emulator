@@ -25,7 +25,6 @@ import org.rifidi.common.utilities.ByteAndHexConvertingUtility;
 import org.rifidi.emulator.common.DataBufferInterruptedException;
 import org.rifidi.emulator.io.comm.streamreader.AbstractStreamReader;
 import org.rifidi.emulator.io.comm.streamreader.GenericByteStreamReader;
-import org.rifidi.emulator.io.comm.streamreader.GenericCharStreamReader;
 import org.rifidi.emulator.io.protocol.ProtocolValidationException;
 
 /**
@@ -54,6 +53,7 @@ public class TCPClientCommunicationIncomingMessageHandler implements Runnable {
 	/**
 	 * The Abstract stream Reader class to use
 	 */
+	@SuppressWarnings("unchecked")
 	private Class readerClass;
 
 	/**
@@ -70,6 +70,7 @@ public class TCPClientCommunicationIncomingMessageHandler implements Runnable {
 	 * @param reader
 	 *            The AbstractStreamReader with an overridden read() method.
 	 */
+	@SuppressWarnings("unchecked")
 	public TCPClientCommunicationIncomingMessageHandler(
 			TCPClientCommunication hostCommunication) {
 
@@ -77,6 +78,7 @@ public class TCPClientCommunicationIncomingMessageHandler implements Runnable {
 
 		// TODO Get AbstractStreamReader !!!!
 		// Class reader = hostCommunication.getAbstractStreamReader();
+
 		Class reader = GenericByteStreamReader.class;
 
 		Class[] interfaces = reader.getInterfaces();
@@ -104,6 +106,7 @@ public class TCPClientCommunicationIncomingMessageHandler implements Runnable {
 	 * 
 	 * @see java.lang.Runnable#run()
 	 */
+	@SuppressWarnings("unchecked")
 	public void run() {
 		Socket clientSocket = this.hostCommunication.getClientSocket();
 

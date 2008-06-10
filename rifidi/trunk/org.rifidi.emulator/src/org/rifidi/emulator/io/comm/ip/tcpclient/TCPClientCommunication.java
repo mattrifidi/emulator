@@ -22,7 +22,6 @@ import org.rifidi.emulator.io.comm.CommunicationConnectionState;
 import org.rifidi.emulator.io.comm.CommunicationPowerState;
 import org.rifidi.emulator.io.comm.ip.IPCommunication;
 import org.rifidi.emulator.io.comm.logFormatter.LogFormatter;
-import org.rifidi.emulator.io.comm.streamreader.AbstractStreamReader;
 import org.rifidi.emulator.io.protocol.Protocol;
 
 /**
@@ -53,6 +52,7 @@ public class TCPClientCommunication extends IPCommunication {
 	 */
 	private Log consoleLogger = null;
 	
+	@SuppressWarnings("unchecked")
 	private Class readerClass;
 	
 	/**
@@ -79,6 +79,7 @@ public class TCPClientCommunication extends IPCommunication {
 	 * @param localPort
 	 *            The port to bind the , AbstractStreamReader readerClass client to.
 	 */
+	@SuppressWarnings("unchecked")
 	public TCPClientCommunication(Protocol protocol,
 			ControlSignal<Boolean> powerControlSignal,
 			ControlSignal<Boolean> connectionControlSignal, String localIP,
@@ -187,6 +188,7 @@ public class TCPClientCommunication extends IPCommunication {
 		return consoleLogger;
 	}
 
+	@SuppressWarnings("unchecked")
 	public Class getAbstractStreamReader() {
 		return readerClass;
 	}

@@ -55,6 +55,7 @@ public class TCPServerCommunication extends IPCommunication {
 	/**
 	 * An abstract Stream reader class to handle reading from the socket
 	 */
+	@SuppressWarnings("unchecked")
 	private Class abstractStreamReader = null;
 	
 	/**
@@ -88,7 +89,7 @@ public class TCPServerCommunication extends IPCommunication {
 	 * @param logFormatter
 	 * 			  A class that handles how the console output should be formatted
 	 */
-
+	@SuppressWarnings("unchecked")
 	public TCPServerCommunication(Protocol protocol,
 			ControlSignal<Boolean> powerControlSignal,
 			ControlSignal<Boolean> connectionControlSignal, String localIP,
@@ -215,6 +216,7 @@ public class TCPServerCommunication extends IPCommunication {
 	/**
 	 * @return the abstractStreamReader
 	 */
+	@SuppressWarnings("unchecked")
 	public Class getAbstractStreamReader() {
 		return abstractStreamReader;
 	}

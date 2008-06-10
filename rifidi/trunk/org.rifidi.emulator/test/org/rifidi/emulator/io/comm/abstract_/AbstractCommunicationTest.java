@@ -216,6 +216,7 @@ public class AbstractCommunicationTest extends TestCase {
 		/**
 		 * @see org.rifidi.emulator.common.PowerState#turnOff(org.rifidi.emulator.common.PowerControllable)
 		 */
+		@SuppressWarnings("unchecked")
 		public void turnOff(PowerControllable pcObject, Class callingClass) {
 			/* Do nothing, simply a test implementation */
 
@@ -245,6 +246,7 @@ public class AbstractCommunicationTest extends TestCase {
 		/**
 		 * @see org.rifidi.emulator.common.PowerState#turnOff(org.rifidi.emulator.common.PowerControllable)
 		 */
+		@SuppressWarnings("unchecked")
 		public void turnOff(PowerControllable pcObject, Class callingClass) {
 			/* Do nothing, simply a test implementation */
 

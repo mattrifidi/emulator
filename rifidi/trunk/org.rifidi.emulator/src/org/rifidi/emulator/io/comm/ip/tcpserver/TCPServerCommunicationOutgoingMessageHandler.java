@@ -47,6 +47,7 @@ public class TCPServerCommunicationOutgoingMessageHandler implements Runnable {
 	/**
 	 * Reader Class that tell us how to print to the log
 	 */
+	@SuppressWarnings("unchecked")
 	private Class readerClass;
 
 	/**
@@ -125,6 +126,11 @@ public class TCPServerCommunicationOutgoingMessageHandler implements Runnable {
 
 		} /* end - if(socketOut != null)... */
 
+	}
+
+	@SuppressWarnings("unchecked")
+	public Class getReaderClass() {
+		return readerClass;
 	}
 
 }

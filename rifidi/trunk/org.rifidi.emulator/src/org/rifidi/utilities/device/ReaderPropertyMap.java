@@ -32,6 +32,7 @@ public class ReaderPropertyMap {
 
 	private String id;
 	
+	@SuppressWarnings("unchecked")
 	private Class actualClass;
 
 	private String xmlrpcip;
@@ -155,6 +156,7 @@ public class ReaderPropertyMap {
 	/**
 	 * @return the actualClass
 	 */
+	@SuppressWarnings("unchecked")
 	public Class getActualClass() {
 		return actualClass;
 	}

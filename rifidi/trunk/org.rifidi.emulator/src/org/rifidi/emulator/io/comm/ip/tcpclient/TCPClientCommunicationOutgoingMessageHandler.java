@@ -40,6 +40,7 @@ public class TCPClientCommunicationOutgoingMessageHandler implements Runnable {
 
 	@SuppressWarnings("unchecked")
 	private Class readerClass;
+	
 	/**
 	 * The TCPClientCommunication this object is bound to.
 	 */
@@ -125,6 +126,11 @@ public class TCPClientCommunicationOutgoingMessageHandler implements Runnable {
 
 		} /* end - if(socketOut != null)... */
 
+	}
+
+	@SuppressWarnings("unchecked")
+	public Class getReaderClass() {
+		return readerClass;
 	}
 
 }

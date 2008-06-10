@@ -87,6 +87,7 @@ public class C1G2Operations {
 		}
 
 		boolean success = true;
+		@SuppressWarnings("unused")
 		byte[] old_id;
 		try {
 			// save id if we need it for callback manager

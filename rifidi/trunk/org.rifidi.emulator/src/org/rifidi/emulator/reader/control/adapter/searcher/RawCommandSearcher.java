@@ -31,6 +31,7 @@ public class RawCommandSearcher implements CommandSearcher {
 	/**
 	 * Message logger
 	 */
+	@SuppressWarnings("unused")
 	private static Log logger = LogFactory
 			.getLog(RawCommandSearcher.class);
 	

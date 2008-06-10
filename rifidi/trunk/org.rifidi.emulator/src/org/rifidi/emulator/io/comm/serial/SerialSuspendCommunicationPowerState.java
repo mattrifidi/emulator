@@ -62,6 +62,7 @@ public class SerialSuspendCommunicationPowerState extends
 	 * @param pcObject   The powerControllable object/SeialCommunication object.  
 	 */
 	@Override
+	@SuppressWarnings("unchecked")
 	public void turnOff(PowerControllable pcObject, Class callingClass) {
 		logger.debug("Turned off by "+ callingClass);
 		

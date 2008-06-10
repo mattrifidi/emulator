@@ -32,6 +32,7 @@ public class InteractiveOnCommandControllerPowerState extends
 	/**
 	 * The logger for this class.
 	 */
+	@SuppressWarnings("unused")
 	private static Log logger = LogFactory.getLog(InteractiveOnCommandControllerPowerState.class);
 	
 	/**
@@ -82,6 +83,7 @@ public class InteractiveOnCommandControllerPowerState extends
 	 * @see org.rifidi.emulator.reader.command.controller.abstract_.AbstractOnCommandControllerPowerState#turnOff(org.rifidi.emulator.common.PowerControllable)
 	 */
 	@Override
+	@SuppressWarnings("unchecked")
 	public void turnOff(PowerControllable pcObject, Class callingClass) {
 		
 		/* Call the super turnOff implementation */

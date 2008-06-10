@@ -1,15 +1,11 @@
 //TODO: fix test
 package org.rifidi.emulator.reader.module.factory;
 
-import java.net.InetSocketAddress;
-
 import junit.framework.TestCase;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.rifidi.emulator.reader.module.GeneralReaderPropertyHolder;
-//import org.rifidi.emulator.reader.module.alien.AlienReaderModule;
-import org.rifidi.emulator.reader.module.ReaderModuleFactory;
 
 public class GetCommandListTest extends TestCase {
 
@@ -33,7 +29,6 @@ public class GetCommandListTest extends TestCase {
 		}
 
 		public void testCreateFourReader() {
-			ReaderModuleFactory newFactory = new ReaderModuleFactory();
 
 			GeneralReaderPropertyHolder newProp3 = new GeneralReaderPropertyHolder();
 			newProp3.setReaderName("Alien_Reader_1");

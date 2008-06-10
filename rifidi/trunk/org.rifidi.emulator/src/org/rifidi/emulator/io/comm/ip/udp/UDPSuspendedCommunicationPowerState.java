@@ -89,6 +89,7 @@ public class UDPSuspendedCommunicationPowerState extends
 	 * @see org.rifidi.emulator.io.comm.buffered.BufferedSuspendedCommunicationPowerState#turnOff(org.rifidi.emulator.common.PowerControllable)
 	 */
 	@Override
+	@SuppressWarnings("unchecked")
 	public void turnOff(PowerControllable pcObject, Class callingClass) {
 		logger.debug("Turned off by " + callingClass);
 

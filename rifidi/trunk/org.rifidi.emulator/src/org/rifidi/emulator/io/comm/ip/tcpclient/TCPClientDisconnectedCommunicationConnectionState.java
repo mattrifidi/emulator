@@ -16,7 +16,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.rifidi.emulator.io.comm.Communication;
 import org.rifidi.emulator.io.comm.buffered.BufferedDisconnectedCommunicationConnectionState;
-import org.rifidi.emulator.io.comm.ip.tcpserver.TCPServerCommunicationIncomingMessageHandler;
 
 /**
  * This class represents the disconnected state of a TCPClientCommunication. It

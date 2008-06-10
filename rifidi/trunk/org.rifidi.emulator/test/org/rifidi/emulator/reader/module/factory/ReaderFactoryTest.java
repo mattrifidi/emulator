@@ -17,7 +17,6 @@ import junit.framework.TestCase;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.rifidi.emulator.reader.module.GeneralReaderPropertyHolder;
-import org.rifidi.emulator.reader.module.ReaderModuleFactory;
 
 /**
  * A test case for the readerFactory class.
@@ -49,7 +48,6 @@ public class ReaderFactoryTest extends TestCase {
 	}
 
 	public void testCreateFourReader() {
-		ReaderModuleFactory newFactory = new ReaderModuleFactory();
 
 		GeneralReaderPropertyHolder newProp1 = new GeneralReaderPropertyHolder();
 		newProp1.setReaderName("Awid_Reader_1");
@@ -66,7 +64,7 @@ public class ReaderFactoryTest extends TestCase {
 			/* Do nothing */
 		}
 
-		GeneralReaderPropertyHolder newProp2 = new GeneralReaderPropertyHolder();
+		
 		newProp1.setReaderName("Awid_Reader_2");
 //		newProp1.setReaderClass(AwidReaderModule.class);
 //		newProp1.setXmlFilePath("properties/reader_xml_lib/AwidMPR.xml");
@@ -99,7 +97,6 @@ public class ReaderFactoryTest extends TestCase {
 			/* Do nothing */
 		}
 
-		GeneralReaderPropertyHolder newProp4 = new GeneralReaderPropertyHolder();
 		newProp3.setReaderName("Alien_Reader_1");
 //		newProp3.setReaderClass(AlienReaderModule.class);
 		newProp3.setNumAntennas(3);

@@ -72,6 +72,7 @@ public class AbstractPowerModuleTest extends TestCase {
 		/**
 		 * @see org.rifidi.emulator.common.PowerState#turnOff(org.rifidi.emulator.common.PowerControllable)
 		 */
+		@SuppressWarnings("unchecked")
 		public void turnOff(PowerControllable pcObject, Class callingClass) {
 			/* Fake a power off event */
 			AbstractPowerModuleTest.this.powerOffOccurred = true;
@@ -129,6 +130,7 @@ public class AbstractPowerModuleTest extends TestCase {
 		/**
 		 * @see org.rifidi.emulator.common.PowerState#turnOff(org.rifidi.emulator.common.PowerControllable)
 		 */
+		@SuppressWarnings("unchecked")
 		public void turnOff(PowerControllable pcObject, Class callingClass) {
 			/* Fake a power off event */
 			AbstractPowerModuleTest.this.powerOffOccurred = true;

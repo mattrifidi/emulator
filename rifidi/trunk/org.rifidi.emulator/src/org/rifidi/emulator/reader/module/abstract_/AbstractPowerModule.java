@@ -39,6 +39,7 @@ public abstract class AbstractPowerModule implements PowerControllable,
 	/**
 	 * The log4j logger for this class.
 	 */
+	@SuppressWarnings("unused")
 	private static Log logger =
 		 LogFactory.getLog(AbstractPowerModule.class);
 	
@@ -132,6 +133,7 @@ public abstract class AbstractPowerModule implements PowerControllable,
 	/**
 	 * @see org.rifidi.emulator.common.PowerControllable#turnOff()
 	 */
+	@SuppressWarnings("unchecked")
 	public void turnOff(Class callingClass) {
 		
 		/* Call the current power state's implementation of this method */

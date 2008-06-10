@@ -36,6 +36,7 @@ public abstract class AbstractOnCommandControllerPowerState extends
 	/**
 	 * The logger for this class.
 	 */
+	@SuppressWarnings("unused")
 	private static Log logger = LogFactory.getLog(AbstractOnCommandControllerPowerState.class);
 
 	
@@ -88,6 +89,7 @@ public abstract class AbstractOnCommandControllerPowerState extends
 	 * 
 	 * @see org.rifidi.emulator.common.PowerState#turnOff(org.rifidi.emulator.common.PowerControllable)
 	 */
+	@SuppressWarnings("unchecked")
 	public void turnOff(PowerControllable pcObject, Class callingClass) {
 		
 		/* Cast to an AbstractCommandController */

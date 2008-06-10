@@ -27,6 +27,7 @@ import org.apache.commons.logging.LogFactory;
  */
 public class GeneralReaderPropertyHolder implements Cloneable, Serializable {
 
+	@SuppressWarnings("unused")
 	private static Log logger = LogFactory
 			.getLog(GeneralReaderPropertyHolder.class);
 

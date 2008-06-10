@@ -34,6 +34,7 @@ public abstract class AbstractCommandControllerOperatingState{
 	/*
 	 * The logger for this class.
 	 */
+	@SuppressWarnings("unused")
 	private static Log logger = LogFactory.getLog(AbstractCommandControllerOperatingState.class);
 	
 	/**

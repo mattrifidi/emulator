@@ -51,6 +51,7 @@ public class TCPServerCommunicationIncomingMessageHandler implements Runnable {
 	/**
 	 * The Abstract stream Reader class to use
 	 */
+	@SuppressWarnings("unchecked")
 	private Class readerClass;
 
 	/**
@@ -67,6 +68,7 @@ public class TCPServerCommunicationIncomingMessageHandler implements Runnable {
 	 * @param reader
 	 *            The AbstractStreamReader with an overridden read() method.
 	 */
+	@SuppressWarnings("unchecked")
 	public TCPServerCommunicationIncomingMessageHandler(
 			TCPServerCommunication hostCommunication) {
 
@@ -99,6 +101,7 @@ public class TCPServerCommunicationIncomingMessageHandler implements Runnable {
 	 * 
 	 * @see java.lang.Runnable#run()
 	 */
+	@SuppressWarnings("unchecked")
 	public void run() {
 		Socket clientSocket = this.hostCommunication.getClientSocket();
 

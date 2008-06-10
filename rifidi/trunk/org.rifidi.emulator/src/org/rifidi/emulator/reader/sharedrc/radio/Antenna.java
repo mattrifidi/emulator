@@ -42,6 +42,7 @@ public class Antenna extends Observable {
 	/**
 	 * The log4j logger for this class.
 	 */
+	@SuppressWarnings("unused")
 	private static Log logger = LogFactory.getLog(Antenna.class);
 	
 	private static Log eventLogger = LogFactory.getLog("EventLogger");

@@ -388,6 +388,7 @@ public class DeviceAddressManager {
 	/**
 	 * This method enumerates all existing devices in the system.
 	 */
+	@SuppressWarnings("unchecked")
 	private void enumerateSystemDevices() {
 		/* This is the set which will eventually become the new device set */
 		Set<SystemDevice> enumeratedDevices = new TreeSet<SystemDevice>();
