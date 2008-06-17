@@ -15,7 +15,6 @@ import org.apache.commons.logging.LogFactory;
 import org.rifidi.emulator.rmi.server.ReaderModuleManagerInterface;
 import org.rifidi.services.tags.impl.RifidiTag;
 import org.rifidi.services.tags.registry.ITagRegistryListener;
-import org.rifidi.ui.common.registry.RegistryChangeListener;
 
 /**
  * This is a UI representation of an antenna associated to a reader. It's

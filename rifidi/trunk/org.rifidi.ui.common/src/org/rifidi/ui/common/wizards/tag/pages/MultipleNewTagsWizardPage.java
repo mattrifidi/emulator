@@ -11,7 +11,6 @@
  */
 package org.rifidi.ui.common.wizards.tag.pages;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -32,9 +31,7 @@ import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Text;
 import org.rifidi.services.tags.enums.TagGen;
 import org.rifidi.services.tags.factory.TagCreationPattern;
-import org.rifidi.services.tags.factory.TagFactory;
 import org.rifidi.services.tags.id.TagType;
-import org.rifidi.services.tags.impl.RifidiTag;
 import org.rifidi.services.tags.registry.ITagRegistry;
 import org.rifidi.ui.common.validators.HexValidator;
 

@@ -43,7 +43,7 @@ public class UIReader extends GeneralReaderPropertyHolder {
 	/**
 	 * The state of the reader - can be running, stopped or suspended
 	 */
-	// TODO Talk about enmus
+	// FIXME Talk about enums
 	private String readerState = "NEW";
 
 	/**
