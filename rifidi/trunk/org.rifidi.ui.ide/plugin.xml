@@ -247,24 +247,6 @@
             label="Toolbar Actions"
             visible="true">
          <action
-               class="org.rifidi.ui.ide.views.tagview.actions.AddMultipleTagsActionDelegate"
-               icon="icons/taglist-add-16x16.png"
-               id="org.rifidi.ui.ide.views.tagview.actions.AddMultipleTagsActionDelegate"
-               label="Add new tags"
-               style="push"
-               toolbarPath="additions"
-               tooltip="Add new tags">
-         </action>
-         <action
-               class="org.rifidi.ui.ide.views.readerview.actions.AddNewReaderActionDelegate"
-               icon="icons/reader-add-16x16.png"
-               id="org.rifidi.ui.ide.views.readerview.actions.AddNewReaderActionDelegate"
-               label="Add new reader"
-               style="push"
-               toolbarPath="additions"
-               tooltip="Add a new reader">
-         </action>
-         <action
                class="org.rifidi.ui.ide.views.readerview.actions.StopReaderActionDelegate"
                icon="icons/control_stop.png"
                id="org.rifidi.ui.ide.views.readerview.actions.StopReaderActionDelegate"
@@ -326,6 +308,21 @@
       <menuContribution
             locationURI="toolbar:org.eclipse.ui.main.toolbar?after=additions">
          <toolbar
+               id="org.rifidi.ui.ide.views.ReaderActions">
+            <command
+                  commandId="org.rifidi.ui.ide.views.commands.AddTags"
+                  icon="icons/taglist-add-16x16.png"
+                  label="Add New Tags"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.rifidi.ui.ide.views.commands.NewReader"
+                  icon="icons/reader-add-16x16.png"
+                  label="Add New Reader"
+                  style="push">
+            </command>
+         </toolbar>
+         <toolbar
                id="org.rifidi.ui.ide.editors.ReaderEditorMenu">
                <command
                commandId="org.rifidi.ui.ide.editors.commands.switchView"
@@ -342,12 +339,36 @@
             id="org.rifidi.ui.ide.editors.commands.switchView"
             name="Switch View">
       </command>
+      <command
+            id="org.rifidi.ui.ide.views.commands.AddTags"
+            name="Add New Tags">
+      </command>
+      <command
+            id="org.rifidi.ui.ide.views.commands.NewReader"
+            name="Create New Reader">
+      </command>
+      <command
+            id="org.rifidi.ui.ide.views.commands.StopReader"
+            name="Stop Reader">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
       <handler
             class="org.rifidi.ui.ide.handlers.SwitchViewHandler"
             commandId="org.rifidi.ui.ide.editors.commands.switchView">
+      </handler>
+      <handler
+            class="org.rifidi.ui.ide.handlers.AddTagHandler"
+            commandId="org.rifidi.ui.ide.views.commands.AddTags">
+      </handler>
+      <handler
+            class="org.rifidi.ui.ide.handlers.NewReaderHandler"
+            commandId="org.rifidi.ui.ide.views.commands.NewReader">
+      </handler>
+      <handler
+            class="org.rifidi.ui.ide.handlers.StopReaderHandler"
+            commandId="org.rifidi.ui.ide.views.commands.StopReader">
       </handler>
    </extension>
 

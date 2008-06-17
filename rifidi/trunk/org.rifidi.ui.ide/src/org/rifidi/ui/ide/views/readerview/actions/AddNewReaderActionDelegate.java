@@ -60,7 +60,6 @@ public class AddNewReaderActionDelegate implements IViewActionDelegate, IWorkben
 				// ignore this one.. we already care about that
 				e.printStackTrace();
 			}
-
 		}
 
 	}

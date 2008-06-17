@@ -1,26 +1,30 @@
-/**
- * 
+/* 
+ * AddTagHandler.java
+ *  Created:	Jun 20, 2006
+ *  Project:	RiFidi Emulator - A Software Simulation Tool for RFID Devices
+ *  				http://www.rifidi.org
+ *  				http://rifidi.sourceforge.net
+ *  Copyright:	Pramari LLC and the Rifidi Project
+ *  License:	Lesser GNU Public License (LGPL)
+ *  				http://www.opensource.org/licenses/lgpl-license.html
  */
 package org.rifidi.ui.ide.handlers;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
 import org.eclipse.core.commands.IHandlerListener;
-import org.eclipse.ui.IEditorPart;
+import org.eclipse.jface.wizard.WizardDialog;
+import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.handlers.HandlerUtil;
-import org.rifidi.ui.ide.editors.ReaderEditor;
+import org.rifidi.ui.common.wizards.tag.MultipleNewTagsWizard;
+import org.rifidi.ui.ide.views.tagview.TagView;
 
 /**
- * @author Andreas Huebner - andreas@pramari.com
+ * @author Matthew Dean - matt@pramari.com
  * 
  */
-public class SwitchViewHandler implements IHandler {
-
-	@SuppressWarnings("unused")
-	private Log logger = LogFactory.getLog(SwitchViewHandler.class);
+public class AddTagHandler implements IHandler {
 
 	/*
 	 * (non-Javadoc)
@@ -29,8 +33,6 @@ public class SwitchViewHandler implements IHandler {
 	 */
 	@Override
 	public void addHandlerListener(IHandlerListener handlerListener) {
-		// TODO Auto-generated method stub
-
 	}
 
 	/*
@@ -40,8 +42,6 @@ public class SwitchViewHandler implements IHandler {
 	 */
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
-
 	}
 
 	/*
@@ -51,10 +51,15 @@ public class SwitchViewHandler implements IHandler {
 	 */
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		IEditorPart editor = HandlerUtil.getActiveEditor(event);
-		if (editor != null && editor instanceof ReaderEditor) {
-			ReaderEditor readerEditor = (ReaderEditor) editor;
-			readerEditor.switchView();
+		IViewPart view = (IViewPart) HandlerUtil
+				.getActiveWorkbenchWindow(event).getActivePage().findView(
+						TagView.ID);
+		if (view != null) {
+			MultipleNewTagsWizard wizard = new MultipleNewTagsWizard();
+			WizardDialog wizardDialog = new WizardDialog(view.getSite()
+					.getShell(), wizard);
+			wizardDialog.open();
+			((TagView) view).refresh();
 		}
 		return null;
 	}
@@ -66,7 +71,6 @@ public class SwitchViewHandler implements IHandler {
 	 */
 	@Override
 	public boolean isEnabled() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
@@ -77,7 +81,6 @@ public class SwitchViewHandler implements IHandler {
 	 */
 	@Override
 	public boolean isHandled() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
@@ -88,8 +91,6 @@ public class SwitchViewHandler implements IHandler {
 	 */
 	@Override
 	public void removeHandlerListener(IHandlerListener handlerListener) {
-		// TODO Auto-generated method stub
-
 	}
 
 }
