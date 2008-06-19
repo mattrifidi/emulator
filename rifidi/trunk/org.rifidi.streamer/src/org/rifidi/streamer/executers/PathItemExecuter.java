@@ -155,7 +155,12 @@ public class PathItemExecuter implements Runnable {
 		Thread.sleep(tagAction.getExecDuration());
 		
 		logger.debug("Removing Tags " + tags.get(0).getTagEntitiyID() +  " - " + tags.get(tags.size() - 1).getTagEntitiyID());
-		reader.removeTags(antennaNum, tags);
+		ArrayList<Long> tagIDsToRemove = new ArrayList<Long>();
+		for(RifidiTag tag :tags)
+		{
+			tagIDsToRemove.add(tag.getTagEntitiyID());
+		}
+		reader.removeTags(antennaNum, tagIDsToRemove);
 		tagRegistry.remove(tags);
 	}
 
