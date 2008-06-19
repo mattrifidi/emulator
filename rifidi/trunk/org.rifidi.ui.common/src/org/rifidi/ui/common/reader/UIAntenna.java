@@ -136,7 +136,7 @@ public class UIAntenna {
 		if (tagsFromReader != null) {
 			tagList = new HashMap<String, RifidiTag>();
 			for (RifidiTag tag : tagsFromReader) {
-				logger.debug("New Taglist in the UIAntenna: " + tag.toString());
+				logger.debug("New Tag in the UIAntenna: " + tag.toString());
 				tagList.put(tag.toString(), tag);
 			}
 		}
