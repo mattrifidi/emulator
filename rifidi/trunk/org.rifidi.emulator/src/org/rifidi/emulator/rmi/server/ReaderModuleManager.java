@@ -102,7 +102,8 @@ public class ReaderModuleManager implements ReaderModuleManagerInterface {
 		logger.info("Removing " + tagIDsToRemove.size() + " tags on antenna "
 				+ antennaNum + " on " + reader.getName());
 		GenericRadio r = (GenericRadio) reader.getSharedResources().getRadio();
-		r.getAntennas().get(antennaNum).removeTags(tagIDsToRemove);
+		boolean lol = r.getAntennas().get(antennaNum)
+				.removeTags(tagIDsToRemove);
 	}
 
 	/*
@@ -237,21 +238,6 @@ public class ReaderModuleManager implements ReaderModuleManagerInterface {
 			e.printStackTrace();
 			return new ArrayList<RifidiTag>();
 		}
-	}
-
-	@Override
-	public void removeTags(int antennaNum, List<RifidiTag> tagsToRemove)
-			throws Exception {
-		ArrayList<Long> tagEntityIDs = new ArrayList<Long>();
-		for (RifidiTag t : tagsToRemove) {
-			tagEntityIDs.add(t.getTagEntitiyID());
-		}
-		
-		logger.info("Removing " + tagEntityIDs.size() + " tags on antenna "
-				+ antennaNum + " on " + reader.getName());
-		GenericRadio r = (GenericRadio) reader.getSharedResources().getRadio();
-		r.getAntennas().get(antennaNum).removeTags(tagEntityIDs);
-
 	}
 
 }

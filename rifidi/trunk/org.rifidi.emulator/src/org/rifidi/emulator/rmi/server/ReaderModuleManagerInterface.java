@@ -79,19 +79,9 @@ public interface ReaderModuleManagerInterface {
 	public void removeTags(int antennaNum, Collection<Long> tagIDsToRemove)
 			throws Exception;
 
-	/**
-	 * A convience method for removing tags. Tags in the list are uniquely
-	 * identified by their TagEntityID, not by their EPC ID.
-	 * 
-	 * @param antennaNum
-	 *            Antenna number from which the tags should be removed
-	 * @param tagsToRemove
-	 *            A list of RifidiTags to remove. The tags will be removed
-	 *            according to their TagEntityID
-	 * @throws Exception
-	 */
-	public void removeTags(int antennaNum, List<RifidiTag> tagsToRemove)
-			throws Exception;
+	// TODO Suggestion to add this method for convenience
+	// public void removeTags(int antennaNum, List<RifidiTag> tagsToRemove)
+	// throws Exception;
 
 	/**
 	 * Get a list of tags in the field of the readers antenna
