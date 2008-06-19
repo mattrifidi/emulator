@@ -242,7 +242,7 @@ public class ReaderModuleManager implements ReaderModuleManagerInterface {
 	@Override
 	public void removeTags(int antennaNum, List<RifidiTag> tagsToRemove)
 			throws Exception {
-		ArrayList<Long> tagEntityIDs = new ArrayList<Long>(tagsToRemove.size());
+		ArrayList<Long> tagEntityIDs = new ArrayList<Long>();
 		for (RifidiTag t : tagsToRemove) {
 			tagEntityIDs.add(t.getTagEntitiyID());
 		}
