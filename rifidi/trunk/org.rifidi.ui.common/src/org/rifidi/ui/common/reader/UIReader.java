@@ -43,7 +43,7 @@ public class UIReader extends GeneralReaderPropertyHolder {
 	/**
 	 * The state of the reader - can be running, stopped or suspended
 	 */
-	// FIXME Talk about enums
+	// FIXME Use enums, not this
 	private String readerState = "NEW";
 
 	/**
