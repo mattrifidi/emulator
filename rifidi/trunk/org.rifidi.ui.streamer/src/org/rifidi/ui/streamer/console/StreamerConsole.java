@@ -52,7 +52,7 @@ public class StreamerConsole implements TestUnitStateListener {
 
 		console = new StreamerConsole();
 
-		startUPTrayIcon();
+		//startUPTrayIcon();
 
 		try {
 			System.out.println();

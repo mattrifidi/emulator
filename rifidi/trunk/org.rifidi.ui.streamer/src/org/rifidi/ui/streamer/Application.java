@@ -23,7 +23,7 @@ public class Application implements IApplication {
 	public Object start(IApplicationContext context) throws Exception {
 
 		// decide which version to start
-
+		
 		Object o = context.getArguments().get("application.args");
 		String[] args = null;
 		if (o instanceof String[]) {
