@@ -46,7 +46,6 @@ import org.rifidi.services.tags.registry.ITagRegistryListener;
 import org.rifidi.ui.common.reader.UIAntenna;
 import org.rifidi.ui.common.reader.UIReader;
 import org.rifidi.ui.common.reader.callback.TagIDChangedCallbackInterface;
-import org.rifidi.ui.common.registry.RegistryChangeListener;
 import org.rifidi.ui.ide.views.antennaview.model.AntennViewLabelProvider;
 import org.rifidi.ui.ide.views.antennaview.model.AntennaViewContentProvider;
 
@@ -83,7 +82,7 @@ public class TagViewer extends TableViewer implements ITagRegistryListener,
 	 * The columns used in the the tableviewer
 	 */
 	private List<TableColumn> tableColumns;
-	
+
 	private ITagRegistry tagRegistry;
 
 	/**
@@ -154,12 +153,21 @@ public class TagViewer extends TableViewer implements ITagRegistryListener,
 		// Handle with the "DEL"-Key events in the TableViewer
 		getControl().addKeyListener(new KeyListener() {
 
-			@SuppressWarnings("unchecked")
 			public void keyPressed(KeyEvent e) {
 				if (e.character == SWT.DEL) {
-					List<RifidiTag> list = (List<RifidiTag>) ((IStructuredSelection) getSelection())
-							.toList();
-					getAntenna().removeTag(list);
+					ArrayList<RifidiTag> tagsToRemove = new ArrayList<RifidiTag>();
+					IStructuredSelection selection = (IStructuredSelection) getSelection();
+					if (selection != null) {
+						for (Object o : selection.toList()) {
+							if (o instanceof RifidiTag)
+								tagsToRemove.add((RifidiTag) o);
+							else
+							{
+								logger.error("Selection is not a RifidiTag");
+							}
+						}
+						getAntenna().removeTag(tagsToRemove);
+					}
 				}
 			}
 
@@ -240,11 +248,17 @@ public class TagViewer extends TableViewer implements ITagRegistryListener,
 				}
 				// delete a tag
 				if (property.equals("delete")) {
-					RifidiTag tag = (RifidiTag) ((TableItem) element).getData();
-					List<RifidiTag> taglist = new ArrayList<RifidiTag>();
-					taglist.add(tag);
-					getAntenna().removeTag(taglist);
-					logger.debug("Tag Remove  " + tag.toString());
+					Object o = ((TableItem) element).getData();
+					if (o instanceof RifidiTag) {
+						RifidiTag tag = (RifidiTag) o;
+						List<RifidiTag> taglist = new ArrayList<RifidiTag>();
+						taglist.add(tag);
+						getAntenna().removeTag(taglist);
+						logger.debug("Tag Remove  " + tag.toString());
+					}else
+					{
+						logger.error("Selection is not a RifidiTag");
+					}
 					// refresh();
 				}
 			}
@@ -302,7 +316,8 @@ public class TagViewer extends TableViewer implements ITagRegistryListener,
 						String text = (String) event.data;
 						String[] textArray = text.split("\n");
 						for (String i : textArray) {
-							RifidiTag tag = tagRegistry.getTag(Long.parseLong(i));
+							RifidiTag tag = tagRegistry.getTag(Long
+									.parseLong(i));
 							list.add(tag);
 							logger.debug("Drag and Drop " + i);
 						}
@@ -414,12 +429,11 @@ public class TagViewer extends TableViewer implements ITagRegistryListener,
 
 		});
 	}
-	
+
 	@Inject
-	public void setTagRegistryService(ITagRegistry tagRegisrty)
-	{
+	public void setTagRegistryService(ITagRegistry tagRegisrty) {
 		this.tagRegistry = tagRegisrty;
-		
+
 	}
 
 }
