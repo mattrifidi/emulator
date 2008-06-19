@@ -99,4 +99,16 @@ public class ReaderEditorInput implements IEditorInput {
 		return reader;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof ReaderEditorInput)
+		{
+			ReaderEditorInput readerEditorInput = (ReaderEditorInput)obj;
+			if(readerEditorInput.getName().equals(reader.getReaderName()))
+				return true;
+		}
+		return super.equals(obj);
+	}
+
+	
 }

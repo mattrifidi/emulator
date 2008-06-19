@@ -1,5 +1,7 @@
 package org.rifidi.ui.ide.views.readerview;
 
+import java.util.HashMap;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.core.runtime.Platform;
@@ -41,6 +43,8 @@ public class ReaderView extends ViewPart implements RegistryChangeListener {
 
 	public static final String ID = "org.rifidi.ui.ide.views.readerview.ReaderView";
 	private TreeViewer treeViewer = null;
+
+	private HashMap<UIReader, ReaderEditorInput> readerEditorInputList = new HashMap<UIReader, ReaderEditorInput>();
 
 	/*
 	 * (non-Javadoc)
@@ -146,7 +150,16 @@ public class ReaderView extends ViewPart implements RegistryChangeListener {
 			treeViewer.setSelection(selection, true);
 		}
 		try {
-			workbenchPage.openEditor(new ReaderEditorInput((UIReader) event),
+			UIReader reader = (UIReader) event;
+			ReaderEditorInput readerEditorInput = readerEditorInputList.get(reader);
+			if(readerEditorInput == null)
+			{
+				readerEditorInput = new ReaderEditorInput(reader);
+			}else
+			{
+				System.out.println("Found ReaderEditorInputObject");
+			}
+			workbenchPage.openEditor(readerEditorInput,
 					ReaderEditor.ID);
 		} catch (PartInitException e) {
 			// Think about handling that Exception
