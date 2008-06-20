@@ -102,8 +102,7 @@ public class ReaderModuleManager implements ReaderModuleManagerInterface {
 		logger.info("Removing " + tagIDsToRemove.size() + " tags on antenna "
 				+ antennaNum + " on " + reader.getName());
 		GenericRadio r = (GenericRadio) reader.getSharedResources().getRadio();
-		boolean lol = r.getAntennas().get(antennaNum)
-				.removeTags(tagIDsToRemove);
+		r.getAntennas().get(antennaNum).removeTags(tagIDsToRemove);
 	}
 
 	/*
