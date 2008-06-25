@@ -90,14 +90,15 @@ public class BoxproducerEntity extends VisualEntity implements SceneControl,
 	 * Reference to the tag registry
 	 */
 	private ITagRegistry tagRegistry;
-	
+
 	/**
 	 * Constructor
 	 */
-	public BoxproducerEntity(){
-		this.speed=4;
+	public BoxproducerEntity() {
+		this.speed = 4;
 		setName("Boxproducer (DoD96)");
 	}
+
 	/**
 	 * @return the speed
 	 */
@@ -305,13 +306,14 @@ public class BoxproducerEntity extends VisualEntity implements SceneControl,
 
 	/**
 	 * Set the product service.
+	 * 
 	 * @param productService
 	 */
 	@Inject
 	public void setProductService(ProductService productService) {
 		this.productService = productService;
 	}
-	
+
 	/**
 	 * @return the products
 	 */
@@ -327,7 +329,7 @@ public class BoxproducerEntity extends VisualEntity implements SceneControl,
 	public void setProducts(List<CardboxEntity> products) {
 		this.products = products;
 	}
-	
+
 	/**
 	 * @return the tagRegistry
 	 */
@@ -335,12 +337,25 @@ public class BoxproducerEntity extends VisualEntity implements SceneControl,
 	public ITagRegistry getTagRegistry() {
 		return this.tagRegistry;
 	}
+
 	/**
-	 * @param tagRegistry the tagRegistry to set
+	 * @param tagRegistry
+	 *            the tagRegistry to set
 	 */
 	@Inject
 	public void setTagRegistry(ITagRegistry tagRegistry) {
 		this.tagRegistry = tagRegistry;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.rifidi.designer.entities.VisualEntity#setLOD(int)
+	 */
+	@Override
+	public void setLOD(int lod) {
+		// No LOD for this one.
+
 	}
 
 }

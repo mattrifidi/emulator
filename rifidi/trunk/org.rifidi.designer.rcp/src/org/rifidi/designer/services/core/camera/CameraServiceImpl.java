@@ -14,6 +14,8 @@ import java.util.concurrent.Callable;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.rifidi.designer.entities.Entity;
+import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.services.core.entities.SceneDataService;
 import org.rifidi.services.annotations.Inject;
 import org.rifidi.services.registry.ServiceRegistry;
@@ -128,6 +130,13 @@ public class CameraServiceImpl implements CameraService {
 						-(baseFrustumvalue + zoomlevel),
 						(baseFrustumvalue + zoomlevel));
 				camera.update();
+				if(sceneDataService.getCurrentSceneData()!=null){
+					for(Entity entity:sceneDataService.getCurrentSceneData().getEntities()){
+						if(entity instanceof VisualEntity){
+							((VisualEntity)entity).setLOD(Math.abs((zoomlevel+44)/22));
+						}
+					}
+				}
 				return null;
 			}
 
@@ -159,6 +168,13 @@ public class CameraServiceImpl implements CameraService {
 						(baseFrustumvalue + zoomlevel) * 4 / 3,
 						-(baseFrustumvalue + zoomlevel),
 						(baseFrustumvalue + zoomlevel));
+				if(sceneDataService.getCurrentSceneData()!=null){
+					for(Entity entity:sceneDataService.getCurrentSceneData().getEntities()){
+						if(entity instanceof VisualEntity){
+							((VisualEntity)entity).setLOD(Math.abs((zoomlevel+44)/22));
+						}
+					}
+				}
 				return null;
 			}
 

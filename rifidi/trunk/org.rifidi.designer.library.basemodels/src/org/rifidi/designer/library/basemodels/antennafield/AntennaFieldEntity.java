@@ -46,6 +46,8 @@ import com.jme.renderer.ColorRGBA;
 import com.jme.renderer.Renderer;
 import com.jme.scene.Node;
 import com.jme.scene.Spatial;
+import com.jme.scene.SwitchNode;
+import com.jme.scene.shape.Box;
 import com.jme.scene.state.AlphaState;
 import com.jme.scene.state.MaterialState;
 import com.jme.system.DisplaySystem;
@@ -70,7 +72,6 @@ public class AntennaFieldEntity extends VisualEntity implements Switch,
 	private Map<Entity, Long> seen = new HashMap<Entity, Long>();
 	// interface used for communicating with the reader
 	private ReaderModuleManagerInterface readerInterface;
-	private Spatial fieldModel = null;
 	// this antenna's index
 	private int antennaNum;
 	private boolean running;
@@ -94,7 +95,10 @@ public class AntennaFieldEntity extends VisualEntity implements Switch,
 	 * Reference to the field service.
 	 */
 	private FieldService fieldService;
-	
+	/**
+	 * LOD node.
+	 */
+	private SwitchNode switchNode;
 	/**
 	 * Default constructor (used by JAXB)
 	 */
@@ -151,7 +155,7 @@ public class AntennaFieldEntity extends VisualEntity implements Switch,
 	@Override
 	public void loaded() {
 		prepare();
-		fieldModel.setLocalScale(factor);
+		switchNode.setLocalScale(factor);
 
 		// apply the transparency
 		getNode().setRenderQueueMode(Renderer.QUEUE_OPAQUE);
@@ -166,7 +170,7 @@ public class AntennaFieldEntity extends VisualEntity implements Switch,
 	}
 
 	private void prepare() {
-		if (fieldModel == null) {
+		if (switchNode == null) {
 			URI modelpath = null;
 			try {
 				modelpath = getClass()
@@ -178,8 +182,10 @@ public class AntennaFieldEntity extends VisualEntity implements Switch,
 				e.printStackTrace();
 			}
 			try {
-				fieldModel = (Node) BinaryImporter.getInstance().load(
-						modelpath.toURL());
+				switchNode=new SwitchNode();
+				switchNode.attachChild((Node) BinaryImporter.getInstance().load(
+						modelpath.toURL()));
+				switchNode.attachChild(new Box("iii",Vector3f.ZERO.clone(),1,1,1));
 			} catch (MalformedURLException e) {
 				logger.fatal(e);
 			} catch (IOException e) {
@@ -222,7 +228,7 @@ public class AntennaFieldEntity extends VisualEntity implements Switch,
 				 */
 				@Override
 				public Object call() throws Exception {
-					((PhysicsNode) getNode()).attachChild(fieldModel);
+					((PhysicsNode) getNode()).attachChild(switchNode);
 					((PhysicsNode) getNode()).setActive(true);
 					((PhysicsNode) getNode()).generatePhysicsGeometry();
 					getNode().updateRenderState();
@@ -414,8 +420,8 @@ public class AntennaFieldEntity extends VisualEntity implements Switch,
 			public Object call() throws Exception {
 				((PhysicsNode) getNode()).setActive(false);
 				getNode().detachAllChildren();
-				fieldModel.setLocalScale(factor);
-				getNode().attachChild(fieldModel);
+				switchNode.setLocalScale(factor);
+				getNode().attachChild(switchNode);
 				getNode().updateModelBound();
 				((PhysicsNode) getNode()).generatePhysicsGeometry();
 				((PhysicsNode) getNode()).setActive(true);
@@ -466,5 +472,13 @@ public class AntennaFieldEntity extends VisualEntity implements Switch,
 	@Inject
 	public void setFieldService(FieldService fieldService) {
 		this.fieldService = fieldService;
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.rifidi.designer.entities.VisualEntity#setLOD(int)
+	 */
+	@Override
+	public void setLOD(int lod) {
+		switchNode.setActiveChild(lod);
 	}
 }

@@ -183,4 +183,15 @@ public class CardboxEntity extends VisualEntity implements NeedsPhysics {
 		this.baseRotation = baseRotation;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.rifidi.designer.entities.VisualEntity#setLOD(int)
+	 */
+	@Override
+	public void setLOD(int lod) {
+		// No LOD for this one.
+
+	}
+
 }

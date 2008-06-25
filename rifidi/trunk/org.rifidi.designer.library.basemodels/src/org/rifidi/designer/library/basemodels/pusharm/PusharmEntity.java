@@ -465,4 +465,15 @@ public class PusharmEntity extends VisualEntity implements SceneControl,
 
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.rifidi.designer.entities.VisualEntity#setLOD(int)
+	 */
+	@Override
+	public void setLOD(int lod) {
+		// No LOD for this one.
+
+	}
+
 }

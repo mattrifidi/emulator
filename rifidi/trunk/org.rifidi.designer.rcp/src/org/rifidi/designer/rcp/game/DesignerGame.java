@@ -292,9 +292,11 @@ public class DesignerGame extends SWTBaseGame implements
 	 * 
 	 * @see org.rifidi.jmeswt.SWTBaseGame#render(float)
 	 */
+
 	@Override
 	protected void render(float interpolation) {
-		if (sceneData != null && !getGlCanvas().isDisposed() && sceneData.getRootNode().getParent()!=null) {
+		if (sceneData != null && !getGlCanvas().isDisposed()
+				&& sceneData.getRootNode().getParent() != null) {
 			GameStateManager.getInstance().render(0);
 			if (GlobalProperties.physicsDebugging) {
 				PhysicsDebugger.drawPhysics(sceneData.getPhysicsSpace(),

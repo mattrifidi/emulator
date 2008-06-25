@@ -389,5 +389,6 @@ public abstract class VisualEntity extends Entity {
 		super.setEntityId(entityId);
 		getNode().setName(entityId);
 	}
-	
+
+	public abstract void setLOD(int lod);
 }

@@ -142,4 +142,15 @@ public class Clothing extends VisualEntity implements NeedsPhysics {
 		this.startRotation = startRotation;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.rifidi.designer.entities.VisualEntity#setLOD(int)
+	 */
+	@Override
+	public void setLOD(int lod) {
+		// No LOD for this one.
+
+	}
+
 }

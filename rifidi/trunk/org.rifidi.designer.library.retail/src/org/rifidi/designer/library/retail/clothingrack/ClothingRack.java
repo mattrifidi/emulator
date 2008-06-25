@@ -356,4 +356,15 @@ public class ClothingRack extends VisualEntity implements VisualEntityHolder,
 	public void setTagRegistry(ITagRegistry tagRegistry) {
 		this.tagRegistry = tagRegistry;
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.rifidi.designer.entities.VisualEntity#setLOD(int)
+	 */
+	@Override
+	public void setLOD(int lod) {
+		// No LOD for this one.
+
+	}
 }

@@ -23,7 +23,6 @@ import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.annotations.Property;
 import org.rifidi.designer.entities.databinding.annotations.MonitoredProperties;
 import org.rifidi.designer.entities.interfaces.Directional;
-import org.rifidi.designer.entities.interfaces.GPI;
 import org.rifidi.designer.entities.interfaces.NeedsPhysics;
 import org.rifidi.designer.entities.interfaces.Switch;
 import org.rifidi.designer.entities.placement.BinaryPattern;
@@ -37,6 +36,8 @@ import com.jme.math.Vector3f;
 import com.jme.renderer.Renderer;
 import com.jme.scene.Node;
 import com.jme.scene.SharedNode;
+import com.jme.scene.SwitchNode;
+import com.jme.scene.shape.Box;
 import com.jme.scene.state.AlphaState;
 import com.jme.system.DisplaySystem;
 import com.jme.util.export.binary.BinaryImporter;
@@ -100,6 +101,8 @@ public class ConveyorEntity extends VisualEntity implements Switch,
 	 * Reference to the physics space.
 	 */
 	private PhysicsSpace physicsSpace;
+	
+	private SwitchNode switchNode;
 
 	/**
 	 * Constructor.
@@ -151,7 +154,12 @@ public class ConveyorEntity extends VisualEntity implements Switch,
 				{ true, true, true, true } });
 		setPattern(pattern);
 		setNode(physicsSpace.createStaticNode());
-		getNode().attachChild(new SharedNode("sharedConv_", model));
+		switchNode=new SwitchNode();
+		switchNode.attachChildAt(new SharedNode("sharedConv_", model), 0);
+		switchNode.attachChild(new Box("iii",Vector3f.ZERO.clone(),4,4,4));
+		switchNode.setActiveChild(0);
+		
+		getNode().attachChild(switchNode);
 
 		((StaticPhysicsNode)getNode()).generatePhysicsGeometry();
 		getNode().setModelBound(new BoundingBox());
@@ -334,6 +342,16 @@ public class ConveyorEntity extends VisualEntity implements Switch,
 	 */
 	public void setPhysicsSpace(PhysicsSpace physicsSpace) {
 		this.physicsSpace = physicsSpace;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.rifidi.designer.entities.VisualEntity#setLOD(int)
+	 */
+	@Override
+	public void setLOD(int lod) {
+		if(switchNode!=null){
+			switchNode.setActiveChild(lod);	
+		}
 	}
 	
 }
