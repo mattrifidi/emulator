@@ -75,9 +75,6 @@ public class Clothing extends VisualEntity implements NeedsPhysics {
 	 */
 	@Override
 	public void init() {
-		BinaryPattern pattern = new BinaryPattern();
-		pattern.setPattern(new boolean[][] { { true, true, true, true } });
-		setPattern(pattern);
 		setCollides(false);
 		URI modelpath = null;
 		try {

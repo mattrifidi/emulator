@@ -68,10 +68,6 @@ public class RetailBox extends VisualEntity implements NeedsPhysics {
 	 */
 	@Override
 	public void init() {
-		BinaryPattern pattern = new BinaryPattern();
-		pattern.setPattern(new boolean[][] {{true,true}});
-		setCollides(false);
-		setPattern(pattern);
 		URI modelpath = null;
 		try {
 			modelpath = getClass().getClassLoader().getResource(

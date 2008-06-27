@@ -30,7 +30,6 @@ import org.rifidi.designer.entities.interfaces.ChildEntity;
 import org.rifidi.designer.entities.interfaces.Field;
 import org.rifidi.designer.entities.interfaces.NeedsPhysics;
 import org.rifidi.designer.entities.interfaces.Switch;
-import org.rifidi.designer.entities.placement.BinaryPattern;
 import org.rifidi.designer.library.basemodels.gate.GateEntity;
 import org.rifidi.designer.services.core.collision.FieldService;
 import org.rifidi.designer.services.core.events.EventsService;
@@ -45,7 +44,6 @@ import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.renderer.Renderer;
 import com.jme.scene.Node;
-import com.jme.scene.Spatial;
 import com.jme.scene.SwitchNode;
 import com.jme.scene.shape.Box;
 import com.jme.scene.state.AlphaState;
@@ -99,6 +97,7 @@ public class AntennaFieldEntity extends VisualEntity implements Switch,
 	 * LOD node.
 	 */
 	private SwitchNode switchNode;
+
 	/**
 	 * Default constructor (used by JAXB)
 	 */
@@ -130,10 +129,6 @@ public class AntennaFieldEntity extends VisualEntity implements Switch,
 	public void init() {
 		prepare();
 		if (getNode() == null) {
-			// set for no pattern
-			BinaryPattern pattern = new BinaryPattern();
-			pattern.setPattern(new boolean[][] {});
-			setPattern(pattern);
 			setNode(physicsSpace.createStaticNode());
 			getNode().setModelBound(new BoundingBox());
 			getNode().updateModelBound();
@@ -182,10 +177,11 @@ public class AntennaFieldEntity extends VisualEntity implements Switch,
 				e.printStackTrace();
 			}
 			try {
-				switchNode=new SwitchNode();
-				switchNode.attachChild((Node) BinaryImporter.getInstance().load(
-						modelpath.toURL()));
-				switchNode.attachChild(new Box("iii",Vector3f.ZERO.clone(),1,1,1));
+				switchNode = new SwitchNode();
+				switchNode.attachChild((Node) BinaryImporter.getInstance()
+						.load(modelpath.toURL()));
+				switchNode.attachChild(new Box("iii", Vector3f.ZERO.clone(), 1,
+						1, 1));
 			} catch (MalformedURLException e) {
 				logger.fatal(e);
 			} catch (IOException e) {
@@ -281,9 +277,9 @@ public class AntennaFieldEntity extends VisualEntity implements Switch,
 		if (entity.getUserData() instanceof RifidiTag) {
 			antennaFieldThread.addAction(new AntennaFieldAction(true,
 					(RifidiTag) entity.getUserData()));
-			eventsService.publish(
-					new TagEvent((RifidiTag) entity.getUserData(),
-							readerInterface, antennaNum, true));
+			eventsService.publish(new TagEvent(
+					(RifidiTag) entity.getUserData(), readerInterface,
+					antennaNum, true));
 		}
 		((GateEntity) getParent()).tagSeen();
 	}
@@ -298,9 +294,9 @@ public class AntennaFieldEntity extends VisualEntity implements Switch,
 		if (entity.getUserData() instanceof RifidiTag) {
 			antennaFieldThread.addAction(new AntennaFieldAction(false,
 					(RifidiTag) entity.getUserData()));
-			eventsService.publish(
-					new TagEvent((RifidiTag) entity.getUserData(),
-							readerInterface, antennaNum, false));
+			eventsService.publish(new TagEvent(
+					(RifidiTag) entity.getUserData(), readerInterface,
+					antennaNum, false));
 		}
 	}
 
@@ -431,24 +427,6 @@ public class AntennaFieldEntity extends VisualEntity implements Switch,
 		});
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.rifidi.designer.entities.VisualEntity#clearHilite()
-	 */
-	@Override
-	public void clearHilite() {
-		try {
-			super.clearHilite();
-		} catch (NullPointerException npe) {
-			logger.debug(npe);
-		}
-		getNode().setRenderState(as);
-		getNode().setRenderQueueMode(Renderer.QUEUE_OPAQUE);
-		getNode().setRenderState(ms);
-		getNode().updateRenderState();
-	}
-
 	/**
 	 * @param readerInterface
 	 *            the readerInterface to set
@@ -459,7 +437,8 @@ public class AntennaFieldEntity extends VisualEntity implements Switch,
 	}
 
 	/**
-	 * @param eventsService the eventsService to set
+	 * @param eventsService
+	 *            the eventsService to set
 	 */
 	@Inject
 	public void setEventsService(EventsService eventsService) {
@@ -467,14 +446,17 @@ public class AntennaFieldEntity extends VisualEntity implements Switch,
 	}
 
 	/**
-	 * @param fieldService the fieldService to set
+	 * @param fieldService
+	 *            the fieldService to set
 	 */
 	@Inject
 	public void setFieldService(FieldService fieldService) {
 		this.fieldService = fieldService;
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.rifidi.designer.entities.VisualEntity#setLOD(int)
 	 */
 	@Override

@@ -98,11 +98,6 @@ public class Shelf extends VisualEntity implements VisualEntityHolder,
 	 */
 	@Override
 	public void init() {
-		BinaryPattern pattern = new BinaryPattern();
-		pattern.setPattern(new boolean[][] {
-				{ true, true, true, true, true, true, true, true },
-				{ true, true, true, true, true, true, true, true } });
-		setPattern(pattern);
 		URI modelpath = null;
 		Node node = new Node();
 		try {

@@ -143,13 +143,6 @@ public class PusharmEntity extends VisualEntity implements SceneControl,
 	 */
 	@Override
 	public void init() {
-		BinaryPattern pattern = new BinaryPattern();
-		pattern.setPattern(new boolean[][] {
-				{ true, true, true, true, true, true },
-				{ true, true, true, true, true, true },
-				{ true, true, true, true, true, true },
-				{ true, true, true, true, true, true } });
-		setPattern(pattern);
 		Node node = new Node();
 		try {
 			URI body = null;

@@ -26,7 +26,6 @@ import org.rifidi.designer.rcp.views.view3d.View3D;
 import org.rifidi.designer.services.core.camera.CameraService;
 import org.rifidi.designer.services.core.entities.FinderService;
 import org.rifidi.designer.services.core.entities.SceneDataService;
-import org.rifidi.jmeswt.utils.Helpers;
 import org.rifidi.jmonkey.SWTDisplaySystem;
 import org.rifidi.services.annotations.Inject;
 import org.rifidi.services.registry.ServiceRegistry;
@@ -154,28 +153,33 @@ public class EntityMouseMoveListener implements MouseListener,
 			pickedEntity = ((VisualEntityHolder) pickedEntity)
 					.getVisualEntity();
 			if (pickedEntity != null) {
-				GameTaskQueueManager.getManager().update(new Callable<Object>() {
+				GameTaskQueueManager.getManager().update(
+						new Callable<Object>() {
 
-					/*
-					 * (non-Javadoc)
-					 * 
-					 * @see java.util.concurrent.Callable#call()
-					 */
-					@Override
-					public Object call() throws Exception {
-						pickedEntity.getNode().removeFromParent();
-						lastHit.setY(((BoundingBox) pickedEntity.getNode()
-								.getWorldBound()).yExtent + 0.1f);
-						pickedEntity.getNode().setLocalTranslation(lastHit);
-						pickedEntity.getNode().setLocalRotation(new Matrix3f());
-						sceneDataService.getCurrentSceneData().getRootNode()
-								.attachChild(pickedEntity.getNode());
-						sceneDataService.getCurrentSceneData().getRootNode()
-								.updateRenderState();
-						return null;
-					}
+							/*
+							 * (non-Javadoc)
+							 * 
+							 * @see java.util.concurrent.Callable#call()
+							 */
+							@Override
+							public Object call() throws Exception {
+								pickedEntity.getNode().removeFromParent();
+								lastHit
+										.setY(((BoundingBox) pickedEntity
+												.getNode().getWorldBound()).yExtent + 0.1f);
+								pickedEntity.getNode().setLocalTranslation(
+										lastHit);
+								pickedEntity.getNode().setLocalRotation(
+										new Matrix3f());
+								sceneDataService.getCurrentSceneData()
+										.getRootNode().attachChild(
+												pickedEntity.getNode());
+								sceneDataService.getCurrentSceneData()
+										.getRootNode().updateRenderState();
+								return null;
+							}
 
-				});
+						});
 			}
 		}
 		if (pickedEntity != null
@@ -222,14 +226,8 @@ public class EntityMouseMoveListener implements MouseListener,
 					.getEntitiesByType(VisualEntityHolder.class)) {
 				if (ent instanceof VisualEntity) {
 					VisualEntity ve = ((VisualEntity) ent);
-					if (ve.collidesWith(pickedEntity)
-							&& !((VisualEntityHolder) ve).isFull()
-							&& ((VisualEntityHolder) ve).accepts(pickedEntity)) {
-						((VisualEntityHolder) ve).addVisualEntity(pickedEntity);
-						pickedEntity = null;
-					} else {
-						ve.showFootprint(false);
-					}
+					((VisualEntityHolder) ve).addVisualEntity(pickedEntity);
+					pickedEntity = null;
 				}
 			}
 			if (pickedEntity.getNode() instanceof PhysicsNode) {
@@ -325,7 +323,7 @@ public class EntityMouseMoveListener implements MouseListener,
 			}
 			return;
 		}
-		if(e.count>0){
+		if (e.count > 0) {
 			cameraService.zoomIn();
 			return;
 		}

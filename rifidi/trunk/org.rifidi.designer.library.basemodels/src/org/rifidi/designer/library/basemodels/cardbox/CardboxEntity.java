@@ -101,9 +101,6 @@ public class CardboxEntity extends VisualEntity implements NeedsPhysics {
 		node.setModelBound(new BoundingBox());
 		node.updateModelBound();
 		setNode(node);
-		BinaryPattern pattern = new BinaryPattern();
-		pattern.setPattern(new boolean[][] { { true, true }, { true, true } });
-		setPattern(pattern);
 		setCollides(false);
 	}
 

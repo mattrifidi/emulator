@@ -71,10 +71,6 @@ public class SceneData implements IAdaptable, IWorkbenchAdapter {
 	 */
 	private byte[] nodeBytes;
 	/**
-	 * The bitmpa for this scene.
-	 */
-	private BitMap bitMap;
-	/**
 	 * Root of the scene graph.
 	 */
 	private Node rootNode;
@@ -291,21 +287,6 @@ public class SceneData implements IAdaptable, IWorkbenchAdapter {
 	 */
 	public void setHeight(final Integer height) {
 		this.height = height;
-	}
-
-	/**
-	 * @return the bitMap
-	 */
-	public BitMap getBitMap() {
-		return bitMap;
-	}
-
-	/**
-	 * @param bitMap
-	 *            the bitMap to set
-	 */
-	public void setBitMap(final BitMap bitMap) {
-		this.bitMap = bitMap;
 	}
 
 	/**

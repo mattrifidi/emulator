@@ -87,9 +87,6 @@ public class InfraredEntity extends VisualEntity implements SceneControl,
 	 */
 	@Override
 	public void init() {
-		BinaryPattern pattern = new BinaryPattern();
-		pattern.setPattern(new boolean[][] {});
-		setPattern(pattern);
 		float len = 2.5f; // length of the trigger area
 
 		// Create the material and alpha states for the trigger area

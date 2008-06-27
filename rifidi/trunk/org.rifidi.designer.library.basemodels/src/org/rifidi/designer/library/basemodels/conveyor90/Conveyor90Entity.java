@@ -73,29 +73,6 @@ public class Conveyor90Entity extends VisualEntity implements Switch,
 	@Override
 	public void init() {
 		if (getNode() == null) {
-			BinaryPattern pattern = new BinaryPattern();
-			pattern.setPattern(new boolean[][] {
-					{ false, false, false, false, false, false, true, true,
-							true, true },
-					{ false, false, false, false, true, true, true, true, true,
-							true },
-					{ false, false, false, true, true, true, true, true, true,
-							true },
-					{ false, false, true, true, true, true, true, true, true,
-							true },
-					{ false, true, true, true, true, true, true, true, true,
-							true },
-					{ false, true, true, true, true, true, true, false, false,
-							false },
-					{ true, true, true, true, true, true, false, false, false,
-							false },
-					{ true, true, true, true, true, false, false, false, false,
-							false },
-					{ true, true, true, true, true, false, false, false, false,
-							false },
-					{ true, true, true, true, true, false, false, false, false,
-							false } });
-			setPattern(pattern);
 			Node node = new Node();
 			node.setName(getEntityId());
 			try {

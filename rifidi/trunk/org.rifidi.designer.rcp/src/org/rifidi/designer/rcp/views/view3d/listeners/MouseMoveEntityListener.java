@@ -10,7 +10,6 @@
  */
 package org.rifidi.designer.rcp.views.view3d.listeners;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,14 +23,12 @@ import org.eclipse.swt.widgets.Display;
 import org.rifidi.designer.entities.Entity;
 import org.rifidi.designer.entities.SceneData;
 import org.rifidi.designer.entities.VisualEntity;
-import org.rifidi.designer.entities.placement.BinaryPattern;
 import org.rifidi.designer.rcp.views.view3d.View3D;
 import org.rifidi.designer.services.core.entities.SceneDataService;
 import org.rifidi.designer.services.core.selection.SelectionService;
 
 import com.jme.math.Quaternion;
 import com.jme.math.Vector3f;
-import com.jme.renderer.ColorRGBA;
 import com.jmex.physics.DynamicPhysicsNode;
 import com.jmex.physics.PhysicsNode;
 
@@ -104,9 +101,10 @@ public class MouseMoveEntityListener implements MouseMoveListener,
 	 * @param view3D
 	 *            reference to the 3d view
 	 * @param selectionService
-	 * 			  reference to the selection service.
+	 *            reference to the selection service.
 	 */
-	public MouseMoveEntityListener(View3D view3D, SelectionService selectionService, SceneDataService sceneDataService) {
+	public MouseMoveEntityListener(View3D view3D,
+			SelectionService selectionService, SceneDataService sceneDataService) {
 		this.view3D = view3D;
 		this.selectionService = selectionService;
 		this.sceneDataService = sceneDataService;
@@ -130,26 +128,12 @@ public class MouseMoveEntityListener implements MouseMoveListener,
 		for (Entity target : selectionService.getSelectionList()) {
 			if (target instanceof VisualEntity) {
 
-				// remove the entity from the scene bitmap
-				if (((VisualEntity) target).isCollides()) {
-					sceneData.getBitMap().removePattern(
-							((VisualEntity) target)
-									.getPositionFromTranslation(),
-							((VisualEntity) target).getPattern().getPattern());
-					((VisualEntity) target)
-							.showFootprint(true, ColorRGBA.green);
-				} else {
-					((VisualEntity) target).showFootprint(true, ColorRGBA.gray);
-				}
-
 				// store the data for this entity
 				Target targetData = new Target(
 						(Vector3f) ((VisualEntity) target).getNode()
-								.getLocalTranslation().clone(),
-						(BinaryPattern) ((VisualEntity) target).getPattern()
-								.clone(), /* quadz, */new Quaternion(
-								((VisualEntity) target).getNode()
-										.getLocalRotation()));
+								.getLocalTranslation().clone(), /* quadz, */
+						new Quaternion(((VisualEntity) target).getNode()
+								.getLocalRotation()));
 
 				// add to listing of target info
 				realTargets.put((VisualEntity) target, targetData);
@@ -180,19 +164,19 @@ public class MouseMoveEntityListener implements MouseMoveListener,
 
 			// check if any objects would be out of bounds after moving this far
 			for (VisualEntity target : realTargets.keySet()) {
-				Point curPos = target.getPositionFromTranslation();
-				int maxX = sceneData.getWidth()
-						- target.getPattern().getWidth();
-				int maxY = sceneData.getWidth()
-						- target.getPattern().getLength();
+				// Point curPos = target.getPositionFromTranslation();
+				// int maxX = sceneData.getWidth()
+				// - target.getPattern().getWidth();
+				// int maxY = sceneData.getWidth()
+				// - target.getPattern().getLength();
 
 				// check x direction
-				if (curPos.x + vec.x > maxX || curPos.x + vec.x < 0)
-					vec.x = 0;
+				// if (curPos.x + vec.x > maxX || curPos.x + vec.x < 0)
+				// vec.x = 0;
 
 				// check y direction
-				if (curPos.y + vec.z > maxY || curPos.y + vec.z < 0)
-					vec.z = 0;
+				// if (curPos.y + vec.z > maxY || curPos.y + vec.z < 0)
+				// vec.z = 0;
 			}
 
 			// remove whatever amount has been used for calculating motion this
@@ -203,39 +187,7 @@ public class MouseMoveEntityListener implements MouseMoveListener,
 			// apply the approved translation to each target
 			for (VisualEntity target : realTargets.keySet()) {
 				target.getNode().getLocalTranslation().addLocal(vec);
-				if (target.isCollides() && collides(target)) {
-					target.setFootprintColor(ColorRGBA.red);
 
-					// find what it collides with and hilite them in blue
-					colliders = new ArrayList<VisualEntity>();
-					for (Entity ent : sceneData.getSearchableEntities()) {
-						if (!ent.equals(target)) {
-							if (ent instanceof VisualEntity) {
-								VisualEntity ve = ((VisualEntity) ent);
-								if (ve.isCollides() && ve.collidesWith(target)) {
-									ve.showFootprint(true, ColorRGBA.blue);
-									colliders.add(ve);
-								} else {
-									ve.showFootprint(false);
-								}
-							}
-						}
-					}
-
-				} else {
-					// unfootprint anything that was colliding
-					if (colliders != null) {
-						for (VisualEntity ent : colliders)
-							ent.showFootprint(false);
-						colliders = null;
-					}
-
-					// set footprint state to good for us
-					if (!target.isCollides())
-						target.setFootprintColor(ColorRGBA.gray);
-					else
-						target.setFootprintColor(ColorRGBA.green);
-				}
 			}
 
 			// recenter the cursor
@@ -261,15 +213,12 @@ public class MouseMoveEntityListener implements MouseMoveListener,
 	 */
 	public void mouseDown(MouseEvent e) {
 		// rotate the object
-//		if (e.button == 3 && realTargets.size() == 1) {
-//			for (VisualEntity ve : realTargets.keySet())
-//				ve.rotateRight();
-//		}
+		// if (e.button == 3 && realTargets.size() == 1) {
+		// for (VisualEntity ve : realTargets.keySet())
+		// ve.rotateRight();
+		// }
 		if (e.button == 1) {
-			if (!collides())
-				drop();
-			else
-				reset();
+			drop();
 
 			view3D.switchMode(View3D.Mode.PickMode);
 			inPlacement = false;
@@ -284,10 +233,7 @@ public class MouseMoveEntityListener implements MouseMoveListener,
 	public void mouseUp(MouseEvent e) {
 		// drop it
 		if (e.button == 1) {
-			if (!collides())
-				drop();
-			else
-				reset();
+			drop();
 
 			view3D.switchMode(View3D.Mode.PickMode);
 			inPlacement = false;
@@ -295,53 +241,16 @@ public class MouseMoveEntityListener implements MouseMoveListener,
 	}
 
 	/**
-	 * Check if the currently selected entity/entities collides with another one
-	 * on its current position
-	 * 
-	 * @return true if any of the entities collide with something in the bitmap
-	 */
-	public boolean collides() {
-		for (VisualEntity target : realTargets.keySet()) {
-			if (collides(target))
-				return true;
-		}
-		return false;
-	}
-
-	/**
-	 * Checks if the given entity collides with anythingin the bitmap
-	 * 
-	 * @param target
-	 *            the entity to check for collisions for
-	 * @return true if there is collision, false otherwise
-	 */
-	private boolean collides(VisualEntity target) {
-		if (target.isCollides()
-				&& sceneData.getBitMap().checkCollision(
-						target.getPositionFromTranslation(),
-						target.getPattern().getPattern()))
-			return true;
-		return false;
-	}
-
-	/**
 	 * Put the currently dragged entity on the map.
 	 */
 	public void drop() {
 		for (VisualEntity target : realTargets.keySet()) {
-			if (target.isCollides()) {
-				sceneData.getBitMap().addPattern(
-						target.getPositionFromTranslation(),
-						target.getPattern().getPattern());
-			}
 
 			// activate physics handling for this node
 			if (target.getNode() instanceof DynamicPhysicsNode) {
 				((DynamicPhysicsNode) target.getNode())
 						.setLinearVelocity(Vector3f.ZERO);
 			}
-
-			target.showFootprint(false);
 		}
 	}
 
@@ -350,18 +259,10 @@ public class MouseMoveEntityListener implements MouseMoveListener,
 	 */
 	public void reset() {
 		for (VisualEntity target : realTargets.keySet()) {
-			// target.getNode().detachChild(realTargets.get(target).quad);
-			target.setPattern(realTargets.get(target).originalPattern);
 			target.getNode().setLocalTranslation(
 					realTargets.get(target).translation);
 			target.getNode().setLocalRotation(
 					realTargets.get(target).quaternion);
-
-			if (target.isCollides()) {
-				sceneData.getBitMap().addPattern(
-						target.getPositionFromTranslation(),
-						target.getPattern().getPattern());
-			}
 
 			if (target.getNode() instanceof PhysicsNode) {
 				// ((PhysicsNode) target.getNode()).setActive(true);
@@ -369,8 +270,6 @@ public class MouseMoveEntityListener implements MouseMoveListener,
 					((DynamicPhysicsNode) target.getNode())
 							.setLinearVelocity(Vector3f.ZERO);
 			}
-
-			target.showFootprint(false);
 		}
 	}
 
@@ -388,10 +287,6 @@ public class MouseMoveEntityListener implements MouseMoveListener,
 		 */
 		public Vector3f translation;
 		/**
-		 * Original binary pattern.
-		 */
-		public BinaryPattern originalPattern;
-		/**
 		 * Rotation quaternion.
 		 */
 		public Quaternion quaternion;
@@ -406,11 +301,9 @@ public class MouseMoveEntityListener implements MouseMoveListener,
 		 * @param quat
 		 *            original rotation quaternion
 		 */
-		public Target(Vector3f translation, BinaryPattern originalPattern,
-				Quaternion quat) {
+		public Target(Vector3f translation, Quaternion quat) {
 			super();
 			this.translation = translation;
-			this.originalPattern = originalPattern;
 			this.quaternion = quat;
 		}
 	}

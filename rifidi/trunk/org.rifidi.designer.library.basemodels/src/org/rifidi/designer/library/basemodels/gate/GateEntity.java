@@ -34,7 +34,6 @@ import org.rifidi.designer.entities.interfaces.GPO;
 import org.rifidi.designer.entities.interfaces.ParentEntity;
 import org.rifidi.designer.entities.interfaces.RifidiEntity;
 import org.rifidi.designer.entities.interfaces.Switch;
-import org.rifidi.designer.entities.placement.BinaryPattern;
 import org.rifidi.designer.library.basemodels.antennafield.AntennaFieldEntity;
 import org.rifidi.designer.services.core.cabling.CablingService;
 import org.rifidi.emulator.rmi.server.ReaderModuleManagerInterface;
@@ -87,12 +86,6 @@ public class GateEntity extends VisualEntity implements RifidiEntity, Switch,
 	 * The multiplication factor for the field size
 	 */
 	private float factor = 1.0f;
-	// private String readerName;
-	// private String readerClassName;
-	// private Integer numAntennas;
-	// private Integer numGPIs;
-	// private Integer numGPOs;
-	// private Map<String, String> propertiesMap;
 	/**
 	 * Connection manager for rifidi.
 	 */
@@ -111,16 +104,9 @@ public class GateEntity extends VisualEntity implements RifidiEntity, Switch,
 	private CablingService cablingService;
 
 	/**
-	 * 
+	 * Constructor.
 	 */
 	public GateEntity() {
-		BinaryPattern pattern = new BinaryPattern();
-		pattern.setPattern(new boolean[][] {
-				{ true, false, false, false, false, true },
-				{ true, false, false, false, false, true },
-				{ true, false, false, false, false, true },
-				{ true, false, false, false, false, true } });
-		setPattern(pattern);
 	}
 
 	/*
@@ -201,9 +187,6 @@ public class GateEntity extends VisualEntity implements RifidiEntity, Switch,
 		try {
 			readerModuleManagerInterface = rmimanager.createReader(reader
 					.getGeneralReaderPropertyHolder());
-			// getReaderName(), getReaderClassName(), getNumAntennas(),
-			// getNumGPIs(), getNumGPOs(), getPropertiesMap());
-
 		} catch (ClassNotFoundException e) {
 			logger.fatal("Unable to create reader: "+e);
 		} catch (InstantiationException e) {
@@ -463,19 +446,6 @@ public class GateEntity extends VisualEntity implements RifidiEntity, Switch,
 	 */
 	public void tagSeen() {
 		cablingService.setHigh(this, 0);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.rifidi.designer.entities.VisualEntity#clearHilite()
-	 */
-	@Override
-	public void clearHilite() {
-		super.clearHilite();
-		for (VisualEntity child : children) {
-			child.clearHilite();
-		}
 	}
 
 	/*

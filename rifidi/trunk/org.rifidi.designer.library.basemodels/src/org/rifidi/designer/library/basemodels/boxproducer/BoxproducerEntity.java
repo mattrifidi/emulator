@@ -146,12 +146,6 @@ public class BoxproducerEntity extends VisualEntity implements SceneControl,
 				e.printStackTrace();
 			}
 		}
-
-		BinaryPattern pattern = new BinaryPattern();
-		pattern.setPattern(new boolean[][] { { false, true, true, false },
-				{ true, true, true, true }, { true, true, true, true },
-				{ false, true, true, false }, });
-		setPattern(pattern);
 		setCollides(false);
 
 		AlphaState as = DisplaySystem.getDisplaySystem().getRenderer()

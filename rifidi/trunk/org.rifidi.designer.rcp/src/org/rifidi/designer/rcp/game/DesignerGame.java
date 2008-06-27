@@ -13,9 +13,12 @@ package org.rifidi.designer.rcp.game;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
+
+import javax.swing.text.Position;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -51,6 +54,7 @@ import org.rifidi.services.annotations.Inject;
 import org.rifidi.services.registry.ServiceRegistry;
 import org.rifidi.utilities.grid.GridNode;
 
+import com.jme.bounding.BoundingBox;
 import com.jme.light.DirectionalLight;
 import com.jme.light.LightNode;
 import com.jme.math.Vector3f;
@@ -58,6 +62,7 @@ import com.jme.renderer.Camera;
 import com.jme.renderer.ColorRGBA;
 import com.jme.renderer.OffscreenRenderer;
 import com.jme.renderer.Renderer;
+import com.jme.scene.shape.Box;
 import com.jme.scene.state.AlphaState;
 import com.jme.scene.state.CullState;
 import com.jme.scene.state.FragmentProgramState;
@@ -480,26 +485,66 @@ public class DesignerGame extends SWTBaseGame implements
 	 */
 	@Override
 	public void selectionChanged(SelectionChangedEvent event) {
-		List<VisualEntity> newHighlights = ((IStructuredSelection) event
-				.getSelection()).toList();
+		List<VisualEntity> newHighlights = new ArrayList<VisualEntity>();
 		List<VisualEntity> unlit = new ArrayList<VisualEntity>();
-		for (VisualEntity entity : newHighlights) {
-			if (!hilited.contains(entity)) {
-				hilited.add(entity);
-				entity.hilite(fragmentProgramState, alphaState);
-				entity.getNode().updateRenderState();
-			}
+		Iterator<VisualEntity> iter=((IStructuredSelection)event.getSelection()).iterator();
+		while (iter.hasNext()) {
+			VisualEntity entity=iter.next();
+			hilited.add(entity);
+			newHighlights.add(entity);
 		}
 		for (VisualEntity entity : hilited) {
 			if (!newHighlights.contains(entity)) {
 				unlit.add(entity);
-				entity.clearHilite();
-				entity.getNode().updateRenderState();
 			}
 		}
+		GameTaskQueueManager.getManager().update(new HiliteCallable(newHighlights,unlit));
 		hilited.removeAll(unlit);
 	}
 
+	private class HiliteCallable implements Callable<Object>{
+
+		private List<VisualEntity> newHighlights;
+		private List<VisualEntity> unlit;
+		
+		/**
+		 * @param newHighlights
+		 * @param unlit
+		 */
+		public HiliteCallable(List<VisualEntity> newHighlights,
+				List<VisualEntity> unlit) {
+			this.newHighlights = newHighlights;
+			this.unlit = unlit;
+		}
+		
+		/* (non-Javadoc)
+		 * @see java.util.concurrent.Callable#call()
+		 */
+		@Override
+		public Object call() throws Exception {
+			for(VisualEntity entity:newHighlights){
+				if(entity.getNode().getChild("hiliter")==null){
+					Vector3f pos=Vector3f.ZERO.clone();
+					pos.addLocal(0f, ((BoundingBox)entity.getNode().getWorldBound()).getCenter().y, 0f);
+					Box box=new Box("hiliter",pos,((BoundingBox)entity.getNode().getWorldBound()).xExtent,((BoundingBox)entity.getNode().getWorldBound()).yExtent,((BoundingBox)entity.getNode().getWorldBound()).zExtent);
+					box.setRenderState(fragmentProgramState);
+					box.setRenderState(alphaState);
+					box.setRenderQueueMode(Renderer.QUEUE_OPAQUE);
+					entity.getNode().attachChild(box);
+					entity.getNode().updateRenderState();	
+				}	
+			}
+			for(VisualEntity entity:unlit){
+				if(entity.getNode().getChild("hiliter")!=null){
+					entity.getNode().getChild("hiliter").removeFromParent();
+					entity.getNode().updateRenderState();
+				}
+			}
+			return null;
+		}
+		
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * 

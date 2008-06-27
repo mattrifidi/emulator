@@ -17,7 +17,6 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.rifidi.designer.entities.Entity;
 import org.rifidi.designer.entities.VisualEntity;
-import org.rifidi.designer.entities.placement.BinaryPattern;
 import org.rifidi.designer.entities.placement.BitMap;
 import org.rifidi.designer.rcp.views.view3d.View3D;
 import org.rifidi.designer.services.core.entities.SceneDataService;
@@ -61,37 +60,9 @@ public class RotateSelectedHandler extends AbstractHandler {
 
 		List<Entity> selection = selectionService.getSelectionList();
 		if (!View3D.moving) {
-			// get the scene information, the entity, and its pattern
-			BitMap sceneBitMap = sceneDataService.getCurrentSceneData()
-					.getBitMap();
 			for (Object obj : selection.toArray()) {
 				VisualEntity entity = (VisualEntity) obj;
-				// remove initial rotation from the bit map
-				sceneBitMap.removePattern(entity.getPositionFromTranslation(),
-						entity.getPattern().getPattern());
-
-				// duplicate the pattern for post-rotation checking and find its
-				// position
-				BinaryPattern clonedPattern = (BinaryPattern) entity
-						.getPattern().clone();
-				clonedPattern.rotateRight();
-
-				// check if this is a valid configuration
-				if (!sceneBitMap.checkCollision(entity
-						.getPositionFromTranslation(clonedPattern),
-						clonedPattern.getPattern())) {
-					entity.rotateRight(); // if no potential collisions,
-					// rotate
-				} else {
-					// otherwise, don't rotate
-					// TODO: dan send message
-					// view3D.getSceneData().getWorldData().getOverlayManager().postMessage("Invalid
-					// rotation!", 2.5f);
-				}
-
-				// re-place the entity in the bitmap
-				sceneBitMap.addPattern(entity.getPositionFromTranslation(),
-						entity.getPattern().getPattern());
+				entity.rotateRight(); // if no potential collisions
 			}
 			return null;
 		}

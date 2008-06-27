@@ -113,30 +113,6 @@ public class ClothingRack extends VisualEntity implements VisualEntityHolder,
 	 */
 	@Override
 	public void init() {
-		BinaryPattern pattern = new BinaryPattern();
-		pattern
-				.setPattern(new boolean[][] {
-						{ false, false, false, true, true, true, true, false,
-								false, false },
-						{ false, false, true, true, true, true, true, true,
-								false, false },
-						{ false, true, true, true, true, true, true, true,
-								true, false },
-						{ true, true, true, true, true, true, true, true, true,
-								true },
-						{ true, true, true, true, true, true, true, true, true,
-								true },
-						{ true, true, true, true, true, true, true, true, true,
-								true },
-						{ true, true, true, true, true, true, true, true, true,
-								true },
-						{ false, true, true, true, true, true, true, true,
-								true, false },
-						{ false, false, true, true, true, true, true, true,
-								false, false },
-						{ false, false, false, true, true, true, true, false,
-								false, false } });
-		setPattern(pattern);
 		URI modelpath = null;
 		Node node = new Node();
 		try {

@@ -33,7 +33,6 @@ import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Display;
 import org.rifidi.designer.entities.Activator;
 import org.rifidi.designer.entities.Entity;
@@ -178,11 +177,6 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 							sceneData.getSyncedEntities().remove(ve);
 						}
 					}
-				}
-				if (((VisualEntity) entity).getPattern() != null) {
-					sceneData.getBitMap().removePattern(
-							getPositionFromTranslation((VisualEntity) entity),
-							((VisualEntity) entity).getPattern().getPattern());
 				}
 			}
 			sceneData.getSyncedEntities().remove(entity);
@@ -352,9 +346,6 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 			 */
 			public Object call() throws Exception {
 				for (Entity entity : product) {
-					sceneData.getBitMap().removePattern(
-							getPositionFromTranslation((VisualEntity) entity),
-							((VisualEntity) entity).getPattern().getPattern());
 					entity.destroy();
 					sceneData.getSyncedEntities().remove(entity);
 					sceneData.getDefaultGroup().removeEntity(entity);
@@ -422,20 +413,6 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 				sceneData.getDefaultGroup().addEntity(entity);
 			}
 		}
-	}
-
-	/**
-	 * Convenience method to calculate the current position of the target on the
-	 * grid. (upper-left-hand corner).
-	 * 
-	 * @return
-	 */
-	private Point getPositionFromTranslation(VisualEntity target) {
-		Vector3f patternSize = new Vector3f(target.getPattern().getWidth() / 2,
-				0, target.getPattern().getLength() / 2);
-		Vector3f pos = target.getNode().getLocalTranslation().subtract(
-				patternSize);
-		return new Point((int) pos.x, (int) pos.z);
 	}
 
 	/*
@@ -529,10 +506,8 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 						BinaryImporter.getInstance());
 
 				// if this is a new file create an empty room
-				if (sceneData.getNodeBytes() == null) {
-					sceneData.setBitMap(new BitMap(sceneData.getWidth()));
-					// sceneData.getRootNode().attachChild(createRoom());
-				} else {// load the model from the stored bytes
+				if (sceneData.getNodeBytes() != null) {
+					// load the model from the stored bytes
 
 					// let the textures load from the right spot
 					try {

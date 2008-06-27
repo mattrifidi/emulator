@@ -129,7 +129,7 @@ public class MousePickListener implements MouseListener, KeyListener {
 			}
 
 			// if we found something tell the editor to do it's magic
-			if (pickedEntity != null && pickedEntity.getPattern() != null) {
+			if (pickedEntity != null) {
 				if (!multiselect) {
 					selectionService.select(pickedEntity, false, true);
 				} else {

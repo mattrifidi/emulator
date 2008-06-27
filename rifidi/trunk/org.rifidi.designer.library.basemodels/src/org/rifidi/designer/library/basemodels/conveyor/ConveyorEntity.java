@@ -145,14 +145,6 @@ public class ConveyorEntity extends VisualEntity implements Switch,
 	@Override
 	public void init() {
 		prepare();
-		BinaryPattern pattern = new BinaryPattern();
-		pattern.setPattern(new boolean[][] { { true, true, true, true },
-				{ true, true, true, true }, { true, true, true, true },
-				{ true, true, true, true }, { true, true, true, true },
-				{ true, true, true, true }, { true, true, true, true },
-				{ true, true, true, true }, { true, true, true, true },
-				{ true, true, true, true } });
-		setPattern(pattern);
 		setNode(physicsSpace.createStaticNode());
 		switchNode=new SwitchNode();
 		switchNode.attachChildAt(new SharedNode("sharedConv_", model), 0);
