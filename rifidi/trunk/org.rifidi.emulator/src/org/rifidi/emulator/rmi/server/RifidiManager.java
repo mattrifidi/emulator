@@ -9,8 +9,10 @@ import gnu.cajo.utils.ItemServer;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.rmi.AccessException;
+import java.rmi.NoSuchObjectException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -217,6 +219,7 @@ public class RifidiManager implements RifidiManagerInterface {
 			e.printStackTrace();
 			return false;
 		}
+
 		return true;
 	}
 
@@ -264,6 +267,12 @@ public class RifidiManager implements RifidiManagerInterface {
 				e.printStackTrace();
 				errorOccured = true;
 			}
+		}
+		logger.debug("Try to unbind the socket the rmi registry was using");
+		try {
+			UnicastRemoteObject.unexportObject(ItemServer.registry, false);
+		} catch (NoSuchObjectException e) {
+			e.printStackTrace();
 		}
 		if (!errorOccured) {
 			readerRegistry.clear();
