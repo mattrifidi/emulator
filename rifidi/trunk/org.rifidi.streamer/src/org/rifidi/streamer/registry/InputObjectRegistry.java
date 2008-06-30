@@ -3,6 +3,7 @@
  */
 package org.rifidi.streamer.registry;
 
+import java.rmi.ConnectException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -288,7 +289,12 @@ public class InputObjectRegistry {
 	}
 
 	public void connectReaderRegsitry(String hostname, int port) {
-		readerRegistry.connect(hostname, port);
+		try {
+			readerRegistry.connect(hostname, port);
+		} catch (ConnectException e) {
+			// TODO Handle this Exception correct.
+			e.printStackTrace();
+		}
 		isConnected = true;
 	}
 
