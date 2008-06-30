@@ -8,6 +8,7 @@ import gnu.cajo.utils.extra.TransparentItemProxy;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.rmi.ConnectException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -93,8 +94,9 @@ public class ReaderRegistry {
 	 *            of the remote RMI Service
 	 * @param port
 	 *            of the remote RMI Service
+	 * @throws ConnectException 
 	 */
-	public void connect(String hostname, int port) {
+	public void connect(String hostname, int port) throws ConnectException {
 		logger.debug("Trying to establish RMI Connection with : " + hostname
 				+ " " + port);
 		connectionURI = "//" + hostname + ":" + port + "/";
@@ -103,6 +105,9 @@ public class ReaderRegistry {
 			rifidiManager = (RifidiManagerInterface) TransparentItemProxy
 					.getItem(connectionURI + RifidiManager.URL,
 							new Class[] { RifidiManagerInterface.class });
+		} catch (java.rmi.ConnectException e) {
+			logger.error("Connection could not be established");
+			throw e;
 		} catch (RemoteException e2) {
 			e2.printStackTrace();
 		} catch (MalformedURLException e2) {
