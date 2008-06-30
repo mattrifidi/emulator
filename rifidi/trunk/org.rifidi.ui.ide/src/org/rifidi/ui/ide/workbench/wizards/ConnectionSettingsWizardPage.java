@@ -23,6 +23,10 @@ import org.rifidi.ui.common.validators.IpAddressValidator;
  * @author Andreas Huebner - andreas@pramari.com
  * 
  */
+/**
+ * @author andreas
+ *
+ */
 public class ConnectionSettingsWizardPage extends WizardPage {
 
 	// private Log logger =
@@ -30,6 +34,9 @@ public class ConnectionSettingsWizardPage extends WizardPage {
 
 	private Text ipAddressText;
 	private Text portNumberText;
+	private int port;
+	private String ipaddress;
+
 
 	/**
 	 * Default Constructor
@@ -131,13 +138,23 @@ public class ConnectionSettingsWizardPage extends WizardPage {
 		String ipString = ipAddressText.getText();
 		if (ipString != null && portString != null) {
 			String error = ipAddressValidator.isValidIP(ipString);
-			int port = Integer.parseInt(portString);
+			port = Integer.parseInt(portString);
 			if (error == null && port >= 0 && port <= 65535) {
+				ipaddress = ipString;
 				setPageComplete(true);
-				ReaderRegistry.getInstance().clean();
-				ReaderRegistry.getInstance().connect(ipString, port);
 			}
 		}
 	}
+
+	public int getPort() {
+		return port;
+	}
+
+	public String getIpaddress() {
+		return ipaddress;
+	}
+	
+	
+	
 
 }

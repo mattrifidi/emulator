@@ -2,6 +2,7 @@ package org.rifidi.ui.ide.workbench;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.rmi.ConnectException;
 import java.rmi.RemoteException;
 
 import org.apache.commons.logging.Log;
@@ -104,7 +105,12 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 		viewManager = new ViewManager(configurer.getWindow());
 
 		// Starting the RMI Service to provide the Emulator functionality
-		ReaderRegistry.getInstance().connect("127.0.0.1", 1198);
+		try {
+			ReaderRegistry.getInstance().connect("127.0.0.1", 1198);
+		} catch (ConnectException e) {
+			// Handle this Exception better
+			e.printStackTrace();
+		}
 		getWindowConfigurer().getActionBarConfigurer().getStatusLineManager()
 				.setMessage("RMI - Emulator connected to 127.0.0.1:1198");
 		super.postWindowOpen();
