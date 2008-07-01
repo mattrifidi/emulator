@@ -71,27 +71,6 @@ public interface SceneDataService {
 	void removeSceneDataChangedListener(SceneDataChangedListener listener);
 
 	/**
-	 * Get the RootNode of the currently loaded scene.
-	 * 
-	 * @return
-	 */
-	Node getRootNode();
-
-	/**
-	 * Get the RoomNode of the currently loaded scene.
-	 * 
-	 * @return
-	 */
-	Node getRoomNode();
-
-	/**
-	 * Get the width of the currently loaded scenedata.
-	 * 
-	 * @return
-	 */
-	Integer getWidth();
-
-	/**
 	 * Get the roomwalls.
 	 * 
 	 * @return

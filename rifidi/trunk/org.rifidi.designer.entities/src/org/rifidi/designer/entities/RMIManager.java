@@ -124,15 +124,13 @@ public class RMIManager {
 	 * @return
 	 */
 	public boolean cleanup() {
-		// TODO maybe cleanup the connection to the RMI
 		try {
 			if (rifidiManager.cleanup()) {
 				readerRegisty.clear();
 				return true;
 			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.fatal("WHO THROWS JUST EXCEPTION???: "+e);
 		}
 		return false;
 	}
@@ -186,8 +184,7 @@ public class RMIManager {
 				return reader;
 			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.fatal("WHO THROWS JUST EXCEPTION???: "+e);
 		}
 		return null;
 	}
@@ -203,8 +200,7 @@ public class RMIManager {
 		try {
 			return rifidiManager.removeReader(name);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.fatal("WHO THROWS JUST EXCEPTION???: "+e);
 		}
 		return false;
 	}
@@ -218,8 +214,7 @@ public class RMIManager {
 		try {
 			return rifidiManager.getReaderList();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.fatal("WHO THROWS JUST EXCEPTION???: "+e);
 		}
 		return null;
 	}
@@ -233,8 +228,7 @@ public class RMIManager {
 		try {
 			return rifidiManager.getSupportedReaderTypes();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.fatal("WHO THROWS JUST EXCEPTION???: "+e);
 		}
 		return null;
 	}

@@ -13,6 +13,7 @@ package org.rifidi.designer.services.core.entities;
 import java.util.List;
 
 import org.rifidi.designer.entities.Entity;
+import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.grouping.EntityGroup;
 
 /**
@@ -86,4 +87,13 @@ public interface EntitiesService {
 	 * @param entity
 	 */
 	void ungroupEntity(Entity entity);
+	
+	/**
+	 * Check for collisions.
+	 * If none are found the returned list is empty.
+	 * @param visualEntity
+	 * @return
+	 */
+	List<VisualEntity> getColliders(VisualEntity visualEntity);
+	
 }

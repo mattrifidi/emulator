@@ -26,7 +26,6 @@ import org.eclipse.ui.model.IWorkbenchAdapter;
 import org.rifidi.designer.entities.databinding.annotations.MonitorThisList;
 import org.rifidi.designer.entities.grouping.EntityGroup;
 import org.rifidi.designer.entities.grouping.GroupContainer;
-import org.rifidi.designer.entities.placement.BitMap;
 
 import com.jme.input.InputHandler;
 import com.jme.scene.Node;
@@ -54,14 +53,6 @@ public class SceneData implements IAdaptable, IWorkbenchAdapter {
 	public enum Direction {
 		NORTH, SOUTH, EAST, WEST, DOWN
 	}
-	/**
-	 * Width of the scene in units.
-	 */
-	private Integer width;
-	/**
-	 * Height of the scene in units.
-	 */
-	private Integer height;
 	/**
 	 * All the entities in the scene.
 	 */
@@ -134,7 +125,10 @@ public class SceneData implements IAdaptable, IWorkbenchAdapter {
 	 * Current SWT display.
 	 */
 	private Display display;
-
+	/**
+	 * Id of the floorplan to use.
+	 */
+	private String floorId;
 	/**
 	 * @return the nodeBytes
 	 */
@@ -257,36 +251,6 @@ public class SceneData implements IAdaptable, IWorkbenchAdapter {
 	public void setEntities(final List<Entity> entities) {
 		this.entities = entities;
 		syncedEntities = Collections.synchronizedList(entities);
-	}
-
-	/**
-	 * @return the width
-	 */
-	public Integer getWidth() {
-		return width;
-	}
-
-	/**
-	 * @param width
-	 *            the width to set
-	 */
-	public void setWidth(final Integer width) {
-		this.width = width;
-	}
-
-	/**
-	 * @return the height
-	 */
-	public Integer getHeight() {
-		return height;
-	}
-
-	/**
-	 * @param height
-	 *            the height to set
-	 */
-	public void setHeight(final Integer height) {
-		this.height = height;
 	}
 
 	/**
@@ -476,5 +440,19 @@ public class SceneData implements IAdaptable, IWorkbenchAdapter {
 	@XmlTransient
 	public void setDisplay(Display display) {
 		this.display = display;
+	}
+
+	/**
+	 * @return the floorId
+	 */
+	public String getFloorId() {
+		return this.floorId;
+	}
+
+	/**
+	 * @param floorId the floorId to set
+	 */
+	public void setFloorId(String floorId) {
+		this.floorId = floorId;
 	}
 }

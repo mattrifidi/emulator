@@ -46,7 +46,6 @@ import org.rifidi.designer.entities.interfaces.NeedsPhysics;
 import org.rifidi.designer.entities.interfaces.ParentEntity;
 import org.rifidi.designer.entities.interfaces.RifidiEntity;
 import org.rifidi.designer.entities.interfaces.VisualEntityHolder;
-import org.rifidi.designer.entities.placement.BitMap;
 import org.rifidi.designer.library.EntityLibraryRegistry;
 import org.rifidi.services.annotations.Inject;
 import org.rifidi.services.initializer.IInitService;
@@ -58,15 +57,9 @@ import org.rifidi.services.tags.impl.C1G2Tag;
 import org.rifidi.services.tags.impl.RifidiTag;
 
 import com.jme.bounding.BoundingBox;
-import com.jme.image.Texture;
 import com.jme.input.InputHandler;
-import com.jme.math.Vector3f;
-import com.jme.renderer.ColorRGBA;
 import com.jme.scene.Node;
-import com.jme.scene.shape.Box;
-import com.jme.scene.state.MaterialState;
-import com.jme.scene.state.TextureState;
-import com.jme.system.DisplaySystem;
+import com.jme.scene.Spatial;
 import com.jme.util.GameTaskQueueManager;
 import com.jme.util.TextureManager;
 import com.jme.util.export.binary.BinaryExporter;
@@ -454,26 +447,27 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 		}
 		TextureManager.clearCache();
 		if (sceneData != null) {
-			sceneDataOld=sceneData;
-			GameTaskQueueManager.getManager().update(new Callable<Object>(){
+			sceneDataOld = sceneData;
+			GameTaskQueueManager.getManager().update(new Callable<Object>() {
 
-				/* (non-Javadoc)
+				/*
+				 * (non-Javadoc)
+				 * 
 				 * @see java.util.concurrent.Callable#call()
 				 */
 				@Override
 				public Object call() throws Exception {
-					for(Entity entity:sceneDataOld.getEntities()){
-						try{
+					for (Entity entity : sceneDataOld.getEntities()) {
+						try {
 							entity.destroy();
-						}
-						catch(Exception e){
-							//THIS MUST RUN THROUGH
+						} catch (Exception e) {
+							// THIS MUST RUN THROUGH
 							logger.fatal(e);
 						}
 					}
 					return null;
 				}
-				
+
 			});
 		}
 		try {
@@ -498,7 +492,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 				sceneData = (SceneData) unm;
 				sceneData.setDisplay(display);
 				sceneData.setPhysicsSpace(PhysicsSpace.create());
-//				sceneData.getPhysicsSpace().setAutoRestThreshold(2);
+				// sceneData.getPhysicsSpace().setAutoRestThreshold(2);
 				sceneData.setCollisionHandler(new InputHandler());
 
 				// initialize the JME importer to handle physics
@@ -552,7 +546,20 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 			logger.fatal("Unable to load file (JAXB): " + e);
 			return;
 		}
-		createRoom(sceneData);
+		Node roomnode = EntityLibraryRegistry.getInstance()
+				.getFloorReferences().get(sceneData.getFloorId()).getNode();
+		ArrayList<Spatial> spatlist = new ArrayList<Spatial>(roomnode
+				.getChildren());
+		for (Spatial spatial : spatlist) {
+			spatial.removeFromParent();
+			StaticPhysicsNode staticNode = sceneData.getPhysicsSpace()
+					.createStaticNode();
+			staticNode.attachChild(spatial);
+			staticNode.generatePhysicsGeometry();
+			roomnode.attachChild(staticNode);
+		}
+		sceneData.setRoomNode(roomnode);
+		
 		fileOfCurrentScene = file;
 		nodeToEntity = Collections
 				.synchronizedMap(new HashMap<Node, VisualEntity>());
@@ -686,37 +693,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	public void removeSceneDataChangedListener(SceneDataChangedListener listener) {
 		listeners.remove(listener);
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.rifidi.services.registry.core.scenedata.SceneDataService#getRoomNode()
-	 */
-	@Override
-	public Node getRoomNode() {
-		return sceneData.getRoomNode();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.rifidi.services.registry.core.scenedata.SceneDataService#getRootNode()
-	 */
-	@Override
-	public Node getRootNode() {
-		return sceneData.getRootNode();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.rifidi.services.registry.core.scenedata.SceneDataService#getWidth()
-	 */
-	@Override
-	public Integer getWidth() {
-		return sceneData.getWidth();
-	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -793,116 +770,6 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	}
 
 	/**
-	 * Helper method to create a square room TODO: this is just a temporary
-	 * solution
-	 * 
-	 * @return node containing the room
-	 */
-	private void createRoom(SceneData sceneData) {
-		Map<Direction, Node> walls;
-		walls = new HashMap<Direction, Node>();
-		Node room = new Node("rifidi_room_components");
-
-		// create and texture the floor
-		StaticPhysicsNode phys = sceneData.getPhysicsSpace().createStaticNode();
-		Box box = new Box("rifidi_floor_wall", new Vector3f(0, -1.5f, 0),
-				new Vector3f(sceneData.getWidth(), 0, sceneData.getWidth()));
-		phys.setName(box.getName());
-		TextureState ts = DisplaySystem.getDisplaySystem().getRenderer()
-				.createTextureState();
-		Texture texture = TextureManager.loadTexture(Activator.class
-				.getClassLoader().getResource("aluminium_0001_c.jpg"),
-				Texture.MM_LINEAR, Texture.FM_LINEAR);
-		texture.setWrap(Texture.WM_WRAP_S_WRAP_T);
-		texture.setScale(new Vector3f(3, 3, 3));
-		ts.setTexture(texture);
-		box.setRenderState(ts);
-		box.setRandomColors();
-		box.setModelBound(new BoundingBox());
-		box.updateModelBound();
-		phys.attachChild(box);
-		phys.setModelBound(new BoundingBox());
-		phys.updateModelBound();
-		phys.generatePhysicsGeometry();
-		room.attachChild(phys);
-		walls.put(Direction.DOWN, phys);
-
-		// create and apply materialstate to the walls
-		MaterialState ms = DisplaySystem.getDisplaySystem().getRenderer()
-				.createMaterialState();
-		ms.setDiffuse(new ColorRGBA(.1f, .7f, .1f, .2f));
-
-		// create west wall
-		phys = sceneData.getPhysicsSpace().createStaticNode();
-		box = new Box("rifidi_west_wall", new Vector3f(-.1f, sceneData
-				.getHeight(), sceneData.getWidth() / 2), .1f, sceneData
-				.getHeight(), sceneData.getWidth() / 2);
-		phys.setName(box.getName());
-		box.setRenderState(ms);
-		box.setModelBound(new BoundingBox());
-		box.updateModelBound();
-		phys.attachChild(box);
-		phys.setModelBound(new BoundingBox());
-		phys.updateModelBound();
-		phys.generatePhysicsGeometry();
-		room.attachChild(phys);
-		walls.put(Direction.WEST, phys);
-
-		// create east wall
-		phys = sceneData.getPhysicsSpace().createStaticNode();
-		box = new Box("rifidi_east_wall", new Vector3f(
-				sceneData.getWidth() + .1f, sceneData.getHeight(), sceneData
-						.getWidth() / 2), .1f, sceneData.getHeight(), sceneData
-				.getWidth() / 2);
-		phys.setName(box.getName());
-		box.setRenderState(ms);
-		box.setModelBound(new BoundingBox());
-		box.updateModelBound();
-		phys.attachChild(box);
-		phys.setModelBound(new BoundingBox());
-		phys.updateModelBound();
-		phys.generatePhysicsGeometry();
-		room.attachChild(phys);
-		walls.put(Direction.EAST, phys);
-
-		// create south wall
-		phys = sceneData.getPhysicsSpace().createStaticNode();
-		box = new Box("rifidi_south_wall", new Vector3f(
-				sceneData.getWidth() / 2, sceneData.getHeight(), sceneData
-						.getWidth() + .1f), sceneData.getWidth() / 2, sceneData
-				.getHeight(), .1f);
-		phys.setName(box.getName());
-		box.setRenderState(ms);
-		box.setModelBound(new BoundingBox());
-		box.updateModelBound();
-		phys.attachChild(box);
-		phys.setModelBound(new BoundingBox());
-		phys.updateModelBound();
-		phys.generatePhysicsGeometry();
-		room.attachChild(phys);
-		walls.put(Direction.SOUTH, phys);
-
-		// create north wall
-		phys = sceneData.getPhysicsSpace().createStaticNode();
-		box = new Box("rifidi_north_wall", new Vector3f(
-				sceneData.getWidth() / 2, sceneData.getHeight(), -.1f),
-				sceneData.getWidth() / 2, sceneData.getHeight(), .1f);
-		phys.setName(box.getName());
-		box.setRenderState(ms);
-		box.setModelBound(new BoundingBox());
-		box.updateModelBound();
-		phys.attachChild(box);
-		phys.setModelBound(new BoundingBox());
-		phys.updateModelBound();
-		phys.generatePhysicsGeometry();
-		room.attachChild(phys);
-		walls.put(Direction.NORTH, phys);
-
-		sceneData.setRoomNode(room);
-		sceneData.setWalls(walls);
-	}
-
-	/**
 	 * @param initService
 	 *            the initService to set
 	 */
@@ -917,6 +784,30 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	 */
 	public void unsetIInitService(IInitService initService) {
 		this.iinitService = null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.rifidi.designer.services.core.entities.EntitiesService#getColliders(org.rifidi.designer.entities.VisualEntity)
+	 */
+	@Override
+	public List<VisualEntity> getColliders(VisualEntity visualEntity) {
+		List<VisualEntity> colliders = new ArrayList<VisualEntity>();
+		for (Entity entity : sceneData.getEntities()) {
+			if (!entity.equals(visualEntity) && entity instanceof VisualEntity) {
+				// safeguard against those who are too lazy initialize all
+				// their entities
+				if (((VisualEntity) entity).getNode() != null
+						&& ((VisualEntity) entity).getNode().getWorldBound() != null) {
+					if (((VisualEntity) entity).getNode().getWorldBound()
+							.intersects(visualEntity.getNode().getWorldBound())) {
+						colliders.add((VisualEntity) entity);
+					}
+				}
+			}
+		}
+		return colliders;
 	}
 
 	/**
@@ -979,11 +870,14 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 			}
 			// center the object in the scene
 			if (center) {
-				float halfWidth = sceneData.getWidth() / 2f;
-				((VisualEntity) newentity).getNode().setLocalTranslation(
-						halfWidth,
-						((VisualEntity) newentity).getNode()
-								.getLocalTranslation().y, halfWidth);
+				((VisualEntity) newentity).getNode()
+						.setLocalTranslation(
+								((BoundingBox) sceneData.getRootNode()
+										.getWorldBound()).xExtent,
+								((VisualEntity) newentity).getNode()
+										.getLocalTranslation().y,
+								((BoundingBox) sceneData.getRootNode()
+										.getWorldBound()).zExtent);
 			}
 			if (listener != null) {
 				sceneData.getDisplay().asyncExec(new Runnable() {

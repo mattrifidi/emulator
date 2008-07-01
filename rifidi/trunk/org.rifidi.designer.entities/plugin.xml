@@ -20,5 +20,4 @@
    </extension>
    <extension-point id="org.rifidi.designer.library" name="Library Extension Point" schema="schema/org.rifidi.designer.library.exsd"/>
    <extension-point id="org.rifidi.designer.entities.internal" name="Internal Entities Extension Point" schema="schema/org.rifidi.designer.entities.internal.exsd"/>
-
 </plugin>

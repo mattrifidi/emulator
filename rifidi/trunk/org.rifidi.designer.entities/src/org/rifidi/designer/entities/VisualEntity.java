@@ -103,8 +103,6 @@ public abstract class VisualEntity extends Entity {
 
 	@Override
 	public void destroy() {
-		// TODO Auto-generated method stub
-
 	}
 
 	/**

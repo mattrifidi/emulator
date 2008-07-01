@@ -52,7 +52,11 @@ public class EntityLibraryRegistry implements IRegistryChangeListener {
 	/**
 	 * All known entity library references.
 	 */
-	private Map<String, EntityLibraryReference> references;
+	private Map<String, EntityLibraryReference> entityReferences;
+	/**
+	 * All known floor elements by their names.
+	 */
+	private Map<String, FloorElement> floorReferences;
 	/**
 	 * List of available entites.
 	 */
@@ -73,8 +77,10 @@ public class EntityLibraryRegistry implements IRegistryChangeListener {
 	private EntityLibraryRegistry() {
 		libraries = Collections
 				.synchronizedList(new ArrayList<EntityLibrary>());
-		references = Collections
+		entityReferences = Collections
 				.synchronizedMap(new HashMap<String, EntityLibraryReference>());
+		floorReferences = Collections
+				.synchronizedMap(new HashMap<String, FloorElement>());
 		entityClasses = Collections.synchronizedList(new ArrayList<Class>());
 		IExtensionRegistry registry = Platform.getExtensionRegistry();
 		registry.addRegistryChangeListener(this, "org.rifidi.designer.library");
@@ -112,10 +118,9 @@ public class EntityLibraryRegistry implements IRegistryChangeListener {
 			try {
 				Class internalentity = Class.forName(configElement
 						.getAttribute("class"));
-				if(add){
+				if (add) {
 					entityClasses.add(internalentity);
-				}
-				else{
+				} else {
 					entityClasses.remove(internalentity);
 				}
 			} catch (InvalidRegistryObjectException e) {
@@ -141,8 +146,14 @@ public class EntityLibraryRegistry implements IRegistryChangeListener {
 						libraries.add(lib);
 						for (EntityLibraryReference ref : lib
 								.getLibraryReferences()) {
-							references.put(ref.getId(), ref);
+							entityReferences.put(ref.getId(), ref);
 							entityClasses.add(ref.getEntityClass());
+						}
+						if(lib.getFloorElements()!=null){
+							for (FloorElement element : lib
+									.getFloorElements()) {
+								floorReferences.put(element.getId(), element);
+							}	
 						}
 					} else {
 						EntityLibrary delete = null;
@@ -152,7 +163,7 @@ public class EntityLibraryRegistry implements IRegistryChangeListener {
 								delete = searchLib;
 								for (EntityLibraryReference ref : searchLib
 										.getLibraryReferences()) {
-									references.remove(ref.getId());
+									entityReferences.remove(ref.getId());
 									entityClasses.remove(ref.getEntityClass());
 								}
 							}
@@ -209,7 +220,7 @@ public class EntityLibraryRegistry implements IRegistryChangeListener {
 	 * @return
 	 */
 	public EntityLibraryReference getEntityLibraryReference(String name) {
-		return references.get(name);
+		return entityReferences.get(name);
 	}
 
 	/*
@@ -230,6 +241,13 @@ public class EntityLibraryRegistry implements IRegistryChangeListener {
 				}
 			}
 		}
+	}
+
+	/**
+	 * @return the floorReferences
+	 */
+	public Map<String, FloorElement> getFloorReferences() {
+		return this.floorReferences;
 	}
 
 }

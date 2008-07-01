@@ -30,6 +30,10 @@ public interface EntityLibrary {
 	List<EntityLibraryReference> getLibraryReferences();
 
 	/**
+	 * Get the list of floorplans this library provides.
+	 */
+	List<FloorElement> getFloorElements();
+	/**
 	 * Returns a human readable name for this library.
 	 * 
 	 * @return library name
