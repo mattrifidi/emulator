@@ -47,8 +47,8 @@ import org.rifidi.designer.library.EntityWizardIface;
 import org.rifidi.designer.library.EntityWizardRifidiIface;
 import org.rifidi.designer.rcp.Activator;
 import org.rifidi.designer.rcp.game.DesignerGame;
+import org.rifidi.designer.rcp.views.view3d.listeners.AllAxisMouseMoveEntityListener;
 import org.rifidi.designer.rcp.views.view3d.listeners.Editor3DDropTargetListener;
-import org.rifidi.designer.rcp.views.view3d.listeners.EntityMouseMoveListener;
 import org.rifidi.designer.rcp.views.view3d.listeners.MouseMoveEntityListener;
 import org.rifidi.designer.rcp.views.view3d.listeners.MousePickListener;
 import org.rifidi.designer.rcp.views.view3d.listeners.ResizeListener;
@@ -73,7 +73,8 @@ import com.jme.util.TextureManager;
  * @author Jochen Mader Nov 20, 2007
  * @author Dan West
  */
-public class View3D extends ViewPart implements IPerspectiveListener, NewEntityListener {
+public class View3D extends ViewPart implements IPerspectiveListener,
+		NewEntityListener {
 	/**
 	 * Enum for the different modes the 3dview supports.
 	 */
@@ -223,7 +224,6 @@ public class View3D extends ViewPart implements IPerspectiveListener, NewEntityL
 		logger.debug("setting up world");
 		sceneDataService.loadScene(Display.getCurrent(), file);
 		switchMode(Mode.PickMode);
-		cameraService.centerCamera();
 	}
 
 	/**
@@ -259,8 +259,7 @@ public class View3D extends ViewPart implements IPerspectiveListener, NewEntityL
 						ent = ((EntityWizardIface) wizard).getEntity();
 					}
 				}
-			}
-			else{
+			} else {
 				ent = (Entity) ref.getEntityClass().newInstance();
 			}
 			entitiesService.addEntity(ent, true, this);
@@ -272,7 +271,9 @@ public class View3D extends ViewPart implements IPerspectiveListener, NewEntityL
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.rifidi.designer.services.core.entities.NewEntityListener#entityAdded(org.rifidi.designer.entities.VisualEntity)
 	 */
 	@Override
@@ -421,8 +422,7 @@ public class View3D extends ViewPart implements IPerspectiveListener, NewEntityL
 		 *            the view3d this mode is being initialized for
 		 */
 		public PickMode(final View3D view3d) {
-			moveListener = new MouseMoveEntityListener(view3d,
-					selectionService, sceneDataService);
+			moveListener = new MouseMoveEntityListener(view3d);
 			MousePickListener pickListener = new MousePickListener(view3d,
 					selectionService, sceneDataService, finderService);
 			addMouseMoveListener(moveListener);
@@ -459,7 +459,7 @@ public class View3D extends ViewPart implements IPerspectiveListener, NewEntityL
 		 */
 		public PlacementMode(final View3D view3d) {
 			MouseMoveEntityListener moveListener = new MouseMoveEntityListener(
-					view3d, selectionService, sceneDataService);
+					view3d);
 			addMouseListener(moveListener);
 			addMouseMoveListener(moveListener);
 			addMouseWheelListener(new ZoomMouseWheelListener(cameraService));
@@ -568,11 +568,11 @@ public class View3D extends ViewPart implements IPerspectiveListener, NewEntityL
 		 *            the view3d this mode is being initialized for
 		 */
 		public MoveMode(final View3D view3d) {
-			EntityMouseMoveListener entityMouseMoveListener = new EntityMouseMoveListener(
+			AllAxisMouseMoveEntityListener allAxisMouseMoveEntityListener = new AllAxisMouseMoveEntityListener(
 					view3d);
-			addMouseMoveListener(entityMouseMoveListener);
-			addMouseListener(entityMouseMoveListener);
-			addMouseWheelListener(entityMouseMoveListener);
+			addMouseMoveListener(allAxisMouseMoveEntityListener);
+			addMouseListener(allAxisMouseMoveEntityListener);
+			addMouseWheelListener(allAxisMouseMoveEntityListener);
 		}
 
 		/*

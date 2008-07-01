@@ -122,8 +122,7 @@ public class NewSceneDataWizardPage extends WizardPage {
 	 * @return the new sceneData
 	 */
 	public SceneData getSceneData() {
-		sceneData.setHeight(5);
-		sceneData.setWidth((int)(widthCombo.getSelectionIndex()+1)*64);
+		sceneData.setFloorId("base");
 		sceneData.setName(layoutName.getText());
 		return sceneData;
 	}

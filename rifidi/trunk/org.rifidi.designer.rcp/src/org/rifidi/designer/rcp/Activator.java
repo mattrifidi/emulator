@@ -24,6 +24,7 @@ import org.rifidi.designer.services.core.entities.ProductService;
 import org.rifidi.designer.services.core.entities.SceneDataService;
 import org.rifidi.designer.services.core.events.EventsService;
 import org.rifidi.designer.services.core.events.EventsServiceImpl;
+import org.rifidi.designer.services.core.highlighting.HighlightingService;
 import org.rifidi.designer.services.core.selection.SelectionService;
 import org.rifidi.designer.services.core.selection.SelectionServiceImpl;
 import org.rifidi.designer.services.core.world.CommandStateService;
@@ -106,7 +107,8 @@ public class Activator extends AbstractUIPlugin {
 				new SelectionServiceImpl(), null);
 		designerGame = new DesignerGame("designer", 10, 20, 754, 584, null);
 		context.registerService(new String[] { WorldService.class.getName(),
-				CommandStateService.class.getName() }, designerGame, null);
+				CommandStateService.class.getName(),
+				HighlightingService.class.getName() }, designerGame, null);
 	}
 
 	/*

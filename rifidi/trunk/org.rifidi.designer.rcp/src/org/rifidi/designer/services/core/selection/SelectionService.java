@@ -61,5 +61,4 @@ public interface SelectionService extends ISelectionProvider {
 	 * @return the selection
 	 */
 	List<Entity> getSelectionList();
-
 }

@@ -24,6 +24,7 @@ import org.rifidi.jmonkey.SWTDisplaySystem;
 import org.rifidi.services.annotations.Inject;
 import org.rifidi.services.registry.ServiceRegistry;
 
+import com.jme.bounding.BoundingBox;
 import com.jme.math.Vector2f;
 import com.jme.math.Vector3f;
 import com.jme.renderer.Camera;
@@ -108,9 +109,14 @@ public class WatchAreaDrawMouseListener implements MouseListener,
 
 			startX = b / m;
 			startZ = b2 / m2;
-			if (startX > 0 && startZ > 0
-					&& startX < sceneDataService.getWidth()
-					&& startZ < sceneDataService.getWidth()) {
+			if (startX > 0
+					&& startZ > 0
+					&& startX < ((BoundingBox) sceneDataService
+							.getCurrentSceneData().getRoomNode()
+							.getWorldBound()).xExtent
+					&& startZ < ((BoundingBox) sceneDataService
+							.getCurrentSceneData().getRoomNode()
+							.getWorldBound()).zExtent) {
 
 				boxNode = new Node();
 				box = new Box("name", Vector3f.ZERO, .5f, 7f, .5f);
@@ -142,8 +148,8 @@ public class WatchAreaDrawMouseListener implements MouseListener,
 								as.setSrcFunction(AlphaState.SB_SRC_ALPHA);
 								as.setDstFunction(AlphaState.DB_ONE);
 								as.setEnabled(true);
-								sceneDataService.getRoomNode().attachChild(
-										boxNode);
+								sceneDataService.getCurrentSceneData()
+										.getRoomNode().attachChild(boxNode);
 								boxNode.setRenderState(as);
 								boxNode.setRenderState(ms);
 								boxNode.updateRenderState();
@@ -266,14 +272,22 @@ public class WatchAreaDrawMouseListener implements MouseListener,
 								if (left < 0) {
 									left = 0;
 								}
-								if (right > sceneDataService.getWidth()) {
-									right = sceneDataService.getWidth();
+								if (right > ((BoundingBox) sceneDataService
+										.getCurrentSceneData().getRoomNode()
+										.getWorldBound()).xExtent) {
+									right = ((BoundingBox) sceneDataService
+											.getCurrentSceneData()
+											.getRoomNode().getWorldBound()).xExtent;
 								}
 								if (top < 0) {
 									top = 0;
 								}
-								if (bottom > sceneDataService.getWidth()) {
-									bottom = sceneDataService.getWidth();
+								if (bottom > ((BoundingBox) sceneDataService
+										.getCurrentSceneData().getRoomNode()
+										.getWorldBound()).zExtent) {
+									bottom = ((BoundingBox) sceneDataService
+											.getCurrentSceneData()
+											.getRoomNode().getWorldBound()).zExtent;
 								}
 								boxNode.getLocalTranslation()
 										.set(
@@ -293,7 +307,8 @@ public class WatchAreaDrawMouseListener implements MouseListener,
 	}
 
 	/**
-	 * @param entitiesService the entitiesService to set
+	 * @param entitiesService
+	 *            the entitiesService to set
 	 */
 	@Inject
 	public void setEntitiesService(EntitiesService entitiesService) {
@@ -301,7 +316,8 @@ public class WatchAreaDrawMouseListener implements MouseListener,
 	}
 
 	/**
-	 * @param sceneDataService the sceneDataService to set
+	 * @param sceneDataService
+	 *            the sceneDataService to set
 	 */
 	@Inject
 	public void setSceneDataService(SceneDataService sceneDataService) {

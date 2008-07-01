@@ -10,6 +10,7 @@
  */
 package org.rifidi.designer.rcp.views.view3d.listeners;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,11 +25,16 @@ import org.rifidi.designer.entities.Entity;
 import org.rifidi.designer.entities.SceneData;
 import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.rcp.views.view3d.View3D;
+import org.rifidi.designer.services.core.entities.EntitiesService;
 import org.rifidi.designer.services.core.entities.SceneDataService;
+import org.rifidi.designer.services.core.highlighting.HighlightingService;
 import org.rifidi.designer.services.core.selection.SelectionService;
+import org.rifidi.services.annotations.Inject;
+import org.rifidi.services.registry.ServiceRegistry;
 
 import com.jme.math.Quaternion;
 import com.jme.math.Vector3f;
+import com.jme.renderer.ColorRGBA;
 import com.jmex.physics.DynamicPhysicsNode;
 import com.jmex.physics.PhysicsNode;
 
@@ -96,18 +102,29 @@ public class MouseMoveEntityListener implements MouseMoveListener,
 	private SelectionService selectionService;
 
 	/**
+	 * Reference to the entities service.
+	 */
+	private EntitiesService entitiesService;
+
+	/**
+	 * Reference to the highlightingservice.
+	 */
+	private HighlightingService highlightingService;
+
+	/**
 	 * Constructor.
 	 * 
 	 * @param view3D
 	 *            reference to the 3d view
 	 * @param selectionService
 	 *            reference to the selection service.
+	 * @param entitiesService
+	 *            reference to the entities service
 	 */
-	public MouseMoveEntityListener(View3D view3D,
-			SelectionService selectionService, SceneDataService sceneDataService) {
+	public MouseMoveEntityListener(View3D view3D) {
 		this.view3D = view3D;
-		this.selectionService = selectionService;
-		this.sceneDataService = sceneDataService;
+		colliders = new ArrayList<VisualEntity>();
+		ServiceRegistry.getInstance().service(this);
 	}
 
 	/**
@@ -131,9 +148,9 @@ public class MouseMoveEntityListener implements MouseMoveListener,
 				// store the data for this entity
 				Target targetData = new Target(
 						(Vector3f) ((VisualEntity) target).getNode()
-								.getLocalTranslation().clone(), /* quadz, */
-						new Quaternion(((VisualEntity) target).getNode()
-								.getLocalRotation()));
+								.getLocalTranslation().clone(), new Quaternion(
+								((VisualEntity) target).getNode()
+										.getLocalRotation()));
 
 				// add to listing of target info
 				realTargets.put((VisualEntity) target, targetData);
@@ -149,6 +166,7 @@ public class MouseMoveEntityListener implements MouseMoveListener,
 	 * @see org.eclipse.swt.events.MouseMoveListener#mouseMove(org.eclipse.swt.events.MouseEvent)
 	 */
 	public void mouseMove(MouseEvent e) {
+		List<VisualEntity> colliders = new ArrayList<VisualEntity>();
 		if (!ignore && inPlacement) {
 
 			// calculate how far to move the object(s)
@@ -164,20 +182,14 @@ public class MouseMoveEntityListener implements MouseMoveListener,
 
 			// check if any objects would be out of bounds after moving this far
 			for (VisualEntity target : realTargets.keySet()) {
-				// Point curPos = target.getPositionFromTranslation();
-				// int maxX = sceneData.getWidth()
-				// - target.getPattern().getWidth();
-				// int maxY = sceneData.getWidth()
-				// - target.getPattern().getLength();
-
-				// check x direction
-				// if (curPos.x + vec.x > maxX || curPos.x + vec.x < 0)
-				// vec.x = 0;
-
-				// check y direction
-				// if (curPos.y + vec.z > maxY || curPos.y + vec.z < 0)
-				// vec.z = 0;
+				colliders.addAll(entitiesService.getColliders(target));
 			}
+			for (VisualEntity collider : colliders) {
+				// only keep the ones that aren't in the current list of
+				// colliders
+				this.colliders.remove(collider);
+			}
+			highlightingService.changeHighlighting(ColorRGBA.red, new ArrayList<VisualEntity>(colliders));
 
 			// remove whatever amount has been used for calculating motion this
 			// round
@@ -187,12 +199,12 @@ public class MouseMoveEntityListener implements MouseMoveListener,
 			// apply the approved translation to each target
 			for (VisualEntity target : realTargets.keySet()) {
 				target.getNode().getLocalTranslation().addLocal(vec);
-
 			}
 
 			// recenter the cursor
 			Display.getCurrent().setCursorLocation(center);
 			ignore = true;
+			this.colliders = colliders;
 		} else if (ignore == true) {
 			ignore = false;
 		}
@@ -212,14 +224,8 @@ public class MouseMoveEntityListener implements MouseMoveListener,
 	 * @see org.eclipse.swt.events.MouseListener#mouseDown(org.eclipse.swt.events.MouseEvent)
 	 */
 	public void mouseDown(MouseEvent e) {
-		// rotate the object
-		// if (e.button == 3 && realTargets.size() == 1) {
-		// for (VisualEntity ve : realTargets.keySet())
-		// ve.rotateRight();
-		// }
-		if (e.button == 1) {
+		if (colliders.size() == 0 && e.button == 1) {
 			drop();
-
 			view3D.switchMode(View3D.Mode.PickMode);
 			inPlacement = false;
 		}
@@ -232,9 +238,8 @@ public class MouseMoveEntityListener implements MouseMoveListener,
 	 */
 	public void mouseUp(MouseEvent e) {
 		// drop it
-		if (e.button == 1) {
+		if (colliders.size() == 0 && e.button == 1) {
 			drop();
-
 			view3D.switchMode(View3D.Mode.PickMode);
 			inPlacement = false;
 		}
@@ -306,5 +311,40 @@ public class MouseMoveEntityListener implements MouseMoveListener,
 			this.translation = translation;
 			this.quaternion = quat;
 		}
+	}
+
+	/**
+	 * @param sceneDataService
+	 *            the sceneDataService to set
+	 */
+	@Inject
+	public void setSceneDataService(SceneDataService sceneDataService) {
+		this.sceneDataService = sceneDataService;
+	}
+
+	/**
+	 * @param selectionService
+	 *            the selectionService to set
+	 */
+	@Inject
+	public void setSelectionService(SelectionService selectionService) {
+		this.selectionService = selectionService;
+	}
+
+	/**
+	 * @param entitiesService
+	 *            the entitiesService to set
+	 */
+	@Inject
+	public void setEntitiesService(EntitiesService entitiesService) {
+		this.entitiesService = entitiesService;
+	}
+
+	/**
+	 * @param highlightingService the highlightingService to set
+	 */
+	@Inject
+	public void setHighlightingService(HighlightingService highlightingService) {
+		this.highlightingService = highlightingService;
 	}
 }

@@ -50,7 +50,7 @@ import com.jmex.physics.material.Material;
  * 
  * @author Jochen Mader Oct 30, 2007
  */
-public class EntityMouseMoveListener implements MouseListener,
+public class AllAxisMouseMoveEntityListener implements MouseListener,
 		MouseMoveListener, MouseWheelListener {
 	/**
 	 * The currently picked entity.
@@ -100,7 +100,7 @@ public class EntityMouseMoveListener implements MouseListener,
 	 * @param view3D
 	 *            the 3d view
 	 */
-	public EntityMouseMoveListener(View3D view3D) {
+	public AllAxisMouseMoveEntityListener(View3D view3D) {
 		ServiceRegistry.getInstance().service(this);
 		this.view3D = view3D;
 	}
@@ -277,9 +277,9 @@ public class EntityMouseMoveListener implements MouseListener,
 			xDelta = pickedEntity.getNode().getLocalTranslation().x
 					+ ((BoundingBox) pickedEntity.getNode().getWorldBound()).xExtent
 					/ 2;
-			if (xDelta > sceneDataService.getWidth()) {
+			if (xDelta > ((BoundingBox)sceneDataService.getCurrentSceneData().getRootNode().getWorldBound()).xExtent) {
 				pickedEntity.getNode().getLocalTranslation().setX(
-						sceneDataService.getWidth()
+						((BoundingBox)sceneDataService.getCurrentSceneData().getRootNode().getWorldBound()).xExtent
 								- ((BoundingBox) pickedEntity.getNode()
 										.getWorldBound()).xExtent);
 			}
@@ -295,9 +295,9 @@ public class EntityMouseMoveListener implements MouseListener,
 			zDelta = pickedEntity.getNode().getLocalTranslation().z
 					+ ((BoundingBox) pickedEntity.getNode().getWorldBound()).zExtent
 					/ 2;
-			if (zDelta > sceneDataService.getWidth()) {
+			if (zDelta > ((BoundingBox)sceneDataService.getCurrentSceneData().getRootNode().getWorldBound()).zExtent) {
 				pickedEntity.getNode().getLocalTranslation().setZ(
-						sceneDataService.getWidth()
+						((BoundingBox)sceneDataService.getCurrentSceneData().getRootNode().getWorldBound()).zExtent
 								- ((BoundingBox) pickedEntity.getNode()
 										.getWorldBound()).zExtent);
 			}

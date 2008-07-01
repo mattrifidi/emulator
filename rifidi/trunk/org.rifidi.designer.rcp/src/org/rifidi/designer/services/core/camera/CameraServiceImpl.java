@@ -15,11 +15,14 @@ import java.util.concurrent.Callable;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.rifidi.designer.entities.Entity;
+import org.rifidi.designer.entities.SceneData;
 import org.rifidi.designer.entities.VisualEntity;
+import org.rifidi.designer.services.core.entities.SceneDataChangedListener;
 import org.rifidi.designer.services.core.entities.SceneDataService;
 import org.rifidi.services.annotations.Inject;
 import org.rifidi.services.registry.ServiceRegistry;
 
+import com.jme.bounding.BoundingBox;
 import com.jme.math.Vector3f;
 import com.jme.renderer.Camera;
 import com.jme.system.DisplaySystem;
@@ -32,7 +35,8 @@ import com.jme.util.GameTaskQueueManager;
  * @author Dan West - dan@pramari.com
  * 
  */
-public class CameraServiceImpl implements CameraService {
+public class CameraServiceImpl implements CameraService,
+		SceneDataChangedListener {
 	/**
 	 * The logger.
 	 */
@@ -112,8 +116,8 @@ public class CameraServiceImpl implements CameraService {
 	@Override
 	public void zoomIn() {
 		zoomlevel--;
-		if(zoomlevel<=-44){
-			zoomlevel=-44;
+		if (zoomlevel <= -44) {
+			zoomlevel = -44;
 		}
 		GameTaskQueueManager.getManager().update(new Callable<Object>() {
 
@@ -130,10 +134,12 @@ public class CameraServiceImpl implements CameraService {
 						-(baseFrustumvalue + zoomlevel),
 						(baseFrustumvalue + zoomlevel));
 				camera.update();
-				if(sceneDataService.getCurrentSceneData()!=null){
-					for(Entity entity:sceneDataService.getCurrentSceneData().getEntities()){
-						if(entity instanceof VisualEntity){
-							((VisualEntity)entity).setLOD(Math.abs((zoomlevel+44)/22));
+				if (sceneDataService.getCurrentSceneData() != null) {
+					for (Entity entity : sceneDataService.getCurrentSceneData()
+							.getEntities()) {
+						if (entity instanceof VisualEntity) {
+							((VisualEntity) entity).setLOD(Math
+									.abs((zoomlevel + 44) / 22));
 						}
 					}
 				}
@@ -151,8 +157,8 @@ public class CameraServiceImpl implements CameraService {
 	@Override
 	public void zoomOut() {
 		zoomlevel++;
-		if(zoomlevel>=-1){
-			zoomlevel=-1;
+		if (zoomlevel >= -1) {
+			zoomlevel = -1;
 		}
 		GameTaskQueueManager.getManager().update(new Callable<Object>() {
 
@@ -168,10 +174,12 @@ public class CameraServiceImpl implements CameraService {
 						(baseFrustumvalue + zoomlevel) * 4 / 3,
 						-(baseFrustumvalue + zoomlevel),
 						(baseFrustumvalue + zoomlevel));
-				if(sceneDataService.getCurrentSceneData()!=null){
-					for(Entity entity:sceneDataService.getCurrentSceneData().getEntities()){
-						if(entity instanceof VisualEntity){
-							((VisualEntity)entity).setLOD(Math.abs((zoomlevel+44)/22));
+				if (sceneDataService.getCurrentSceneData() != null) {
+					for (Entity entity : sceneDataService.getCurrentSceneData()
+							.getEntities()) {
+						if (entity instanceof VisualEntity) {
+							((VisualEntity) entity).setLOD(Math
+									.abs((zoomlevel + 44) / 22));
 						}
 					}
 				}
@@ -187,10 +195,6 @@ public class CameraServiceImpl implements CameraService {
 	 * @return a new initialized Jmonkey camera
 	 */
 	public void createCamera() {
-		float interval = (float) (Math.PI * 0.1f);
-		float aspect = 1024 / 768;
-		// Vector3f dir = new Vector3f(-0.1f, -.7f, -.7f);
-		Vector3f dir = new Vector3f(0.0f, 1.0f, 0.0f);
 		camera = DisplaySystem.getDisplaySystem().getRenderer().createCamera(
 				754, 584);
 		camera
@@ -199,17 +203,10 @@ public class CameraServiceImpl implements CameraService {
 						(baseFrustumvalue + zoomlevel) * 4 / 3,
 						-(baseFrustumvalue + zoomlevel),
 						(baseFrustumvalue + zoomlevel));
-		// camera.setLocation(new Vector3f(4, 2, 4));
-		// camera.setDirection(new Vector3f(0f, -1f, -.001f));
 
 		camera.setLocation(new Vector3f(4.3f, 2, 4.6f));
 		camera.lookAt(new Vector3f(3.7f, 1, 3), Vector3f.UNIT_Y);
-		// camera.lookAt(new Vector3f(45,0,5), Vector3f.UNIT_Y);
-		// camera.lookAt(Vector3f.ZERO, Vector3f.UNIT_Y);
 		camera.setParallelProjection(true);
-		// Quaternion q = new Quaternion();
-		// q.fromAngles(0, interval, 0);
-		// q.toRotationMatrix(new Matrix3f()).multLocal(camera.getDirection());
 		camera.update();
 		DisplaySystem.getDisplaySystem().getRenderer().setCamera(camera);
 	}
@@ -224,11 +221,13 @@ public class CameraServiceImpl implements CameraService {
 			 */
 			@Override
 			public Object call() throws Exception {
-				camera.setLocation(new Vector3f((int) (sceneDataService
-						.getCurrentSceneData().getWidth() / 2), 2,
-						(int) (sceneDataService.getCurrentSceneData()
-								.getWidth() / 2)));
-
+				camera.setLocation(new Vector3f(
+						(int) (((BoundingBox) sceneDataService
+								.getCurrentSceneData().getRoomNode()
+								.getWorldBound()).xExtent / 2), 2,
+						(int) ((BoundingBox) sceneDataService
+								.getCurrentSceneData().getRoomNode()
+								.getWorldBound()).zExtent / 2));
 				camera.getLocation().addLocal(new Vector3f(-5, 0, -15));
 				camera.update();
 				return null;
@@ -255,6 +254,7 @@ public class CameraServiceImpl implements CameraService {
 	public void setSceneDataService(SceneDataService sceneDataService) {
 		logger.debug("CamerService got SceneDataService");
 		this.sceneDataService = sceneDataService;
+		sceneDataService.addSceneDataChangedListener(this);
 	}
 
 	/**
@@ -286,6 +286,27 @@ public class CameraServiceImpl implements CameraService {
 			}
 
 		});
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.rifidi.designer.services.core.entities.SceneDataChangedListener#destroySceneData(org.rifidi.designer.entities.SceneData)
+	 */
+	@Override
+	public void destroySceneData(SceneData sceneData) {
+		// TODO Auto-generated method stub
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.rifidi.designer.services.core.entities.SceneDataChangedListener#sceneDataChanged(org.rifidi.designer.entities.SceneData)
+	 */
+	@Override
+	public void sceneDataChanged(SceneData sceneData) {
+		centerCamera();
 	}
 
 }
