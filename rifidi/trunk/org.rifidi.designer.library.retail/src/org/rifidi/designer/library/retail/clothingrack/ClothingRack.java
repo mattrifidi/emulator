@@ -22,7 +22,6 @@ import java.util.concurrent.Callable;
 import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.interfaces.NeedsPhysics;
 import org.rifidi.designer.entities.interfaces.VisualEntityHolder;
-import org.rifidi.designer.entities.placement.BinaryPattern;
 import org.rifidi.designer.library.retail.Position;
 import org.rifidi.designer.library.retail.clothing.Clothing;
 import org.rifidi.services.annotations.Inject;
@@ -184,8 +183,6 @@ public class ClothingRack extends VisualEntity implements VisualEntityHolder,
 	 */
 	@Override
 	public void loaded() {
-		// TODO Auto-generated method stub
-
 	}
 
 	/*

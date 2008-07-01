@@ -16,6 +16,7 @@ import java.util.List;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.rifidi.designer.library.EntityLibrary;
 import org.rifidi.designer.library.EntityLibraryReference;
+import org.rifidi.designer.library.FloorElement;
 import org.rifidi.designer.library.retail.clothing.Clothing;
 import org.rifidi.designer.library.retail.clothingrack.ClothingRack;
 import org.rifidi.designer.library.retail.retailbox.RetailBox;
@@ -110,6 +111,14 @@ public class RetailLibrary implements EntityLibrary {
 	public ImageDescriptor getImageDescriptor() {
 		return Activator.getDefault().getImageRegistry().getDescriptor(
 				RetailLibrary.class.getName());
+	}
+
+	/* (non-Javadoc)
+	 * @see org.rifidi.designer.library.EntityLibrary#getFloorElements()
+	 */
+	@Override
+	public List<FloorElement> getFloorElements() {
+		return null;
 	}
 
 }

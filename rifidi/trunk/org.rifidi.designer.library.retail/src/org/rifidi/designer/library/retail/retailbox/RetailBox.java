@@ -17,7 +17,6 @@ import java.net.URISyntaxException;
 
 import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.interfaces.NeedsPhysics;
-import org.rifidi.designer.entities.placement.BinaryPattern;
 
 import com.jme.input.InputHandler;
 import com.jme.math.Vector3f;
@@ -99,7 +98,6 @@ public class RetailBox extends VisualEntity implements NeedsPhysics {
 	 */
 	@Override
 	public void loaded() {
-		// TODO Auto-generated method stub
 
 	}
 
