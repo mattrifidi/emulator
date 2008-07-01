@@ -27,7 +27,6 @@ import org.rifidi.designer.entities.interfaces.NeedsPhysics;
 import org.rifidi.designer.entities.interfaces.SceneControl;
 import org.rifidi.designer.entities.interfaces.Switch;
 import org.rifidi.designer.entities.interfaces.Trigger;
-import org.rifidi.designer.entities.placement.BinaryPattern;
 
 import com.jme.animation.SpatialTransformer;
 import com.jme.bounding.BoundingBox;
@@ -454,7 +453,6 @@ public class PusharmEntity extends VisualEntity implements SceneControl,
 	 */
 	@Override
 	public void setLow(int portNum) {
-		// TODO Auto-generated method stub
 
 	}
 

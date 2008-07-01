@@ -27,8 +27,6 @@ import org.rifidi.designer.library.basemodels.cardbox.CardboxEntity;
 import org.rifidi.designer.library.basemodels.cardbox.CardboxEntityWorkbenchAdapter;
 import org.rifidi.designer.library.basemodels.conveyor.ConveyorEntity;
 import org.rifidi.designer.library.basemodels.conveyor.ConveyorEntityWorkbenchAdapter;
-import org.rifidi.designer.library.basemodels.conveyor90.Conveyor90Entity;
-import org.rifidi.designer.library.basemodels.conveyor90.Conveyor90EntityWorkbenchAdapter;
 import org.rifidi.designer.library.basemodels.gate.GateEntity;
 import org.rifidi.designer.library.basemodels.gate.GateEntityWorkbenchAdapter;
 import org.rifidi.designer.library.basemodels.infrared.InfraredEntity;
@@ -113,16 +111,6 @@ public class AdapterFactory implements IAdapterFactory {
 		} else if (adaptableObject instanceof ConveyorEntity) {
 			if (IWorkbenchAdapter.class.equals(adapterType)) {
 				return new ConveyorEntityWorkbenchAdapter();
-			}
-			if (IActionFilter.class.equals(adapterType)) {
-				return new SwitchActionFilterAdapter();
-			}
-			if (IPropertySource.class.equals(adapterType)) {
-				return new DefaultPropertySource((Entity) adaptableObject);
-			}
-		} else if (adaptableObject instanceof Conveyor90Entity) {
-			if (IWorkbenchAdapter.class.equals(adapterType)) {
-				return new Conveyor90EntityWorkbenchAdapter();
 			}
 			if (IActionFilter.class.equals(adapterType)) {
 				return new SwitchActionFilterAdapter();

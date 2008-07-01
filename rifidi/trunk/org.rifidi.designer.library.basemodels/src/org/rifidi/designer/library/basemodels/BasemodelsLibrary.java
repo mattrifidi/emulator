@@ -16,6 +16,7 @@ import java.util.List;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.rifidi.designer.library.EntityLibrary;
 import org.rifidi.designer.library.EntityLibraryReference;
+import org.rifidi.designer.library.FloorElement;
 import org.rifidi.designer.library.basemodels.antennafield.AntennaFieldEntity;
 import org.rifidi.designer.library.basemodels.boxproducer.BoxproducerEntity;
 import org.rifidi.designer.library.basemodels.cardbox.CardboxEntity;
@@ -36,12 +37,17 @@ public class BasemodelsLibrary implements EntityLibrary {
 	 * Library references for the models.
 	 */
 	private List<EntityLibraryReference> library;
-
+	/**
+	 * List of availabel floorelements.
+	 */
+	private List<FloorElement> floorelements;
+	
 	/**
 	 * Constructor.
 	 */
 	public BasemodelsLibrary() {
 		this.library = new ArrayList<EntityLibraryReference>();
+		this.floorelements = new ArrayList<FloorElement>();
 		EntityLibraryReference conveyorRef = new EntityLibraryReference();
 		conveyorRef.setId(ConveyorEntity.class.getName());
 		conveyorRef.setImageDescriptor(Activator.getDefault()
@@ -144,6 +150,13 @@ public class BasemodelsLibrary implements EntityLibrary {
 		prodSGTIN96Ref.setEntityClass(org.rifidi.designer.library.basemodels.boxproducerSGTIN96.BoxproducerEntitySGTIN96.class);
 		prodSGTIN96Ref.setHidden(false);
 		library.add(prodSGTIN96Ref);
+		
+		FloorElement floorElement=new FloorElement();
+		floorElement.setId("base");
+		floorElement.setImageDescriptor(null);
+		floorElement.setName("base");
+		floorElement.setPath("org/rifidi/designer/library/basemodels/test.jme");
+		floorelements.add(floorElement);
 	}
 
 	/*
@@ -173,6 +186,14 @@ public class BasemodelsLibrary implements EntityLibrary {
 	public ImageDescriptor getImageDescriptor() {
 		return Activator.getDefault().getImageRegistry().getDescriptor(
 				BasemodelsLibrary.class.getName());
+	}
+
+	/* (non-Javadoc)
+	 * @see org.rifidi.designer.library.EntityLibrary#getFloorElements()
+	 */
+	@Override
+	public List<FloorElement> getFloorElements() {
+		return floorelements;
 	}
 
 }

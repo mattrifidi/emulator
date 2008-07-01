@@ -9,7 +9,6 @@ import org.osgi.framework.BundleContext;
 import org.rifidi.designer.library.basemodels.boxproducer.BoxproducerEntity;
 import org.rifidi.designer.library.basemodels.cardbox.CardboxEntity;
 import org.rifidi.designer.library.basemodels.conveyor.ConveyorEntity;
-import org.rifidi.designer.library.basemodels.conveyor90.Conveyor90Entity;
 import org.rifidi.designer.library.basemodels.gate.GateEntity;
 import org.rifidi.designer.library.basemodels.infrared.InfraredEntity;
 import org.rifidi.designer.library.basemodels.pusharm.PusharmEntity;
@@ -96,8 +95,6 @@ public class Activator extends AbstractUIPlugin {
 				PLUGIN_ID, iconPath + "cardboard.png"));
 		reg.put(InfraredEntity.class.getName(), imageDescriptorFromPlugin(
 				PLUGIN_ID, iconPath + "infrared.png"));
-		reg.put(Conveyor90Entity.class.getName(), imageDescriptorFromPlugin(
-				PLUGIN_ID, iconPath + "convey90.png"));
 		reg.put(BasemodelsLibrary.class.getName(), imageDescriptorFromPlugin(
 				PLUGIN_ID, iconPath + "rifidi.png"));
 	}

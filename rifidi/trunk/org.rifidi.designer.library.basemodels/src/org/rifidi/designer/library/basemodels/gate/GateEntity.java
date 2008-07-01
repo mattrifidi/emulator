@@ -276,7 +276,6 @@ public class GateEntity extends VisualEntity implements RifidiEntity, Switch,
 	@Override
 	public void destroy() {
 		getNode().removeFromParent();
-		System.out.println("destroying");
 		try {
 			readerModuleManagerInterface.turnReaderOff();
 		} catch (Exception e) {
@@ -288,67 +287,6 @@ public class GateEntity extends VisualEntity implements RifidiEntity, Switch,
 	public void setRMIManager(RMIManager rmimanager) {
 		this.rmimanager = rmimanager;
 	}
-
-	// TODO implement these properties under the uireader in ui.common
-	// public String getReaderName() {
-	// return reader.getReaderName();
-	// }
-	//
-	// @Property(displayName = "Reader Name", description = "guess what",
-	// readonly = true, unit = "")
-	// public void setReaderName(String readerName) {
-	// this.readerName = readerName;
-	// }
-	//
-	// public String getReaderClassName() {
-	// return readerClassName;
-	// }
-	//
-	// @Property(displayName = "Reader Class", description = "guess what",
-	// readonly = true, unit = "")
-	// public void setReaderClassName(String readerClassName) {
-	// this.readerClassName = readerClassName;
-	// }
-	//
-	// public Integer getNumAntennas() {
-	// return numAntennas;
-	// }
-	//
-	// @Property(displayName = "Num Antennas", description = "guess what",
-	// readonly = true, unit = "")
-	// public void setNumAntennas(Integer numAntennas) {
-	// this.numAntennas = numAntennas;
-	// }
-	//
-	// public Integer getNumGPIs() {
-	// return numGPIs;
-	// }
-	//
-	// @Property(displayName = "Num GPI's", description = "guess what", readonly
-	// = true, unit = "")
-	// public void setNumGPIs(Integer numGPIs) {
-	// this.numGPIs = numGPIs;
-	// }
-	//
-	// public Integer getNumGPOs() {
-	// return numGPOs;
-	// }
-	//
-	// @Property(displayName = "Num GPO's", description = "guess what", readonly
-	// = true, unit = "")
-	// public void setNumGPOs(Integer numGPOs) {
-	// this.numGPOs = numGPOs;
-	// }
-	//
-	// public Map<String, String> getPropertiesMap() {
-	// return propertiesMap;
-	// }
-	//
-	// @Property(displayName = "Properties", description = "guess what",
-	// readonly = true, unit = "")
-	// public void setPropertiesMap(Map<String, String> propertiesMap) {
-	// this.propertiesMap = propertiesMap;
-	// }
 
 	/**
 	 * Set the running state of the entity.

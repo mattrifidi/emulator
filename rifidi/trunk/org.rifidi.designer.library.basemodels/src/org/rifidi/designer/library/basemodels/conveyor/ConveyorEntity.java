@@ -25,7 +25,6 @@ import org.rifidi.designer.entities.databinding.annotations.MonitoredProperties;
 import org.rifidi.designer.entities.interfaces.Directional;
 import org.rifidi.designer.entities.interfaces.NeedsPhysics;
 import org.rifidi.designer.entities.interfaces.Switch;
-import org.rifidi.designer.entities.placement.BinaryPattern;
 import org.rifidi.jmeswt.utils.NodeHelper;
 
 import com.jme.bounding.BoundingBox;
@@ -274,9 +273,6 @@ public class ConveyorEntity extends VisualEntity implements Switch,
 		((PhysicsNode)getNode()).setActive(false);
 		getNode().removeFromParent();
 	}
-
-	// TODO it would appear that unparenting things makes them lose their
-	// localdata. Find a more graceful way of handling the fact
 
 	/*
 	 * (non-Javadoc)

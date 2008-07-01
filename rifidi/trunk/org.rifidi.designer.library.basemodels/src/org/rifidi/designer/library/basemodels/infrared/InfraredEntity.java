@@ -22,7 +22,6 @@ import org.rifidi.designer.entities.interfaces.GPO;
 import org.rifidi.designer.entities.interfaces.NeedsPhysics;
 import org.rifidi.designer.entities.interfaces.SceneControl;
 import org.rifidi.designer.entities.interfaces.Switch;
-import org.rifidi.designer.entities.placement.BinaryPattern;
 import org.rifidi.designer.services.core.cabling.CablingService;
 import org.rifidi.services.annotations.Inject;
 
@@ -225,7 +224,6 @@ public class InfraredEntity extends VisualEntity implements SceneControl,
 
 	@Override
 	public boolean isRunning() {
-		// TODO Auto-generated method stub
 		return running;
 	}
 
@@ -242,7 +240,6 @@ public class InfraredEntity extends VisualEntity implements SceneControl,
 
 	@Override
 	public void fieldLeft(Entity entity) {
-		// TODO Auto-generated method stub
 		
 	}
 

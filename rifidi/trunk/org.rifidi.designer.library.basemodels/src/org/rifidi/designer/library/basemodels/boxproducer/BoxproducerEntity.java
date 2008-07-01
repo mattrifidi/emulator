@@ -28,7 +28,6 @@ import org.rifidi.designer.entities.annotations.Property;
 import org.rifidi.designer.entities.databinding.annotations.MonitoredProperties;
 import org.rifidi.designer.entities.interfaces.SceneControl;
 import org.rifidi.designer.entities.interfaces.Switch;
-import org.rifidi.designer.entities.placement.BinaryPattern;
 import org.rifidi.designer.library.basemodels.cardbox.CardboxEntity;
 import org.rifidi.designer.services.core.entities.ProductService;
 import org.rifidi.jmeswt.utils.NodeHelper;

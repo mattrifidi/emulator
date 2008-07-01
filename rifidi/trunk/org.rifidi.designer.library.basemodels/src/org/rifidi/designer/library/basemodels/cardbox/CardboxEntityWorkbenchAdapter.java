@@ -49,7 +49,6 @@ public class CardboxEntityWorkbenchAdapter implements IWorkbenchAdapter{
 	 * @see org.eclipse.ui.model.IWorkbenchAdapter#getParent(java.lang.Object)
 	 */
 	public Object getParent(Object o) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
