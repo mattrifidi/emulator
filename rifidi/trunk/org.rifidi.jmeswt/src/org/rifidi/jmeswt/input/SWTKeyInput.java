@@ -44,7 +44,6 @@ public class SWTKeyInput extends KeyInput implements KeyListener {
 	 */
 	@Override
 	protected void destroy() {
-		// TODO Auto-generated method stub
 
 	}
 

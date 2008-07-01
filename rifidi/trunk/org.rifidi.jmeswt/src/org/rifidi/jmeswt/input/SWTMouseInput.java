@@ -121,7 +121,6 @@ public class SWTMouseInput extends MouseInput implements MouseListener,
 	public int getButtonIndex(String buttonName) {
 		String lowerButtonName = buttonName.toLowerCase();
 		if (lowerButtonName.contains("MOUSE")) {
-			// TODO: try catch or not try catch that is the question here
 			return Integer.parseInt(lowerButtonName.substring(5));
 		}
 		logger.warning("Unknown button: " + buttonName);

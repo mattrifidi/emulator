@@ -80,6 +80,8 @@ public class RenderThread extends Thread {
 	 */
 	@Override
 	public void run() {
+		game.getDisplaySys().getRenderer().enableStatistics(true);
+		renderRunnable=new RenderRunnable();
 		while (!game.getGlCanvas().isDisposed() && keepRunning) {
 			try {
 				semaphore.acquire();
@@ -89,7 +91,7 @@ public class RenderThread extends Thread {
 
 			try {
 				if (canvas != null) {
-					display.syncExec(new RenderRunnable());
+					display.syncExec(renderRunnable);
 				}
 			} finally {
 				semaphore.release();

@@ -35,7 +35,6 @@ import com.jme.renderer.Camera;
 import com.jme.renderer.ColorRGBA;
 import com.jme.scene.Node;
 import com.jme.scene.state.LightState;
-import com.jme.scene.state.WireframeState;
 import com.jme.scene.state.ZBufferState;
 import com.jme.system.DisplaySystem;
 import com.jme.system.JmeException;
@@ -78,10 +77,6 @@ public abstract class SWTBaseGame extends AbstractGame {
 	 * Root of the scene graph.
 	 */
 	private Node rootNode;
-	/**
-	 * State for wireframe display.
-	 */
-	private WireframeState wireState;
 	/**
 	 * State for the light.
 	 */
@@ -200,14 +195,6 @@ public abstract class SWTBaseGame extends AbstractGame {
 		rootNode = new Node("rootNode");
 
 		/**
-		 * Create a wirestate to toggle on and off. Starts disabled with default
-		 * width of 1 pixel.
-		 */
-		wireState = display.getRenderer().createWireframeState();
-		wireState.setEnabled(false);
-		rootNode.setRenderState(wireState);
-
-		/**
 		 * Create a ZBuffer to display pixels closest to the camera above
 		 * farther ones.
 		 */
@@ -215,19 +202,6 @@ public abstract class SWTBaseGame extends AbstractGame {
 		buf.setEnabled(true);
 		buf.setFunction(ZBufferState.CF_LEQUAL);
 		rootNode.setRenderState(buf);
-
-		/** Set up a basic, default light. */
-		PointLight light = new PointLight();
-		light.setDiffuse(new ColorRGBA(0.75f, 0.75f, 0.75f, 0.75f));
-		light.setAmbient(new ColorRGBA(0.5f, 0.5f, 0.5f, 1.0f));
-		light.setLocation(new Vector3f(100, 100, 100));
-		light.setEnabled(true);
-
-		/** Attach the light to a lightState and the lightState to rootNode. */
-		lightState = display.getRenderer().createLightState();
-		lightState.setEnabled(true);
-		lightState.attach(light);
-		rootNode.setRenderState(lightState);
 
 		/** Let derived classes initialize. */
 		simpleInitGame();
@@ -476,7 +450,9 @@ public abstract class SWTBaseGame extends AbstractGame {
 		this.parent = parent;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.jme.app.AbstractGame#finish()
 	 */
 	@Override
