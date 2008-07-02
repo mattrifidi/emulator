@@ -100,7 +100,7 @@ public class AlientTagListFormatter {
 			logger.debug("Custom Output");
 
 			for (RifidiTag tag : tags) {
-				sb.append(this.aFormatter.formatTag(tag, tagListCustomFormatProperty.getDefaultValue(),
+				sb.append(this.aFormatter.formatTag(tag, tagListCustomFormatProperty.getPropertyStringValue(),
 						alienDateFormat, alienTimeFormat));
 				sb.append(AlienCommon.NEWLINE);
 			}

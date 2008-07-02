@@ -44,7 +44,7 @@ public class AlienTag {
 	private static Log logger = LogFactory.getLog(AlienTag.class);
 
 	/**
-	 * A convience method to use to scan the radio and get tags back from the
+	 * A convenience method to use to scan the radio and get tags back from the
 	 * tag memory. It also increments the read count of the tags.
 	 * 
 	 * @param asr
@@ -90,7 +90,7 @@ public class AlienTag {
 
 		String returnVal = "";
 
-		/* If no prompt supress add echo to the output */
+		/* If no prompt suppress add echo to the output */
 		if (!arg.getPromptSuppress()) {
 			String formattedEcho = arg.getCurrentQueryName()
 					+ AlienCommon.NEWLINE;
@@ -123,7 +123,7 @@ public class AlienTag {
 				tags.get(i).incrementReadCount();
 			}
 
-			/* If theres is something in the TagMemory add it to the Output */
+			/* If there is something in the TagMemory add it to the Output */
 			if (tags.size() != 0) {
 				returnVal += formatter.formatTag(tags);
 			} else {

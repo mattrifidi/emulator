@@ -39,17 +39,18 @@ public class TagFormatter {
 	 * @param aTag
 	 *            The Tag Object
 	 * @param regExToken
-	 *            The regExToken is the specified custon format.
+	 *            The regExToken is the specified custom format.
 	 * 
 	 * @return formated_tag which is a String in the format specified.
 	 */
 	public String formatTag(RifidiTag aTag, String regExToken,
 			SimpleDateFormat dateformat, SimpleDateFormat timeformat) {
 
+		//FIXME the %i is broken, fix
 		regExToken = regExToken
 				.replaceAll("%i", aTag.toString());
 		
-		regExToken = regExToken.replaceAll("%k", aTag.toString());
+		regExToken = regExToken.replaceAll("%k", this.removeWhitespace(aTag.toString()));
 		
 		String discDate = dateformat.format(aTag.getDiscoveryDate());
 		regExToken = regExToken.replaceAll("%d", discDate);
