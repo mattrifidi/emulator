@@ -96,4 +96,11 @@ public interface EntitiesService {
 	 */
 	List<VisualEntity> getColliders(VisualEntity visualEntity);
 	
+	/**
+	 * Check if the given entity collides with a scene wall.
+	 * @param visualEntity
+	 * @return
+	 */
+	boolean collidesWithScene(VisualEntity visualEntity);
+	
 }

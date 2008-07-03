@@ -24,7 +24,6 @@ import org.rifidi.jmonkey.SWTDisplaySystem;
 import org.rifidi.services.annotations.Inject;
 import org.rifidi.services.registry.ServiceRegistry;
 
-import com.jme.bounding.BoundingBox;
 import com.jme.math.Vector2f;
 import com.jme.math.Vector3f;
 import com.jme.renderer.Camera;
@@ -109,57 +108,44 @@ public class WatchAreaDrawMouseListener implements MouseListener,
 
 			startX = b / m;
 			startZ = b2 / m2;
-			if (startX > 0
-					&& startZ > 0
-					&& startX < ((BoundingBox) sceneDataService
-							.getCurrentSceneData().getRoomNode()
-							.getWorldBound()).xExtent
-					&& startZ < ((BoundingBox) sceneDataService
-							.getCurrentSceneData().getRoomNode()
-							.getWorldBound()).zExtent) {
 
-				boxNode = new Node();
-				box = new Box("name", Vector3f.ZERO, .5f, 7f, .5f);
-				boxNode.setLocalTranslation(new Vector3f((float) Math
-						.ceil(startX) - .5f, 5.6f,
-						(float) Math.ceil(startZ) - .5f));
-				boxNode.attachChild(box);
-				GameTaskQueueManager.getManager().update(
-						new Callable<Object>() {
+			boxNode = new Node();
+			box = new Box("name", Vector3f.ZERO, .5f, 7f, .5f);
+			boxNode.setLocalTranslation(new Vector3f(
+					(float) Math.ceil(startX) - .5f, 5.6f, (float) Math
+							.ceil(startZ) - .5f));
+			boxNode.attachChild(box);
+			GameTaskQueueManager.getManager().update(new Callable<Object>() {
 
-							/*
-							 * (non-Javadoc)
-							 * 
-							 * @see java.util.concurrent.Callable#call()
-							 */
-							@Override
-							public Object call() throws Exception {
-								MaterialState ms = DisplaySystem
-										.getDisplaySystem().getRenderer()
-										.createMaterialState();
-								ms.setDiffuse(new ColorRGBA(0, 0, 1, .5f));
-								ms.setEmissive(new ColorRGBA(0, 0, 1, .3f));
-								ms.setShininess(1);
-								ms.setSpecular(new ColorRGBA(0, 0, 1, .3f));
-								AlphaState as = DisplaySystem
-										.getDisplaySystem().getRenderer()
-										.createAlphaState();
-								as.setBlendEnabled(true);
-								as.setSrcFunction(AlphaState.SB_SRC_ALPHA);
-								as.setDstFunction(AlphaState.DB_ONE);
-								as.setEnabled(true);
-								sceneDataService.getCurrentSceneData()
-										.getRoomNode().attachChild(boxNode);
-								boxNode.setRenderState(as);
-								boxNode.setRenderState(ms);
-								boxNode.updateRenderState();
-								box
-										.setRenderQueueMode(Renderer.QUEUE_TRANSPARENT);
-								return null;
-							}
+				/*
+				 * (non-Javadoc)
+				 * 
+				 * @see java.util.concurrent.Callable#call()
+				 */
+				@Override
+				public Object call() throws Exception {
+					MaterialState ms = DisplaySystem.getDisplaySystem()
+							.getRenderer().createMaterialState();
+					ms.setDiffuse(new ColorRGBA(0, 0, 1, .5f));
+					ms.setEmissive(new ColorRGBA(0, 0, 1, .3f));
+					ms.setShininess(1);
+					ms.setSpecular(new ColorRGBA(0, 0, 1, .3f));
+					AlphaState as = DisplaySystem.getDisplaySystem()
+							.getRenderer().createAlphaState();
+					as.setBlendEnabled(true);
+					as.setSrcFunction(AlphaState.SB_SRC_ALPHA);
+					as.setDstFunction(AlphaState.DB_ONE);
+					as.setEnabled(true);
+					sceneDataService.getCurrentSceneData().getRoomNode()
+							.attachChild(boxNode);
+					boxNode.setRenderState(as);
+					boxNode.setRenderState(ms);
+					boxNode.updateRenderState();
+					box.setRenderQueueMode(Renderer.QUEUE_TRANSPARENT);
+					return null;
+				}
 
-						});
-			}
+			});
 		} else if (e.button == 3) {
 			pressed = false;
 			if (boxNode != null) {
@@ -269,26 +255,6 @@ public class WatchAreaDrawMouseListener implements MouseListener,
 								float bottom = newZ > startZ ? (float) Math
 										.floor(newZ) : (float) Math
 										.ceil(startZ);
-								if (left < 0) {
-									left = 0;
-								}
-								if (right > ((BoundingBox) sceneDataService
-										.getCurrentSceneData().getRoomNode()
-										.getWorldBound()).xExtent) {
-									right = ((BoundingBox) sceneDataService
-											.getCurrentSceneData()
-											.getRoomNode().getWorldBound()).xExtent;
-								}
-								if (top < 0) {
-									top = 0;
-								}
-								if (bottom > ((BoundingBox) sceneDataService
-										.getCurrentSceneData().getRoomNode()
-										.getWorldBound()).zExtent) {
-									bottom = ((BoundingBox) sceneDataService
-											.getCurrentSceneData()
-											.getRoomNode().getWorldBound()).zExtent;
-								}
 								boxNode.getLocalTranslation()
 										.set(
 												new Vector3f((right - left) / 2

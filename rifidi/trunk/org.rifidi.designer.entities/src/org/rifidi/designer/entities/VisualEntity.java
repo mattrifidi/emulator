@@ -44,6 +44,10 @@ public abstract class VisualEntity extends Entity {
 	 */
 	@XmlTransient
 	private static Matrix3f rotationMatrix90 = null;
+	
+	protected Integer width=0;
+	protected Integer length=0;
+	protected Integer height=0;
 
 	/**
 	 * @return the node
@@ -123,4 +127,25 @@ public abstract class VisualEntity extends Entity {
 	}
 
 	public abstract void setLOD(int lod);
+
+	/**
+	 * @return the width
+	 */
+	public Integer getWidth() {
+		return this.width;
+	}
+
+	/**
+	 * @return the length
+	 */
+	public Integer getLength() {
+		return this.length;
+	}
+
+	/**
+	 * @return the height
+	 */
+	public Integer getHeight() {
+		return this.height;
+	}
 }

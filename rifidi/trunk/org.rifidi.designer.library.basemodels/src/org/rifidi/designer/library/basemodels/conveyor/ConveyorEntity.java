@@ -115,6 +115,9 @@ public class ConveyorEntity extends VisualEntity implements Switch,
 		basicTrans.setEnabled(true);
 		setName("Conveyor");
 		setSpeed(4);
+		width=2;
+		height=3;
+		length=5;
 	}
 
 	/**
@@ -147,7 +150,7 @@ public class ConveyorEntity extends VisualEntity implements Switch,
 		setNode(physicsSpace.createStaticNode());
 		switchNode=new SwitchNode();
 		switchNode.attachChildAt(new SharedNode("sharedConv_", model), 0);
-		switchNode.attachChild(new Box("iii",Vector3f.ZERO.clone(),4,4,4));
+		switchNode.attachChildAt(new SharedNode("sharedConv_", model), 1);
 		switchNode.setActiveChild(0);
 		
 		getNode().attachChild(switchNode);

@@ -30,5 +30,12 @@ public interface HighlightingService {
 	 * @param highlight
 	 */
 	void changeHighlighting(ColorRGBA color, List<VisualEntity> highlight);
-
+	
+	/**
+	 * Change the highlight of already highlighted entities. 
+	 * @param color
+	 * @param newcolor
+	 * @param entity
+	 */
+	void changeHighlightColor(ColorRGBA color, ColorRGBA newcolor, List<VisualEntity> hilight);
 }

@@ -558,8 +558,9 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 			staticNode.generatePhysicsGeometry();
 			roomnode.attachChild(staticNode);
 		}
+		roomnode.updateWorldBound();
 		sceneData.setRoomNode(roomnode);
-		
+
 		fileOfCurrentScene = file;
 		nodeToEntity = Collections
 				.synchronizedMap(new HashMap<Node, VisualEntity>());
@@ -693,7 +694,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	public void removeSceneDataChangedListener(SceneDataChangedListener listener) {
 		listeners.remove(listener);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -810,6 +811,24 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 		return colliders;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.rifidi.designer.services.core.entities.EntitiesService#collidesWithScene(org.rifidi.designer.entities.VisualEntity)
+	 */
+	@Override
+	public boolean collidesWithScene(VisualEntity visualEntity) {
+		for (Spatial spat : sceneData.getRoomNode().getChildren()) {
+			if (!"floor".equals(spat.getName())) {
+				if (visualEntity.getNode().getWorldBound().intersects(
+						spat.getWorldBound())) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
 	/**
 	 * Used to do updates on the scene graph.
 	 * 
@@ -870,14 +889,13 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 			}
 			// center the object in the scene
 			if (center) {
-				((VisualEntity) newentity).getNode()
-						.setLocalTranslation(
-								((BoundingBox) sceneData.getRootNode()
-										.getWorldBound()).xExtent,
-								((VisualEntity) newentity).getNode()
-										.getLocalTranslation().y,
-								((BoundingBox) sceneData.getRootNode()
-										.getWorldBound()).zExtent);
+				((VisualEntity) newentity).getNode().setLocalTranslation(
+						(float) Math.floor(((BoundingBox) sceneData
+								.getRoomNode().getWorldBound()).xExtent),
+						((VisualEntity) newentity).getNode()
+								.getLocalTranslation().y,
+						(float) Math.floor(((BoundingBox) sceneData
+								.getRoomNode().getWorldBound()).zExtent));
 			}
 			if (listener != null) {
 				sceneData.getDisplay().asyncExec(new Runnable() {

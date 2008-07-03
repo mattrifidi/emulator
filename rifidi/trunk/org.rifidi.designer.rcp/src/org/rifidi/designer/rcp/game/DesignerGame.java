@@ -654,16 +654,25 @@ public class DesignerGame extends SWTBaseGame implements
 		}
 		// create the grid
 		logger.debug("creating grid");
-		GridNode grid = new GridNode("griddy",
-				(int) ((BoundingBox) sceneDataService.getCurrentSceneData()
-						.getRoomNode().getWorldBound()).xExtent,
-				(int) ((BoundingBox) sceneDataService.getCurrentSceneData()
-						.getRoomNode().getWorldBound()).zExtent, .1f);
-		grid.setLocalTranslation(
-				((BoundingBox) sceneDataService.getCurrentSceneData()
-						.getRootNode().getWorldBound()).xExtent / 2, 0.01f,
-				((BoundingBox) sceneDataService.getCurrentSceneData()
-						.getRoomNode().getWorldBound()).zExtent / 2);
+		int gridX = (int) ((BoundingBox) sceneDataService.getCurrentSceneData()
+				.getRoomNode().getWorldBound()).xExtent * 2;
+		int gridZ = (int) ((BoundingBox) sceneDataService.getCurrentSceneData()
+				.getRoomNode().getWorldBound()).zExtent * 2;
+		//one grid is 0.5 units!!!
+		gridX = Math.floor(((BoundingBox) sceneDataService.getCurrentSceneData()
+				.getRoomNode().getWorldBound()).xExtent) < ((BoundingBox) sceneDataService.getCurrentSceneData()
+						.getRoomNode().getWorldBound()).xExtent ? gridX + 1
+				: gridX;
+		gridZ = Math.floor(((BoundingBox) sceneDataService.getCurrentSceneData()
+				.getRoomNode().getWorldBound()).zExtent) < ((BoundingBox) sceneDataService.getCurrentSceneData()
+						.getRoomNode().getWorldBound()).zExtent ? gridZ + 1
+				: gridZ;
+		GridNode grid = new GridNode("griddy", gridX, gridZ, .1f);
+		grid.setLocalTranslation(((BoundingBox) sceneDataService
+				.getCurrentSceneData().getRoomNode().getWorldBound())
+				.getCenter().x, 0.01f, ((BoundingBox) sceneDataService
+				.getCurrentSceneData().getRoomNode().getWorldBound())
+				.getCenter().z);
 
 		MaterialState ms = DisplaySystem.getDisplaySystem().getRenderer()
 				.createMaterialState();
@@ -753,6 +762,31 @@ public class DesignerGame extends SWTBaseGame implements
 				new HiliteCallable(color, highlight, unlit));
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.rifidi.designer.services.core.highlighting.HighlightingService#changeHighlightColor(com.jme.renderer.ColorRGBA,
+	 *      com.jme.renderer.ColorRGBA, java.util.List)
+	 */
+	@Override
+	public void changeHighlightColor(ColorRGBA color, ColorRGBA newcolor,
+			List<VisualEntity> hilight) {
+		hilited.get(color).removeAll(hilight);
+		if (!fragmentPrograms.containsKey(newcolor)) {
+			fragmentPrograms.put(newcolor,
+					createNewFragmentProgramState(newcolor));
+			hilited.put(newcolor, new ArrayList<VisualEntity>());
+		}
+		hilited.get(newcolor).addAll(hilight);
+		for (VisualEntity target : hilight) {
+			target.getNode().getChild("hiliter").clearRenderState(
+					RenderState.RS_FRAGMENT_PROGRAM);
+			target.getNode().getChild("hiliter").setRenderState(
+					fragmentPrograms.get(newcolor));
+			target.getNode().updateRenderState();
+		}
+	}
+
 	/**
 	 * Action that is submitted to the update thread to keep the highlights
 	 * pulsing.
@@ -836,15 +870,10 @@ public class DesignerGame extends SWTBaseGame implements
 				if (entity.getNode().getChild("hiliter") != null) {
 					entity.getNode().getChild("hiliter").removeFromParent();
 				}
-				Vector3f pos = Vector3f.ZERO.clone();
-				pos.addLocal(0f, ((BoundingBox) entity.getNode()
-						.getWorldBound()).getCenter().y, 0f);
-				Box box = new Box(
-						"hiliter",
-						pos,
-						((BoundingBox) entity.getNode().getWorldBound()).xExtent,
-						((BoundingBox) entity.getNode().getWorldBound()).yExtent,
-						((BoundingBox) entity.getNode().getWorldBound()).zExtent);
+				Box box = new Box("hiliter", ((BoundingBox) entity.getNode()
+						.getWorldBound()).getCenter().clone().subtractLocal(
+						entity.getNode().getLocalTranslation()), entity
+						.getWidth(), entity.getHeight(), entity.getLength());
 				box.setRenderState(fragmentPrograms.get(color));
 				box.setRenderState(alphaState);
 				box.setRenderQueueMode(Renderer.QUEUE_OPAQUE);

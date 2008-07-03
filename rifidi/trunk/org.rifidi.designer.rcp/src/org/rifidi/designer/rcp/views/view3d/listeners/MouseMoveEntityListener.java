@@ -91,6 +91,7 @@ public class MouseMoveEntityListener implements MouseMoveListener,
 	 */
 	private List<VisualEntity> colliders;
 
+	private ArrayList<VisualEntity> collidesWithFloor = new ArrayList<VisualEntity>();
 	/**
 	 * Indicator for whether an object is being moved.
 	 */
@@ -189,8 +190,33 @@ public class MouseMoveEntityListener implements MouseMoveListener,
 				// colliders
 				this.colliders.remove(collider);
 			}
-			highlightingService.changeHighlighting(ColorRGBA.red, new ArrayList<VisualEntity>(colliders));
+			highlightingService.changeHighlighting(ColorRGBA.red,
+					new ArrayList<VisualEntity>(colliders));
+			ArrayList<VisualEntity> collidesWithFloorNew = new ArrayList<VisualEntity>();
+			ArrayList<VisualEntity> stoppedCollidingWithFloor = new ArrayList<VisualEntity>();
+			//check for collisions with the floorplan
+			for (VisualEntity target : realTargets.keySet()) {
+				if (entitiesService.collidesWithScene(target)) {
+					if (!collidesWithFloor.contains(target)) {
+						collidesWithFloorNew.add(target);
+					}
+				} else {
+					if (collidesWithFloor.contains(target)) {
+						stoppedCollidingWithFloor.add(target);
+					}
+				}
+			}
 
+			if (collidesWithFloorNew.size() > 0) {
+				collidesWithFloor.addAll(collidesWithFloorNew);
+				highlightingService.changeHighlightColor(ColorRGBA.blue,
+						ColorRGBA.yellow, collidesWithFloorNew);
+			}
+			if (stoppedCollidingWithFloor.size() > 0) {
+				collidesWithFloor.removeAll(stoppedCollidingWithFloor);
+				highlightingService.changeHighlightColor(ColorRGBA.yellow,
+						ColorRGBA.blue, stoppedCollidingWithFloor);
+			}
 			// remove whatever amount has been used for calculating motion this
 			// round
 			deltaY -= (int) deltaY;
@@ -210,6 +236,10 @@ public class MouseMoveEntityListener implements MouseMoveListener,
 		}
 	}
 
+	private void checkCollisions(){
+		
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -224,7 +254,7 @@ public class MouseMoveEntityListener implements MouseMoveListener,
 	 * @see org.eclipse.swt.events.MouseListener#mouseDown(org.eclipse.swt.events.MouseEvent)
 	 */
 	public void mouseDown(MouseEvent e) {
-		if (colliders.size() == 0 && e.button == 1) {
+		if (colliders.size() == 0 && collidesWithFloor.size()==0 && e.button == 1) {
 			drop();
 			view3D.switchMode(View3D.Mode.PickMode);
 			inPlacement = false;
@@ -238,7 +268,7 @@ public class MouseMoveEntityListener implements MouseMoveListener,
 	 */
 	public void mouseUp(MouseEvent e) {
 		// drop it
-		if (colliders.size() == 0 && e.button == 1) {
+		if (colliders.size() == 0 && collidesWithFloor.size()==0 && e.button == 1) {
 			drop();
 			view3D.switchMode(View3D.Mode.PickMode);
 			inPlacement = false;
@@ -255,25 +285,6 @@ public class MouseMoveEntityListener implements MouseMoveListener,
 			if (target.getNode() instanceof DynamicPhysicsNode) {
 				((DynamicPhysicsNode) target.getNode())
 						.setLinearVelocity(Vector3f.ZERO);
-			}
-		}
-	}
-
-	/**
-	 * Move the currently selected entity back to where we started
-	 */
-	public void reset() {
-		for (VisualEntity target : realTargets.keySet()) {
-			target.getNode().setLocalTranslation(
-					realTargets.get(target).translation);
-			target.getNode().setLocalRotation(
-					realTargets.get(target).quaternion);
-
-			if (target.getNode() instanceof PhysicsNode) {
-				// ((PhysicsNode) target.getNode()).setActive(true);
-				if (target.getNode() instanceof DynamicPhysicsNode)
-					((DynamicPhysicsNode) target.getNode())
-							.setLinearVelocity(Vector3f.ZERO);
 			}
 		}
 	}
@@ -341,7 +352,8 @@ public class MouseMoveEntityListener implements MouseMoveListener,
 	}
 
 	/**
-	 * @param highlightingService the highlightingService to set
+	 * @param highlightingService
+	 *            the highlightingService to set
 	 */
 	@Inject
 	public void setHighlightingService(HighlightingService highlightingService) {
