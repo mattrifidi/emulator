@@ -386,7 +386,7 @@
 		<displayName>ExternalOutput</displayName>
 		<commandState>Interactive</commandState>
 		<commandHandlerDetails>
-			<handlerClass>org.rifidi.emulator.reader.alien.commandhandler.AlienSystem</handlerClass>
+			<handlerClass>org.rifidi.emulator.reader.alien.commandhandler.AlienExternalIO</handlerClass>
 			<handlerMethod>externalOutput</handlerMethod>
 			<argumentType>String</argumentType>
 		</commandHandlerDetails>
@@ -401,7 +401,7 @@
 		<displayName>InitExternalOutput</displayName>
 		<commandState>Interactive</commandState>
 		<commandHandlerDetails>
-			<handlerClass>org.rifidi.emulator.reader.alien.commandhandler.AlienSystem</handlerClass>
+			<handlerClass>org.rifidi.emulator.reader.alien.commandhandler.AlienExternalIO</handlerClass>
 			<handlerMethod>initExternalOutput</handlerMethod>
 			<argumentType>String</argumentType>
 		</commandHandlerDetails>
@@ -416,7 +416,7 @@
 		<displayName>InvertExternalOutput</displayName>
 		<commandState>Interactive</commandState>
 		<commandHandlerDetails>
-			<handlerClass>org.rifidi.emulator.reader.alien.commandhandler.AlienSystem</handlerClass>
+			<handlerClass>org.rifidi.emulator.reader.alien.commandhandler.AlienExternalIO</handlerClass>
 			<handlerMethod>invertExternalOutput</handlerMethod>
 			<argumentType>String</argumentType>
 		</commandHandlerDetails>
@@ -431,7 +431,7 @@
 		<displayName>InvertExternalInput</displayName>
 		<commandState>Interactive</commandState>
 		<commandHandlerDetails>
-			<handlerClass>org.rifidi.emulator.reader.alien.commandhandler.AlienSystem</handlerClass>
+			<handlerClass>org.rifidi.emulator.reader.alien.commandhandler.AlienExternalIO</handlerClass>
 			<handlerMethod>invertExternalInput</handlerMethod>
 			<argumentType>String</argumentType>
 		</commandHandlerDetails>
@@ -445,7 +445,7 @@
 		<displayName>ExternalInput</displayName>
 		<commandState>Interactive</commandState>
 		<commandHandlerDetails>
-			<handlerClass>org.rifidi.emulator.reader.alien.commandhandler.AlienSystem</handlerClass>
+			<handlerClass>org.rifidi.emulator.reader.alien.commandhandler.AlienExternalIO</handlerClass>
 			<handlerMethod>getExternalInput</handlerMethod>
 			<argumentType>String</argumentType>
 		</commandHandlerDetails>
