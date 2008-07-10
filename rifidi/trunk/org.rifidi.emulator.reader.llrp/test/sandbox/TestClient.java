@@ -16,7 +16,6 @@ import edu.uark.csce.llrp.AccessCommand;
 import edu.uark.csce.llrp.AccessReportSpec;
 import edu.uark.csce.llrp.AccessSpec;
 import edu.uark.csce.llrp.AccessSpecStopTrigger;
-import edu.uark.csce.llrp.AddAccessSpec;
 import edu.uark.csce.llrp.AddROSpec;
 import edu.uark.csce.llrp.AntennaConfiguration;
 import edu.uark.csce.llrp.C1G2EPCMemorySelector;
@@ -26,10 +25,10 @@ import edu.uark.csce.llrp.C1G2TargetTag;
 import edu.uark.csce.llrp.CloseConnection;
 import edu.uark.csce.llrp.DeleteAccessSpec;
 import edu.uark.csce.llrp.DeleteROSpec;
-import edu.uark.csce.llrp.EnableAccessSpec;
 import edu.uark.csce.llrp.EnableROSpec;
 import edu.uark.csce.llrp.EventNotificationState;
 import edu.uark.csce.llrp.GPITriggerValue;
+import edu.uark.csce.llrp.GetReport;
 import edu.uark.csce.llrp.InventoryParameterSpec;
 import edu.uark.csce.llrp.Message;
 import edu.uark.csce.llrp.PeriodicTriggerValue;
@@ -86,47 +85,40 @@ public class TestClient {
 		// Make the Connection and start up the ReaderThread
 		initialize();
 		
-		//giveTheReaderSomeTime(500, "wait for 500 ms");
+		giveTheReaderSomeTime(500, "wait for 500 ms");
 		
 		int msgID=1;
 		SetReaderConfig src = createSetReaderConfig();
 		src.setMessageID(msgID++);
 		this.write(src, "Set Reader Config");
 		
-		//giveTheReaderSomeTime(500, "wait for 500 ms");
+		giveTheReaderSomeTime(500, "wait for 500 ms");
 		
 		AddROSpec ars = new AddROSpec();
 		ars.setMessageID(msgID++);
 		ars.setROSpecParam(createRoSpec(11));
 		write(ars, "Add ROSpec");
 		
-		//giveTheReaderSomeTime(500, "wait for 500 ms");
-		
-		AddAccessSpec aas = new AddAccessSpec();
-		aas.setMessageID(msgID++);
-		aas.setAccessSpecParam(createAccessSpec(12, 11));
-		write(aas, "add access spec");
-		
-		//giveTheReaderSomeTime(500, "wait for 500 ms");
+		giveTheReaderSomeTime(500, "wait for 500 ms");
 		
 		EnableROSpec ers = new EnableROSpec();
 		ers.setMessageID(msgID++);
 		ers.setROSpecID(11);
 		write(ers, "enable rospec");
 		
-		//giveTheReaderSomeTime(500, "wait for 500 ms");
-		
-		EnableAccessSpec eas = new EnableAccessSpec();
-		eas.setMessageID(msgID++);
-		eas.setAccessSpecID(12);
-		write(eas, "enable access spec");
-		
-		//giveTheReaderSomeTime(500, "wait for 500 ms");
+		giveTheReaderSomeTime(500, "wait for 500 ms");
 		
 		StartROSpec srs = new StartROSpec();
 		srs.setMessageID(msgID++);
 		srs.setROSpecID(11);
 		write(srs, "start rospec");
+		
+		GetReport grs = new GetReport();
+		
+		for(int i = 0; i<5; i++){
+			giveTheReaderSomeTime(2000, "wait for 500 ms");
+			write(grs, "GET RROSPEC");
+		}
 		
 		giveTheReaderSomeTime(5000, "waiting for 5 secs");
 		
@@ -135,7 +127,7 @@ public class TestClient {
 		das.setAccessSpecID(12);
 		write(das, "delete access spec");
 		
-		//giveTheReaderSomeTime(500, "wait for 500 ms");
+		giveTheReaderSomeTime(500, "wait for 500 ms");
 		
 		DeleteROSpec drs = new DeleteROSpec();
 		drs.setROSpecID(11);
@@ -234,7 +226,6 @@ public class TestClient {
 			e.printStackTrace();
 		}
 	}
-
 	/**
 	 * Method for easy Set Reader Config creation
 	 * 
@@ -464,6 +455,7 @@ public class TestClient {
 
 		return as;
 	}
+
 
 	/**
 	 * Reader Thread to read from socket to System console

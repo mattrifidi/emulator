@@ -127,9 +127,9 @@ public class ROSpecExecuter implements Runnable {
 			format = llrpsr.getProperties().roReportFormat_Global;
 		}
 		int trig = format.reportTrigger;
-		if (trig == 2 && llrpsr.getTagReportDataEntries().size() > 0) {
+		if (trig == 2 && llrpsr.getTagReportDataEntries().getNumDataEntries() > 0) {
 			LLRPReportControllerFactory.getInstance().getReportController(
-					this.roSpec.getReaderName()).sendAllReports(llrpsr);
+					this.roSpec.getReaderName()).sendAllReports(llrpsr, 0);
 		}
 		/* Send ROSpec End Event if enabled */
 		if (table

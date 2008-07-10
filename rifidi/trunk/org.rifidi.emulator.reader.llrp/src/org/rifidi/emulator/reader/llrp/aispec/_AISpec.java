@@ -207,49 +207,47 @@ public class _AISpec implements Observer {
 
 			// Add all new tags to TagReportDataEntries and perform access
 			// operation on tag if we need to
-			if (tagMem.newTagsInLatestScan.size() > 0) {
-				for (RifidiTag t : tagMem.newTagsInLatestScan) {
+			for (RifidiTag t : tagMem.getTagReport()) {
 
-					t.incrementReadCount();
+				t.incrementReadCount();
 
-					TagReportData trd = LLRPReportController.formatTagReport(
-							getReportFormat(), t, roSpecID, specIndex, llrpsr);
+				TagReportData trd = LLRPReportController.formatTagReport(
+						getReportFormat(), t, roSpecID, specIndex, llrpsr);
 
-					llrpsr.getTagReportDataEntries().add(trd);
+				llrpsr.getTagReportDataEntries().add(trd);
 
-					_AccessSpec accessSpec = llrpsr.accessSpecs
-							.getFirstAccessSpecthatMatches(t);
+				_AccessSpec accessSpec = llrpsr.accessSpecs
+						.getFirstAccessSpecthatMatches(t);
 
-					if (accessSpec != null) {
-						if (accessSpec.getRoSpecID() == 0
-								|| accessSpec.getRoSpecID() == this.roSpecID) {
+				if (accessSpec != null) {
+					if (accessSpec.getRoSpecID() == 0
+							|| accessSpec.getRoSpecID() == this.roSpecID) {
 
-							accessSpec.performOperations(t, trd);
+						accessSpec.performOperations(t, trd);
 
-						}
 					}
-
-					// if we need to send out a report now, do it
-					if (this.getReportFormat().reportTrigger == 1
-							|| this.getReportFormat().reportTrigger == 2) {
-						if (this.getReportFormat().N > 0) {
-							if (llrpsr.getTagReportDataEntries().size() >= getReportFormat().N) {
-
-								LLRPReportControllerFactory.getInstance()
-										.getReportController(
-												this.llrpsr.getReaderName())
-										.sendAllReports(llrpsr);
-								logger
-										.debug("Sent a report because of N tag trigger");
-
-							}
-						}
-					}
-
 				}
 
-			}
+				// if we need to send out a report now, do it
+				if (this.getReportFormat().reportTrigger == 1
+						|| this.getReportFormat().reportTrigger == 2) {
+					if (this.getReportFormat().N > 0) {
+						if (llrpsr.getTagReportDataEntries()
+								.getNumDataEntries() == getReportFormat().N) {
 
+							LLRPReportControllerFactory.getInstance()
+								.getReportController(this.llrpsr.getReaderName())
+									.sendAllReports(llrpsr, getReportFormat().N);
+							
+							logger.debug("Sent a report because" +
+											" of N tag trigger");
+
+						}
+					}
+				}	
+			}
+			tagMem.clear();
+			
 			// if we are using Tag Observation Trigger, update it with new tags
 			if (this.stopTrigger instanceof TagObservationTrigger) {
 				TagObservationTrigger trig = (TagObservationTrigger) stopTrigger;
@@ -272,16 +270,12 @@ public class _AISpec implements Observer {
 			((TimerTrigger) stopTrigger).stopTimer();
 		}
 
-		logger.debug("The AISPec has seen **" + tagMem.getTagReport().size()
-				+ "** tags");
-
-		tagMem.clear();
-
 		// Send report if we need to do that now
 		int trig = getReportFormat().reportTrigger;
-		if (trig == 1 && llrpsr.getTagReportDataEntries().size() > 0) {
+		if (trig == 1
+				&& llrpsr.getTagReportDataEntries().getNumDataEntries() > 0) {
 			LLRPReportControllerFactory.getInstance().getReportController(
-					this.llrpsr.getReaderName()).sendAllReports(llrpsr);
+					this.llrpsr.getReaderName()).sendAllReports(llrpsr, 0);
 		}
 
 		// Send the AISpecEventParameter

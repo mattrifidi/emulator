@@ -9,6 +9,7 @@ import org.rifidi.emulator.reader.command.xml.CommandDigester;
 import org.rifidi.emulator.reader.llrp.accessspec.AccessSpecList;
 import org.rifidi.emulator.reader.llrp.keepalive.KeepAliveController;
 import org.rifidi.emulator.reader.llrp.properties.Properties;
+import org.rifidi.emulator.reader.llrp.report.TagReportDataEntries;
 import org.rifidi.emulator.reader.module.abstract_.AbstractReaderSharedResources;
 import org.rifidi.emulator.reader.sharedrc.radio.generic.GenericRadio;
 import org.rifidi.emulator.reader.sharedrc.tagmemory.TagMemory;
@@ -48,7 +49,7 @@ public class LLRPReaderSharedResources extends AbstractReaderSharedResources {
 	/**
 	 * This is a list of tags that have been seen but have not yet been reported
 	 */
-	private ArrayList<TagReportData> tagReportDataEntries;
+	private TagReportDataEntries tagReportDataEntries;
 
 	/**
 	 * this is a variable that records the time that the reader was started for
@@ -114,7 +115,7 @@ public class LLRPReaderSharedResources extends AbstractReaderSharedResources {
 		this.propertiesMap = new HashMap<String, String>();
 		properties = new Properties();
 		added_Rospecs = new HashMap<Integer, ROSpec>();
-		this.tagReportDataEntries = new ArrayList<TagReportData>();
+		this.tagReportDataEntries = new TagReportDataEntries();;
 		this.keepAliveController = new KeepAliveController(readerName);
 		this.accessSpecs = new AccessSpecList();
 
@@ -167,7 +168,7 @@ public class LLRPReaderSharedResources extends AbstractReaderSharedResources {
 	 * 
 	 * @return
 	 */
-	public ArrayList<TagReportData> getTagReportDataEntries() {
+	public TagReportDataEntries getTagReportDataEntries() {
 		return tagReportDataEntries;
 	}
 

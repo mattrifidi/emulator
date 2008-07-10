@@ -14,6 +14,7 @@ package org.rifidi.emulator.reader.llrp.report;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
@@ -68,8 +69,8 @@ public class LLRPReportController {
 	 * The communication that this ReportController has.
 	 */
 	private Communication comm;
-	
-	private boolean locked=false;
+
+	private boolean locked = false;
 
 	/**
 	 * Makes a new LLRPReportController.
@@ -88,23 +89,56 @@ public class LLRPReportController {
 	 *            The format that defines how the report looks.
 	 * @param ROSpecID
 	 *            The ROSpec that generated the report.
+	 * @param maxNumTRDs
+	 *            The maximum number of TagReportData parameters per report.
+	 *            This corresponds to the N tag trigger in the RoReportSpec. If
+	 *            N =0, it will send all reports. If there are more TRDs
+	 *            collected than N, then we will send more than one report.
 	 */
-	public void sendAllReports(LLRPReaderSharedResources llrpsr) {
+	public void sendAllReports(LLRPReaderSharedResources llrpsr, int maxNumTRDs) {
 
+		ArrayList<TagReportData> listOfData = llrpsr.getTagReportDataEntries()
+				.getAllDataEntries();
+		if (maxNumTRDs == 0 || (maxNumTRDs > listOfData.size())) {
+			sendNTRDs(listOfData, listOfData.size());
+		}
+		else{
+			while(listOfData.size()>maxNumTRDs){
+				sendNTRDs(listOfData, maxNumTRDs);
+			}
+			sendNTRDs(listOfData, listOfData.size());
+		}
+	}
+	
+	/**
+	 * This methods sends 
+	 * @param listOfData
+	 * @param numToSend
+	 */
+	private void sendNTRDs (ArrayList<TagReportData> listOfData, int numToSend){
 		byte[] retVal = null;
 		ROAccessReport report = new ROAccessReport();
-		for (TagReportData trd : llrpsr.getTagReportDataEntries()) {
-			report.addTagReportDataParam(trd);
+		if(numToSend >= listOfData.size()){
+			for (TagReportData trd : listOfData) {
+				report.addTagReportDataParam(trd);
+			}
+			listOfData.clear();
+		}else{
+			ArrayList<TagReportData> toDelete = new ArrayList<TagReportData>();
+			for(int i=0; i<numToSend; i++){
+				report.addTagReportDataParam(listOfData.get(i));
+				toDelete.add(listOfData.get(i));
+			}
+			for(TagReportData trd : toDelete){
+				listOfData.remove(trd);
+			}
 		}
-
+		
 		try {
 			retVal = report.serialize();
 			if (comm.isConnected() && !this.locked) {
 				logger.debug("Sending a report...");
 				comm.sendBytes(retVal);
-				synchronized (this) {
-					llrpsr.getTagReportDataEntries().clear();
-				}
 			} else {
 				logger.error("There is a lost report");
 			}
@@ -434,12 +468,12 @@ public class LLRPReportController {
 	public void setComm(Communication comm) {
 		this.comm = comm;
 	}
-	
-	public void unlock(){
-		locked=false;
+
+	public void unlock() {
+		locked = false;
 	}
-	
-	public void lock(){
-		locked=true;
+
+	public void lock() {
+		locked = true;
 	}
 }

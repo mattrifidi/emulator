@@ -48,15 +48,12 @@ public class LLRPReports {
 		
 		GetReport getReport = (GetReport) m;
 		
-		ArrayList<TagReportData> data = ((LLRPReaderSharedResources)asr).getTagReportDataEntries();
+		ArrayList<TagReportData> data = ((LLRPReaderSharedResources)asr).getTagReportDataEntries().getAllDataEntries();
 		
 		for(TagReportData d : data){
 			reportMsg.addTagReportDataParam(d);
 		}
-		synchronized(this){
-			data.clear();
-		}
-		
+
 		reportMsg.setMessageID(getReport.getMessageID());
 		arg.getReturnValue().add(reportMsg);
 		return arg;

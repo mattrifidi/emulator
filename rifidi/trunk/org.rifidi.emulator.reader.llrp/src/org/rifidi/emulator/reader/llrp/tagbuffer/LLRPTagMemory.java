@@ -47,16 +47,10 @@ public class LLRPTagMemory implements TagMemory {
 	private boolean suspended = false;
 
 	/**
-	 * The collection of tags that were in the latest scan that have not been seen before
-	 */
-	public Collection<RifidiTag> newTagsInLatestScan;
-
-	/**
 	 * Private constructor
 	 */
 	public LLRPTagMemory() {
 		this.tagBuffer = new RifidiTagMap();
-		this.newTagsInLatestScan = new ArrayList<RifidiTag>();
 	}
 
 	/**
@@ -76,18 +70,9 @@ public class LLRPTagMemory implements TagMemory {
 	 */
 	public void updateMemory(Collection<RifidiTag> tagsInLatestScan) {
 		if (!suspended) {
-			this.newTagsInLatestScan.clear();
 			for (RifidiTag t : tagsInLatestScan) {
-				//add new tags -- first check if the tag has been seen before.  If not, add it to the new
-				if (!this.tagBuffer.contains(t.getTagEntitiyID())) {
-					logger.debug("Adding new tag: "
-							+ ByteAndHexConvertingUtility.toHexString(t
-									.getTag().readId()));
-					this.newTagsInLatestScan.add(t);
-				}
-			}
-			tagBuffer.clear();
-			tagBuffer.addTags(tagsInLatestScan);
+				tagBuffer.addTags(tagsInLatestScan);
+			}			
 		}
 	}
 
@@ -119,6 +104,5 @@ public class LLRPTagMemory implements TagMemory {
 	 */
 	public void clear() {
 		this.tagBuffer.clear();
-		this.newTagsInLatestScan.clear();
 	}
 }

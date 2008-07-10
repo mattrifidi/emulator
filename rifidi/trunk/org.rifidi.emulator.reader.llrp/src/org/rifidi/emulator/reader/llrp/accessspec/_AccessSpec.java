@@ -205,7 +205,7 @@ public class _AccessSpec {
 			LLRPReportControllerFactory.getInstance().getReportController(
 					llrpsr.getReaderName()).sendReport(trd);
 			// remove from list so we don't resend it later
-			llrpsr.getTagReportDataEntries().remove(trd);
+			llrpsr.getTagReportDataEntries().removeDataEntry(trd);
 		}
 
 		// if stop trigger has fired, delete this spec from the list
