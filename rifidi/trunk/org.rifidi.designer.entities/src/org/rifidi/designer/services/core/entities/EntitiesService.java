@@ -15,6 +15,7 @@ import java.util.List;
 import org.rifidi.designer.entities.Entity;
 import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.grouping.EntityGroup;
+import org.rifidi.designer.octree.CollisionOctree;
 
 /**
  * This service is responsible for manipulating entities and their groups,
@@ -103,4 +104,9 @@ public interface EntitiesService {
 	 */
 	boolean collidesWithScene(VisualEntity visualEntity);
 	
+	/**
+	 * Get the current octree for collisions.
+	 * @return
+	 */
+	CollisionOctree getCollisionOctree();
 }

@@ -11,6 +11,7 @@
 package org.rifidi.designer.services.core.highlighting;
 
 import java.util.List;
+import java.util.Set;
 
 import org.rifidi.designer.entities.VisualEntity;
 
@@ -29,7 +30,7 @@ public interface HighlightingService {
 	 * @param color
 	 * @param highlight
 	 */
-	void changeHighlighting(ColorRGBA color, List<VisualEntity> highlight);
+	void changeHighlighting(ColorRGBA color, Set<VisualEntity> highlight);
 	
 	/**
 	 * Change the highlight of already highlighted entities. 
@@ -37,5 +38,16 @@ public interface HighlightingService {
 	 * @param newcolor
 	 * @param entity
 	 */
-	void changeHighlightColor(ColorRGBA color, ColorRGBA newcolor, List<VisualEntity> hilight);
+	void changeHighlightColor(ColorRGBA color, ColorRGBA newcolor, Set<VisualEntity> hilight);
+	
+	/**
+	 * Remove highlighting from the given set of entities.
+	 * @param hilight
+	 */
+	void clearHighlights(Set<VisualEntity> hilight);
+	
+	/**
+	 * Remove all highlights.
+	 */
+	void clearAllHighlights();
 }

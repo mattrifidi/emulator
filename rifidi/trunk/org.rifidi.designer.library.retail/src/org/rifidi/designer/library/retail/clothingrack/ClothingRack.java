@@ -35,6 +35,7 @@ import com.jme.input.InputHandler;
 import com.jme.math.Quaternion;
 import com.jme.math.Vector3f;
 import com.jme.scene.Node;
+import com.jme.scene.shape.Box;
 import com.jme.util.GameTaskQueueManager;
 import com.jme.util.export.binary.BinaryImporter;
 import com.jmex.physics.DynamicPhysicsNode;
@@ -339,5 +340,14 @@ public class ClothingRack extends VisualEntity implements VisualEntityHolder,
 	public void setLOD(int lod) {
 		// No LOD for this one.
 
+	}
+
+	/* (non-Javadoc)
+	 * @see org.rifidi.designer.entities.VisualEntity#getBoundingNode()
+	 */
+	@Override
+	public Node getBoundingNode() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

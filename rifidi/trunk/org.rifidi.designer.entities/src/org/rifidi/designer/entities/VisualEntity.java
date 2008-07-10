@@ -10,6 +10,7 @@
  */
 package org.rifidi.designer.entities;
 
+
 import javax.xml.bind.annotation.XmlTransient;
 
 import com.jme.math.FastMath;
@@ -44,10 +45,6 @@ public abstract class VisualEntity extends Entity {
 	 */
 	@XmlTransient
 	private static Matrix3f rotationMatrix90 = null;
-	
-	protected Integer width=0;
-	protected Integer length=0;
-	protected Integer height=0;
 
 	/**
 	 * @return the node
@@ -125,27 +122,16 @@ public abstract class VisualEntity extends Entity {
 		super.setEntityId(entityId);
 		getNode().setName(entityId);
 	}
-
+	/**
+	 * Set the current level of LOD.
+	 * @param lod
+	 */
 	public abstract void setLOD(int lod);
 
 	/**
-	 * @return the width
+	 * Get a node containing standard boxes that describe the bounds of the model.
+	 * NOTE: NOT BoundingBox
+	 * @return
 	 */
-	public Integer getWidth() {
-		return this.width;
-	}
-
-	/**
-	 * @return the length
-	 */
-	public Integer getLength() {
-		return this.length;
-	}
-
-	/**
-	 * @return the height
-	 */
-	public Integer getHeight() {
-		return this.height;
-	}
+	public abstract Node getBoundingNode();
 }

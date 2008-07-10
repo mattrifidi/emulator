@@ -28,6 +28,7 @@ import org.rifidi.services.annotations.Inject;
 
 import com.jme.input.InputHandler;
 import com.jme.renderer.ColorRGBA;
+import com.jme.scene.Node;
 import com.jme.scene.Spatial;
 import com.jme.scene.state.AlphaState;
 import com.jme.scene.state.MaterialState;
@@ -102,7 +103,7 @@ public class WatchAreaEntity extends VisualEntity implements NeedsPhysics,
 					.getChildren())) {
 				phys.attachChild(spatial);
 			}
-			
+
 			getNode().removeFromParent();
 			setNode(phys);
 			phys.generatePhysicsGeometry();
@@ -139,7 +140,7 @@ public class WatchAreaEntity extends VisualEntity implements NeedsPhysics,
 		getNode().clearRenderState(RenderState.RS_MATERIAL);
 		getNode().setRenderState(as);
 		getNode().updateRenderState();
-		((PhysicsNode)getNode()).setMaterial(Material.GHOST);
+		((PhysicsNode) getNode()).setMaterial(Material.GHOST);
 		if (msStarted == null) {
 			msStarted = DisplaySystem.getDisplaySystem().getRenderer()
 					.createMaterialState();
@@ -150,8 +151,7 @@ public class WatchAreaEntity extends VisualEntity implements NeedsPhysics,
 		}
 		if (running) {
 			turnOn();
-		}
-		else{
+		} else {
 			turnOff();
 		}
 		fieldService.registerField(this);
@@ -252,8 +252,7 @@ public class WatchAreaEntity extends VisualEntity implements NeedsPhysics,
 	 */
 	@Override
 	public void fieldEntered(Entity entity) {
-		eventsService.publish(
-				new WatchAreaEvent(true, this, entity));
+		eventsService.publish(new WatchAreaEvent(true, this, entity));
 	}
 
 	/*
@@ -263,27 +262,30 @@ public class WatchAreaEntity extends VisualEntity implements NeedsPhysics,
 	 */
 	@Override
 	public void fieldLeft(Entity entity) {
-		eventsService.publish(
-				new WatchAreaEvent(false, this, entity));
+		eventsService.publish(new WatchAreaEvent(false, this, entity));
 	}
 
 	/**
-	 * @param eventsService the eventsService to set
+	 * @param eventsService
+	 *            the eventsService to set
 	 */
 	@Inject
 	public void setEventsService(EventsService eventsService) {
 		this.eventsService = eventsService;
 	}
-	
+
 	/**
-	 * @param fieldService the fieldService to set
+	 * @param fieldService
+	 *            the fieldService to set
 	 */
 	@Inject
 	public void setFieldService(FieldService fieldService) {
 		this.fieldService = fieldService;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.rifidi.designer.entities.interfaces.InternalEntity#isVisible()
 	 */
 	@Override
@@ -301,5 +303,16 @@ public class WatchAreaEntity extends VisualEntity implements NeedsPhysics,
 		// No LOD for this one.
 
 	}
-	
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.rifidi.designer.entities.VisualEntity#getBoundingNode()
+	 */
+	@Override
+	public Node getBoundingNode() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

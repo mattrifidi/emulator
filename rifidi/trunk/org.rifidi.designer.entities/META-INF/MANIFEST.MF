@@ -28,4 +28,5 @@ Export-Package: org.rifidi.designer.entities,
  org.rifidi.designer.entities.properties,
  org.rifidi.designer.entities.wizards,
  org.rifidi.designer.library,
+ org.rifidi.designer.octree,
  org.rifidi.designer.services.core.entities

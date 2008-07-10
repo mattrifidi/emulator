@@ -10,10 +10,10 @@
  */
 package org.rifidi.designer.rcp.views.view3d.listeners;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
@@ -36,7 +36,6 @@ import com.jme.math.Quaternion;
 import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jmex.physics.DynamicPhysicsNode;
-import com.jmex.physics.PhysicsNode;
 
 /**
  * This listener moves objects around. The mouse pointer is replaced by an
@@ -89,9 +88,11 @@ public class MouseMoveEntityListener implements MouseMoveListener,
 	/**
 	 * List of colliding visual entities.
 	 */
-	private List<VisualEntity> colliders;
-
-	private ArrayList<VisualEntity> collidesWithFloor = new ArrayList<VisualEntity>();
+	private Set<VisualEntity> colliders;
+	/**
+	 * List of moving entities that collide with the floorplan.
+	 */
+	private Set<VisualEntity> collidesWithFloor = new HashSet<VisualEntity>();
 	/**
 	 * Indicator for whether an object is being moved.
 	 */
@@ -111,6 +112,10 @@ public class MouseMoveEntityListener implements MouseMoveListener,
 	 * Reference to the highlightingservice.
 	 */
 	private HighlightingService highlightingService;
+	/**
+	 * Used for collisionchecking in the octree.
+	 */
+	private Set<VisualEntity> colls=new HashSet<VisualEntity>();
 
 	/**
 	 * Constructor.
@@ -124,7 +129,7 @@ public class MouseMoveEntityListener implements MouseMoveListener,
 	 */
 	public MouseMoveEntityListener(View3D view3D) {
 		this.view3D = view3D;
-		colliders = new ArrayList<VisualEntity>();
+		colliders = new HashSet<VisualEntity>();
 		ServiceRegistry.getInstance().service(this);
 	}
 
@@ -155,6 +160,7 @@ public class MouseMoveEntityListener implements MouseMoveListener,
 
 				// add to listing of target info
 				realTargets.put((VisualEntity) target, targetData);
+				entitiesService.getCollisionOctree().removeEntity((VisualEntity) target);
 			}
 		}
 
@@ -166,8 +172,8 @@ public class MouseMoveEntityListener implements MouseMoveListener,
 	 * 
 	 * @see org.eclipse.swt.events.MouseMoveListener#mouseMove(org.eclipse.swt.events.MouseEvent)
 	 */
+	
 	public void mouseMove(MouseEvent e) {
-		List<VisualEntity> colliders = new ArrayList<VisualEntity>();
 		if (!ignore && inPlacement) {
 
 			// calculate how far to move the object(s)
@@ -181,19 +187,37 @@ public class MouseMoveEntityListener implements MouseMoveListener,
 			vec.x = (int) vec.x;
 			vec.z = (int) vec.z;
 
-			// check if any objects would be out of bounds after moving this far
+			//clear the set
+			colls.clear();
+			//find the ones that are colliding and remove the ones that stopped colliding
+			Set<VisualEntity> newColliders = new HashSet<VisualEntity>();
+			Set<VisualEntity> removedColliders = new HashSet<VisualEntity>();
 			for (VisualEntity target : realTargets.keySet()) {
-				colliders.addAll(entitiesService.getColliders(target));
+				entitiesService.getCollisionOctree().findCollisions(target, colls);
 			}
-			for (VisualEntity collider : colliders) {
-				// only keep the ones that aren't in the current list of
-				// colliders
-				this.colliders.remove(collider);
+			for(VisualEntity res:colls){
+				if(!colliders.contains(res)){
+					newColliders.add(res);
+				}
 			}
-			highlightingService.changeHighlighting(ColorRGBA.red,
-					new ArrayList<VisualEntity>(colliders));
-			ArrayList<VisualEntity> collidesWithFloorNew = new ArrayList<VisualEntity>();
-			ArrayList<VisualEntity> stoppedCollidingWithFloor = new ArrayList<VisualEntity>();
+			for(VisualEntity res:colliders){
+				if(!colls.contains(res)){
+					removedColliders.add(res);
+				}
+			}
+			if (newColliders.size() > 0) {
+				colliders.addAll(newColliders);
+			}
+			if (removedColliders.size() > 0) {
+				colliders.removeAll(removedColliders);
+			}
+			
+			if(newColliders.size() > 0 || removedColliders.size() > 0){
+				highlightingService.changeHighlighting(ColorRGBA.red, colliders);
+			}
+			
+			Set<VisualEntity> collidesWithFloorNew = new HashSet<VisualEntity>();
+			Set<VisualEntity> stoppedCollidingWithFloor = new HashSet<VisualEntity>();
 			//check for collisions with the floorplan
 			for (VisualEntity target : realTargets.keySet()) {
 				if (entitiesService.collidesWithScene(target)) {
@@ -234,10 +258,6 @@ public class MouseMoveEntityListener implements MouseMoveListener,
 		} else if (ignore == true) {
 			ignore = false;
 		}
-	}
-
-	private void checkCollisions(){
-		
 	}
 	
 	/*
@@ -286,6 +306,7 @@ public class MouseMoveEntityListener implements MouseMoveListener,
 				((DynamicPhysicsNode) target.getNode())
 						.setLinearVelocity(Vector3f.ZERO);
 			}
+			entitiesService.getCollisionOctree().insertEntity(target);
 		}
 	}
 

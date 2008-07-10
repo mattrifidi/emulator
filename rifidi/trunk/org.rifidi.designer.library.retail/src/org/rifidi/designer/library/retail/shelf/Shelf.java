@@ -300,4 +300,15 @@ public class Shelf extends VisualEntity implements VisualEntityHolder,
 
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.rifidi.designer.entities.VisualEntity#getBoundingNode()
+	 */
+	@Override
+	public Node getBoundingNode() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

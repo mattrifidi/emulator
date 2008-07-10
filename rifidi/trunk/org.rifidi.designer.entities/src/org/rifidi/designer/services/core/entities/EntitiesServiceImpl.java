@@ -47,6 +47,7 @@ import org.rifidi.designer.entities.interfaces.ParentEntity;
 import org.rifidi.designer.entities.interfaces.RifidiEntity;
 import org.rifidi.designer.entities.interfaces.VisualEntityHolder;
 import org.rifidi.designer.library.EntityLibraryRegistry;
+import org.rifidi.designer.octree.CollisionOctree;
 import org.rifidi.services.annotations.Inject;
 import org.rifidi.services.initializer.IInitService;
 import org.rifidi.services.initializer.exceptions.InitializationException;
@@ -58,8 +59,10 @@ import org.rifidi.services.tags.impl.RifidiTag;
 
 import com.jme.bounding.BoundingBox;
 import com.jme.input.InputHandler;
+import com.jme.math.Vector3f;
 import com.jme.scene.Node;
 import com.jme.scene.Spatial;
+import com.jme.scene.shape.Box;
 import com.jme.util.GameTaskQueueManager;
 import com.jme.util.TextureManager;
 import com.jme.util.export.binary.BinaryExporter;
@@ -109,6 +112,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	 */
 	private IInitService iinitService;
 
+	private CollisionOctree octree=null; 
 	/**
 	 * Constructor.
 	 */
@@ -555,15 +559,18 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 			StaticPhysicsNode staticNode = sceneData.getPhysicsSpace()
 					.createStaticNode();
 			staticNode.attachChild(spatial);
+			staticNode.setName(spatial.getName());
 			staticNode.generatePhysicsGeometry();
 			roomnode.attachChild(staticNode);
 		}
 		roomnode.updateWorldBound();
+		octree=new CollisionOctree(1f,(BoundingBox)roomnode.getWorldBound());
 		sceneData.setRoomNode(roomnode);
-
 		fileOfCurrentScene = file;
 		nodeToEntity = Collections
 				.synchronizedMap(new HashMap<Node, VisualEntity>());
+//		Box marker=new Box("marker",Vector3f.ZERO.clone(),3,3,3);
+//		sceneData.getRootNode().attachChild(marker);
 		for (Entity entity : sceneData.getSearchableEntities()) {
 			if (entity instanceof VisualEntity) {
 				nodeToEntity.put(((VisualEntity) entity).getNode(),
@@ -810,6 +817,15 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 		}
 		return colliders;
 	}
+	
+
+	/* (non-Javadoc)
+	 * @see org.rifidi.designer.services.core.entities.EntitiesService#getCollisionOctree()
+	 */
+	@Override
+	public CollisionOctree getCollisionOctree() {
+		return octree;
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -820,9 +836,11 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	public boolean collidesWithScene(VisualEntity visualEntity) {
 		for (Spatial spat : sceneData.getRoomNode().getChildren()) {
 			if (!"floor".equals(spat.getName())) {
-				if (visualEntity.getNode().getWorldBound().intersects(
-						spat.getWorldBound())) {
-					return true;
+				for (Spatial sp : ((Node) visualEntity.getNode().getChild(
+						"hiliter")).getChildren()) {
+					if (sp.getWorldBound().intersects(spat.getWorldBound())) {
+						return true;
+					}
 				}
 			}
 		}

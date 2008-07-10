@@ -10,6 +10,8 @@
  */
 package org.rifidi.designer.library.basemodels.infrared;
 
+import java.util.ArrayList;
+
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.apache.commons.logging.Log;
@@ -252,6 +254,15 @@ public class InfraredEntity extends VisualEntity implements SceneControl,
 	public void setLOD(int lod) {
 		// No LOD for this one.
 
+	}
+
+	/* (non-Javadoc)
+	 * @see org.rifidi.designer.entities.VisualEntity#getBoundingNode()
+	 */
+	@Override
+	public Node getBoundingNode() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

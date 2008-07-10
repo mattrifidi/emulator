@@ -25,7 +25,6 @@ import org.rifidi.designer.entities.databinding.annotations.MonitoredProperties;
 import org.rifidi.designer.entities.interfaces.Directional;
 import org.rifidi.designer.entities.interfaces.NeedsPhysics;
 import org.rifidi.designer.entities.interfaces.Switch;
-import org.rifidi.jmeswt.utils.NodeHelper;
 
 import com.jme.bounding.BoundingBox;
 import com.jme.input.InputHandler;
@@ -34,7 +33,9 @@ import com.jme.math.Quaternion;
 import com.jme.math.Vector3f;
 import com.jme.renderer.Renderer;
 import com.jme.scene.Node;
+import com.jme.scene.SceneElement;
 import com.jme.scene.SharedNode;
+import com.jme.scene.Spatial;
 import com.jme.scene.SwitchNode;
 import com.jme.scene.shape.Box;
 import com.jme.scene.state.AlphaState;
@@ -115,9 +116,6 @@ public class ConveyorEntity extends VisualEntity implements Switch,
 		basicTrans.setEnabled(true);
 		setName("Conveyor");
 		setSpeed(4);
-		width=2;
-		height=3;
-		length=5;
 	}
 
 	/**
@@ -147,22 +145,32 @@ public class ConveyorEntity extends VisualEntity implements Switch,
 	@Override
 	public void init() {
 		prepare();
-		setNode(physicsSpace.createStaticNode());
+		setNode(new Node());
+		StaticPhysicsNode phys=physicsSpace.createStaticNode();
+		phys.setName("maingeometry");
+		getNode().attachChild(phys);
 		switchNode=new SwitchNode();
 		switchNode.attachChildAt(new SharedNode("sharedConv_", model), 0);
 		switchNode.attachChildAt(new SharedNode("sharedConv_", model), 1);
 		switchNode.setActiveChild(0);
-		
-		getNode().attachChild(switchNode);
-
-		((StaticPhysicsNode)getNode()).generatePhysicsGeometry();
+		phys.attachChild(switchNode);		
+		phys.generatePhysicsGeometry();
 		getNode().setModelBound(new BoundingBox());
 		getNode().updateModelBound();
 
-		logger.debug(NodeHelper.printNodeHierarchy(getNode(), 6));
-
+		Node _node=new Node("hiliter");
+		Box box = new Box("hiliter", ((BoundingBox) getNode()
+				.getWorldBound()).getCenter().clone().subtractLocal(
+				getNode().getLocalTranslation()), 2f, 3f, 5f);
+		box.setModelBound(new BoundingBox());
+		box.updateModelBound();
+		_node.attachChild(box);
+		_node.setModelBound(new BoundingBox());
+		_node.updateModelBound();
+		_node.setCullMode(SceneElement.CULL_ALWAYS);
+		getNode().attachChild(_node);
 		rollerMaterial = new Material("Roller");
-		((PhysicsNode)getNode()).setMaterial(rollerMaterial);
+		phys.setMaterial(rollerMaterial);
 	}
 
 	/*
@@ -343,6 +351,14 @@ public class ConveyorEntity extends VisualEntity implements Switch,
 		if(switchNode!=null){
 			switchNode.setActiveChild(lod);	
 		}
+	}
+
+	/* (non-Javadoc)
+	 * @see org.rifidi.designer.entities.VisualEntity#getBoundingNode()
+	 */
+	@Override
+	public Node getBoundingNode() {
+		return (Node)getNode().getChild("hiliter");
 	}
 	
 }

@@ -43,6 +43,7 @@ import org.rifidi.ui.common.reader.UIReader;
 import com.jme.math.Vector3f;
 import com.jme.scene.Node;
 import com.jme.scene.SharedNode;
+import com.jme.scene.shape.Box;
 import com.jme.util.export.binary.BinaryImporter;
 
 /**
@@ -429,6 +430,15 @@ public class GateEntity extends VisualEntity implements RifidiEntity, Switch,
 	public void setLOD(int lod) {
 		// No LOD for this one.
 
+	}
+
+	/* (non-Javadoc)
+	 * @see org.rifidi.designer.entities.VisualEntity#getBoundingNode()
+	 */
+	@Override
+	public Node getBoundingNode() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

@@ -39,6 +39,7 @@ import com.jme.renderer.ColorRGBA;
 import com.jme.renderer.Renderer;
 import com.jme.scene.Node;
 import com.jme.scene.SharedNode;
+import com.jme.scene.shape.Box;
 import com.jme.scene.state.AlphaState;
 import com.jme.scene.state.MaterialState;
 import com.jme.system.DisplaySystem;
@@ -344,6 +345,15 @@ public class BoxproducerEntityGID96 extends VisualEntity implements SceneControl
 	public void setLOD(int lod) {
 		// No LOD for this one.
 
+	}
+
+	/* (non-Javadoc)
+	 * @see org.rifidi.designer.entities.VisualEntity#getBoundingNode()
+	 */
+	@Override
+	public Node getBoundingNode() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

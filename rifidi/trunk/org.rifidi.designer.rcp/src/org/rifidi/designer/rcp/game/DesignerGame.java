@@ -13,9 +13,11 @@ package org.rifidi.designer.rcp.game;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.Callable;
 
 import org.apache.commons.logging.Log;
@@ -39,6 +41,7 @@ import org.rifidi.designer.rcp.GlobalProperties;
 import org.rifidi.designer.rcp.views.minimapview.MiniMapView;
 import org.rifidi.designer.services.core.camera.CameraService;
 import org.rifidi.designer.services.core.collision.FieldService;
+import org.rifidi.designer.services.core.entities.EntitiesService;
 import org.rifidi.designer.services.core.entities.SceneDataChangedListener;
 import org.rifidi.designer.services.core.entities.SceneDataService;
 import org.rifidi.designer.services.core.highlighting.HighlightingService;
@@ -61,7 +64,8 @@ import com.jme.renderer.Camera;
 import com.jme.renderer.ColorRGBA;
 import com.jme.renderer.OffscreenRenderer;
 import com.jme.renderer.Renderer;
-import com.jme.scene.shape.Box;
+import com.jme.scene.Node;
+import com.jme.scene.SceneElement;
 import com.jme.scene.state.AlphaState;
 import com.jme.scene.state.CullState;
 import com.jme.scene.state.FragmentProgramState;
@@ -94,10 +98,6 @@ public class DesignerGame extends SWTBaseGame implements
 	 * Zbuffer for the rootnode.
 	 */
 	private ZBufferState zbufferState;
-	/**
-	 * Cullstate for the rootNode.
-	 */
-	private CullState cullState;
 	/**
 	 * The primary lightstate.
 	 */
@@ -308,6 +308,8 @@ public class DesignerGame extends SWTBaseGame implements
 	 * @see org.rifidi.jmeswt.SWTBaseGame#render(float)
 	 */
 
+	private Node bo = null;
+
 	@Override
 	protected void render(float interpolation) {
 		if (sceneData != null && !getGlCanvas().isDisposed()
@@ -318,8 +320,14 @@ public class DesignerGame extends SWTBaseGame implements
 						display.getRenderer());
 			}
 			if (GlobalProperties.boundingDebugging) {
-				Debugger.drawBounds(sceneData.getRootNode(), display
-						.getRenderer());
+//				Debugger.drawBounds(sceneData.getRootNode(), display
+//						.getRenderer());
+				if (bo == null) {
+					bo = ((EntitiesService) sceneDataService)
+							.getCollisionOctree().getTreeAsNode();
+				}
+				Debugger.drawBounds(bo, display.getRenderer());
+//				display.getRenderer().draw(bo);
 			}
 			display.getRenderer().displayBackBuffer();
 			getGlCanvas().swapBuffers();
@@ -505,8 +513,8 @@ public class DesignerGame extends SWTBaseGame implements
 	 */
 	@Override
 	public void selectionChanged(SelectionChangedEvent event) {
-		List<VisualEntity> newHighlights = new ArrayList<VisualEntity>();
-		List<VisualEntity> unlit = new ArrayList<VisualEntity>();
+		Set<VisualEntity> newHighlights = new HashSet<VisualEntity>();
+		Set<VisualEntity> unlit = new HashSet<VisualEntity>();
 		Iterator<VisualEntity> iter = ((IStructuredSelection) event
 				.getSelection()).iterator();
 		while (iter.hasNext()) {
@@ -658,14 +666,14 @@ public class DesignerGame extends SWTBaseGame implements
 				.getRoomNode().getWorldBound()).xExtent * 2;
 		int gridZ = (int) ((BoundingBox) sceneDataService.getCurrentSceneData()
 				.getRoomNode().getWorldBound()).zExtent * 2;
-		//one grid is 0.5 units!!!
-		gridX = Math.floor(((BoundingBox) sceneDataService.getCurrentSceneData()
-				.getRoomNode().getWorldBound()).xExtent) < ((BoundingBox) sceneDataService.getCurrentSceneData()
-						.getRoomNode().getWorldBound()).xExtent ? gridX + 1
+		// one grid is 1 unit!!!
+		gridX = Math.floor(((BoundingBox) sceneDataService
+				.getCurrentSceneData().getRoomNode().getWorldBound()).xExtent) < ((BoundingBox) sceneDataService
+				.getCurrentSceneData().getRoomNode().getWorldBound()).xExtent ? gridX + 1
 				: gridX;
-		gridZ = Math.floor(((BoundingBox) sceneDataService.getCurrentSceneData()
-				.getRoomNode().getWorldBound()).zExtent) < ((BoundingBox) sceneDataService.getCurrentSceneData()
-						.getRoomNode().getWorldBound()).zExtent ? gridZ + 1
+		gridZ = Math.floor(((BoundingBox) sceneDataService
+				.getCurrentSceneData().getRoomNode().getWorldBound()).zExtent) < ((BoundingBox) sceneDataService
+				.getCurrentSceneData().getRoomNode().getWorldBound()).zExtent ? gridZ + 1
 				: gridZ;
 		GridNode grid = new GridNode("griddy", gridX, gridZ, .1f);
 		grid.setLocalTranslation(((BoundingBox) sceneDataService
@@ -742,10 +750,11 @@ public class DesignerGame extends SWTBaseGame implements
 	 * (non-Javadoc)
 	 * 
 	 * @see org.rifidi.designer.services.core.highlighting.HighlightingService#changeHighlighting(com.jme.renderer.ColorRGBA,
-	 *      java.util.List)
+	 *      java.util.Set)
 	 */
 	@Override
-	public void changeHighlighting(ColorRGBA color, List<VisualEntity> highlight) {
+	public void changeHighlighting(ColorRGBA color, Set<VisualEntity> highlight) {
+		System.out.println(highlight.size());
 		if (!fragmentPrograms.containsKey(color)) {
 			fragmentPrograms.put(color, createNewFragmentProgramState(color));
 			hilited.put(color, new ArrayList<VisualEntity>());
@@ -758,19 +767,32 @@ public class DesignerGame extends SWTBaseGame implements
 		}
 		hilited.get(color).clear();
 		hilited.get(color).addAll(highlight);
-		GameTaskQueueManager.getManager().update(
-				new HiliteCallable(color, highlight, unlit));
+
+		for (VisualEntity entity : highlight) {
+			Node hilit = entity.getBoundingNode();
+			hilit.setCullMode(SceneElement.CULL_DYNAMIC);
+			hilit.setRenderState(fragmentPrograms.get(color));
+			hilit.setRenderState(alphaState);
+			hilit.setRenderQueueMode(Renderer.QUEUE_OPAQUE);
+			entity.getNode().updateRenderState();
+		}
+		for (VisualEntity entity : unlit) {
+			entity.getBoundingNode().setCullMode(SceneElement.CULL_ALWAYS);
+			entity.getBoundingNode().clearRenderState(
+					RenderState.RS_FRAGMENT_PROGRAM);
+			entity.getNode().updateRenderState();
+		}
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see org.rifidi.designer.services.core.highlighting.HighlightingService#changeHighlightColor(com.jme.renderer.ColorRGBA,
-	 *      com.jme.renderer.ColorRGBA, java.util.List)
+	 *      com.jme.renderer.ColorRGBA, java.util.Set)
 	 */
 	@Override
 	public void changeHighlightColor(ColorRGBA color, ColorRGBA newcolor,
-			List<VisualEntity> hilight) {
+			Set<VisualEntity> hilight) {
 		hilited.get(color).removeAll(hilight);
 		if (!fragmentPrograms.containsKey(newcolor)) {
 			fragmentPrograms.put(newcolor,
@@ -784,6 +806,39 @@ public class DesignerGame extends SWTBaseGame implements
 			target.getNode().getChild("hiliter").setRenderState(
 					fragmentPrograms.get(newcolor));
 			target.getNode().updateRenderState();
+		}
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.rifidi.designer.services.core.highlighting.HighlightingService#clearAllHighlights()
+	 */
+	@Override
+	public void clearAllHighlights() {
+		// TODO Auto-generated method stub
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.rifidi.designer.services.core.highlighting.HighlightingService#clearHighlights(java.util.Set)
+	 */
+	@Override
+	public void clearHighlights(Set<VisualEntity> hilight) {
+		for (ColorRGBA color : hilited.keySet()) {
+			for (VisualEntity entity : hilited.get(color)) {
+				if (hilight.contains(entity)) {
+					entity.getBoundingNode().setCullMode(
+							SceneElement.CULL_ALWAYS);
+					entity.getBoundingNode().clearRenderState(
+							RenderState.RS_FRAGMENT_PROGRAM);
+					entity.getNode().updateRenderState();
+				}
+			}
+			hilited.get(color).removeAll(hilight);
 		}
 	}
 
@@ -841,53 +896,4 @@ public class DesignerGame extends SWTBaseGame implements
 
 	}
 
-	private class HiliteCallable implements Callable<Object> {
-
-		private List<VisualEntity> newHighlights;
-		private List<VisualEntity> unlit;
-		private ColorRGBA color;
-
-		/**
-		 * @param color
-		 * @param newHighlights
-		 * @param unlit
-		 */
-		public HiliteCallable(ColorRGBA color,
-				List<VisualEntity> newHighlights, List<VisualEntity> unlit) {
-			this.newHighlights = newHighlights;
-			this.unlit = unlit;
-			this.color = color;
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see java.util.concurrent.Callable#call()
-		 */
-		@Override
-		public Object call() throws Exception {
-			for (VisualEntity entity : newHighlights) {
-				if (entity.getNode().getChild("hiliter") != null) {
-					entity.getNode().getChild("hiliter").removeFromParent();
-				}
-				Box box = new Box("hiliter", ((BoundingBox) entity.getNode()
-						.getWorldBound()).getCenter().clone().subtractLocal(
-						entity.getNode().getLocalTranslation()), entity
-						.getWidth(), entity.getHeight(), entity.getLength());
-				box.setRenderState(fragmentPrograms.get(color));
-				box.setRenderState(alphaState);
-				box.setRenderQueueMode(Renderer.QUEUE_OPAQUE);
-				entity.getNode().attachChild(box);
-				entity.getNode().updateRenderState();
-			}
-			for (VisualEntity entity : unlit) {
-				if (entity.getNode().getChild("hiliter") != null) {
-					entity.getNode().getChild("hiliter").removeFromParent();
-					entity.getNode().updateRenderState();
-				}
-			}
-			return null;
-		}
-
-	}
 }
