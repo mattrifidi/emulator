@@ -53,6 +53,10 @@ public class CubeOctreeNode {
 	 * Size of the tree.
 	 */
 	public static int size = 0;
+	/**
+	 * Minimum size of cube.
+	 */
+	private float targetSize;
 
 	/**
 	 * Constructor.
@@ -67,39 +71,11 @@ public class CubeOctreeNode {
 	public CubeOctreeNode(Vector3f center, float extent, float targetSize) {
 		this.center = center;
 		this.extent = extent;
+		this.targetSize = targetSize;
 		children = new ArrayList<VisualEntity>();
 		nodes = new ArrayList<CubeOctreeNode>();
 		// we are done if the sidelength equals the targetsize
-		if (!(extent * 2 <= targetSize)) {
-			float newExtent = extent / 2;
-			// create the eight new nodes
-			// the top 4 nodes
-			nodes.add(new CubeOctreeNode(new Vector3f(center.x - newExtent,
-					center.y + newExtent, center.z - newExtent), newExtent,
-					targetSize));
-			nodes.add(new CubeOctreeNode(new Vector3f(center.x + newExtent,
-					center.y + newExtent, center.z - newExtent), newExtent,
-					targetSize));
-			nodes.add(new CubeOctreeNode(new Vector3f(center.x - newExtent,
-					center.y + newExtent, center.z + newExtent), newExtent,
-					targetSize));
-			nodes.add(new CubeOctreeNode(new Vector3f(center.x + newExtent,
-					center.y + newExtent, center.z + newExtent), newExtent,
-					targetSize));
-			// the bottom 4 nodes
-			nodes.add(new CubeOctreeNode(new Vector3f(center.x - newExtent,
-					center.y - newExtent, center.z - newExtent), newExtent,
-					targetSize));
-			nodes.add(new CubeOctreeNode(new Vector3f(center.x + newExtent,
-					center.y - newExtent, center.z - newExtent), newExtent,
-					targetSize));
-			nodes.add(new CubeOctreeNode(new Vector3f(center.x - newExtent,
-					center.y - newExtent, center.z + newExtent), newExtent,
-					targetSize));
-			nodes.add(new CubeOctreeNode(new Vector3f(center.x + newExtent,
-					center.y - newExtent, center.z + newExtent), newExtent,
-					targetSize));
-		} else {
+		if (extent * 2 <= targetSize) {
 			leaf = true;
 		}
 	}
@@ -113,7 +89,7 @@ public class CubeOctreeNode {
 	 * @return
 	 */
 	public boolean intersects(Node boundingNode) {
-		if (boundingNode.getChildren()!=null) {
+		if (boundingNode.getChildren() != null) {
 			for (Spatial sp : boundingNode.getChildren()) {
 				BoundingBox bb = (BoundingBox) sp.getWorldBound();
 				if (center.x + extent <= Math.round(bb.getCenter().x
@@ -150,6 +126,38 @@ public class CubeOctreeNode {
 			children.add(entity);
 			return;
 		}
+		float newExtent = extent / 2;
+		// create the eight new nodes
+		// the top 4 nodes
+		if (nodes.size() == 0) {
+			nodes.add(new CubeOctreeNode(new Vector3f(center.x - newExtent,
+					center.y + newExtent, center.z - newExtent), newExtent,
+					targetSize));
+			nodes.add(new CubeOctreeNode(new Vector3f(center.x + newExtent,
+					center.y + newExtent, center.z - newExtent), newExtent,
+					targetSize));
+			nodes.add(new CubeOctreeNode(new Vector3f(center.x - newExtent,
+					center.y + newExtent, center.z + newExtent), newExtent,
+					targetSize));
+			nodes.add(new CubeOctreeNode(new Vector3f(center.x + newExtent,
+					center.y + newExtent, center.z + newExtent), newExtent,
+					targetSize));
+			// the bottom 4 nodes
+			nodes.add(new CubeOctreeNode(new Vector3f(center.x - newExtent,
+					center.y - newExtent, center.z - newExtent), newExtent,
+					targetSize));
+			nodes.add(new CubeOctreeNode(new Vector3f(center.x + newExtent,
+					center.y - newExtent, center.z - newExtent), newExtent,
+					targetSize));
+			nodes.add(new CubeOctreeNode(new Vector3f(center.x - newExtent,
+					center.y - newExtent, center.z + newExtent), newExtent,
+					targetSize));
+			nodes.add(new CubeOctreeNode(new Vector3f(center.x + newExtent,
+					center.y - newExtent, center.z + newExtent), newExtent,
+					targetSize));
+
+		}
+
 		for (CubeOctreeNode node : nodes) {
 			if (node.intersects(entity.getBoundingNode())) {
 				node.addChild(entity);

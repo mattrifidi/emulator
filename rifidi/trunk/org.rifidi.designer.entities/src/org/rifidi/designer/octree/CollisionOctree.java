@@ -64,7 +64,9 @@ public class CollisionOctree {
 	 * @param entity
 	 */
 	public void insertEntity(VisualEntity entity) {
-		root.addChild(entity);
+		if(root.intersects(entity.getBoundingNode())){
+			root.addChild(entity);
+		}
 	}
 
 	/**

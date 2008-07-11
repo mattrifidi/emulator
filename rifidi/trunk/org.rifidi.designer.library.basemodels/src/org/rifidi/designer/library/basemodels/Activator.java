@@ -97,5 +97,9 @@ public class Activator extends AbstractUIPlugin {
 				PLUGIN_ID, iconPath + "infrared.png"));
 		reg.put(BasemodelsLibrary.class.getName(), imageDescriptorFromPlugin(
 				PLUGIN_ID, iconPath + "rifidi.png"));
+		reg.put("alienworld", imageDescriptorFromPlugin(
+				PLUGIN_ID, iconPath + "alienworld.png"));
+		reg.put("floorplan1", imageDescriptorFromPlugin(
+				PLUGIN_ID, iconPath + "floorplan1.png"));
 	}
 }
