@@ -31,10 +31,12 @@ import org.rifidi.services.tags.id.TagType;
 import org.rifidi.services.tags.impl.RifidiTag;
 import org.rifidi.services.tags.registry.ITagRegistry;
 
+import com.jme.bounding.BoundingBox;
 import com.jme.input.InputHandler;
 import com.jme.math.Quaternion;
 import com.jme.math.Vector3f;
 import com.jme.scene.Node;
+import com.jme.scene.SceneElement;
 import com.jme.scene.shape.Box;
 import com.jme.util.GameTaskQueueManager;
 import com.jme.util.export.binary.BinaryImporter;
@@ -80,10 +82,10 @@ public class ClothingRack extends VisualEntity implements VisualEntityHolder,
 	 */
 	private static Node model = null;
 	/**
-	 * Reference to the tag registry. 
+	 * Reference to the tag registry.
 	 */
 	private ITagRegistry tagRegistry;
-	
+
 	/**
 	 * Constructor.
 	 */
@@ -99,9 +101,9 @@ public class ClothingRack extends VisualEntity implements VisualEntityHolder,
 	 */
 	@Override
 	public void destroy() {
-		for(VisualEntity child:getVisualEntityList()){
-			if(child!=null){
-				child.destroy();	
+		for (VisualEntity child : getVisualEntityList()) {
+			if (child != null) {
+				child.destroy();
 			}
 		}
 	}
@@ -114,7 +116,11 @@ public class ClothingRack extends VisualEntity implements VisualEntityHolder,
 	@Override
 	public void init() {
 		URI modelpath = null;
-		Node node = new Node();
+		Node mainNode=new Node();
+		mainNode.setModelBound(new BoundingBox());
+		Node node = new Node("maingeometry");
+		node.setModelBound(new BoundingBox());
+		mainNode.attachChild(node);
 		try {
 			modelpath = getClass().getClassLoader().getResource(
 					"org/rifidi/designer/library/retail/clothingrack/rack.jme")
@@ -131,11 +137,11 @@ public class ClothingRack extends VisualEntity implements VisualEntityHolder,
 		node.attachChild(model);
 		entities = new ArrayList<VisualEntity>(capacity);
 		positions = new ArrayList<Position>(capacity);
-		TagCreationPattern tagpattern=new TagCreationPattern();
+		TagCreationPattern tagpattern = new TagCreationPattern();
 		tagpattern.setTagGeneration(TagGen.GEN2);
 		tagpattern.setTagType(TagType.GID96);
 		tagpattern.setNumberOfTags(capacity);
-		List<RifidiTag> tags=tagRegistry.createTags(tagpattern);
+		List<RifidiTag> tags = tagRegistry.createTags(tagpattern);
 		for (int count = 0; count < capacity; count++) {
 			Clothing clothing = new Clothing();
 			Position pos = new Position(calcPos(count), calcRot(count));
@@ -147,7 +153,21 @@ public class ClothingRack extends VisualEntity implements VisualEntityHolder,
 			clothing.setName(clothing.getUserData().toString());
 			itemCount++;
 		}
-		setNode(node);
+		setNode(mainNode);
+		getNode().updateGeometricState(0f, true);
+		getNode().updateModelBound();
+		
+		Node _node=new Node("hiliter");
+		Box box = new Box("hiliter", ((BoundingBox) getNode()
+				.getWorldBound()).getCenter().clone().subtractLocal(
+				getNode().getLocalTranslation()), 6f, 4f, 6f);
+		box.setModelBound(new BoundingBox());
+		box.updateModelBound();
+		_node.attachChild(box);
+		_node.setModelBound(new BoundingBox());
+		_node.updateModelBound();
+		_node.setCullMode(SceneElement.CULL_ALWAYS);
+		getNode().attachChild(_node);
 	}
 
 	private Vector3f calcPos(int count) {
@@ -324,7 +344,8 @@ public class ClothingRack extends VisualEntity implements VisualEntityHolder,
 	}
 
 	/**
-	 * @param tagRegistry the tagRegistry to set
+	 * @param tagRegistry
+	 *            the tagRegistry to set
 	 */
 	@Inject
 	public void setTagRegistry(ITagRegistry tagRegistry) {
@@ -342,12 +363,14 @@ public class ClothingRack extends VisualEntity implements VisualEntityHolder,
 
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.rifidi.designer.entities.VisualEntity#getBoundingNode()
 	 */
 	@Override
 	public Node getBoundingNode() {
-		// TODO Auto-generated method stub
-		return null;
+		return (Node) getNode().getChild("hiliter");
 	}
+	
 }

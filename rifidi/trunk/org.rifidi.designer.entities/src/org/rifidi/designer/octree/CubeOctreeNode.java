@@ -105,34 +105,36 @@ public class CubeOctreeNode {
 	}
 
 	/**
-	 * Check if the given entity intersects this node.
-	 * NOTE: 
-	 * A node that touches another node is NOT intersecting a node.
-	 * This is required to allow two entities to be placed directly next to each others.
+	 * Check if the given entity intersects this node. NOTE: A node that touches
+	 * another node is NOT intersecting a node. This is required to allow two
+	 * entities to be placed directly next to each others.
+	 * 
 	 * @param boundingNode
 	 * @return
 	 */
 	public boolean intersects(Node boundingNode) {
-		for (Spatial sp : boundingNode.getChildren()) {
-			BoundingBox bb = (BoundingBox) sp.getWorldBound();
-			if (center.x + extent <= Math.round(bb.getCenter().x - bb.xExtent)
-					|| center.x - extent >= Math.round(bb.getCenter().x
-							+ bb.xExtent))
-				;
-			else if (center.y + extent <= Math.round(bb.getCenter().y
-					- bb.yExtent)
-					|| center.y - extent >= Math.round(bb.getCenter().y
-							+ bb.yExtent))
-				;
-			else if (center.z + extent <= Math.round(bb.getCenter().z
-					- bb.zExtent)
-					|| center.z - extent >= Math.round(bb.getCenter().z
-							+ bb.zExtent))
-				;
-			else {
-				return true;
+		if (boundingNode.getChildren()!=null) {
+			for (Spatial sp : boundingNode.getChildren()) {
+				BoundingBox bb = (BoundingBox) sp.getWorldBound();
+				if (center.x + extent <= Math.round(bb.getCenter().x
+						- bb.xExtent)
+						|| center.x - extent >= Math.round(bb.getCenter().x
+								+ bb.xExtent))
+					;
+				else if (center.y + extent <= Math.round(bb.getCenter().y
+						- bb.yExtent)
+						|| center.y - extent >= Math.round(bb.getCenter().y
+								+ bb.yExtent))
+					;
+				else if (center.z + extent <= Math.round(bb.getCenter().z
+						- bb.zExtent)
+						|| center.z - extent >= Math.round(bb.getCenter().z
+								+ bb.zExtent))
+					;
+				else {
+					return true;
+				}
 			}
-
 		}
 		return false;
 	}

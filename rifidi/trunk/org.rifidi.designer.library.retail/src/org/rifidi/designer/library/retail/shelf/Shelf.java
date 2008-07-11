@@ -25,10 +25,13 @@ import org.rifidi.designer.entities.interfaces.VisualEntityHolder;
 import org.rifidi.designer.library.retail.Position;
 import org.rifidi.designer.library.retail.retailbox.RetailBox;
 
+import com.jme.bounding.BoundingBox;
 import com.jme.input.InputHandler;
 import com.jme.math.Quaternion;
 import com.jme.math.Vector3f;
 import com.jme.scene.Node;
+import com.jme.scene.SceneElement;
+import com.jme.scene.shape.Box;
 import com.jme.util.GameTaskQueueManager;
 import com.jme.util.export.binary.BinaryImporter;
 import com.jmex.physics.DynamicPhysicsNode;
@@ -98,7 +101,11 @@ public class Shelf extends VisualEntity implements VisualEntityHolder,
 	@Override
 	public void init() {
 		URI modelpath = null;
-		Node node = new Node();
+		Node mainNode=new Node();
+		mainNode.setModelBound(new BoundingBox());
+		Node node = new Node("maingeometry");
+		node.setModelBound(new BoundingBox());
+		mainNode.attachChild(node);
 		try {
 			modelpath = getClass().getClassLoader().getResource(
 					"org/rifidi/designer/library/retail/shelf/shelf.jme")
@@ -139,7 +146,21 @@ public class Shelf extends VisualEntity implements VisualEntityHolder,
 			entities.add(box);
 			itemCount++;
 		}
-		setNode(node);
+		setNode(mainNode);
+		getNode().updateGeometricState(0f, true);
+		getNode().updateModelBound();
+		
+		Node _node=new Node("hiliter");
+		Box box = new Box("hiliter", ((BoundingBox) getNode()
+				.getWorldBound()).getCenter().clone().subtractLocal(
+				getNode().getLocalTranslation()).add(new Vector3f(0,2,0)), 4f, 4f, 1f);
+		box.setModelBound(new BoundingBox());
+		box.updateModelBound();
+		_node.attachChild(box);
+		_node.setModelBound(new BoundingBox());
+		_node.updateModelBound();
+		_node.setCullMode(SceneElement.CULL_ALWAYS);
+		getNode().attachChild(_node);
 	}
 
 	/*
@@ -307,8 +328,7 @@ public class Shelf extends VisualEntity implements VisualEntityHolder,
 	 */
 	@Override
 	public Node getBoundingNode() {
-		// TODO Auto-generated method stub
-		return null;
+		return (Node) getNode().getChild("hiliter");
 	}
 
 }

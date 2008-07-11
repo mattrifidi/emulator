@@ -10,8 +10,6 @@
  */
 package org.rifidi.designer.library.basemodels.infrared;
 
-import java.util.ArrayList;
-
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.apache.commons.logging.Log;
@@ -75,6 +73,11 @@ public class InfraredEntity extends VisualEntity implements SceneControl,
 	 */
 	private CablingService cablingService;
 	/**
+	 * Empty bounding node.
+	 */
+	private Node bounding;
+
+	/**
 	 * Constructor
 	 */
 	public InfraredEntity() {
@@ -116,6 +119,9 @@ public class InfraredEntity extends VisualEntity implements SceneControl,
 		setNode(triggerSpace);
 
 		prepare();
+		
+		bounding = new Node();
+		bounding.setModelBound(new BoundingBox());
 
 	}
 
@@ -131,18 +137,19 @@ public class InfraredEntity extends VisualEntity implements SceneControl,
 
 	private void prepare() {
 		// set up collisions to trigger the pusharm
-		((StaticPhysicsNode)getNode()).generatePhysicsGeometry();
-		((StaticPhysicsNode)getNode()).setMaterial(Material.GHOST);
+		((StaticPhysicsNode) getNode()).generatePhysicsGeometry();
+		((StaticPhysicsNode) getNode()).setMaterial(Material.GHOST);
 		InputAction triggerAction = new InputAction() {
 			public void performAction(InputActionEvent evt) {
 				Node collider = ((ContactInfo) evt.getTriggerData()).getNode1()
-						.equals(((StaticPhysicsNode)getNode())) ? ((ContactInfo) evt
-						.getTriggerData()).getNode2() : ((ContactInfo) evt
-						.getTriggerData()).getNode1();
+						.equals(((StaticPhysicsNode) getNode())) ? ((ContactInfo) evt
+						.getTriggerData()).getNode2()
+						: ((ContactInfo) evt.getTriggerData()).getNode1();
 
 			}
 		};
-		SyntheticButton intersect = ((StaticPhysicsNode)getNode()).getCollisionEventHandler();
+		SyntheticButton intersect = ((StaticPhysicsNode) getNode())
+				.getCollisionEventHandler();
 		collisionHandler.addAction(triggerAction, intersect, false);
 		collisionHandler.setEnabled(true);
 
@@ -221,7 +228,7 @@ public class InfraredEntity extends VisualEntity implements SceneControl,
 
 	@Inject
 	public void setCablingService(CablingService cablingService) {
-		this.cablingService=cablingService;
+		this.cablingService = cablingService;
 	}
 
 	@Override
@@ -232,7 +239,7 @@ public class InfraredEntity extends VisualEntity implements SceneControl,
 	@Override
 	public void fieldEntered(Entity entity) {
 		if (isRunning()) {
-			System.out.println("field entered "+entity+" at "+this);
+			System.out.println("field entered " + entity + " at " + this);
 			cablingService.setHigh(this, 1);
 			cablingService.setLow(this, 1);
 			cablingService.setHigh(this, 3);
@@ -242,7 +249,7 @@ public class InfraredEntity extends VisualEntity implements SceneControl,
 
 	@Override
 	public void fieldLeft(Entity entity) {
-		
+
 	}
 
 	/*
@@ -256,13 +263,14 @@ public class InfraredEntity extends VisualEntity implements SceneControl,
 
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.rifidi.designer.entities.VisualEntity#getBoundingNode()
 	 */
 	@Override
 	public Node getBoundingNode() {
-		// TODO Auto-generated method stub
-		return null;
+		return bounding;
 	}
 
 }

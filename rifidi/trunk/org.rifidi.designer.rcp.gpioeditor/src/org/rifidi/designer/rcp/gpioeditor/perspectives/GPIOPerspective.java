@@ -41,7 +41,7 @@ public class GPIOPerspective implements IPerspectiveFactory,
 	/**
 	 * ID of this perspective.
 	 */
-	public final static String ID="org.rifidi.designer.rcp.perspectives.gpio"; 
+	public final static String ID = "org.rifidi.designer.rcp.perspectives.gpio";
 	/**
 	 * Logger for this class.
 	 */
@@ -57,7 +57,8 @@ public class GPIOPerspective implements IPerspectiveFactory,
 	/**
 	 * Is this perspective active.
 	 */
-	private boolean active=false;
+	private boolean active = false;
+
 	/**
 	 * Constructor.
 	 */
@@ -79,7 +80,8 @@ public class GPIOPerspective implements IPerspectiveFactory,
 		layout.addStandaloneView("org.rifidi.designer.rcp.views.View3D", false,
 				IPageLayout.BOTTOM, 0.55f,
 				"org.rifidi.designer.rcp.views.entityview.EntityView");
-		PlatformUI.getWorkbench().getActiveWorkbenchWindow().addPerspectiveListener(this);
+		PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+				.addPerspectiveListener(this);
 	}
 
 	/**
@@ -263,26 +265,32 @@ public class GPIOPerspective implements IPerspectiveFactory,
 			logger.warn(e);
 		}
 	}
-	
-	/* (non-Javadoc)
-	 * @see org.eclipse.ui.IPerspectiveListener#perspectiveActivated(org.eclipse.ui.IWorkbenchPage, org.eclipse.ui.IPerspectiveDescriptor)
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.ui.IPerspectiveListener#perspectiveActivated(org.eclipse.ui.IWorkbenchPage,
+	 *      org.eclipse.ui.IPerspectiveDescriptor)
 	 */
 	@Override
 	public void perspectiveActivated(IWorkbenchPage page,
 			IPerspectiveDescriptor perspective) {
-		if(editor!=null){
+		if (editor != null) {
 			destroySceneData(null);
 			sceneDataChanged(null);
 		}
-		if(ID.equals(perspective.getId()) && !active){
+		if (ID.equals(perspective.getId()) && !active) {
 			sceneDataService.addSceneDataChangedListener(this);
 			return;
 		}
 		sceneDataService.removeSceneDataChangedListener(this);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.ui.IPerspectiveListener#perspectiveChanged(org.eclipse.ui.IWorkbenchPage, org.eclipse.ui.IPerspectiveDescriptor, java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.ui.IPerspectiveListener#perspectiveChanged(org.eclipse.ui.IWorkbenchPage,
+	 *      org.eclipse.ui.IPerspectiveDescriptor, java.lang.String)
 	 */
 	@Override
 	public void perspectiveChanged(IWorkbenchPage page,

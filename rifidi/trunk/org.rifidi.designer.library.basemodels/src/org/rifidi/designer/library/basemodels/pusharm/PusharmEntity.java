@@ -39,6 +39,7 @@ import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.renderer.Renderer;
 import com.jme.scene.Node;
+import com.jme.scene.SceneElement;
 import com.jme.scene.Spatial;
 import com.jme.scene.shape.Box;
 import com.jme.scene.state.AlphaState;
@@ -143,7 +144,10 @@ public class PusharmEntity extends VisualEntity implements SceneControl,
 	 */
 	@Override
 	public void init() {
-		Node node = new Node();
+		Node mainNode=new Node();
+		mainNode.setModelBound(new BoundingBox());
+		Node node = new Node("maingeometry");
+		node.setModelBound(new BoundingBox());
 		try {
 			URI body = null;
 			URI arm = null;
@@ -167,7 +171,6 @@ public class PusharmEntity extends VisualEntity implements SceneControl,
 			bodyNode.setModelBound(new BoundingBox());
 			bodyNode.updateModelBound();
 			for (Spatial sp : bodyNode.getChildren()) {
-				System.out.println("sp: "+sp);
 				sp.clearRenderState(RenderState.RS_TEXTURE);
 			}
 
@@ -185,7 +188,6 @@ public class PusharmEntity extends VisualEntity implements SceneControl,
 			node.attachChild(bodyNode);
 			node.attachChild(armPhysics);
 			node.updateModelBound();
-			setNode(node);
 
 			// store pusharm dimensions for ease of calculation
 			float xCent = armPhysics.getWorldBound().getCenter().x;
@@ -217,8 +219,28 @@ public class PusharmEntity extends VisualEntity implements SceneControl,
 			triggerSpace.setModelBound(new BoundingBox());
 			triggerSpace.updateModelBound();
 			triggerSpace.updateRenderState();
-			getNode().attachChild(triggerSpace);
+			node.attachChild(triggerSpace);
 
+			setNode(mainNode);
+			getNode().attachChild(node);
+
+			getNode().updateGeometricState(0, true);
+			getNode().updateWorldBound();
+			Node _node=new Node("hiliter");
+			System.out.println(((BoundingBox) bodyNode
+					.getWorldBound()).getCenter().clone().subtractLocal(
+							getNode().getLocalTranslation()));
+			Box box = new Box("hiliter", ((BoundingBox) bodyNode
+					.getWorldBound()).getCenter().clone().subtractLocal(
+							getNode().getLocalTranslation()), 3f, 3.5f, 2.0f);
+			box.setModelBound(new BoundingBox());
+			box.updateModelBound();
+			_node.attachChild(box);
+			_node.setModelBound(new BoundingBox());
+			_node.updateModelBound();
+			_node.setCullMode(SceneElement.CULL_ALWAYS);
+			getNode().attachChild(_node);
+			
 		} catch (IOException e) {
 			logger.error("Unable to load jme: " + e);
 		}
@@ -473,7 +495,6 @@ public class PusharmEntity extends VisualEntity implements SceneControl,
 	 */
 	@Override
 	public Node getBoundingNode() {
-		// TODO Auto-generated method stub
-		return null;
+		return (Node)getNode().getChild("hiliter");
 	}
 }

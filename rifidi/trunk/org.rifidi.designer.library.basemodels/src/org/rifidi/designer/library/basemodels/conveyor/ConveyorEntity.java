@@ -35,7 +35,6 @@ import com.jme.renderer.Renderer;
 import com.jme.scene.Node;
 import com.jme.scene.SceneElement;
 import com.jme.scene.SharedNode;
-import com.jme.scene.Spatial;
 import com.jme.scene.SwitchNode;
 import com.jme.scene.shape.Box;
 import com.jme.scene.state.AlphaState;
@@ -157,6 +156,8 @@ public class ConveyorEntity extends VisualEntity implements Switch,
 		phys.generatePhysicsGeometry();
 		getNode().setModelBound(new BoundingBox());
 		getNode().updateModelBound();
+		rollerMaterial = new Material("Roller");
+		phys.setMaterial(rollerMaterial);
 
 		Node _node=new Node("hiliter");
 		Box box = new Box("hiliter", ((BoundingBox) getNode()
@@ -169,8 +170,6 @@ public class ConveyorEntity extends VisualEntity implements Switch,
 		_node.updateModelBound();
 		_node.setCullMode(SceneElement.CULL_ALWAYS);
 		getNode().attachChild(_node);
-		rollerMaterial = new Material("Roller");
-		phys.setMaterial(rollerMaterial);
 	}
 
 	/*
@@ -353,12 +352,14 @@ public class ConveyorEntity extends VisualEntity implements Switch,
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.rifidi.designer.entities.VisualEntity#getBoundingNode()
 	 */
 	@Override
 	public Node getBoundingNode() {
-		return (Node)getNode().getChild("hiliter");
+		return (Node) getNode().getChild("hiliter");
 	}
 	
 }

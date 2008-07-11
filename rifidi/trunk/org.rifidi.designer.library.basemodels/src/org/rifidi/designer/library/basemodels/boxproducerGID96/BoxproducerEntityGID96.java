@@ -35,9 +35,11 @@ import org.rifidi.services.annotations.Inject;
 import org.rifidi.services.tags.registry.ITagRegistry;
 
 import com.jme.bounding.BoundingBox;
+import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.renderer.Renderer;
 import com.jme.scene.Node;
+import com.jme.scene.SceneElement;
 import com.jme.scene.SharedNode;
 import com.jme.scene.shape.Box;
 import com.jme.scene.state.AlphaState;
@@ -131,7 +133,6 @@ public class BoxproducerEntityGID96 extends VisualEntity implements SceneControl
 						.getClassLoader()
 						.getResource(
 								"org/rifidi/designer/library/basemodels/boxproducer/blankdisc.jme")
-						// .getResource("org/rifidi/designer/library/basemodels/boxproducer/boxproducer_saucer.jme")
 						.toURI();
 			} catch (URISyntaxException e) {
 				e.printStackTrace();
@@ -161,18 +162,28 @@ public class BoxproducerEntityGID96 extends VisualEntity implements SceneControl
 		model.setRenderState(ms);
 
 		Node node = new Node(getEntityId());
-		Node sharednode = new SharedNode("shared_", model);
+		Node sharednode = new SharedNode("maingeometry", model);
 		sharednode.setLocalTranslation(0, 12, 0);
-		// sharednode.setRenderState(ms);
 		node.attachChild(sharednode);
+		
+		sharednode.setRenderQueueMode(Renderer.QUEUE_TRANSPARENT);
+		sharednode.setRenderState(as);
 
-		node.setRenderQueueMode(Renderer.QUEUE_TRANSPARENT);
-		node.setRenderState(as);
-
-		node.setModelBound(new BoundingBox());
-		node.updateModelBound();
+		sharednode.setModelBound(new BoundingBox());
+		sharednode.updateModelBound();
 
 		setNode(node);
+
+		Node _node=new Node("hiliter");
+		Box box = new Box("hiliter", new Vector3f(0,12f,0), 3f, .5f, 3f);
+		box.setModelBound(new BoundingBox());
+		box.updateModelBound();
+		_node.attachChild(box);
+		_node.setModelBound(new BoundingBox());
+		_node.updateModelBound();
+		_node.setCullMode(SceneElement.CULL_ALWAYS);
+		getNode().attachChild(_node);
+		
 		logger.debug(NodeHelper.printNodeHierarchy(getNode(), 3));
 
 		thread = new BoxproducerEntityThread(this, productService, products);
@@ -352,8 +363,7 @@ public class BoxproducerEntityGID96 extends VisualEntity implements SceneControl
 	 */
 	@Override
 	public Node getBoundingNode() {
-		// TODO Auto-generated method stub
-		return null;
+		return (Node)getNode().getChild("hiliter");
 	}
 
 }

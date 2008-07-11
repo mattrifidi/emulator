@@ -754,7 +754,6 @@ public class DesignerGame extends SWTBaseGame implements
 	 */
 	@Override
 	public void changeHighlighting(ColorRGBA color, Set<VisualEntity> highlight) {
-		System.out.println(highlight.size());
 		if (!fragmentPrograms.containsKey(color)) {
 			fragmentPrograms.put(color, createNewFragmentProgramState(color));
 			hilited.put(color, new ArrayList<VisualEntity>());
@@ -801,9 +800,9 @@ public class DesignerGame extends SWTBaseGame implements
 		}
 		hilited.get(newcolor).addAll(hilight);
 		for (VisualEntity target : hilight) {
-			target.getNode().getChild("hiliter").clearRenderState(
+			target.getBoundingNode().clearRenderState(
 					RenderState.RS_FRAGMENT_PROGRAM);
-			target.getNode().getChild("hiliter").setRenderState(
+			target.getBoundingNode().setRenderState(
 					fragmentPrograms.get(newcolor));
 			target.getNode().updateRenderState();
 		}

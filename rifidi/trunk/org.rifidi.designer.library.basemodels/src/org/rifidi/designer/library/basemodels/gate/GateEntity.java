@@ -40,8 +40,10 @@ import org.rifidi.emulator.rmi.server.ReaderModuleManagerInterface;
 import org.rifidi.services.annotations.Inject;
 import org.rifidi.ui.common.reader.UIReader;
 
+import com.jme.bounding.BoundingBox;
 import com.jme.math.Vector3f;
 import com.jme.scene.Node;
+import com.jme.scene.SceneElement;
 import com.jme.scene.SharedNode;
 import com.jme.scene.shape.Box;
 import com.jme.util.export.binary.BinaryImporter;
@@ -118,9 +120,12 @@ public class GateEntity extends VisualEntity implements RifidiEntity, Switch,
 	@Override
 	public void init() {
 		prepare();
-
-		Node node = new Node();
-		setNode(node);
+		Node mainNode=new Node();
+		mainNode.setModelBound(new BoundingBox());
+		Node node = new Node("maingeometry");
+		mainNode.attachChild(node);
+		setNode(mainNode);
+		
 		node.attachChild(new SharedNode("shared_gate", model));
 		// find the snappoints
 		children = new ArrayList<VisualEntity>();
@@ -145,7 +150,47 @@ public class GateEntity extends VisualEntity implements RifidiEntity, Switch,
 			antennaL.setBaseRotation(baseRot);
 			children.add(antennaL);
 		}
-
+		getNode().updateGeometricState(0, true);
+		getNode().updateWorldBound();
+		
+		Node _node=new Node("hiliter");
+		Box box = new Box("top", ((BoundingBox) getNode()
+				.getWorldBound()).getCenter().clone().subtractLocal(
+				getNode().getLocalTranslation()).add(new Vector3f(0,5,0)), 3f, 1f, .5f);
+		box.setModelBound(new BoundingBox());
+		box.updateModelBound();
+		_node.attachChild(box);
+		box = new Box("left", ((BoundingBox) getNode()
+				.getWorldBound()).getCenter().clone().subtractLocal(
+				getNode().getLocalTranslation()).add(new Vector3f(-2.5f,-.5f,0)), .5f, 4.5f, .5f);
+		box.setModelBound(new BoundingBox());
+		box.updateModelBound();
+		_node.attachChild(box);
+		box = new Box("leftFoot", ((BoundingBox) getNode()
+				.getWorldBound()).getCenter().clone().subtractLocal(
+				getNode().getLocalTranslation()).add(new Vector3f(-2.5f,-5.5f,0)), .5f, .5f, 2f);
+		box.setModelBound(new BoundingBox());
+		box.updateModelBound();
+		_node.attachChild(box);
+		box = new Box("right", ((BoundingBox) getNode()
+				.getWorldBound()).getCenter().clone().subtractLocal(
+				getNode().getLocalTranslation()).add(new Vector3f(2.5f,-.5f,0)), .5f, 4.5f, .5f);
+		box.setModelBound(new BoundingBox());
+		box.updateModelBound();
+		_node.attachChild(box);
+		box = new Box("rightFoot", ((BoundingBox) getNode()
+				.getWorldBound()).getCenter().clone().subtractLocal(
+				getNode().getLocalTranslation()).add(new Vector3f(2.5f,-5.5f,0)), .5f, .5f, 2f);
+		box.setModelBound(new BoundingBox());
+		box.updateModelBound();
+		_node.attachChild(box);
+		
+		
+		
+		_node.setModelBound(new BoundingBox());
+		_node.updateModelBound();
+		_node.setCullMode(SceneElement.CULL_ALWAYS);
+		getNode().attachChild(_node);
 	}
 
 	/*
@@ -437,8 +482,7 @@ public class GateEntity extends VisualEntity implements RifidiEntity, Switch,
 	 */
 	@Override
 	public Node getBoundingNode() {
-		// TODO Auto-generated method stub
-		return null;
+		return (Node)getNode().getChild("hiliter");
 	}
 
 }
