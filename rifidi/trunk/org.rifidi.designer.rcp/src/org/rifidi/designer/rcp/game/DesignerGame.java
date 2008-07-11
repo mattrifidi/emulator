@@ -478,9 +478,9 @@ public class DesignerGame extends SWTBaseGame implements
 							1f));
 					offy.getCamera().setLocation(
 							new Vector3f(((BoundingBox) sceneData.getRoomNode()
-									.getWorldBound()).xExtent / 2, 2,
+									.getWorldBound()).xExtent , 2,
 									((BoundingBox) sceneData.getRoomNode()
-											.getWorldBound()).zExtent / 2));
+											.getWorldBound()).zExtent ));
 					offy.getCamera()
 							.setDirection(new Vector3f(0f, -1f, -.001f));
 					offy.getCamera().setParallelProjection(true);
@@ -489,14 +489,14 @@ public class DesignerGame extends SWTBaseGame implements
 							1000.0f,
 							-.6f
 									* ((BoundingBox) sceneData.getRoomNode()
-											.getWorldBound()).xExtent,
+											.getWorldBound()).xExtent*2,
 							.6f * ((BoundingBox) sceneData.getRoomNode()
-									.getWorldBound()).xExtent,
+									.getWorldBound()).xExtent*2,
 							-.6f
 									* ((BoundingBox) sceneData.getRoomNode()
-											.getWorldBound()).zExtent,
+											.getWorldBound()).zExtent*2,
 							.6f * ((BoundingBox) sceneData.getRoomNode()
-									.getWorldBound()).zExtent);
+									.getWorldBound()).zExtent*2);
 				}
 				createGrid();
 				return null;
