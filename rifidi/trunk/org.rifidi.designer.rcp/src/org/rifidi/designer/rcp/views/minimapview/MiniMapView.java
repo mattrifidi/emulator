@@ -141,23 +141,6 @@ public class MiniMapView extends ViewPart {
 			}
 		});
 		label.addMouseWheelListener(new ZoomMouseWheelListener(cameraService));
-		// scale = new Scale(comp, SWT.None);
-		// scale.setMinimum(0);
-		// scale.setMaximum(100);
-		// scale.setSelection(10); // TODO fix duplicate constant 10
-		// scale.setLayoutData(gridData2);
-		// scale.addSelectionListener(new SelectionAdapter() {
-		// /*
-		// * (non-Javadoc)
-		// *
-		// * @see
-		// org.eclipse.swt.events.SelectionListener#widgetSelected(org.eclipse.swt.events.SelectionEvent)
-		// */
-		// public void widgetSelected(SelectionEvent e) {
-		// CameraServiceImpl cameraService = (CameraServiceImpl) ServiceRegistry
-		// .getInstance().getService(CameraService.class);
-		// }
-		// });
 	}
 
 	/**
@@ -217,6 +200,7 @@ public class MiniMapView extends ViewPart {
 		Vector3f topright = location.add(3 + delta, -3 + delta, 0);
 		Vector3f bottomright = location.add(3 + delta, 3 + delta, 0);
 		Vector3f bottomleft = location.add(-3 + delta, 3 + delta, 0);
+		
 		int[] corners = new int[] { (int) topleft.x - 20, (int) topleft.y - 20,
 				(int) topright.x + 20, (int) topright.y - 20,
 				(int) topright.x + 20, (int) topright.y - 20,
