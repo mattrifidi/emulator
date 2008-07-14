@@ -92,20 +92,22 @@ public class AlienExternalIO {
 	 */
 	public CommandObject invertExternalOutput(CommandObject arg,
 			AbstractReaderSharedResources asr) {
-		String temp = (String) arg.getArguments().get(0);
-		if (!(temp.equalsIgnoreCase("ON") || temp.equalsIgnoreCase("OFF"))) {
-			String cur = arg.getCurrentQueryName();
-			ArrayList<Object> tempVal = new ArrayList<Object>();
-			tempVal.add(cur);
-			ArrayList<String> PossibleValues = new ArrayList<String>();
-			PossibleValues.add("ON");
-			PossibleValues.add("OFF");
-			ArrayList<Object> retVal = new AlienExceptionHandler().error10(
-					tempVal, arg, PossibleValues);
-			arg.setReturnValue(retVal);
-			return arg;
-		}
-
+		logger.debug("got into invertExternalOutput");
+		if (arg.getArguments().size() != 0){
+			String temp = (String) arg.getArguments().get(0);
+			if (!(temp.equalsIgnoreCase("ON") || temp.equalsIgnoreCase("OFF"))) {
+				String cur = arg.getCurrentQueryName();
+				ArrayList<Object> tempVal = new ArrayList<Object>();
+				tempVal.add(cur);
+				ArrayList<String> PossibleValues = new ArrayList<String>();
+				PossibleValues.add("ON");
+				PossibleValues.add("OFF");
+				ArrayList<Object> retVal = new AlienExceptionHandler().error10(
+						tempVal, arg, PossibleValues);
+				arg.setReturnValue(retVal);
+				return arg;
+			}
+		} 
 		return AlienCommon.getter_setter(arg, asr);
 	}
 
@@ -120,20 +122,21 @@ public class AlienExternalIO {
 	 */
 	public CommandObject invertExternalInput(CommandObject arg,
 			AbstractReaderSharedResources asr) {
-		String temp = (String) arg.getArguments().get(0);
-		if (!(temp.equalsIgnoreCase("ON") || temp.equalsIgnoreCase("OFF"))) {
-			String cur = arg.getCurrentQueryName();
-			ArrayList<Object> tempVal = new ArrayList<Object>();
-			tempVal.add(cur);
-			ArrayList<String> PossibleValues = new ArrayList<String>();
-			PossibleValues.add("ON");
-			PossibleValues.add("OFF");
-			ArrayList<Object> retVal = new AlienExceptionHandler().error10(
-					tempVal, arg, PossibleValues);
-			arg.setReturnValue(retVal);
-			return arg;
+		if (arg.getArguments().size() != 0) {
+			String temp = (String) arg.getArguments().get(0);
+			if (!(temp.equalsIgnoreCase("ON") || temp.equalsIgnoreCase("OFF"))) {
+				String cur = arg.getCurrentQueryName();
+				ArrayList<Object> tempVal = new ArrayList<Object>();
+				tempVal.add(cur);
+				ArrayList<String> PossibleValues = new ArrayList<String>();
+				PossibleValues.add("ON");
+				PossibleValues.add("OFF");
+				ArrayList<Object> retVal = new AlienExceptionHandler().error10(
+						tempVal, arg, PossibleValues);
+				arg.setReturnValue(retVal);
+				return arg;
+			}
 		}
-
 		return AlienCommon.getter_setter(arg, asr);
 	}
 
