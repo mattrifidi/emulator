@@ -6,6 +6,7 @@ package org.rifidi.emulator.reader.sharedrc.GPIO;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Observable;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -41,6 +42,11 @@ public class GPIOController extends Observable {
 
 	private boolean suspended = false;
 	
+	private boolean invertGPI = false;
+	
+	private boolean invertGPO = false;
+	
+	
 	/**
 	 * The name of this reader
 	 */
@@ -56,7 +62,7 @@ public class GPIOController extends Observable {
 		gpiSignals.put(portNum, new GPIOState());
 	}
 
-	public void setGPIHigh(int portNum) {
+	public void _setGPIHigh(int portNum) {
 		if (gpiSignals.get(portNum) != null) {
 			if (!gpiSignals.get(portNum).getState()) {
 
@@ -75,7 +81,7 @@ public class GPIOController extends Observable {
 		}
 	}
 
-	public void setGPILow(int portNum) {
+	public void _setGPILow(int portNum) {
 		if (gpiSignals.get(portNum) != null) {
 			if (gpiSignals.get(portNum).getState()) {
 				eventLogger.info("[GPI EVENT]:Rifidi Engine GPI port "
@@ -93,6 +99,22 @@ public class GPIOController extends Observable {
 		}
 	}
 
+	public void setGPIHigh(int portNum){
+		if (!invertGPI){
+			_setGPIHigh(portNum);
+		} else {
+			_setGPILow(portNum);
+		}
+	}
+	
+	public void setGPILow(int portNum) {
+		if (!invertGPI){
+			_setGPILow(portNum);
+		} else {
+			_setGPIHigh(portNum);
+		}
+	}
+	
 	public boolean getGPIState(int portNum) {
 		return gpiSignals.get(portNum).getState();
 	}
@@ -121,7 +143,11 @@ public class GPIOController extends Observable {
 
 				// make sure we have a callback interface
 				if (callbackInterface != null) {
-					callbackInterface.GPOPortSetHigh(portNum);
+					if (invertGPO == false) {
+						callbackInterface.GPOPortSetHigh(portNum);
+					} else {
+						callbackInterface.GPOPortSetLow(portNum);
+					}
 				}
 
 			}
@@ -143,7 +169,11 @@ public class GPIOController extends Observable {
 				this.setChanged();
 				this.notifyObervers(GPO_EVENT, portNum);
 				if (callbackInterface != null) {
-					callbackInterface.GPOPortSetLow(portNum);
+					if (invertGPO == false) {
+						callbackInterface.GPOPortSetLow(portNum);
+					} else {
+						callbackInterface.GPOPortSetHigh(portNum);
+					}	
 				}
 
 			}
@@ -185,6 +215,65 @@ public class GPIOController extends Observable {
 	public void resume() {
 		logger.debug("GPIO resumed");
 		this.suspended = false;
+	}
+
+	public boolean isInvertGPI() {
+		return invertGPI;
+	}
+
+	public void setInvertGPI(boolean invertGPI) {
+		if (this.invertGPI == invertGPI) return;
+		
+		this.invertGPI = invertGPI;
+		Set<Integer> keySet = gpiSignals.keySet();
+		
+		if (this.invertGPI) {
+			logger.debug("Setting InvertGPI HIGH.");
+		} else {
+			logger.debug("Setting InvertGPI LOW.");
+		}
+		
+		for (Integer i: keySet){
+			if (gpiSignals.get(i).getState()) {
+				gpiSignals.get(i).setStateLow();
+			} else {
+				gpiSignals.get(i).setStateHigh();
+			}
+		}
+	}
+
+	public boolean isInvertGPO() {
+		return invertGPO;
+	}
+
+	public void setInvertGPO(boolean invertGPO) {
+		if (this.invertGPO == invertGPO) return;
+		
+		this.invertGPO = invertGPO;
+		Set<Integer> keySet = gpoSignals.keySet();
+		
+		if (this.invertGPO) {
+			logger.debug("Setting InvertGPO HIGH.");
+		} else {
+			logger.debug("Setting InvertGPO LOW.");
+		}
+		
+		for (Integer i: keySet) {
+			if (!this.invertGPO){
+			if (gpoSignals.get(i).getState()){
+				
+					callbackInterface.GPOPortSetHigh(i);
+				} else {
+					callbackInterface.GPOPortSetLow(i);
+				}
+			} else {
+				if (!this.invertGPO) {
+					callbackInterface.GPOPortSetLow(i);
+				} else {
+					callbackInterface.GPOPortSetHigh(i);
+				}
+			}
+		}
 	}
 
 }
