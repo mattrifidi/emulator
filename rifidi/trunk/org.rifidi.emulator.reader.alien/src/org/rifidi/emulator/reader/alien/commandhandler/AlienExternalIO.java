@@ -94,6 +94,7 @@ public class AlienExternalIO {
 			AbstractReaderSharedResources asr) {
 		logger.debug("got into invertExternalOutput");
 		if (arg.getArguments().size() != 0){
+			logger.debug("hello");
 			String temp = (String) arg.getArguments().get(0);
 			if (!(temp.equalsIgnoreCase("ON") || temp.equalsIgnoreCase("OFF"))) {
 				String cur = arg.getCurrentQueryName();
@@ -107,6 +108,13 @@ public class AlienExternalIO {
 				arg.setReturnValue(retVal);
 				return arg;
 			}
+			if (temp.equalsIgnoreCase("ON")) {
+				asr.getGpioController().setInvertGPO(true);
+			}
+			if (temp.equalsIgnoreCase("OFF")) {
+				asr.getGpioController().setInvertGPO(false);
+			}
+			
 		} 
 		return AlienCommon.getter_setter(arg, asr);
 	}
@@ -135,6 +143,12 @@ public class AlienExternalIO {
 						tempVal, arg, PossibleValues);
 				arg.setReturnValue(retVal);
 				return arg;
+			}
+			if (temp.equalsIgnoreCase("ON")) {
+				asr.getGpioController().setInvertGPI(true);
+			}
+			if (temp.equalsIgnoreCase("OFF")) {
+				asr.getGpioController().setInvertGPI(false);
 			}
 		}
 		return AlienCommon.getter_setter(arg, asr);
