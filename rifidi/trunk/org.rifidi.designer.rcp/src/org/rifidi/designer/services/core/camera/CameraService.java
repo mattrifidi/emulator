@@ -22,54 +22,53 @@ import com.jme.renderer.Camera;
 public interface CameraService {
 
 	/**
-	 * Store the position, zoomlevel and direction of the currently active
-	 * camera.
-	 * 
-	 * @param num
-	 */
-	void recordCameraState(int num);
-
-	/**
-	 * Load a stored camera state back.
-	 * @param num
-	 */
-	void loadRecordedCameraState(int num);
-	
-	/**
 	 * Zoom in one step.
 	 */
 	void zoomIn();
-	
+
 	/**
 	 * Zoom out one step.
 	 */
 	void zoomOut();
-	
+
 	/**
 	 * Set zoom to default level.
 	 */
 	void resetZoom();
-	
+
 	/**
 	 * Creates a camera with the default settings.
 	 * 
 	 * @return a new initialized Jmonkey camera
 	 */
 	public void createCamera();
-	
+
 	/**
 	 * Get the main camera used by the 3d view.
+	 * 
 	 * @return
 	 */
 	public Camera getMainCamera();
-	
+
 	/**
 	 * Center the current camera.
 	 */
 	public void centerCamera();
-	
+
 	/**
-	 * 
+	 * Move the camera to the given position.
 	 */
 	public void positionCamera(Vector3f targetPos);
+
+	/**
+	 * This method alters the current LOD. This is used by the minimap and
+	 * called on each minimap rendering. This only temporary changes the LOD. To
+	 * prevent weird results call resetLOD after you are done.
+	 */
+	public void setLOD(int lod);
+
+	/**
+	 * Reset the LOD to the original value.
+	 */
+	public void resetLOD();
 }

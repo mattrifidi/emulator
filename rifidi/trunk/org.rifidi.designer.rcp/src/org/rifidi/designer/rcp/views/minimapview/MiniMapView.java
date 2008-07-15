@@ -332,7 +332,6 @@ public class MiniMapView extends ViewPart {
 	}
 
 	private class Updater extends Thread {
-		private boolean running = false;
 		private boolean keepRunning = true;
 
 		/*
@@ -354,7 +353,6 @@ public class MiniMapView extends ViewPart {
 					public void run() {
 						try {
 							drawFrame();
-							running = false;
 						} catch (SWTException e) {
 							// should just occur if the widget is
 							// disposed faster than we can shoot

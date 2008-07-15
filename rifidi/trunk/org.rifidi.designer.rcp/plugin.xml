@@ -213,26 +213,6 @@
       </command>
       <command
             categoryId="org.rifidi.designer.rcp.actions.viewcategory"
-            id="org.rifidi.designer.rcp.commands.cameras.camerarecording"
-            name="Camera Recording">
-         <commandParameter
-               id="org.rifidi.designer.rcp.commands.cameras.camerarecording.number"
-               name="number"
-               values="org.rifidi.designer.rcp.handlers.cameras.CameraParameters">
-         </commandParameter>
-      </command>
-      <command
-            categoryId="org.rifidi.designer.rcp.actions.viewcategory"
-            id="org.rifidi.designer.rcp.commands.cameras.camerarestore"
-            name="Camera Restore">
-         <commandParameter
-               id="org.rifidi.designer.rcp.commands.cameras.camerarecording.number"
-               name="number"
-               values="org.rifidi.designer.rcp.handlers.cameras.CameraParameters">
-         </commandParameter>
-      </command>
-      <command
-            categoryId="org.rifidi.designer.rcp.actions.viewcategory"
             id="org.rifidi.designer.rcp.commands.tools.movetool"
             name="Move Tool">
       </command>
@@ -380,14 +360,6 @@
       <handler
             class="org.rifidi.designer.rcp.handlers.tools.WatchAreaToolHandler"
             commandId="org.rifidi.designer.rcp.commands.tools.watcharea">
-      </handler>
-      <handler
-            class="org.rifidi.designer.rcp.handlers.cameras.CameraRecordingHandler"
-            commandId="org.rifidi.designer.rcp.commands.cameras.camerarecording">
-      </handler>
-      <handler
-            class="org.rifidi.designer.rcp.handlers.cameras.CameraRestoreHandler"
-            commandId="org.rifidi.designer.rcp.commands.cameras.camerarestore">
       </handler>
       <handler
             class="org.rifidi.designer.rcp.handlers.tools.MoveToolHandler"

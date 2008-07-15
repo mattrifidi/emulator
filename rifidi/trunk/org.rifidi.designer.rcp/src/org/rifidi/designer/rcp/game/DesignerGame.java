@@ -41,7 +41,6 @@ import org.rifidi.designer.rcp.GlobalProperties;
 import org.rifidi.designer.rcp.views.minimapview.MiniMapView;
 import org.rifidi.designer.services.core.camera.CameraService;
 import org.rifidi.designer.services.core.collision.FieldService;
-import org.rifidi.designer.services.core.entities.EntitiesService;
 import org.rifidi.designer.services.core.entities.SceneDataChangedListener;
 import org.rifidi.designer.services.core.entities.SceneDataService;
 import org.rifidi.designer.services.core.highlighting.HighlightingService;
@@ -66,6 +65,7 @@ import com.jme.renderer.OffscreenRenderer;
 import com.jme.renderer.Renderer;
 import com.jme.scene.Node;
 import com.jme.scene.SceneElement;
+import com.jme.scene.Spatial;
 import com.jme.scene.state.AlphaState;
 import com.jme.scene.state.CullState;
 import com.jme.scene.state.FragmentProgramState;
@@ -185,6 +185,11 @@ public class DesignerGame extends SWTBaseGame implements
 	 * Grid game state.
 	 */
 	private BasicGameState gridState;
+	/**
+	 * List that contains all the spatials that should be rendered by the
+	 * offscreen renderer.
+	 */
+	private List<Spatial> offscreenRenderSpatials;
 
 	/**
 	 * @param name
@@ -225,6 +230,7 @@ public class DesignerGame extends SWTBaseGame implements
 		stateMap.get(WorldStates.Running).add("stop");
 		stateMap.get(WorldStates.Running).add("pause");
 		ServiceRegistry.getInstance().service(this);
+		offscreenRenderSpatials = new ArrayList<Spatial>();
 	}
 
 	/*
@@ -332,7 +338,18 @@ public class DesignerGame extends SWTBaseGame implements
 					&& minimapCounter == 10) {
 				miniMapView.setMapCamera(offy.getCamera());
 				minimapCounter = 0;
-				offy.render(getRootNode());
+				cameraService.setLOD(3);
+				offscreenRenderSpatials.clear();
+				offscreenRenderSpatials.add(sceneData.getRoomNode());
+				for (Entity entity : sceneData.getEntities()) {
+					if (entity instanceof VisualEntity
+							&& ((VisualEntity) entity).getNode() != null) {
+						offscreenRenderSpatials.add(((VisualEntity) entity)
+								.getNode());
+					}
+				}
+				offy.render((ArrayList<Spatial>)offscreenRenderSpatials);
+				cameraService.resetLOD();
 				IntBuffer buffer = offy.getImageData();
 				if (imgData == null) {
 					imgData = new ImageData(200, 200, 32, new PaletteData(
@@ -470,9 +487,9 @@ public class DesignerGame extends SWTBaseGame implements
 							1f));
 					offy.getCamera().setLocation(
 							new Vector3f(((BoundingBox) sceneData.getRoomNode()
-									.getWorldBound()).xExtent , 2,
+									.getWorldBound()).xExtent, 2,
 									((BoundingBox) sceneData.getRoomNode()
-											.getWorldBound()).zExtent ));
+											.getWorldBound()).zExtent));
 					offy.getCamera()
 							.setDirection(new Vector3f(0f, -1f, -.001f));
 					offy.getCamera().setParallelProjection(true);
@@ -481,14 +498,14 @@ public class DesignerGame extends SWTBaseGame implements
 							1000.0f,
 							-.6f
 									* ((BoundingBox) sceneData.getRoomNode()
-											.getWorldBound()).xExtent*2,
+											.getWorldBound()).xExtent * 2,
 							.6f * ((BoundingBox) sceneData.getRoomNode()
-									.getWorldBound()).xExtent*2,
+									.getWorldBound()).xExtent * 2,
 							-.6f
 									* ((BoundingBox) sceneData.getRoomNode()
-											.getWorldBound()).zExtent*2,
+											.getWorldBound()).zExtent * 2,
 							.6f * ((BoundingBox) sceneData.getRoomNode()
-									.getWorldBound()).zExtent*2);
+									.getWorldBound()).zExtent * 2);
 				}
 				createGrid();
 				return null;

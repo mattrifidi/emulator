@@ -41,10 +41,6 @@ public class CameraServiceImpl implements CameraService,
 	 * The logger.
 	 */
 	private Log logger = LogFactory.getLog(CameraServiceImpl.class);
-	/**
-	 * Array of stored camera states.
-	 */
-	private CameraState[] cameraStates = new CameraState[10];
 
 	private int zoomlevel;
 
@@ -54,7 +50,7 @@ public class CameraServiceImpl implements CameraService,
 
 	private int baseFrustumvalue = 50;
 
-	private Camera tempCam;
+	private int lod = 0;
 
 	/**
 	 * Default constructor.
@@ -62,39 +58,6 @@ public class CameraServiceImpl implements CameraService,
 	public CameraServiceImpl() {
 		logger.debug("CamerService created");
 		ServiceRegistry.getInstance().service(this);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.rifidi.services.registry.core.camera.CameraService#loadRecordedCameraState(int)
-	 */
-	@Override
-	public void loadRecordedCameraState(int num) {
-		CameraState cameraState = cameraStates[num];
-		if (cameraState != null) {
-			// setActiveCamera(cameraState.getCameraId());
-			// getActiveCamera().placeCamera(cameraState.getLocation(),
-			// cameraState.getDirection());
-			// getActiveCamera().setZoom(cameraState.getZoom());
-			// getActiveCamera().setLookAtPoint(cameraState.getLookAtPoint());
-		}
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.rifidi.services.registry.core.camera.CameraService#recordCameraState(int)
-	 */
-	@Override
-	public void recordCameraState(int num) {
-		// CameraState cameraState = new CameraState();
-		// cameraState.setLocation(getActiveCamera().getLocation());
-		// cameraState.setDirection(getActiveCamera().getDirection());
-		// cameraState.setZoom(getActiveCamera().getZoom());
-		// cameraState.setCameraId(activeCameraId);
-		// cameraState.setLookAtPoint(getActiveCamera().getLookAtPoint());
-		// cameraStates[num] = cameraState;
 	}
 
 	/*
@@ -119,6 +82,7 @@ public class CameraServiceImpl implements CameraService,
 		if (zoomlevel <= -44) {
 			zoomlevel = -44;
 		}
+		lod = Math.abs((zoomlevel + 44) / 22);
 		GameTaskQueueManager.getManager().update(new Callable<Object>() {
 
 			/*
@@ -138,8 +102,7 @@ public class CameraServiceImpl implements CameraService,
 					for (Entity entity : sceneDataService.getCurrentSceneData()
 							.getEntities()) {
 						if (entity instanceof VisualEntity) {
-							((VisualEntity) entity).setLOD(Math
-									.abs((zoomlevel + 44) / 22));
+							((VisualEntity) entity).setLOD(lod);
 						}
 					}
 				}
@@ -307,6 +270,36 @@ public class CameraServiceImpl implements CameraService,
 	@Override
 	public void sceneDataChanged(SceneData sceneData) {
 		centerCamera();
+	}
+
+	/* (non-Javadoc)
+	 * @see org.rifidi.designer.services.core.camera.CameraService#resetLOD()
+	 */
+	@Override
+	public void resetLOD() {
+		if (sceneDataService.getCurrentSceneData() != null) {
+			for (Entity entity : sceneDataService.getCurrentSceneData()
+					.getEntities()) {
+				if (entity instanceof VisualEntity) {
+					((VisualEntity) entity).setLOD(lod);
+				}
+			}
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see org.rifidi.designer.services.core.camera.CameraService#setLOD(int)
+	 */
+	@Override
+	public void setLOD(int lod) {
+		if (sceneDataService.getCurrentSceneData() != null) {
+			for (Entity entity : sceneDataService.getCurrentSceneData()
+					.getEntities()) {
+				if (entity instanceof VisualEntity) {
+					((VisualEntity) entity).setLOD(lod);
+				}
+			}
+		}
 	}
 
 }
