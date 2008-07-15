@@ -324,10 +324,10 @@ public class DesignerGame extends SWTBaseGame implements
 //						.getRenderer());
 				if (bo == null) {
 					bo = ((EntitiesService) sceneDataService)
-							.getCollisionOctree().getTreeAsNode();
+							.getRoomOctree().getTreeAsNode();
 				}
 				Debugger.drawBounds(bo, display.getRenderer());
-//				display.getRenderer().draw(bo);
+				display.getRenderer().draw(bo);
 			}
 			display.getRenderer().displayBackBuffer();
 			getGlCanvas().swapBuffers();

@@ -16,6 +16,7 @@ import org.rifidi.designer.entities.Entity;
 import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.grouping.EntityGroup;
 import org.rifidi.designer.octree.CollisionOctree;
+import org.rifidi.designer.octree.RoomOctree;
 
 /**
  * This service is responsible for manipulating entities and their groups,
@@ -109,4 +110,10 @@ public interface EntitiesService {
 	 * @return
 	 */
 	CollisionOctree getCollisionOctree();
+	
+	/**
+	 * Get the current octree for room collisions.
+	 * @return
+	 */
+	RoomOctree getRoomOctree();
 }

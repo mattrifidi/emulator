@@ -48,6 +48,7 @@ import org.rifidi.designer.entities.interfaces.RifidiEntity;
 import org.rifidi.designer.entities.interfaces.VisualEntityHolder;
 import org.rifidi.designer.library.EntityLibraryRegistry;
 import org.rifidi.designer.octree.CollisionOctree;
+import org.rifidi.designer.octree.RoomOctree;
 import org.rifidi.services.annotations.Inject;
 import org.rifidi.services.initializer.IInitService;
 import org.rifidi.services.initializer.exceptions.InitializationException;
@@ -61,6 +62,7 @@ import com.jme.bounding.BoundingBox;
 import com.jme.input.InputHandler;
 import com.jme.scene.Node;
 import com.jme.scene.Spatial;
+import com.jme.scene.TriMesh;
 import com.jme.util.GameTaskQueueManager;
 import com.jme.util.TextureManager;
 import com.jme.util.export.binary.BinaryExporter;
@@ -110,8 +112,10 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	 */
 	private IInitService iinitService;
 
-	private CollisionOctree octree = null;
+	private CollisionOctree collisionOctree = null;
 
+	private RoomOctree roomTree = null;
+	
 	/**
 	 * Constructor.
 	 */
@@ -553,6 +557,8 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 				.getFloorReferences().get(sceneData.getFloorId()).getNode();
 		ArrayList<Spatial> spatlist = new ArrayList<Spatial>(roomnode
 				.getChildren());
+		
+		//turn the geometry into a set of physicsnodes
 		for (Spatial spatial : spatlist) {
 			spatial.removeFromParent();
 			StaticPhysicsNode staticNode = sceneData.getPhysicsSpace()
@@ -563,7 +569,14 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 			roomnode.attachChild(staticNode);
 		}
 		roomnode.updateWorldBound();
-		octree = new CollisionOctree(1f, (BoundingBox) roomnode.getWorldBound());
+		collisionOctree = new CollisionOctree(1f, (BoundingBox) roomnode.getWorldBound());
+		roomTree=new RoomOctree(1f, (BoundingBox) roomnode.getWorldBound());
+		for (Spatial spatial : spatlist) {
+			if(!"floor".equals(spatial.getName())){
+				roomTree.insertMesh((TriMesh)spatial);
+			}
+		}
+		
 		sceneData.setRoomNode(roomnode);
 		fileOfCurrentScene = file;
 		nodeToEntity = Collections
@@ -824,7 +837,15 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	 */
 	@Override
 	public CollisionOctree getCollisionOctree() {
-		return octree;
+		return collisionOctree;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.rifidi.designer.services.core.entities.EntitiesService#getRoomOctree()
+	 */
+	@Override
+	public RoomOctree getRoomOctree() {
+		return roomTree;
 	}
 
 	/*
@@ -834,19 +855,20 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	 */
 	@Override
 	public boolean collidesWithScene(VisualEntity visualEntity) {
-		if (visualEntity.getBoundingNode().getChildren() != null) {
-			for (Spatial spat : sceneData.getRoomNode().getChildren()) {
-				if (!"floor".equals(spat.getName())) {
-					for (Spatial sp : ((Node) visualEntity.getBoundingNode())
-							.getChildren()) {
-						if (sp.getWorldBound().intersects(spat.getWorldBound())) {
-							return true;
-						}
-					}
-				}
-			}
-		}
-		return false;
+		return roomTree.findCollisions(visualEntity);
+//		if (visualEntity.getBoundingNode().getChildren() != null) {
+//			for (Spatial spat : sceneData.getRoomNode().getChildren()) {
+//				if (!"floor".equals(spat.getName())) {
+//					for (Spatial sp : ((Node) visualEntity.getBoundingNode())
+//							.getChildren()) {
+//						if (sp.getWorldBound().intersects(spat.getWorldBound())) {
+//							return true;
+//						}
+//					}
+//				}
+//			}
+//		}
+//		return false;
 	}
 
 	/**
