@@ -232,15 +232,15 @@ public class AlienLogin {
 			AbstractReaderSharedResources asr) {
 
 		CommandObject returnCmd;
-		
-		if(!arg.getArguments().isEmpty()){
-			if(arg.getArguments().get(0).equals("q")){
+
+		if (!arg.getArguments().isEmpty()) {
+			if (arg.getArguments().get(0).equals("q")) {
 				logger.debug("Found a q in the passwordPropmt, so quit");
 				AlienGeneral ag = new AlienGeneral();
 				return ag.quit(arg, asr);
 			}
 		}
-		
+
 		if (!arg.getPromptSuppress()) {
 
 			/* Call the Alien Common utility method to return the current value */
@@ -272,8 +272,12 @@ public class AlienLogin {
 			AbstractReaderSharedResources asr) {
 
 		String retVal = "";
+		String passwordValue = "";
 
-		String passwordValue = (String) arg.getArguments().get(0);
+		if (!arg.getArguments().isEmpty()) {
+			passwordValue = (String) arg.getArguments().get(0);
+		}
+
 		ArrayList<Object> returnArray = new ArrayList<Object>();
 		if (!arg.getPromptSuppress()) {
 			/* Apply the mask to the value */
@@ -291,16 +295,17 @@ public class AlienLogin {
 			arg.setReturnValue(returnArray);
 		} else {
 			HashMap<String, ReaderProperty> comMap = (HashMap<String, ReaderProperty>) asr
-			.getPropertyMap();
+					.getPropertyMap();
 			ReaderProperty passwordProp = comMap.get("password");
-			
+
 			String cmdPassword = passwordProp.getPropertyStringValue();
-			
-			if(passwordValue.equals(cmdPassword)) {
+
+			if (passwordValue.equals(cmdPassword)) {
 				returnArray.add(AlienCommon.ZEROCHAR);
 			}
 			arg.setReturnValue(returnArray);
 		}
+
 		return arg;
 
 	}
@@ -322,7 +327,9 @@ public class AlienLogin {
 		String retUsername = "";
 		ArrayList<Object> returnArray = new ArrayList<Object>();
 		/* Get the username from the argument that was passed in */
-		retUsername = (String) arg.getArguments().get(0);
+		if (!arg.getArguments().isEmpty()) {
+			retUsername = (String) arg.getArguments().get(0);
+		}
 		if (!arg.getPromptSuppress()) {
 			/* Create a Return Array with the return value */
 
@@ -565,9 +572,15 @@ public class AlienLogin {
 			logger.debug(i.toString());
 		}
 
-		/* get the username and passwords as arguments */
-		argUsername = (String) argumentsList.get(0);
-		argPassword = (String) argumentsList.get(1);
+		if (argumentsList != null && !argumentsList.isEmpty()) {
+			/* get the username and passwords as arguments */
+			if (argumentsList.get(0) != null) {
+				argUsername = (String) argumentsList.get(0);
+			}
+			if (argumentsList.get(1) != null) {
+				argPassword = (String) argumentsList.get(1);
+			}
+		}
 
 		argUsername = argUsername.trim();
 		argPassword = argPassword.trim();

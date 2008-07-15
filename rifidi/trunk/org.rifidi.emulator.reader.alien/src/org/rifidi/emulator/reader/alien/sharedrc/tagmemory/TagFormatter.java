@@ -46,9 +46,8 @@ public class TagFormatter {
 	public String formatTag(RifidiTag aTag, String regExToken,
 			SimpleDateFormat dateformat, SimpleDateFormat timeformat) {
 
-		//FIXME the %i is broken, fix
 		regExToken = regExToken
-				.replaceAll("%i", aTag.toString());
+				.replaceAll("%i", this.addWhitespace(this.removeWhitespace(aTag.toString())));
 		
 		regExToken = regExToken.replaceAll("%k", this.removeWhitespace(aTag.toString()));
 		
