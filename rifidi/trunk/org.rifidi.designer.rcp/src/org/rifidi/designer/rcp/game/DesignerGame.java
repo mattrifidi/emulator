@@ -308,8 +308,6 @@ public class DesignerGame extends SWTBaseGame implements
 	 * @see org.rifidi.jmeswt.SWTBaseGame#render(float)
 	 */
 
-	private Node bo = null;
-
 	@Override
 	protected void render(float interpolation) {
 		if (sceneData != null && !getGlCanvas().isDisposed()
@@ -320,14 +318,8 @@ public class DesignerGame extends SWTBaseGame implements
 						display.getRenderer());
 			}
 			if (GlobalProperties.boundingDebugging) {
-//				Debugger.drawBounds(sceneData.getRootNode(), display
-//						.getRenderer());
-				if (bo == null) {
-					bo = ((EntitiesService) sceneDataService)
-							.getRoomOctree().getTreeAsNode();
-				}
-				Debugger.drawBounds(bo, display.getRenderer());
-				display.getRenderer().draw(bo);
+				Debugger.drawBounds(sceneData.getRootNode(), display
+						.getRenderer());
 			}
 			display.getRenderer().displayBackBuffer();
 			getGlCanvas().swapBuffers();

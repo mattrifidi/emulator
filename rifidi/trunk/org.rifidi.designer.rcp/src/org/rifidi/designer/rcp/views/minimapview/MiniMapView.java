@@ -187,15 +187,9 @@ public class MiniMapView extends ViewPart {
 	 */
 	private void drawFrame() {
 		Vector3f location = cameraService.getMainCamera().getLocation().clone();
-		float factor = image.getBounds().width / size;
-		location.setY(location.getZ());
-		location.multLocal(factor);
-		int delta = 0;
-		if (size == 64) {
-			delta = 20;
-		} else {
-			delta = 43;
-		}
+		location=mapCamera.getScreenCoordinates(location);
+		location.y=200-location.y;
+		int delta = 20;
 		Vector3f topleft = location.add(-3 + delta, -3 + delta, 0);
 		Vector3f topright = location.add(3 + delta, -3 + delta, 0);
 		Vector3f bottomright = location.add(3 + delta, 3 + delta, 0);
