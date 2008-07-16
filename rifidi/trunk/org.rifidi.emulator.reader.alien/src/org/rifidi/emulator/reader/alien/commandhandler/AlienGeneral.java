@@ -209,6 +209,8 @@ public class AlienGeneral {
 	/**
 	 * Gets the current uptime for the reader.
 	 * 
+	 * TODO: This uptime isn't correct, we need to find some way to make it correct.  
+	 * 
 	 * @param arg
 	 *            The CommandObject which contains the information from the
 	 *            method.
