@@ -149,8 +149,12 @@ public class ReflectiveCommandAdapter implements CommandAdapter {
 					this.sharedResources, geh);
 
 			/* Get the response and decode */
-			commandResponse.addAll(this.newFormatter.encode(inputCommand
-					.getReturnValue()));
+			if (inputCommand != null) {
+				if (inputCommand.getReturnValue() != null) {
+					commandResponse.addAll(this.newFormatter
+							.encode(inputCommand.getReturnValue()));
+				}
+			}
 
 		} catch (CommandNotFoundException e) {
 			logger.warn(e.getMessage());
@@ -162,7 +166,9 @@ public class ReflectiveCommandAdapter implements CommandAdapter {
 		}
 		// Resets the arguments and the return values for the next method
 		// call
-		inputCommand.reset();
+		if (inputCommand != null) {
+			inputCommand.reset();
+		}
 		return commandResponse;
 	}
 }
