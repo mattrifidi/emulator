@@ -24,6 +24,8 @@ import org.rifidi.emulator.reader.sharedrc.properties.ReaderProperty;
  * @version <$CURRENT_VERSION$>
  */
 public class AlienSystem {
+	
+	@SuppressWarnings("unused")
 	private static Log logger =
 		 LogFactory.getLog(AlienSystem.class);
 

@@ -36,8 +36,7 @@ public class AlienGeneral {
 	/**
 	 * Message logger
 	 */
-	private static Log logger = LogFactory
-			.getLog(AlienGeneral.class);
+	private static Log logger = LogFactory.getLog(AlienGeneral.class);
 
 	/**
 	 * The help file for this reader.
@@ -85,8 +84,9 @@ public class AlienGeneral {
 			AbstractReaderSharedResources asr) {
 		return AlienCommon.getter_setter(arg, asr);
 	}
-	
-	public CommandObject connect(CommandObject arg, AbstractReaderSharedResources asr){
+
+	public CommandObject connect(CommandObject arg,
+			AbstractReaderSharedResources asr) {
 		logger.debug("Connect message handled");
 		return arg;
 	}
@@ -216,7 +216,7 @@ public class AlienGeneral {
 	 */
 	public CommandObject getUptime(CommandObject arg,
 			AbstractReaderSharedResources asr) {
-		return arg;
+		return AlienCommon.getter_setter(arg, asr);
 	}
 
 	/**
@@ -364,8 +364,6 @@ public class AlienGeneral {
 		return arg;
 	}
 
-
-
 	/**
 	 * Doesn't actually do anything.
 	 * 
@@ -376,24 +374,24 @@ public class AlienGeneral {
 	 */
 	public CommandObject function(CommandObject arg,
 			AbstractReaderSharedResources asr) {
-		if(!arg.getArguments().isEmpty()){
+		if (!arg.getArguments().isEmpty()) {
 			String function = ((String) arg.getArguments().get(0));
-			String validValues="programmer|reader";
-			if(!validValues.contains(function.toLowerCase())){
+			String validValues = "programmer|reader";
+			if (!validValues.contains(function.toLowerCase())) {
 				String cur = arg.getCurrentQueryName();
 				ArrayList<Object> tempVal = new ArrayList<Object>();
 				tempVal.add(cur);
 				ArrayList<String> PossibleValues = new ArrayList<String>();
 				PossibleValues.add("Programmer");
 				PossibleValues.add("Reader");
-				ArrayList<Object> retVal = new AlienExceptionHandler().error10(tempVal, arg, PossibleValues);
+				ArrayList<Object> retVal = new AlienExceptionHandler().error10(
+						tempVal, arg, PossibleValues);
 				arg.setReturnValue(retVal);
 				return arg;
 			}
 		}
-		
+
 		return AlienCommon.getter_setter(arg, asr);
 	}
-
 
 }
