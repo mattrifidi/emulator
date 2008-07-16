@@ -217,7 +217,7 @@ public class AlienGeneral {
 	 *            method.
 	 * @return The CommandObject, unmodified.
 	 */
-	public CommandObject getUptime(CommandObject arg,
+	public CommandObject uptime(CommandObject arg,
 			AbstractReaderSharedResources asr) {
 		return AlienCommon.getter_setter(arg, asr);
 	}
