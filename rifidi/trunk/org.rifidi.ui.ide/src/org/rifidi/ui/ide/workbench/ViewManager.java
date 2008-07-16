@@ -7,6 +7,7 @@ import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -16,7 +17,6 @@ import org.rifidi.ui.common.registry.ReaderRegistry;
 import org.rifidi.ui.common.registry.RegistryChangeListener;
 import org.rifidi.ui.ide.editors.ReaderEditor;
 import org.rifidi.ui.ide.editors.ReaderEditorInput;
-import org.rifidi.ui.ide.views.antennaview.AntennaView;
 import org.rifidi.ui.ide.views.consoleview.ConsoleView;
 import org.rifidi.ui.ide.views.readerview.ReaderView;
 
@@ -44,26 +44,27 @@ public class ViewManager implements RegistryChangeListener {
 
 		// Register a listener in the ReaderViews SelectionService to bring up
 		// the actual selected Reader
-		//		window.getActivePage().addSelectionListener(ReaderView.ID,
-		//				new ISelectionListener() {
+		// window.getActivePage().addSelectionListener(ReaderView.ID,
+		// new ISelectionListener() {
 		//
-		//					public void selectionChanged(IWorkbenchPart part,
-		//							ISelection selection) {
+		// public void selectionChanged(IWorkbenchPart part,
+		// ISelection selection) {
 		//
-		//						Object o = ((IStructuredSelection) selection)
-		//								.getFirstElement();
-		//						if (o instanceof UIReader) {
-		//							UIReader reader = (UIReader) o;
-		//							if (reader != null) {
-		//								TODO DoubleClickListener
-		//								updateSelectedView(reader);
-		//							}
-		//						}
-		//					}
+		// Object o = ((IStructuredSelection) selection)
+		// .getFirstElement();
+		// if (o instanceof UIReader) {
+		// UIReader reader = (UIReader) o;
+		// if (reader != null) {
+		// TODO DoubleClickListener
+		// updateSelectedView(reader);
+		// }
+		// }
+		// }
 		//
-		//				});
-		
-		TreeViewer viewer = ((ReaderView)window.getActivePage().findView(ReaderView.ID)).getTreeViewer();
+		// });
+
+		TreeViewer viewer = ((ReaderView) window.getActivePage().findView(
+				ReaderView.ID)).getTreeViewer();
 		viewer.addDoubleClickListener(new IDoubleClickListener() {
 			public void doubleClick(DoubleClickEvent event) {
 				IStructuredSelection selection = (IStructuredSelection) event
@@ -84,10 +85,10 @@ public class ViewManager implements RegistryChangeListener {
 
 		// Initialize or show the ReaderEditor for this reader
 		try {
-//			window.getActivePage().showView(AntennaView.ID,
-//					reader.getReaderName(), IWorkbenchPage.VIEW_ACTIVATE);
-			window.getActivePage().openEditor(new ReaderEditorInput((UIReader) event),
-					ReaderEditor.ID);
+			// window.getActivePage().showView(AntennaView.ID,
+			// reader.getReaderName(), IWorkbenchPage.VIEW_ACTIVATE);
+			window.getActivePage().openEditor(
+					new ReaderEditorInput((UIReader) event), ReaderEditor.ID);
 		} catch (PartInitException e) {
 			e.printStackTrace();
 		}
@@ -99,9 +100,10 @@ public class ViewManager implements RegistryChangeListener {
 		} catch (PartInitException e) {
 			e.printStackTrace();
 		}
-		
-		//Select ReadView again
-		window.getActivePage().activate(window.getActivePage().findView(ReaderView.ID));
+
+		// Select ReadView again
+		window.getActivePage().activate(
+				window.getActivePage().findView(ReaderView.ID));
 
 	}
 
@@ -116,21 +118,27 @@ public class ViewManager implements RegistryChangeListener {
 			((ConsoleView) consoleView.getView(false))
 					.stopConsoleUpdaterThread();
 		}
-		// Hide AntennaView for this reader
-		workbenchPage.hideView(workbenchPage.findViewReference(AntennaView.ID,
-				reader.getReaderName()));
 
+		IEditorPart editorToClose = workbenchPage
+				.findEditor(new ReaderEditorInput((UIReader) event));
+		// Hide AntennaView for this reader
+		// workbenchPage.hideView(workbenchPage.findViewReference(AntennaView.ID,
+		// reader.getReaderName()));
+		if (editorToClose != null)
+			workbenchPage.closeEditor(editorToClose, false);
 		// Hide ConsoleView for this reader
 		workbenchPage.hideView(workbenchPage.findViewReference(ConsoleView.ID,
 				reader.getReaderName()));
-		
-		//Select ReadView again
-		window.getActivePage().activate(window.getActivePage().findView(ReaderView.ID));
+
+		// Select ReadView again
+		window.getActivePage().activate(
+				window.getActivePage().findView(ReaderView.ID));
 	}
 
 	public void update(Object event) {
-		//Select ReadView again
-		window.getActivePage().activate(window.getActivePage().findView(ReaderView.ID));
+		// Select ReadView again
+		window.getActivePage().activate(
+				window.getActivePage().findView(ReaderView.ID));
 	}
 
 	public void updateSelectedView(UIReader reader) {
