@@ -330,8 +330,8 @@ public class DesignerGame extends SWTBaseGame implements
 				}
 				Debugger.drawBounds(bu, display
 						.getRenderer());
-//				Debugger.drawBounds(sceneData.getRootNode(), display
-//						.getRenderer());
+				Debugger.drawBounds(sceneData.getRootNode(), display
+						.getRenderer());
 			}
 			display.getRenderer().displayBackBuffer();
 			getGlCanvas().swapBuffers();

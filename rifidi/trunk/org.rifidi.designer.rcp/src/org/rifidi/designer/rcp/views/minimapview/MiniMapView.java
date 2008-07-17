@@ -125,7 +125,7 @@ public class MiniMapView extends ViewPart {
 			}
 
 			public void mouseDown(MouseEvent e) {
-				centerOn(e.x, e.y);
+				centerOn(e.x-15, e.y-15);
 				mousedown = true;
 			}
 
@@ -137,7 +137,7 @@ public class MiniMapView extends ViewPart {
 		label.addMouseMoveListener(new MouseMoveListener() {
 			public void mouseMove(MouseEvent e) {
 				if (mousedown)
-					centerOn(e.x, e.y);
+					centerOn(e.x-15, e.y-15);
 			}
 		});
 		label.addMouseWheelListener(new ZoomMouseWheelListener(cameraService));
