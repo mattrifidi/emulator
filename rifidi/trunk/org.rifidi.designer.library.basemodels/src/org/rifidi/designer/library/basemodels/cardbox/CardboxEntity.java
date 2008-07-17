@@ -13,7 +13,6 @@ package org.rifidi.designer.library.basemodels.cardbox;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -29,7 +28,6 @@ import com.jme.math.Matrix3f;
 import com.jme.math.Vector3f;
 import com.jme.scene.Node;
 import com.jme.scene.SharedNode;
-import com.jme.scene.shape.Box;
 import com.jme.util.export.binary.BinaryImporter;
 import com.jmex.physics.DynamicPhysicsNode;
 import com.jmex.physics.PhysicsSpace;
@@ -63,6 +61,9 @@ public class CardboxEntity extends VisualEntity implements NeedsPhysics {
 	 */
 	private PhysicsSpace physicsSpace;
 	
+	/**
+	 * Constructor.
+	 */
 	public CardboxEntity(){
 		setName("Cardbox");
 	}

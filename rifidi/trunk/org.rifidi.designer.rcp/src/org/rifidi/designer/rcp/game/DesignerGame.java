@@ -41,6 +41,7 @@ import org.rifidi.designer.rcp.GlobalProperties;
 import org.rifidi.designer.rcp.views.minimapview.MiniMapView;
 import org.rifidi.designer.services.core.camera.CameraService;
 import org.rifidi.designer.services.core.collision.FieldService;
+import org.rifidi.designer.services.core.entities.EntitiesServiceImpl;
 import org.rifidi.designer.services.core.entities.SceneDataChangedListener;
 import org.rifidi.designer.services.core.entities.SceneDataService;
 import org.rifidi.designer.services.core.highlighting.HighlightingService;
@@ -313,7 +314,7 @@ public class DesignerGame extends SWTBaseGame implements
 	 * 
 	 * @see org.rifidi.jmeswt.SWTBaseGame#render(float)
 	 */
-
+	Node bu=null;
 	@Override
 	protected void render(float interpolation) {
 		if (sceneData != null && !getGlCanvas().isDisposed()
@@ -324,8 +325,13 @@ public class DesignerGame extends SWTBaseGame implements
 						display.getRenderer());
 			}
 			if (GlobalProperties.boundingDebugging) {
-				Debugger.drawBounds(sceneData.getRootNode(), display
+				if(bu==null){
+					bu=((EntitiesServiceImpl)sceneDataService).getRoomOctree().getTreeAsNode();
+				}
+				Debugger.drawBounds(bu, display
 						.getRenderer());
+//				Debugger.drawBounds(sceneData.getRootNode(), display
+//						.getRenderer());
 			}
 			display.getRenderer().displayBackBuffer();
 			getGlCanvas().swapBuffers();

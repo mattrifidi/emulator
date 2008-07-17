@@ -83,9 +83,9 @@ public class RoomOctree {
 			Vector3f[] triangle = new Vector3f[] { new Vector3f(),
 					new Vector3f(), new Vector3f() };
 			entity.getTriangle(count, triangle);
-			triangle[0].addLocal(entity.getLocalTranslation());
-			triangle[1].addLocal(entity.getLocalTranslation());
-			triangle[2].addLocal(entity.getLocalTranslation());
+			triangle[0].addLocal(entity.getWorldTranslation());
+			triangle[1].addLocal(entity.getWorldTranslation());
+			triangle[2].addLocal(entity.getWorldTranslation());
 			if(triangle[0].x==left && triangle[1].x==left && triangle[2].x==left){
 				trianglesLeft.add(triangle);
 			}
@@ -105,7 +105,6 @@ public class RoomOctree {
 				trianglesBottom.add(triangle);
 			}
 		}
-		
 		root.addChild(trianglesLeft, RoomOctreeNode.Sides.LEFT);
 		root.addChild(trianglesRight, RoomOctreeNode.Sides.RIGHT);
 		root.addChild(trianglesFront, RoomOctreeNode.Sides.FRONT);
@@ -124,7 +123,11 @@ public class RoomOctree {
 
 	public Node getTreeAsNode() {
 		Node node = new Node();
+		node.setModelBound(new BoundingBox());
 		root.getTreeAsNode(node);
+		node.updateGeometricState(0f, true);
+		node.updateModelBound();
+		node.updateWorldBound();
 		return node;
 	}
 }

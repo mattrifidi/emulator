@@ -19,8 +19,11 @@ import com.jme.scene.shape.Box;
  * 
  */
 public class RoomOctreeNode {
-	
-	public static enum Sides{LEFT,RIGHT,FRONT,BACK};
+
+	public static enum Sides {
+		LEFT, RIGHT, FRONT, BACK
+	};
+
 	/**
 	 * Logger for this class.
 	 */
@@ -74,36 +77,7 @@ public class RoomOctreeNode {
 			leaf = true;
 		}
 	}
-    
-	/**
-	 * Checks if the given triangle would bleed into an adjacent triangle.
-	 * @param triangle
-	 * @return
-	 */
-	private boolean checkSides(Vector3f[] triangle){
-		//avoid bleeding into the cube in front
-		if(!(triangle[0].z>=center.z-extent && triangle[1].z>=center.z-extent && triangle[2].z>=center.z-extent)){
-			return false;
-		}
-		//avoid bleeding into the cube in the back
-		if(!(triangle[0].z<=center.z+extent && triangle[1].z<=center.z+extent && triangle[2].z<=center.z+extent)){
-			return false;
-		}
-		//avoid bleeding into the cube on top
-		if(!(triangle[0].y>=center.y-extent && triangle[1].y>=center.y-extent && triangle[2].y>=center.y-extent)){
-			return false;
-		}
-		//avoid bleeding into the cube on the left
-		if(!(triangle[0].x<=center.x+extent && triangle[1].x<=center.x+extent && triangle[2].x<=center.x+extent)){
-			return false;
-		}
-		//avoid bleeding into the cube on the right
-		if(!(triangle[0].x>=center.x-extent && triangle[1].x>=center.x-extent && triangle[2].x>=center.x-extent)){
-			return false;
-		}
-		return true;
-	}
-	
+
 	/**
 	 * Check if the given entity intersects this node. NOTE: A node that touches
 	 * another node is NOT intersecting a node. This is required to allow two
@@ -113,51 +87,110 @@ public class RoomOctreeNode {
 	 * @return
 	 */
 	public boolean intersects(Vector3f[] triangle, Sides side) {
-		if(side.equals(Sides.LEFT)){
-			//avoid bleeding into the adjacent cube
-			if(triangle[0].x==center.x+extent && triangle[1].x==center.x+extent && triangle[2].x==center.x+extent){
-				return false;
-			}
-			if(!checkSides(triangle)){
-				return false;
-			}
-		}
-		else if(side.equals(Sides.RIGHT)){
-			//avoid bleeding into the adjacent cube
-			if(triangle[0].x==center.x-extent && triangle[1].x==center.x-extent && triangle[2].x==center.x-extent){
-				return false;
-			}
-			if(!checkSides(triangle)){
-				return false;
-			}
-		}
-		else if(side.equals(Sides.FRONT)){
-			if(triangle[0].z==center.z-extent && triangle[1].z==center.z-extent && triangle[2].z==center.z-extent){
-				return false;
-			}
-			if(!checkSides(triangle)){
-				return false;
-			}
-		}
-		else if(side.equals(Sides.BACK)){
-			if(triangle[0].z==center.z+extent && triangle[1].z==center.z+extent && triangle[2].z==center.z+extent){
-				return false;
-			}
-			if(!checkSides(triangle)){
-				return false;
-			}
-		}
-		
+		float minX = triangle[0].x, maxX = triangle[0].x, minY = triangle[0].y, maxY = triangle[0].y, minZ = triangle[0].z, maxZ = triangle[0].z;
 		for (Vector3f point : triangle) {
-			if (center.x + extent < point.x || center.x - extent > point.x)
-				;
-			else if (center.y + extent < point.y || center.y - extent > point.y)
-				;
-			else if (center.z + extent < point.z || center.z - extent > point.z)
-				;
-			else {
-				return true;
+			if (minX > point.x) {
+				minX = point.x;
 			}
+			if (maxX < point.x) {
+				maxX = point.x;
+			}
+			if (minY > point.y) {
+				minY = point.y;
+			}
+			if (maxY < point.y) {
+				maxY = point.y;
+			}
+			if (minZ > point.z) {
+				minZ = point.z;
+			}
+			if (maxZ < point.z) {
+				maxZ = point.z;
+			}
+		}
+		if (side.equals(Sides.LEFT)) {
+			// avoid bleeding into the adjacent cube
+			if (triangle[0].x == center.x + extent
+					&& triangle[1].x == center.x + extent
+					&& triangle[2].x == center.x + extent) {
+				return false;
+			}
+			if (minZ >= center.z + extent) {
+				return false;
+			}
+			if (maxZ <= center.z - extent) {
+				return false;
+			}
+			if (maxY <= center.y - extent) {
+				return false;
+			}
+			if (minY >= center.y + extent) {
+				return false;
+			}
+		} else if (side.equals(Sides.RIGHT)) {
+			// avoid bleeding into the adjacent cube
+			if (triangle[0].x == center.x - extent
+					&& triangle[1].x == center.x - extent
+					&& triangle[2].x == center.x - extent) {
+				return false;
+			}
+			if (minZ >= center.z + extent) {
+				return false;
+			}
+			if (maxZ <= center.z - extent) {
+				return false;
+			}
+			if (maxY <= center.y - extent) {
+				return false;
+			}
+			if (minY >= center.y + extent) {
+				return false;
+			}
+		} else if (side.equals(Sides.FRONT)) {
+			if (triangle[0].z == center.z - extent
+					&& triangle[1].z == center.z - extent
+					&& triangle[2].z == center.z - extent) {
+				return false;
+			}
+			if (minX >= center.x + extent) {
+				return false;
+			}
+			if (maxX <= center.x - extent) {
+				return false;
+			}
+			if (maxY <= center.y - extent) {
+				return false;
+			}
+			if (minY >= center.y + extent) {
+				return false;
+			}
+		} else if (side.equals(Sides.BACK)) {
+			if (triangle[0].z == center.z + extent
+					&& triangle[1].z == center.z + extent
+					&& triangle[2].z == center.z + extent) {
+				return false;
+			}
+			if (minX >= center.x + extent) {
+				return false;
+			}
+			if (maxX <= center.x - extent) {
+				return false;
+			}
+			if (maxY <= center.y - extent) {
+				return false;
+			}
+			if (minY >= center.y + extent) {
+				return false;
+			}
+		}
+		if (center.x + extent < minX || center.x - extent > maxX)
+			;
+		else if (center.y + extent < minY || center.y - extent > maxY)
+			;
+		else if (center.z + extent < minZ || center.z - extent > maxZ)
+			;
+		else {
+			return true;
 		}
 		return false;
 	}
@@ -265,8 +298,8 @@ public class RoomOctreeNode {
 			}
 			for (RoomOctreeNode node : nodes) {
 				if (node.intersects(boundingNode)) {
-					boolean ret=node.findCollision(boundingNode);
-					if(ret==true){
+					boolean ret = node.findCollision(boundingNode);
+					if (ret == true) {
 						return true;
 					}
 				}
@@ -295,9 +328,6 @@ public class RoomOctreeNode {
 			Box boxy = new Box("node", center.clone(), extent, extent, extent);
 			boxy.setModelBound(new BoundingBox());
 			node.attachChild(boxy);
-			node.setModelBound(new BoundingBox());
-			node.updateModelBound();
-			node.updateWorldBound();
 		}
 		for (RoomOctreeNode no : nodes) {
 			no.getTreeAsNode(node);

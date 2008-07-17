@@ -571,9 +571,12 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 		roomnode.updateWorldBound();
 		collisionOctree = new CollisionOctree(1f, (BoundingBox) roomnode.getWorldBound());
 		roomTree=new RoomOctree(1f, (BoundingBox) roomnode.getWorldBound());
+		System.out.println((BoundingBox) roomnode.getWorldBound());
 		for (Spatial spatial : spatlist) {
 			if(!"floor".equals(spatial.getName())){
-				roomTree.insertMesh((TriMesh)spatial);
+				for(Spatial spat:((Node)spatial).getChildren()){
+					roomTree.insertMesh((TriMesh)spat);	
+				}
 			}
 		}
 		
