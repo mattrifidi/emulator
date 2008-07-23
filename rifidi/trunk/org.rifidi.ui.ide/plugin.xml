@@ -310,15 +310,15 @@
          <toolbar
                id="org.rifidi.ui.ide.views.ReaderActions">
             <command
-                  commandId="org.rifidi.ui.ide.views.commands.AddTags"
-                  icon="icons/taglist-add-16x16.png"
-                  label="Add New Tags"
-                  style="push">
-            </command>
-            <command
                   commandId="org.rifidi.ui.ide.views.commands.NewReader"
                   icon="icons/reader-add-16x16.png"
                   label="Add New Reader"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.rifidi.ui.ide.views.commands.AddTags"
+                  icon="icons/taglist-add-16x16.png"
+                  label="Add New Tags"
                   style="push">
             </command>
          </toolbar>

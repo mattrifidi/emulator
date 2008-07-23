@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Common Plug-in
-Bundle-SymbolicName: org.rifidi.ui.common
+Bundle-SymbolicName: org.rifidi.ui.common;singleton:=true
 Bundle-Version: 1.0.0
 Bundle-Activator: org.rifidi.ui.common.Activator
 Bundle-Vendor: Pramari, LLC
