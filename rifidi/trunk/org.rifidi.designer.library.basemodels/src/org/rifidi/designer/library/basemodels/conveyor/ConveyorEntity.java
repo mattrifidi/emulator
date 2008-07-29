@@ -67,11 +67,11 @@ public class ConveyorEntity extends VisualEntity implements Switch,
 	/**
 	 * Node for the directional pointer.
 	 */
-	private static Node forwardIndicatorOrig;
+	// private static Node forwardIndicatorOrig;
 	/**
 	 * Flipped directional pointer.
 	 */
-	private static Node reverseIndicatorOrig;
+	// private static Node reverseIndicatorOrig;
 	/**
 	 * Modified forward indicator.
 	 */
@@ -91,7 +91,7 @@ public class ConveyorEntity extends VisualEntity implements Switch,
 	/**
 	 * Model for shared meshes
 	 */
-	private static Node model = null;
+	private static Node[] lod = null;
 	/**
 	 * Material for the rollers
 	 */
@@ -100,7 +100,7 @@ public class ConveyorEntity extends VisualEntity implements Switch,
 	 * Reference to the physics space.
 	 */
 	private PhysicsSpace physicsSpace;
-	
+
 	private SwitchNode switchNode;
 
 	/**
@@ -145,24 +145,29 @@ public class ConveyorEntity extends VisualEntity implements Switch,
 	public void init() {
 		prepare();
 		setNode(new Node());
-		StaticPhysicsNode phys=physicsSpace.createStaticNode();
+		StaticPhysicsNode phys = physicsSpace.createStaticNode();
 		phys.setName("maingeometry");
 		getNode().attachChild(phys);
-		switchNode=new SwitchNode();
-		switchNode.attachChildAt(new SharedNode("sharedConv_", model), 0);
-		switchNode.attachChildAt(new SharedNode("sharedConv_", model), 1);
+		switchNode = new SwitchNode();
+		switchNode.attachChildAt(new SharedNode("sharedConv_", lod[0]), 0);
+		switchNode.attachChildAt(new SharedNode("sharedConv_", lod[1]), 1);
+		switchNode.attachChildAt(new SharedNode("sharedConv_", lod[2]), 2);
 		switchNode.setActiveChild(0);
-		phys.attachChild(switchNode);		
+		phys.attachChild(switchNode);
 		phys.generatePhysicsGeometry();
-		getNode().setModelBound(new BoundingBox());
-		getNode().updateModelBound();
+		switchNode.attachChildAt(new SharedNode("sharedConv_", lod[3]), 3);
+
 		rollerMaterial = new Material("Roller");
 		phys.setMaterial(rollerMaterial);
+		
+		Node _node = new Node("hiliter");
 
-		Node _node=new Node("hiliter");
-		Box box = new Box("hiliter", ((BoundingBox) getNode()
-				.getWorldBound()).getCenter().clone().subtractLocal(
-				getNode().getLocalTranslation()), 2f, 3f, 5f);
+		phys.setLocalTranslation(new Vector3f(-0.14f, ((BoundingBox) switchNode
+				.getWorldBound()).yExtent, 0));
+		Box box = new Box("hiliter", ((BoundingBox) phys.getWorldBound())
+				.getCenter().clone().subtractLocal(
+						getNode().getLocalTranslation()).addLocal(phys.getLocalTranslation()).addLocal(0.04f,0f,0f), 2f,
+				((BoundingBox) phys.getWorldBound()).yExtent+0.01f, 5f);
 		box.setModelBound(new BoundingBox());
 		box.updateModelBound();
 		_node.attachChild(box);
@@ -181,7 +186,7 @@ public class ConveyorEntity extends VisualEntity implements Switch,
 	public void loaded() {
 		prepare();
 		rollerMaterial = new Material("Roller");
-		((PhysicsNode)getNode()).setMaterial(rollerMaterial);
+		((PhysicsNode) getNode()).setMaterial(rollerMaterial);
 		if (active) {
 			active = false;
 			turnOn();
@@ -192,32 +197,36 @@ public class ConveyorEntity extends VisualEntity implements Switch,
 	}
 
 	private void prepare() {
-		if (model == null) {
+		if (lod == null) {
+			lod = new Node[4];
 			URI modelpath = null;
-			try {
-				modelpath = getClass()
-						.getClassLoader()
-						.getResource(
-								"org/rifidi/designer/library/basemodels/conveyor/conveyor.jme")
-						.toURI();
-			} catch (URISyntaxException e) {
-				logger.debug(e);
-			}
-			try {
-				model = (Node) BinaryImporter.getInstance().load(
-						modelpath.toURL());
-				forwardIndicatorOrig = (Node) model.getChild("forwardArrows");
-				reverseIndicatorOrig = (Node) model.getChild("backwardArrows");
-				model.getChild("forwardArrows").removeFromParent();
-				model.getChild("backwardArrows").removeFromParent();
-			} catch (MalformedURLException e) {
-				logger.debug(e);
-			} catch (IOException e) {
-				logger.debug(e);
+			for (int count = 0; count < 4; count++) {
+				try {
+					modelpath = getClass().getClassLoader().getResource(
+							"org/rifidi/designer/library/basemodels/conveyor/conveyor"
+									+ count + ".jme").toURI();
+				} catch (URISyntaxException e) {
+					logger.debug(e);
+				}
+				try {
+					lod[count] = (Node) BinaryImporter.getInstance().load(
+							modelpath.toURL());
+					lod[count].setLocalRotation(new Quaternion().fromAngleAxis(
+							270 * FastMath.DEG_TO_RAD, Vector3f.UNIT_X));
+					lod[count].setModelBound(new BoundingBox());
+					lod[count].updateGeometricState(0f, true);
+					lod[count].updateModelBound();
+					lod[count].updateWorldBound();
+					lod[count].setLocalScale(new Vector3f(0.87f,1f,1f));
+				} catch (MalformedURLException e) {
+					logger.debug(e);
+				} catch (IOException e) {
+					logger.debug(e);
+				}
 			}
 		}
-		forwardIndicator = new SharedNode("shared_", forwardIndicatorOrig);
-		reverseIndicator = new SharedNode("shared_", reverseIndicatorOrig);
+		// forwardIndicator = new SharedNode("shared_", forwardIndicatorOrig);
+		// reverseIndicator = new SharedNode("shared_", reverseIndicatorOrig);
 
 	}
 
@@ -244,7 +253,8 @@ public class ConveyorEntity extends VisualEntity implements Switch,
 	@Override
 	public void turnOff() {
 		if (active) {
-			((PhysicsNode)getNode()).getMaterial().setSurfaceMotion(Vector3f.ZERO);
+			((PhysicsNode) getNode()).getMaterial().setSurfaceMotion(
+					Vector3f.ZERO);
 			// rollers.setActive(true);
 			active = false;
 		}
@@ -258,7 +268,7 @@ public class ConveyorEntity extends VisualEntity implements Switch,
 	@Override
 	public void turnOn() {
 		if (!active) {
-			rollerMaterial.setSurfaceMotion(Vector3f.UNIT_Y.mult(speed));
+			rollerMaterial.setSurfaceMotion(Vector3f.UNIT_X.mult(speed));
 			// rollers.setActive(true);
 			active = true;
 		}
@@ -280,7 +290,7 @@ public class ConveyorEntity extends VisualEntity implements Switch,
 	 */
 	@Override
 	public void destroy() {
-		((PhysicsNode)getNode()).setActive(false);
+		((PhysicsNode) getNode()).setActive(false);
 		getNode().removeFromParent();
 	}
 
@@ -342,13 +352,15 @@ public class ConveyorEntity extends VisualEntity implements Switch,
 		this.physicsSpace = physicsSpace;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.rifidi.designer.entities.VisualEntity#setLOD(int)
 	 */
 	@Override
 	public void setLOD(int lod) {
-		if(switchNode!=null){
-			switchNode.setActiveChild(lod);	
+		if (switchNode != null) {
+			switchNode.setActiveChild(lod);
 		}
 	}
 
@@ -361,5 +373,5 @@ public class ConveyorEntity extends VisualEntity implements Switch,
 	public Node getBoundingNode() {
 		return (Node) getNode().getChild("hiliter");
 	}
-	
+
 }
