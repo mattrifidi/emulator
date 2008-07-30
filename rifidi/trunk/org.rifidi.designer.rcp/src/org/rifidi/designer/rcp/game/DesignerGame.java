@@ -314,7 +314,8 @@ public class DesignerGame extends SWTBaseGame implements
 	 * 
 	 * @see org.rifidi.jmeswt.SWTBaseGame#render(float)
 	 */
-	Node bu=null;
+	Node bu = null;
+
 	@Override
 	protected void render(float interpolation) {
 		if (sceneData != null && !getGlCanvas().isDisposed()
@@ -325,11 +326,11 @@ public class DesignerGame extends SWTBaseGame implements
 						display.getRenderer());
 			}
 			if (GlobalProperties.boundingDebugging) {
-				if(bu==null){
-					bu=((EntitiesServiceImpl)sceneDataService).getRoomOctree().getTreeAsNode();
+				if (bu == null) {
+					bu = ((EntitiesServiceImpl) sceneDataService)
+							.getRoomOctree().getTreeAsNode();
 				}
-				Debugger.drawBounds(bu, display
-						.getRenderer());
+				Debugger.drawBounds(bu, display.getRenderer());
 				Debugger.drawBounds(sceneData.getRootNode(), display
 						.getRenderer());
 			}
@@ -346,15 +347,7 @@ public class DesignerGame extends SWTBaseGame implements
 				minimapCounter = 0;
 				cameraService.setLOD(3);
 				offscreenRenderSpatials.clear();
-				offscreenRenderSpatials.add(sceneData.getRoomNode());
-				for (Entity entity : sceneData.getEntities()) {
-					if (entity instanceof VisualEntity
-							&& ((VisualEntity) entity).getNode() != null) {
-						offscreenRenderSpatials.add(((VisualEntity) entity)
-								.getNode());
-					}
-				}
-				offy.render((ArrayList<Spatial>)offscreenRenderSpatials);
+				offy.render(sceneData.getRootNode());
 				cameraService.resetLOD();
 				IntBuffer buffer = offy.getImageData();
 				if (imgData == null) {
@@ -499,19 +492,21 @@ public class DesignerGame extends SWTBaseGame implements
 					offy.getCamera()
 							.setDirection(new Vector3f(0f, -1f, -.001f));
 					offy.getCamera().setParallelProjection(true);
-					offy.getCamera().setFrustum(
-							-100.0f,
-							1000.0f,
-							-.6f
-									* ((BoundingBox) sceneData.getRoomNode()
-											.getWorldBound()).xExtent * 2,
-							.6f * ((BoundingBox) sceneData.getRoomNode()
-									.getWorldBound()).xExtent * 2,
-							-.6f
-									* ((BoundingBox) sceneData.getRoomNode()
-											.getWorldBound()).zExtent * 2,
-							.6f * ((BoundingBox) sceneData.getRoomNode()
-									.getWorldBound()).zExtent * 2);
+					float ratio = ((BoundingBox) sceneData.getRoomNode()
+							.getWorldBound()).xExtent
+							/ ((BoundingBox) sceneData.getRoomNode()
+									.getWorldBound()).zExtent;
+					float sidelength = 0;
+					if (ratio > 1) {
+						sidelength = ((BoundingBox) sceneData.getRoomNode()
+								.getWorldBound()).xExtent;
+					} else {
+						sidelength = ((BoundingBox) sceneData.getRoomNode()
+								.getWorldBound()).zExtent;
+					}
+					offy.getCamera().setFrustum(-100.0f, 1000.0f,
+							-.6f * sidelength * 2, .6f * sidelength * 2,
+							-.6f * sidelength * 2, .6f * sidelength * 2);
 				}
 				createGrid();
 				return null;
