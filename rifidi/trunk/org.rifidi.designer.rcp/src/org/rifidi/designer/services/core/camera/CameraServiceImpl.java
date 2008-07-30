@@ -52,6 +52,8 @@ public class CameraServiceImpl implements CameraService,
 
 	private int lod = 0;
 
+	private Vector3f[] cameraValues;
+	
 	/**
 	 * Default constructor.
 	 */
@@ -82,7 +84,12 @@ public class CameraServiceImpl implements CameraService,
 		if (zoomlevel <= -44) {
 			zoomlevel = -44;
 		}
-		lod = Math.abs((zoomlevel + 44) / 22);
+		lod = Math.abs((zoomlevel + 44) / 11);
+		if(cameraValues!=null && lod!=3){
+			camera.setAxes(cameraValues[0], cameraValues[1], cameraValues[2]);
+			camera.apply();
+			cameraValues=null;
+		}
 		GameTaskQueueManager.getManager().update(new Callable<Object>() {
 
 			/*
@@ -123,6 +130,15 @@ public class CameraServiceImpl implements CameraService,
 		if (zoomlevel >= -1) {
 			zoomlevel = -1;
 		}
+		lod = Math.abs((zoomlevel + 44) / 11);
+		if(lod==3 && cameraValues==null){
+			cameraValues=new Vector3f[3];
+			cameraValues[0]=camera.getLeft();
+			cameraValues[1]=camera.getUp();
+			cameraValues[2]=camera.getDirection();
+			camera.setAxes(new Vector3f(-1,0,0), new Vector3f(0,1,-0.5f), new Vector3f(0,-1,0));
+			camera.apply();
+		}
 		GameTaskQueueManager.getManager().update(new Callable<Object>() {
 
 			/*
@@ -141,8 +157,7 @@ public class CameraServiceImpl implements CameraService,
 					for (Entity entity : sceneDataService.getCurrentSceneData()
 							.getEntities()) {
 						if (entity instanceof VisualEntity) {
-							((VisualEntity) entity).setLOD(Math
-									.abs((zoomlevel + 44) / 22));
+							((VisualEntity) entity).setLOD(lod);
 						}
 					}
 				}
