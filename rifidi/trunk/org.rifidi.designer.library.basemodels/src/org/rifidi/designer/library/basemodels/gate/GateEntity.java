@@ -41,10 +41,13 @@ import org.rifidi.services.annotations.Inject;
 import org.rifidi.ui.common.reader.UIReader;
 
 import com.jme.bounding.BoundingBox;
+import com.jme.math.FastMath;
+import com.jme.math.Quaternion;
 import com.jme.math.Vector3f;
 import com.jme.scene.Node;
 import com.jme.scene.SceneElement;
 import com.jme.scene.SharedNode;
+import com.jme.scene.SwitchNode;
 import com.jme.scene.shape.Box;
 import com.jme.util.export.binary.BinaryImporter;
 
@@ -66,9 +69,9 @@ public class GateEntity extends VisualEntity implements RifidiEntity, Switch,
 	 */
 	private static Log logger = LogFactory.getLog(GateEntity.class);
 	/**
-	 * Model for shared meshes.
+	 * Model for shared meshes
 	 */
-	private static Node model = null;
+	private static Node[] lod = null;
 	/**
 	 * Left antenna entity.
 	 */
@@ -105,6 +108,10 @@ public class GateEntity extends VisualEntity implements RifidiEntity, Switch,
 	 * Reference to the cablingservice.
 	 */
 	private CablingService cablingService;
+	/**
+	 * Node that contains the different lods.
+	 */
+	private SwitchNode switchNode;
 
 	/**
 	 * Constructor.
@@ -122,11 +129,17 @@ public class GateEntity extends VisualEntity implements RifidiEntity, Switch,
 		prepare();
 		Node mainNode=new Node();
 		mainNode.setModelBound(new BoundingBox());
-		Node node = new Node("maingeometry");
-		mainNode.attachChild(node);
+		switchNode = new SwitchNode("maingeometry");
+		switchNode.setLocalScale(new Vector3f(0.9f,1.1f,1f));
+		switchNode.attachChildAt(new SharedNode("shared_gate", lod[0]), 0);
+		switchNode.attachChildAt(new SharedNode("shared_gate", lod[1]), 1);
+		switchNode.attachChildAt(new SharedNode("shared_gate", lod[2]), 2);
+		switchNode.attachChildAt(new SharedNode("shared_gate", lod[3]), 3);
+		switchNode.setActiveChild(0);
+		
+		mainNode.attachChild(switchNode);
 		setNode(mainNode);
 		
-		node.attachChild(new SharedNode("shared_gate", model));
 		// find the snappoints
 		children = new ArrayList<VisualEntity>();
 		if (reader.getNumAntennas() > 0) {
@@ -201,6 +214,7 @@ public class GateEntity extends VisualEntity implements RifidiEntity, Switch,
 	@Override
 	public void loaded() {
 		prepare();
+		switchNode=(SwitchNode)getNode().getChild("maingeometry");
 		for (VisualEntity antennaFieldEntity : children) {
 			((AntennaFieldEntity) antennaFieldEntity)
 					.setReaderInterface(readerModuleManagerInterface);
@@ -210,24 +224,32 @@ public class GateEntity extends VisualEntity implements RifidiEntity, Switch,
 	}
 
 	private void prepare() {
-		if (model == null) {
+		if (lod == null) {
+			lod = new Node[4];
 			URI modelpath = null;
-			try {
-				modelpath = getClass()
-						.getClassLoader()
-						.getResource(
-								"org/rifidi/designer/library/basemodels/gate/gateway.jme")
-						.toURI();
-			} catch (URISyntaxException e) {
-				e.printStackTrace();
-			}
-			try {
-				model = (Node) BinaryImporter.getInstance().load(
-						modelpath.toURL());
-			} catch (MalformedURLException e) {
-				logger.fatal(e);
-			} catch (IOException e) {
-				logger.fatal(e);
+			for (int count = 0; count < 4; count++) {
+				try {
+					modelpath = getClass().getClassLoader().getResource(
+							"org/rifidi/designer/library/basemodels/gate/gate"
+									+ count + ".jme").toURI();
+				} catch (URISyntaxException e) {
+					logger.debug(e);
+				}
+				try {
+					lod[count] = (Node) BinaryImporter.getInstance().load(
+							modelpath.toURL());
+					lod[count].setLocalRotation(new Quaternion().fromAngleAxis(
+							270 * FastMath.DEG_TO_RAD, Vector3f.UNIT_X));
+					lod[count].setModelBound(new BoundingBox());
+					lod[count].updateGeometricState(0f, true);
+					lod[count].updateModelBound();
+					lod[count].updateWorldBound();
+					lod[count].setLocalScale(new Vector3f(0.87f,1f,1f));
+				} catch (MalformedURLException e) {
+					logger.debug(e);
+				} catch (IOException e) {
+					logger.debug(e);
+				}
 			}
 		}
 		try {
@@ -444,7 +466,6 @@ public class GateEntity extends VisualEntity implements RifidiEntity, Switch,
 
 	@Override
 	public void setHigh(int portNum) {
-		System.out.println("setting high");
 		try {
 			readerModuleManagerInterface.setGPIHigh(portNum);
 		} catch (Exception e) {
@@ -456,7 +477,6 @@ public class GateEntity extends VisualEntity implements RifidiEntity, Switch,
 
 	@Override
 	public void setLow(int portNum) {
-		System.out.println("setting low");
 		try {
 			readerModuleManagerInterface.setGPILow(portNum);
 		} catch (Exception e) {
@@ -473,8 +493,9 @@ public class GateEntity extends VisualEntity implements RifidiEntity, Switch,
 	 */
 	@Override
 	public void setLOD(int lod) {
-		// No LOD for this one.
-
+		if(switchNode!=null){
+			switchNode.setActiveChild(lod);	
+		}
 	}
 
 	/* (non-Javadoc)

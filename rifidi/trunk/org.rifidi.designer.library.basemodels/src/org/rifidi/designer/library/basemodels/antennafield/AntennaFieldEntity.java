@@ -462,7 +462,7 @@ public class AntennaFieldEntity extends VisualEntity implements Switch,
 	 */
 	@Override
 	public void setLOD(int lod) {
-		switchNode.setActiveChild(lod);
+//		switchNode.setActiveChild(lod);
 	}
 
 	/* (non-Javadoc)

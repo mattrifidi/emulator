@@ -100,7 +100,9 @@ public class ConveyorEntity extends VisualEntity implements Switch,
 	 * Reference to the physics space.
 	 */
 	private PhysicsSpace physicsSpace;
-
+	/**
+	 * Node that contains the different lods.
+	 */
 	private SwitchNode switchNode;
 
 	/**
@@ -148,7 +150,7 @@ public class ConveyorEntity extends VisualEntity implements Switch,
 		StaticPhysicsNode phys = physicsSpace.createStaticNode();
 		phys.setName("maingeometry");
 		getNode().attachChild(phys);
-		switchNode = new SwitchNode();
+		switchNode = new SwitchNode("switchnode");
 		switchNode.attachChildAt(new SharedNode("sharedConv_", lod[0]), 0);
 		switchNode.attachChildAt(new SharedNode("sharedConv_", lod[1]), 1);
 		switchNode.attachChildAt(new SharedNode("sharedConv_", lod[2]), 2);
@@ -187,6 +189,7 @@ public class ConveyorEntity extends VisualEntity implements Switch,
 		prepare();
 		rollerMaterial = new Material("Roller");
 		((PhysicsNode) getNode()).setMaterial(rollerMaterial);
+		switchNode=(SwitchNode)getNode().getChild("switchnode");
 		if (active) {
 			active = false;
 			turnOn();
