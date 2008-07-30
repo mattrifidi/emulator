@@ -161,15 +161,16 @@ public class ConveyorEntity extends VisualEntity implements Switch,
 
 		rollerMaterial = new Material("Roller");
 		phys.setMaterial(rollerMaterial);
-		
+
 		Node _node = new Node("hiliter");
 
 		phys.setLocalTranslation(new Vector3f(-0.14f, ((BoundingBox) switchNode
 				.getWorldBound()).yExtent, 0));
 		Box box = new Box("hiliter", ((BoundingBox) phys.getWorldBound())
 				.getCenter().clone().subtractLocal(
-						getNode().getLocalTranslation()).addLocal(phys.getLocalTranslation()).addLocal(0.04f,0f,0f), 2f,
-				((BoundingBox) phys.getWorldBound()).yExtent+0.01f, 5f);
+						getNode().getLocalTranslation()).addLocal(
+						phys.getLocalTranslation()).addLocal(0.04f, 0f, 0f),
+				2f, ((BoundingBox) phys.getWorldBound()).yExtent + 0.01f, 5f);
 		box.setModelBound(new BoundingBox());
 		box.updateModelBound();
 		_node.attachChild(box);
@@ -189,7 +190,7 @@ public class ConveyorEntity extends VisualEntity implements Switch,
 		prepare();
 		rollerMaterial = new Material("Roller");
 		((PhysicsNode) getNode()).setMaterial(rollerMaterial);
-		switchNode=(SwitchNode)getNode().getChild("switchnode");
+		switchNode = (SwitchNode) getNode().getChild("switchnode");
 		if (active) {
 			active = false;
 			turnOn();
@@ -217,10 +218,13 @@ public class ConveyorEntity extends VisualEntity implements Switch,
 					lod[count].setLocalRotation(new Quaternion().fromAngleAxis(
 							270 * FastMath.DEG_TO_RAD, Vector3f.UNIT_X));
 					lod[count].setModelBound(new BoundingBox());
+					lod[count].setLocalScale(new Vector3f(0.87f, 1f, 1f));
 					lod[count].updateGeometricState(0f, true);
 					lod[count].updateModelBound();
 					lod[count].updateWorldBound();
-					lod[count].setLocalScale(new Vector3f(0.87f,1f,1f));
+					if(count==3){
+						lod[count].setLocalScale(new Vector3f(1.0f,0.9f,1.0f));
+					}
 				} catch (MalformedURLException e) {
 					logger.debug(e);
 				} catch (IOException e) {
