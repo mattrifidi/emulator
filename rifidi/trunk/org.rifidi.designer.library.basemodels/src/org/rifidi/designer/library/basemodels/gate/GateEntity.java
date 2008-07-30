@@ -134,7 +134,7 @@ public class GateEntity extends VisualEntity implements RifidiEntity, Switch,
 		switchNode.attachChildAt(new SharedNode("shared_gate", lod[0]), 0);
 		switchNode.attachChildAt(new SharedNode("shared_gate", lod[1]), 1);
 		switchNode.attachChildAt(new SharedNode("shared_gate", lod[2]), 2);
-		switchNode.attachChildAt(new SharedNode("shared_gate", lod[3]), 3);
+		switchNode.attachChildAt(new SharedNode("shared_gate", lod[2]), 3);
 		switchNode.setActiveChild(0);
 		
 		mainNode.attachChild(switchNode);
