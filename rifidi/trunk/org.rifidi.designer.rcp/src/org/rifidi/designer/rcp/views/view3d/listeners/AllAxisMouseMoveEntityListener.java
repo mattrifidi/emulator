@@ -10,6 +10,7 @@
  */
 package org.rifidi.designer.rcp.views.view3d.listeners;
 
+import java.util.Set;
 import java.util.concurrent.Callable;
 
 import org.eclipse.swt.events.MouseEvent;
@@ -19,11 +20,11 @@ import org.eclipse.swt.events.MouseWheelListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Display;
-import org.rifidi.designer.entities.Entity;
 import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.interfaces.VisualEntityHolder;
 import org.rifidi.designer.rcp.views.view3d.View3D;
 import org.rifidi.designer.services.core.camera.CameraService;
+import org.rifidi.designer.services.core.entities.EntitiesService;
 import org.rifidi.designer.services.core.entities.FinderService;
 import org.rifidi.designer.services.core.entities.SceneDataService;
 import org.rifidi.jmonkey.SWTDisplaySystem;
@@ -88,7 +89,10 @@ public class AllAxisMouseMoveEntityListener implements MouseListener,
 	 * Reference to the finder service.
 	 */
 	private FinderService finderService;
-
+	/**
+	 * Reference to the entities service.
+	 */
+	private EntitiesService entitiesService;
 	/**
 	 * Translation of the last hit object.
 	 */
@@ -222,15 +226,25 @@ public class AllAxisMouseMoveEntityListener implements MouseListener,
 	public void mouseUp(MouseEvent e) {
 		view3D.showMousePointer();
 		if (pickedEntity != null) {
-			for (Entity ent : finderService
-					.getEntitiesByType(VisualEntityHolder.class)) {
-				if (ent instanceof VisualEntity) {
-					VisualEntity ve = ((VisualEntity) ent);
-					((VisualEntityHolder) ve).addVisualEntity(pickedEntity);
-					pickedEntity = null;
+			Set<VisualEntity> colls = entitiesService
+					.getColliders(pickedEntity);
+			// check if the picked entity collides with anything
+			if (pickedEntity != null && colls.size() != 0) {
+				for (VisualEntity ent : colls) {
+					if (ent instanceof VisualEntityHolder) {
+						// if it vollides with an EntityHolder then try dropping
+						// it into it
+						if (((VisualEntityHolder) ent).accepts(pickedEntity)) {
+							((VisualEntityHolder) ent)
+									.addVisualEntity(pickedEntity);
+							pickedEntity = null;
+						}
+					}
 				}
 			}
-			if (pickedEntity.getNode() instanceof PhysicsNode) {
+			// drop it
+			else if (pickedEntity != null
+					&& pickedEntity.getNode() instanceof PhysicsNode) {
 				GameTaskQueueManager.getManager().update(
 						new ActivationCallable((PhysicsNode) pickedEntity
 								.getNode()));
@@ -265,39 +279,42 @@ public class AllAxisMouseMoveEntityListener implements MouseListener,
 			deltaY -= (int) deltaY;
 			deltaX -= (int) deltaX;
 			pickedEntity.getNode().getLocalTranslation().addLocal(vec);
+			// a series of checks to keep the entity in the bounds of the scene
 			float xDelta = pickedEntity.getNode().getLocalTranslation().x
-					- ((BoundingBox) pickedEntity.getNode().getWorldBound()).xExtent
-					/ 2;
+					- ((BoundingBox) pickedEntity.getNode().getWorldBound()).xExtent;
 			if (xDelta < 0) {
 				pickedEntity.getNode().getLocalTranslation()
 						.setX(
 								((BoundingBox) pickedEntity.getNode()
-										.getWorldBound()).xExtent / 2 + 0.5f);
+										.getWorldBound()).xExtent + 0.5f);
 			}
 			xDelta = pickedEntity.getNode().getLocalTranslation().x
-					+ ((BoundingBox) pickedEntity.getNode().getWorldBound()).xExtent
-					/ 2;
-			if (xDelta > ((BoundingBox)sceneDataService.getCurrentSceneData().getRootNode().getWorldBound()).xExtent) {
+					+ ((BoundingBox) pickedEntity.getNode().getWorldBound()).xExtent;
+			if (xDelta > ((BoundingBox) sceneDataService.getCurrentSceneData()
+					.getRootNode().getWorldBound()).xExtent * 2) {
 				pickedEntity.getNode().getLocalTranslation().setX(
-						((BoundingBox)sceneDataService.getCurrentSceneData().getRootNode().getWorldBound()).xExtent
+						((BoundingBox) sceneDataService.getCurrentSceneData()
+								.getRootNode().getWorldBound()).xExtent
+								* 2
 								- ((BoundingBox) pickedEntity.getNode()
-										.getWorldBound()).xExtent);
+										.getWorldBound()).xExtent * 2);
 			}
 			float zDelta = pickedEntity.getNode().getLocalTranslation().z
-					- ((BoundingBox) pickedEntity.getNode().getWorldBound()).yExtent
-					/ 2;
+					- ((BoundingBox) pickedEntity.getNode().getWorldBound()).yExtent;
 			if (zDelta < 0) {
 				pickedEntity.getNode().getLocalTranslation()
 						.setZ(
 								((BoundingBox) pickedEntity.getNode()
-										.getWorldBound()).zExtent / 2 + 0.5f);
+										.getWorldBound()).zExtent + 0.5f);
 			}
 			zDelta = pickedEntity.getNode().getLocalTranslation().z
-					+ ((BoundingBox) pickedEntity.getNode().getWorldBound()).zExtent
-					/ 2;
-			if (zDelta > ((BoundingBox)sceneDataService.getCurrentSceneData().getRootNode().getWorldBound()).zExtent) {
+					+ ((BoundingBox) pickedEntity.getNode().getWorldBound()).zExtent;
+			if (zDelta > ((BoundingBox) sceneDataService.getCurrentSceneData()
+					.getRootNode().getWorldBound()).zExtent * 2) {
 				pickedEntity.getNode().getLocalTranslation().setZ(
-						((BoundingBox)sceneDataService.getCurrentSceneData().getRootNode().getWorldBound()).zExtent
+						((BoundingBox) sceneDataService.getCurrentSceneData()
+								.getRootNode().getWorldBound()).zExtent
+								* 2
 								- ((BoundingBox) pickedEntity.getNode()
 										.getWorldBound()).zExtent);
 			}
@@ -328,40 +345,6 @@ public class AllAxisMouseMoveEntityListener implements MouseListener,
 			return;
 		}
 		cameraService.zoomOut();
-		// int newzoom = cameraService.getActiveCamera().getZoom()
-		// + (int) (e.count * 1.5f);
-		// cameraService.getActiveCamera().setZoom(newzoom);
-	}
-
-	private class ActivationCallable implements Callable<Object> {
-
-		private PhysicsNode physicsNode;
-
-		/**
-		 * @param physicsNode
-		 */
-		public ActivationCallable(PhysicsNode physicsNode) {
-			super();
-			this.physicsNode = physicsNode;
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see java.util.concurrent.Callable#call()
-		 */
-		@Override
-		public Object call() throws Exception {
-			if (physicsNode instanceof DynamicPhysicsNode) {
-
-				((DynamicPhysicsNode) physicsNode).clearDynamics();
-				((DynamicPhysicsNode) physicsNode).clearForce();
-				((DynamicPhysicsNode) physicsNode).setMaterial(Material.WOOD);
-			}
-			physicsNode.setActive(true);
-			return null;
-		}
-
 	}
 
 	/**
@@ -391,4 +374,52 @@ public class AllAxisMouseMoveEntityListener implements MouseListener,
 		this.finderService = finderService;
 	}
 
+	/**
+	 * @param entitiesService
+	 *            the entitiesService to set
+	 */
+	@Inject
+	public void setEntitiesService(EntitiesService entitiesService) {
+		this.entitiesService = entitiesService;
+	}
+
+	/**
+	 * Callable for activating the physics properties of the given entity
+	 * 
+	 * 
+	 * @author Jochen Mader - jochen@pramari.com - Jul 31, 2008
+	 * 
+	 */
+	private class ActivationCallable implements Callable<Object> {
+		/**
+		 * The node to activate.
+		 */
+		private PhysicsNode physicsNode;
+
+		/**
+		 * @param physicsNode
+		 */
+		public ActivationCallable(PhysicsNode physicsNode) {
+			super();
+			this.physicsNode = physicsNode;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see java.util.concurrent.Callable#call()
+		 */
+		@Override
+		public Object call() throws Exception {
+			if (physicsNode instanceof DynamicPhysicsNode) {
+
+				((DynamicPhysicsNode) physicsNode).clearDynamics();
+				((DynamicPhysicsNode) physicsNode).clearForce();
+				((DynamicPhysicsNode) physicsNode).setMaterial(Material.WOOD);
+			}
+			physicsNode.setActive(true);
+			return null;
+		}
+
+	}
 }
