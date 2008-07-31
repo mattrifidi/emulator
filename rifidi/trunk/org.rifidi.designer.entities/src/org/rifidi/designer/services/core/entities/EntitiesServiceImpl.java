@@ -18,8 +18,10 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.Callable;
 
 import javax.xml.bind.JAXBContext;
@@ -115,7 +117,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	private CollisionOctree collisionOctree = null;
 
 	private RoomOctree roomTree = null;
-	
+
 	/**
 	 * Constructor.
 	 */
@@ -557,8 +559,8 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 				.getFloorReferences().get(sceneData.getFloorId()).getNode();
 		ArrayList<Spatial> spatlist = new ArrayList<Spatial>(roomnode
 				.getChildren());
-		
-		//turn the geometry into a set of physicsnodes
+
+		// turn the geometry into a set of physicsnodes
 		for (Spatial spatial : spatlist) {
 			spatial.removeFromParent();
 			StaticPhysicsNode staticNode = sceneData.getPhysicsSpace()
@@ -569,17 +571,18 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 			roomnode.attachChild(staticNode);
 		}
 		roomnode.updateWorldBound();
-		collisionOctree = new CollisionOctree(1f, (BoundingBox) roomnode.getWorldBound());
-		roomTree=new RoomOctree(1f, (BoundingBox) roomnode.getWorldBound());
+		collisionOctree = new CollisionOctree(1f, (BoundingBox) roomnode
+				.getWorldBound());
+		roomTree = new RoomOctree(1f, (BoundingBox) roomnode.getWorldBound());
 		System.out.println((BoundingBox) roomnode.getWorldBound());
 		for (Spatial spatial : spatlist) {
-			if(!"floor".equals(spatial.getName())){
-				for(Spatial spat:((Node)spatial).getChildren()){
-					roomTree.insertMesh((TriMesh)spat);	
+			if (!"floor".equals(spatial.getName())) {
+				for (Spatial spat : ((Node) spatial).getChildren()) {
+					roomTree.insertMesh((TriMesh) spat);
 				}
 			}
 		}
-		
+
 		sceneData.setRoomNode(roomnode);
 		fileOfCurrentScene = file;
 		nodeToEntity = Collections
@@ -815,8 +818,8 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	 * @see org.rifidi.designer.services.core.entities.EntitiesService#getColliders(org.rifidi.designer.entities.VisualEntity)
 	 */
 	@Override
-	public List<VisualEntity> getColliders(VisualEntity visualEntity) {
-		List<VisualEntity> colliders = new ArrayList<VisualEntity>();
+	public Set<VisualEntity> getColliders(VisualEntity visualEntity) {
+		Set<VisualEntity> colliders = new HashSet<VisualEntity>();
 		for (Entity entity : sceneData.getEntities()) {
 			if (!entity.equals(visualEntity) && entity instanceof VisualEntity) {
 				// safeguard against those who are too lazy initialize all
@@ -843,7 +846,9 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 		return collisionOctree;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.rifidi.designer.services.core.entities.EntitiesService#getRoomOctree()
 	 */
 	@Override
@@ -859,19 +864,19 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	@Override
 	public boolean collidesWithScene(VisualEntity visualEntity) {
 		return roomTree.findCollisions(visualEntity);
-//		if (visualEntity.getBoundingNode().getChildren() != null) {
-//			for (Spatial spat : sceneData.getRoomNode().getChildren()) {
-//				if (!"floor".equals(spat.getName())) {
-//					for (Spatial sp : ((Node) visualEntity.getBoundingNode())
-//							.getChildren()) {
-//						if (sp.getWorldBound().intersects(spat.getWorldBound())) {
-//							return true;
-//						}
-//					}
-//				}
-//			}
-//		}
-//		return false;
+		// if (visualEntity.getBoundingNode().getChildren() != null) {
+		// for (Spatial spat : sceneData.getRoomNode().getChildren()) {
+		// if (!"floor".equals(spat.getName())) {
+		// for (Spatial sp : ((Node) visualEntity.getBoundingNode())
+		// .getChildren()) {
+		// if (sp.getWorldBound().intersects(spat.getWorldBound())) {
+		// return true;
+		// }
+		// }
+		// }
+		// }
+		// }
+		// return false;
 	}
 
 	/**

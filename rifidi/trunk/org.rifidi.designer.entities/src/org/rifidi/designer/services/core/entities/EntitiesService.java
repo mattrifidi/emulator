@@ -11,6 +11,7 @@
 package org.rifidi.designer.services.core.entities;
 
 import java.util.List;
+import java.util.Set;
 
 import org.rifidi.designer.entities.Entity;
 import org.rifidi.designer.entities.VisualEntity;
@@ -89,30 +90,33 @@ public interface EntitiesService {
 	 * @param entity
 	 */
 	void ungroupEntity(Entity entity);
-	
+
 	/**
-	 * Check for collisions.
-	 * If none are found the returned list is empty.
+	 * Check for collisions. If none are found the returned list is empty.
+	 * 
 	 * @param visualEntity
 	 * @return
 	 */
-	List<VisualEntity> getColliders(VisualEntity visualEntity);
-	
+	Set<VisualEntity> getColliders(VisualEntity visualEntity);
+
 	/**
 	 * Check if the given entity collides with a scene wall.
+	 * 
 	 * @param visualEntity
 	 * @return
 	 */
 	boolean collidesWithScene(VisualEntity visualEntity);
-	
+
 	/**
 	 * Get the current octree for collisions.
+	 * 
 	 * @return
 	 */
 	CollisionOctree getCollisionOctree();
-	
+
 	/**
 	 * Get the current octree for room collisions.
+	 * 
 	 * @return
 	 */
 	RoomOctree getRoomOctree();
