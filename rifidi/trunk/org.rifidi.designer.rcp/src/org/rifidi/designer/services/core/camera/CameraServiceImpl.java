@@ -42,7 +42,7 @@ public class CameraServiceImpl implements CameraService,
 	 */
 	private Log logger = LogFactory.getLog(CameraServiceImpl.class);
 
-	private int zoomlevel;
+	private int zoomlevel=40;
 
 	private SceneDataService sceneDataService;
 
@@ -52,6 +52,8 @@ public class CameraServiceImpl implements CameraService,
 
 	private int lod = 0;
 
+	private boolean lodChange=false;
+	
 	private Vector3f[] cameraValues;
 	
 	/**
@@ -84,13 +86,13 @@ public class CameraServiceImpl implements CameraService,
 		if (zoomlevel <= -44) {
 			zoomlevel = -44;
 		}
-		lod = Math.abs((zoomlevel + 44) / 11);
+		adjustLOD();
 		if(cameraValues!=null && lod!=3){
 			camera.setAxes(cameraValues[0], cameraValues[1], cameraValues[2]);
 			camera.apply();
 			cameraValues=null;
 		}
-		GameTaskQueueManager.getManager().update(new Callable<Object>() {
+		GameTaskQueueManager.getManager().render(new Callable<Object>() {
 
 			/*
 			 * (non-Javadoc)
@@ -105,11 +107,15 @@ public class CameraServiceImpl implements CameraService,
 						-(baseFrustumvalue + zoomlevel),
 						(baseFrustumvalue + zoomlevel));
 				camera.update();
-				if (sceneDataService.getCurrentSceneData() != null) {
-					for (Entity entity : sceneDataService.getCurrentSceneData()
-							.getEntities()) {
-						if (entity instanceof VisualEntity) {
-							((VisualEntity) entity).setLOD(lod);
+				camera.apply();
+				if(lodChange){
+					lodChange=false;
+					if (sceneDataService.getCurrentSceneData() != null) {
+						for (Entity entity : sceneDataService.getCurrentSceneData()
+								.getEntities()) {
+							if (entity instanceof VisualEntity) {
+								((VisualEntity) entity).setLOD(lod);
+							}
 						}
 					}
 				}
@@ -127,10 +133,10 @@ public class CameraServiceImpl implements CameraService,
 	@Override
 	public void zoomOut() {
 		zoomlevel++;
-		if (zoomlevel >= -1) {
-			zoomlevel = -1;
+		if (zoomlevel >= 200) {
+			zoomlevel = 200;
 		}
-		lod = Math.abs((zoomlevel + 44) / 11);
+		adjustLOD();
 		if(lod==3 && cameraValues==null){
 			cameraValues=new Vector3f[3];
 			cameraValues[0]=camera.getLeft();
@@ -139,7 +145,7 @@ public class CameraServiceImpl implements CameraService,
 			camera.setAxes(new Vector3f(-1,0,0), new Vector3f(0,1,-0.5f), new Vector3f(0,-1,0));
 			camera.apply();
 		}
-		GameTaskQueueManager.getManager().update(new Callable<Object>() {
+		GameTaskQueueManager.getManager().render(new Callable<Object>() {
 
 			/*
 			 * (non-Javadoc)
@@ -153,14 +159,20 @@ public class CameraServiceImpl implements CameraService,
 						(baseFrustumvalue + zoomlevel) * 4 / 3,
 						-(baseFrustumvalue + zoomlevel),
 						(baseFrustumvalue + zoomlevel));
-				if (sceneDataService.getCurrentSceneData() != null) {
-					for (Entity entity : sceneDataService.getCurrentSceneData()
-							.getEntities()) {
-						if (entity instanceof VisualEntity) {
-							((VisualEntity) entity).setLOD(lod);
+				camera.update();
+				camera.apply();
+				if(lodChange){
+					lodChange=false;
+					if (sceneDataService.getCurrentSceneData() != null) {
+						for (Entity entity : sceneDataService.getCurrentSceneData()
+								.getEntities()) {
+							if (entity instanceof VisualEntity) {
+								((VisualEntity) entity).setLOD(lod);
+							}
 						}
 					}
 				}
+				
 				return null;
 			}
 
@@ -317,4 +329,34 @@ public class CameraServiceImpl implements CameraService,
 		}
 	}
 
+	/**
+	 * Check if lod has changed and apply it.
+	 */
+	private void adjustLOD(){
+		if(zoomlevel<=-30){
+			if(lod!=0){
+				lod=0;
+				lodChange=true;
+			}
+		}
+		else if(zoomlevel<=-10){
+			if(lod!=1){
+				lod=1;
+				lodChange=true;
+			}
+		}
+		else if(zoomlevel<=40){
+			if(lod!=2){
+				lod=2;
+				lodChange=true;
+			}
+		}
+		else if(zoomlevel<=70){
+			if(lod!=3){
+				lod=3;
+				lodChange=true;
+			}
+		}
+		setLOD(lod);
+	}
 }
