@@ -150,9 +150,8 @@ public class _AISpec implements Observer {
 	}
 
 	/**
-	 * Looks for tags in its given antennas. This method works by polling the
-	 * antenna. Eventually we would like to change that so that everything is
-	 * done by notification
+	 * Looks for tags in its given antennas. This method attempts to follow the
+	 * state diagram of AISpec operation (figure 5 in the LLRP Spec).
 	 * 
 	 * @param tagMap
 	 */
@@ -206,7 +205,8 @@ public class _AISpec implements Observer {
 			llrpsr.getRadio().scan(this.antennas, tagMem);
 
 			// Add all new tags to TagReportDataEntries and perform access
-			// operation on tag if we need to
+			// operation on tag if we need to. This is equivalent to
+			// singulation.
 			for (RifidiTag t : tagMem.getTagReport()) {
 
 				t.incrementReadCount();
@@ -214,6 +214,9 @@ public class _AISpec implements Observer {
 				TagReportData trd = LLRPReportController.formatTagReport(
 						getReportFormat(), t, roSpecID, specIndex, llrpsr);
 
+				// TODO: this method is incorrect because it only adds the tag
+				// if the EPCID has not already been seen. That is there are no
+				// duplicates.
 				llrpsr.getTagReportDataEntries().add(trd);
 
 				_AccessSpec accessSpec = llrpsr.accessSpecs
@@ -235,19 +238,21 @@ public class _AISpec implements Observer {
 						if (llrpsr.getTagReportDataEntries()
 								.getNumDataEntries() == getReportFormat().N) {
 
-							LLRPReportControllerFactory.getInstance()
-								.getReportController(this.llrpsr.getReaderName())
+							LLRPReportControllerFactory
+									.getInstance()
+									.getReportController(
+											this.llrpsr.getReaderName())
 									.sendAllReports(llrpsr, getReportFormat().N);
-							
-							logger.debug("Sent a report because" +
-											" of N tag trigger");
+
+							logger.debug("Sent a report because"
+									+ " of N tag trigger");
 
 						}
 					}
-				}	
+				}
 			}
 			tagMem.clear();
-			
+
 			// if we are using Tag Observation Trigger, update it with new tags
 			if (this.stopTrigger instanceof TagObservationTrigger) {
 				TagObservationTrigger trig = (TagObservationTrigger) stopTrigger;
