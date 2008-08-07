@@ -43,7 +43,7 @@ public class ThingMagicRQLCommandFormatter implements CommandFormatter {
 		while (matcher.find())
 			store.add(matcher.group());
 		
-		retVal.add(new ParsedCommandObject(store, argString));
+		//retVal.add(new ParsedCommandObject(store, argString));
 		
 		
 		logger.debug(retVal);

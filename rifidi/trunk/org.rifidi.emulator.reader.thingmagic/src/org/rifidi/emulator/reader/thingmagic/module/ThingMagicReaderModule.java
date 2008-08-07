@@ -27,11 +27,8 @@ import org.rifidi.emulator.reader.sharedrc.radio.Antenna;
 import org.rifidi.emulator.reader.sharedrc.radio.generic.GenericRadio;
 import org.rifidi.emulator.reader.thingmagic.command.exception.ThingMagicRQLExceptionHandler;
 import org.rifidi.emulator.reader.thingmagic.database.DataBase;
-import org.rifidi.emulator.reader.thingmagic.database.enums.ETable;
-import org.rifidi.emulator.reader.thingmagic.database.enums.GenericTableRow;
 import org.rifidi.emulator.reader.thingmagic.formatter.ThingMagicRQLCommandFormatter;
 import org.rifidi.emulator.reader.thingmagic.io.protocol.ThingMagicProtocol;
-import org.rifidi.emulator.reader.thingmagic.tagbuffer.DataBaseTagTable;
 import org.rifidi.emulator.reader.thingmagic.tagbuffer.ThingMagicTagMemory;
 
 
@@ -147,15 +144,15 @@ public class ThingMagicReaderModule extends AbstractPowerModule implements
 		int rql_port = Integer.parseInt(((String) properties
 				.getProperty("rql_address")).split(":")[1]);
 
-		this.tmsr = new ThingMagicReaderSharedResources(genericRadio, tagMemory,
-				new ControlSignal<Boolean>(false), name, null, digester,
-				antennaList.size(),
-				new DataBase<Object, Enum<? extends GenericTableRow>, Object>(),
-				new ControlSignal<Boolean>(false),
-				new ControlSignal<Boolean>(false));
-		
-		/* register the database table */
-		tmsr.getDataBase().createTable(ETable.TAG_ID, new DataBaseTagTable(tmsr));
+//		this.tmsr = new ThingMagicReaderSharedResources(genericRadio, tagMemory,
+//				new ControlSignal<Boolean>(false), name, null, digester,
+//				antennaList.size(),
+//				new DataBase<Object, Enum<? extends GenericTableRow>, Object>(),
+//				new ControlSignal<Boolean>(false),
+//				new ControlSignal<Boolean>(false));
+//		
+//		/* register the database table */
+//		tmsr.getDataBase().createTable(ETable.TAG_ID, new DataBaseTagTable(tmsr));
 
 		this.RQLComm = new TCPServerCommunication(new ThingMagicProtocol(), this.tmsr
 				.getInteractiveRQLPowerSignal(), this.tmsr
