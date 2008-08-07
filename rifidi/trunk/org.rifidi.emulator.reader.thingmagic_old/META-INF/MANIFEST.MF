@@ -1,0 +1,22 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Thingmagic Plug-in
+Bundle-SymbolicName: org.rifidi.emulator.reader.thingmagic
+Bundle-Version: 0.0.1
+Bundle-Activator: org.rifidi.emulator.reader.thingmagic_old.Activator
+Bundle-Vendor: Pramari, LLC
+Require-Bundle: org.rifidi.dependencies,
+ org.rifidi.emulator,
+ org.rifidi.common.utilities,
+ org.rifidi.services.tags;bundle-version="2.0.0"
+Eclipse-LazyStart: true
+Import-Package: org.osgi.framework;version="1.4.0"
+Export-Package: org.rifidi.emulator.reader.thingmagic_old,
+ org.rifidi.emulator.reader.thingmagic_old.command.exception,
+ org.rifidi.emulator.reader.thingmagic_old.commandhandler,
+ org.rifidi.emulator.reader.thingmagic_old.database,
+ org.rifidi.emulator.reader.thingmagic_old.exceptionhanlder,
+ org.rifidi.emulator.reader.thingmagic_old.formatter,
+ org.rifidi.emulator.reader.thingmagic_old.io.protocol,
+ org.rifidi.emulator.reader.thingmagic_old.module,
+ org.rifidi.emulator.reader.thingmagic_old.tagbuffer
