@@ -222,6 +222,8 @@ public class View3D extends ViewPart implements IPerspectiveListener,
 	@SuppressWarnings("unchecked")
 	public void loadScene(final IFile file) {
 		logger.debug("setting up world");
+		//change the window title
+		Display.getCurrent().getActiveShell().setText("Rifidi Designer: "+file.getName());
 		sceneDataService.loadScene(Display.getCurrent(), file);
 		switchMode(Mode.PickMode);
 	}

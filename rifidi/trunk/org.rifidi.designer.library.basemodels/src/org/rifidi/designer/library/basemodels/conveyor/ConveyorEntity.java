@@ -189,7 +189,7 @@ public class ConveyorEntity extends VisualEntity implements Switch,
 	public void loaded() {
 		prepare();
 		rollerMaterial = new Material("Roller");
-		((PhysicsNode) getNode()).setMaterial(rollerMaterial);
+		((PhysicsNode)getNode().getChild("maingeometry")).setMaterial(rollerMaterial);
 		switchNode = (SwitchNode) getNode().getChild("switchnode");
 		if (active) {
 			active = false;
@@ -260,7 +260,7 @@ public class ConveyorEntity extends VisualEntity implements Switch,
 	@Override
 	public void turnOff() {
 		if (active) {
-			((PhysicsNode) getNode()).getMaterial().setSurfaceMotion(
+			rollerMaterial.setSurfaceMotion(
 					Vector3f.ZERO);
 			// rollers.setActive(true);
 			active = false;

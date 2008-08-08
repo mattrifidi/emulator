@@ -571,10 +571,10 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 			roomnode.attachChild(staticNode);
 		}
 		roomnode.updateWorldBound();
+		roomnode.updateModelBound();
 		collisionOctree = new CollisionOctree(1f, (BoundingBox) roomnode
 				.getWorldBound());
 		roomTree = new RoomOctree(1f, (BoundingBox) roomnode.getWorldBound());
-		System.out.println((BoundingBox) roomnode.getWorldBound());
 		for (Spatial spatial : spatlist) {
 			if (!"floor".equals(spatial.getName())) {
 				for (Spatial spat : ((Node) spatial).getChildren()) {
@@ -587,12 +587,14 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 		fileOfCurrentScene = file;
 		nodeToEntity = Collections
 				.synchronizedMap(new HashMap<Node, VisualEntity>());
+		sceneData.getRootNode().updateGeometricState(0f, true);
 		// Box marker=new Box("marker",Vector3f.ZERO.clone(),3,3,3);
 		// sceneData.getRootNode().attachChild(marker);
 		for (Entity entity : sceneData.getSearchableEntities()) {
 			if (entity instanceof VisualEntity) {
 				nodeToEntity.put(((VisualEntity) entity).getNode(),
 						(VisualEntity) entity);
+				collisionOctree.insertEntity((VisualEntity)entity);
 			}
 		}
 		for (SceneDataChangedListener listener : listeners) {
