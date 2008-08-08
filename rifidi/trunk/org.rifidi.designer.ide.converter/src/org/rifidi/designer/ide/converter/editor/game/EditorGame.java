@@ -15,9 +15,12 @@ import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.widgets.Composite;
 import org.rifidi.jmeswt.SWTBaseGame;
 
+import com.jme.light.PointLight;
 import com.jme.math.Vector3f;
+import com.jme.renderer.ColorRGBA;
 import com.jme.scene.CameraNode;
 import com.jme.scene.Node;
+import com.jme.scene.state.LightState;
 
 /**
  * Game for the Collada editor.
@@ -35,6 +38,7 @@ public class EditorGame extends SWTBaseGame implements KeyListener {
 	private boolean down = false;
 	private Node centerNode;
 	private CameraNode camNode;
+	private LightState lightState;
 
 	/**
 	 * Constructor.
@@ -63,6 +67,18 @@ public class EditorGame extends SWTBaseGame implements KeyListener {
 		camNode.setLocalTranslation(new Vector3f(0, 0, -25f));
 		centerNode.attachChild(camNode);
 		getRootNode().attachChild(centerNode);
+		/** Set up a basic, default light. */
+		PointLight light = new PointLight();
+		light.setDiffuse(new ColorRGBA(0.75f, 0.75f, 0.75f, 0.75f));
+		light.setAmbient(new ColorRGBA(0.5f, 0.5f, 0.5f, 1.0f));
+		light.setLocation(new Vector3f(0, 0, 100));
+		light.setEnabled(true);
+
+		/** Attach the light to a lightState and the lightState to rootNode. */
+		lightState = display.getRenderer().createLightState();
+		lightState.setEnabled(true);
+		lightState.attach(light);
+		getRootNode().setRenderState(lightState);
 	}
 
 	/*
@@ -74,6 +90,7 @@ public class EditorGame extends SWTBaseGame implements KeyListener {
 	protected void update(float interpolation) {
 		super.update(interpolation);
 		getRootNode().updateGeometricState(interpolation, true);
+		getRootNode().updateRenderState();
 	}
 
 	/*

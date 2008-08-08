@@ -35,6 +35,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IPartListener;
+import org.eclipse.ui.IReusableEditor;
 import org.eclipse.ui.IURIEditorInput;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
@@ -66,16 +67,12 @@ import com.jmex.model.converters.ObjToJme;
  * @author Jochen Mader - jochen@pramari.com - May 22, 2008
  * 
  */
-public class ColladaEditor extends EditorPart {
+public class ColladaEditor extends EditorPart implements IReusableEditor {
 	/**
 	 * Logger for this class.
 	 */
 	private static final Logger logger = Logger.getLogger(ColladaEditor.class
 			.getName());
-	/**
-	 * Container for the editor widgets.
-	 */
-	private Composite container;
 	/**
 	 * The GLCanvas for this editor
 	 */
@@ -100,6 +97,8 @@ public class ColladaEditor extends EditorPart {
 	private static IPartListener partListener = null;
 
 	private InputStream fileInput = null;
+
+	private static boolean created = false;
 
 	/**
 	 * 
@@ -188,6 +187,10 @@ public class ColladaEditor extends EditorPart {
 		}
 		uri = ((IURIEditorInput) input).getURI();
 
+		// ResourceLocatorTool.addResourceLocator(
+		// ResourceLocatorTool.TYPE_TEXTURE,
+		// new FixedDirectoryResourceLocator(uri));
+
 		setInput(input);
 		setSite(site);
 		int pos = uri.toString().lastIndexOf('/');
@@ -242,20 +245,22 @@ public class ColladaEditor extends EditorPart {
 						uri.toString().lastIndexOf('.'));
 				if (((IURIEditorInput) getEditorInput()).getURI().toString()
 						.endsWith(".dae")) {
+
 					ColladaImporter.load(fileInput,
 							((IURIEditorInput) getEditorInput()).getURI()
 									.toString());
 					model = ColladaImporter.getModel();
 					ColladaImporter.cleanUp();
-					if (MyResourceLocator.findTheCrap(nameNoEnding) != null) {
-						TextureState ts = game.getDisplaySys().getRenderer()
-								.createTextureState();
-						ts.setEnabled(true);
-						ts.setTexture(TextureManager.loadTexture(
-								MyResourceLocator.findTheCrap(nameNoEnding),
-								Texture.MM_LINEAR_LINEAR, Texture.FM_LINEAR));
-						model.setRenderState(ts);
-					}
+					// if (MyResourceLocator.findTheCrap(nameNoEnding) != null)
+					// {
+					// TextureState ts = game.getDisplaySys().getRenderer()
+					// .createTextureState();
+					// ts.setEnabled(true);
+					// ts.setTexture(TextureManager.loadTexture(
+					// MyResourceLocator.findTheCrap(nameNoEnding),
+					// Texture.MM_LINEAR_LINEAR, Texture.FM_LINEAR));
+					// model.setRenderState(ts);
+					// }
 				} else if (((IURIEditorInput) getEditorInput()).getURI()
 						.toString().endsWith(".jme")) {
 					BinaryImporter im = new BinaryImporter();
@@ -558,6 +563,17 @@ public class ColladaEditor extends EditorPart {
 	public void dispose() {
 		super.dispose();
 		game.finish();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.ui.part.EditorPart#setInput(org.eclipse.ui.IEditorInput)
+	 */
+	@Override
+	public void setInput(IEditorInput input) {
+		System.out.println("hit");
+		super.setInput(input);
 	}
 
 }
