@@ -5,6 +5,12 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.rifidi.emulator.reader.formatter.CommandFormatter;
 import org.rifidi.emulator.reader.thingmagic.commandhandler.RQLEncodedCommands;
+import org.rifidi.emulator.reader.thingmagic.commandobjects.DeclareCommand;
+import org.rifidi.emulator.reader.thingmagic.commandobjects.FetchCommand;
+import org.rifidi.emulator.reader.thingmagic.commandobjects.SelectCommand;
+import org.rifidi.emulator.reader.thingmagic.commandobjects.SetCommand;
+import org.rifidi.emulator.reader.thingmagic.commandobjects.UpdateCommand;
+
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -18,35 +24,54 @@ public class ThingMagicRQLCommandFormatter implements CommandFormatter {
 		
 	}
 	
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.rifidi.emulator.reader.formatter.CommandFormatter#decode(byte[])
+	 */
+	// The CommmandFactory
 	@Override
 	public ArrayList<Object> decode(byte[] arg) {
-		ArrayList<String> store = new ArrayList<String>();
-		String argString = new String(arg);
+		String command = new String(arg);
 		ArrayList<Object> retVal = new ArrayList<Object>();
 		
-		logger.debug(argString);
+		command = command.trim();
 		
-		/* how goal here is not to do error checking but to 
-		 * parse the incoming command to make it easer to check for errors
-		 * latter on as the command is broken up into very predictable sub-blocks
-		 * See java.util.regex
-		 */
-		Pattern pattern = Pattern.compile(
-				"\\w+|[\\s,]+|<>|>=|<=|=|>|<|\\(|\\)|[^\\s\\w,<>=\\(\\)]+",
-				Pattern.CASE_INSENSITIVE | Pattern.DOTALL
-			);
-		Matcher matcher = pattern.matcher(argString);
+		//TODO check if there is any white space after the command name.
 		
-		if (matcher.find())
-			retVal.add(matcher.group());
+		if (command.toLowerCase().startsWith("select")){
+			retVal.add("execute");
+			retVal.add(new SelectCommand());
+			return retVal;
+		}
 		
-		while (matcher.find())
-			store.add(matcher.group());
+		if (command.toLowerCase().startsWith("update")){
+			retVal.add("execute");
+			retVal.add(new UpdateCommand());
+			return retVal;
+		}
 		
-		//retVal.add(new ParsedCommandObject(store, argString));
+		if (command.toLowerCase().startsWith("declare")){
+			retVal.add("execute");
+			retVal.add(new DeclareCommand());
+			return retVal;
+		}
 		
+		if (command.toLowerCase().startsWith("fetch")){
+			retVal.add("execute");
+			retVal.add(new FetchCommand());
+			return retVal;
+		}
 		
-		logger.debug(retVal);
+		if (command.toLowerCase().startsWith("set")){
+			retVal.add("execute");
+			retVal.add(new SetCommand());
+			return retVal;
+		}
+		
+		retVal.add("error");
+		retVal.add(command);
+		
 		return retVal;
 	}
 	
