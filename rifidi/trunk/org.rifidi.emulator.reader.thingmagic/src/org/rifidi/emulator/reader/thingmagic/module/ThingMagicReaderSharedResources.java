@@ -8,12 +8,10 @@ import org.apache.commons.logging.LogFactory;
 import org.rifidi.emulator.common.ControlSignal;
 import org.rifidi.emulator.reader.command.exception.GenericExceptionHandler;
 import org.rifidi.emulator.reader.command.xml.CommandDigester;
-import org.rifidi.emulator.reader.command.xml.CommandXMLDigester;
 import org.rifidi.emulator.reader.module.abstract_.AbstractReaderSharedResources;
 import org.rifidi.emulator.reader.sharedrc.radio.generic.GenericRadio;
 import org.rifidi.emulator.reader.sharedrc.tagmemory.TagMemory;
 import org.rifidi.emulator.reader.thingmagic.database.DataBase;
-import org.rifidi.emulator.reader.thingmagic.tagbuffer.ThingMagicTagMemory;
 
 /**
  * @author jmaine

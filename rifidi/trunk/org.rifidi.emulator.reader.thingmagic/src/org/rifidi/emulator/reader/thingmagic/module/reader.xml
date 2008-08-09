@@ -11,7 +11,7 @@
 		<commandState>Interactive</commandState>
 		<commandHandlerDetails>
 			<handlerClass>org.rifidi.emulator.reader.thingmagic.commandhandler.RQLEncodedCommands</handlerClass>
-			<handlerMethod>select</handlerMethod>
+			<handlerMethod>execute</handlerMethod>
 			<argumentType>String</argumentType>
 		</commandHandlerDetails>
 		<actionTag>IGNORE</actionTag>

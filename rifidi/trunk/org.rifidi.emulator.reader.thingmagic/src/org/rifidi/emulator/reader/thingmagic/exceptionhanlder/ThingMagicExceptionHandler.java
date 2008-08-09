@@ -9,7 +9,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.rifidi.emulator.reader.command.CommandObject;
 import org.rifidi.emulator.reader.command.exception.GenericExceptionHandler;
-import org.rifidi.emulator.reader.thingmagic.tagbuffer.ThingMagicTagMemory;
 
 /**
  * @author jmaine

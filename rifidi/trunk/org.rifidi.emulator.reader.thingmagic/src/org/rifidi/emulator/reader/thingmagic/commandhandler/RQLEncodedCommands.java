@@ -28,8 +28,9 @@ public class RQLEncodedCommands {
 
 	public CommandObject execute(CommandObject arg,
 			AbstractReaderSharedResources asr){
-		
 		Command command = (Command) arg.getArguments().get(0);
+		logger.debug("Command type: " + command.getClass().getSimpleName());
+		logger.debug("Executing: " + command.toCommandString());
 		arg.setReturnValue(command.execute());
 		
 		return arg;

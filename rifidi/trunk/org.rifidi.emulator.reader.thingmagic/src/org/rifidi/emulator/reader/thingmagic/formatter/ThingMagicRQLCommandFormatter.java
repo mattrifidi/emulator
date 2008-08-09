@@ -1,27 +1,25 @@
 package org.rifidi.emulator.reader.thingmagic.formatter;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.rifidi.emulator.reader.formatter.CommandFormatter;
-import org.rifidi.emulator.reader.thingmagic.commandhandler.RQLEncodedCommands;
 import org.rifidi.emulator.reader.thingmagic.commandobjects.DeclareCommand;
 import org.rifidi.emulator.reader.thingmagic.commandobjects.FetchCommand;
 import org.rifidi.emulator.reader.thingmagic.commandobjects.SelectCommand;
 import org.rifidi.emulator.reader.thingmagic.commandobjects.SetCommand;
 import org.rifidi.emulator.reader.thingmagic.commandobjects.UpdateCommand;
-
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import org.rifidi.emulator.reader.thingmagic.module.ThingMagicReaderSharedResources;
 
 
 public class ThingMagicRQLCommandFormatter implements CommandFormatter {
 	private static Log logger = LogFactory.getLog(ThingMagicRQLCommandFormatter.class);
+	private ThingMagicReaderSharedResources tmsr;
 
-	public ThingMagicRQLCommandFormatter(){
+	public ThingMagicRQLCommandFormatter(ThingMagicReaderSharedResources tmsr){
 		
-		
+		this.tmsr = tmsr;
 	}
 	
 	
@@ -33,39 +31,41 @@ public class ThingMagicRQLCommandFormatter implements CommandFormatter {
 	@Override
 	public ArrayList<Object> decode(byte[] arg) {
 		String command = new String(arg);
+		logger.debug("Command: " + command);
 		ArrayList<Object> retVal = new ArrayList<Object>();
 		
-		command = command.trim();
+		String commandTrimmed = command.trim();
 		
 		//TODO check if there is any white space after the command name.
+		//TODO add error checking.
 		
-		if (command.toLowerCase().startsWith("select")){
+		if (commandTrimmed.toLowerCase().startsWith("select")){
 			retVal.add("execute");
-			retVal.add(new SelectCommand());
+			retVal.add(new SelectCommand(command, tmsr));
 			return retVal;
 		}
 		
-		if (command.toLowerCase().startsWith("update")){
+		if (commandTrimmed.toLowerCase().startsWith("update")){
 			retVal.add("execute");
-			retVal.add(new UpdateCommand());
+			retVal.add(new UpdateCommand(command));
 			return retVal;
 		}
 		
-		if (command.toLowerCase().startsWith("declare")){
+		if (commandTrimmed.toLowerCase().startsWith("declare")){
 			retVal.add("execute");
-			retVal.add(new DeclareCommand());
+			retVal.add(new DeclareCommand(command));
 			return retVal;
 		}
 		
-		if (command.toLowerCase().startsWith("fetch")){
+		if (commandTrimmed.toLowerCase().startsWith("fetch")){
 			retVal.add("execute");
-			retVal.add(new FetchCommand());
+			retVal.add(new FetchCommand(command));
 			return retVal;
 		}
 		
-		if (command.toLowerCase().startsWith("set")){
+		if (commandTrimmed.toLowerCase().startsWith("set")){
 			retVal.add("execute");
-			retVal.add(new SetCommand());
+			retVal.add(new SetCommand(command));
 			return retVal;
 		}
 		
@@ -81,19 +81,9 @@ public class ThingMagicRQLCommandFormatter implements CommandFormatter {
 		ArrayList<Object> retVal = new ArrayList<Object>();
 		
 		
-		/* gather all the information back in on big string */
-		for (Object obj: arg){
-			
-			List<Object> list = (List<Object>) obj;
-			String gather = ""; 
-			for (int x = 0; x < list.size(); x++){
-				gather += list.get(x);
-				gather += (x != list.size() -1 ) ? "|": "\n";
-			}
-			retVal.add(gather);
+		for (Object o: arg){
+			retVal.add(o + "\n");
 		}
-		
-		// TODO do we need to put another return here if args is empty?
 		
 		
 		/* there must be a blank line

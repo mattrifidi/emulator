@@ -3,14 +3,13 @@
  */
 package org.rifidi.emulator.reader.thingmagic.io.protocol;
 
-import java.util.*;
-import java.util.regex.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.rifidi.emulator.io.protocol.Protocol;
 import org.rifidi.emulator.io.protocol.ProtocolValidationException;
-import org.rifidi.emulator.reader.thingmagic.tagbuffer.ThingMagicTagMemory;
 
 /**
  * @author jmaine
