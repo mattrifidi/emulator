@@ -20,7 +20,7 @@ public class Activator implements BundleActivator  {
 	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
 	 */
 	public void start(BundleContext context) throws Exception {
-		System.out.println("Registered org.rifidi.emulator.reader.thingmagic");
+		System.out.println("Registered org.rifidi.emulator.reader.thingmagic_old");
 		context.registerService(new String[]{ReaderModule.class.getName()}, new ThingMagicReaderModule(), new Hashtable());
 	}
 
