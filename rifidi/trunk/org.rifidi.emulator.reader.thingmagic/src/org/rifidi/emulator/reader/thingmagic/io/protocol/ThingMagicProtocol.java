@@ -44,7 +44,7 @@ public class ThingMagicProtocol implements Protocol {
 			throw new ProtocolValidationException();
 		
 		/* force incoming command to lower case */
-		stringData = stringData.toUpperCase();
+		//stringData = stringData.toUpperCase();
 		
 		/* split the string and eat the leading white spaces
 		 *  in front of each semicolon.

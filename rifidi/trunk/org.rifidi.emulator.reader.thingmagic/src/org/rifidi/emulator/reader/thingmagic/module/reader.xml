@@ -6,8 +6,8 @@
 
 	<!-- Connect Message.  Don't know why we are getting this message -->
 	<Command>
-		<queryName>select</queryName>
-		<displayName>select</displayName>
+		<queryName>execute</queryName>
+		<displayName>execute</displayName>
 		<commandState>Interactive</commandState>
 		<commandHandlerDetails>
 			<handlerClass>org.rifidi.emulator.reader.thingmagic.commandhandler.RQLEncodedCommands</handlerClass>

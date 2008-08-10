@@ -29,7 +29,7 @@ public class SelectCommand implements Command {
 		List<String> commandBlocks = new ArrayList<String>();
 		// TODO Auto-generated constructor stub
 	
-		logger.debug("Parsing command: " + command );
+		System.out.println("Parsing command: " + command );
 		
 		
 		/* how goal here is not to do error checking but to 
@@ -41,13 +41,15 @@ public class SelectCommand implements Command {
 				"\\w+|[\\s,]+|<>|>=|<=|=|>|<|\\(|\\)|[^\\s\\w,<>=\\(\\)]+",
 				Pattern.CASE_INSENSITIVE | Pattern.DOTALL
 			);
-		Matcher matcher = pattern.matcher(command);
+		Matcher matcher = pattern.matcher(command.toLowerCase());
 		
 		while (matcher.find())
-			commandBlocks.add(matcher.group().toLowerCase());
+			commandBlocks.add(matcher.group());
+		
+		System.out.println(commandBlocks);
 		
 		int index = 0;
-		if (commandBlocks.get(index).matches("\\s")){
+		if (commandBlocks.get(index).matches("\\s+")){
 			index++;
 		}
 		
@@ -56,38 +58,44 @@ public class SelectCommand implements Command {
 		}
 		index++;
 		
-		if (!commandBlocks.get(index).matches("\\s")){
+		if (!commandBlocks.get(index).matches("\\s+")){
 			//TODO throw an exception
 		}
 		
 		index++;
 		
-		for (; !commandBlocks.get(index).equals("from") ;index++){
-			if (commandBlocks.get(index).matches("[,\\s]*")) continue;
-			if (commandBlocks.get(index).matches("\\w")){
+		for (; !commandBlocks.get(index).equals("from") ; index++){
+			if (commandBlocks.get(index).matches("[,\\s]+")) continue;
+			if (commandBlocks.get(index).matches("\\w+")){
 				columns.add(commandBlocks.get(index));
 			} else {
 				//TODO throw an exception
 			}
 		}
+		index++;
 		
-		if (!commandBlocks.get(index).matches("\\s")){
+		if (!commandBlocks.get(index).matches("\\s+")){
 			//TODO throw an exception
 		}
+		index++;
 		
-		if (commandBlocks.get(index).matches("\\w")){
+		if (commandBlocks.get(index).matches("\\w+")){
 			table = commandBlocks.get(index);
 		} else {
 			//TODO throw an exception
 		}
 		
-		if (!commandBlocks.get(index).matches("\\s")){
-			//TODO throw an exception
-		}
+		index++;
+		if (commandBlocks.size() < index ) {
+			if (!commandBlocks.get(index).matches("\\s+")){
+				//TODO throw an exception
+			}
+		} else return;
+		
 		index++;
 		
-		if (!commandBlocks.get(index).matches("where")){
-			if (!commandBlocks.get(index).matches("\\s")){
+		if ( (commandBlocks.size() < index ) && (commandBlocks.get(index).matches("where")) ){
+			if (!commandBlocks.get(index).matches("\\s+")){
 				//TODO throw an exception
 			}
 			index++;
@@ -99,7 +107,7 @@ public class SelectCommand implements Command {
 			}
 		}
 		
-		if (!commandBlocks.get(index).matches("set")){
+		if ((commandBlocks.size() < index ) && (commandBlocks.get(index).matches("set"))){
 			//TODO implement the set clause
 		}
 		
@@ -113,6 +121,8 @@ public class SelectCommand implements Command {
 		// TODO Auto-generated method stub
 		ArrayList<Object> retVal = new ArrayList<Object>();
 		//TODO add filtering
+		logger.debug("Getting table: " + table);
+		logger.debug("Getting column data: " + columns);
 		
 		for (IDBRow row : tmsr.getDataBase().getTable(table)){
 			StringBuffer buff = new StringBuffer();
