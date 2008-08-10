@@ -19,6 +19,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.interfaces.NeedsPhysics;
 import org.rifidi.designer.entities.interfaces.VisualEntityHolder;
@@ -33,10 +35,13 @@ import org.rifidi.services.tags.registry.ITagRegistry;
 
 import com.jme.bounding.BoundingBox;
 import com.jme.input.InputHandler;
+import com.jme.math.FastMath;
 import com.jme.math.Quaternion;
 import com.jme.math.Vector3f;
 import com.jme.scene.Node;
 import com.jme.scene.SceneElement;
+import com.jme.scene.SharedNode;
+import com.jme.scene.SwitchNode;
 import com.jme.scene.shape.Box;
 import com.jme.util.GameTaskQueueManager;
 import com.jme.util.export.binary.BinaryImporter;
@@ -51,7 +56,10 @@ import com.jmex.physics.PhysicsSpace;
  */
 public class ClothingRack extends VisualEntity implements VisualEntityHolder,
 		NeedsPhysics {
-
+	/**
+	 * Logger for this class.
+	 */
+	private static final Log logger=LogFactory.getLog(ClothingRack.class);
 	/**
 	 * Reference to the collision input handler.
 	 */
@@ -80,12 +88,16 @@ public class ClothingRack extends VisualEntity implements VisualEntityHolder,
 	/**
 	 * Model for shared meshes
 	 */
-	private static Node model = null;
+	private static Node[] lod = null;
 	/**
 	 * Reference to the tag registry.
 	 */
 	private ITagRegistry tagRegistry;
-
+	/**
+	 * Node that contains the different lods.
+	 */
+	private SwitchNode switchNode;
+	
 	/**
 	 * Constructor.
 	 */
@@ -115,26 +127,50 @@ public class ClothingRack extends VisualEntity implements VisualEntityHolder,
 	 */
 	@Override
 	public void init() {
-		URI modelpath = null;
 		Node mainNode=new Node();
 		mainNode.setModelBound(new BoundingBox());
 		Node node = new Node("maingeometry");
 		node.setModelBound(new BoundingBox());
 		mainNode.attachChild(node);
-		try {
-			modelpath = getClass().getClassLoader().getResource(
-					"org/rifidi/designer/library/retail/clothingrack/rack.jme")
-					.toURI();
-			model = (Node) BinaryImporter.getInstance().load(modelpath.toURL());
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
+		if (lod == null) {
+			lod = new Node[3];
+			URI modelpath = null;
+			for (int count = 0; count < 3; count++) {
+				try {
+					modelpath = getClass().getClassLoader().getResource(
+							"org/rifidi/designer/library/retail/clothingrack/rack"
+									+ count + ".jme").toURI();
+				} catch (URISyntaxException e) {
+					logger.debug(e);
+				}
+				try {
+					lod[count] = (Node) BinaryImporter.getInstance().load(
+							modelpath.toURL());
+					lod[count].setLocalRotation(new Quaternion().fromAngleAxis(
+							270 * FastMath.DEG_TO_RAD, Vector3f.UNIT_X));
+					lod[count].setModelBound(new BoundingBox());
+					lod[count].setLocalScale(new Vector3f(0.87f, 1f, 1f));
+					lod[count].updateGeometricState(0f, true);
+					lod[count].updateModelBound();
+					lod[count].updateWorldBound();
+					if(count==3){
+						lod[count].setLocalScale(new Vector3f(1.0f,0.9f,1.0f));
+					}
+				} catch (MalformedURLException e) {
+					logger.debug(e);
+				} catch (IOException e) {
+					logger.debug(e);
+				}
+			}
 		}
-		model.setLocalTranslation(new Vector3f(0, 3.7f, 0));
-		node.attachChild(model);
+		switchNode = new SwitchNode("switchnode");
+		switchNode.attachChildAt(new SharedNode("sharedRack0", lod[0]), 0);
+		switchNode.attachChildAt(new SharedNode("sharedRack1", lod[1]), 1);
+		switchNode.attachChildAt(new SharedNode("sharedRack2", lod[2]), 2);
+		switchNode.attachChildAt(new SharedNode("sharedRack2", lod[2]), 3);
+		switchNode.setActiveChild(0);
+		switchNode.setLocalTranslation(new Vector3f(0, 3.7f, 0));
+		node.attachChild(switchNode);
 		entities = new ArrayList<VisualEntity>(capacity);
 		positions = new ArrayList<Position>(capacity);
 		TagCreationPattern tagpattern = new TagCreationPattern();
@@ -160,7 +196,7 @@ public class ClothingRack extends VisualEntity implements VisualEntityHolder,
 		Node _node=new Node("hiliter");
 		Box box = new Box("hiliter", ((BoundingBox) getNode()
 				.getWorldBound()).getCenter().clone().subtractLocal(
-				getNode().getLocalTranslation()), 6f, 4f, 6f);
+				getNode().getLocalTranslation()), 4f, 4f, 4f);
 		box.setModelBound(new BoundingBox());
 		box.updateModelBound();
 		_node.attachChild(box);
@@ -172,14 +208,14 @@ public class ClothingRack extends VisualEntity implements VisualEntityHolder,
 
 	private Vector3f calcPos(int count) {
 		Vector3f ret = new Vector3f();
-		float r = 4;
+		float r = 2.4f;
 		float alpha = count * 30;
 		float mult = 1;
 		if (alpha > 180) {
 			alpha -= 180;
 			mult = -1;
 		}
-		ret.y = 3.7f;
+		ret.y = 5.3f;
 		ret.z = mult * (float) (r * Math.cos(alpha * Math.PI / 180));
 		ret.x = mult * (float) Math.sqrt(r * r - ret.z * ret.z);
 		return ret;
@@ -359,8 +395,9 @@ public class ClothingRack extends VisualEntity implements VisualEntityHolder,
 	 */
 	@Override
 	public void setLOD(int lod) {
-		// No LOD for this one.
-
+		if (switchNode != null) {
+			switchNode.setActiveChild(lod);
+		}
 	}
 
 	/*
