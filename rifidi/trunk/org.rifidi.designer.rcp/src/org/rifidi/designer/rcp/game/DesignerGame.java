@@ -79,6 +79,7 @@ import com.jme.util.GameTaskQueueManager;
 import com.jme.util.geom.Debugger;
 import com.jmex.game.state.BasicGameState;
 import com.jmex.game.state.GameStateManager;
+import com.jmex.model.collada.schema.ambientType;
 import com.jmex.physics.PhysicsDebugger;
 
 /**
@@ -284,13 +285,14 @@ public class DesignerGame extends SWTBaseGame implements
 
 		// create a default light
 		ls = DisplaySystem.getDisplaySystem().getRenderer().createLightState();
-		LightNode lightNode = new LightNode("Head light", ls);
-		DirectionalLight dl = new DirectionalLight();
-		dl.setDiffuse(new ColorRGBA(1, 1, 1, 1));
-		dl.setAmbient(new ColorRGBA(0.4f, 0.4f, 0.4f, 1));
-		dl.setDirection(new Vector3f(0.1f, -1, 0.1f));
-		dl.setEnabled(true);
-		lightNode.setLight(dl);
+		ls.setGlobalAmbient(new ColorRGBA(1f, 1f, 1f, .1f));
+		ls.setEnabled(true);
+		DirectionalLight light = new DirectionalLight();
+        light.setDiffuse(new ColorRGBA(1.0f, 1.0f, 1.0f, 1.0f));
+        light.setAmbient(new ColorRGBA(0.5f, 0.5f, 0.5f, .5f));
+        light.setDirection(new Vector3f(1,-1,0));
+        light.setEnabled(true);
+        ls.attach(light);
 		display.getRenderer().setBackgroundColor(ColorRGBA.gray.clone());
 		getRootNode().setRenderState(zbufferState);
 		getRootNode().setRenderState(cullState);
