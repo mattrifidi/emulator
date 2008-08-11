@@ -65,6 +65,7 @@ import com.jme.input.InputHandler;
 import com.jme.scene.Node;
 import com.jme.scene.Spatial;
 import com.jme.scene.TriMesh;
+import com.jme.scene.state.RenderState;
 import com.jme.util.GameTaskQueueManager;
 import com.jme.util.TextureManager;
 import com.jme.util.export.binary.BinaryExporter;
@@ -572,6 +573,8 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 		}
 		roomnode.updateWorldBound();
 		roomnode.updateModelBound();
+		roomnode.clearRenderState(RenderState.RS_LIGHT);
+		roomnode.updateRenderState();
 		collisionOctree = new CollisionOctree(1f, (BoundingBox) roomnode
 				.getWorldBound());
 		roomTree = new RoomOctree(1f, (BoundingBox) roomnode.getWorldBound());
