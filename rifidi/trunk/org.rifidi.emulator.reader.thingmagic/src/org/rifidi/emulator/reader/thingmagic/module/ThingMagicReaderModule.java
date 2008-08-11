@@ -28,6 +28,10 @@ import org.rifidi.emulator.reader.sharedrc.radio.generic.GenericRadio;
 import org.rifidi.emulator.reader.thingmagic.command.exception.ThingMagicRQLExceptionHandler;
 import org.rifidi.emulator.reader.thingmagic.database.DataBase;
 import org.rifidi.emulator.reader.thingmagic.database.IDBTable;
+import org.rifidi.emulator.reader.thingmagic.database.impl.DBIO;
+import org.rifidi.emulator.reader.thingmagic.database.impl.DBSavedSettings;
+import org.rifidi.emulator.reader.thingmagic.database.impl.DBSettings;
+import org.rifidi.emulator.reader.thingmagic.database.impl.DBTagData;
 import org.rifidi.emulator.reader.thingmagic.formatter.ThingMagicRQLCommandFormatter;
 import org.rifidi.emulator.reader.thingmagic.io.protocol.ThingMagicProtocol;
 import org.rifidi.emulator.reader.thingmagic.tagbuffer.ThingMagicTagTableMemory;
@@ -154,6 +158,12 @@ public class ThingMagicReaderModule extends AbstractPowerModule implements
 		
 		/* register the database tables */
 		tmsr.getDataBase().addTable("tag_id", (IDBTable) tmsr.getTagMemory());
+		tmsr.getDataBase().addTable("tag_data", new DBTagData());
+		
+		tmsr.getDataBase().addTable("io", new DBIO());
+		
+		tmsr.getDataBase().addTable("settings", new DBSettings());
+		tmsr.getDataBase().addTable("saved_settings", new DBSavedSettings());
 
 		this.RQLComm = new TCPServerCommunication(new ThingMagicProtocol(), this.tmsr
 				.getInteractiveRQLPowerSignal(), this.tmsr
