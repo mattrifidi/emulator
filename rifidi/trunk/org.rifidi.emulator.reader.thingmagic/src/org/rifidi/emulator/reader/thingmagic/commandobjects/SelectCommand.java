@@ -44,9 +44,9 @@ public class SelectCommand implements Command {
 
 		while (matcher.find())
 			commandBlocks.add(matcher.group());
-
-		System.out.println(commandBlocks);
-
+		
+		logger.debug("Command Blockes: " + commandBlocks);
+		
 		int index = 0;
 		if (commandBlocks.get(index).matches("\\s+")) {
 			index++;
