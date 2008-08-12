@@ -32,9 +32,9 @@ import org.rifidi.emulator.reader.thingmagic.database.impl.DBIO;
 import org.rifidi.emulator.reader.thingmagic.database.impl.DBSavedSettings;
 import org.rifidi.emulator.reader.thingmagic.database.impl.DBSettings;
 import org.rifidi.emulator.reader.thingmagic.database.impl.DBTagData;
+import org.rifidi.emulator.reader.thingmagic.database.impl.tagbuffer.ThingMagicTagTableMemory;
 import org.rifidi.emulator.reader.thingmagic.formatter.ThingMagicRQLCommandFormatter;
 import org.rifidi.emulator.reader.thingmagic.io.protocol.ThingMagicProtocol;
-import org.rifidi.emulator.reader.thingmagic.tagbuffer.ThingMagicTagTableMemory;
 
 
 /**

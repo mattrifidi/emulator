@@ -1,4 +1,4 @@
-package org.rifidi.emulator.reader.thingmagic.tagbuffer;
+package org.rifidi.emulator.reader.thingmagic.database.impl.tagbuffer;
 
 import java.util.AbstractList;
 import java.util.ArrayList;

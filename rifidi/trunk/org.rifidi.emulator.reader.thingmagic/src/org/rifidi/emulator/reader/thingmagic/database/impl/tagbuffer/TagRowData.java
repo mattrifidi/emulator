@@ -1,4 +1,4 @@
-package org.rifidi.emulator.reader.thingmagic.tagbuffer;
+package org.rifidi.emulator.reader.thingmagic.database.impl.tagbuffer;
 
 import java.math.BigDecimal;
 import java.util.AbstractMap;
