@@ -5,10 +5,12 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.rifidi.emulator.reader.formatter.CommandFormatter;
 import org.rifidi.emulator.reader.thingmagic.commandobjects.DeclareCommand;
+import org.rifidi.emulator.reader.thingmagic.commandobjects.ErrorCommand;
 import org.rifidi.emulator.reader.thingmagic.commandobjects.FetchCommand;
 import org.rifidi.emulator.reader.thingmagic.commandobjects.SelectCommand;
 import org.rifidi.emulator.reader.thingmagic.commandobjects.SetCommand;
 import org.rifidi.emulator.reader.thingmagic.commandobjects.UpdateCommand;
+import org.rifidi.emulator.reader.thingmagic.commandobjects.exceptions.CommandCreationExeption;
 import org.rifidi.emulator.reader.thingmagic.module.ThingMagicReaderSharedResources;
 
 
@@ -35,41 +37,46 @@ public class ThingMagicRQLCommandFormatter implements CommandFormatter {
 		
 		String commandTrimmed = command.trim();
 		
-		//TODO check if there is any white space after the command name.
-		//TODO add error checking.
+		/* the command handler name */
+		retVal.add("execute");
 		
-		if (commandTrimmed.toLowerCase().startsWith("select")){
-			retVal.add("execute");
-			retVal.add(new SelectCommand(command, tmsr));
+		/* split around the white spaces */
+		String temp[] = commandTrimmed.split("\\s");
+		/* grab the command name */
+		String commandName = temp[0]; 
+		
+		try {
+			if (commandName.toLowerCase().equals("select")){
+				retVal.add(new SelectCommand(command, tmsr));
+				return retVal;
+			}
+			
+			if (commandName.toLowerCase().equals("update")){
+				retVal.add(new UpdateCommand(command));
+				return retVal;
+			}
+			
+			if (commandName.toLowerCase().equals("declare")){
+				retVal.add(new DeclareCommand(command));
+				return retVal;
+			}
+			
+			if (commandName.toLowerCase().equals("fetch")){
+				retVal.add(new FetchCommand(command));
+				return retVal;
+			}
+			
+			if (commandName.toLowerCase().equals("set")){
+				retVal.add(new SetCommand(command));
+				return retVal;
+			}
+		} catch (CommandCreationExeption e){
+			logger.debug(e.getMessage());
+			retVal.add(new ErrorCommand(e.getMessage()));
 			return retVal;
-		}
+		}		
 		
-		if (commandTrimmed.toLowerCase().startsWith("update")){
-			retVal.add("execute");
-			retVal.add(new UpdateCommand(command));
-			return retVal;
-		}
-		
-		if (commandTrimmed.toLowerCase().startsWith("declare")){
-			retVal.add("execute");
-			retVal.add(new DeclareCommand(command));
-			return retVal;
-		}
-		
-		if (commandTrimmed.toLowerCase().startsWith("fetch")){
-			retVal.add("execute");
-			retVal.add(new FetchCommand(command));
-			return retVal;
-		}
-		
-		if (commandTrimmed.toLowerCase().startsWith("set")){
-			retVal.add("execute");
-			retVal.add(new SetCommand(command));
-			return retVal;
-		}
-		
-		retVal.add("error");
-		retVal.add(command);
+		retVal.add(new ErrorCommand("Error 0100:     syntax error at '" + commandName + "'"));
 		
 		return retVal;
 	}

@@ -1,6 +1,5 @@
 package org.rifidi.emulator.reader.thingmagic.database.impl.tagbuffer;
 
-import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -10,11 +9,9 @@ import org.apache.commons.logging.LogFactory;
 import org.rifidi.emulator.reader.sharedrc.tagmemory.TagMemory;
 import org.rifidi.emulator.reader.thingmagic.database.IDBRow;
 import org.rifidi.emulator.reader.thingmagic.database.IDBTable;
-import org.rifidi.emulator.reader.thingmagic.formatter.ThingMagicRQLCommandFormatter;
-import org.rifidi.emulator.reader.thingmagic.module.ThingMagicReaderSharedResources;
 import org.rifidi.services.tags.impl.RifidiTag;
 
-public class ThingMagicTagTableMemory extends AbstractList<IDBRow> implements
+public class ThingMagicTagTableMemory implements
 		IDBTable, TagMemory {
 	private static Log logger = LogFactory.getLog(ThingMagicTagTableMemory.class);
 	private List<TagRowData> tags = new ArrayList<TagRowData>();
@@ -79,13 +76,6 @@ public class ThingMagicTagTableMemory extends AbstractList<IDBRow> implements
 				tags.add(tagRowData);
 			}
 		}
-		
-		/*
-		 * Now update the tag data
-		 */
-		for (TagRowData t: tags){
-			t.updateTagData();
-		}
 
 	}
 
@@ -94,4 +84,5 @@ public class ThingMagicTagTableMemory extends AbstractList<IDBRow> implements
 		logger.debug("Clearing tag memory.");
 		tags.clear();
 	}
-}
+
+ }
