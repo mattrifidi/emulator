@@ -1,4 +1,4 @@
-package org.rifidi.emulator.reader.thingmagic.database.impl;
+package org.rifidi.emulator.reader.thingmagic.database.impl.row;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

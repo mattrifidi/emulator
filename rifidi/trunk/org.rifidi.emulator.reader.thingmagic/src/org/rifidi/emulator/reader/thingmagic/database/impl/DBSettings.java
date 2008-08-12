@@ -4,6 +4,7 @@ import java.util.AbstractList;
 
 import org.rifidi.emulator.reader.thingmagic.database.IDBRow;
 import org.rifidi.emulator.reader.thingmagic.database.IDBTable;
+import org.rifidi.emulator.reader.thingmagic.database.impl.row.DBSettingsRow;
 
 public class DBSettings extends AbstractList<IDBRow> implements IDBTable {
 
