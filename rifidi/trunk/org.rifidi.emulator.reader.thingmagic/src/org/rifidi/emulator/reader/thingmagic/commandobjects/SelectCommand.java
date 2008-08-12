@@ -48,45 +48,72 @@ public class SelectCommand implements Command {
 		logger.debug("Command Blockes: " + commandBlocks);
 		
 		int index = 0;
+		/*
+		 * Look for white spaces
+		 */
 		if (commandBlocks.get(index).matches("\\s+")) {
 			index++;
 		}
 
 		if (!commandBlocks.get(index).equals("select")) {
-			// TODO throw an exception
+			throw new CommandCreationExeption("Error 0100:     syntax error at '" + commandBlocks.get(index) + "'");
+
 		}
 		index++;
 
+		/*
+		 * Look for white spaces
+		 */
 		if (!commandBlocks.get(index).matches("\\s+")) {
-			// TODO throw an exception
+			throw new CommandCreationExeption("Error 0100:     syntax error at '" + commandBlocks.get(index--) + "'");
 		}
 
 		index++;
 
+		//TODO: Handle errors correctly here.
 		for (; !commandBlocks.get(index).equals("from"); index++) {
-			if (commandBlocks.get(index).matches("[,\\s]+"))
-				continue;
+			/* 
+			 * look for a comma with any number of white spaces
+			 * on either side.
+			 */
+			if (!commandBlocks.get(index).matches("\\s*,\\s*")) {
+				throw new CommandCreationExeption("Error 0100:     syntax error at '" + commandBlocks.get(index++) + "'");
+			} 
+				
+			
+			/*
+			 *  look for words
+			 */
 			if (commandBlocks.get(index).matches("\\w+")) {
 				columns.add(commandBlocks.get(index));
 			} else {
-				// TODO throw an exception
+				throw new CommandCreationExeption("Error 0100:     syntax error at '" + commandBlocks.get(index) + "'");
 			}
 		}
 		index++;
 
+		/*
+		 * Look for white spaces
+		 */
 		if (!commandBlocks.get(index).matches("\\s+")) {
-			// TODO throw an exception
+			throw new CommandCreationExeption("Error 0100:     syntax error at '" + commandBlocks.get(index--) + "'");
 		}
 		index++;
 
+		/*
+		 * Look for words
+		 */
 		if (commandBlocks.get(index).matches("\\w+")) {
 			table = commandBlocks.get(index);
 		} else {
-			// TODO throw an exception
+			throw new CommandCreationExeption("Error 0100:     syntax error at '" + commandBlocks.get(index) + "'");
 		}
 
 		index++;
 		if (commandBlocks.size() < index) {
+			/*
+			 * Look for white spaces
+			 */
 			if (!commandBlocks.get(index).matches("\\s+")) {
 				// TODO throw an exception
 			} else {
@@ -94,6 +121,10 @@ public class SelectCommand implements Command {
 
 				if ((commandBlocks.size() < index)
 						&& (commandBlocks.get(index).matches("where"))) {
+					
+					/*
+					 * Look for white spaces
+					 */
 					if (!commandBlocks.get(index).matches("\\s+")) {
 						// TODO throw an exception
 					}

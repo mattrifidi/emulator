@@ -29,6 +29,7 @@ public class ThingMagicProtocol implements Protocol {
 		return data;
 	}
 
+	//TODO Send the semicolon onward. It will help with handling errors in syntax.
 	/* (non-Javadoc)
 	 * @see org.rifidi.emulator.io.protocol.Protocol#removeProtocol(byte[])
 	 */
