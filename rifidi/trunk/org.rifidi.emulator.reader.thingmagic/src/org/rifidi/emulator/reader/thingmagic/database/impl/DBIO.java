@@ -1,23 +1,28 @@
 package org.rifidi.emulator.reader.thingmagic.database.impl;
 
-import java.util.AbstractList;
-
+import org.rifidi.emulator.reader.sharedrc.GPIO.GPIOController;
 import org.rifidi.emulator.reader.thingmagic.database.IDBRow;
 import org.rifidi.emulator.reader.thingmagic.database.IDBTable;
+import org.rifidi.emulator.reader.thingmagic.database.impl.row.DBIORow;
 
-public class DBIO extends AbstractList<IDBRow> implements IDBTable {
+public class DBIO implements IDBTable {
+
+	public DBIORow io;
+	
+	public DBIO(GPIOController gpioController) {
+		io = new DBIORow(gpioController);
+	}
 
 	@Override
 	public IDBRow get(int index) {
-		// TODO Auto-generated method stub
-		return null;
+		if (index != 0)
+			throw new IndexOutOfBoundsException();
+		return io;
 	}
 
 	@Override
 	public int size() {
-		// TODO Auto-generated method stub
-		return 0;
+		return 1;
 	}
-
-
+	
 }

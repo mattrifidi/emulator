@@ -158,9 +158,9 @@ public class ThingMagicReaderModule extends AbstractPowerModule implements
 		
 		/* register the database tables */
 		tmsr.getDataBase().addTable("tag_id", (IDBTable) tmsr.getTagMemory());
-		tmsr.getDataBase().addTable("tag_data", new DBTagData());
+		tmsr.getDataBase().addTable("tag_data", new DBTagData((ThingMagicTagTableMemory) tmsr.getTagMemory()));
 		
-		tmsr.getDataBase().addTable("io", new DBIO());
+		tmsr.getDataBase().addTable("io", new DBIO(tmsr.getGpioController()));
 		
 		tmsr.getDataBase().addTable("settings", new DBSettings());
 		tmsr.getDataBase().addTable("saved_settings", new DBSavedSettings());
