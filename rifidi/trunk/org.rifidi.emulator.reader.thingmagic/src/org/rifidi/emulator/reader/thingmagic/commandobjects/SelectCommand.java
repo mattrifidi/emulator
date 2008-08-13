@@ -61,90 +61,122 @@ public class SelectCommand implements Command {
 		}
 		index++;
 
-		/*
-		 * Look for white spaces
-		 */
-		if (!commandBlocks.get(index).matches("\\s+")) {
-			throw new CommandCreationExeption("Error 0100:     syntax error at '" + commandBlocks.get(index--) + "'");
-		}
-
-		index++;
-
-		//TODO: Handle errors correctly here.
-		for (; !commandBlocks.get(index).equals("from"); index++) {
-			/* 
-			 * look for a comma with any number of white spaces
-			 * on either side.
-			 */
-			if (!commandBlocks.get(index).matches("\\s*,\\s*")) {
-				throw new CommandCreationExeption("Error 0100:     syntax error at '" + commandBlocks.get(index++) + "'");
-			} 
-				
-			
-			/*
-			 *  look for words
-			 */
-			if (commandBlocks.get(index).matches("\\w+")) {
-				columns.add(commandBlocks.get(index));
-			} else {
-				throw new CommandCreationExeption("Error 0100:     syntax error at '" + commandBlocks.get(index) + "'");
-			}
-		}
-		index++;
-
-		/*
-		 * Look for white spaces
-		 */
-		if (!commandBlocks.get(index).matches("\\s+")) {
-			throw new CommandCreationExeption("Error 0100:     syntax error at '" + commandBlocks.get(index--) + "'");
-		}
-		index++;
-
-		/*
-		 * Look for words
-		 */
-		if (commandBlocks.get(index).matches("\\w+")) {
-			table = commandBlocks.get(index);
-		} else {
-			throw new CommandCreationExeption("Error 0100:     syntax error at '" + commandBlocks.get(index) + "'");
-		}
-
-		index++;
-		if (commandBlocks.size() < index) {
+		logger.debug("Huray! we are in the correct command object!");
+		//TODO Refine the error handling to mirror more exactly what the thingmagic would return;
+		try {
 			/*
 			 * Look for white spaces
 			 */
 			if (!commandBlocks.get(index).matches("\\s+")) {
-				// TODO throw an exception
-			} else {
+				throw new CommandCreationExeption("Error 0100:     syntax error at '" + commandBlocks.get(index--) + "'");
+			}
+	
+			index++;
+			
+			logger.debug("Expected whitespace found.");
+	
+			//TODO: Handle errors correctly here.
+			for (; !commandBlocks.get(index).equals("from"); index++) {
+				/*
+				 *  look for words
+				 */
+				if (commandBlocks.get(index).matches("\\w+")) {
+					columns.add(commandBlocks.get(index));
+				} else {
+					throw new CommandCreationExeption("Error 0100:     syntax error at '" + commandBlocks.get(index) + "'");
+				}
 				index++;
-
-				if ((commandBlocks.size() < index)
-						&& (commandBlocks.get(index).matches("where"))) {
+				
+				if (commandBlocks.get(index+1).equals("from")) {
+					logger.debug("Found keyword from");
+					if (!commandBlocks.get(index).matches("\\s*")){
+						logger.debug("Bad command block found.");
+						throw new CommandCreationExeption("Error 0100:     syntax error at 'from'");
+					}
 					
 					/*
-					 * Look for white spaces
+					 * move the index to the "from" command block.
 					 */
-					if (!commandBlocks.get(index).matches("\\s+")) {
-						// TODO throw an exception
-					}
+					index++; 
+					break;	
+				}
+				
+				/* 
+				 * look for a comma with any number of white spaces
+				 * on either side.
+				 */
+				if (!commandBlocks.get(index).matches("\\s*,\\s*")) {
+					throw new CommandCreationExeption("Error 0100:     syntax error at '" + commandBlocks.get(index++) + "'");
+				} 
+					
+				
+		
+			}
+			index++;
+	
+			/*
+			 * Look for white spaces
+			 */
+			if (!commandBlocks.get(index).matches("\\s+")) {
+				throw new CommandCreationExeption("Error 0100:     syntax error at '" + commandBlocks.get(index--) + "'");
+			}
+			index++;
+	
+			/*
+			 * Look for words
+			 */
+			if (commandBlocks.get(index).matches("\\w+")) {
+				table = commandBlocks.get(index);
+			} else {
+				throw new CommandCreationExeption("Error 0100:     syntax error at '" + commandBlocks.get(index) + "'");
+			}
+	
+			index++;
+			if (commandBlocks.size() < index) {
+				/*
+				 * Look for white spaces
+				 */
+				if (!commandBlocks.get(index).matches("\\s+")) {
+					// TODO throw an exception
+				} else {
 					index++;
-
-					for (; index < commandBlocks.size(); index++) {
-						if (commandBlocks.get(index).equals("set"))
-							break;
-						// TODO parse where clause
-						// whereClause.append(args.get(index));
+	
+					if ((commandBlocks.size() < index)
+							&& (commandBlocks.get(index).matches("where"))) {
+						
+						/*
+						 * Look for white spaces
+						 */
+						if (!commandBlocks.get(index).matches("\\s+")) {
+							// TODO throw an exception
+						}
+						index++;
+	
+						for (; index < commandBlocks.size(); index++) {
+							if (commandBlocks.get(index).equals("set"))
+								break;
+							// TODO parse where clause
+							// whereClause.append(args.get(index));
+						}
+					}
+	
+					if ((commandBlocks.size() < index)
+							&& (commandBlocks.get(index).matches("set"))) {
+						// TODO implement the set clause
 					}
 				}
-
-				if ((commandBlocks.size() < index)
-						&& (commandBlocks.get(index).matches("set"))) {
-					// TODO implement the set clause
+			}
+		} catch (IndexOutOfBoundsException e){
+			/*
+			 * look for the last offending command block that is not a series of whitespaces.
+			 * 
+			 */
+			for(int x = commandBlocks.size(); x >= 0; x--) {
+				if (commandBlocks.get(x).matches("\\s")){
+					throw new CommandCreationExeption("Error 0100:     syntax error at '" + commandBlocks.get(index) + "'");
 				}
 			}
 		}
-
 		IDBTable tableImpl = tmsr.getDataBase().getTable(table);
 		if (tableImpl == null) {
 			throw new CommandCreationExeption(

@@ -1,6 +1,7 @@
 package org.rifidi.emulator.reader.thingmagic.database.impl.tagbuffer;
 
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 
 import org.apache.commons.logging.Log;
@@ -36,8 +37,40 @@ public class TagRowData implements IDBRow {
 
 	private static boolean initialized = false;
 	
+	/*
+	 * Here is a list of real frequency data returned from the thing magic reader.
+	 * When the user requests frequency data... we just return one of these at random.
+	 * Note: Some times the reader will return the same frequency data for two tags of the same
+	 * Gen type... but this is not implemented.
+	 * 
+	 * This is an 8x8 block of numbers--should provide "random" enough numbers for
+	 * the casual user.
+	 */
+	//TODO Possibly add more numbers to this list.
+	private static int frequencies[] = 
+		{914750, 918250, 915250, 926750, 904250, 925250, 917250, 909750,
+		 907250, 909250, 910250, 910250, 908250, 906750, 908750, 912750,
+		 926250, 921750, 913750, 910750, 911750, 914750, 919250, 914250,
+		 922750, 912750, 911250, 925250, 903750, 922250, 907250, 909250,
+		 
+		 916750, 903250, 907750, 917750, 912250, 926250, 905750, 913750,
+		 910750, 906250, 914750, 918250, 916750, 924250, 902750, 905250,
+		 911250, 913750, 923250, 903750, 919750, 906250, 914750, 908250,
+		 912250, 908750, 913250, 915250, 913750, 904250, 910750, 903750
+		};
+	
+	/*
+	 * Here are the lowest and highest values of dspmicros 
+	 * (the number of microseconds to read one tag) from 28 tries with 5
+	 * tags in front of the reader antenna. The idea is that we fake this number
+	 * by picking a random number between the highest and the lowest and return it.
+	 */
+	private static int dspmicrosLow = 8798;
+	private static int dspmicrosHigh = 73132;
 	
 	private RifidiTag tag;
+	
+	private Random random = new Random();
 	
 	/**
 	 * This creates a map of tag data keys (based on the way the Mercury 4, ThingMagic reader
@@ -70,7 +103,9 @@ public class TagRowData implements IDBRow {
 			readable.add(ANTENNA_ID);
 			readable.add(READ_COUNT);
 			readable.add(PROTOCOL_ID);
-			// TODO: Finish adding the reabables
+			readable.add(FREQUENCY);
+			readable.add(DSPMICROS);
+			readable.add(LOCKED);
 			readable.add(TIMESTAMP);
 			
 			// TODO: Add the writables.
@@ -137,6 +172,41 @@ public class TagRowData implements IDBRow {
 			timeStamp.append("000");
 			
 			return timeStamp.toString();
+		}
+		
+		if(key.equals(FREQUENCY)){
+			/*
+			 * pick a random number from the list of frequencies.
+			 * Note: Random.nextInt(value) returns a value from a range of [0, value) --
+			 * perfect for selecting a random number from an array in Java. :)
+			 */
+			return Integer.toString(frequencies[random.nextInt(frequencies.length)]);
+		}
+		
+		if(key.equals(DSPMICROS)){
+			/*
+			 * grab the number of integers from low and high dspmicros numbers.
+			 * We add one to make sure we get the numbers inclusive on both ends of the range.
+			 */
+			int range = (dspmicrosHigh - dspmicrosLow) + 1;
+			/* 
+			 * now we pick a random number from that range. -- [0, range-1)
+			 */
+			int rand = random.nextInt(range);
+			
+			/*
+			 * Then we add the offset (dspmicrosLow) to the range,
+			 * convert it to a string, and return the result.
+			 */
+			return Integer.toString(dspmicrosLow + rand);
+		}
+		
+		if (key.equals(LOCKED)) {
+			/* 
+			 * return "1" for always locked.
+			 */
+			//TODO: This is related to the DBTagDataRow.... which is not implemented.
+			return "1";
 		}
 		
 		/* Best effort to complete the command...
