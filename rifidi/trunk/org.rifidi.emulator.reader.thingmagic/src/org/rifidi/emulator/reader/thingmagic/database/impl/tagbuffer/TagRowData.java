@@ -12,10 +12,7 @@ import org.rifidi.services.tags.enums.TagGen;
 import org.rifidi.services.tags.impl.RifidiTag;
 
 
-/*
- * We use AbstractMap here since we are defining a key-value pair of tag data and to keep from
- * re-inventing the wheel with Map collections.
- */
+
 //TODO implement this better.
 public class TagRowData implements IDBRow {
 	private static Log logger = LogFactory.getLog(ThingMagicTagTableMemory.class);
