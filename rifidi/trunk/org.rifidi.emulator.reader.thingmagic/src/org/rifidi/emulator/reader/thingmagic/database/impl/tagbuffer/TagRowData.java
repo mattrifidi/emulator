@@ -47,7 +47,7 @@ public class TagRowData implements IDBRow {
 	 * the casual user.
 	 */
 	//TODO Possibly add more numbers to this list.
-	private static int frequencies[] = 
+	private static int FREQUENCIES[] = 
 		{914750, 918250, 915250, 926750, 904250, 925250, 917250, 909750,
 		 907250, 909250, 910250, 910250, 908250, 906750, 908750, 912750,
 		 926250, 921750, 913750, 910750, 911750, 914750, 919250, 914250,
@@ -65,8 +65,8 @@ public class TagRowData implements IDBRow {
 	 * tags in front of the reader antenna. The idea is that we fake this number
 	 * by picking a random number between the highest and the lowest and return it.
 	 */
-	private static int dspmicrosLow = 8798;
-	private static int dspmicrosHigh = 73132;
+	private static int DSPMICROS_LOW = 8798;
+	private static int DSPMICROS_HIGH = 73132;
 	
 	private RifidiTag tag;
 	
@@ -180,7 +180,7 @@ public class TagRowData implements IDBRow {
 			 * Note: Random.nextInt(value) returns a value from a range of [0, value) --
 			 * perfect for selecting a random number from an array in Java. :)
 			 */
-			return Integer.toString(frequencies[random.nextInt(frequencies.length)]);
+			return Integer.toString(FREQUENCIES[random.nextInt(FREQUENCIES.length)]);
 		}
 		
 		if(key.equals(DSPMICROS)){
@@ -188,7 +188,7 @@ public class TagRowData implements IDBRow {
 			 * grab the number of integers from low and high dspmicros numbers.
 			 * We add one to make sure we get the numbers inclusive on both ends of the range.
 			 */
-			int range = (dspmicrosHigh - dspmicrosLow) + 1;
+			int range = (DSPMICROS_HIGH - DSPMICROS_LOW) + 1;
 			/* 
 			 * now we pick a random number from that range. -- [0, range-1)
 			 */
@@ -198,7 +198,7 @@ public class TagRowData implements IDBRow {
 			 * Then we add the offset (dspmicrosLow) to the range,
 			 * convert it to a string, and return the result.
 			 */
-			return Integer.toString(dspmicrosLow + rand);
+			return Integer.toString(DSPMICROS_LOW + rand);
 		}
 		
 		if (key.equals(LOCKED)) {
