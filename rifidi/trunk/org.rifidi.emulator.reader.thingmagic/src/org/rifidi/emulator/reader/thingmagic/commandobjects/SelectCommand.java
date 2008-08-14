@@ -33,9 +33,9 @@ public class SelectCommand implements Command {
 		logger.debug("Parsing command: " + command);
 
 		/*
-		 * how goal here is not to do error checking but to parse the incoming
-		 * command to make it easer to check for errors latter on as the command
-		 * is broken up into very predictable sub-blocks See java.util.regex
+		 * This regex helps break up the command into easily parsable 
+		 * commandBlocks. This makes it much easier to check for syntax errors
+		 * because the commandBlocks are highly predictable.
 		 */
 		Pattern pattern = Pattern.compile(
 				"\\w+|[\\s,]+|<>|>=|<=|=|>|<|\\(|\\)|[^\\s\\w,<>=\\(\\)]+",
