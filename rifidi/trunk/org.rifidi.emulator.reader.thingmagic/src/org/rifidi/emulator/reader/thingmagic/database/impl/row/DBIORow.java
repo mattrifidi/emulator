@@ -2,8 +2,6 @@ package org.rifidi.emulator.reader.thingmagic.database.impl.row;
 
 import org.rifidi.emulator.reader.sharedrc.GPIO.GPIOController;
 import org.rifidi.emulator.reader.thingmagic.database.IDBRow;
-import org.rifidi.emulator.reader.thingmagic.database.exceptions.DBReadException;
-import org.rifidi.emulator.reader.thingmagic.database.exceptions.DBWriteException;
 
 public class DBIORow implements IDBRow {
 
@@ -31,7 +29,7 @@ public class DBIORow implements IDBRow {
 	}
 
 	@Override
-	public String get(String column) throws DBReadException {
+	public String get(String column) {
 		
 		if (column.equals("data")){
 			short io = 0;
@@ -47,15 +45,7 @@ public class DBIORow implements IDBRow {
 			 */
 			return "0x" + Long.toHexString(0x100000000L | io).substring(1);
 		}
-		
-		/* !Should never get here!
-		 * If we actually do... there is something seriously
-		 * wrong with the code that calls this class, or this method itself.
-		 * 
-		 * Better throwing a custom RuntimeException than
-		 * trying to guess what caused the null pointers... 
-		 */
-		throw new DBReadException("Could not read from field " + column);
+		return null;
 	}
 
 	@Override
@@ -83,14 +73,7 @@ public class DBIORow implements IDBRow {
 			return value;
 		}
 		
-		/* !Should never get here!
-		 * If we actually do... there is something seriously
-		 * wrong with the code that calls this class, or this method itself.
-		 * 
-		 * Better throwing a custom RuntimeException than
-		 * trying to guess what caused the null pointers... 
-		 */
-		throw new DBWriteException("Could not write to field " + column);
+		return null;
 	}
 
 }

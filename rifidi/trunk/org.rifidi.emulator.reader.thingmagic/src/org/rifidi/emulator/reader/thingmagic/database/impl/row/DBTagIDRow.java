@@ -7,7 +7,6 @@ import java.util.Set;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.rifidi.emulator.reader.thingmagic.database.IDBRow;
-import org.rifidi.emulator.reader.thingmagic.database.exceptions.DBWriteException;
 import org.rifidi.emulator.reader.thingmagic.database.impl.DBTagID;
 import org.rifidi.services.tags.enums.TagGen;
 import org.rifidi.services.tags.impl.RifidiTag;
@@ -214,18 +213,11 @@ public class DBTagIDRow implements IDBRow {
 	}
 
 	@Override
-	public String put(String key, String value) throws DBWriteException {
+	public String put(String key, String value){
 		// TODO Auto-generated method stub
 		
 		
-		/* !Should never get here!
-		 * If we actually do... there is something seriously
-		 * wrong with the code that calls this class, or this method itself.
-		 * 
-		 * Better throwing a custom RuntimeException than
-		 * trying to guess what caused the null pointers... 
-		 */
-		throw new DBWriteException("Could not write to field " + key);
+		return null;
 	}
 
 	@Override

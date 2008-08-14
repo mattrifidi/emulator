@@ -8,8 +8,6 @@ import java.util.Set;
 import java.util.TimeZone;
 
 import org.rifidi.emulator.reader.thingmagic.database.IDBRow;
-import org.rifidi.emulator.reader.thingmagic.database.exceptions.DBReadException;
-import org.rifidi.emulator.reader.thingmagic.database.exceptions.DBWriteException;
 
 public class DBSettingsRow implements IDBRow{
 
@@ -65,7 +63,7 @@ public class DBSettingsRow implements IDBRow{
 	}
 	
 	@Override
-	public String get(String key) throws DBReadException {
+	public String get(String key) {
 		// TODO Auto-generated method stub
 		
 		if (key.equals(CURRENT_TIME)){
@@ -80,26 +78,12 @@ public class DBSettingsRow implements IDBRow{
 			return "EPC1 GEN2";
 		}
 		
-		/* !Should never get here!
-		 * If we actually do... there is something seriously
-		 * wrong with the code that calls this class, or this method itself.
-		 * 
-		 * Better throwing a custom RuntimeException than
-		 * trying to guess what caused the null pointers... 
-		 */
-		throw new DBReadException("Could not read from field " + key);
+		return null;
 	}
 
 	@Override
-	public String put(String key, String value) throws DBWriteException {
-		/* !Should never get here!
-		 * If we actually do... there is something seriously
-		 * wrong with the code that calls this class, or this method itself.
-		 * 
-		 * Better throwing a custom RuntimeException than
-		 * trying to guess what caused the null pointers... 
-		 */
-		throw new DBWriteException("Could not write to field " + key);
+	public String put(String key, String value) {
+		return null;
 	}
 
 }

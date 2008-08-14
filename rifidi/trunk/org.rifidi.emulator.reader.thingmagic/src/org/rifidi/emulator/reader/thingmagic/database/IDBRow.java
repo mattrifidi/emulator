@@ -1,6 +1,5 @@
 package org.rifidi.emulator.reader.thingmagic.database;
 
-import org.rifidi.emulator.reader.thingmagic.database.exceptions.DBReadException;
 
 
 public interface IDBRow {
@@ -11,5 +10,5 @@ public interface IDBRow {
 	//TODO: Research the behavior of this command further.
 	public String put(String key, String value);
 	
-	public String get(String key) throws DBReadException;
+	public String get(String key);
 }

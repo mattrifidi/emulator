@@ -1,7 +1,6 @@
 package org.rifidi.emulator.reader.thingmagic.database.impl.row;
 
 import org.rifidi.emulator.reader.thingmagic.database.IDBRow;
-import org.rifidi.emulator.reader.thingmagic.database.exceptions.DBReadException;
 
 //TODO figure out how this one should work... :puzzled:
 public class DBTagDataRow implements IDBRow {
@@ -19,7 +18,7 @@ public class DBTagDataRow implements IDBRow {
 	}
 
 	@Override
-	public String get(String key) throws DBReadException {
+	public String get(String key){
 		// TODO Auto-generated method stub
 		return "";
 	}
