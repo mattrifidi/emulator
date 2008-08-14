@@ -10,7 +10,7 @@ import org.apache.commons.logging.LogFactory;
 import org.rifidi.emulator.reader.thingmagic.commandobjects.exceptions.CommandCreationExeption;
 import org.rifidi.emulator.reader.thingmagic.database.IDBRow;
 import org.rifidi.emulator.reader.thingmagic.database.IDBTable;
-import org.rifidi.emulator.reader.thingmagic.database.impl.tagbuffer.ThingMagicTagTableMemory;
+import org.rifidi.emulator.reader.thingmagic.database.impl.DBTagID;
 import org.rifidi.emulator.reader.thingmagic.module.ThingMagicReaderSharedResources;
 
 public class SelectCommand implements Command {
@@ -22,11 +22,6 @@ public class SelectCommand implements Command {
 	private String table;
 
 	private ThingMagicReaderSharedResources tmsr;
-
-	/*
-	 * default timeout for getting tags.
-	 */
-	private long timeout = 250;
 
 	public SelectCommand(String command, ThingMagicReaderSharedResources tmsr)
 			throws CommandCreationExeption {
@@ -193,7 +188,7 @@ public class SelectCommand implements Command {
 		 * reading a tag... make best effort to complete the command in an
 		 * orderly and predictable manner.
 		 */
-		if (tableImpl instanceof ThingMagicTagTableMemory) {
+		if (tableImpl instanceof DBTagID) {
 			return;
 		}
 
@@ -221,20 +216,8 @@ public class SelectCommand implements Command {
 		// TODO add filtering
 		logger.debug("Getting table: " + table);
 		logger.debug("Getting column data: " + columns);
-
-		//TODO: This needs to be done only when dealing with the tag_id table.
 		
-		/* clear all previously accumulated tags. */
-		tmsr.getTagMemory().clear();
-		
-		try {
-			Thread.sleep(timeout ); // let the tags gather for a moment.
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} 
-		/* Force the radio to scan now. */
-		tmsr.getRadio().scan(null, tmsr.getTagMemory());
+		tmsr.getDataBase().getTable(table).preTableAccess(null);
 		
 		/*
 		 * Do the select database work.

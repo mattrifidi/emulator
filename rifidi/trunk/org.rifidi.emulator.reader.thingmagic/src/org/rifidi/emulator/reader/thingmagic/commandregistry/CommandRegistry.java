@@ -13,6 +13,7 @@ import org.rifidi.emulator.reader.thingmagic.commandobjects.UpdateCommand;
  * and to move on to other things.  We can revisit this latter if need be.
  *
  */
+//TODO contain hashmap not extends.
 public class CommandRegistry extends HashMap<String, Command>{
 
 	/**

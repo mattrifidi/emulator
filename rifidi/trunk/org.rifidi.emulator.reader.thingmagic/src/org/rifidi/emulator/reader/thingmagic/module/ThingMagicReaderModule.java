@@ -32,7 +32,7 @@ import org.rifidi.emulator.reader.thingmagic.database.impl.DBIO;
 import org.rifidi.emulator.reader.thingmagic.database.impl.DBSavedSettings;
 import org.rifidi.emulator.reader.thingmagic.database.impl.DBSettings;
 import org.rifidi.emulator.reader.thingmagic.database.impl.DBTagData;
-import org.rifidi.emulator.reader.thingmagic.database.impl.tagbuffer.ThingMagicTagTableMemory;
+import org.rifidi.emulator.reader.thingmagic.database.impl.DBTagID;
 import org.rifidi.emulator.reader.thingmagic.formatter.ThingMagicRQLCommandFormatter;
 import org.rifidi.emulator.reader.thingmagic.io.protocol.ThingMagicProtocol;
 
@@ -133,7 +133,7 @@ public class ThingMagicReaderModule extends AbstractPowerModule implements
 		digester.parseToCommand(this.getClass().getClassLoader()
 				.getResourceAsStream(XMLLOCATION + "reader.xml"));
 
-		ThingMagicTagTableMemory tagMemory = new ThingMagicTagTableMemory();
+		DBTagID tagMemory = new DBTagID();
 
 		HashMap<Integer, Antenna> antennaList = new HashMap<Integer, Antenna>();
 		for (int i = 0; i < properties.getNumAntennas(); i++) {
@@ -144,6 +144,8 @@ public class ThingMagicReaderModule extends AbstractPowerModule implements
 		/* Make a Radio for the reader */
 		GenericRadio genericRadio = new GenericRadio(antennaList, 25, name, tagMemory);
 
+		tagMemory.setRadio(genericRadio);
+		
 		String rql_address = ((String) properties.getProperty("rql_address"))
 				.split(":")[0];
 		int rql_port = Integer.parseInt(((String) properties
@@ -158,7 +160,7 @@ public class ThingMagicReaderModule extends AbstractPowerModule implements
 		
 		/* register the database tables */
 		tmsr.getDataBase().addTable("tag_id", (IDBTable) tmsr.getTagMemory());
-		tmsr.getDataBase().addTable("tag_data", new DBTagData((ThingMagicTagTableMemory) tmsr.getTagMemory()));
+		tmsr.getDataBase().addTable("tag_data", new DBTagData((DBTagID) tmsr.getTagMemory()));
 		
 		tmsr.getDataBase().addTable("io", new DBIO(tmsr.getGpioController()));
 		

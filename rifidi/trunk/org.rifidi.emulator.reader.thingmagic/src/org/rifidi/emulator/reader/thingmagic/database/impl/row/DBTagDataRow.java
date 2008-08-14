@@ -2,14 +2,13 @@ package org.rifidi.emulator.reader.thingmagic.database.impl.row;
 
 import org.rifidi.emulator.reader.thingmagic.database.IDBRow;
 import org.rifidi.emulator.reader.thingmagic.database.exceptions.DBReadException;
-import org.rifidi.emulator.reader.thingmagic.database.impl.tagbuffer.TagRowData;
 
 //TODO figure out how this one should work... :puzzled:
 public class DBTagDataRow implements IDBRow {
 
-	private TagRowData tag;
+	private DBTagIDRow tag;
 
-	public DBTagDataRow(TagRowData tag) {
+	public DBTagDataRow(DBTagIDRow tag) {
 		this.tag = tag;
 	}
 

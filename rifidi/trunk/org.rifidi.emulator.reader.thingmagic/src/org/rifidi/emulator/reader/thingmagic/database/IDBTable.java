@@ -1,5 +1,7 @@
 package org.rifidi.emulator.reader.thingmagic.database;
 
+import java.util.Map;
+
 
 
 public interface IDBTable {
@@ -8,5 +10,6 @@ public interface IDBTable {
 	
 	public int size();
 	
+	public void preTableAccess(Map<String, String> params);
 	
 }

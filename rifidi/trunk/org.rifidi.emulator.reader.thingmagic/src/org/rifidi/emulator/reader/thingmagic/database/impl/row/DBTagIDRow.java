@@ -1,4 +1,4 @@
-package org.rifidi.emulator.reader.thingmagic.database.impl.tagbuffer;
+package org.rifidi.emulator.reader.thingmagic.database.impl.row;
 
 import java.util.HashSet;
 import java.util.Random;
@@ -8,14 +8,15 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.rifidi.emulator.reader.thingmagic.database.IDBRow;
 import org.rifidi.emulator.reader.thingmagic.database.exceptions.DBWriteException;
+import org.rifidi.emulator.reader.thingmagic.database.impl.DBTagID;
 import org.rifidi.services.tags.enums.TagGen;
 import org.rifidi.services.tags.impl.RifidiTag;
 
 
 
 //TODO implement this better.
-public class TagRowData implements IDBRow {
-	private static Log logger = LogFactory.getLog(ThingMagicTagTableMemory.class);
+public class DBTagIDRow implements IDBRow {
+	private static Log logger = LogFactory.getLog(DBTagID.class);
 	
 	static private String ID = "id";
 	static private String ANTENNA_ID = "antenna_id";
@@ -74,7 +75,7 @@ public class TagRowData implements IDBRow {
 	 * defines them) and their respective values.
 	 * @param tag The RFID tag to get the tag data from
 	 */
-	public TagRowData(RifidiTag tag){
+	public DBTagIDRow(RifidiTag tag){
 		logger.debug("Creating tag row data");
 		this.tag = tag;
 	
@@ -250,8 +251,8 @@ public class TagRowData implements IDBRow {
 	
 	@Override
 	public boolean equals (Object o){
-		if (o instanceof TagRowData){
-			return tag.equals(((TagRowData) o).getTag());
+		if (o instanceof DBTagIDRow){
+			return tag.equals(((DBTagIDRow) o).getTag());
 		} 
 		
 		return false;

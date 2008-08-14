@@ -1,23 +1,27 @@
-package org.rifidi.emulator.reader.thingmagic.database.impl.tagbuffer;
+package org.rifidi.emulator.reader.thingmagic.database.impl;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.rifidi.emulator.reader.sharedrc.radio.generic.GenericRadio;
 import org.rifidi.emulator.reader.sharedrc.tagmemory.TagMemory;
 import org.rifidi.emulator.reader.thingmagic.database.IDBRow;
 import org.rifidi.emulator.reader.thingmagic.database.IDBTable;
+import org.rifidi.emulator.reader.thingmagic.database.impl.row.DBTagIDRow;
 import org.rifidi.services.tags.impl.RifidiTag;
 
-public class ThingMagicTagTableMemory implements
+public class DBTagID implements
 		IDBTable, TagMemory {
-	private static Log logger = LogFactory.getLog(ThingMagicTagTableMemory.class);
-	private List<TagRowData> tags = new ArrayList<TagRowData>();
+	private static Log logger = LogFactory.getLog(DBTagID.class);
+	private List<DBTagIDRow> tags = new ArrayList<DBTagIDRow>();
 	private boolean suspended = false;
+	private GenericRadio radio;
 
-	public ThingMagicTagTableMemory() {
+	public DBTagID() {
 		logger.debug("Creating Tag Memory...");
 		clear();
 	}
@@ -47,7 +51,7 @@ public class ThingMagicTagTableMemory implements
 		logger.debug("Getting tag report.");
 		List<RifidiTag> tagsToReturn = new ArrayList<RifidiTag>();
 		if (!suspended) {
-			for (TagRowData t : tags) {
+			for (DBTagIDRow t : tags) {
 				tagsToReturn.add(t.getTag());
 			}
 		}
@@ -69,7 +73,7 @@ public class ThingMagicTagTableMemory implements
 		logger.debug("Updating tag memory with tags: " + tagsToAdd);
 		// TODO Think of a better way of doing this.
 		for (RifidiTag t : tagsToAdd) {
-			TagRowData tagRowData = new TagRowData(t);
+			DBTagIDRow tagRowData = new DBTagIDRow(t);
 			if (tags.contains(tagRowData)) {
 				// TODO increment read count
 			} else {
@@ -83,6 +87,31 @@ public class ThingMagicTagTableMemory implements
 	public void clear() {
 		logger.debug("Clearing tag memory.");
 		tags.clear();
+	}
+
+	@Override
+	public void preTableAccess(Map<String, String> params) {
+		/*
+		 * default timeout for getting tags.
+		 */
+		long timeout = 250;
+		
+		/* clear all previously accumulated tags. */
+		clear();
+		try {
+			
+			Thread.sleep(timeout); // let the tags gather for a moment.
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		/* Force the radio to scan now. */
+		radio.scan(null, this);
+	}
+
+	public void setRadio(GenericRadio radio) {
+		// TODO Auto-generated method stub
+		this.radio = radio;
 	}
 
  }

@@ -1,5 +1,7 @@
 package org.rifidi.emulator.reader.thingmagic.database.impl;
 
+import java.util.Map;
+
 import org.rifidi.emulator.reader.sharedrc.GPIO.GPIOController;
 import org.rifidi.emulator.reader.thingmagic.database.IDBRow;
 import org.rifidi.emulator.reader.thingmagic.database.IDBTable;
@@ -23,6 +25,12 @@ public class DBIO implements IDBTable {
 	@Override
 	public int size() {
 		return 1;
+	}
+
+	@Override
+	public void preTableAccess(Map<String, String> params) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

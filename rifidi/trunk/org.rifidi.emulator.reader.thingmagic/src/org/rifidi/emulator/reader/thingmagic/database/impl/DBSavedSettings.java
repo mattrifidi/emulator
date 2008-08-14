@@ -1,6 +1,7 @@
 package org.rifidi.emulator.reader.thingmagic.database.impl;
 
 import java.util.AbstractList;
+import java.util.Map;
 
 import org.rifidi.emulator.reader.thingmagic.database.IDBRow;
 import org.rifidi.emulator.reader.thingmagic.database.IDBTable;
@@ -21,6 +22,12 @@ public class DBSavedSettings extends AbstractList<IDBRow> implements IDBTable {
 	public int size() {
 		// TODO Auto-generated method stub
 		return 1;
+	}
+
+	@Override
+	public void preTableAccess(Map<String, String> params) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	

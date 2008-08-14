@@ -15,7 +15,6 @@ Export-Package: org.rifidi.emulator.reader.thingmagic,
  org.rifidi.emulator.reader.thingmagic.command.exception,
  org.rifidi.emulator.reader.thingmagic.commandhandler,
  org.rifidi.emulator.reader.thingmagic.database,
- org.rifidi.emulator.reader.thingmagic.database.impl.tagbuffer,
  org.rifidi.emulator.reader.thingmagic.formatter,
  org.rifidi.emulator.reader.thingmagic.io.protocol,
  org.rifidi.emulator.reader.thingmagic.module
