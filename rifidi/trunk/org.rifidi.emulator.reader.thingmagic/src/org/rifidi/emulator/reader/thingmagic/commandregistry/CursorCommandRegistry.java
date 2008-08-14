@@ -14,7 +14,7 @@ import org.rifidi.emulator.reader.thingmagic.commandobjects.UpdateCommand;
  *
  */
 //TODO contain hashmap not extends.
-public class CommandRegistry extends HashMap<String, Command>{
+public class CursorCommandRegistry extends HashMap<String, Command>{
 
 	/**
 	 * 
