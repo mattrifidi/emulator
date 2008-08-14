@@ -23,6 +23,11 @@ public class SelectCommand implements Command {
 
 	private ThingMagicReaderSharedResources tmsr;
 
+	/*
+	 * default timeout for getting tags.
+	 */
+	private long timeout = 250;
+
 	public SelectCommand(String command, ThingMagicReaderSharedResources tmsr)
 			throws CommandCreationExeption {
 		this.tmsr = tmsr;
@@ -217,6 +222,23 @@ public class SelectCommand implements Command {
 		logger.debug("Getting table: " + table);
 		logger.debug("Getting column data: " + columns);
 
+		//TODO: This needs to be done only when dealing with the tag_id table.
+		
+		/* clear all previously accumulated tags. */
+		tmsr.getTagMemory().clear();
+		
+		try {
+			Thread.sleep(timeout ); // let the tags gather for a moment.
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		/* Force the radio to scan now. */
+		tmsr.getRadio().scan(null, tmsr.getTagMemory());
+		
+		/*
+		 * Do the select database work.
+		 */
 		for (int x = 0; x < tmsr.getDataBase().getTable(table).size(); x++) {
 			IDBRow row = tmsr.getDataBase().getTable(table).get(x);
 
