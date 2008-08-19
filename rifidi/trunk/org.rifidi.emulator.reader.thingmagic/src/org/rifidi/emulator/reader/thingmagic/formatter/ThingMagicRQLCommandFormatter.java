@@ -52,7 +52,7 @@ public class ThingMagicRQLCommandFormatter implements CommandFormatter {
 			}
 			
 			if (commandName.toLowerCase().equals("update")){
-				retVal.add(new UpdateCommand(command));
+				retVal.add(new UpdateCommand(command, tmsr));
 				return retVal;
 			}
 			
