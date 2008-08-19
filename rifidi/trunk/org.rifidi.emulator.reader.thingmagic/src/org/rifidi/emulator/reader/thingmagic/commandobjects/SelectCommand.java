@@ -171,8 +171,8 @@ public class SelectCommand implements Command {
 			 * look for the last offending command block that is not a series of whitespaces.
 			 * 
 			 */
-			for(int x = commandBlocks.size(); x >= 0; x--) {
-				if (commandBlocks.get(x).matches("\\s")){
+			for(int x = commandBlocks.size() - 1; x >= 0; x--) {
+				if (!commandBlocks.get(x).matches("\\s")){
 					throw new CommandCreationExeption("Error 0100:     syntax error at '" + commandBlocks.get(index) + "'");
 				}
 			}
