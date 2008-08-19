@@ -18,7 +18,7 @@ public class DBTagDataRow implements IDBRow {
 	}
 
 	@Override
-	public String get(String key){
+	public String get(String key) {
 		// TODO Auto-generated method stub
 		return "";
 	}

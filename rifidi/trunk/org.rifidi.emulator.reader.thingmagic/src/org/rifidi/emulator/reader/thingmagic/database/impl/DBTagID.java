@@ -14,8 +14,7 @@ import org.rifidi.emulator.reader.thingmagic.database.IDBTable;
 import org.rifidi.emulator.reader.thingmagic.database.impl.row.DBTagIDRow;
 import org.rifidi.services.tags.impl.RifidiTag;
 
-public class DBTagID implements
-		IDBTable, TagMemory {
+public class DBTagID implements IDBTable, TagMemory {
 	private static Log logger = LogFactory.getLog(DBTagID.class);
 	private List<DBTagIDRow> tags = new ArrayList<DBTagIDRow>();
 	private boolean suspended = false;
@@ -95,16 +94,16 @@ public class DBTagID implements
 		 * default timeout for getting tags.
 		 */
 		long timeout = 250;
-		
+
 		/* clear all previously accumulated tags. */
 		clear();
 		try {
-			
+
 			Thread.sleep(timeout); // let the tags gather for a moment.
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} 
+		}
 		/* Force the radio to scan now. */
 		radio.scan(null, this);
 	}
@@ -114,4 +113,4 @@ public class DBTagID implements
 		this.radio = radio;
 	}
 
- }
+}

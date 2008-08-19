@@ -15,7 +15,7 @@ public class DBTagData extends AbstractList<IDBRow> implements IDBTable {
 	public DBTagData(DBTagID tagMemory) {
 		this.tagMemory = tagMemory;
 	}
-	
+
 	@Override
 	public IDBRow get(int index) {
 		// TODO Auto-generated method stub
@@ -25,15 +25,16 @@ public class DBTagData extends AbstractList<IDBRow> implements IDBTable {
 	@Override
 	public int size() {
 
-		//TODO Disable this until we figure out how TagDataRow should work... :puzzled:
-		//return tagMemory.size();
+		// TODO Disable this until we figure out how TagDataRow should work...
+		// :puzzled:
+		// return tagMemory.size();
 		return 0;
 	}
 
 	@Override
 	public void preTableAccess(Map<String, String> params) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

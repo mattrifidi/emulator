@@ -33,7 +33,7 @@ public class SelectCommand implements Command {
 		logger.debug("Parsing command: " + command);
 
 		/*
-		 * This regex helps break up the command into easily parsable 
+		 * This regex helps break up the command into easily parsable
 		 * commandBlocks. This makes it much easier to check for syntax errors
 		 * because the commandBlocks are highly predictable.
 		 */
@@ -44,9 +44,9 @@ public class SelectCommand implements Command {
 
 		while (matcher.find())
 			commandBlocks.add(matcher.group());
-		
+
 		logger.debug("Command Blockes: " + commandBlocks);
-		
+
 		int index = 0;
 		/*
 		 * Look for white spaces
@@ -56,81 +56,93 @@ public class SelectCommand implements Command {
 		}
 
 		if (!commandBlocks.get(index).equals("select")) {
-			throw new CommandCreationExeption("Error 0100:     syntax error at '" + commandBlocks.get(index) + "'");
+			throw new CommandCreationExeption(
+					"Error 0100:     syntax error at '"
+							+ commandBlocks.get(index) + "'");
 
 		}
 		index++;
 
 		logger.debug("Huray! we are in the correct command object!");
-		//TODO Refine the error handling to mirror more exactly what the thingmagic would return;
+		// TODO Refine the error handling to mirror more exactly what the
+		// thingmagic would return;
 		try {
 			/*
 			 * Look for white spaces
 			 */
 			if (!commandBlocks.get(index).matches("\\s+")) {
-				throw new CommandCreationExeption("Error 0100:     syntax error at '" + commandBlocks.get(index--) + "'");
+				throw new CommandCreationExeption(
+						"Error 0100:     syntax error at '"
+								+ commandBlocks.get(index--) + "'");
 			}
-	
+
 			index++;
-			
+
 			logger.debug("Expected whitespace found.");
-	
-			//TODO: Handle errors correctly here.
+
+			// TODO: Handle errors correctly here.
 			for (; !commandBlocks.get(index).equals("from"); index++) {
 				/*
-				 *  look for words
+				 * look for words
 				 */
 				if (commandBlocks.get(index).matches("\\w+")) {
 					columns.add(commandBlocks.get(index));
 				} else {
-					throw new CommandCreationExeption("Error 0100:     syntax error at '" + commandBlocks.get(index) + "'");
+					throw new CommandCreationExeption(
+							"Error 0100:     syntax error at '"
+									+ commandBlocks.get(index) + "'");
 				}
 				index++;
-				
-				if (commandBlocks.get(index+1).equals("from")) {
+
+				if (commandBlocks.get(index + 1).equals("from")) {
 					logger.debug("Found keyword from");
-					if (!commandBlocks.get(index).matches("\\s*")){
+					if (!commandBlocks.get(index).matches("\\s*")) {
 						logger.debug("Bad command block found.");
-						throw new CommandCreationExeption("Error 0100:     syntax error at 'from'");
+						throw new CommandCreationExeption(
+								"Error 0100:     syntax error at 'from'");
 					}
-					
+
 					/*
 					 * move the index to the "from" command block.
 					 */
-					index++; 
-					break;	
+					index++;
+					break;
 				}
-				
-				/* 
-				 * look for a comma with any number of white spaces
-				 * on either side.
+
+				/*
+				 * look for a comma with any number of white spaces on either
+				 * side.
 				 */
 				if (!commandBlocks.get(index).matches("\\s*,\\s*")) {
-					throw new CommandCreationExeption("Error 0100:     syntax error at '" + commandBlocks.get(index++) + "'");
-				} 
-					
-				
-		
+					throw new CommandCreationExeption(
+							"Error 0100:     syntax error at '"
+									+ commandBlocks.get(index++) + "'");
+				}
+
 			}
 			index++;
-	
+
 			/*
 			 * Look for white spaces
 			 */
 			if (!commandBlocks.get(index).matches("\\s+")) {
-				throw new CommandCreationExeption("Error 0100:     syntax error at '" + commandBlocks.get(index--) + "'");
+				throw new CommandCreationExeption(
+						"Error 0100:     syntax error at '"
+								+ commandBlocks.get(index--) + "'");
 			}
 			index++;
-	
+
 			/*
 			 * Look for words
 			 */
 			if (commandBlocks.get(index).matches("\\w+")) {
 				table = commandBlocks.get(index);
 			} else {
-				throw new CommandCreationExeption("Error 0100:     syntax error at '" + commandBlocks.get(index) + "'");
+				throw new CommandCreationExeption(
+						"Error 0100:     syntax error at '"
+								+ commandBlocks.get(index) + "'");
 			}
-	
+
 			index++;
 			if (commandBlocks.size() < index) {
 				/*
@@ -140,10 +152,10 @@ public class SelectCommand implements Command {
 					// TODO throw an exception
 				} else {
 					index++;
-	
+
 					if ((commandBlocks.size() < index)
 							&& (commandBlocks.get(index).matches("where"))) {
-						
+
 						/*
 						 * Look for white spaces
 						 */
@@ -151,7 +163,7 @@ public class SelectCommand implements Command {
 							// TODO throw an exception
 						}
 						index++;
-	
+
 						for (; index < commandBlocks.size(); index++) {
 							if (commandBlocks.get(index).equals("set"))
 								break;
@@ -159,21 +171,23 @@ public class SelectCommand implements Command {
 							// whereClause.append(args.get(index));
 						}
 					}
-	
+
 					if ((commandBlocks.size() < index)
 							&& (commandBlocks.get(index).matches("set"))) {
 						// TODO implement the set clause
 					}
 				}
 			}
-		} catch (IndexOutOfBoundsException e){
+		} catch (IndexOutOfBoundsException e) {
 			/*
-			 * look for the last offending command block that is not a series of whitespaces.
-			 * 
+			 * look for the last offending command block that is not a series of
+			 * whitespaces.
 			 */
-			for(int x = commandBlocks.size() - 1; x >= 0; x--) {
-				if (!commandBlocks.get(x).matches("\\s")){
-					throw new CommandCreationExeption("Error 0100:     syntax error at '" + commandBlocks.get(index) + "'");
+			for (int x = commandBlocks.size() - 1; x >= 0; x--) {
+				if (!commandBlocks.get(x).matches("\\s")) {
+					throw new CommandCreationExeption(
+							"Error 0100:     syntax error at '"
+									+ commandBlocks.get(index) + "'");
 				}
 			}
 		}
@@ -216,9 +230,9 @@ public class SelectCommand implements Command {
 		// TODO add filtering
 		logger.debug("Getting table: " + table);
 		logger.debug("Getting column data: " + columns);
-		
+
 		tmsr.getDataBase().getTable(table).preTableAccess(null);
-		
+
 		/*
 		 * Do the select database work.
 		 */

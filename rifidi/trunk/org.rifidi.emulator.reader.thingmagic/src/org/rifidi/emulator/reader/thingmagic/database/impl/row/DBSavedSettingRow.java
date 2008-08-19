@@ -5,21 +5,19 @@ import java.util.Map;
 
 import org.rifidi.emulator.reader.thingmagic.database.IDBRow;
 
-
 public class DBSavedSettingRow implements IDBRow {
-	
-	
-	private static Map<String, String> savedSettings = new HashMap<String, String>(); 
-	
+
+	private static Map<String, String> savedSettings = new HashMap<String, String>();
+
 	private static boolean initialized = false;
-	
-	public DBSavedSettingRow () {
+
+	public DBSavedSettingRow() {
 		initialize();
 	}
-	
-	private static void initialize(){
-		if (!initialized){
-			//TODO find something better for ip related values than "localhost"
+
+	private static void initialize() {
+		if (!initialized) {
+			// TODO find something better for ip related values than "localhost"
 			savedSettings.put("hostname", "mercury4");
 			savedSettings.put("iface", "dhcp");
 			savedSettings.put("dhcpcd", "-t 15");
@@ -31,7 +29,7 @@ public class DBSavedSettingRow implements IDBRow {
 			savedSettings.put("primary_dns", "localhost");
 			savedSettings.put("secondary_dns", "localhost");
 			savedSettings.put("domain_name", "thingmagic.com");
-			
+
 			initialized = true;
 		}
 	}
@@ -44,7 +42,7 @@ public class DBSavedSettingRow implements IDBRow {
 	@Override
 	public boolean isReadable(String column) {
 		/*
-		 * All columns are readable 
+		 * All columns are readable
 		 */
 		return savedSettings.containsKey(column);
 	}
@@ -56,7 +54,7 @@ public class DBSavedSettingRow implements IDBRow {
 		 */
 		return savedSettings.containsKey(column);
 	}
-	
+
 	@Override
 	public String get(String key) {
 		return savedSettings.get(key);
@@ -64,7 +62,7 @@ public class DBSavedSettingRow implements IDBRow {
 
 	@Override
 	public String put(String key, String value) {
-		if (savedSettings.containsKey(key)){
+		if (savedSettings.containsKey(key)) {
 			return savedSettings.put(key, value);
 		}
 		return null;

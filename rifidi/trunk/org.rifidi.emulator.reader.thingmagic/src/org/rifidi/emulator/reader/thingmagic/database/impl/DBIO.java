@@ -10,7 +10,7 @@ import org.rifidi.emulator.reader.thingmagic.database.impl.row.DBIORow;
 public class DBIO implements IDBTable {
 
 	public DBIORow io;
-	
+
 	public DBIO(GPIOController gpioController) {
 		io = new DBIORow(gpioController);
 	}
@@ -30,7 +30,7 @@ public class DBIO implements IDBTable {
 	@Override
 	public void preTableAccess(Map<String, String> params) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 }

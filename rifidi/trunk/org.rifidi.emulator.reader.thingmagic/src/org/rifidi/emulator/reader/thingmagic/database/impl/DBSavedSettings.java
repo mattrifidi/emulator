@@ -10,7 +10,7 @@ import org.rifidi.emulator.reader.thingmagic.database.impl.row.DBSavedSettingRow
 public class DBSavedSettings extends AbstractList<IDBRow> implements IDBTable {
 
 	private DBSavedSettingRow savedSettings = new DBSavedSettingRow();
-	
+
 	@Override
 	public IDBRow get(int arg0) {
 		if (arg0 != 0)
@@ -27,8 +27,7 @@ public class DBSavedSettings extends AbstractList<IDBRow> implements IDBTable {
 	@Override
 	public void preTableAccess(Map<String, String> params) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
-	
 }
