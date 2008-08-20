@@ -101,10 +101,15 @@ public class CameraServiceImpl implements CameraService,
 			 */
 			@Override
 			public Object call() throws Exception {
-				camera.setFrustum(-100f, 1000.0f,
+				camera.setFrustum(-200f, 1000.0f,
 						-(baseFrustumvalue + zoomlevel) * 4 / 3,
 						(baseFrustumvalue + zoomlevel) * 4 / 3,
 						-(baseFrustumvalue + zoomlevel),
+						(baseFrustumvalue + zoomlevel));
+				System.out.println(
+						-(baseFrustumvalue + zoomlevel) * 4 / 3+" "+
+						(baseFrustumvalue + zoomlevel) * 4 / 3+" "+
+						-(baseFrustumvalue + zoomlevel)+" "+
 						(baseFrustumvalue + zoomlevel));
 				camera.update();
 				camera.apply();
