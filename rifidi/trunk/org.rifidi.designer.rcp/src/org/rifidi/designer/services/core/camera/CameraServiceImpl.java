@@ -42,7 +42,9 @@ public class CameraServiceImpl implements CameraService,
 	 */
 	private Log logger = LogFactory.getLog(CameraServiceImpl.class);
 
-	private int zoomlevel=40;
+	private int zoomlevel = 81;
+
+	private int zoomoffset = -40;
 
 	private SceneDataService sceneDataService;
 
@@ -50,12 +52,12 @@ public class CameraServiceImpl implements CameraService,
 
 	private int baseFrustumvalue = 50;
 
-	private int lod = 0;
+	private int lod = 3;
 
-	private boolean lodChange=false;
-	
+	private boolean lodChange = false;
+
 	private Vector3f[] cameraValues;
-	
+
 	/**
 	 * Default constructor.
 	 */
@@ -82,18 +84,13 @@ public class CameraServiceImpl implements CameraService,
 	 */
 	@Override
 	public void zoomIn() {
-		zoomlevel--;
-		if (zoomlevel <= -44) {
-			zoomlevel = -44;
+		zoomlevel*=0.7;
+		if (zoomlevel <= 5) {
+			zoomlevel = 5;
 		}
 		adjustLOD();
-		if(cameraValues!=null && lod!=3){
-			camera.setAxes(cameraValues[0], cameraValues[1], cameraValues[2]);
-			camera.apply();
-			cameraValues=null;
-		}
 		GameTaskQueueManager.getManager().render(new Callable<Object>() {
-
+			
 			/*
 			 * (non-Javadoc)
 			 * 
@@ -101,28 +98,16 @@ public class CameraServiceImpl implements CameraService,
 			 */
 			@Override
 			public Object call() throws Exception {
-				camera.setFrustum(-200f, 1000.0f,
-						-(baseFrustumvalue + zoomlevel) * 4 / 3,
-						(baseFrustumvalue + zoomlevel) * 4 / 3,
-						-(baseFrustumvalue + zoomlevel),
-						(baseFrustumvalue + zoomlevel));
-				System.out.println(
-						-(baseFrustumvalue + zoomlevel) * 4 / 3+" "+
-						(baseFrustumvalue + zoomlevel) * 4 / 3+" "+
-						-(baseFrustumvalue + zoomlevel)+" "+
-						(baseFrustumvalue + zoomlevel));
+				camera.setFrustum(-200f, 1000.0f, -(baseFrustumvalue
+						+ zoomlevel + zoomoffset) * 4 / 3, (baseFrustumvalue
+						+ zoomlevel + zoomoffset) * 4 / 3, -(baseFrustumvalue
+						+ zoomlevel + zoomoffset), (baseFrustumvalue
+						+ zoomlevel + zoomoffset));
 				camera.update();
 				camera.apply();
-				if(lodChange){
-					lodChange=false;
-					if (sceneDataService.getCurrentSceneData() != null) {
-						for (Entity entity : sceneDataService.getCurrentSceneData()
-								.getEntities()) {
-							if (entity instanceof VisualEntity) {
-								((VisualEntity) entity).setLOD(lod);
-							}
-						}
-					}
+				if (lodChange) {
+					lodChange = false;
+					setLOD(lod);
 				}
 				return null;
 			}
@@ -137,19 +122,11 @@ public class CameraServiceImpl implements CameraService,
 	 */
 	@Override
 	public void zoomOut() {
-		zoomlevel++;
+		zoomlevel*=1.3;
 		if (zoomlevel >= 200) {
 			zoomlevel = 200;
 		}
 		adjustLOD();
-		if(lod==3 && cameraValues==null){
-			cameraValues=new Vector3f[3];
-			cameraValues[0]=camera.getLeft();
-			cameraValues[1]=camera.getUp();
-			cameraValues[2]=camera.getDirection();
-			camera.setAxes(new Vector3f(-1,0,0), new Vector3f(0,1,-0.5f), new Vector3f(0,-1,0));
-			camera.apply();
-		}
 		GameTaskQueueManager.getManager().render(new Callable<Object>() {
 
 			/*
@@ -159,25 +136,18 @@ public class CameraServiceImpl implements CameraService,
 			 */
 			@Override
 			public Object call() throws Exception {
-				camera.setFrustum(-100f, 1000.0f,
-						-(baseFrustumvalue + zoomlevel) * 4 / 3,
-						(baseFrustumvalue + zoomlevel) * 4 / 3,
-						-(baseFrustumvalue + zoomlevel),
-						(baseFrustumvalue + zoomlevel));
+				camera.setFrustum(-200f, 1000.0f, -(baseFrustumvalue
+						+ zoomlevel + zoomoffset) * 4 / 3, (baseFrustumvalue
+						+ zoomlevel + zoomoffset) * 4 / 3, -(baseFrustumvalue
+						+ zoomlevel + zoomoffset), (baseFrustumvalue
+						+ zoomlevel + zoomoffset));
 				camera.update();
 				camera.apply();
-				if(lodChange){
-					lodChange=false;
-					if (sceneDataService.getCurrentSceneData() != null) {
-						for (Entity entity : sceneDataService.getCurrentSceneData()
-								.getEntities()) {
-							if (entity instanceof VisualEntity) {
-								((VisualEntity) entity).setLOD(lod);
-							}
-						}
-					}
+				if (lodChange) {
+					lodChange = false;
+					setLOD(lod);
 				}
-				
+
 				return null;
 			}
 
@@ -227,7 +197,6 @@ public class CameraServiceImpl implements CameraService,
 				camera.update();
 				return null;
 			}
-
 		});
 	}
 
@@ -301,10 +270,14 @@ public class CameraServiceImpl implements CameraService,
 	 */
 	@Override
 	public void sceneDataChanged(SceneData sceneData) {
+		lod = 0;
 		centerCamera();
+		adjustLOD();
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.rifidi.designer.services.core.camera.CameraService#resetLOD()
 	 */
 	@Override
@@ -319,7 +292,9 @@ public class CameraServiceImpl implements CameraService,
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.rifidi.designer.services.core.camera.CameraService#setLOD(int)
 	 */
 	@Override
@@ -337,31 +312,44 @@ public class CameraServiceImpl implements CameraService,
 	/**
 	 * Check if lod has changed and apply it.
 	 */
-	private void adjustLOD(){
-		if(zoomlevel<=-30){
-			if(lod!=0){
-				lod=0;
-				lodChange=true;
+	private void adjustLOD() {
+		if (zoomlevel + zoomoffset <= -30) {
+			if (lod != 0) {
+				lod = 0;
+				lodChange = true;
+			}
+		} else if (zoomlevel + zoomoffset <= -10) {
+			if (lod != 1) {
+				lod = 1;
+				lodChange = true;
+			}
+		} else if (zoomlevel + zoomoffset <= 40) {
+			if (lod != 2) {
+				lod = 2;
+				lodChange = true;
+			}
+		} else if (zoomlevel + zoomoffset > 40) {
+			if (lod != 3) {
+				lod = 3;
+				lodChange = true;
+			}
+			if (lod == 3 && cameraValues == null) {
+				cameraValues = new Vector3f[3];
+				cameraValues[0] = camera.getLeft();
+				cameraValues[1] = camera.getUp();
+				cameraValues[2] = camera.getDirection();
+				camera.setAxes(new Vector3f(-1, 0, 0),
+						new Vector3f(0, 1, -0.5f), new Vector3f(0, -1, 0));
+				camera.apply();
 			}
 		}
-		else if(zoomlevel<=-10){
-			if(lod!=1){
-				lod=1;
-				lodChange=true;
-			}
+		if (cameraValues != null && lod != 3) {
+			camera.setAxes(cameraValues[0], cameraValues[1], cameraValues[2]);
+			camera.apply();
+			cameraValues = null;
 		}
-		else if(zoomlevel<=40){
-			if(lod!=2){
-				lod=2;
-				lodChange=true;
-			}
+		if (lodChange) {
+			setLOD(lod);
 		}
-		else if(zoomlevel<=70){
-			if(lod!=3){
-				lod=3;
-				lodChange=true;
-			}
-		}
-		setLOD(lod);
 	}
 }

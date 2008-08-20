@@ -58,7 +58,6 @@ import org.rifidi.utilities.grid.GridNode;
 
 import com.jme.bounding.BoundingBox;
 import com.jme.light.DirectionalLight;
-import com.jme.light.LightNode;
 import com.jme.math.Vector3f;
 import com.jme.renderer.Camera;
 import com.jme.renderer.ColorRGBA;
@@ -79,7 +78,6 @@ import com.jme.util.GameTaskQueueManager;
 import com.jme.util.geom.Debugger;
 import com.jmex.game.state.BasicGameState;
 import com.jmex.game.state.GameStateManager;
-import com.jmex.model.collada.schema.ambientType;
 import com.jmex.physics.PhysicsDebugger;
 
 /**
@@ -288,11 +286,11 @@ public class DesignerGame extends SWTBaseGame implements
 		ls.setGlobalAmbient(new ColorRGBA(1f, 1f, 1f, .1f));
 		ls.setEnabled(true);
 		DirectionalLight light = new DirectionalLight();
-        light.setDiffuse(new ColorRGBA(1.0f, 1.0f, 1.0f, 1.0f));
-        light.setAmbient(new ColorRGBA(0.5f, 0.5f, 0.5f, .5f));
-        light.setDirection(new Vector3f(1,-1,0));
-        light.setEnabled(true);
-        ls.attach(light);
+		light.setDiffuse(new ColorRGBA(1.0f, 1.0f, 1.0f, 1.0f));
+		light.setAmbient(new ColorRGBA(0.5f, 0.5f, 0.5f, .5f));
+		light.setDirection(new Vector3f(1, -1, 0));
+		light.setEnabled(true);
+		ls.attach(light);
 		display.getRenderer().setBackgroundColor(ColorRGBA.gray.clone());
 		getRootNode().setRenderState(zbufferState);
 		getRootNode().setRenderState(cullState);
