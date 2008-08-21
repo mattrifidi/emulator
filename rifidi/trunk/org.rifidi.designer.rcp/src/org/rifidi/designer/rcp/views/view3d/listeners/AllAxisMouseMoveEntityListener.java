@@ -243,7 +243,7 @@ public class AllAxisMouseMoveEntityListener implements MouseListener,
 				}
 			}
 			// drop it
-			else if (pickedEntity != null
+			if (pickedEntity != null
 					&& pickedEntity.getNode() instanceof PhysicsNode) {
 				GameTaskQueueManager.getManager().update(
 						new ActivationCallable((PhysicsNode) pickedEntity
