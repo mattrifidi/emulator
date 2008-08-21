@@ -27,38 +27,37 @@ public class SelectCommand implements Command {
 			throws CommandCreationExeption {
 		this.tmsr = tmsr;
 		this.command = command;
-		List<String> commandBlocks = new ArrayList<String>();
+		List<String> tokens = new ArrayList<String>();
 		// TODO Auto-generated constructor stub
 
 		logger.debug("Parsing command: " + command);
 
-		/*
-		 * This regex helps break up the command into easily parsable
-		 * commandBlocks. This makes it much easier to check for syntax errors
-		 * because the commandBlocks are highly predictable.
-		 */
-		Pattern pattern = Pattern.compile(
-				"\\w+|[\\s,]+|<>|>=|<=|=|>|<|\\(|\\)|[^\\s\\w,<>=\\(\\)]+",
+		Pattern tokenizer = Pattern.compile(
+				"\\w+|\\s*<>\\*|\\s*>=\\s*|\\s*<=\\s*|\\s*=\\s*|\\s*,\\s*|\\s?+|"
+						+ ">|<|\\(|\\)|'|[^\\s\\w,<>=\\(\\)']+",
 				Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
-		Matcher matcher = pattern.matcher(command.toLowerCase());
+		Matcher tokenFinder = tokenizer.matcher(command.toLowerCase().trim());
 
-		while (matcher.find())
-			commandBlocks.add(matcher.group());
-
-		logger.debug("Command Blockes: " + commandBlocks);
-
-		int index = 0;
-		/*
-		 * Look for white spaces
-		 */
-		if (commandBlocks.get(index).matches("\\s+")) {
-			index++;
+		while (tokenFinder.find()){
+			String temp = tokenFinder.group();		
+			/* 
+			 * no need to add empty strings at tokens.
+			 * 
+			 */
+			//TODO: Figure out why we are getting empty stings as tokens.
+			if (temp.equals(""))
+				continue;
+			tokens.add(temp);
 		}
 
-		if (!commandBlocks.get(index).equals("select")) {
+		logger.debug("Command Blockes: " + tokens);
+
+		int index = 0;
+
+		if (!tokens.get(index).equals("select")) {
 			throw new CommandCreationExeption(
 					"Error 0100:     syntax error at '"
-							+ commandBlocks.get(index) + "'");
+							+ tokens.get(index) + "'");
 
 		}
 		index++;
@@ -70,10 +69,10 @@ public class SelectCommand implements Command {
 			/*
 			 * Look for white spaces
 			 */
-			if (!commandBlocks.get(index).matches("\\s+")) {
+			if (!tokens.get(index).matches("\\s+")) {
 				throw new CommandCreationExeption(
 						"Error 0100:     syntax error at '"
-								+ commandBlocks.get(index--) + "'");
+								+ tokens.get(index--) + "'");
 			}
 
 			index++;
@@ -81,22 +80,22 @@ public class SelectCommand implements Command {
 			logger.debug("Expected whitespace found.");
 
 			// TODO: Handle errors correctly here.
-			for (; !commandBlocks.get(index).equals("from"); index++) {
+			for (; !tokens.get(index).equals("from"); index++) {
 				/*
 				 * look for words
 				 */
-				if (commandBlocks.get(index).matches("\\w+")) {
-					columns.add(commandBlocks.get(index));
+				if (tokens.get(index).matches("\\w+")) {
+					columns.add(tokens.get(index));
 				} else {
 					throw new CommandCreationExeption(
 							"Error 0100:     syntax error at '"
-									+ commandBlocks.get(index) + "'");
+									+ tokens.get(index) + "'");
 				}
 				index++;
 
-				if (commandBlocks.get(index + 1).equals("from")) {
+				if (tokens.get(index + 1).equals("from")) {
 					logger.debug("Found keyword from");
-					if (!commandBlocks.get(index).matches("\\s*")) {
+					if (!tokens.get(index).matches("\\s*")) {
 						logger.debug("Bad command block found.");
 						throw new CommandCreationExeption(
 								"Error 0100:     syntax error at 'from'");
@@ -113,10 +112,10 @@ public class SelectCommand implements Command {
 				 * look for a comma with any number of white spaces on either
 				 * side.
 				 */
-				if (!commandBlocks.get(index).matches("\\s*,\\s*")) {
+				if (!tokens.get(index).matches("\\s*,\\s*")) {
 					throw new CommandCreationExeption(
 							"Error 0100:     syntax error at '"
-									+ commandBlocks.get(index++) + "'");
+									+ tokens.get(index++) + "'");
 				}
 
 			}
@@ -125,55 +124,55 @@ public class SelectCommand implements Command {
 			/*
 			 * Look for white spaces
 			 */
-			if (!commandBlocks.get(index).matches("\\s+")) {
+			if (!tokens.get(index).matches("\\s+")) {
 				throw new CommandCreationExeption(
 						"Error 0100:     syntax error at '"
-								+ commandBlocks.get(index--) + "'");
+								+ tokens.get(index--) + "'");
 			}
 			index++;
 
 			/*
 			 * Look for words
 			 */
-			if (commandBlocks.get(index).matches("\\w+")) {
-				table = commandBlocks.get(index);
+			if (tokens.get(index).matches("\\w+")) {
+				table = tokens.get(index);
 			} else {
 				throw new CommandCreationExeption(
 						"Error 0100:     syntax error at '"
-								+ commandBlocks.get(index) + "'");
+								+ tokens.get(index) + "'");
 			}
 
 			index++;
-			if (commandBlocks.size() < index) {
+			if (tokens.size() < index) {
 				/*
 				 * Look for white spaces
 				 */
-				if (!commandBlocks.get(index).matches("\\s+")) {
+				if (!tokens.get(index).matches("\\s+")) {
 					// TODO throw an exception
 				} else {
 					index++;
 
-					if ((commandBlocks.size() < index)
-							&& (commandBlocks.get(index).matches("where"))) {
+					if ((tokens.size() < index)
+							&& (tokens.get(index).matches("where"))) {
 
 						/*
 						 * Look for white spaces
 						 */
-						if (!commandBlocks.get(index).matches("\\s+")) {
+						if (!tokens.get(index).matches("\\s+")) {
 							// TODO throw an exception
 						}
 						index++;
 
-						for (; index < commandBlocks.size(); index++) {
-							if (commandBlocks.get(index).equals("set"))
+						for (; index < tokens.size(); index++) {
+							if (tokens.get(index).equals("set"))
 								break;
 							// TODO parse where clause
 							// whereClause.append(args.get(index));
 						}
 					}
 
-					if ((commandBlocks.size() < index)
-							&& (commandBlocks.get(index).matches("set"))) {
+					if ((tokens.size() < index)
+							&& (tokens.get(index).matches("set"))) {
 						// TODO implement the set clause
 					}
 				}
@@ -183,11 +182,11 @@ public class SelectCommand implements Command {
 			 * look for the last offending command block that is not a series of
 			 * whitespaces.
 			 */
-			for (int x = commandBlocks.size() - 1; x >= 0; x--) {
-				if (!commandBlocks.get(x).matches("\\s")) {
+			for (int x = tokens.size() - 1; x >= 0; x--) {
+				if (!tokens.get(x).matches("\\s")) {
 					throw new CommandCreationExeption(
 							"Error 0100:     syntax error at '"
-									+ commandBlocks.get(index) + "'");
+									+ tokens.get(index) + "'");
 				}
 			}
 		}
@@ -211,7 +210,7 @@ public class SelectCommand implements Command {
 			for (String column : columns) {
 				if (!row.containsColumn(column)) {
 					throw new CommandCreationExeption(
-							"Error 0100:     Unknown " + table);
+							"Error 0100:     Unknown " + column);
 				}
 
 				if (!row.isReadable(column)) {
