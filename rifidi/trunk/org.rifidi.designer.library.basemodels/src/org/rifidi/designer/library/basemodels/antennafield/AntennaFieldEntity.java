@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
@@ -183,6 +182,7 @@ public class AntennaFieldEntity extends VisualEntity implements Switch,
 						.load(modelpath.toURL()));
 				switchNode.attachChild(new Box("iii", Vector3f.ZERO.clone(), 1,
 						1, 1));
+				switchNode.setActiveChild(0);
 			} catch (MalformedURLException e) {
 				logger.fatal(e);
 			} catch (IOException e) {
