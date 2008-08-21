@@ -114,9 +114,13 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	 * Reference to the initservice.
 	 */
 	private IInitService iinitService;
-
+	/**
+	 * The collision tree.
+	 */
 	private CollisionOctree collisionOctree = null;
-
+	/**
+	 * Tree for checking collisions against the room.
+	 */
 	private RoomOctree roomTree = null;
 
 	/**
@@ -869,19 +873,6 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	@Override
 	public boolean collidesWithScene(VisualEntity visualEntity) {
 		return roomTree.findCollisions(visualEntity);
-		// if (visualEntity.getBoundingNode().getChildren() != null) {
-		// for (Spatial spat : sceneData.getRoomNode().getChildren()) {
-		// if (!"floor".equals(spat.getName())) {
-		// for (Spatial sp : ((Node) visualEntity.getBoundingNode())
-		// .getChildren()) {
-		// if (sp.getWorldBound().intersects(spat.getWorldBound())) {
-		// return true;
-		// }
-		// }
-		// }
-		// }
-		// }
-		// return false;
 	}
 
 	/**
