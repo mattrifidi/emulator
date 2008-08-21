@@ -11,8 +11,8 @@
 package org.rifidi.designer.services.core.cabling;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -38,7 +38,7 @@ public class CablingServiceImpl implements CablingService,
 	/**
 	 * Logger for this class.
 	 */
-	private static Log logger=LogFactory.getLog(CableChangeListener.class);
+	private static Log logger = LogFactory.getLog(CableChangeListener.class);
 	/**
 	 * Reference to the currently loaded scenedata.
 	 */
@@ -67,8 +67,8 @@ public class CablingServiceImpl implements CablingService,
 	 */
 	public CablingServiceImpl() {
 		logger.debug("CablingService created");
-		cableList = Collections.synchronizedList(new ArrayList<CableEntity>());
-		cableChangeListeners = new ArrayList<CableChangeListener>();
+		cableList = new CopyOnWriteArrayList<CableEntity>();
+		cableChangeListeners = new CopyOnWriteArrayList<CableChangeListener>();
 		ServiceRegistry.getInstance().service(this);
 	}
 
@@ -127,11 +127,9 @@ public class CablingServiceImpl implements CablingService,
 	@Override
 	public void setHigh(GPO source, int port) {
 		List<CableEntity> activeCables = new ArrayList<CableEntity>();
-		synchronized (cableList) {
-			for (CableEntity cable : cableList) {
-				if (cable.getGpo().equals(source)) {
-					activeCables.add(cable);
-				}
+		for (CableEntity cable : cableList) {
+			if (cable.getGpo().equals(source)) {
+				activeCables.add(cable);
 			}
 		}
 		for (CableEntity act : activeCables) {
@@ -142,12 +140,9 @@ public class CablingServiceImpl implements CablingService,
 	@Override
 	public void setLow(GPO source, int port) {
 		List<CableEntity> activeCables = new ArrayList<CableEntity>();
-		synchronized (cableList) {
-			for (CableEntity cable : cableList) {
-				if (cable.getGpo().equals(source)
-						&& cable.getSourcePort() == port) {
-					activeCables.add(cable);
-				}
+		for (CableEntity cable : cableList) {
+			if (cable.getGpo().equals(source) && cable.getSourcePort() == port) {
+				activeCables.add(cable);
 			}
 		}
 		for (CableEntity act : activeCables) {
@@ -163,11 +158,9 @@ public class CablingServiceImpl implements CablingService,
 	@Override
 	public List<CableEntity> getSources(GPI gpi) {
 		List<CableEntity> sources = new ArrayList<CableEntity>();
-		synchronized (cableList) {
-			for (CableEntity cableEntity : cableList) {
-				if (cableEntity.getGpi().equals(gpi)) {
-					sources.add(cableEntity);
-				}
+		for (CableEntity cableEntity : cableList) {
+			if (cableEntity.getGpi().equals(gpi)) {
+				sources.add(cableEntity);
 			}
 		}
 		return sources;
@@ -181,11 +174,9 @@ public class CablingServiceImpl implements CablingService,
 	@Override
 	public List<CableEntity> getTargets(GPO gpo) {
 		List<CableEntity> targets = new ArrayList<CableEntity>();
-		synchronized (cableList) {
-			for (CableEntity cableEntity : cableList) {
-				if (cableEntity.getGpo().equals(gpo)) {
-					targets.add(cableEntity);
-				}
+		for (CableEntity cableEntity : cableList) {
+			if (cableEntity.getGpo().equals(gpo)) {
+				targets.add(cableEntity);
 			}
 		}
 		return targets;
@@ -265,7 +256,7 @@ public class CablingServiceImpl implements CablingService,
 	public void unsetEntitiesService(EntitiesService entitiesService) {
 		this.entitiesService = null;
 	}
-	
+
 	/**
 	 * @param sceneDataService
 	 *            the sceneDataService to set
@@ -284,5 +275,5 @@ public class CablingServiceImpl implements CablingService,
 	public void unsetSceneDataService(SceneDataService sceneDataService) {
 		this.sceneDataService = null;
 	}
-	
+
 }
