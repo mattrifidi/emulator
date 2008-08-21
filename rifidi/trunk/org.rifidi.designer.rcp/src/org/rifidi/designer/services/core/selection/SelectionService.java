@@ -58,6 +58,7 @@ public interface SelectionService extends ISelectionProvider {
 	void clearSelection();
 
 	/**
+	 * Get the list of currently selected entites.
 	 * @return the selection
 	 */
 	List<Entity> getSelectionList();

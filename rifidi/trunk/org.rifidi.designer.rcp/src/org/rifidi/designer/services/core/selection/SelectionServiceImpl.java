@@ -11,7 +11,6 @@
 package org.rifidi.designer.services.core.selection;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -100,9 +99,12 @@ public class SelectionServiceImpl implements SelectionService,
 		}
 	}
 
-	/**
-	 * Clear selection.
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.rifidi.services.registry.core.selection.SelectionService#clearSelection()
 	 */
+	@Override
 	public void clearSelection() {
 		hilited.clear();
 		triggerSelection(null);
@@ -127,11 +129,14 @@ public class SelectionServiceImpl implements SelectionService,
 		hilited.clear();
 	}
 
-	/**
-	 * @return the hilited
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.rifidi.services.registry.core.selection.SelectionService#getSelectionList()
 	 */
+	@Override
 	public List<Entity> getSelectionList() {
-		return Collections.unmodifiableList(hilited);
+		return new ArrayList<Entity>(hilited);
 	}
 
 	/*
