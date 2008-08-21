@@ -33,6 +33,7 @@ import com.jme.util.GameTaskQueueManager;
  * Basic implementation of the camera service.
  * 
  * @author Dan West - dan@pramari.com
+ * @author Jochen Mader - jochen@pramari.com
  * 
  */
 public class CameraServiceImpl implements CameraService,
@@ -154,11 +155,12 @@ public class CameraServiceImpl implements CameraService,
 		});
 	}
 
-	/**
-	 * Creates a camera with the default settings.
+	/*
+	 * (non-Javadoc)
 	 * 
-	 * @return a new initialized Jmonkey camera
+	 * @see org.rifidi.designer.services.core.camera.CameraService#createCamera()
 	 */
+	@Override
 	public void createCamera() {
 		camera = DisplaySystem.getDisplaySystem().getRenderer().createCamera(
 				754, 584);
@@ -175,7 +177,13 @@ public class CameraServiceImpl implements CameraService,
 		camera.update();
 		DisplaySystem.getDisplaySystem().getRenderer().setCamera(camera);
 	}
-
+	
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.rifidi.designer.services.core.camera.CameraService#centerCamera()
+	 */
+	@Override
 	public void centerCamera() {
 		GameTaskQueueManager.getManager().render(new Callable<Object>() {
 

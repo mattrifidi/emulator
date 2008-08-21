@@ -14,10 +14,10 @@ import com.jme.math.Vector3f;
 import com.jme.renderer.Camera;
 
 /**
- * This service keeps track of cameras and notifies subscribed listeners of
- * camera change/update events..
+ * This service keeps track of cameras and adjust LOD. CameraService is NOT
+ * supposed to be threadsafe as it should only be used inside the eclipse thread.
  * 
- * @author Dan West - dan@pramari.com
+ * @author Jochen Mader - jochen@pramari.com
  */
 public interface CameraService {
 
@@ -51,7 +51,7 @@ public interface CameraService {
 	public Camera getMainCamera();
 
 	/**
-	 * Center the current camera.
+	 * Center the current camera on the scene.
 	 */
 	public void centerCamera();
 
