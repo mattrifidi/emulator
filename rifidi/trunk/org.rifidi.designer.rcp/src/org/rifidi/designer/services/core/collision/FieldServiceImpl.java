@@ -86,7 +86,7 @@ public class FieldServiceImpl implements FieldService {
 	public void registerField(Field field) {
 		fields.put(field, new ColliderInputAction(field));
 		// Might be that we are loading a new scene data and entities are
-		// registering themselves, deferr init uuntil the scenedata is set.
+		// registering themselves, defer init until the scenedata is set.
 		if (sceneData != null) {
 			SyntheticButton intersect = ((PhysicsNode) ((VisualEntity) field)
 					.getNode()).getCollisionEventHandler();
