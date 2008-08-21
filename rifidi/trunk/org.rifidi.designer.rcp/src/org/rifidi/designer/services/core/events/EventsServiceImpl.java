@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -73,10 +74,14 @@ public class EventsServiceImpl implements EventsService {
 	 * Green output stream.
 	 */
 	private MessageConsoleStream msgConsoleStreamGreen;
-
+	/**
+	 * Set if the events should be recorded.
+	 */
 	private boolean recording = false;
-
-	private boolean inited = false;
+	/**
+	 * Used for deferred initialization.
+	 */
+	private AtomicBoolean inited = new AtomicBoolean(false);
 
 	/**
 	 * Constructor.
@@ -84,42 +89,11 @@ public class EventsServiceImpl implements EventsService {
 	public EventsServiceImpl() {
 		logger.debug("EventsService created");
 		ServiceRegistry.getInstance().service(this);
+		eventStack = new Stack<WorldEvent>();
+		eventTypes = Collections.synchronizedList(new ArrayList<Class>());
 	}
 
 	private void init() {
-		inited = true;
-		eventStack = new Stack<WorldEvent>();
-		eventTypes = Collections.synchronizedList(new ArrayList<Class>());
-		Activator.display.asyncExec(new Runnable() {
-
-			/*
-			 * (non-Javadoc)
-			 * 
-			 * @see java.lang.Runnable#run()
-			 */
-			@Override
-			public void run() {
-				MessageConsole fMessageConsole = new MessageConsole(
-						"TagMessages", null);
-				ConsolePlugin.getDefault().getConsoleManager().addConsoles(
-						new IConsole[] { fMessageConsole });
-				msgConsoleStreamRed = fMessageConsole.newMessageStream();
-				msgConsoleStreamRed.setColor(Activator.display
-						.getSystemColor(SWT.COLOR_RED));
-				msgConsoleStreamBlack = fMessageConsole.newMessageStream();
-				msgConsoleStreamBlack.setColor(Activator.display
-						.getSystemColor(SWT.COLOR_BLACK));
-				msgConsoleStreamGreen = fMessageConsole.newMessageStream();
-				msgConsoleStreamGreen.setColor(Activator.display
-						.getSystemColor(SWT.COLOR_GREEN));
-				recordedEvents = new HashMap<Long, WorldEvent>();
-				thread = new ProcessingThread("eventProcessingThread",
-						eventStack, eventTypes, msgConsoleStreamRed,
-						msgConsoleStreamBlack, msgConsoleStreamGreen);
-				thread.start();
-			}
-
-		});
 
 	}
 
@@ -130,13 +104,43 @@ public class EventsServiceImpl implements EventsService {
 	 */
 	@Override
 	public void publish(WorldEvent worldEvent) {
-		if (!inited) {
-			init();
+		// We need a running eclipse which is not available when the service
+		// gets instantiated.
+		if (inited.compareAndSet(false, true)) {
+			Activator.display.asyncExec(new Runnable() {
+
+				/*
+				 * (non-Javadoc)
+				 * 
+				 * @see java.lang.Runnable#run()
+				 */
+				@Override
+				public void run() {
+					MessageConsole fMessageConsole = new MessageConsole(
+							"TagMessages", null);
+					ConsolePlugin.getDefault().getConsoleManager().addConsoles(
+							new IConsole[] { fMessageConsole });
+					msgConsoleStreamRed = fMessageConsole.newMessageStream();
+					msgConsoleStreamRed.setColor(Activator.display
+							.getSystemColor(SWT.COLOR_RED));
+					msgConsoleStreamBlack = fMessageConsole.newMessageStream();
+					msgConsoleStreamBlack.setColor(Activator.display
+							.getSystemColor(SWT.COLOR_BLACK));
+					msgConsoleStreamGreen = fMessageConsole.newMessageStream();
+					msgConsoleStreamGreen.setColor(Activator.display
+							.getSystemColor(SWT.COLOR_GREEN));
+					recordedEvents = new HashMap<Long, WorldEvent>();
+					thread = new ProcessingThread("eventProcessingThread",
+							eventStack, eventTypes, msgConsoleStreamRed,
+							msgConsoleStreamBlack, msgConsoleStreamGreen);
+					thread.start();
+				}
+
+			});
 		}
 		eventStack.push(worldEvent);
 		if (eventTypes.contains(worldEvent.getClass())) {
 			recordedEvents.put(System.currentTimeMillis(), worldEvent);
-			System.out.println("recorded: " + worldEvent);
 		}
 	}
 
@@ -271,9 +275,9 @@ public class EventsServiceImpl implements EventsService {
 						msgConsoleStreamGreen.println(worldEvent.toString());
 					} else if (worldEvent instanceof WatchAreaEvent) {
 						msgConsoleStreamRed.println(worldEvent.toString());
-//					} else if (worldEvent instanceof WarningEvent) {
-//						MessagingSystem.getInstance().postMessage(
-//								"readerEvents", worldEvent.toString());
+						// } else if (worldEvent instanceof WarningEvent) {
+						// MessagingSystem.getInstance().postMessage(
+						// "readerEvents", worldEvent.toString());
 					} else {
 						msgConsoleStreamBlack.println(worldEvent.toString());
 					}
