@@ -162,7 +162,7 @@ public class UpdateCommand implements Command {
 
 			token = tokenIterator.next();
 
-			if (!token.matches("\\s*=\\s"))
+			if (!token.matches("\\s*=\\s*"))
 				throw new CommandCreationExeption(
 						"Error 0100:     syntax error at '" + token + "'");
 
