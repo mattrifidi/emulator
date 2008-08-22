@@ -185,7 +185,7 @@ public class UpdateCommand implements Command {
 			keyValuePairs.put(key, valueBuffer.toString());
 
 			/*
-			 * if we have no more command blocks. it is valid.. and we should
+			 * if we have no more tokens. it is valid.. and we should
 			 * break here.
 			 */
 			if (!tokenIterator.hasNext())
