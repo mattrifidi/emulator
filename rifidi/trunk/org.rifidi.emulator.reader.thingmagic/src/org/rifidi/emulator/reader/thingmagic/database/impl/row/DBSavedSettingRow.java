@@ -63,7 +63,11 @@ public class DBSavedSettingRow implements IDBRow {
 	@Override
 	public String put(String key, String value) {
 		if (savedSettings.containsKey(key)) {
-			return savedSettings.put(key, value);
+			savedSettings.put(key, value);
+			/*
+			 * return the value as confirmation.
+			 */
+			return value;
 		}
 		return null;
 	}

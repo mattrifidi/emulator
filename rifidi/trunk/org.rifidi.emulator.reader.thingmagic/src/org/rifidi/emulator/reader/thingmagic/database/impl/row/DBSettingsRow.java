@@ -85,7 +85,11 @@ public class DBSettingsRow implements IDBRow {
 
 	@Override
 	public String put(String key, String value) {
-		return null;
+		/*
+		 * In this case we just return the current value unmodified as it is 
+		 * unmodifiable.
+		 */
+		return get(key);
 	}
 
 }

@@ -35,8 +35,21 @@ public class SelectCommand implements Command {
 		logger.debug("Parsing command: " + command);
 
 		Pattern tokenizer = Pattern.compile(
-				"\\w+|\\s*<>\\*|\\s*>=\\s*|\\s*<=\\s*|\\s*=\\s*|\\s*,\\s*|\\s?+|"
-						+ ">|<|\\(|\\)|'|[^\\s\\w,<>=\\(\\)']+",
+				//anything less...
+				"[^\\s\\w,<>=\\(\\)\\u0027]|" +
+				//groups we are looking for...
+				"\\w+|" +
+				"\\u0027|" +
+				"\\s*<>\\*|" +
+				"\\s*>=\\s*|" +
+				"\\s*<=\\s*|" +
+				"\\s*=\\s*|" +
+				"\\s*,\\s*|" +
+				"\\s*>\\s*|" +
+				"\\s*<\\s*|" +
+				"\\s?+|" +
+				"\\(|" +
+				"\\)|",
 				Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
 		Matcher tokenFinder = tokenizer.matcher(command.toLowerCase().trim());
 

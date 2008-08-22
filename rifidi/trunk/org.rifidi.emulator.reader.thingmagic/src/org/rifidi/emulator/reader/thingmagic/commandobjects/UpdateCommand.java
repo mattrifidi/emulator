@@ -44,8 +44,21 @@ public class UpdateCommand implements Command {
 		 * really predictable command blocks.
 		 */
 		Pattern tokenizer = Pattern.compile(
-				"\\w+|\\s*<>\\*|\\s*>=\\s*|\\s*<=\\s*|\\s*=\\s*|\\s*,\\s*|\\s?+|"
-						+ ">|<|\\(|\\)|'|[^\\s\\w,<>=\\(\\)']+",
+				//anything less...
+				"[^\\s\\w,<>=\\(\\)\\u0027]|" +
+				//groups we are looking for...
+				"\\w+|" +
+				"\\u0027|" +
+				"\\s*<>\\*|" +
+				"\\s*>=\\s*|" +
+				"\\s*<=\\s*|" +
+				"\\s*=\\s*|" +
+				"\\s*,\\s*|" +
+				"\\s*>\\s*|" +
+				"\\s*<\\s*|" +
+				"\\s?+|" +
+				"\\(|" +
+				"\\)|",
 				Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
 		Matcher tokenFinder = tokenizer.matcher(command.toLowerCase().trim());
 
@@ -177,11 +190,11 @@ public class UpdateCommand implements Command {
 			}
 
 			token = tokenIterator.next();
-			while (token.equals("'")) {
+			while (!token.equals("'")) {
 				valueBuffer.append(token);
 				token = tokenIterator.next();
 			}
-
+			logger.debug("key: " + key + " value: '" + valueBuffer.toString() + "'");
 			keyValuePairs.put(key, valueBuffer.toString());
 
 			/*
