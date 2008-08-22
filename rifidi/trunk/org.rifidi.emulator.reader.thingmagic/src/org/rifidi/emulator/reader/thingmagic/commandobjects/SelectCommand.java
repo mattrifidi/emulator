@@ -2,6 +2,8 @@ package org.rifidi.emulator.reader.thingmagic.commandobjects;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
+import java.util.NoSuchElementException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -38,158 +40,150 @@ public class SelectCommand implements Command {
 				Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
 		Matcher tokenFinder = tokenizer.matcher(command.toLowerCase().trim());
 
-		while (tokenFinder.find()){
-			String temp = tokenFinder.group();		
-			/* 
+		while (tokenFinder.find()) {
+			String temp = tokenFinder.group();
+			/*
 			 * no need to add empty strings at tokens.
-			 * 
 			 */
-			//TODO: Figure out why we are getting empty stings as tokens.
+			// TODO: Figure out why we are getting empty stings as tokens.
 			if (temp.equals(""))
 				continue;
 			tokens.add(temp);
 		}
 
-		logger.debug("Command Blockes: " + tokens);
+		ListIterator<String> tokenIterator = tokens.listIterator();
 
-		int index = 0;
+		String token = tokenIterator.next();
 
-		if (!tokens.get(index).equals("select")) {
+		if (!token.equals("select")) {
 			throw new CommandCreationExeption(
-					"Error 0100:     syntax error at '"
-							+ tokens.get(index) + "'");
+					"Error 0100:     syntax error at '" + token + "'");
 
 		}
-		index++;
 
 		logger.debug("Huray! we are in the correct command object!");
 		// TODO Refine the error handling to mirror more exactly what the
 		// thingmagic would return;
 		try {
+			token = tokenIterator.next();
+
 			/*
 			 * Look for white spaces
 			 */
-			if (!tokens.get(index).matches("\\s+")) {
+			if (!token.matches("\\s+")) {
 				throw new CommandCreationExeption(
-						"Error 0100:     syntax error at '"
-								+ tokens.get(index--) + "'");
+						"Error 0100:     syntax error at '" + token + "'");
 			}
 
-			index++;
-
 			logger.debug("Expected whitespace found.");
+			do {
+				token = tokenIterator.next();
 
-			// TODO: Handle errors correctly here.
-			for (; !tokens.get(index).equals("from"); index++) {
 				/*
-				 * look for words
+				 * look a word
 				 */
-				if (tokens.get(index).matches("\\w+")) {
-					columns.add(tokens.get(index));
+				if (token.matches("\\w+")) {
+					columns.add(token);
 				} else {
 					throw new CommandCreationExeption(
-							"Error 0100:     syntax error at '"
-									+ tokens.get(index) + "'");
+							"Error 0100:     syntax error at '" + token + "'");
 				}
-				index++;
-
-				if (tokens.get(index + 1).equals("from")) {
-					logger.debug("Found keyword from");
-					if (!tokens.get(index).matches("\\s*")) {
-						logger.debug("Bad command block found.");
-						throw new CommandCreationExeption(
-								"Error 0100:     syntax error at 'from'");
-					}
-
-					/*
-					 * move the index to the "from" command block.
-					 */
-					index++;
-					break;
-				}
-
+				token = tokenIterator.next();
 				/*
 				 * look for a comma with any number of white spaces on either
 				 * side.
 				 */
-				if (!tokens.get(index).matches("\\s*,\\s*")) {
+			} while (token.matches("\\s*,\\s*"));
+
+			if (tokenIterator.next().equals("from")) {
+
+				if (!token.matches("\\s+"))
 					throw new CommandCreationExeption(
-							"Error 0100:     syntax error at '"
-									+ tokens.get(index++) + "'");
-				}
+							"Error 0100:     syntax error at 'from'");
 
+			} else {
+				throw new CommandCreationExeption(
+						"Error 0100:     syntax error at ','");
 			}
-			index++;
 
+			token = tokenIterator.next();
 			/*
 			 * Look for white spaces
 			 */
-			if (!tokens.get(index).matches("\\s+")) {
+			if (!token.matches("\\s+")) {
 				throw new CommandCreationExeption(
-						"Error 0100:     syntax error at '"
-								+ tokens.get(index--) + "'");
+						"Error 0100:     syntax error at '" + token + "'");
 			}
-			index++;
+
+			token = tokenIterator.next();
 
 			/*
 			 * Look for words
 			 */
-			if (tokens.get(index).matches("\\w+")) {
-				table = tokens.get(index);
+			if (token.matches("\\w+")) {
+				table = token;
 			} else {
 				throw new CommandCreationExeption(
-						"Error 0100:     syntax error at '"
-								+ tokens.get(index) + "'");
+						"Error 0100:     syntax error at '" + token + "'");
 			}
 
-			index++;
-			if (tokens.size() < index) {
-				/*
-				 * Look for white spaces
-				 */
-				if (!tokens.get(index).matches("\\s+")) {
-					// TODO throw an exception
-				} else {
-					index++;
+			// index++;
+			// if (tokens.size() < index) {
+			// /*
+			// * Look for white spaces
+			// */
+			// if (!tokens.get(index).matches("\\s+")) {
+			// // TODO throw an exception
+			// } else {
+			// index++;
+			//
+			// if ((tokens.size() < index)
+			// && (tokens.get(index).matches("where"))) {
+			//
+			// /*
+			// * Look for white spaces
+			// */
+			// if (!tokens.get(index).matches("\\s+")) {
+			// // TODO throw an exception
+			// }
+			// index++;
+			//
+			// for (; index < tokens.size(); index++) {
+			// if (tokens.get(index).equals("set"))
+			// break;
+			// // TODO parse where clause
+			// // whereClause.append(args.get(index));
+			// }
+			// }
+			//
+			// if ((tokens.size() < index)
+			// && (tokens.get(index).matches("set"))) {
+			// // TODO implement the set clause
+			// }
+			// }
+			// }
+		} catch (NoSuchElementException e) {
+			/*
+			 * if we get here... we run out of tokens prematurely... Our job now is
+			 * to walk backwards to find the last non space tokens and
+			 * throw an exception saying that there is an syntax error at that
+			 * point.
+			 */
 
-					if ((tokens.size() < index)
-							&& (tokens.get(index).matches("where"))) {
-
-						/*
-						 * Look for white spaces
-						 */
-						if (!tokens.get(index).matches("\\s+")) {
-							// TODO throw an exception
-						}
-						index++;
-
-						for (; index < tokens.size(); index++) {
-							if (tokens.get(index).equals("set"))
-								break;
-							// TODO parse where clause
-							// whereClause.append(args.get(index));
-						}
-					}
-
-					if ((tokens.size() < index)
-							&& (tokens.get(index).matches("set"))) {
-						// TODO implement the set clause
-					}
-				}
-			}
-		} catch (IndexOutOfBoundsException e) {
 			/*
 			 * look for the last offending command block that is not a series of
 			 * whitespaces.
 			 */
-			for (int x = tokens.size() - 1; x >= 0; x--) {
-				if (!tokens.get(x).matches("\\s")) {
-					throw new CommandCreationExeption(
-							"Error 0100:     syntax error at '"
-									+ tokens.get(index) + "'");
-				}
+
+			token = tokenIterator.previous();
+			while (token.matches("\\s")) {
+				token = tokenIterator.previous();
 			}
+
+			throw new CommandCreationExeption(
+					"Error 0100:     syntax error at '" + token + "'");
 		}
+
 		IDBTable tableImpl = tmsr.getDataBase().getTable(table);
 		if (tableImpl == null) {
 			throw new CommandCreationExeption(

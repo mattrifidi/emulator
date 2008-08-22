@@ -100,8 +100,8 @@ public class UpdateCommand implements Command {
 			parseKeyValuePairs(tokenIterator);
 		} catch (NoSuchElementException e) {
 			/*
-			 * if we get here... we run out of command blocks.. Our job now is
-			 * to walk backwards to find the last non space command block and
+			 * if we get here... we run out of tokens prematurely... Our job now is
+			 * to walk backwards to find the last non space tokens and
 			 * throw an exception saying that there is an syntax error at that
 			 * point.
 			 */
