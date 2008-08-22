@@ -115,7 +115,7 @@ public class UpdateCommand implements Command {
 			while (token.matches("\\s")) {
 				token = tokenIterator.previous();
 			}
-
+			logger.debug("Premature end of token list detected.");
 			throw new CommandCreationExeption(
 					"Error 0100:     syntax error at '" + token + "'");
 
