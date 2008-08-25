@@ -517,19 +517,6 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 				if (sceneData.getNodeBytes() != null) {
 					// load the model from the stored bytes
 
-					// let the textures load from the right spot
-					try {
-						URI dirpath = Activator.class.getClassLoader()
-								.getResource("/").toURI();
-						ResourceLocatorTool.addResourceLocator(
-								ResourceLocatorTool.TYPE_TEXTURE,
-								new SimpleResourceLocator(dirpath));
-					} catch (URISyntaxException e) {
-						logger
-								.error("URI exception while setting texture path: "
-										+ e);
-					}
-
 					sceneData.setRootNode((Node) BinaryImporter.getInstance()
 							.load(sceneData.getNodeBytes()));
 					for (Entity entity : sceneData.getEntities()) {
