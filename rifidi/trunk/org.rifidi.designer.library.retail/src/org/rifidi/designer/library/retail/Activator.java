@@ -1,5 +1,8 @@
 package org.rifidi.designer.library.retail;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
@@ -7,6 +10,9 @@ import org.rifidi.designer.library.retail.clothing.Clothing;
 import org.rifidi.designer.library.retail.clothingrack.ClothingRack;
 import org.rifidi.designer.library.retail.retailbox.RetailBox;
 import org.rifidi.designer.library.retail.shelf.Shelf;
+
+import com.jme.util.resource.MultiFormatResourceLocator;
+import com.jme.util.resource.ResourceLocatorTool;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -33,6 +39,17 @@ public class Activator extends AbstractUIPlugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
+		URI dirpath = null;
+		try {
+			dirpath = getClass().getClassLoader().getResource(
+					"org/rifidi/designer/library/retail/textures/").toURI();
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		}
+		MultiFormatResourceLocator loc2 = new MultiFormatResourceLocator(
+				dirpath, ".jpg", ".png", ".tga");
+		ResourceLocatorTool.addResourceLocator(
+				ResourceLocatorTool.TYPE_TEXTURE, loc2);
 	}
 
 	/*
