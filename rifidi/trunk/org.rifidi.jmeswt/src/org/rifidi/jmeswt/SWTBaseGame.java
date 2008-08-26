@@ -234,6 +234,7 @@ public abstract class SWTBaseGame extends AbstractGame {
 		Vector3f left = new Vector3f(-1.0f, 0.0f, 0.0f);
 		Vector3f up = new Vector3f(0.0f, 1.0f, 0.0f);
 		Vector3f dir = new Vector3f(0.0f, 0f, -1.0f);
+		
 		/** Move our camera to a correct place and orientation. */
 		cam.setFrame(loc, left, up, dir);
 		cameraPerspective();
