@@ -69,9 +69,10 @@ public class MousePickListener implements MouseListener, KeyListener {
 	 * @param view3D
 	 *            the 3d view
 	 * @param selectionService
-	 * 			  the current selection service.
+	 *            the current selection service.
 	 */
-	public MousePickListener(View3D view3D, SelectionService selectionService, SceneDataService sceneDataService, FinderService finderService) {
+	public MousePickListener(View3D view3D, SelectionService selectionService,
+			SceneDataService sceneDataService, FinderService finderService) {
 		this.view3D = view3D;
 		this.selectionService = selectionService;
 		this.sceneDataService = sceneDataService;
@@ -107,20 +108,28 @@ public class MousePickListener implements MouseListener, KeyListener {
 					.normalizeLocal());
 			PickResults pickResults = new BoundingPickResults();
 			// shoot
-			sceneDataService.getCurrentSceneData()
-					.getRootNode().findPick(ray, pickResults);
+			sceneDataService.getCurrentSceneData().getRootNode().findPick(ray,
+					pickResults);
 			Node node = null;
 			// loop[ through the results to find an entity
 			// this has to be done as for some reasons a bounding box appears
 			// around the room and is hit first, darn
+			float distance = -1;
 			for (int count = 0; count < pickResults.getNumber(); count++) {
-				node = pickResults.getPickData(count).getTargetMesh()
-						.getParentGeom().getParent();
+				// find the one closest to the camera
+				if (distance == -1
+						|| distance > pickResults.getPickData(count)
+								.getDistance()) {
 
-				pickedEntity = finderService.getVisualEntityByNode(node);
-
-				if (pickedEntity != null) {
-					break;
+					node = pickResults.getPickData(count).getTargetMesh()
+							.getParentGeom().getParent();
+					VisualEntity _pickedEntity = finderService
+							.getVisualEntityByNode(node);
+					
+					if (_pickedEntity != null) {
+						pickedEntity = _pickedEntity;
+						distance = pickResults.getPickData(count).getDistance();
+					}
 				}
 			}
 
