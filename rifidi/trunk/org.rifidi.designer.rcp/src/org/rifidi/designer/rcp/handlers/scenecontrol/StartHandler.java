@@ -14,6 +14,7 @@ import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.services.IEvaluationService;
 import org.rifidi.designer.services.core.selection.SelectionService;
 import org.rifidi.designer.services.core.selection.SelectionServiceImpl;
 import org.rifidi.designer.services.core.world.WorldService;
@@ -52,8 +53,8 @@ public class StartHandler extends AbstractHandler {
 	@Override
 	public Object execute(ExecutionEvent arg0) throws ExecutionException {
 		worldService.run();
-		// TODO: this is sooooo ugly. Revisit in eclipse 3.4!
-		((SelectionServiceImpl) selectionService).triggerSelection(this);
+		IEvaluationService service = (IEvaluationService)PlatformUI.getWorkbench().getService(IEvaluationService.class);
+		service.requestEvaluation("org.rifidi.designer.rcp.world.state");
 		return null;
 	}
 

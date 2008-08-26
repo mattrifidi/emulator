@@ -185,7 +185,7 @@ public class SelectionServiceImpl implements SelectionService,
 	 * Triggers a selection event that contains the currently highlighted
 	 * entities.
 	 */
-	public void triggerSelection(Object source) {
+	private void triggerSelection(Object source) {
 		for (ISelectionChangedListener listener : selectionListeners) {
 			SelectionChangedEvent event = new SelectionChangedEvent(this,
 					new StructuredSelection(hilited));

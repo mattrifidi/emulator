@@ -16,7 +16,9 @@ import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
+import org.eclipse.ui.services.IEvaluationService;
 import org.rifidi.designer.entities.Entity;
 import org.rifidi.designer.entities.grouping.EntityGroup;
 import org.rifidi.designer.entities.interfaces.Switch;
@@ -71,7 +73,8 @@ public class TurnOffHandler extends AbstractHandler {
 				((Switch) sw).turnOff();
 			}
 		}
-		((SelectionServiceImpl) selectionService).triggerSelection(this);
+		IEvaluationService service = (IEvaluationService)PlatformUI.getWorkbench().getService(IEvaluationService.class);
+		service.requestEvaluation("org.rifidi.designer.rcp.entities.running");
 		return null;
 	}
 
