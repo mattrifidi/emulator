@@ -1,91 +1,161 @@
 package org.rifidi.ui.streamer.composites.items;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.events.VerifyEvent;
-import org.eclipse.swt.events.VerifyListener;
-import org.eclipse.swt.graphics.FontMetrics;
-import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Spinner;
-import org.eclipse.swt.widgets.Text;
-import org.rifidi.services.tags.enums.TagGen;
-import org.rifidi.services.tags.id.TagType;
+import org.rifidi.services.tags.factory.TagCreationPattern;
 import org.rifidi.streamer.xml.actions.TagAction;
+import org.rifidi.ui.streamer.composites.items.dialog.AbstractCustomAddDialog;
+import org.rifidi.ui.streamer.data.EventAwareWrapper;
 
 /**
  * @author Andreas Huebner - andreas@pramari.com
- *
+ * 
  */
 public class TagActionComposite extends Composite {
 
 	private TagAction tagAction;
 	private Spinner execDurationSpinner;
-	private Spinner numberSpinner;
-	private Text prefixText;
-	private Combo tagGenCombo;
-	private Combo tagTypeCombo;
-	private ArrayList<String> tagGenValues;
-	private ArrayList<String> tagTypeValues;
 	private Button regenerateCheckbox;
+	private Composite drawPane;
+	private List<TagPatternComposite> tagPatternComposites;
 
 	public TagActionComposite(Composite parent, int style, TagAction tagAction) {
-		super(parent, style);
+		super(parent, style | SWT.BORDER);
 
 		this.tagAction = tagAction;
+		this.tagPatternComposites = new ArrayList<TagPatternComposite>();
+		setLayout(new GridLayout(1, true));
+		draw();
 
-		setLayout(new GridLayout(2, false));
+	}
 
-		Label execDurationLabel = new Label(this, SWT.NONE);
+	private void updateWidgets() {
+		execDurationSpinner.setSelection((int) tagAction.getExecDuration());
+		regenerateCheckbox.setSelection(tagAction.isRegenerate());
+	}
+
+	private void saveChanges() {
+		tagAction.setExecDuration(new Integer(execDurationSpinner
+				.getSelection()).longValue());
+		tagAction.setRegenerate(regenerateCheckbox.getSelection());
+		for (TagPatternComposite c : tagPatternComposites) {
+			c.saveChanges();
+		}
+	}
+
+	private void addPattern() {
+		for (TagPatternComposite c : tagPatternComposites) {
+			c.saveChanges();
+		}
+		tagPatternComposites.clear();
+		TagCreationPattern pattern = new TagCreationPattern();
+		tagAction.getTagCreationPattern().add(pattern);
+		draw();
+		if (this.getParent() instanceof ScrolledComposite) {
+			((ScrolledComposite) this.getParent()).setMinSize(this.computeSize(
+					SWT.DEFAULT, SWT.DEFAULT));
+		}
+		this.layout();
+	}
+
+	private void remotePattern() {
+		for (TagPatternComposite c : tagPatternComposites) {
+			c.saveChanges();
+		}
+		RemovePatternDialog removePatternDialog = new RemovePatternDialog(this.getShell(), "Remove Tag Patterns", null);
+		removePatternDialog.open();
+
+	}
+
+	private void draw() {
+		if (drawPane != null) {
+			drawPane.dispose();
+		}
+
+		drawPane = new Composite(this, SWT.NONE);
+		drawPane.setLayout(new GridLayout(1, false));
+
+		Composite widgetComposite = new Composite(drawPane, SWT.NONE);
+		widgetComposite.setLayout(new GridLayout(2, false));
+
+		Label execDurationLabel = new Label(widgetComposite, SWT.NONE);
 		execDurationLabel.setText("Excecute duration (ms):");
-		execDurationSpinner = new Spinner(this, SWT.BORDER);
+		execDurationSpinner = new Spinner(widgetComposite, SWT.NONE);
 		execDurationSpinner.setMaximum(1000000000);
 
-		Label numberLabel = new Label(this, SWT.NONE);
-		numberLabel.setText("Number of Tags:");
-		numberSpinner = new Spinner(this, SWT.BORDER);
-		numberSpinner.setMaximum(100000);
-
-		Label tagGenLabel = new Label(this, SWT.NONE);
-		tagGenLabel.setText("Tag generation:");
-		tagGenCombo = new Combo(this, SWT.NONE);
-
-		Label tagTypeLabel = new Label(this, SWT.NONE);
-		tagTypeLabel.setText("Tag type:");
-		tagTypeCombo = new Combo(this, SWT.NONE);
-
-		Label prefixLabel = new Label(this, SWT.NONE);
-		prefixLabel.setText("Tag prefix:");
-		prefixText = new Text(this, SWT.BORDER);
-		prefixText.setTextLimit(5);
-		prefixText.setEnabled(false);
-		// Set the size of the Text Widget
-		int characters = 6; // should be 5 but 6 because of average size
-		GC gc = new GC(prefixText);
-		FontMetrics fm = gc.getFontMetrics();
-		int width = characters * fm.getAverageCharWidth();
-		int height = fm.getHeight();
-		gc.dispose();
-		GridData prefixTextGridData = new GridData(width, height);
-		prefixText.setLayoutData(prefixTextGridData);
-
-		Label regenerateLabel = new Label(this, SWT.NONE);
+		Label regenerateLabel = new Label(widgetComposite, SWT.NONE);
 		regenerateLabel.setText("regenerate Tags:");
-		regenerateCheckbox = new Button(this, SWT.CHECK);
+		regenerateCheckbox = new Button(widgetComposite, SWT.CHECK);
 		regenerateCheckbox.setEnabled(false);
 		regenerateCheckbox.setToolTipText("This feature is not yet available");
 
-		Button saveButton = new Button(this, SWT.PUSH);
+		if (tagAction.getTagCreationPattern() == null) {
+			tagAction
+					.setTagCreationPattern(new ArrayList<TagCreationPattern>());
+		}
+
+		Composite patternsComposite = new Composite(drawPane, SWT.NONE);
+		patternsComposite.setLayout(new RowLayout());
+
+		int i = 1;
+		for (TagCreationPattern pattern : tagAction.getTagCreationPattern()) {
+			tagPatternComposites.add(new TagPatternComposite(patternsComposite,
+					SWT.NONE, pattern, i++));
+		}
+
+		Composite buttonComposite = new Composite(drawPane, SWT.NONE);
+		buttonComposite.setLayout(new RowLayout());
+
+		Button addPatternButton = new Button(buttonComposite, SWT.PUSH);
+		addPatternButton.setText("Add Pattern");
+		addPatternButton.addSelectionListener(new SelectionListener() {
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				addPattern();
+
+			}
+
+		});
+
+		Button removePatternButton = new Button(buttonComposite, SWT.PUSH);
+		removePatternButton.setText("Remove Pattern");
+		removePatternButton.addSelectionListener(new SelectionListener() {
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				remotePattern();
+
+			}
+
+		});
+
+		Button saveButton = new Button(buttonComposite, SWT.PUSH);
 		saveButton.setText("Save");
 		saveButton.addSelectionListener(new SelectionListener() {
 
@@ -101,77 +171,56 @@ public class TagActionComposite extends Composite {
 			}
 		});
 
-		tagTypeCombo.addListener(SWT.Selection, new Listener() {
-
-			@Override
-			public void handleEvent(Event event) {
-				if (tagTypeCombo.getText().equals(TagType.CustomEPC96.name())) {
-					prefixText.setEnabled(true);
-				} else
-					prefixText.setEnabled(false);
-
-			}
-		});
-
-		prefixText.addVerifyListener(new VerifyListener() {
-
-			@Override
-			public void verifyText(VerifyEvent e) {
-				e.doit = "0123456789abcdef".indexOf(e.text.toLowerCase()) >= 0;
-			}
-
-		});
-
-		fillComboWidgets();
-
 		updateWidgets();
 	}
+	
+	private class RemovePatternDialog extends AbstractCustomAddDialog{
 
-	private void fillComboWidgets() {
-		tagGenValues = new ArrayList<String>();
-		for (TagGen tagGen : TagGen.values()) {
-			tagGenValues.add(tagGen.name());
+		Button[] buttons;
+		
+		public RemovePatternDialog(Shell parent, String title,
+				EventAwareWrapper input) {
+			super(parent, title, input);
+			// TODO Auto-generated constructor stub
 		}
-		tagGenCombo.setItems(tagGenValues.toArray(new String[tagGenValues
-				.size()]));
 
-		tagTypeValues = new ArrayList<String>();
-		for (TagType tagType : TagType.values()) {
-			tagTypeValues.add(tagType.name());
+		@Override
+		public void createControls(Composite parent) {
+			parent.setLayout(new GridLayout(2, false));
+			Composite c = new Composite(parent, SWT.BORDER);
+			c.setLayout(new GridLayout(4, false));
+			GridData gd = new GridData();
+			gd.horizontalSpan =2;
+			gd.horizontalAlignment =SWT.FILL;
+			c.setLayoutData(gd);
+			buttons = new Button[tagAction.getTagCreationPattern().size()];
+			for(int i=0; i<tagAction.getTagCreationPattern().size(); i++){
+				buttons[i] = new Button(c, SWT.CHECK);
+				buttons[i].setText("Pattern " + (i+1));
+			}
 		}
-		tagTypeCombo.setItems(tagTypeValues.toArray(new String[tagTypeValues
-				.size()]));
-	}
 
-	private void updateWidgets() {
-		execDurationSpinner.setSelection((int) tagAction.getExecDuration());
-		//TODO: figure out how to add support for TagCreationPatterns
-/*		numberSpinner.setSelection(tagAction.getNumber());
-		if (tagAction.getPrefix() != null)
-			prefixText.setText(tagAction.getPrefix());
-		if (tagAction.getTagGen() != null)
-			tagGenCombo.select(tagGenValues.indexOf(tagAction.getTagGen()
-					.name()));
-		if (tagAction.getTagType() != null)
-		{
-			if(tagAction.getTagType() == TagType.CustomEPC96)
-				prefixText.setEnabled(true);
-			tagTypeCombo.select(tagTypeValues.indexOf(tagAction.getTagType()
-					.name()));
-		}*/
-		regenerateCheckbox.setSelection(tagAction.isRegenerate());
-	}
-
-	private void saveChanges() {
-		tagAction.setExecDuration(new Integer(execDurationSpinner
-				.getSelection()).longValue());
-		//TODO: figure out how to add support for TagCreationPatterns
-		/*tagAction.setNumber(numberSpinner.getSelection());
-		tagAction.setPrefix(prefixText.getText());
-		if (!tagGenCombo.getText().isEmpty())
-			tagAction.setTagGen(TagGen.valueOf(tagGenCombo.getText()));
-		if (!tagTypeCombo.getText().isEmpty())
-			tagAction.setTagType(TagType.valueOf(tagTypeCombo.getText()));*/
+		@Override
+		public void saveChanges() {
+			ArrayList<TagCreationPattern> patternsToRemove = new ArrayList<TagCreationPattern>();
+			for(int i=0;i<buttons.length; i++){
+				if (buttons[i].getSelection()){
+					System.out.println("removing " + i);
+					patternsToRemove.add(tagAction.getTagCreationPattern().get(i));
+				}
+			}
+			tagAction.getTagCreationPattern().removeAll(patternsToRemove);
+			
+			tagPatternComposites.clear();
+			draw();
+			if (getParent() instanceof ScrolledComposite) {
+				((ScrolledComposite) getParent()).setMinSize(computeSize(
+						SWT.DEFAULT, SWT.DEFAULT));
+			}
+			layout();
+			
+		}
+		
 	}
 
 }
