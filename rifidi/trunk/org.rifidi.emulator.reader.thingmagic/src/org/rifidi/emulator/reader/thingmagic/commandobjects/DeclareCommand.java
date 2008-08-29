@@ -14,8 +14,13 @@ import org.rifidi.emulator.reader.thingmagic.module.ThingMagicReaderSharedResour
 
 public class DeclareCommand implements Command {
 	private static Log logger = LogFactory.getLog(DeclareCommand.class);
+
+	String cursorName;
 	
-	public DeclareCommand(String command, ThingMagicReaderSharedResources tmsr) throws CommandCreationExeption {
+	Command cursorCommand;
+
+	public DeclareCommand(String command, ThingMagicReaderSharedResources tmsr)
+			throws CommandCreationExeption {
 		// TODO Auto-generated constructor stub
 		List<String> tokens = new ArrayList<String>();
 		/*
@@ -32,9 +37,8 @@ public class DeclareCommand implements Command {
 		// anything less...
 				"[^\\s\\w]+|" +
 				// groups we are looking for...
-				"\\w+|" +
-				"\\s+",
-				Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
+						"\\w+|" + "\\s+", Pattern.CASE_INSENSITIVE
+						| Pattern.DOTALL);
 		Matcher tokenFinder = tokenizer.matcher(command.toLowerCase().trim());
 
 		while (tokenFinder.find()) {
@@ -49,27 +53,81 @@ public class DeclareCommand implements Command {
 		}
 
 		ListIterator<String> tokenIterator = tokens.listIterator();
-		
-		
+
 		String token = tokenIterator.next();
-		
+
 		if (!token.equals("update"))
 			throw new CommandCreationExeption(
 					"Error 0100:     syntax error at '" + token + "'");
-		
+
 		try {
 			token = tokenIterator.next();
 
 			if (!token.matches("\\s+"))
 				throw new CommandCreationExeption(
 						"Error 0100:     syntax error at '" + token + "'");
+
+			token = tokenIterator.next();
+			if (token.matches("\\w+")) {
+				cursorName = token;
+			} else {
+				throw new CommandCreationExeption(
+						"Error 0100:     syntax error at '" + token + "'");
+			}
+			token = tokenIterator.next();
+
+			if (!token.matches("\\s+"))
+				throw new CommandCreationExeption(
+						"Error 0100:     syntax error at '" + token + "'");
+
+			token = tokenIterator.next();
 			
+			if (!token.equals("cursor"))
+				throw new CommandCreationExeption(
+						"Error 0100:     syntax error at '" + token + "'");
+			
+			token = tokenIterator.next();
+			
+			if (!token.matches("\\s+"))
+				throw new CommandCreationExeption(
+						"Error 0100:     syntax error at '" + token + "'");
+
+			token = tokenIterator.next();
+
+			if (!token.equals("for"))
+				throw new CommandCreationExeption(
+						"Error 0100:     syntax error at '" + token + "'");
+			
+			token = tokenIterator.next();
+			
+			if (!token.matches("\\s+"))
+				throw new CommandCreationExeption(
+						"Error 0100:     syntax error at '" + token + "'");
+			
+			
+			StringBuffer cursorCommandBuf = new StringBuffer();
+			token = tokenIterator.next();
+			
+			cursorCommandBuf.append(token);
+			
+			while (tokenIterator.hasNext()){
+				cursorCommandBuf.append(tokenIterator.next());
+			}
+			
+			if (token.equals("select")) {
+				cursorCommand = new SelectCommand(cursorCommandBuf.toString(), tmsr);
+			} else if (token.equals("update")) {
+				cursorCommand = new UpdateCommand(cursorCommandBuf.toString(), tmsr);
+			} else {
+				throw new CommandCreationExeption(
+						"Error 0100:     syntax error at '" + token + "'");
+			}
+
 		} catch (NoSuchElementException e) {
 			/*
-			 * if we get here... we run out of tokens prematurely... Our job now is
-			 * to walk backwards to find the last non space tokens and
-			 * throw an exception saying that there is an syntax error at that
-			 * point.
+			 * if we get here... we run out of tokens prematurely... Our job now
+			 * is to walk backwards to find the last non space tokens and throw
+			 * an exception saying that there is an syntax error at that point.
 			 */
 
 			/*
@@ -78,14 +136,14 @@ public class DeclareCommand implements Command {
 			 */
 
 			token = tokenIterator.previous();
-			while (token.matches("\\s")) {
+			while (token.matches("\\s+")) {
 				token = tokenIterator.previous();
 			}
 			logger.debug("Premature end of token list detected.");
 			throw new CommandCreationExeption(
 					"Error 0100:     syntax error at '" + token + "'");
 
-		}	
+		}
 	}
 
 	@Override

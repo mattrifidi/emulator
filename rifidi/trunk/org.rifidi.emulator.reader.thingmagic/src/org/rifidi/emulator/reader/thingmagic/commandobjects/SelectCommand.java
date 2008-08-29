@@ -189,7 +189,7 @@ public class SelectCommand implements Command {
 			 */
 
 			token = tokenIterator.previous();
-			while (token.matches("\\s")) {
+			while (token.matches("\\s+")) {
 				token = tokenIterator.previous();
 			}
 			logger.debug("Premature end of token list detected.");
