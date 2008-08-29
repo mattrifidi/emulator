@@ -27,7 +27,9 @@ import com.jme.input.InputHandler;
 import com.jme.math.Matrix3f;
 import com.jme.math.Vector3f;
 import com.jme.scene.Node;
+import com.jme.scene.SceneElement;
 import com.jme.scene.SharedNode;
+import com.jme.scene.shape.Box;
 import com.jme.util.export.binary.BinaryImporter;
 import com.jmex.physics.DynamicPhysicsNode;
 import com.jmex.physics.PhysicsSpace;
@@ -103,6 +105,15 @@ public class CardboxEntity extends VisualEntity implements NeedsPhysics {
 		node.setModelBound(new BoundingBox());
 		node.updateModelBound();
 		setNode(node);
+		Node _node=new Node("hiliter");
+		Box box = new Box("hiliter", new Vector3f(0,0f,0), 1.01f, 1.01f, 1.01f);
+		box.setModelBound(new BoundingBox());
+		box.updateModelBound();
+		_node.attachChild(box);
+		_node.setModelBound(new BoundingBox());
+		_node.updateModelBound();
+		_node.setCullMode(SceneElement.CULL_ALWAYS);
+		getNode().attachChild(_node);
 		setCollides(false);
 	}
 
@@ -198,7 +209,6 @@ public class CardboxEntity extends VisualEntity implements NeedsPhysics {
 	 */
 	@Override
 	public Node getBoundingNode() {
-		// TODO Auto-generated method stub
-		return null;
+		return (Node)getNode().getChild("hiliter");
 	}
 }

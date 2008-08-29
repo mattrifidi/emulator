@@ -390,7 +390,8 @@ public class DesignerGame extends SWTBaseGame implements
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.services.core.entities.SceneDataChangedListener#destroySceneData(org.rifidi.designer.entities.SceneData)
+	 * @seeorg.rifidi.designer.services.core.entities.SceneDataChangedListener#
+	 * destroySceneData(org.rifidi.designer.entities.SceneData)
 	 */
 	@Override
 	public void destroySceneData(SceneData sceneData) {
@@ -462,7 +463,8 @@ public class DesignerGame extends SWTBaseGame implements
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.services.core.entities.SceneDataChangedListener#sceneDataChanged(org.rifidi.designer.entities.SceneData)
+	 * @seeorg.rifidi.designer.services.core.entities.SceneDataChangedListener#
+	 * sceneDataChanged(org.rifidi.designer.entities.SceneData)
 	 */
 	@Override
 	public void sceneDataChanged(SceneData sceneDataNew) {
@@ -519,7 +521,9 @@ public class DesignerGame extends SWTBaseGame implements
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.jface.viewers.ISelectionChangedListener#selectionChanged(org.eclipse.jface.viewers.SelectionChangedEvent)
+	 * @see
+	 * org.eclipse.jface.viewers.ISelectionChangedListener#selectionChanged(
+	 * org.eclipse.jface.viewers.SelectionChangedEvent)
 	 */
 	@Override
 	public void selectionChanged(SelectionChangedEvent event) {
@@ -539,7 +543,9 @@ public class DesignerGame extends SWTBaseGame implements
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.swt.events.KeyListener#keyPressed(org.eclipse.swt.events.KeyEvent)
+	 * @see
+	 * org.eclipse.swt.events.KeyListener#keyPressed(org.eclipse.swt.events.
+	 * KeyEvent)
 	 */
 	public void keyPressed(KeyEvent e) {
 		if (e.character == 'a' || e.character == 'A') {
@@ -556,7 +562,9 @@ public class DesignerGame extends SWTBaseGame implements
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.swt.events.KeyListener#keyReleased(org.eclipse.swt.events.KeyEvent)
+	 * @see
+	 * org.eclipse.swt.events.KeyListener#keyReleased(org.eclipse.swt.events
+	 * .KeyEvent)
 	 */
 	public void keyReleased(KeyEvent e) {
 		updownleftright[0] = false;
@@ -711,7 +719,9 @@ public class DesignerGame extends SWTBaseGame implements
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.services.registry.core.world.CommandStateService#isEnabled(java.lang.String)
+	 * @see
+	 * org.rifidi.services.registry.core.world.CommandStateService#isEnabled
+	 * (java.lang.String)
 	 */
 	@Override
 	public boolean isEnabled(String commandName) {
@@ -759,8 +769,8 @@ public class DesignerGame extends SWTBaseGame implements
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.services.core.highlighting.HighlightingService#changeHighlighting(com.jme.renderer.ColorRGBA,
-	 *      java.util.Set)
+	 * @seeorg.rifidi.designer.services.core.highlighting.HighlightingService#
+	 * changeHighlighting(com.jme.renderer.ColorRGBA, java.util.Set)
 	 */
 	@Override
 	public void changeHighlighting(ColorRGBA color, Set<VisualEntity> highlight) {
@@ -779,25 +789,33 @@ public class DesignerGame extends SWTBaseGame implements
 
 		for (VisualEntity entity : highlight) {
 			Node hilit = entity.getBoundingNode();
-			hilit.setCullMode(SceneElement.CULL_DYNAMIC);
-			hilit.setRenderState(fragmentPrograms.get(color));
-			hilit.setRenderState(alphaState);
-			hilit.setRenderQueueMode(Renderer.QUEUE_OPAQUE);
-			entity.getNode().updateRenderState();
+			// for those who forget to add the bounding volume
+			if (hilit != null) {
+				hilit.setCullMode(SceneElement.CULL_DYNAMIC);
+				hilit.setRenderState(fragmentPrograms.get(color));
+				hilit.setRenderState(alphaState);
+				hilit.setRenderQueueMode(Renderer.QUEUE_OPAQUE);
+				entity.getNode().updateRenderState();
+			}
 		}
 		for (VisualEntity entity : unlit) {
-			entity.getBoundingNode().setCullMode(SceneElement.CULL_ALWAYS);
-			entity.getBoundingNode().clearRenderState(
-					RenderState.RS_FRAGMENT_PROGRAM);
-			entity.getNode().updateRenderState();
+			Node hilit = entity.getBoundingNode();
+			// for those who forget to add the bounding volume
+			if (hilit != null) {
+				hilit.setCullMode(SceneElement.CULL_ALWAYS);
+				hilit.clearRenderState(
+						RenderState.RS_FRAGMENT_PROGRAM);
+				hilit.updateRenderState();
+			}
 		}
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.services.core.highlighting.HighlightingService#changeHighlightColor(com.jme.renderer.ColorRGBA,
-	 *      com.jme.renderer.ColorRGBA, java.util.Set)
+	 * @seeorg.rifidi.designer.services.core.highlighting.HighlightingService#
+	 * changeHighlightColor(com.jme.renderer.ColorRGBA,
+	 * com.jme.renderer.ColorRGBA, java.util.Set)
 	 */
 	@Override
 	public void changeHighlightColor(ColorRGBA color, ColorRGBA newcolor,
@@ -822,7 +840,8 @@ public class DesignerGame extends SWTBaseGame implements
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.services.core.highlighting.HighlightingService#clearAllHighlights()
+	 * @seeorg.rifidi.designer.services.core.highlighting.HighlightingService#
+	 * clearAllHighlights()
 	 */
 	@Override
 	public void clearAllHighlights() {
@@ -833,7 +852,8 @@ public class DesignerGame extends SWTBaseGame implements
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.services.core.highlighting.HighlightingService#clearHighlights(java.util.Set)
+	 * @seeorg.rifidi.designer.services.core.highlighting.HighlightingService#
+	 * clearHighlights(java.util.Set)
 	 */
 	@Override
 	public void clearHighlights(Set<VisualEntity> hilight) {
@@ -881,7 +901,9 @@ public class DesignerGame extends SWTBaseGame implements
 		/*
 		 * (non-Javadoc)
 		 * 
-		 * @see org.rifidi.services.registry.core.world.RepeatedUpdateAction#doUpdate(float)
+		 * @see
+		 * org.rifidi.services.registry.core.world.RepeatedUpdateAction#doUpdate
+		 * (float)
 		 */
 		@Override
 		public void doUpdate(float timePassed) {

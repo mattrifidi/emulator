@@ -13,8 +13,6 @@ package org.rifidi.designer.services.core.entities;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -70,8 +68,6 @@ import com.jme.util.GameTaskQueueManager;
 import com.jme.util.TextureManager;
 import com.jme.util.export.binary.BinaryExporter;
 import com.jme.util.export.binary.BinaryImporter;
-import com.jme.util.resource.ResourceLocatorTool;
-import com.jme.util.resource.SimpleResourceLocator;
 import com.jmex.physics.PhysicsNode;
 import com.jmex.physics.PhysicsSpace;
 import com.jmex.physics.StaticPhysicsNode;
@@ -135,8 +131,9 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.services.registry.core.entities.EntitiesService#addEntity(org.rifidi.designer.entities.Entity,
-	 *      java.lang.Boolean)
+	 * @see
+	 * org.rifidi.services.registry.core.entities.EntitiesService#addEntity(
+	 * org.rifidi.designer.entities.Entity, java.lang.Boolean)
 	 */
 	@Override
 	public void addEntity(Entity ent, Boolean center, NewEntityListener listener) {
@@ -166,7 +163,9 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.services.registry.core.entities.EntitiesService#deleteEntities(java.util.List)
+	 * @see
+	 * org.rifidi.services.registry.core.entities.EntitiesService#deleteEntities
+	 * (java.util.List)
 	 */
 	@Override
 	public void deleteEntities(final List<Entity> entities) {
@@ -219,7 +218,9 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.services.registry.core.entities.EntitiesService#getEntityNames()
+	 * @see
+	 * org.rifidi.services.registry.core.entities.EntitiesService#getEntityNames
+	 * ()
 	 */
 	@Override
 	public List<String> getEntityNames() {
@@ -229,8 +230,9 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.services.registry.core.entities.EntitiesService#addEntitiesToGroup(org.rifidi.designer.entities.grouping.EntityGroup,
-	 *      java.lang.String)
+	 * @see
+	 * org.rifidi.services.registry.core.entities.EntitiesService#addEntitiesToGroup
+	 * (org.rifidi.designer.entities.grouping.EntityGroup, java.lang.String)
 	 */
 	@Override
 	public void addEntitiesToGroup(final EntityGroup entityGroup,
@@ -253,7 +255,9 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.services.registry.core.entities.EntitiesService#addEntityGroup(org.rifidi.designer.entities.EntityGroup)
+	 * @see
+	 * org.rifidi.services.registry.core.entities.EntitiesService#addEntityGroup
+	 * (org.rifidi.designer.entities.EntityGroup)
 	 */
 	@Override
 	public void addEntityGroup(final EntityGroup entityGroup) {
@@ -267,7 +271,9 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.services.registry.core.entities.FinderService#entityGroupExists(org.rifidi.designer.entities.EntityGroup)
+	 * @see
+	 * org.rifidi.services.registry.core.entities.FinderService#entityGroupExists
+	 * (org.rifidi.designer.entities.EntityGroup)
 	 */
 	@Override
 	public boolean entityGroupExists(final EntityGroup entityGroup) {
@@ -277,7 +283,9 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.services.registry.core.entities.EntitiesService#removeEntityGroup(org.rifidi.designer.entities.EntityGroup)
+	 * @see
+	 * org.rifidi.services.registry.core.entities.EntitiesService#removeEntityGroup
+	 * (org.rifidi.designer.entities.EntityGroup)
 	 */
 	@Override
 	public void removeEntityGroup(final EntityGroup entityGroup) {
@@ -290,7 +298,9 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.services.registry.core.entities.EntitiesService#getEntityGroups()
+	 * @see
+	 * org.rifidi.services.registry.core.entities.EntitiesService#getEntityGroups
+	 * ()
 	 */
 	@Override
 	public List<EntityGroup> getEntityGroups() {
@@ -300,7 +310,8 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.services.registry.core.entities.FinderService#getVisualEntityByNode(com.jme.scene.Node)
+	 * @seeorg.rifidi.services.registry.core.entities.FinderService#
+	 * getVisualEntityByNode(com.jme.scene.Node)
 	 */
 	@Override
 	public VisualEntity getVisualEntityByNode(final Node node) {
@@ -322,7 +333,9 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.services.registry.core.entities.ProductService#addProduct(org.rifidi.designer.entities.Entity)
+	 * @see
+	 * org.rifidi.services.registry.core.entities.ProductService#addProduct(
+	 * org.rifidi.designer.entities.Entity)
 	 */
 	@Override
 	public void addProduct(final Entity product) {
@@ -340,7 +353,9 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.services.registry.core.entities.ProductService#deleteProducts(java.util.List)
+	 * @see
+	 * org.rifidi.services.registry.core.entities.ProductService#deleteProducts
+	 * (java.util.List)
 	 */
 	@Override
 	public void deleteProducts(final List<Entity> product) {
@@ -395,7 +410,9 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.services.registry.core.entities.FinderService#isEntityGrouped(org.rifidi.designer.entities.Entity)
+	 * @see
+	 * org.rifidi.services.registry.core.entities.FinderService#isEntityGrouped
+	 * (org.rifidi.designer.entities.Entity)
 	 */
 	@Override
 	public boolean isEntityGrouped(final Entity entity) {
@@ -410,7 +427,9 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.services.registry.core.entities.EntitiesService#ungroupEntity(org.rifidi.designer.entities.Entity)
+	 * @see
+	 * org.rifidi.services.registry.core.entities.EntitiesService#ungroupEntity
+	 * (org.rifidi.designer.entities.Entity)
 	 */
 	@Override
 	public void ungroupEntity(final Entity entity) {
@@ -425,7 +444,9 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.services.core.entities.FinderService#getEntitiesByType(java.lang.Class)
+	 * @see
+	 * org.rifidi.designer.services.core.entities.FinderService#getEntitiesByType
+	 * (java.lang.Class)
 	 */
 	@Override
 	public List<Entity> getEntitiesByType(Class type) {
@@ -450,8 +471,9 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.services.registry.core.scenedata.SceneDataService#loadScene(org.eclipse.swt.widgets.Display,
-	 *      org.eclipse.core.resources.IFile)
+	 * @see
+	 * org.rifidi.services.registry.core.scenedata.SceneDataService#loadScene
+	 * (org.eclipse.swt.widgets.Display, org.eclipse.core.resources.IFile)
 	 */
 	@SuppressWarnings("unchecked")
 	public void loadScene(Display display, IFile file) {
@@ -588,7 +610,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 			if (entity instanceof VisualEntity) {
 				nodeToEntity.put(((VisualEntity) entity).getNode(),
 						(VisualEntity) entity);
-				collisionOctree.insertEntity((VisualEntity)entity);
+				collisionOctree.insertEntity((VisualEntity) entity);
 			}
 		}
 		for (SceneDataChangedListener listener : listeners) {
@@ -638,7 +660,9 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.services.registry.core.scenedata.SceneDataService#saveScene(org.eclipse.core.resources.IFile)
+	 * @see
+	 * org.rifidi.services.registry.core.scenedata.SceneDataService#saveScene
+	 * (org.eclipse.core.resources.IFile)
 	 */
 	@Override
 	public void saveScene(IFile file) {
@@ -649,7 +673,8 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.services.registry.core.scenedata.SceneDataService#saveScene()
+	 * @see
+	 * org.rifidi.services.registry.core.scenedata.SceneDataService#saveScene()
 	 */
 	@Override
 	public void saveScene() {
@@ -699,7 +724,9 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.services.registry.core.scenedata.SceneDataService#addSceneDataChangedListener(org.rifidi.services.registry.core.scenedata.SceneDataChangedListener)
+	 * @seeorg.rifidi.services.registry.core.scenedata.SceneDataService#
+	 * addSceneDataChangedListener
+	 * (org.rifidi.services.registry.core.scenedata.SceneDataChangedListener)
 	 */
 	@Override
 	public void addSceneDataChangedListener(SceneDataChangedListener listener) {
@@ -709,7 +736,9 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.services.registry.core.scenedata.SceneDataService#removeSceneDataChangedListener(org.rifidi.services.registry.core.scenedata.SceneDataChangedListener)
+	 * @seeorg.rifidi.services.registry.core.scenedata.SceneDataService#
+	 * removeSceneDataChangedListener
+	 * (org.rifidi.services.registry.core.scenedata.SceneDataChangedListener)
 	 */
 	@Override
 	public void removeSceneDataChangedListener(SceneDataChangedListener listener) {
@@ -719,7 +748,8 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.services.registry.core.scenedata.SceneDataService#getWalls()
+	 * @see
+	 * org.rifidi.services.registry.core.scenedata.SceneDataService#getWalls()
 	 */
 	@Override
 	public Map<Direction, Node> getWalls() {
@@ -738,7 +768,8 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.services.registry.core.scenedata.SceneDataService#getName()
+	 * @see
+	 * org.rifidi.services.registry.core.scenedata.SceneDataService#getName()
 	 */
 	@Override
 	public String getName() {
@@ -748,7 +779,9 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.services.registry.core.scenedata.SceneDataService#setName(java.lang.String)
+	 * @see
+	 * org.rifidi.services.registry.core.scenedata.SceneDataService#setName(
+	 * java.lang.String)
 	 */
 	@Override
 	public void setName(String name) {
@@ -811,7 +844,9 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.services.core.entities.EntitiesService#getColliders(org.rifidi.designer.entities.VisualEntity)
+	 * @see
+	 * org.rifidi.designer.services.core.entities.EntitiesService#getColliders
+	 * (org.rifidi.designer.entities.VisualEntity)
 	 */
 	@Override
 	public Set<VisualEntity> getColliders(VisualEntity visualEntity) {
@@ -835,7 +870,9 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.services.core.entities.EntitiesService#getCollisionOctree()
+	 * @see
+	 * org.rifidi.designer.services.core.entities.EntitiesService#getCollisionOctree
+	 * ()
 	 */
 	@Override
 	public CollisionOctree getCollisionOctree() {
@@ -845,7 +882,9 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.services.core.entities.EntitiesService#getRoomOctree()
+	 * @see
+	 * org.rifidi.designer.services.core.entities.EntitiesService#getRoomOctree
+	 * ()
 	 */
 	@Override
 	public RoomOctree getRoomOctree() {
@@ -855,7 +894,9 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.services.core.entities.EntitiesService#collidesWithScene(org.rifidi.designer.entities.VisualEntity)
+	 * @see
+	 * org.rifidi.designer.services.core.entities.EntitiesService#collidesWithScene
+	 * (org.rifidi.designer.entities.VisualEntity)
 	 */
 	@Override
 	public boolean collidesWithScene(VisualEntity visualEntity) {

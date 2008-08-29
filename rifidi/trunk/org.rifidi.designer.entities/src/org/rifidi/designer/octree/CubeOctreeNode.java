@@ -89,6 +89,9 @@ public class CubeOctreeNode {
 	 * @return
 	 */
 	public boolean intersects(Node boundingNode) {
+		if(boundingNode==null){
+			return false;
+		}
 		if (boundingNode.getChildren() != null) {
 			for (Spatial sp : boundingNode.getChildren()) {
 				BoundingBox bb = (BoundingBox) sp.getWorldBound();
