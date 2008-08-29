@@ -41,7 +41,7 @@ public class UpdateCommand implements Command {
 		 * group.
 		 * 
 		 * This makes it really easy to parse the command string as it becomes
-		 * really predictable command blocks.
+		 * really predictable tokens.
 		 */
 		Pattern tokenizer = Pattern.compile(
 				//anything less...
