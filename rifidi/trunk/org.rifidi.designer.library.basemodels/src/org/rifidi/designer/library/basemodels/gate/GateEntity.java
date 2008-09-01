@@ -441,7 +441,20 @@ public class GateEntity extends VisualEntity implements RifidiEntity, Switch,
 	public String getReaderType() {
 		return reader.getReaderType();
 	}
-
+	
+	@XmlTransient
+	@Property(displayName = "Reader Connection", description = "connection details for the reader", readonly = true, unit = "")
+	public void setConnectionDetails(String readerDetails){
+		
+	}
+	
+	public String getConnectionDetails(){
+		if(reader.getProperty("inet_address")!=null){
+			return reader.getProperty("inet_address");
+		}
+		return "no connection info available";
+	}
+	
 	@Inject
 	public void setCablingService(CablingService cablingService) {
 		this.cablingService = cablingService;
