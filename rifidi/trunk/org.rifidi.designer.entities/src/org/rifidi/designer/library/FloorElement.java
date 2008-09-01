@@ -133,27 +133,22 @@ public class FloorElement {
 
 	/**
 	 * Get the floorplan model.
+	 * 
 	 * @return
 	 */
 	public Node getNode() {
-		if (model == null) {
-			URI modelpath = null;
-			try {
-				modelpath = getClass()
-						.getClassLoader()
-						.getResource(path)
-						.toURI();
-			} catch (URISyntaxException e) {
-				logger.debug(e);
-			}
-			try {
-				model = (Node) BinaryImporter.getInstance().load(
-						modelpath.toURL());
-			} catch (MalformedURLException e) {
-				logger.debug(e);
-			} catch (IOException e) {
-				logger.debug(e);
-			}
+		URI modelpath = null;
+		try {
+			modelpath = getClass().getClassLoader().getResource(path).toURI();
+		} catch (URISyntaxException e) {
+			logger.debug(e);
+		}
+		try {
+			model = (Node) BinaryImporter.getInstance().load(modelpath.toURL());
+		} catch (MalformedURLException e) {
+			logger.debug(e);
+		} catch (IOException e) {
+			logger.debug(e);
 		}
 		return model;
 	}

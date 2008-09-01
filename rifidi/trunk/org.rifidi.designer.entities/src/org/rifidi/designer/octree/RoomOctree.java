@@ -44,10 +44,10 @@ public class RoomOctree {
 	 * @param startVolume
 	 */
 	public RoomOctree(Float minCubeSize, BoundingBox startVolume) {
-		logger.debug("Created new Octree");
 		// create a cube
 		float side = startVolume.xExtent > startVolume.zExtent ? startVolume.xExtent
 				: startVolume.zExtent;
+		logger.debug("Created new Octree with sidelength: "+side);
 		int sideCount = (int) Math.ceil(side / minCubeSize);
 		// no log2 in java, darn
 		int count = 2;

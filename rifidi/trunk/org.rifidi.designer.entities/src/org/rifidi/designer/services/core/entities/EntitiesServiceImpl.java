@@ -534,7 +534,6 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 				// initialize the JME importer to handle physics
 				sceneData.getPhysicsSpace().setupBinaryClassLoader(
 						BinaryImporter.getInstance());
-
 				// if this is a new file create an empty room
 				if (sceneData.getNodeBytes() != null) {
 					// load the model from the stored bytes
@@ -573,7 +572,6 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 				.getFloorReferences().get(sceneData.getFloorId()).getNode();
 		ArrayList<Spatial> spatlist = new ArrayList<Spatial>(roomnode
 				.getChildren());
-
 		// turn the geometry into a set of physicsnodes
 		for (Spatial spatial : spatlist) {
 			spatial.removeFromParent();
@@ -598,7 +596,6 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 				}
 			}
 		}
-
 		sceneData.setRoomNode(roomnode);
 		fileOfCurrentScene = file;
 		nodeToEntity = Collections
@@ -616,6 +613,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 		for (SceneDataChangedListener listener : listeners) {
 			listener.sceneDataChanged(sceneData);
 		}
+		System.out.println("loaded");
 	}
 
 	/**
