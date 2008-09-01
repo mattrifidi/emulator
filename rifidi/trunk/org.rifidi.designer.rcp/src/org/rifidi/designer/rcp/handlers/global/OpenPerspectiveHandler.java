@@ -21,6 +21,9 @@ import org.eclipse.ui.contexts.IContextActivation;
 import org.eclipse.ui.contexts.IContextService;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.rifidi.designer.rcp.ApplicationWorkbenchAdvisor;
+import org.rifidi.designer.services.core.selection.SelectionService;
+import org.rifidi.services.annotations.Inject;
+import org.rifidi.services.registry.ServiceRegistry;
 
 /**
  * Handler for switching to the runtime perspective.
@@ -36,11 +39,25 @@ public class OpenPerspectiveHandler extends AbstractHandler {
 
 	private IContextActivation runActivation;
 	private IContextActivation designActivation;
+	/**
+	 * Reference to the selection service.
+	 */
+	private SelectionService selectionService;
+
+	/**
+	 * 
+	 */
+	public OpenPerspectiveHandler() {
+		super();
+		ServiceRegistry.getInstance().service(this);
+	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.core.commands.AbstractHandler#execute(org.eclipse.core.commands.ExecutionEvent)
+	 * @see
+	 * org.eclipse.core.commands.AbstractHandler#execute(org.eclipse.core.commands
+	 * .ExecutionEvent)
 	 */
 	@Override
 	public Object execute(ExecutionEvent arg0) throws ExecutionException {
@@ -91,6 +108,16 @@ public class OpenPerspectiveHandler extends AbstractHandler {
 			HandlerUtil.getActiveWorkbenchWindow(arg0).getActivePage()
 					.setEditorAreaVisible(false);
 		}
+		selectionService.clearSelection();
 		return null;
+	}
+
+	/**
+	 * @param selectionService
+	 *            the selectionService to set
+	 */
+	@Inject
+	public void setSelectionService(SelectionService selectionService) {
+		this.selectionService = selectionService;
 	}
 }
