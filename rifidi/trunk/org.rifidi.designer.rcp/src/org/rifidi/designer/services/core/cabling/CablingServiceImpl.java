@@ -11,8 +11,9 @@
 package org.rifidi.designer.services.core.cabling;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -46,7 +47,7 @@ public class CablingServiceImpl implements CablingService,
 	/**
 	 * List of registered cables.
 	 */
-	private List<CableEntity> cableList;
+	private Set<CableEntity> cableList;
 
 	/**
 	 * Reference to the entities service.
@@ -67,15 +68,17 @@ public class CablingServiceImpl implements CablingService,
 	 */
 	public CablingServiceImpl() {
 		logger.debug("CablingService created");
-		cableList = new CopyOnWriteArrayList<CableEntity>();
-		cableChangeListeners = new CopyOnWriteArrayList<CableChangeListener>();
+		cableList = new HashSet<CableEntity>();
+		cableChangeListeners = new ArrayList<CableChangeListener>();
 		ServiceRegistry.getInstance().service(this);
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.services.registry.core.cabling.CablingService#createCable(org.rifidi.designer.entities.CableEntity)
+	 * @see
+	 * org.rifidi.services.registry.core.cabling.CablingService#createCable(
+	 * org.rifidi.designer.entities.CableEntity)
 	 */
 	@Override
 	public void createCable(CableEntity cableEntity) {
@@ -87,7 +90,9 @@ public class CablingServiceImpl implements CablingService,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.services.registry.core.cabling.CablingService#recreateCable(org.rifidi.designer.entities.CableEntity)
+	 * @see
+	 * org.rifidi.services.registry.core.cabling.CablingService#recreateCable
+	 * (org.rifidi.designer.entities.CableEntity)
 	 */
 	@Override
 	public void recreateCable(CableEntity cableEntity) {
@@ -97,7 +102,9 @@ public class CablingServiceImpl implements CablingService,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.services.registry.core.cabling.CablingService#destroyCable(org.rifidi.designer.entities.CableEntity)
+	 * @see
+	 * org.rifidi.services.registry.core.cabling.CablingService#destroyCable
+	 * (org.rifidi.designer.entities.CableEntity)
 	 */
 	@Override
 	public void destroyCable(CableEntity cableEntity) {
@@ -111,7 +118,9 @@ public class CablingServiceImpl implements CablingService,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.services.registry.core.cabling.CablingService#cableExists(org.rifidi.designer.entities.CableEntity)
+	 * @see
+	 * org.rifidi.services.registry.core.cabling.CablingService#cableExists(
+	 * org.rifidi.designer.entities.CableEntity)
 	 */
 	@Override
 	public boolean cableExists(CableEntity cableEntity) {
@@ -121,8 +130,9 @@ public class CablingServiceImpl implements CablingService,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.services.registry.core.cabling.CablingService#setHigh(org.rifidi.designer.entities.interfaces.GPO,
-	 *      int)
+	 * @see
+	 * org.rifidi.services.registry.core.cabling.CablingService#setHigh(org.
+	 * rifidi.designer.entities.interfaces.GPO, int)
 	 */
 	@Override
 	public void setHigh(GPO source, int port) {
@@ -153,7 +163,9 @@ public class CablingServiceImpl implements CablingService,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.services.registry.core.cabling.CablingService#getSources(org.rifidi.designer.entities.interfaces.GPI)
+	 * @see
+	 * org.rifidi.services.registry.core.cabling.CablingService#getSources(org
+	 * .rifidi.designer.entities.interfaces.GPI)
 	 */
 	@Override
 	public List<CableEntity> getSources(GPI gpi) {
@@ -169,7 +181,9 @@ public class CablingServiceImpl implements CablingService,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.services.registry.core.cabling.CablingService#getTargets(org.rifidi.designer.entities.interfaces.GPO)
+	 * @see
+	 * org.rifidi.services.registry.core.cabling.CablingService#getTargets(org
+	 * .rifidi.designer.entities.interfaces.GPO)
 	 */
 	@Override
 	public List<CableEntity> getTargets(GPO gpo) {
@@ -185,7 +199,9 @@ public class CablingServiceImpl implements CablingService,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.services.registry.core.scenedata.SceneDataChangedListener#destroySceneData(org.rifidi.designer.entities.SceneData)
+	 * @see
+	 * org.rifidi.services.registry.core.scenedata.SceneDataChangedListener#
+	 * destroySceneData(org.rifidi.designer.entities.SceneData)
 	 */
 	@Override
 	public void destroySceneData(SceneData sceneData) {
@@ -196,7 +212,9 @@ public class CablingServiceImpl implements CablingService,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.services.registry.core.scenedata.SceneDataChangedListener#sceneDataChanged(org.rifidi.designer.entities.SceneData)
+	 * @see
+	 * org.rifidi.services.registry.core.scenedata.SceneDataChangedListener#
+	 * sceneDataChanged(org.rifidi.designer.entities.SceneData)
 	 */
 	@Override
 	public void sceneDataChanged(SceneData sceneData) {
@@ -212,7 +230,9 @@ public class CablingServiceImpl implements CablingService,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.services.registry.core.cabling.CablingService#addCableChangeListener(org.rifidi.services.registry.core.cabling.CableChangeListener)
+	 * @seeorg.rifidi.services.registry.core.cabling.CablingService#
+	 * addCableChangeListener
+	 * (org.rifidi.services.registry.core.cabling.CableChangeListener)
 	 */
 	@Override
 	public void addCableChangeListener(CableChangeListener cableChangeListener) {
@@ -222,7 +242,9 @@ public class CablingServiceImpl implements CablingService,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.services.registry.core.cabling.CablingService#removeCableChangeListener(org.rifidi.services.registry.core.cabling.CableChangeListener)
+	 * @seeorg.rifidi.services.registry.core.cabling.CablingService#
+	 * removeCableChangeListener
+	 * (org.rifidi.services.registry.core.cabling.CableChangeListener)
 	 */
 	@Override
 	public void removeCableChangeListener(

@@ -10,10 +10,11 @@
  */
 package org.rifidi.designer.rcp.gpioeditor.commands;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.eclipse.gef.commands.Command;
 import org.rifidi.designer.entities.internal.CableEntity;
 import org.rifidi.designer.services.core.cabling.CablingService;
-import org.rifidi.services.registry.ServiceRegistry;
 
 /**
  * Command for deleting a cable.
@@ -23,6 +24,10 @@ import org.rifidi.services.registry.ServiceRegistry;
  * 
  */
 public class CableDeleteCommand extends Command {
+	/**
+	 * logger for this class.
+	 */
+	private static final Log logger=LogFactory.getLog(CableDeleteCommand.class);
 	/**
 	 * The cable we are using.
 	 */
@@ -61,6 +66,7 @@ public class CableDeleteCommand extends Command {
 	 * @see org.eclipse.gef.commands.Command#execute()
 	 */
 	public void execute() {
+		logger.debug("Deleting cable: "+cable);
 		cablingService.destroyCable(cable);
 	}
 
@@ -70,6 +76,7 @@ public class CableDeleteCommand extends Command {
 	 * @see org.eclipse.gef.commands.Command#redo()
 	 */
 	public void redo() {
+		logger.debug("Deleting cable: "+cable);
 		cablingService.destroyCable(cable);
 	}
 
@@ -79,6 +86,7 @@ public class CableDeleteCommand extends Command {
 	 * @see org.eclipse.gef.commands.Command#undo()
 	 */
 	public void undo() {
+		logger.debug("Recreating Cable: "+cable);
 		cablingService.createCable(cable);
 	}
 }
