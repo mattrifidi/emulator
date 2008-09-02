@@ -37,4 +37,8 @@ public class CursorCommandRegistry {
 	public void remove(String key){
 		registry.remove(key);
 	}
+	
+	public boolean containsKey(String key){
+		return registry.containsKey(key);
+	}
 }

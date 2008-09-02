@@ -26,6 +26,7 @@ import org.rifidi.emulator.reader.module.abstract_.AbstractPowerModule;
 import org.rifidi.emulator.reader.sharedrc.radio.Antenna;
 import org.rifidi.emulator.reader.sharedrc.radio.generic.GenericRadio;
 import org.rifidi.emulator.reader.thingmagic.command.exception.ThingMagicRQLExceptionHandler;
+import org.rifidi.emulator.reader.thingmagic.commandregistry.CursorCommandRegistry;
 import org.rifidi.emulator.reader.thingmagic.database.DataBase;
 import org.rifidi.emulator.reader.thingmagic.database.IDBTable;
 import org.rifidi.emulator.reader.thingmagic.database.impl.DBIO;
@@ -155,6 +156,7 @@ public class ThingMagicReaderModule extends AbstractPowerModule implements
 				new ControlSignal<Boolean>(false), name, null, digester,
 				antennaList.size(),
 				new DataBase(),
+				new CursorCommandRegistry(),
 				new ControlSignal<Boolean>(false),
 				new ControlSignal<Boolean>(false));
 		

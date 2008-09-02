@@ -15,13 +15,20 @@ import org.rifidi.emulator.reader.thingmagic.module.ThingMagicReaderSharedResour
 public class DeclareCommand implements Command {
 	private static Log logger = LogFactory.getLog(DeclareCommand.class);
 
-	String cursorName;
+	private String cursorName;
 	
-	Command cursorCommand;
+	private Command cursorCommand;
+
+	private ThingMagicReaderSharedResources tmsr;
+	
+	String command;
 
 	public DeclareCommand(String command, ThingMagicReaderSharedResources tmsr)
 			throws CommandCreationExeption {
-		// TODO Auto-generated constructor stub
+		
+		this.tmsr = tmsr;
+		this.command = command;
+		
 		List<String> tokens = new ArrayList<String>();
 		/*
 		 * This regex looks for a Word, or a series of spaces on either side of
@@ -144,18 +151,39 @@ public class DeclareCommand implements Command {
 					"Error 0100:     syntax error at '" + token + "'");
 
 		}
+		
+//		if (!(tmsr.getCursorCommandRegistry().size() <= 16)) {
+//			/* we can only hold no more than 16 cursors
+//			 * 
+//			 */
+//			
+//			//TODO Correct the message.
+//			throw new CommandCreationExeption(
+//					"Error 0100:     Can not old no more than 16 cursors.");
+//		}
+		
+		if (tmsr.getCursorCommandRegistry().containsKey(cursorName)){
+			//TODO Correct the message.
+			throw new CommandCreationExeption(
+					"Error 0100:	Cursor already exists");
+		}
+		
 	}
 
 	@Override
 	public ArrayList<Object> execute() {
 		// TODO Auto-generated method stub
-		return null;
+		tmsr.getCursorCommandRegistry().put(cursorName, cursorCommand);
+		
+		ArrayList<Object> retVal = new ArrayList<Object>();
+		retVal.add("\n");
+		return retVal;
 	}
 
 	@Override
 	public String toCommandString() {
 		// TODO Auto-generated method stub
-		return null;
+		return command;
 	}
 
 }

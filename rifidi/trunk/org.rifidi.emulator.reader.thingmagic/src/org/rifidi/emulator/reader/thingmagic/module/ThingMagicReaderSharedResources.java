@@ -11,6 +11,7 @@ import org.rifidi.emulator.reader.command.xml.CommandDigester;
 import org.rifidi.emulator.reader.module.abstract_.AbstractReaderSharedResources;
 import org.rifidi.emulator.reader.sharedrc.radio.generic.GenericRadio;
 import org.rifidi.emulator.reader.sharedrc.tagmemory.TagMemory;
+import org.rifidi.emulator.reader.thingmagic.commandregistry.CursorCommandRegistry;
 import org.rifidi.emulator.reader.thingmagic.database.DataBase;
 
 /**
@@ -26,14 +27,30 @@ public class ThingMagicReaderSharedResources extends
 	private ControlSignal<Boolean> interactiveRQLConnectionSignal;
 
 	public DataBase dataBase;
+
+	private CursorCommandRegistry cursorCommandRegistry;
 	
+	public CursorCommandRegistry getCursorCommandRegistry() {
+		return cursorCommandRegistry;
+	}
+
+
+
+	public void setCursorCommandRegistry(CursorCommandRegistry cursorCommandRegistry) {
+		this.cursorCommandRegistry = cursorCommandRegistry;
+	}
+
+
+
 	public ThingMagicReaderSharedResources(GenericRadio radio,
 			TagMemory tagMemory, ControlSignal<Boolean> readerPowerSignal,
 			String readerName, GenericExceptionHandler exc,
 			CommandDigester dig, int numAntennas, DataBase base,
-			ControlSignal<Boolean> interactiveRQLPowerSignal,
+			CursorCommandRegistry cursorCommandRegistry, ControlSignal<Boolean> interactiveRQLPowerSignal,
 			ControlSignal<Boolean> interactiveRQLConnectionSignal) {
 		super(radio, tagMemory, readerPowerSignal, readerName, exc, dig, numAntennas);
+		
+		this.cursorCommandRegistry = cursorCommandRegistry;
 		
 		this.dataBase = base;
 		this.interactiveRQLPowerSignal = interactiveRQLPowerSignal;
