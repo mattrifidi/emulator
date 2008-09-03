@@ -10,6 +10,8 @@
  */
 package org.rifidi.designer.rcp.views.view3d.listeners;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
@@ -37,7 +39,10 @@ import com.jme.system.DisplaySystem;
  * @author Jochen Mader Oct 30, 2007
  */
 public class MousePickListener implements MouseListener, KeyListener {
-
+	/**
+	 * Logger for this class.
+	 */
+	private static final Log logger=LogFactory.getLog(MousePickListener.class);
 	/**
 	 * Are we selecting more than one entitiy?
 	 */
@@ -82,7 +87,9 @@ public class MousePickListener implements MouseListener, KeyListener {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.swt.events.MouseListener#mouseDoubleClick(org.eclipse.swt.events.MouseEvent)
+	 * @see
+	 * org.eclipse.swt.events.MouseListener#mouseDoubleClick(org.eclipse.swt
+	 * .events.MouseEvent)
 	 */
 	public void mouseDoubleClick(MouseEvent e) {
 	}
@@ -90,7 +97,9 @@ public class MousePickListener implements MouseListener, KeyListener {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.swt.events.MouseListener#mouseDown(org.eclipse.swt.events.MouseEvent)
+	 * @see
+	 * org.eclipse.swt.events.MouseListener#mouseDown(org.eclipse.swt.events
+	 * .MouseEvent)
 	 */
 	public void mouseDown(MouseEvent e) {
 		if (e.button == 1 || e.button == 3) {
@@ -100,39 +109,44 @@ public class MousePickListener implements MouseListener, KeyListener {
 			// create ray
 			int canvasY = ((SWTDisplaySystem) DisplaySystem.getDisplaySystem())
 					.getCurrentGLCanvas().getSize().y;
-			Vector3f coord = cam.getWorldCoordinates(new Vector2f(e.x, canvasY
-					- e.y), 0);
-			Vector3f coord2 = cam.getWorldCoordinates(new Vector2f(e.x, canvasY
-					- e.y), 1);
-			Ray ray = new Ray(coord, coord2.subtractLocal(coord)
-					.normalizeLocal());
-			PickResults pickResults = new BoundingPickResults();
-			// shoot
-			sceneDataService.getCurrentSceneData().getRootNode().findPick(ray,
-					pickResults);
-			Node node = null;
-			// loop[ through the results to find an entity
-			// this has to be done as for some reasons a bounding box appears
-			// around the room and is hit first, darn
-			float distance = -1;
-			for (int count = 0; count < pickResults.getNumber(); count++) {
-				// find the one closest to the camera
-				if (distance == -1
-						|| distance > pickResults.getPickData(count)
-								.getDistance()) {
+			try {
+				Vector3f coord = cam.getWorldCoordinates(new Vector2f(e.x,
+						canvasY - e.y), 0);
+				Vector3f coord2 = cam.getWorldCoordinates(new Vector2f(e.x,
+						canvasY - e.y), 1);
+				Ray ray = new Ray(coord, coord2.subtractLocal(coord)
+						.normalizeLocal());
+				PickResults pickResults = new BoundingPickResults();
+				// shoot
+				sceneDataService.getCurrentSceneData().getRootNode().findPick(
+						ray, pickResults);
+				Node node = null;
+				// loop[ through the results to find an entity
+				// this has to be done as for some reasons a bounding box
+				// appears
+				// around the room and is hit first, darn
+				float distance = -1;
+				for (int count = 0; count < pickResults.getNumber(); count++) {
+					// find the one closest to the camera
+					if (distance == -1
+							|| distance > pickResults.getPickData(count)
+									.getDistance()) {
 
-					node = pickResults.getPickData(count).getTargetMesh()
-							.getParentGeom().getParent();
-					VisualEntity _pickedEntity = finderService
-							.getVisualEntityByNode(node);
-					
-					if (_pickedEntity != null) {
-						pickedEntity = _pickedEntity;
-						distance = pickResults.getPickData(count).getDistance();
+						node = pickResults.getPickData(count).getTargetMesh()
+								.getParentGeom().getParent();
+						VisualEntity _pickedEntity = finderService
+								.getVisualEntityByNode(node);
+
+						if (_pickedEntity != null) {
+							pickedEntity = _pickedEntity;
+							distance = pickResults.getPickData(count)
+									.getDistance();
+						}
 					}
 				}
+			} catch (ArithmeticException ae) {
+				logger.debug(ae);
 			}
-
 			if (pickedEntity == null) {
 				selectionService.clearSelection();
 			}
@@ -154,7 +168,8 @@ public class MousePickListener implements MouseListener, KeyListener {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.swt.events.MouseListener#mouseUp(org.eclipse.swt.events.MouseEvent)
+	 * @seeorg.eclipse.swt.events.MouseListener#mouseUp(org.eclipse.swt.events.
+	 * MouseEvent)
 	 */
 	public void mouseUp(MouseEvent e) {
 	}
@@ -162,7 +177,9 @@ public class MousePickListener implements MouseListener, KeyListener {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.swt.events.KeyListener#keyPressed(org.eclipse.swt.events.KeyEvent)
+	 * @see
+	 * org.eclipse.swt.events.KeyListener#keyPressed(org.eclipse.swt.events.
+	 * KeyEvent)
 	 */
 	public void keyPressed(KeyEvent e) {
 		if (e.keyCode == SWT.SHIFT) {
@@ -173,7 +190,9 @@ public class MousePickListener implements MouseListener, KeyListener {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.swt.events.KeyListener#keyReleased(org.eclipse.swt.events.KeyEvent)
+	 * @see
+	 * org.eclipse.swt.events.KeyListener#keyReleased(org.eclipse.swt.events
+	 * .KeyEvent)
 	 */
 	public void keyReleased(KeyEvent e) {
 		if (e.keyCode == SWT.SHIFT) {
