@@ -613,7 +613,6 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 		for (SceneDataChangedListener listener : listeners) {
 			listener.sceneDataChanged(sceneData);
 		}
-		System.out.println("loaded");
 	}
 
 	/**
@@ -1012,7 +1011,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 				((PhysicsNode) entity.getNode()).generatePhysicsGeometry();
 			}
 
-			rootNode.updateRenderState();
+			entity.getNode().updateRenderState();
 
 			nodeToEntity.put(((VisualEntity) entity).getNode(),
 					(VisualEntity) entity);

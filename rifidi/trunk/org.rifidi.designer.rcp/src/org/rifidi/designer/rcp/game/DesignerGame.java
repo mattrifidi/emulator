@@ -10,6 +10,10 @@
  */
 package org.rifidi.designer.rcp.game;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,6 +41,7 @@ import org.rifidi.designer.entities.SceneData;
 import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.SceneData.Direction;
 import org.rifidi.designer.entities.interfaces.SceneControl;
+import org.rifidi.designer.rcp.Activator;
 import org.rifidi.designer.rcp.GlobalProperties;
 import org.rifidi.designer.rcp.views.minimapview.MiniMapView;
 import org.rifidi.designer.services.core.camera.CameraService;
@@ -192,6 +197,10 @@ public class DesignerGame extends SWTBaseGame implements
 	private List<Spatial> offscreenRenderSpatials;
 
 	/**
+	 * Phongshader for walls.
+	 */
+	private FragmentProgramState phong;
+	/**
 	 * @param name
 	 * @param updateResolution
 	 * @param renderResolution
@@ -287,11 +296,27 @@ public class DesignerGame extends SWTBaseGame implements
 		ls.setEnabled(true);
 		DirectionalLight light = new DirectionalLight();
 		light.setDiffuse(new ColorRGBA(1.0f, 1.0f, 1.0f, 1.0f));
-		light.setAmbient(new ColorRGBA(0.5f, 0.5f, 0.5f, .5f));
+		light.setAmbient(new ColorRGBA(.5f, .5f, .5f, .5f));
 		light.setDirection(new Vector3f(1, -1, 0));
 		light.setEnabled(true);
 		ls.attach(light);
+		InputStream arb=this.getClass().getClassLoader().getResourceAsStream("/org/rifidi/designer/rcp/game/phong.arb");
+		BufferedReader br = new BufferedReader(new InputStreamReader(arb));
+		StringBuilder sb = new StringBuilder();
+		String line = null;
+		try {
+			while ((line = br.readLine()) != null) {
+				sb.append(line + "\n");
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		display.getRenderer().setBackgroundColor(ColorRGBA.gray.clone());
+//		FragmentProgramState phong=display.getRenderer().createFragmentProgramState();
+//		phong.load(sb.toString());
+//		phong.setParameter(new float[]{.5f,.5f,.5f,.5f}, 0);
+//		phong.setParameter(new float[]{1f,1f,1f,1f}, 1);
+//		phong.setEnabled(true);
 		getRootNode().setRenderState(zbufferState);
 		getRootNode().setRenderState(cullState);
 		getRootNode().setRenderState(ls);
@@ -315,7 +340,6 @@ public class DesignerGame extends SWTBaseGame implements
 	 * @see org.rifidi.jmeswt.SWTBaseGame#render(float)
 	 */
 	Node bu = null;
-
 	@Override
 	protected void render(float interpolation) {
 		if (sceneData != null && !getGlCanvas().isDisposed()
@@ -480,9 +504,10 @@ public class DesignerGame extends SWTBaseGame implements
 			@Override
 			public Object call() throws Exception {
 				sceneData.getRootNode().attachChild(sceneData.getRoomNode());
+				sceneData.getRootNode().setName("rootnode");
+				sceneData.getRoomNode().setName("roomnode");
 				getRootNode().attachChild(sceneData.getRootNode());
 				// showHideWalls();
-				getRootNode().updateRenderState();
 				if (offy.isSupported()) {
 					offy.setBackgroundColor(new ColorRGBA(.667f, .667f, .851f,
 							1f));
