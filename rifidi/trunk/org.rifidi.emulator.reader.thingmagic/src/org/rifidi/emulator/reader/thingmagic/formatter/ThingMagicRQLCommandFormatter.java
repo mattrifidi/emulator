@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.rifidi.emulator.reader.formatter.CommandFormatter;
+import org.rifidi.emulator.reader.thingmagic.commandobjects.CloseCommand;
 import org.rifidi.emulator.reader.thingmagic.commandobjects.DeclareCommand;
 import org.rifidi.emulator.reader.thingmagic.commandobjects.ErrorCommand;
 import org.rifidi.emulator.reader.thingmagic.commandobjects.FetchCommand;
@@ -67,6 +68,11 @@ public class ThingMagicRQLCommandFormatter implements CommandFormatter {
 				return retVal;
 			}
 
+			if (commandName.toLowerCase().equals("close")) {
+				retVal.add(new CloseCommand(command, tmsr));
+				return retVal;
+			}
+			
 			if (commandName.toLowerCase().equals("set")) {
 				retVal.add(new SetCommand(command));
 				return retVal;

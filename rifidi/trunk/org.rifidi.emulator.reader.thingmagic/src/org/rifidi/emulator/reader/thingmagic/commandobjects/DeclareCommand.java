@@ -16,19 +16,19 @@ public class DeclareCommand implements Command {
 	private static Log logger = LogFactory.getLog(DeclareCommand.class);
 
 	private String cursorName;
-	
+
 	private Command cursorCommand;
 
 	private ThingMagicReaderSharedResources tmsr;
-	
+
 	String command;
 
 	public DeclareCommand(String command, ThingMagicReaderSharedResources tmsr)
 			throws CommandCreationExeption {
-		
+
 		this.tmsr = tmsr;
 		this.command = command;
-		
+
 		List<String> tokens = new ArrayList<String>();
 		/*
 		 * This regex looks for a Word, or a series of spaces on either side of
@@ -89,13 +89,13 @@ public class DeclareCommand implements Command {
 						"Error 0100:     syntax error at '" + token + "'");
 
 			token = tokenIterator.next();
-			
+
 			if (!token.equals("cursor"))
 				throw new CommandCreationExeption(
 						"Error 0100:     syntax error at '" + token + "'");
-			
+
 			token = tokenIterator.next();
-			
+
 			if (!token.matches("\\s+"))
 				throw new CommandCreationExeption(
 						"Error 0100:     syntax error at '" + token + "'");
@@ -105,29 +105,30 @@ public class DeclareCommand implements Command {
 			if (!token.equals("for"))
 				throw new CommandCreationExeption(
 						"Error 0100:     syntax error at '" + token + "'");
-			
+
 			token = tokenIterator.next();
-			
+
 			if (!token.matches("\\s+"))
 				throw new CommandCreationExeption(
 						"Error 0100:     syntax error at '" + token + "'");
-			
-			
+
 			StringBuffer cursorCommandBuf = new StringBuffer();
 			token = tokenIterator.next();
-			
+
 			cursorCommandBuf.append(token);
-			
-			while (tokenIterator.hasNext()){
+
+			while (tokenIterator.hasNext()) {
 				cursorCommandBuf.append(tokenIterator.next());
 			}
-			
+
 			logger.debug("Command is \"" + cursorCommandBuf.toString() + "\"");
-			
+
 			if (token.equals("select")) {
-				cursorCommand = new SelectCommand(cursorCommandBuf.toString(), tmsr);
+				cursorCommand = new SelectCommand(cursorCommandBuf.toString(),
+						tmsr);
 			} else if (token.equals("update")) {
-				cursorCommand = new UpdateCommand(cursorCommandBuf.toString(), tmsr);
+				cursorCommand = new UpdateCommand(cursorCommandBuf.toString(),
+						tmsr);
 			} else {
 				throw new CommandCreationExeption(
 						"Error 0100:     syntax error at '" + token + "'");
@@ -154,43 +155,43 @@ public class DeclareCommand implements Command {
 					"Error 0100:     syntax error at '" + token + "'");
 
 		}
-		
-//		if (!(tmsr.getCursorCommandRegistry().size() <= 16)) {
-//			/* we can only hold no more than 16 cursors
-//			 * 
-//			 */
-//			
-//			//TODO Correct the messsage.
-//			throw new CommandCreationExeption(
-//					"Error 0100:     Can not old no more than 16 cursors.");
-//		}
-		
-		if (tmsr.getCursorCommandRegistry().containsKey(cursorName)){
-			//TODO Correct the message.
+
+		// if (!(tmsr.getCursorCommandRegistry().size() <= 16)) {
+		// /* we can only hold no more than 16 cursors
+		// *
+		// */
+		//			
+		// //TODO Correct the messsage.
+		// throw new CommandCreationExeption(
+		// "Error 0100:     Can not old no more than 16 cursors.");
+		// }
+
+		if (tmsr.getCursorCommandRegistry().containsKey(cursorName)) {
+			// TODO Correct the message.
 			throw new CommandCreationExeption(
 					"Error 0100:	Cursor already exists");
 		}
-		
+
 	}
 
 	@Override
 	public ArrayList<Object> execute() {
-		// TODO Auto-generated method stub
+
 		tmsr.getCursorCommandRegistry().put(cursorName, cursorCommand);
-		
+
 		ArrayList<Object> retVal = new ArrayList<Object>();
-		
-		
+
 		/*
 		 * there must be a blank line at the end.. even if we didn't send
 		 * something useful back.
 		 * 
-		 * When the messages are formated for return (in ThingMagicRQLCommandFormatter)
-		 * a new line is appended to each string even if it is an empty string.
+		 * When the messages are formated for return (in
+		 * ThingMagicRQLCommandFormatter) a new line is appended to each string
+		 * even if it is an empty string.
 		 */
-		//place holder for newline.
+		// place holder for newline.
 		retVal.add("");
-		
+
 		return retVal;
 	}
 
