@@ -63,7 +63,7 @@ public class DeclareCommand implements Command {
 
 		String token = tokenIterator.next();
 
-		if (!token.equals("update"))
+		if (!token.equals("declare"))
 			throw new CommandCreationExeption(
 					"Error 0100:     syntax error at '" + token + "'");
 

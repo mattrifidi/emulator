@@ -68,7 +68,7 @@ public class FetchCommand implements Command {
 
 		String token = tokenIterator.next();
 
-		if (!token.equals("update"))
+		if (!token.equals("fetch"))
 			throw new CommandCreationExeption(
 					"Error 0100:     syntax error at '" + token + "'");
 
