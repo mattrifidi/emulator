@@ -179,7 +179,18 @@ public class DeclareCommand implements Command {
 		tmsr.getCursorCommandRegistry().put(cursorName, cursorCommand);
 		
 		ArrayList<Object> retVal = new ArrayList<Object>();
-		//retVal.add("");
+		
+		
+		/*
+		 * there must be a blank line at the end.. even if we didn't send
+		 * something useful back.
+		 * 
+		 * When the messages are formated for return (in ThingMagicRQLCommandFormatter)
+		 * a new line is appended to each string even if it is an empty string.
+		 */
+		//place holder for newline.
+		retVal.add("");
+		
 		return retVal;
 	}
 

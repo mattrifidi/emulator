@@ -92,12 +92,6 @@ public class ThingMagicRQLCommandFormatter implements CommandFormatter {
 			retVal.add(o + "\n");
 		}
 
-		/*
-		 * there must be a blank line at the end.. even if we didn't send
-		 * something useful back.
-		 */
-		retVal.add("\n");
-
 		return retVal;
 	}
 

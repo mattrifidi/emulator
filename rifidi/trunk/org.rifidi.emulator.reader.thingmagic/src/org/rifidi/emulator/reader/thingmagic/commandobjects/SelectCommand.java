@@ -253,6 +253,17 @@ public class SelectCommand implements Command {
 			}
 			retVal.add(buff.toString());
 		}
+		
+		/*
+		 * there must be a blank line at the end.. even if we didn't send
+		 * something useful back.
+		 * 
+		 * When the messages are formated for return (in ThingMagicRQLCommandFormatter)
+		 * a new line is appended to each string even if it is an empty string.
+		 */
+		//place holder for newline.
+		retVal.add("");
+		
 		return retVal;
 	}
 
