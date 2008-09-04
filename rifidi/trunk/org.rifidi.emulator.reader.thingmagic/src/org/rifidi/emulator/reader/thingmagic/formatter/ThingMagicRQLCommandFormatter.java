@@ -9,6 +9,7 @@ import org.rifidi.emulator.reader.thingmagic.commandobjects.CloseCommand;
 import org.rifidi.emulator.reader.thingmagic.commandobjects.DeclareCommand;
 import org.rifidi.emulator.reader.thingmagic.commandobjects.ErrorCommand;
 import org.rifidi.emulator.reader.thingmagic.commandobjects.FetchCommand;
+import org.rifidi.emulator.reader.thingmagic.commandobjects.ResetCommand;
 import org.rifidi.emulator.reader.thingmagic.commandobjects.SelectCommand;
 import org.rifidi.emulator.reader.thingmagic.commandobjects.SetCommand;
 import org.rifidi.emulator.reader.thingmagic.commandobjects.UpdateCommand;
@@ -74,7 +75,12 @@ public class ThingMagicRQLCommandFormatter implements CommandFormatter {
 			}
 
 			if (commandName.toLowerCase().equals("set")) {
-				retVal.add(new SetCommand(command));
+				retVal.add(new SetCommand(command, tmsr));
+				return retVal;
+			}
+			
+			if (commandName.toLowerCase().equals("reset")) {
+				retVal.add(new ResetCommand(command, tmsr));
 				return retVal;
 			}
 		} catch (CommandCreationExeption e) {
