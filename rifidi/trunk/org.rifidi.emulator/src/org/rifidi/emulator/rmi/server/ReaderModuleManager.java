@@ -239,4 +239,22 @@ public class ReaderModuleManager implements ReaderModuleManagerInterface {
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.rifidi.emulator.rmi.server.ReaderModuleManagerInterface#getGPIList(int)
+	 */
+	@Override
+	public List<String> getGPIList(int numberOfPorts) {
+		return reader.getGPIPortNumbers(numberOfPorts);
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.rifidi.emulator.rmi.server.ReaderModuleManagerInterface#getGPIList(int)
+	 */
+	@Override
+	public List<String> getGPOList(int numberOfPorts) {
+		return reader.getGPOPortNumbers(numberOfPorts);
+	}
+
 }

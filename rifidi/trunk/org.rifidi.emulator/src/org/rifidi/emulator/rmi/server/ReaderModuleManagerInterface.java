@@ -50,6 +50,20 @@ public interface ReaderModuleManagerInterface {
 	 *             will be thrown if errors in the RMI communication occur
 	 */
 	public void resumeReader() throws Exception;
+	
+	/**
+	 * 
+	 * @param numberOfPorts
+	 * @return
+	 */
+	public List<String> getGPIList(int numberOfPorts);
+	
+	/**
+	 * 
+	 * @param numberOfPorts
+	 * @return
+	 */
+	public List<String> getGPOList(int numberOfPorts);
 
 	/**
 	 * Add a collection of tags to the reader
@@ -160,4 +174,7 @@ public interface ReaderModuleManagerInterface {
 	public Boolean setReaderProperty(String propertyName, String propertyValue)
 			throws Exception;
 
+
+
+	
 }

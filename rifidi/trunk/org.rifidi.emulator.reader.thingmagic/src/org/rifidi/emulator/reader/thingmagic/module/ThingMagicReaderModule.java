@@ -5,6 +5,7 @@ package org.rifidi.emulator.reader.thingmagic.module;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -267,5 +268,17 @@ public class ThingMagicReaderModule extends AbstractPowerModule implements
 	 */
 	protected void changePowerState(PowerState anotherPowerState) {
 		super.changePowerState(anotherPowerState);
+	}
+
+	@Override
+	public List<String> getGPIPortNumbers(int numberOfPorts) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<String> getGPOPortNumbers(int numberOfPorts) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

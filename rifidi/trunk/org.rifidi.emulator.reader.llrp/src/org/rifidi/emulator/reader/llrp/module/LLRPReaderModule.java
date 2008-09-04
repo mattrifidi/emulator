@@ -17,6 +17,7 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -258,8 +259,10 @@ public class LLRPReaderModule extends AbstractPowerModule implements
 			}
 		} else {
 
-/*			this.getSharedResources().getInteractiveConnectionSignal()
-					.setControlVariableValue(false);*/
+			/*
+			 * this.getSharedResources().getInteractiveConnectionSignal()
+			 * .setControlVariableValue(false);
+			 */
 
 			initializeConnection(connectionType);
 
@@ -499,6 +502,34 @@ public class LLRPReaderModule extends AbstractPowerModule implements
 	 */
 	public ReflectiveCommandAdapter getInteractiveCommandAdapter() {
 		return interactiveCommandAdapter;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.rifidi.emulator.reader.module.ReaderModule#getGPIPortNumbers(int)
+	 */
+	@Override
+	public List<String> getGPIPortNumbers(int numberOfPorts) {
+		List<String> retVal = new ArrayList<String>();
+		for (int i = 1; i <= numberOfPorts; i++) {
+			retVal.add(String.valueOf(i));
+		}
+		return retVal;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.rifidi.emulator.reader.module.ReaderModule#getGPOPortNumbers(int)
+	 */
+	@Override
+	public List<String> getGPOPortNumbers(int numberOfPorts) {
+		List<String> retVal = new ArrayList<String>();
+		for (int i = 1; i <= numberOfPorts; i++) {
+			retVal.add(String.valueOf(i));
+		}
+		return retVal;
 	}
 
 }

@@ -21,6 +21,7 @@ import org.eclipse.ui.part.EditorPart;
 import org.rifidi.ui.common.reader.UIReader;
 import org.rifidi.ui.ide.views.antennaview.GPIOPGroup;
 import org.rifidi.ui.ide.views.antennaview.TagPGroup;
+import org.rifidi.ui.ide.views.antennaview.exception.RifidiIndexDoesNotMatchException;
 
 /**
  * ReaderDetails Editor - This shows the antennas of the selected reader
@@ -53,7 +54,8 @@ public class ReaderEditor extends EditorPart {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.ui.part.EditorPart#doSave(org.eclipse.core.runtime.IProgressMonitor)
+	 * @seeorg.eclipse.ui.part.EditorPart#doSave(org.eclipse.core.runtime.
+	 * IProgressMonitor)
 	 */
 	@Override
 	public void doSave(IProgressMonitor monitor) {
@@ -74,7 +76,7 @@ public class ReaderEditor extends EditorPart {
 	 * (non-Javadoc)
 	 * 
 	 * @see org.eclipse.ui.part.EditorPart#init(org.eclipse.ui.IEditorSite,
-	 *      org.eclipse.ui.IEditorInput)
+	 * org.eclipse.ui.IEditorInput)
 	 */
 	@Override
 	public void init(IEditorSite site, IEditorInput input)
@@ -113,7 +115,9 @@ public class ReaderEditor extends EditorPart {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.ui.part.WorkbenchPart#createPartControl(org.eclipse.swt.widgets.Composite)
+	 * @see
+	 * org.eclipse.ui.part.WorkbenchPart#createPartControl(org.eclipse.swt.widgets
+	 * .Composite)
 	 */
 	@Override
 	public void createPartControl(Composite parent) {
@@ -157,14 +161,21 @@ public class ReaderEditor extends EditorPart {
 		tabFolder.setSelection(0);
 
 		// Create GPIO Composite
-		if (reader.getNumGPIs() > 0 || reader.getNumGPOs() > 0) {
-			gpioChild = new Composite(mainComposite, SWT.NONE);
-			gpioChild
-					.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-			gpioChild.setLayout(new GridLayout());
-			GPIOPGroup gpioView = new GPIOPGroup(gpioChild, SWT.SMOOTH, reader);
-			gpioView
-					.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		try {
+			if (reader.getNumGPIs() > 0 || reader.getNumGPOs() > 0) {
+				gpioChild = new Composite(mainComposite, SWT.NONE);
+				gpioChild.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
+						true));
+				gpioChild.setLayout(new GridLayout());
+
+				GPIOPGroup gpioView = new GPIOPGroup(gpioChild, SWT.SMOOTH,
+						reader);
+				gpioView.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
+						true));
+
+			}
+		} catch (RifidiIndexDoesNotMatchException e) {
+			e.printStackTrace();
 		}
 		// getSite().setSelectionProvider(this);
 

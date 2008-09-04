@@ -14,6 +14,7 @@ import gnu.io.SerialPort;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.logging.Log;
@@ -358,6 +359,17 @@ public class AwidReaderModule extends AbstractPowerModule implements
 
 	public void setRf_power(boolean rf_power) {
 		this.rf_power = rf_power;
+	}
+
+	@Override
+	public List<String> getGPIPortNumbers(int numberOfPorts) {
+		return null;
+	}
+
+	@Override
+	public List<String> getGPOPortNumbers(int numberOfPorts) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

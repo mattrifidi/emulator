@@ -1,6 +1,7 @@
 package org.rifidi.ui.ide.views.antennaview;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -16,6 +17,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.rifidi.ui.common.reader.UIReader;
 import org.rifidi.ui.common.reader.callback.GPOEventCallbackInterface;
+import org.rifidi.ui.ide.views.antennaview.exception.RifidiIndexDoesNotMatchException;
 
 /**
  * GPIO View to display the actual GPIO's of a reader
@@ -36,13 +38,24 @@ public class GPIOPGroup extends PGroup implements GPOEventCallbackInterface {
 	/**
 	 * @param parent
 	 * @param style
+	 * @throws RifidiIndexDoesNotMatchException 
 	 */
-	public GPIOPGroup(Composite parent, int style, UIReader reader) {
+	public GPIOPGroup(Composite parent, int style, UIReader reader) throws RifidiIndexDoesNotMatchException {
 		super(parent, style);
 		setText("GPIO Settings");
 		setLayout(new GridLayout());
 		this.uiReader = reader;
 		display = parent.getShell().getDisplay();
+
+		List<String> gpiStringList = reader.getReaderManager().getGPIList(
+				reader.getNumGPIs());
+		List<String> gpoStringList = reader.getReaderManager().getGPOList(
+				reader.getNumGPOs());
+
+		if (gpiStringList.size() != reader.getNumGPIs()
+				|| gpoStringList.size() != reader.getNumGPOs()) {
+			throw new RifidiIndexDoesNotMatchException();
+		}
 
 		// register Reader for GPIO events
 		reader.getReaderCallbackManager().addGPOPortListener(this);
@@ -56,7 +69,8 @@ public class GPIOPGroup extends PGroup implements GPOEventCallbackInterface {
 				| SWT.CENTER, true, true));
 		base.setLayout(new GridLayout(2, false));
 
-		// base.setBackgroundImage(Activator.getImageDescriptor("icons/add-16x16.png").createImage());
+		// base.setBackgroundImage(Activator.getImageDescriptor(
+		// "icons/add-16x16.png").createImage());
 
 		// gpi buttons label
 		Label gpiLabel = new Label(base, SWT.NONE);
@@ -81,7 +95,11 @@ public class GPIOPGroup extends PGroup implements GPOEventCallbackInterface {
 			label
 					.setLayoutData(new GridData(SWT.CENTER, SWT.NONE, false,
 							false));
-			label.setText(String.valueOf(i));
+			if (gpiStringList == null) {
+				label.setText(String.valueOf(i));
+			} else {
+				label.setText(gpiStringList.get(i));
+			}
 
 			Button check = new Button(buttonComp, SWT.CENTER | SWT.CHECK);
 			check.setData(i);
@@ -133,7 +151,11 @@ public class GPIOPGroup extends PGroup implements GPOEventCallbackInterface {
 			label
 					.setLayoutData(new GridData(SWT.CENTER, SWT.NONE, false,
 							false));
-			label.setText(String.valueOf(i));
+			if (gpoStringList == null) {
+				label.setText(String.valueOf(i));
+			} else {
+				label.setText(gpoStringList.get(i));
+			}
 
 			Button check = new Button(buttonComp, SWT.CENTER | SWT.CHECK);
 			check.setEnabled(false);
@@ -149,7 +171,9 @@ public class GPIOPGroup extends PGroup implements GPOEventCallbackInterface {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.ui.common.reader.callback.GPOEventCallbackInterface#GPOPortSetHigh(int)
+	 * @see
+	 * org.rifidi.ui.common.reader.callback.GPOEventCallbackInterface#GPOPortSetHigh
+	 * (int)
 	 */
 	public void GPOPortSetHigh(final int gpoPortNum) {
 		display.syncExec(new Runnable() {
@@ -165,7 +189,9 @@ public class GPIOPGroup extends PGroup implements GPOEventCallbackInterface {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.ui.common.reader.callback.GPOEventCallbackInterface#GPOPortSetLow(int)
+	 * @see
+	 * org.rifidi.ui.common.reader.callback.GPOEventCallbackInterface#GPOPortSetLow
+	 * (int)
 	 */
 	public void GPOPortSetLow(final int gpoPortNum) {
 		display.syncExec(new Runnable() {

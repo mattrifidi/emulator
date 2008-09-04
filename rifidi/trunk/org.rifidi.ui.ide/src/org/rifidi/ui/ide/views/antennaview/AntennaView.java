@@ -28,6 +28,7 @@ import org.eclipse.ui.part.ViewPart;
 import org.rifidi.ui.common.reader.UIAntenna;
 import org.rifidi.ui.common.reader.UIReader;
 import org.rifidi.ui.common.registry.ReaderRegistry;
+import org.rifidi.ui.ide.views.antennaview.exception.RifidiIndexDoesNotMatchException;
 
 /**
  * View used to display antennas and the GPIO's associated with a this reader.
@@ -37,8 +38,8 @@ import org.rifidi.ui.common.registry.ReaderRegistry;
  */
 public class AntennaView extends ViewPart implements ISelectionProvider {
 
-	//private static Log logger = LogFactory.getLog(AntennaView.class);
-	
+	// private static Log logger = LogFactory.getLog(AntennaView.class);
+
 	public static final String ID = "org.rifidi.ui.ide.views.antennaview.AntennaView";
 
 	// the main composite that holds the composites for the individual antennas
@@ -62,7 +63,9 @@ public class AntennaView extends ViewPart implements ISelectionProvider {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.ui.part.WorkbenchPart#createPartControl(org.eclipse.swt.widgets.Composite)
+	 * @see
+	 * org.eclipse.ui.part.WorkbenchPart#createPartControl(org.eclipse.swt.widgets
+	 * .Composite)
 	 */
 	@Override
 	public void createPartControl(Composite parent) {
@@ -82,12 +85,17 @@ public class AntennaView extends ViewPart implements ISelectionProvider {
 				this.getViewSite().getSecondaryId());
 
 		createAntennas(uiReader.getAntennas());
-
-		gpioChild = new Composite(sc, SWT.NONE);
-		gpioChild.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		gpioChild.setLayout(new GridLayout());
-		gpioView = new GPIOPGroup(gpioChild, SWT.SMOOTH, uiReader);
-		gpioView.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		try {
+			gpioChild = new Composite(sc, SWT.NONE);
+			gpioChild
+					.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+			gpioChild.setLayout(new GridLayout());
+			gpioView = new GPIOPGroup(gpioChild, SWT.SMOOTH, uiReader);
+			gpioView
+					.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		} catch (RifidiIndexDoesNotMatchException e) {
+			e.printStackTrace();
+		}
 
 		getSite().setSelectionProvider(this);
 	}
@@ -152,14 +160,20 @@ public class AntennaView extends ViewPart implements ISelectionProvider {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.jface.viewers.ISelectionProvider#addSelectionChangedListener(org.eclipse.jface.viewers.ISelectionChangedListener)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.jface.viewers.ISelectionProvider#addSelectionChangedListener
+	 * (org.eclipse.jface.viewers.ISelectionChangedListener)
 	 */
 	public void addSelectionChangedListener(ISelectionChangedListener listener) {
 		selectionListeners.add(listener);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.jface.viewers.ISelectionProvider#getSelection()
 	 */
 	public ISelection getSelection() {
@@ -169,16 +183,24 @@ public class AntennaView extends ViewPart implements ISelectionProvider {
 		return new StructuredSelection();
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.jface.viewers.ISelectionProvider#removeSelectionChangedListener(org.eclipse.jface.viewers.ISelectionChangedListener)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.jface.viewers.ISelectionProvider#removeSelectionChangedListener
+	 * (org.eclipse.jface.viewers.ISelectionChangedListener)
 	 */
 	public void removeSelectionChangedListener(
 			ISelectionChangedListener listener) {
 		selectionListeners.remove(listener);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.jface.viewers.ISelectionProvider#setSelection(org.eclipse.jface.viewers.ISelection)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.jface.viewers.ISelectionProvider#setSelection(org.eclipse
+	 * .jface.viewers.ISelection)
 	 */
 	public void setSelection(ISelection selection) {
 	}

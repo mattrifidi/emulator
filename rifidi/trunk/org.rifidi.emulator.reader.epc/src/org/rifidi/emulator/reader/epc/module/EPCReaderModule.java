@@ -12,6 +12,7 @@ package org.rifidi.emulator.reader.epc.module;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -265,6 +266,18 @@ public class EPCReaderModule extends AbstractPowerModule implements
 	 */
 	public void finalize() {
 
+	}
+
+	@Override
+	public List<String> getGPIPortNumbers(int numberOfPorts) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<String> getGPOPortNumbers(int numberOfPorts) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

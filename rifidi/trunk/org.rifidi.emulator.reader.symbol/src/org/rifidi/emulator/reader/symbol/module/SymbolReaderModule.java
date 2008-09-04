@@ -13,6 +13,7 @@ package org.rifidi.emulator.reader.symbol.module;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -292,5 +293,15 @@ public class SymbolReaderModule extends AbstractPowerModule implements
 	 */
 	public TCPServerCommunication getHttpComm() {
 		return httpComm;
+	}
+	@Override
+	public List<String> getGPIPortNumbers(int numberOfPorts) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public List<String> getGPOPortNumbers(int numberOfPorts) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

@@ -12,8 +12,10 @@
 
 package org.rifidi.emulator.reader.alien.module;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -335,22 +337,19 @@ public class AlienReaderModule extends AbstractPowerModule implements
 
 		String heartbeatPower = "";
 
-			heartbeatPower = properties.getPropertiesMap().get(
-					"heartbeat_power");
-			if(heartbeatPower==null){
-				heartbeatPower="false";
-			}
-
+		heartbeatPower = properties.getPropertiesMap().get("heartbeat_power");
+		if (heartbeatPower == null) {
+			heartbeatPower = "false";
+		}
 
 		Integer heartbeatBindingPort = 3989;
 
-		try{
-		heartbeatBindingPort = Integer.parseInt(properties
+		try {
+			heartbeatBindingPort = Integer.parseInt(properties
 					.getPropertiesMap().get("heartbeat_port"));
-		}catch(NumberFormatException ex){
+		} catch (NumberFormatException ex) {
 			heartbeatBindingPort = 3989;
 		}
-		
 
 		boolean power;
 		if (heartbeatPower.equalsIgnoreCase("true")) {
@@ -447,7 +446,7 @@ public class AlienReaderModule extends AbstractPowerModule implements
 	 * (non-Javadoc)
 	 * 
 	 * @see org.rifidi.emulator.reader.module.ReaderModule
-	 *      #getCommandsByCategory(java.lang.String)
+	 * #getCommandsByCategory(java.lang.String)
 	 */
 	public Collection<CommandObject> getCommandsByCategory(String category) {
 		return digester.getCommandsByCategory(category);
@@ -471,6 +470,36 @@ public class AlienReaderModule extends AbstractPowerModule implements
 	 * Finalize the reader
 	 */
 	public void finalize() {
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.rifidi.emulator.reader.module.ReaderModule#getGPIPortNumbers(int)
+	 */
+	@Override
+	public List<String> getGPIPortNumbers(int numberOfPorts) {
+		List<String> retVal = new ArrayList<String>();
+		int x = 1;
+		for (int i = 0; i < numberOfPorts; i++) {
+			retVal.add(String.valueOf(x));
+			x = x * 2;
+		}
+		return retVal;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.rifidi.emulator.reader.module.ReaderModule#getGPOPortNumbers(int)
+	 */
+	@Override
+	public List<String> getGPOPortNumbers(int numberOfPorts) {
+		List<String> retVal = new ArrayList<String>();
+		int x = 1;
+		for (int i = 0; i < numberOfPorts; i++) {
+			retVal.add(String.valueOf(x));
+			x = x * 2;
+		}
+		return retVal;
 	}
 
 }
