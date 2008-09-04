@@ -72,7 +72,7 @@ public class ThingMagicRQLCommandFormatter implements CommandFormatter {
 				retVal.add(new CloseCommand(command, tmsr));
 				return retVal;
 			}
-			
+
 			if (commandName.toLowerCase().equals("set")) {
 				retVal.add(new SetCommand(command));
 				return retVal;
