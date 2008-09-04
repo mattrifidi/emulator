@@ -157,7 +157,7 @@ public class DeclareCommand implements Command {
 //			 * 
 //			 */
 //			
-//			//TODO Correct the message.
+//			//TODO Correct the messsage.
 //			throw new CommandCreationExeption(
 //					"Error 0100:     Can not old no more than 16 cursors.");
 //		}

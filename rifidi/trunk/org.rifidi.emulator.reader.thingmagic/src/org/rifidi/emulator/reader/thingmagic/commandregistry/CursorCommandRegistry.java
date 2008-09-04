@@ -16,11 +16,11 @@ public class CursorCommandRegistry {
 	public Command put(String key, Command value) throws IllegalStateException, ClassCastException {
 		if ((value instanceof UpdateCommand)
 				|| (value instanceof SelectCommand)) {
-			if (registry.size() <= 16) {
+//			if (registry.size() <= 16) {
 				return registry.put(key, value);
-			} else {
-				throw new IllegalStateException();
-			}
+//			} else {
+//				throw new IllegalStateException();
+//			}
 		} else {
 			throw new ClassCastException();
 		}
