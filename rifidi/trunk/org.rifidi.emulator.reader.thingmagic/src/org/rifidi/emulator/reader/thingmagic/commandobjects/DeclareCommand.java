@@ -77,6 +77,7 @@ public class DeclareCommand implements Command {
 			token = tokenIterator.next();
 			if (token.matches("\\w+")) {
 				cursorName = token;
+				logger.debug("Cursor name is " + cursorName);
 			} else {
 				throw new CommandCreationExeption(
 						"Error 0100:     syntax error at '" + token + "'");
@@ -120,6 +121,8 @@ public class DeclareCommand implements Command {
 			while (tokenIterator.hasNext()){
 				cursorCommandBuf.append(tokenIterator.next());
 			}
+			
+			logger.debug("Command is \"" + cursorCommandBuf.toString() + "\"");
 			
 			if (token.equals("select")) {
 				cursorCommand = new SelectCommand(cursorCommandBuf.toString(), tmsr);
@@ -176,7 +179,7 @@ public class DeclareCommand implements Command {
 		tmsr.getCursorCommandRegistry().put(cursorName, cursorCommand);
 		
 		ArrayList<Object> retVal = new ArrayList<Object>();
-		retVal.add("\n");
+		//retVal.add("");
 		return retVal;
 	}
 

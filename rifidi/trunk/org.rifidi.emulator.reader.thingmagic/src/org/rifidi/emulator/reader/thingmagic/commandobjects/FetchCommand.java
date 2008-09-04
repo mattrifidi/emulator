@@ -86,7 +86,8 @@ public class FetchCommand implements Command {
 							"Error 0100:     syntax error at '" + token + "'");
 				}
 				
-				if (tmsr.getCursorCommandRegistry().containsKey(token)){
+				
+				if (!tmsr.getCursorCommandRegistry().containsKey(token)){
 					throw new CommandCreationExeption(
 							"Error 0100:	Cursor does not exist");
 				}
