@@ -84,7 +84,7 @@ public class AutoEvaluationState implements AutoState, Observer {
 
 		// ifTaglist has tags, do autoTrue
 		if (!stateIsStopped) {
-			if (!currentTags.isEmpty()) {
+			if (!currentTags.isEmpty() && !anyNewTags(oldTags, currentTags)) {
 				autoTrue();
 				this.evalTrig = EvaluationTriggerCondition.True;
 			} else {
@@ -109,6 +109,31 @@ public class AutoEvaluationState implements AutoState, Observer {
 
 	}
 
+	/**
+	 * Returns true if there are any tags in currTags that are not in oldTags.
+	 * 
+	 * @param oldTags
+	 *            The tags that were in the previous cycle
+	 * @param currTags
+	 *            The tags that were in the current cycle
+	 * @return True if there are any tags in the current cycle that were not in
+	 *         the previous cycle.
+	 */
+	private boolean anyNewTags(List<RifidiTag> oldTags, List<RifidiTag> currTags) {
+		for (RifidiTag curr : currTags) {
+			boolean found = false;
+			for (RifidiTag old : oldTags) {
+				if (old.equals(curr)) {
+					found = true;
+				}
+			}
+			if (!found) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public void stopState() {
 		logger.debug("stop state called");
 		stateIsStopped = true;
@@ -121,9 +146,9 @@ public class AutoEvaluationState implements AutoState, Observer {
 	 * @return
 	 */
 	private List<RifidiTag> scanRadio() {
-		// TODO: Possible problem: We are scanning every time now, instead of 
-		// only when notify mode is on.  This may cause problems with autonomous 
-		// mode and a -1 persistTime.  
+		// TODO: Possible problem: We are scanning every time now, instead of
+		// only when notify mode is on. This may cause problems with autonomous
+		// mode and a -1 persistTime.
 		ArrayList<RifidiTag> response = new ArrayList<RifidiTag>();
 		// if (asr.getNotifyControlSignal().getControlVariableValue() == true) {
 		response = AlienTag.getTagList(this.asr);
