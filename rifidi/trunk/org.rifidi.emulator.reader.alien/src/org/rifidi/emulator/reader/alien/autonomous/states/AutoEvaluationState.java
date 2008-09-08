@@ -79,6 +79,7 @@ public class AutoEvaluationState implements AutoState, Observer {
 			currentTags = scanRadio();
 			setTagEventTriggerCondition();
 			logger.debug("Done getting tag list");
+			logger.debug("Number of tags found: " + currentTags.size());
 		}
 
 		// ifTaglist has tags, do autoTrue
@@ -102,7 +103,7 @@ public class AutoEvaluationState implements AutoState, Observer {
 		// now go to waiting state again
 		if (!stateIsStopped) {
 			logger.debug("transition to next state please");
-		}else{
+		} else {
 			logger.debug("state is stopped");
 		}
 
@@ -120,14 +121,16 @@ public class AutoEvaluationState implements AutoState, Observer {
 	 * @return
 	 */
 	private List<RifidiTag> scanRadio() {
-
+		// TODO: Possible problem: We are scanning every time now, instead of 
+		// only when notify mode is on.  This may cause problems with autonomous 
+		// mode and a -1 persistTime.  
 		ArrayList<RifidiTag> response = new ArrayList<RifidiTag>();
-		if (asr.getNotifyControlSignal().getControlVariableValue() == true) {
-			response = AlienTag.getTagList(this.asr);
-		} else {
-			logger.debug("Notification mode is not on "
-					+ "- not processing taglist");
-		}
+		// if (asr.getNotifyControlSignal().getControlVariableValue() == true) {
+		response = AlienTag.getTagList(this.asr);
+		// } else {
+		// logger.debug("Notification mode is not on "
+		// + "- not processing taglist");
+		// }
 		return response;
 	}
 
@@ -234,6 +237,7 @@ public class AutoEvaluationState implements AutoState, Observer {
 	 * @param tags
 	 */
 	private void sendTags(List<RifidiTag> tags) {
+		logger.debug("tags size: " + tags.size());
 		NotifyController controller = this.asr.getAutoStateController()
 				.getNotifyController();
 
