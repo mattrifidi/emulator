@@ -73,7 +73,7 @@ public class ThingMagicReaderModuleOnPowerState extends AbstractOnPowerState {
 		ThingMagicReaderModule rm = (ThingMagicReaderModule) pcObject;
 		
 		/* turn off tcp connection */
-		rm.getInteractiveRQLController().turnOff(this.getClass());
+		//rm.getInteractiveRQLController().turnOff(this.getClass());
 		
 		/* more things to do to turn off the tcp connection */
 		rm.getSharedResources().getInteractiveRQLPowerSignal()
