@@ -51,7 +51,7 @@ public class EPCReaderModule extends AbstractPowerModule implements
 
 	public static final String startupText = "<STARTUP>";
 
-	public static final String READERTYPE = "EPC Reader Protocol v1.1";
+	public static final String READERTYPE = "Reader Protocol v1.1";
 
 	public static final String XMLLOCATION = "org/rifidi/emulator/reader/epc/module/";
 
@@ -118,7 +118,7 @@ public class EPCReaderModule extends AbstractPowerModule implements
 		consoleLogger = LogFactory.getLog("console."
 				+ properties.getReaderName());
 		consoleLogger.info(EPCReaderModule.startupText
-				+ "Instantiated EPC rp v1.1 with name: "
+				+ "Instantiated Reader Protocol v1.1 with name: "
 				+ properties.getReaderName());
 		consoleLogger.info(EPCReaderModule.startupText
 				+ properties.getReaderName() + " IP Address: "
