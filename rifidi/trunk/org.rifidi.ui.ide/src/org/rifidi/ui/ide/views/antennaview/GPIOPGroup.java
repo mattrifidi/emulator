@@ -8,6 +8,7 @@ import org.apache.commons.logging.LogFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.nebula.widgets.pgroup.PGroup;
@@ -17,14 +18,23 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.rifidi.ui.common.reader.UIReader;
 import org.rifidi.ui.common.reader.callback.GPOEventCallbackInterface;
+import org.rifidi.ui.ide.Activator;
 import org.rifidi.ui.ide.views.antennaview.exception.RifidiIndexDoesNotMatchException;
 
 /**
  * GPIO View to display the actual GPIO's of a reader
  * 
  * @author Dan West - dan@pramari.com
+ * @author Matthew Dean - matt@pramari.com
  */
 public class GPIOPGroup extends PGroup implements GPOEventCallbackInterface {
+	
+	//TODO: Find an OSGI solution to referencing these images
+	private static final String RED_FILENAME = "icons/red_16.png";
+	private static final String GREEN_FILENAME = "icons/green_16.png";
+
+	private static final Image RED_LED = Activator.getImageDescriptor(RED_FILENAME).createImage();
+	private static final Image GREEN_LED = Activator.getImageDescriptor(GREEN_FILENAME).createImage();
 
 	private Log logger = LogFactory.getLog(GPIOPGroup.class);
 
@@ -33,15 +43,17 @@ public class GPIOPGroup extends PGroup implements GPOEventCallbackInterface {
 	private Display display;
 
 	private ArrayList<Button> gpiButtonList = new ArrayList<Button>();
-	private ArrayList<Button> gpoButtonList = new ArrayList<Button>();
+	private ArrayList<Label> gpoButtonList = new ArrayList<Label>();
 
 	/**
 	 * @param parent
 	 * @param style
-	 * @throws RifidiIndexDoesNotMatchException 
+	 * @throws RifidiIndexDoesNotMatchException
 	 */
-	public GPIOPGroup(Composite parent, int style, UIReader reader) throws RifidiIndexDoesNotMatchException {
+	public GPIOPGroup(Composite parent, int style, UIReader reader)
+			throws RifidiIndexDoesNotMatchException {
 		super(parent, style);
+
 		setText("GPIO Settings");
 		setLayout(new GridLayout());
 		this.uiReader = reader;
@@ -157,9 +169,9 @@ public class GPIOPGroup extends PGroup implements GPOEventCallbackInterface {
 				label.setText(gpoStringList.get(i));
 			}
 
-			Button check = new Button(buttonComp, SWT.CENTER | SWT.CHECK);
-			check.setEnabled(false);
-			gpoButtonList.add(check);
+			Label image_label = new Label(buttonComp, SWT.IMAGE_PNG);
+			image_label.setImage(RED_LED);
+			gpoButtonList.add(image_label);
 		}
 
 		base.pack();
@@ -181,7 +193,9 @@ public class GPIOPGroup extends PGroup implements GPOEventCallbackInterface {
 				logger.debug("GPO PORT " + gpoPortNum
 						+ " WAS SET TO HIGH IN THE IDE");
 
-				gpoButtonList.get(gpoPortNum).setSelection(true);
+				gpoButtonList.get(gpoPortNum).setImage(GREEN_LED);
+
+				gpoButtonList.get(gpoPortNum).redraw();
 			}
 		});
 	}
@@ -198,7 +212,9 @@ public class GPIOPGroup extends PGroup implements GPOEventCallbackInterface {
 			public void run() {
 				logger.debug("GPO PORT " + gpoPortNum
 						+ " WAS SET TO LOW IN THE IDE");
-				gpoButtonList.get(gpoPortNum).setSelection(false);
+				gpoButtonList.get(gpoPortNum).setImage(RED_LED);
+
+				gpoButtonList.get(gpoPortNum).redraw();
 			}
 		});
 	}
