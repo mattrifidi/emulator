@@ -13,7 +13,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
@@ -32,9 +31,9 @@ import org.rifidi.dynamicswtforms.ui.widgets.listeners.DynamicSWTWidgetListener;
 import org.rifidi.dynamicswtforms.xml.constants.FormData;
 import org.rifidi.dynamicswtforms.xml.constants.FormElementType;
 
-public class DynamicSWTForm implements DynamicSWTWidgetListener{
+public class DynamicSWTForm implements DynamicSWTWidgetListener {
 
-	private Document document;
+	private Element formRoot;
 	private ArrayList<DynamicSWTFormWidget> widgets;
 	private boolean displayErrors;
 	private Label errorTextLabel;
@@ -47,17 +46,25 @@ public class DynamicSWTForm implements DynamicSWTWidgetListener{
 		SAXBuilder builder = new SAXBuilder();
 		Reader reader = new StringReader(xml);
 		try {
-			this.listeners = new ArrayList<DynamicSWTWidgetListener>();
-			this.displayErrors = displayErrors;
-			this.errorIcons = new ArrayList<Label>();
-			widgets = new ArrayList<DynamicSWTFormWidget>();
-			this.document = builder.build(reader);
-			this.name = document.getRootElement().getAttributeValue(FormData.NAME.name());
+			init(builder.build(reader).getRootElement(), displayErrors);
 		} catch (JDOMException e) {
 			throw new DynamicSWTFormInvalidXMLException(e);
 		} catch (IOException e) {
 			throw new DynamicSWTFormInvalidXMLException(e);
 		}
+	}
+
+	public DynamicSWTForm(Element formRoot, boolean displayErrors) {
+		init(formRoot, displayErrors);
+	}
+	
+	private void init(Element formRoot, boolean displayErrors){
+		this.listeners = new ArrayList<DynamicSWTWidgetListener>();
+		this.displayErrors = displayErrors;
+		this.errorIcons = new ArrayList<Label>();
+		widgets = new ArrayList<DynamicSWTFormWidget>();
+		this.formRoot = formRoot;
+		this.name = formRoot.getAttributeValue(FormData.NAME.name());
 	}
 
 	public void createControls(Composite parent) {
@@ -81,7 +88,7 @@ public class DynamicSWTForm implements DynamicSWTWidgetListener{
 			formComposite.setLayout(formCompositeLayout);
 		}
 
-		List<Element> children = document.getRootElement().getChildren();
+		List<Element> children = formRoot.getChildren();
 		for (Element child : children) {
 			// createWidget
 			FormElementType type = null;
@@ -89,7 +96,7 @@ public class DynamicSWTForm implements DynamicSWTWidgetListener{
 			try {
 				type = FormElementType.valueOf(child.getName());
 			} catch (IllegalArgumentException ex) {
-				//TODO: do something here
+				// TODO: do something here
 			}
 
 			if (this.displayErrors) {
@@ -103,7 +110,7 @@ public class DynamicSWTForm implements DynamicSWTWidgetListener{
 
 			switch (type) {
 			case BOOLEAN:
-				//widget = new BooleanWidget(new BooleanWidgetData(child));
+				// widget = new BooleanWidget(new BooleanWidgetData(child));
 				break;
 			case CHOICE:
 				widget = new ChoiceWidget(new ChoiceWidgetData(child));
@@ -118,7 +125,7 @@ public class DynamicSWTForm implements DynamicSWTWidgetListener{
 				widget = new StringWidget(new StringWidgetData(child));
 				break;
 			}
-			
+
 			this.widgets.add(widget);
 			widget.createLabel(formComposite);
 			widget.createControl(formComposite);
@@ -129,8 +136,8 @@ public class DynamicSWTForm implements DynamicSWTWidgetListener{
 	}
 
 	public String setValue(String widgetName, String value) {
-		for(DynamicSWTFormWidget widget : widgets){
-			if(widget.getElementName().equalsIgnoreCase(widgetName)){
+		for (DynamicSWTFormWidget widget : widgets) {
+			if (widget.getElementName().equalsIgnoreCase(widgetName)) {
 				return widget.setValue(value);
 			}
 		}
@@ -138,8 +145,8 @@ public class DynamicSWTForm implements DynamicSWTWidgetListener{
 	}
 
 	public String getValue(String widgetName) {
-		for(DynamicSWTFormWidget widget : widgets){
-			if(widget.getElementName().equalsIgnoreCase(widgetName)){
+		for (DynamicSWTFormWidget widget : widgets) {
+			if (widget.getElementName().equalsIgnoreCase(widgetName)) {
 				return widget.getValue();
 			}
 		}
@@ -147,64 +154,88 @@ public class DynamicSWTForm implements DynamicSWTWidgetListener{
 	}
 
 	public void setError(String widgetName, String message) {
-
+		for(DynamicSWTFormWidget w : widgets){
+			if(w.getElementName().equalsIgnoreCase(widgetName)){
+				errorIcons.get(widgets.indexOf(w)).setVisible(true);
+				errorTextLabel.setText(message);
+				errorTextLabel.setVisible(true);
+			}
+		}
 	}
 
 	public void unsetError(String widgetName) {
-
+		for(DynamicSWTFormWidget w : widgets){
+			if(w.getElementName().equalsIgnoreCase(widgetName)){
+				errorIcons.get(widgets.indexOf(w)).setVisible(false);
+				errorTextLabel.setText("");
+				errorTextLabel.setVisible(false);
+			}
+		}
 	}
 
 	public String validate() {
-		for(DynamicSWTFormWidget widget : widgets){
+		for (DynamicSWTFormWidget widget : widgets) {
 			String s = widget.validate();
-			if(s!=null){
+			if (s != null) {
 				return s;
 			}
 		}
 		return null;
 	}
-	
-	public void addListner(DynamicSWTWidgetListener listener){
+
+	public void addListner(DynamicSWTWidgetListener listener) {
 		this.listeners.add(listener);
 	}
-	
-	public void removeListner(DynamicSWTWidgetListener listener){
+
+	public void removeListner(DynamicSWTWidgetListener listener) {
 		this.listeners.remove(listener);
 	}
 
 	@Override
 	public void dataChanged(String newData) {
-		for(DynamicSWTWidgetListener l : listeners){
+		for (DynamicSWTWidgetListener l : listeners) {
 			l.dataChanged(newData);
 		}
 	}
 
 	@Override
 	public void keyReleased() {
-		for(DynamicSWTWidgetListener l : listeners){
+		for (DynamicSWTWidgetListener l : listeners) {
 			l.keyReleased();
 		}
-		
+
 	}
-	
-	public Element getXML(){
+
+	public Element getXML() {
 		Element e = new Element(name);
-		for(DynamicSWTFormWidget widget : widgets){
+		for (DynamicSWTFormWidget widget : widgets) {
 			e.addContent(widget.getXML());
 		}
 		return e;
 	}
-	
-	public String getXMLAsString(boolean compact){
+
+	public String getXMLAsString(boolean compact) {
 		Element e = getXML();
 		XMLOutputter outputter;
-		if(compact){
+		if (compact) {
 			outputter = new XMLOutputter(Format.getCompactFormat());
-		}else{
-			outputter= new XMLOutputter(Format.getPrettyFormat());
+		} else {
+			outputter = new XMLOutputter(Format.getPrettyFormat());
 		}
 		String s = outputter.outputString(e);
 		return s;
+	}
+	
+	public void enable(){
+		for(DynamicSWTFormWidget w : widgets){
+			w.enable();
+		}
+	}
+	
+	public void disable(){
+		for(DynamicSWTFormWidget w : widgets){
+			w.disable();
+		}
 	}
 
 }

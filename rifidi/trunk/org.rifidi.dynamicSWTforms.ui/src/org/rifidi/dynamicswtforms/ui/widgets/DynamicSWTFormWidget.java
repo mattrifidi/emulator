@@ -24,4 +24,8 @@ public interface DynamicSWTFormWidget {
 	
 	public void removeListener(DynamicSWTWidgetListener listener);
 	
+	public void disable();
+	
+	public void enable();
+	
 }

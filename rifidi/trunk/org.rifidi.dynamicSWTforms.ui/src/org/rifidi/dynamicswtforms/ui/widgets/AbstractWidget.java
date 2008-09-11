@@ -50,5 +50,18 @@ public abstract class AbstractWidget implements DynamicSWTFormWidget {
 		e.setText(this.getValue());
 		return e;
 	}
+	
+	protected void notifyListenersDataChanged(String data) {
+		for (DynamicSWTWidgetListener l : listners) {
+			l.dataChanged(data);
+		}
+
+	}
+	
+	protected void notifyListenersKeyReleased(){
+		for (DynamicSWTWidgetListener l : listners) {
+			l.keyReleased();
+		}
+	}
 
 }
