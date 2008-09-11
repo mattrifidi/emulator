@@ -73,9 +73,8 @@ public class DynamicSWTFormXMLProcessorImpl implements
 	private Element processClass(Class<?> clazz, Document doc) {
 		Form anntoations = clazz.getAnnotation(Form.class);
 
-		Element annotationNode = doc.createElement(FormData.DYNAMIC_SWT_FORM
-				.toString());
-		annotationNode.setAttribute(FormData.NAME.toString(), clazz
+		Element annotationNode = doc.createElement(FormData.DYNAMIC_SWT_FORM.name());
+		annotationNode.setAttribute(FormData.NAME.name(), clazz
 				.getSimpleName());
 		if (anntoations != null) {
 			for (FormElement w : anntoations.formElements()) {
@@ -89,24 +88,23 @@ public class DynamicSWTFormXMLProcessorImpl implements
 
 		Element element = doc.createElement(formElement.type().toString());
 
-		Element name = doc.createElement(FormElementData.ELEMENT_NAME
-				.toString());
+		Element name = doc.createElement(FormElementData.ELEMENT_NAME.name());
 		name.appendChild(doc.createTextNode(formElement.elementName()));
 		element.appendChild(name);
 
 		Element displayname = doc.createElement(FormElementData.DISPLAY_NAME
-				.toString());
+				.name());
 		displayname.appendChild(doc.createTextNode(formElement.displayName()));
 		element.appendChild(displayname);
 
 		Element defaultValue = doc.createElement(FormElementData.DEFAULT_VALUE
-				.toString());
+				.name());
 		defaultValue
 				.appendChild(doc.createTextNode(formElement.defaultValue()));
 		element.appendChild(defaultValue);
 
 		Element editable = doc.createElement(FormElementData.EDITABLE
-				.toString());
+				.name());
 		editable.appendChild(doc.createTextNode(Boolean.toString(formElement
 				.editable())));
 		element.appendChild(editable);
@@ -141,7 +139,7 @@ public class DynamicSWTFormXMLProcessorImpl implements
 	private void processStringFormElement(FormElement formElement,
 			Element element) {
 		Element regex = element.getOwnerDocument().createElement(
-				FormElementData.REGEX.toString());
+				FormElementData.REGEX.name());
 		regex.appendChild(element.getOwnerDocument().createTextNode(
 				formElement.regex()));
 		element.appendChild(regex);
@@ -150,14 +148,14 @@ public class DynamicSWTFormXMLProcessorImpl implements
 	private void processIntegerFormElement(FormElement formElement,
 			Element element) {
 		Element min = element.getOwnerDocument().createElement(
-				FormElementData.MIN.toString());
+				FormElementData.MIN.name());
 		Integer minInt = new Double(formElement.min()).intValue();
 		min.appendChild(element.getOwnerDocument().createTextNode(
 				Integer.toString(minInt)));
 		element.appendChild(min);
 
 		Element max = element.getOwnerDocument().createElement(
-				FormElementData.MAX.toString());
+				FormElementData.MAX.name());
 		Integer maxInt = new Double(formElement.max()).intValue();
 		max.appendChild(element.getOwnerDocument().createTextNode(
 				Integer.toString(maxInt)));
@@ -168,21 +166,21 @@ public class DynamicSWTFormXMLProcessorImpl implements
 	private void processFloatFormElement(FormElement formElement,
 			Element element) {
 		Element min = element.getOwnerDocument().createElement(
-				FormElementData.MIN.toString());
+				FormElementData.MIN.name());
 		Float minFloat = new Double(formElement.min()).floatValue();
 		min.appendChild(element.getOwnerDocument().createTextNode(
 				Float.toString(minFloat)));
 		element.appendChild(min);
 
 		Element max = element.getOwnerDocument().createElement(
-				FormElementData.MAX.toString());
+				FormElementData.MAX.name());
 		Float maxLong = new Double(formElement.max()).floatValue();
 		max.appendChild(element.getOwnerDocument().createTextNode(
 				Float.toString(maxLong)));
 		element.appendChild(max);
 
 		Element decimal = element.getOwnerDocument().createElement(
-				FormElementData.DECIMAL_PLACES.toString());
+				FormElementData.DECIMAL_PLACES.name());
 		decimal.appendChild(element.getOwnerDocument().createTextNode(
 				Integer.toString(formElement.decimalPlaces())));
 		element.appendChild(decimal);
@@ -211,11 +209,11 @@ public class DynamicSWTFormXMLProcessorImpl implements
 			ArrayList<String> possibleValues) {
 		if (possibleValues.size() > 0) {
 			Element values = element.getOwnerDocument().createElement(
-					FormElementData.POSSIBLE_VALUES.toString());
+					FormElementData.POSSIBLE_VALUES.name());
 			for (String value : possibleValues) {
 				Element valueElement = element.getOwnerDocument()
 						.createElement(
-								FormElementData.POSSIBLE_VALUE.toString());
+								FormElementData.POSSIBLE_VALUE.name());
 				valueElement.appendChild(element.getOwnerDocument()
 						.createTextNode(value));
 				values.appendChild(valueElement);
