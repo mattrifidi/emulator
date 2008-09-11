@@ -110,9 +110,9 @@ public class DynamicSWTFormXMLProcessorImpl implements
 		editable.appendChild(doc.createTextNode(Boolean.toString(formElement
 				.editable())));
 		element.appendChild(editable);
-		
+
 		switch (formElement.type()) {
-		
+
 		case BOOLEAN:
 			processBooleanFormElement(formElement, element);
 			break;
@@ -200,6 +200,9 @@ public class DynamicSWTFormXMLProcessorImpl implements
 			}
 			processPossibleValues(element, enumValues);
 		} catch (ClassNotFoundException e) {
+			// TODO: remove the print stack trace and figure out why logger is
+			// not working
+			logger.debug(e);
 			e.printStackTrace();
 		}
 	}
