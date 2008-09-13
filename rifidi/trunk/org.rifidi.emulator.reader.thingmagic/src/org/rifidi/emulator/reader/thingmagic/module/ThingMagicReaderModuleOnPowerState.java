@@ -72,6 +72,9 @@ public class ThingMagicReaderModuleOnPowerState extends AbstractOnPowerState {
 		/* cast the pcObject to something we can use */
 		ThingMagicReaderModule rm = (ThingMagicReaderModule) pcObject;
 		
+		/* clear cursor registry... as it is volatile in the real reader. */ 
+		rm.getSharedResources().getCursorCommandRegistry().clear();
+		
 		/* turn off tcp connection */
 		//rm.getInteractiveRQLController().turnOff(this.getClass());
 		
