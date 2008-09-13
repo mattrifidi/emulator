@@ -76,7 +76,7 @@ public class ResetCommand implements Command {
 	@Override
 	public ArrayList<Object> execute() {
 		
-		tmsr.setCursorCommandRegistry(new CursorCommandRegistry());
+		tmsr.getCursorCommandRegistry().clear();
 		//TODO add more things that need to be reset
 		
 		ArrayList<Object> retVal = new ArrayList<Object>();
