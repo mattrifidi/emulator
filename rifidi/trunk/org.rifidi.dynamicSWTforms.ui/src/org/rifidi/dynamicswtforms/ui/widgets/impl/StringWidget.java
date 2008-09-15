@@ -4,12 +4,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.FocusEvent;
-import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 import org.rifidi.dynamicswtforms.ui.widgets.AbstractWidget;
@@ -35,6 +34,11 @@ public class StringWidget extends AbstractWidget {
 	@Override
 	public void createControl(Composite parent) {
 		text = new Text(parent, SWT.BORDER);
+		GridData gridData = new GridData();
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.grabExcessHorizontalSpace=true;
+		gridData.minimumWidth=150;
+		text.setLayoutData(gridData);
 		text.setEditable(data.isEditable());
 		text.setText(data.getDefaultValue());
 		
@@ -43,25 +47,6 @@ public class StringWidget extends AbstractWidget {
 			@Override
 			public void modifyText(ModifyEvent e) {
 				dirty = true;
-
-			}
-
-		});
-
-		text.addFocusListener(new FocusListener() {
-
-			@Override
-			public void focusGained(FocusEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void focusLost(FocusEvent e) {
-				if (dirty == true) {
-					dirty = false;
-					notifyListenersDataChanged(text.getText());
-				}
 
 			}
 

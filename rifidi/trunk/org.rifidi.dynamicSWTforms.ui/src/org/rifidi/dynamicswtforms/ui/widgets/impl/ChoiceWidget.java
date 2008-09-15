@@ -3,8 +3,8 @@ package org.rifidi.dynamicswtforms.ui.widgets.impl;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.FocusEvent;
-import org.eclipse.swt.events.FocusListener;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
@@ -28,6 +28,8 @@ public class ChoiceWidget extends AbstractWidget {
 		combo = new Combo(parent, SWT.BORDER);
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.minimumWidth = 150;
 		combo.setLayoutData(gridData);
 
 		List<String> choices = ((ChoiceWidgetData) data).possibleChoices();
@@ -41,9 +43,7 @@ public class ChoiceWidget extends AbstractWidget {
 			@Override
 			// This method is called when enter is pressed
 			public void widgetDefaultSelected(SelectionEvent e) {
-				dirty = false;
-				notifyListenersDataChanged(combo.getItem(combo
-						.getSelectionIndex()));
+				dirty = true;
 			}
 
 			@Override
@@ -52,19 +52,25 @@ public class ChoiceWidget extends AbstractWidget {
 			}
 		});
 
-		combo.addFocusListener(new FocusListener() {
+		combo.addKeyListener(new KeyListener() {
+
 			@Override
-			public void focusGained(FocusEvent e) {
+			public void keyPressed(KeyEvent e) {
 			}
 
 			@Override
-			public void focusLost(FocusEvent e) {
-				if (dirty = true) {
-					dirty = false;
-					notifyListenersDataChanged(combo.getItem(combo
-							.getSelectionIndex()));
-				}
+			public void keyReleased(KeyEvent e) {
+				if (e.character == SWT.CR) {
+					if (dirty == true) {
+						dirty = false;
+						notifyListenersDataChanged(combo.getItem(combo
+								.getSelectionIndex()));
+					}
+				} else
+					notifyListenersKeyReleased();
+
 			}
+
 		});
 
 	}

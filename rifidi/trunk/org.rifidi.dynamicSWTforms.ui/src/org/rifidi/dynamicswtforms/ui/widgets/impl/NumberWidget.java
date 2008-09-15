@@ -1,8 +1,6 @@
 package org.rifidi.dynamicswtforms.ui.widgets.impl;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.FocusEvent;
-import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.ModifyEvent;
@@ -19,7 +17,7 @@ import org.rifidi.dynamicswtforms.xml.constants.FormElementType;
 public class NumberWidget extends AbstractWidget {
 
 	private Spinner spinner;
-	private boolean dirty=false;
+	private boolean dirty = false;
 
 	public NumberWidget(AbstractWidgetData data) {
 		super(data);
@@ -29,7 +27,9 @@ public class NumberWidget extends AbstractWidget {
 	public void createControl(Composite parent) {
 		spinner = new Spinner(parent, SWT.BORDER);
 		GridData gridData = new GridData();
-		//gridData.horizontalAlignment = GridData.FILL;
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.minimumWidth = 150;
 		spinner.setLayoutData(gridData);
 
 		if (data.getType() == FormElementType.INTEGER) {
@@ -57,31 +57,12 @@ public class NumberWidget extends AbstractWidget {
 		}
 
 		spinner.setSelection(Integer.parseInt(intData.getDefaultValue()));
-		
+
 		spinner.addModifyListener(new ModifyListener() {
 
 			@Override
 			public void modifyText(ModifyEvent e) {
 				dirty = true;
-
-			}
-
-		});
-
-		spinner.addFocusListener(new FocusListener() {
-
-			@Override
-			public void focusGained(FocusEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void focusLost(FocusEvent e) {
-				if (dirty == true) {
-					dirty = false;
-					notifyListenersDataChanged(spinner.getText());
-				}
 
 			}
 
@@ -100,7 +81,8 @@ public class NumberWidget extends AbstractWidget {
 						dirty = false;
 						notifyListenersDataChanged(spinner.getText());
 					}
-				}
+				} else
+					notifyListenersKeyReleased();
 
 			}
 
@@ -158,15 +140,15 @@ public class NumberWidget extends AbstractWidget {
 	@Override
 	public void disable() {
 		this.spinner.setEnabled(false);
-		
+
 	}
 
 	@Override
 	public void enable() {
-		if(this.data.isEditable()){
+		if (this.data.isEditable()) {
 			this.spinner.setEnabled(true);
 		}
-		
+
 	}
 
 }

@@ -12,7 +12,8 @@ Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipse.swt;bundle-version="3.4.0",
  org.rifidi.dynamicSWTForms.xml;bundle-version="1.0.0",
  org.eclipse.jface;bundle-version="3.4.0",
- org.jdom;bundle-version="1.0.0"
+ org.jdom;bundle-version="1.0.0",
+ org.eclipse.ui.views.properties.tabbed;bundle-version="3.4.0"
 Export-Package: org.rifidi.dynamicswtforms.ui.exceptions,
  org.rifidi.dynamicswtforms.ui.form,
  org.rifidi.dynamicswtforms.ui.widgets,

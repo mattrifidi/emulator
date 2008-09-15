@@ -13,6 +13,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
@@ -70,22 +71,30 @@ public class DynamicSWTForm implements DynamicSWTWidgetListener {
 	public void createControls(Composite parent) {
 
 		Composite formComposite = new Composite(parent, SWT.NONE);
+		formComposite.setLayout(new GridLayout(1, false));
+		
+		Composite widgetCompsoite;
+		
 		if (this.displayErrors) {
-			GridLayout formCompositeLayout = new GridLayout();
-			formCompositeLayout.makeColumnsEqualWidth = false;
-			formCompositeLayout.numColumns = 3;
-			formComposite.setLayout(formCompositeLayout);
-
 			errorTextLabel = new Label(formComposite, SWT.NONE);
 			GridData errorTextGridData = new GridData();
 			errorTextGridData.horizontalSpan = 3;
 			errorTextLabel.setLayoutData(errorTextGridData);
 			errorTextLabel.setVisible(false);
+			
+			widgetCompsoite = new Composite(formComposite, SWT.NONE);
+			GridLayout widgetCompositeLayout = new GridLayout();
+			widgetCompositeLayout.makeColumnsEqualWidth = false;
+			widgetCompositeLayout.numColumns = 3;
+			widgetCompsoite.setLayout(widgetCompositeLayout);
+
+
 		} else {
-			GridLayout formCompositeLayout = new GridLayout();
-			formCompositeLayout.makeColumnsEqualWidth = false;
-			formCompositeLayout.numColumns = 2;
-			formComposite.setLayout(formCompositeLayout);
+			widgetCompsoite = new Composite(formComposite, SWT.NONE);
+			GridLayout widgetCompositeLayout = new GridLayout();
+			widgetCompositeLayout.makeColumnsEqualWidth = false;
+			widgetCompositeLayout.numColumns = 2;
+			widgetCompsoite.setLayout(widgetCompositeLayout);
 		}
 
 		List<Element> children = formRoot.getChildren();
@@ -100,7 +109,7 @@ public class DynamicSWTForm implements DynamicSWTWidgetListener {
 			}
 
 			if (this.displayErrors) {
-				Label imageLabel = new Label(formComposite, SWT.NONE);
+				Label imageLabel = new Label(widgetCompsoite, SWT.NONE);
 				// TODO: remove this and add image manually
 				Image x = JFaceResources.getImage("dialog_message_error_image");
 				imageLabel.setImage(x);
@@ -127,8 +136,8 @@ public class DynamicSWTForm implements DynamicSWTWidgetListener {
 			}
 
 			this.widgets.add(widget);
-			widget.createLabel(formComposite);
-			widget.createControl(formComposite);
+			widget.createLabel(widgetCompsoite);
+			widget.createControl(widgetCompsoite);
 			widget.addListener(this);
 
 		}
