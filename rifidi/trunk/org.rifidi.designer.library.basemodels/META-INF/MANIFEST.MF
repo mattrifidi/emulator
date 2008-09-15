@@ -9,13 +9,15 @@ Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.ui.views,
- org.rifidi.jmeswt,
  org.rifidi.dependencies,
  org.rifidi.designer.rcp,
  org.rifidi.emulator,
  org.rifidi.services,
  org.rifidi.services.tags,
  org.rifidi.designer.entities,
- org.rifidi.ui.common
+ org.rifidi.ui.common,
+ org.monklypse.jme2;bundle-version="1.0.0",
+ org.monklypse.jme2.physics;bundle-version="1.0.0",
+ org.monklypse.lwjgl;bundle-version="1.0.0"
 Eclipse-LazyStart: true
 Eclipse-BuddyPolicy: dependent

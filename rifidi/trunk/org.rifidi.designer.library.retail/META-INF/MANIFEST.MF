@@ -7,11 +7,14 @@ Bundle-Activator: org.rifidi.designer.library.retail.Activator
 Bundle-Vendor: Pramari, LLC
 Require-Bundle: org.eclipse.core.runtime,
  org.rifidi.designer.rcp,
- org.rifidi.jmeswt,
  org.rifidi.services.tags,
  org.rifidi.services,
  org.rifidi.emulator,
  org.eclipse.ui,
  org.eclipse.ui.views,
- org.rifidi.designer.entities
+ org.rifidi.designer.entities,
+ org.monklypse.jme2;bundle-version="1.0.0",
+ org.monklypse.jme2.physics;bundle-version="1.0.0",
+ org.monklypse.lwjgl;bundle-version="1.0.0",
+ org.rifidi.dependencies;bundle-version="1.0.0"
 Eclipse-LazyStart: true

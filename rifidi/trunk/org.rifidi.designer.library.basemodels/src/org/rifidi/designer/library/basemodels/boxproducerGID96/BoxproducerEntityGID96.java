@@ -22,6 +22,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.monklypse.core.NodeHelper;
 import org.rifidi.designer.entities.Entity;
 import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.annotations.Property;
@@ -30,7 +31,6 @@ import org.rifidi.designer.entities.interfaces.SceneControl;
 import org.rifidi.designer.entities.interfaces.Switch;
 import org.rifidi.designer.library.basemodels.cardbox.CardboxEntity;
 import org.rifidi.designer.services.core.entities.ProductService;
-import org.rifidi.jmeswt.utils.NodeHelper;
 import org.rifidi.services.annotations.Inject;
 import org.rifidi.services.tags.registry.ITagRegistry;
 
@@ -39,11 +39,13 @@ import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.renderer.Renderer;
 import com.jme.scene.Node;
-import com.jme.scene.SceneElement;
 import com.jme.scene.SharedNode;
+import com.jme.scene.Spatial.CullHint;
 import com.jme.scene.shape.Box;
-import com.jme.scene.state.AlphaState;
+import com.jme.scene.state.BlendState;
 import com.jme.scene.state.MaterialState;
+import com.jme.scene.state.BlendState.DestinationFunction;
+import com.jme.scene.state.BlendState.SourceFunction;
 import com.jme.system.DisplaySystem;
 import com.jme.util.export.binary.BinaryImporter;
 
@@ -54,8 +56,8 @@ import com.jme.util.export.binary.BinaryImporter;
  * @author Dan West
  */
 @MonitoredProperties(names = { "IDGenerator", "name" })
-public class BoxproducerEntityGID96 extends VisualEntity implements SceneControl,
-		Switch {
+public class BoxproducerEntityGID96 extends VisualEntity implements
+		SceneControl, Switch {
 	/**
 	 * Logger for this class.
 	 */
@@ -92,14 +94,15 @@ public class BoxproducerEntityGID96 extends VisualEntity implements SceneControl
 	 * Reference to the tag registry.
 	 */
 	private ITagRegistry tagRegistry;
-	
+
 	/**
 	 * Constructor
 	 */
-	public BoxproducerEntityGID96(){
-		this.speed=4;
+	public BoxproducerEntityGID96() {
+		this.speed = 4;
 		setName("Boxproducer (GID96)");
 	}
+
 	/**
 	 * @return the speed
 	 */
@@ -148,10 +151,11 @@ public class BoxproducerEntityGID96 extends VisualEntity implements SceneControl
 		}
 		setCollides(false);
 
-		AlphaState as = DisplaySystem.getDisplaySystem().getRenderer()
-				.createAlphaState();
-		as.setDstFunction(AlphaState.DB_ONE_MINUS_SRC_ALPHA);
-		as.setSrcFunction(AlphaState.SB_SRC_ALPHA);
+		BlendState as = DisplaySystem.getDisplaySystem().getRenderer()
+				.createBlendState();
+		as.setBlendEnabled(true);
+		as.setSourceFunction(SourceFunction.SourceAlpha);
+		as.setDestinationFunction(DestinationFunction.OneMinusSourceAlpha);
 		as.setBlendEnabled(true);
 		as.setEnabled(true);
 
@@ -165,7 +169,7 @@ public class BoxproducerEntityGID96 extends VisualEntity implements SceneControl
 		Node sharednode = new SharedNode("maingeometry", model);
 		sharednode.setLocalTranslation(0, 12, 0);
 		node.attachChild(sharednode);
-		
+
 		sharednode.setRenderQueueMode(Renderer.QUEUE_TRANSPARENT);
 		sharednode.setRenderState(as);
 
@@ -174,16 +178,16 @@ public class BoxproducerEntityGID96 extends VisualEntity implements SceneControl
 
 		setNode(node);
 
-		Node _node=new Node("hiliter");
-		Box box = new Box("hiliter", new Vector3f(0,12f,0), 3f, .5f, 3f);
+		Node _node = new Node("hiliter");
+		Box box = new Box("hiliter", new Vector3f(0, 12f, 0), 3f, .5f, 3f);
 		box.setModelBound(new BoundingBox());
 		box.updateModelBound();
 		_node.attachChild(box);
 		_node.setModelBound(new BoundingBox());
 		_node.updateModelBound();
-		_node.setCullMode(SceneElement.CULL_ALWAYS);
+		_node.setCullHint(CullHint.Always);
 		getNode().attachChild(_node);
-		
+
 		logger.debug(NodeHelper.printNodeHierarchy(getNode(), 3));
 
 		thread = new BoxproducerEntityThread(this, productService, products);
@@ -206,7 +210,9 @@ public class BoxproducerEntityGID96 extends VisualEntity implements SceneControl
 						.getClassLoader()
 						.getResource(
 								"org/rifidi/designer/library/basemodels/boxproducer/blankdisc.jme")
-						// .getResource("org/rifidi/designer/library/basemodels/boxproducer/boxproducer_saucer.jme")
+						// .getResource(
+						// "org/rifidi/designer/library/basemodels/boxproducer/boxproducer_saucer.jme"
+						// )
 						.toURI();
 			} catch (URISyntaxException e) {
 				e.printStackTrace();
@@ -310,13 +316,14 @@ public class BoxproducerEntityGID96 extends VisualEntity implements SceneControl
 
 	/**
 	 * Set the product service.
+	 * 
 	 * @param productService
 	 */
 	@Inject
 	public void setProductService(ProductService productService) {
 		this.productService = productService;
 	}
-	
+
 	/**
 	 * @return the products
 	 */
@@ -332,14 +339,17 @@ public class BoxproducerEntityGID96 extends VisualEntity implements SceneControl
 	public void setProducts(List<CardboxEntity> products) {
 		this.products = products;
 	}
+
 	/**
 	 * @return the tagRegistry
 	 */
 	public ITagRegistry getTagRegistry() {
 		return this.tagRegistry;
 	}
+
 	/**
-	 * @param tagRegistry the tagRegistry to set
+	 * @param tagRegistry
+	 *            the tagRegistry to set
 	 */
 	@Inject
 	@XmlTransient
@@ -358,12 +368,14 @@ public class BoxproducerEntityGID96 extends VisualEntity implements SceneControl
 
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.rifidi.designer.entities.VisualEntity#getBoundingNode()
 	 */
 	@Override
 	public Node getBoundingNode() {
-		return (Node)getNode().getChild("hiliter");
+		return (Node) getNode().getChild("hiliter");
 	}
 
 }

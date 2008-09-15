@@ -46,8 +46,10 @@ import com.jme.renderer.Renderer;
 import com.jme.scene.Node;
 import com.jme.scene.SwitchNode;
 import com.jme.scene.shape.Box;
-import com.jme.scene.state.AlphaState;
+import com.jme.scene.state.BlendState;
 import com.jme.scene.state.MaterialState;
+import com.jme.scene.state.BlendState.DestinationFunction;
+import com.jme.scene.state.BlendState.SourceFunction;
 import com.jme.system.DisplaySystem;
 import com.jme.util.GameTaskQueueManager;
 import com.jme.util.export.binary.BinaryImporter;
@@ -81,7 +83,7 @@ public class AntennaFieldEntity extends VisualEntity implements Switch,
 	private VisualEntity parent;
 	private float factor;
 	// transparency
-	private AlphaState as;
+	private BlendState as;
 	private MaterialState ms;
 
 	private AntennaFieldThread antennaFieldThread;
@@ -189,10 +191,10 @@ public class AntennaFieldEntity extends VisualEntity implements Switch,
 				logger.fatal(e);
 			}
 		}
-		as = DisplaySystem.getDisplaySystem().getRenderer().createAlphaState();
+		as = DisplaySystem.getDisplaySystem().getRenderer().createBlendState();
 		as.setBlendEnabled(true);
-		as.setSrcFunction(AlphaState.SB_SRC_ALPHA);
-		as.setDstFunction(AlphaState.DB_ONE_MINUS_SRC_COLOR);
+		as.setSourceFunction(SourceFunction.SourceAlpha);
+		as.setDestinationFunction(DestinationFunction.OneMinusSourceColor);
 		as.setEnabled(true);
 		// create material and alpha states for the field
 		ms = DisplaySystem.getDisplaySystem().getRenderer()
@@ -216,7 +218,7 @@ public class AntennaFieldEntity extends VisualEntity implements Switch,
 	 */
 	public void turnOn() {
 		if (!running == true) {
-			GameTaskQueueManager.getManager().update(new Callable<Object>() {
+			update(new Callable<Object>() {
 
 				/*
 				 * (non-Javadoc)
@@ -271,7 +273,9 @@ public class AntennaFieldEntity extends VisualEntity implements Switch,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.entities.interfaces.Field#fieldEntered(org.rifidi.designer.entities.Entity)
+	 * @see
+	 * org.rifidi.designer.entities.interfaces.Field#fieldEntered(org.rifidi
+	 * .designer.entities.Entity)
 	 */
 	@Override
 	public void fieldEntered(Entity entity) {
@@ -288,7 +292,9 @@ public class AntennaFieldEntity extends VisualEntity implements Switch,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.entities.interfaces.Field#fieldLeft(org.rifidi.designer.entities.Entity)
+	 * @see
+	 * org.rifidi.designer.entities.interfaces.Field#fieldLeft(org.rifidi.designer
+	 * .entities.Entity)
 	 */
 	@Override
 	public void fieldLeft(Entity entity) {
@@ -337,7 +343,9 @@ public class AntennaFieldEntity extends VisualEntity implements Switch,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.entities.interfaces.NeedsPhysics#setCollisionHandler(com.jme.input.InputHandler)
+	 * @see
+	 * org.rifidi.designer.entities.interfaces.NeedsPhysics#setCollisionHandler
+	 * (com.jme.input.InputHandler)
 	 */
 	public void setCollisionHandler(InputHandler collisionHandler) {
 		this.collisionHandler = collisionHandler;
@@ -346,7 +354,9 @@ public class AntennaFieldEntity extends VisualEntity implements Switch,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.entities.interfaces.NeedsPhysics#setPhysicsSpace(com.jmex.physics.PhysicsSpace)
+	 * @see
+	 * org.rifidi.designer.entities.interfaces.NeedsPhysics#setPhysicsSpace(
+	 * com.jmex.physics.PhysicsSpace)
 	 */
 	public void setPhysicsSpace(PhysicsSpace physicsSpace) {
 		this.physicsSpace = physicsSpace;
@@ -365,7 +375,9 @@ public class AntennaFieldEntity extends VisualEntity implements Switch,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.entities.interfaces.ChildEntity#setParent(org.rifidi.designer.entities.VisualEntity)
+	 * @see
+	 * org.rifidi.designer.entities.interfaces.ChildEntity#setParent(org.rifidi
+	 * .designer.entities.VisualEntity)
 	 */
 	@Override
 	@XmlIDREF
@@ -462,10 +474,12 @@ public class AntennaFieldEntity extends VisualEntity implements Switch,
 	 */
 	@Override
 	public void setLOD(int lod) {
-//		switchNode.setActiveChild(lod);
+		// switchNode.setActiveChild(lod);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.rifidi.designer.entities.VisualEntity#getBoundingNode()
 	 */
 	@Override
@@ -473,5 +487,5 @@ public class AntennaFieldEntity extends VisualEntity implements Switch,
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 }

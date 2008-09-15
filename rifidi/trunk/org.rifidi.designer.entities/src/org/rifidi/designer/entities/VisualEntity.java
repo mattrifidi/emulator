@@ -10,6 +10,7 @@
  */
 package org.rifidi.designer.entities;
 
+import java.util.concurrent.Callable;
 
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -18,6 +19,7 @@ import com.jme.math.Matrix3f;
 import com.jme.math.Quaternion;
 import com.jme.math.Vector3f;
 import com.jme.scene.Node;
+import com.jme.util.GameTaskQueue;
 
 /**
  * A VisualEntity is an entity with a visual representation (bright me).
@@ -26,7 +28,14 @@ import com.jme.scene.Node;
  * 
  */
 public abstract class VisualEntity extends Entity {
-
+	/**
+	 * Queue that gets executed in the opengl context.
+	 */
+	private GameTaskQueue renderQueue;
+	/**
+	 * Queue that gets executed in the update context.
+	 */
+	private GameTaskQueue updateQueue;
 	/**
 	 * The node that belongs to the VisualEntity.
 	 */
@@ -106,6 +115,43 @@ public abstract class VisualEntity extends Entity {
 	public void destroy() {
 	}
 
+	@Override
+	public void setEntityId(String entityId) {
+		super.setEntityId(entityId);
+		getNode().setName(entityId);
+	}
+	
+
+	/**
+	 * @param renderQueue the renderQueue to set
+	 */
+	public void setRenderQueue(GameTaskQueue renderQueue) {
+		this.renderQueue = renderQueue;
+	}
+
+	/**
+	 * @param updateQueue the updateQueue to set
+	 */
+	public void setUpdateQueue(GameTaskQueue updateQueue) {
+		this.updateQueue = updateQueue;
+	}
+	
+	/**
+	 * Submit a callable to the update queue.
+	 * @param callable
+	 */
+	public void update(Callable<Object> callable){
+		renderQueue.enqueue(callable);
+	}
+	
+	/**
+	 * Submit a callable to the opengl queue.
+	 * @param callable
+	 */
+	public void render(Callable<Object> callable){
+		updateQueue.enqueue(callable);
+	}
+
 	/**
 	 * This method is used after adding the entity to the project.
 	 * 
@@ -117,20 +163,17 @@ public abstract class VisualEntity extends Entity {
 	 */
 	public abstract void loaded();
 
-	@Override
-	public void setEntityId(String entityId) {
-		super.setEntityId(entityId);
-		getNode().setName(entityId);
-	}
 	/**
 	 * Set the current level of LOD.
+	 * 
 	 * @param lod
 	 */
 	public abstract void setLOD(int lod);
 
 	/**
-	 * Get a node containing standard boxes that describe the bounds of the model.
-	 * NOTE: NOT BoundingBox
+	 * Get a node containing standard boxes that describe the bounds of the
+	 * model. NOTE: NOT BoundingBox
+	 * 
 	 * @return
 	 */
 	public abstract Node getBoundingNode();

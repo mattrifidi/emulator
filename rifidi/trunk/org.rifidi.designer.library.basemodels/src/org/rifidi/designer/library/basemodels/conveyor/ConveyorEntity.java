@@ -19,6 +19,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.monklypse.core.NodeHelper;
 import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.annotations.Property;
 import org.rifidi.designer.entities.databinding.annotations.MonitoredProperties;
@@ -33,11 +34,13 @@ import com.jme.math.Quaternion;
 import com.jme.math.Vector3f;
 import com.jme.renderer.Renderer;
 import com.jme.scene.Node;
-import com.jme.scene.SceneElement;
 import com.jme.scene.SharedNode;
 import com.jme.scene.SwitchNode;
+import com.jme.scene.Spatial.CullHint;
 import com.jme.scene.shape.Box;
-import com.jme.scene.state.AlphaState;
+import com.jme.scene.state.BlendState;
+import com.jme.scene.state.BlendState.DestinationFunction;
+import com.jme.scene.state.BlendState.SourceFunction;
 import com.jme.system.DisplaySystem;
 import com.jme.util.export.binary.BinaryImporter;
 import com.jmex.physics.PhysicsNode;
@@ -63,7 +66,7 @@ public class ConveyorEntity extends VisualEntity implements Switch,
 	/**
 	 * Alphastate for the directional pointer.
 	 */
-	private AlphaState basicTrans = null;
+	private BlendState basicTrans = null;
 	/**
 	 * Node for the directional pointer.
 	 */
@@ -110,10 +113,10 @@ public class ConveyorEntity extends VisualEntity implements Switch,
 	 */
 	public ConveyorEntity() {
 		basicTrans = DisplaySystem.getDisplaySystem().getRenderer()
-				.createAlphaState();
+				.createBlendState();
 		basicTrans.setBlendEnabled(true);
-		basicTrans.setDstFunction(AlphaState.DB_ONE_MINUS_SRC_ALPHA);
-		basicTrans.setSrcFunction(AlphaState.SB_SRC_ALPHA);
+		basicTrans.setDestinationFunction(DestinationFunction.OneMinusSourceAlpha);
+		basicTrans.setSourceFunction(SourceFunction.SourceAlpha);
 		basicTrans.setEnabled(true);
 		setName("Conveyor");
 		setSpeed(4);
@@ -176,7 +179,7 @@ public class ConveyorEntity extends VisualEntity implements Switch,
 		_node.attachChild(box);
 		_node.setModelBound(new BoundingBox());
 		_node.updateModelBound();
-		_node.setCullMode(SceneElement.CULL_ALWAYS);
+		_node.setCullHint(CullHint.Always);
 		getNode().attachChild(_node);
 	}
 

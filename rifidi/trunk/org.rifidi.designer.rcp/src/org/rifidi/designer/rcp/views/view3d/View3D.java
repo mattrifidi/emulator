@@ -47,6 +47,7 @@ import org.rifidi.designer.library.EntityLibraryReference;
 import org.rifidi.designer.library.EntityWizardIface;
 import org.rifidi.designer.library.EntityWizardRifidiIface;
 import org.rifidi.designer.rcp.Activator;
+import org.rifidi.designer.rcp.game.DesignerGame;
 import org.rifidi.designer.rcp.views.view3d.listeners.AllAxisMouseMoveEntityListener;
 import org.rifidi.designer.rcp.views.view3d.listeners.Editor3DDropTargetListener;
 import org.rifidi.designer.rcp.views.view3d.listeners.MouseMoveEntityListener;
@@ -55,7 +56,7 @@ import org.rifidi.designer.rcp.views.view3d.listeners.ResizeListener;
 import org.rifidi.designer.rcp.views.view3d.listeners.WatchAreaDrawMouseListener;
 import org.rifidi.designer.rcp.views.view3d.listeners.ZoomMouseWheelListener;
 import org.rifidi.designer.rcp.views.view3d.mode.InteractionMode;
-import org.rifidi.designer.services.core.camera.CameraService;
+import org.rifidi.designer.services.core.camera.ZoomableLWJGLCamera;
 import org.rifidi.designer.services.core.entities.EntitiesService;
 import org.rifidi.designer.services.core.entities.FinderService;
 import org.rifidi.designer.services.core.entities.NewEntityListener;
@@ -129,15 +130,11 @@ public class View3D extends ViewPart implements IPerspectiveListener,
 	 * The finder service.
 	 */
 	private FinderService finderService;
-	/**
-	 * The camera service.
-	 */
-	private CameraService cameraService;
 
 	// miscellany & NEW STUFF
 	private Point oldpos;
 	/** Reference to the implementor. */
-	private JMECanvasImplementor2<GLCanvas> designerGame;
+	private DesignerGame designerGame;
 
 	/**
 	 * 
@@ -156,11 +153,11 @@ public class View3D extends ViewPart implements IPerspectiveListener,
 	 */
 	@Override
 	public void createPartControl(final Composite parent) {
-		getViewSite().getWorkbenchWindow().addPerspectiveListener(this);
 		TextureManager.clearCache();
 
 		jmeComposite = new JMEComposite(parent, designerGame);
 		glCanvas = designerGame.getCanvas();
+		System.out.println(designerGame.getRenderer().getCamera());
 		// let glcanvas have focus by default
 		glCanvas.forceFocus();
 
@@ -193,6 +190,7 @@ public class View3D extends ViewPart implements IPerspectiveListener,
 		Control control = glCanvas;
 		Menu menu = menuMgr.createContextMenu(control);
 		control.setMenu(menu);
+		getViewSite().getWorkbenchWindow().addPerspectiveListener(this);
 	}
 
 	/*
@@ -360,15 +358,6 @@ public class View3D extends ViewPart implements IPerspectiveListener,
 	}
 
 	/**
-	 * 
-	 * @param cameraService
-	 */
-	@Inject
-	public void setCameraService(CameraService cameraService) {
-		this.cameraService = cameraService;
-	}
-
-	/**
 	 * @param sceneDataService
 	 *            the sceneDataService to set
 	 */
@@ -424,7 +413,8 @@ public class View3D extends ViewPart implements IPerspectiveListener,
 			addMouseMoveListener(moveListener);
 			addMouseListener(pickListener);
 			addKeyListener(pickListener);
-			addMouseWheelListener(new ZoomMouseWheelListener(cameraService));
+			addMouseWheelListener(new ZoomMouseWheelListener(
+					(ZoomableLWJGLCamera) designerGame.getRenderer().getCamera()));
 		}
 
 		/*
@@ -460,7 +450,8 @@ public class View3D extends ViewPart implements IPerspectiveListener,
 					view3d);
 			addMouseListener(moveListener);
 			addMouseMoveListener(moveListener);
-			addMouseWheelListener(new ZoomMouseWheelListener(cameraService));
+			addMouseWheelListener(new ZoomMouseWheelListener(
+					(ZoomableLWJGLCamera) designerGame.getRenderer().getCamera()));
 		}
 
 		/*
@@ -539,7 +530,8 @@ public class View3D extends ViewPart implements IPerspectiveListener,
 					view3d);
 			addMouseMoveListener(watchAreaDrawMouseListener);
 			addMouseListener(watchAreaDrawMouseListener);
-			addMouseWheelListener(new ZoomMouseWheelListener(cameraService));
+			addMouseWheelListener(new ZoomMouseWheelListener(
+					(ZoomableLWJGLCamera) designerGame.getRenderer().getCamera()));
 		}
 
 		/*
@@ -608,7 +600,7 @@ public class View3D extends ViewPart implements IPerspectiveListener,
 	 *            the designerGame to set
 	 */
 	@Inject
-	public void setDesignerGame(JMECanvasImplementor2<GLCanvas> designerGame) {
+	public void setDesignerGame(DesignerGame designerGame) {
 		this.designerGame = designerGame;
 	}
 }

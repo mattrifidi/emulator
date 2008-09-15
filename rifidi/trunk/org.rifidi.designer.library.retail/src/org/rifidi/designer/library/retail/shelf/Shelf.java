@@ -30,9 +30,8 @@ import com.jme.input.InputHandler;
 import com.jme.math.Quaternion;
 import com.jme.math.Vector3f;
 import com.jme.scene.Node;
-import com.jme.scene.SceneElement;
+import com.jme.scene.Spatial.CullHint;
 import com.jme.scene.shape.Box;
-import com.jme.util.GameTaskQueueManager;
 import com.jme.util.export.binary.BinaryImporter;
 import com.jmex.physics.DynamicPhysicsNode;
 import com.jmex.physics.PhysicsSpace;
@@ -101,7 +100,7 @@ public class Shelf extends VisualEntity implements VisualEntityHolder,
 	@Override
 	public void init() {
 		URI modelpath = null;
-		Node mainNode=new Node();
+		Node mainNode = new Node();
 		mainNode.setModelBound(new BoundingBox());
 		Node node = new Node("maingeometry");
 		node.setModelBound(new BoundingBox());
@@ -149,17 +148,18 @@ public class Shelf extends VisualEntity implements VisualEntityHolder,
 		setNode(mainNode);
 		getNode().updateGeometricState(0f, true);
 		getNode().updateModelBound();
-		
-		Node _node=new Node("hiliter");
-		Box box = new Box("hiliter", ((BoundingBox) getNode()
-				.getWorldBound()).getCenter().clone().subtractLocal(
-				getNode().getLocalTranslation()).add(new Vector3f(0,2,0)), 4f, 4f, 1f);
+
+		Node _node = new Node("hiliter");
+		Box box = new Box("hiliter", ((BoundingBox) getNode().getWorldBound())
+				.getCenter().clone().subtractLocal(
+						getNode().getLocalTranslation()).add(
+						new Vector3f(0, 2, 0)), 4f, 4f, 1f);
 		box.setModelBound(new BoundingBox());
 		box.updateModelBound();
 		_node.attachChild(box);
 		_node.setModelBound(new BoundingBox());
 		_node.updateModelBound();
-		_node.setCullMode(SceneElement.CULL_ALWAYS);
+		_node.setCullHint(CullHint.Always);
 		getNode().attachChild(_node);
 	}
 
@@ -176,13 +176,15 @@ public class Shelf extends VisualEntity implements VisualEntityHolder,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.entities.interfaces.VisualEntityHolder#addVisualEntity(org.rifidi.designer.entities.VisualEntity)
+	 * @see
+	 * org.rifidi.designer.entities.interfaces.VisualEntityHolder#addVisualEntity
+	 * (org.rifidi.designer.entities.VisualEntity)
 	 */
 	@Override
 	public void addVisualEntity(final VisualEntity visualEntity) {
 		if (accepts(visualEntity) && !isFull()) {
 			entities.add(visualEntity);
-			GameTaskQueueManager.getManager().update(new Callable<Object>() {
+			update(new Callable<Object>() {
 
 				/*
 				 * (non-Javadoc)
@@ -224,7 +226,9 @@ public class Shelf extends VisualEntity implements VisualEntityHolder,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.entities.interfaces.VisualEntityHolder#getVisualEntity()
+	 * @see
+	 * org.rifidi.designer.entities.interfaces.VisualEntityHolder#getVisualEntity
+	 * ()
 	 */
 	@Override
 	public VisualEntity getVisualEntity() {
@@ -247,7 +251,9 @@ public class Shelf extends VisualEntity implements VisualEntityHolder,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.entities.interfaces.VisualEntityHolder#getVisualEntity(org.rifidi.designer.entities.VisualEntity)
+	 * @see
+	 * org.rifidi.designer.entities.interfaces.VisualEntityHolder#getVisualEntity
+	 * (org.rifidi.designer.entities.VisualEntity)
 	 */
 	@Override
 	public VisualEntity getVisualEntity(VisualEntity visualEntity) {
@@ -263,7 +269,9 @@ public class Shelf extends VisualEntity implements VisualEntityHolder,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.entities.interfaces.VisualEntityHolder#getVisualEntitySet()
+	 * @see
+	 * org.rifidi.designer.entities.interfaces.VisualEntityHolder#getVisualEntitySet
+	 * ()
 	 */
 	@Override
 	public List<VisualEntity> getVisualEntityList() {
@@ -283,7 +291,9 @@ public class Shelf extends VisualEntity implements VisualEntityHolder,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.entities.interfaces.NeedsPhysics#setCollisionHandler(com.jme.input.InputHandler)
+	 * @see
+	 * org.rifidi.designer.entities.interfaces.NeedsPhysics#setCollisionHandler
+	 * (com.jme.input.InputHandler)
 	 */
 	@Override
 	public void setCollisionHandler(InputHandler collisionHandler) {
@@ -293,7 +303,9 @@ public class Shelf extends VisualEntity implements VisualEntityHolder,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.entities.interfaces.NeedsPhysics#setPhysicsSpace(com.jmex.physics.PhysicsSpace)
+	 * @see
+	 * org.rifidi.designer.entities.interfaces.NeedsPhysics#setPhysicsSpace(
+	 * com.jmex.physics.PhysicsSpace)
 	 */
 	@Override
 	public void setPhysicsSpace(PhysicsSpace physicsSpace) {
@@ -303,7 +315,9 @@ public class Shelf extends VisualEntity implements VisualEntityHolder,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.entities.interfaces.VisualEntityHolder#accepts(org.rifidi.designer.entities.VisualEntity)
+	 * @see
+	 * org.rifidi.designer.entities.interfaces.VisualEntityHolder#accepts(org
+	 * .rifidi.designer.entities.VisualEntity)
 	 */
 	@Override
 	public boolean accepts(VisualEntity visualEntity) {

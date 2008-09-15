@@ -13,7 +13,6 @@ Require-Bundle: org.eclipse.gef;bundle-version="[3.2.0,4.0.0)",
  org.rifidi.dependencies,
  org.rifidi.services,
  org.eclipse.core.databinding,
- org.rifidi.jmeswt,
  org.rifidi.designer.entities
 Bundle-Activator: org.rifidi.designer.rcp.gpioeditor.GPIOPlugin
 Eclipse-LazyStart: true

@@ -45,7 +45,7 @@ import org.rifidi.designer.entities.SceneData.Direction;
 import org.rifidi.designer.entities.interfaces.SceneControl;
 import org.rifidi.designer.rcp.GlobalProperties;
 import org.rifidi.designer.rcp.views.minimapview.MiniMapView;
-import org.rifidi.designer.services.core.camera.CameraService;
+import org.rifidi.designer.services.core.camera.ZoomableLWJGLCamera;
 import org.rifidi.designer.services.core.collision.FieldService;
 import org.rifidi.designer.services.core.entities.EntitiesServiceImpl;
 import org.rifidi.designer.services.core.entities.SceneDataChangedListener;
@@ -77,7 +77,6 @@ import com.jme.scene.state.MaterialState;
 import com.jme.scene.state.RenderState;
 import com.jme.scene.state.ZBufferState;
 import com.jme.system.DisplaySystem;
-import com.jme.util.GameTaskQueueManager;
 import com.jme.util.geom.Debugger;
 import com.jmex.game.state.BasicGameState;
 import com.jmex.game.state.GameStateManager;
@@ -115,10 +114,6 @@ public class DesignerGame extends SWTDefaultImplementor implements
 	 * Reference to the scenedataservice.
 	 */
 	private SceneDataService sceneDataService;
-	/**
-	 * Reference to the camera service.
-	 */
-	private CameraService cameraService;
 	/**
 	 * Offscreenrenderer for the minimap.
 	 */
@@ -195,7 +190,10 @@ public class DesignerGame extends SWTDefaultImplementor implements
 	 * offscreen renderer.
 	 */
 	private List<Spatial> offscreenRenderSpatials;
-
+	/**
+	 * LOD of the main camera.
+	 */
+	private int sceneLOD;
 	/**
 	 * Phongshader for walls.
 	 */
@@ -238,6 +236,31 @@ public class DesignerGame extends SWTDefaultImplementor implements
 		offscreenRenderSpatials = new ArrayList<Spatial>();
 	}
 
+	/**
+	 * Overwritten to enable LOD.
+	 */
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.monklypse.core.SWTDefaultImplementor#doRender()
+	 */
+	@Override
+	public void doRender() {
+		if (sceneLOD != ((ZoomableLWJGLCamera) getCamera()).getLod()) {
+			if (sceneDataService.getCurrentSceneData() != null) {
+				sceneLOD = ((ZoomableLWJGLCamera) getCamera()).getLod();
+				for (Entity entity : sceneDataService.getCurrentSceneData()
+						.getEntities()) {
+					if (entity instanceof VisualEntity) {
+						((VisualEntity) entity).setLOD(sceneLOD);
+					}
+				}
+			}
+		}
+		super.doRender();
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -274,10 +297,15 @@ public class DesignerGame extends SWTDefaultImplementor implements
 					&& minimapCounter == 10) {
 				miniMapView.setMapCamera(offy.getCamera());
 				minimapCounter = 0;
-				cameraService.setLOD(3);
+				sceneLOD = 3;
+				for (Entity entity : sceneDataService.getCurrentSceneData()
+						.getEntities()) {
+					if (entity instanceof VisualEntity) {
+						((VisualEntity) entity).setLOD(sceneLOD);
+					}
+				}
 				offscreenRenderSpatials.clear();
 				offy.render(sceneData.getRootNode());
-				cameraService.resetLOD();
 				IntBuffer buffer = offy.getImageData();
 				if (imgData == null) {
 					imgData = new ImageData(200, 200, 32, new PaletteData(
@@ -303,10 +331,9 @@ public class DesignerGame extends SWTDefaultImplementor implements
 	 */
 	@Override
 	public void simpleSetup() {
-		cameraService.createCamera();
-		getRenderer().setCamera(cameraService.getMainCamera());
-		setCam(cameraService.getMainCamera());
+		setCamera(new ZoomableLWJGLCamera(this, 754, 584));
 		getCanvas().addKeyListener(this);
+
 		offy = new LWJGLOffscreenRenderer(200, 200,
 				(LWJGLRenderer) getRenderer());
 		if (offy.isSupported()) {
@@ -441,42 +468,6 @@ public class DesignerGame extends SWTDefaultImplementor implements
 	}
 
 	/**
-	 * Make walls (in)visible according to their position relative to the
-	 * camera.
-	 */
-	public void showHideWalls() {
-		// show all walls
-		showWall(Direction.NORTH);
-		showWall(Direction.SOUTH);
-		showWall(Direction.EAST);
-		showWall(Direction.WEST);
-		// hide east/west wall
-		if (cameraService.getMainCamera().getDirection().x > 0) {
-			hideWall(Direction.WEST);
-		} else if (cameraService.getMainCamera().getDirection().x < 0) {
-			hideWall(Direction.EAST);
-		}
-
-		// hide north/south wall
-		if (cameraService.getMainCamera().getDirection().z < 0) {
-			hideWall(Direction.SOUTH);
-		} else if (cameraService.getMainCamera().getDirection().z > 0) {
-			hideWall(Direction.NORTH);
-		}
-	}
-
-	/**
-	 * @param dir
-	 *            direction specifying which wall to hide
-	 */
-	public void hideWall(final Direction dir) {
-		sceneDataService.getWalls().get(dir).setRenderState(wallAlpha);
-		sceneDataService.getWalls().get(dir).setRenderQueueMode(
-				Renderer.QUEUE_OPAQUE);
-		sceneDataService.getWalls().get(dir).updateRenderState();
-	}
-
-	/**
 	 * @param dir
 	 *            direction specifying which wall to show
 	 */
@@ -511,7 +502,15 @@ public class DesignerGame extends SWTDefaultImplementor implements
 				sceneData.getRootNode().setName("rootnode");
 				sceneData.getRoomNode().setName("roomnode");
 				getRootNode().attachChild(sceneData.getRootNode());
-				// showHideWalls();
+				// adjust main camera
+				getCamera().setLocation(
+						new Vector3f((int) (((BoundingBox) sceneData
+								.getRoomNode().getWorldBound()).xExtent / 2),
+								2, (int) ((BoundingBox) sceneData.getRoomNode()
+										.getWorldBound()).zExtent / 2));
+				getCamera().getLocation().addLocal(new Vector3f(-5, 0, -15));
+				getCamera().update();
+				// adjust minimpa camera
 				if (offy.isSupported()) {
 					offy.setBackgroundColor(new ColorRGBA(.667f, .667f, .851f,
 							1f));
@@ -522,7 +521,14 @@ public class DesignerGame extends SWTDefaultImplementor implements
 											.getWorldBound()).zExtent));
 					offy.getCamera()
 							.setDirection(new Vector3f(0f, -1f, -.001f));
+					offy.getCamera().lookAt(
+							new Vector3f(((BoundingBox) sceneData.getRoomNode()
+									.getWorldBound()).xExtent, 0,
+									((BoundingBox) sceneData.getRoomNode()
+											.getWorldBound()).zExtent - 1),
+							new Vector3f(0, 1, 0));
 					offy.getCamera().setParallelProjection(true);
+
 					float ratio = ((BoundingBox) sceneData.getRoomNode()
 							.getWorldBound()).xExtent
 							/ ((BoundingBox) sceneData.getRoomNode()
@@ -538,6 +544,9 @@ public class DesignerGame extends SWTDefaultImplementor implements
 					offy.getCamera().setFrustum(-100.0f, 1000.0f,
 							-.6f * sidelength * 2, .6f * sidelength * 2,
 							-.6f * sidelength * 2, .6f * sidelength * 2);
+
+					offy.getCamera().update();
+					offy.getCamera().apply();
 				}
 				createGrid();
 				return null;
@@ -666,7 +675,7 @@ public class DesignerGame extends SWTDefaultImplementor implements
 	 */
 	@Override
 	public void stop() {
-		GameTaskQueueManager.getManager().update(new Callable<Object>() {
+		update(new Callable<Object>() {
 
 			/*
 			 * (non-Javadoc)
@@ -764,15 +773,6 @@ public class DesignerGame extends SWTDefaultImplementor implements
 	public void setSceneDataService(SceneDataService sceneDataService) {
 		this.sceneDataService = sceneDataService;
 		sceneDataService.addSceneDataChangedListener(this);
-	}
-
-	/**
-	 * @param cameraService
-	 *            the cameraService to set
-	 */
-	@Inject
-	public void setCameraService(CameraService cameraService) {
-		this.cameraService = cameraService;
 	}
 
 	/**
@@ -895,6 +895,22 @@ public class DesignerGame extends SWTDefaultImplementor implements
 				}
 			}
 			hilited.get(color).removeAll(hilight);
+		}
+	}
+
+	/**
+	 * Set the LOD for the scene. Can be undone using resetLOD.
+	 * 
+	 * @param lod
+	 */
+	public void setLOD(int lod) {
+		if (sceneDataService.getCurrentSceneData() != null) {
+			for (Entity entity : sceneDataService.getCurrentSceneData()
+					.getEntities()) {
+				if (entity instanceof VisualEntity) {
+					((VisualEntity) entity).setLOD(lod);
+				}
+			}
 		}
 	}
 

@@ -20,6 +20,7 @@ import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.opengl.GLCanvas;
 import org.monklypse.core.JMECanvasImplementor2;
 import org.rifidi.designer.entities.VisualEntity;
+import org.rifidi.designer.rcp.game.DesignerGame;
 import org.rifidi.designer.rcp.views.view3d.View3D;
 import org.rifidi.designer.services.core.entities.FinderService;
 import org.rifidi.designer.services.core.entities.SceneDataService;
@@ -75,7 +76,7 @@ public class MousePickListener implements MouseListener, KeyListener {
 	/**
 	 * Reference to the implementor.
 	 */
-	private JMECanvasImplementor implementor;
+	private DesignerGame implementor;
 
 	/**
 	 * Constructor.
@@ -209,7 +210,7 @@ public class MousePickListener implements MouseListener, KeyListener {
 	 *            the implementor to set
 	 */
 	@Inject
-	public void setImplementor(JMECanvasImplementor implementor) {
+	public void setImplementor(DesignerGame implementor) {
 		this.implementor = implementor;
 	}
 

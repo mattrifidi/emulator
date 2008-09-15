@@ -27,8 +27,8 @@ import com.jme.input.InputHandler;
 import com.jme.math.Matrix3f;
 import com.jme.math.Vector3f;
 import com.jme.scene.Node;
-import com.jme.scene.SceneElement;
 import com.jme.scene.SharedNode;
+import com.jme.scene.Spatial.CullHint;
 import com.jme.scene.shape.Box;
 import com.jme.util.export.binary.BinaryImporter;
 import com.jmex.physics.DynamicPhysicsNode;
@@ -112,7 +112,7 @@ public class CardboxEntity extends VisualEntity implements NeedsPhysics {
 		_node.attachChild(box);
 		_node.setModelBound(new BoundingBox());
 		_node.updateModelBound();
-		_node.setCullMode(SceneElement.CULL_ALWAYS);
+		_node.setCullHint(CullHint.Always);
 		getNode().attachChild(_node);
 		setCollides(false);
 	}

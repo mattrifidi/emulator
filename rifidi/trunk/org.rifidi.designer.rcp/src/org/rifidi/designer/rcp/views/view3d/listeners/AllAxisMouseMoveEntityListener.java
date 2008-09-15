@@ -24,8 +24,9 @@ import org.eclipse.swt.widgets.Display;
 import org.monklypse.core.JMECanvasImplementor2;
 import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.interfaces.VisualEntityHolder;
+import org.rifidi.designer.rcp.game.DesignerGame;
 import org.rifidi.designer.rcp.views.view3d.View3D;
-import org.rifidi.designer.services.core.camera.CameraService;
+import org.rifidi.designer.services.core.camera.ZoomableLWJGLCamera;
 import org.rifidi.designer.services.core.entities.EntitiesService;
 import org.rifidi.designer.services.core.entities.FinderService;
 import org.rifidi.designer.services.core.entities.SceneDataService;
@@ -42,8 +43,6 @@ import com.jme.math.Vector3f;
 import com.jme.renderer.Camera;
 import com.jme.scene.Node;
 import com.jme.system.DisplaySystem;
-import com.jme.system.canvas.JMECanvasImplementor;
-import com.jme.util.GameTaskQueueManager;
 import com.jmex.physics.DynamicPhysicsNode;
 import com.jmex.physics.PhysicsNode;
 import com.jmex.physics.material.Material;
@@ -84,10 +83,6 @@ public class AllAxisMouseMoveEntityListener implements MouseListener,
 	 */
 	private SceneDataService sceneDataService;
 	/**
-	 * Reference to the camera service.
-	 */
-	private CameraService cameraService;
-	/**
 	 * Reference to the finder service.
 	 */
 	private FinderService finderService;
@@ -102,7 +97,7 @@ public class AllAxisMouseMoveEntityListener implements MouseListener,
 	/**
 	 * Reference to the implementor.
 	 */
-	private JMECanvasImplementor implementor;
+	private DesignerGame implementor;
 
 	/**
 	 * Constructor.
@@ -167,33 +162,28 @@ public class AllAxisMouseMoveEntityListener implements MouseListener,
 			pickedEntity = ((VisualEntityHolder) pickedEntity)
 					.getVisualEntity();
 			if (pickedEntity != null) {
-				GameTaskQueueManager.getManager().update(
-						new Callable<Object>() {
+				implementor.update(new Callable<Object>() {
 
-							/*
-							 * (non-Javadoc)
-							 * 
-							 * @see java.util.concurrent.Callable#call()
-							 */
-							@Override
-							public Object call() throws Exception {
-								pickedEntity.getNode().removeFromParent();
-								lastHit
-										.setY(((BoundingBox) pickedEntity
-												.getNode().getWorldBound()).yExtent + 0.1f);
-								pickedEntity.getNode().setLocalTranslation(
-										lastHit);
-								pickedEntity.getNode().setLocalRotation(
-										new Matrix3f());
-								sceneDataService.getCurrentSceneData()
-										.getRootNode().attachChild(
-												pickedEntity.getNode());
-								sceneDataService.getCurrentSceneData()
-										.getRootNode().updateRenderState();
-								return null;
-							}
+					/*
+					 * (non-Javadoc)
+					 * 
+					 * @see java.util.concurrent.Callable#call()
+					 */
+					@Override
+					public Object call() throws Exception {
+						pickedEntity.getNode().removeFromParent();
+						lastHit.setY(((BoundingBox) pickedEntity.getNode()
+								.getWorldBound()).yExtent + 0.1f);
+						pickedEntity.getNode().setLocalTranslation(lastHit);
+						pickedEntity.getNode().setLocalRotation(new Matrix3f());
+						sceneDataService.getCurrentSceneData().getRootNode()
+								.attachChild(pickedEntity.getNode());
+						sceneDataService.getCurrentSceneData().getRootNode()
+								.updateRenderState();
+						return null;
+					}
 
-						});
+				});
 			}
 		}
 		if (pickedEntity != null
@@ -206,7 +196,7 @@ public class AllAxisMouseMoveEntityListener implements MouseListener,
 			deltaX = 0;
 			deltaY = 0;
 			view3D.hideMousePointer();
-			GameTaskQueueManager.getManager().update(new Callable<Object>() {
+			implementor.update(new Callable<Object>() {
 
 				/*
 				 * (non-Javadoc)
@@ -256,7 +246,7 @@ public class AllAxisMouseMoveEntityListener implements MouseListener,
 			// drop it
 			if (pickedEntity != null
 					&& pickedEntity.getNode() instanceof PhysicsNode) {
-				GameTaskQueueManager.getManager().update(
+				implementor.update(
 						new ActivationCallable((PhysicsNode) pickedEntity
 								.getNode()));
 				pickedEntity = null;
@@ -356,10 +346,11 @@ public class AllAxisMouseMoveEntityListener implements MouseListener,
 			return;
 		}
 		if (e.count > 0) {
-			cameraService.zoomIn();
+			((ZoomableLWJGLCamera) implementor.getRenderer().getCamera())
+					.zoomIn();
 			return;
 		}
-		cameraService.zoomOut();
+		((ZoomableLWJGLCamera) implementor.getRenderer().getCamera()).zoomOut();
 	}
 
 	/**
@@ -369,15 +360,6 @@ public class AllAxisMouseMoveEntityListener implements MouseListener,
 	@Inject
 	public void setSceneDataService(SceneDataService sceneDataService) {
 		this.sceneDataService = sceneDataService;
-	}
-
-	/**
-	 * @param cameraService
-	 *            the cameraService to set
-	 */
-	@Inject
-	public void setCameraService(CameraService cameraService) {
-		this.cameraService = cameraService;
 	}
 
 	/**
@@ -403,7 +385,7 @@ public class AllAxisMouseMoveEntityListener implements MouseListener,
 	 *            the implementor to set
 	 */
 	@Inject
-	public void setImplementor(JMECanvasImplementor implementor) {
+	public void setImplementor(DesignerGame implementor) {
 		this.implementor = implementor;
 	}
 

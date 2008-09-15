@@ -8,14 +8,12 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
-import org.monklypse.core.JMECanvasImplementor2;
+import org.monklypse.core.SWTDefaultImplementor;
 import org.osgi.framework.BundleContext;
 import org.rifidi.designer.entities.RMIManager;
 import org.rifidi.designer.rcp.game.DesignerGame;
 import org.rifidi.designer.services.core.cabling.CablingService;
 import org.rifidi.designer.services.core.cabling.CablingServiceImpl;
-import org.rifidi.designer.services.core.camera.CameraService;
-import org.rifidi.designer.services.core.camera.CameraServiceImpl;
 import org.rifidi.designer.services.core.collision.FieldService;
 import org.rifidi.designer.services.core.collision.FieldServiceImpl;
 import org.rifidi.designer.services.core.entities.EntitiesService;
@@ -91,8 +89,6 @@ public class Activator extends AbstractUIPlugin {
 		}
 		context.registerService(CablingService.class.getName(),
 				new CablingServiceImpl(), null);
-		context.registerService(CameraService.class.getName(),
-				new CameraServiceImpl(), null);
 		context.registerService(FieldService.class.getName(),
 				new FieldServiceImpl(), null);
 		context.registerService(new String[] { EntitiesService.class.getName(),
@@ -107,8 +103,8 @@ public class Activator extends AbstractUIPlugin {
 		context.registerService(new String[] { WorldService.class.getName(),
 				CommandStateService.class.getName(),
 				HighlightingService.class.getName(),
-				JMECanvasImplementor2.class.getName() }, new DesignerGame(
-				"designer", 754, 584), null);
+				DesignerGame.class.getName(), SWTDefaultImplementor.class.getName() }, new DesignerGame("designer",
+				754, 584), null);
 	}
 
 	/*

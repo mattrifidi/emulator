@@ -34,7 +34,6 @@ import com.jme.scene.state.BlendState;
 import com.jme.scene.state.MaterialState;
 import com.jme.scene.state.RenderState;
 import com.jme.system.DisplaySystem;
-import com.jme.util.GameTaskQueueManager;
 import com.jmex.physics.PhysicsNode;
 import com.jmex.physics.PhysicsSpace;
 import com.jmex.physics.StaticPhysicsNode;
@@ -201,7 +200,7 @@ public class WatchAreaEntity extends VisualEntity implements NeedsPhysics,
 	 */
 	@Override
 	public void turnOff() {
-		GameTaskQueueManager.getManager().update(new Callable<Object>() {
+		update(new Callable<Object>() {
 
 			/*
 			 * (non-Javadoc)
@@ -226,7 +225,7 @@ public class WatchAreaEntity extends VisualEntity implements NeedsPhysics,
 	 */
 	@Override
 	public void turnOn() {
-		GameTaskQueueManager.getManager().update(new Callable<Object>() {
+		update(new Callable<Object>() {
 
 			/*
 			 * (non-Javadoc)

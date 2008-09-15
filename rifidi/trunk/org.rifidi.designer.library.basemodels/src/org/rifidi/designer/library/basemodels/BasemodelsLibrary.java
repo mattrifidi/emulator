@@ -169,7 +169,7 @@ public class BasemodelsLibrary implements EntityLibrary {
 				.getImageRegistry().getDescriptor(
 						"room2"));
 		floorElement.setName("Room2");
-		floorElement.setPath("org/rifidi/designer/library/basemodels/room1.jme");
+		floorElement.setPath("org/rifidi/designer/library/basemodels/test.jme");
 		floorelements.add(floorElement);
 		
 //		floorElement = new FloorElement();

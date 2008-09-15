@@ -19,6 +19,7 @@ import org.eclipse.swt.opengl.GLCanvas;
 import org.monklypse.core.Helpers;
 import org.monklypse.core.JMECanvasImplementor2;
 import org.rifidi.designer.entities.internal.WatchAreaEntity;
+import org.rifidi.designer.rcp.game.DesignerGame;
 import org.rifidi.designer.rcp.views.view3d.View3D;
 import org.rifidi.designer.services.core.entities.EntitiesService;
 import org.rifidi.designer.services.core.entities.SceneDataService;
@@ -35,7 +36,6 @@ import com.jme.scene.shape.Box;
 import com.jme.scene.state.BlendState;
 import com.jme.scene.state.MaterialState;
 import com.jme.system.DisplaySystem;
-import com.jme.system.canvas.JMECanvasImplementor;
 import com.jme.util.GameTaskQueueManager;
 
 /**
@@ -63,7 +63,7 @@ public class WatchAreaDrawMouseListener implements MouseListener,
 	/** Reference to the scene data service. */
 	private SceneDataService sceneDataService;
 	/** Reference to the implementor */
-	private JMECanvasImplementor implementor;
+	private DesignerGame implementor;
 
 	/**
 	 * Constructor.
@@ -99,8 +99,7 @@ public class WatchAreaDrawMouseListener implements MouseListener,
 			Camera cam = DisplaySystem.getDisplaySystem().getRenderer()
 					.getCamera();
 			// create ray
-			int canvasY = ((GLCanvas) ((JMECanvasImplementor2) implementor)
-					.getCanvas()).getSize().y;
+			int canvasY = implementor.getCanvas().getSize().y;
 			Vector3f coord = cam.getWorldCoordinates(new Vector2f(e.x, canvasY
 					- e.y), 0);
 			Vector3f coord2 = cam.getWorldCoordinates(new Vector2f(e.x, canvasY
@@ -121,7 +120,7 @@ public class WatchAreaDrawMouseListener implements MouseListener,
 					(float) Math.ceil(startX) - .5f, 5.6f, (float) Math
 							.ceil(startZ) - .5f));
 			boxNode.attachChild(box);
-			GameTaskQueueManager.getManager().update(new Callable<Object>() {
+			implementor.update(new Callable<Object>() {
 
 				/*
 				 * (non-Javadoc)
@@ -169,7 +168,7 @@ public class WatchAreaDrawMouseListener implements MouseListener,
 						return null;
 					}
 
-				});
+				}, implementor.getUpdateQueue());
 				boxNode = null;
 				box = null;
 				pressed = false;
@@ -205,7 +204,7 @@ public class WatchAreaDrawMouseListener implements MouseListener,
 						return null;
 					}
 
-				});
+				}, implementor.getUpdateQueue());
 			}
 			boxNode = null;
 			box = null;
@@ -307,7 +306,7 @@ public class WatchAreaDrawMouseListener implements MouseListener,
 	 *            the implementor to set
 	 */
 	@Inject
-	public void setImplementor(JMECanvasImplementor implementor) {
+	public void setImplementor(DesignerGame implementor) {
 		this.implementor = implementor;
 	}
 

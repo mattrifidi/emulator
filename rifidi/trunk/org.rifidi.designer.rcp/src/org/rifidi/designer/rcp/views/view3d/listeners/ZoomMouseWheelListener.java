@@ -12,7 +12,7 @@ package org.rifidi.designer.rcp.views.view3d.listeners;
 
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseWheelListener;
-import org.rifidi.designer.services.core.camera.CameraService;
+import org.rifidi.designer.services.core.camera.ZoomableLWJGLCamera;
 
 /**
  * Listener for zooming with the mouse wheel
@@ -22,17 +22,15 @@ import org.rifidi.designer.services.core.camera.CameraService;
  */
 public class ZoomMouseWheelListener implements MouseWheelListener {
 	/**
-	 * Reference to the 3d view.
+	 * The zoomable camera.
 	 */
-	private CameraService cameraService;
+	private ZoomableLWJGLCamera camera;
 
 	/**
 	 * Constructor.
-	 * @param cameraService
-	 * 			  the current camera service.
 	 */
-	public ZoomMouseWheelListener(CameraService cameraService) {
-		this.cameraService=cameraService;
+	public ZoomMouseWheelListener(ZoomableLWJGLCamera camera) {
+		this.camera=camera;
 	}
 
 
@@ -43,9 +41,9 @@ public class ZoomMouseWheelListener implements MouseWheelListener {
 	 */
 	public void mouseScrolled(MouseEvent e) {
 		if(e.count>0){
-			cameraService.zoomIn();
+			camera.zoomIn();
 			return;
 		}
-		cameraService.zoomOut();
+		camera.zoomOut();
 	}
 }

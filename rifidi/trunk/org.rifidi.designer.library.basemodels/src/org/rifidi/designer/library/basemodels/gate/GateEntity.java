@@ -45,9 +45,9 @@ import com.jme.math.FastMath;
 import com.jme.math.Quaternion;
 import com.jme.math.Vector3f;
 import com.jme.scene.Node;
-import com.jme.scene.SceneElement;
 import com.jme.scene.SharedNode;
 import com.jme.scene.SwitchNode;
+import com.jme.scene.Spatial.CullHint;
 import com.jme.scene.shape.Box;
 import com.jme.util.export.binary.BinaryImporter;
 
@@ -202,7 +202,7 @@ public class GateEntity extends VisualEntity implements RifidiEntity, Switch,
 		
 		_node.setModelBound(new BoundingBox());
 		_node.updateModelBound();
-		_node.setCullMode(SceneElement.CULL_ALWAYS);
+		_node.setCullHint(CullHint.Always);
 		getNode().attachChild(_node);
 	}
 

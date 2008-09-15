@@ -39,12 +39,14 @@ import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.renderer.Renderer;
 import com.jme.scene.Node;
-import com.jme.scene.SceneElement;
 import com.jme.scene.Spatial;
+import com.jme.scene.Spatial.CullHint;
 import com.jme.scene.shape.Box;
-import com.jme.scene.state.AlphaState;
+import com.jme.scene.state.BlendState;
 import com.jme.scene.state.MaterialState;
 import com.jme.scene.state.RenderState;
+import com.jme.scene.state.BlendState.DestinationFunction;
+import com.jme.scene.state.BlendState.SourceFunction;
 import com.jme.system.DisplaySystem;
 import com.jme.util.export.binary.BinaryImporter;
 import com.jmex.physics.PhysicsNode;
@@ -200,11 +202,11 @@ public class PusharmEntity extends VisualEntity implements SceneControl,
 			MaterialState ms = DisplaySystem.getDisplaySystem().getRenderer()
 					.createMaterialState();
 			ms.setDiffuse(new ColorRGBA(1, 1, 1, .6f));
-			AlphaState as = DisplaySystem.getDisplaySystem().getRenderer()
-					.createAlphaState();
+			BlendState as = DisplaySystem.getDisplaySystem().getRenderer()
+					.createBlendState();
 			as.setBlendEnabled(true);
-			as.setSrcFunction(AlphaState.SB_SRC_ALPHA);
-			as.setDstFunction(AlphaState.DB_ONE);
+			as.setSourceFunction(SourceFunction.SourceAlpha);
+			as.setDestinationFunction(DestinationFunction.One);
 			as.setEnabled(true);
 
 			// create the trigger area
@@ -238,7 +240,7 @@ public class PusharmEntity extends VisualEntity implements SceneControl,
 			_node.attachChild(box);
 			_node.setModelBound(new BoundingBox());
 			_node.updateModelBound();
-			_node.setCullMode(SceneElement.CULL_ALWAYS);
+			_node.setCullHint(CullHint.Always);
 			getNode().attachChild(_node);
 			
 		} catch (IOException e) {

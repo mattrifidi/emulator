@@ -34,6 +34,7 @@ import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.swt.widgets.Display;
+import org.monklypse.core.SWTDefaultImplementor;
 import org.rifidi.designer.entities.Activator;
 import org.rifidi.designer.entities.Entity;
 import org.rifidi.designer.entities.SceneData;
@@ -64,7 +65,6 @@ import com.jme.scene.Node;
 import com.jme.scene.Spatial;
 import com.jme.scene.TriMesh;
 import com.jme.scene.state.RenderState;
-import com.jme.util.GameTaskQueueManager;
 import com.jme.util.TextureManager;
 import com.jme.util.export.binary.BinaryExporter;
 import com.jme.util.export.binary.BinaryImporter;
@@ -118,6 +118,8 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	 * Tree for checking collisions against the room.
 	 */
 	private RoomOctree roomTree = null;
+	/** Default implementor. */
+	private SWTDefaultImplementor implementor;
 
 	/**
 	 * Constructor.
@@ -152,9 +154,8 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 		initEntity(ent, sceneData, true);
 
 		if (ent instanceof VisualEntity) {
-			GameTaskQueueManager.getManager().update(
-					new UpdateCallable(sceneData.getRootNode(),
-							(VisualEntity) ent, center, listener));
+			implementor.update(new UpdateCallable(sceneData.getRootNode(),
+					(VisualEntity) ent, center, listener));
 		} else {
 			ent.setEntityId(sceneData.getNextID().toString());
 		}
@@ -194,7 +195,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 			sceneData.getEntityNames().remove(entity.getName());
 		}
 		if (visuals.size() > 0) {
-			GameTaskQueueManager.getManager().update(new Callable<Object>() {
+			implementor.update(new Callable<Object>() {
 
 				/*
 				 * (non-Javadoc)
@@ -344,9 +345,8 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 		sceneData.getSyncedEntities().add(product);
 		sceneData.getProducedEntities().addEntity(product);
 		if (product instanceof VisualEntity) {
-			GameTaskQueueManager.getManager().update(
-					new UpdateCallable(sceneData.getRootNode(),
-							(VisualEntity) product, false, null));
+			implementor.update(new UpdateCallable(sceneData.getRootNode(),
+					(VisualEntity) product, false, null));
 		}
 	}
 
@@ -359,7 +359,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	 */
 	@Override
 	public void deleteProducts(final List<Entity> product) {
-		GameTaskQueueManager.getManager().update(new Callable<Object>() {
+		implementor.update(new Callable<Object>() {
 
 			/*
 			 * (non-Javadoc)
@@ -484,7 +484,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 		TextureManager.clearCache();
 		if (sceneData != null) {
 			sceneDataOld = sceneData;
-			GameTaskQueueManager.getManager().update(new Callable<Object>() {
+			implementor.update(new Callable<Object>() {
 
 				/*
 				 * (non-Javadoc)
@@ -627,6 +627,8 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 		// reassociate the entities with their nodes if it is loaded, skip if it
 		// is a new one
 		if (entity instanceof VisualEntity && !isNew) {
+			((VisualEntity) entity).setUpdateQueue(implementor.getUpdateQueue());
+			((VisualEntity) entity).setRenderQueue(implementor.getRenderQueue());
 			((VisualEntity) entity).setNode((Node) sceneData.getRootNode()
 					.getChild(entity.getEntityId().toString()));
 		}
@@ -675,7 +677,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	 */
 	@Override
 	public void saveScene() {
-		GameTaskQueueManager.getManager().update(new Callable<Object>() {
+		implementor.update(new Callable<Object>() {
 
 			/*
 			 * (non-Javadoc)
@@ -1016,6 +1018,15 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 			nodeToEntity.put(((VisualEntity) entity).getNode(),
 					(VisualEntity) entity);
 		}
+	}
+
+	/**
+	 * @param implementor
+	 *            the implementor to set
+	 */
+	@Inject
+	public void setImplementor(SWTDefaultImplementor implementor) {
+		this.implementor = implementor;
 	}
 
 }

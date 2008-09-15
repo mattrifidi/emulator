@@ -4,16 +4,18 @@ Bundle-Name: Entities Plug-in
 Bundle-SymbolicName: org.rifidi.designer.entities;singleton:=true
 Bundle-Version: 1.0.0
 Bundle-Vendor: Pramari, LLC
-Require-Bundle: org.rifidi.services,
- org.rifidi.jmeswt,
- org.eclipse.core.databinding,
+Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- org.eclipse.ui,
- org.rifidi.dependencies,
+ org.monklypse.jme2;bundle-version="1.0.0",
+ org.monklypse.jme2.physics;bundle-version="1.0.0",
+ org.monklypse.lwjgl;bundle-version="1.0.0",
  org.rifidi.emulator,
+ org.rifidi.dependencies,
+ org.eclipse.core.databinding,
+ org.rifidi.services,
  org.eclipse.ui.views,
- org.rifidi.services.initializer,
  org.eclipse.core.resources,
+ org.rifidi.services.initializer,
  org.rifidi.services.tags
 Bundle-Activator: org.rifidi.designer.entities.Activator
 Eclipse-LazyStart: true
