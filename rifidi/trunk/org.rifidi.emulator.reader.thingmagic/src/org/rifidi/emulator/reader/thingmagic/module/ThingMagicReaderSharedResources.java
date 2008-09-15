@@ -11,6 +11,7 @@ import org.rifidi.emulator.reader.command.xml.CommandDigester;
 import org.rifidi.emulator.reader.module.abstract_.AbstractReaderSharedResources;
 import org.rifidi.emulator.reader.sharedrc.radio.generic.GenericRadio;
 import org.rifidi.emulator.reader.sharedrc.tagmemory.TagMemory;
+import org.rifidi.emulator.reader.thingmagic.automodecontoler.AutoModeControler;
 import org.rifidi.emulator.reader.thingmagic.commandregistry.CursorCommandRegistry;
 import org.rifidi.emulator.reader.thingmagic.database.DataBase;
 
@@ -29,7 +30,15 @@ public class ThingMagicReaderSharedResources extends
 	public DataBase dataBase;
 
 	private CursorCommandRegistry cursorCommandRegistry;
+
+	private AutoModeControler autoModeControler;
 	
+	public AutoModeControler getAutoModeControler() {
+		return autoModeControler;
+	}
+
+
+
 	public CursorCommandRegistry getCursorCommandRegistry() {
 		return cursorCommandRegistry;
 	}
@@ -82,6 +91,13 @@ public class ThingMagicReaderSharedResources extends
 	 */
 	public ControlSignal<Boolean> getInteractiveRQLConnectionSignal() {
 		return interactiveRQLConnectionSignal;
+	}
+
+
+
+	public void setAutoModeControler(AutoModeControler autoModeControler) {
+		// TODO Auto-generated method stub
+		this.autoModeControler = autoModeControler;
 	}
 	
 	

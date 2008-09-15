@@ -26,6 +26,7 @@ import org.rifidi.emulator.reader.module.ReaderModule;
 import org.rifidi.emulator.reader.module.abstract_.AbstractPowerModule;
 import org.rifidi.emulator.reader.sharedrc.radio.Antenna;
 import org.rifidi.emulator.reader.sharedrc.radio.generic.GenericRadio;
+import org.rifidi.emulator.reader.thingmagic.automodecontoler.AutoModeControler;
 import org.rifidi.emulator.reader.thingmagic.command.exception.ThingMagicRQLExceptionHandler;
 import org.rifidi.emulator.reader.thingmagic.commandregistry.CursorCommandRegistry;
 import org.rifidi.emulator.reader.thingmagic.database.DataBase;
@@ -175,6 +176,8 @@ public class ThingMagicReaderModule extends AbstractPowerModule implements
 				.getInteractiveRQLConnectionSignal(), rql_address, rql_port,
 				this.name, GenericCharStreamReader.class, new GenericStringLogFormatter());
 
+		tmsr.setAutoModeControler(new AutoModeControler(this.RQLComm));
+		
 		this.interactiveRQLAdapter = new ReflectiveCommandAdapter(
 				"Interactive", new ThingMagicRQLCommandFormatter(this.tmsr),
 				new ThingMagicRQLExceptionHandler(), this.tmsr, new RawCommandSearcher());
