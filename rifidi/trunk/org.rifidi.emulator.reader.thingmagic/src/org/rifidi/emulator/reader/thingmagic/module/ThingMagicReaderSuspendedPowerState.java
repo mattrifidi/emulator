@@ -66,6 +66,8 @@ public class ThingMagicReaderSuspendedPowerState extends AbstractSuspendedPowerS
 		/* cast the pcObject to something we can use */
 		ThingMagicReaderModule rm = (ThingMagicReaderModule) pcObject;
 		
+		rm.getSharedResources().getAutoModeControler().stop();
+		
 		/* clear cursor registry... as it is volatile in the real reader. */ 
 		rm.getSharedResources().getCursorCommandRegistry().clear();
 		

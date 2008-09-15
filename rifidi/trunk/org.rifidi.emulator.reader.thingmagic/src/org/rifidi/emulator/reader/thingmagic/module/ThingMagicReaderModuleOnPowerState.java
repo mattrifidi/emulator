@@ -40,7 +40,7 @@ public class ThingMagicReaderModuleOnPowerState extends AbstractOnPowerState {
 	 */
 	@Override
 	public void suspend(PowerControllable pcObject) {
-		// TODO Auto-generated method stub
+		// TODO What do we do with the Automode controller when we suspend?
 		
 		/* cast pcObject to something we can use */
 		ThingMagicReaderModule rm = (ThingMagicReaderModule) pcObject;
@@ -71,6 +71,8 @@ public class ThingMagicReaderModuleOnPowerState extends AbstractOnPowerState {
 		
 		/* cast the pcObject to something we can use */
 		ThingMagicReaderModule rm = (ThingMagicReaderModule) pcObject;
+		
+		rm.getSharedResources().getAutoModeControler().stop();
 		
 		/* clear cursor registry... as it is volatile in the real reader. */ 
 		rm.getSharedResources().getCursorCommandRegistry().clear();
