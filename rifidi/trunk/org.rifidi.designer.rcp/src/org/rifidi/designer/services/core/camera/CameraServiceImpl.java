@@ -14,6 +14,8 @@ import java.util.concurrent.Callable;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.eclipse.swt.opengl.GLCanvas;
+import org.monklypse.core.JMECanvasImplementor2;
 import org.rifidi.designer.entities.Entity;
 import org.rifidi.designer.entities.SceneData;
 import org.rifidi.designer.entities.VisualEntity;
@@ -26,6 +28,7 @@ import com.jme.bounding.BoundingBox;
 import com.jme.math.Vector3f;
 import com.jme.renderer.Camera;
 import com.jme.system.DisplaySystem;
+import com.jme.system.canvas.JMECanvasImplementor;
 import com.jme.util.GameTaskQueueManager;
 
 /**
@@ -59,6 +62,7 @@ public class CameraServiceImpl implements CameraService,
 
 	private Vector3f[] cameraValues;
 
+	private JMECanvasImplementor2<GLCanvas> implementor;
 	/**
 	 * Default constructor.
 	 */
@@ -90,7 +94,7 @@ public class CameraServiceImpl implements CameraService,
 			zoomlevel = 5;
 		}
 		adjustLOD();
-		GameTaskQueueManager.getManager().render(new Callable<Object>() {
+		implementor.render(new Callable<Object>() {
 			
 			/*
 			 * (non-Javadoc)
@@ -128,7 +132,7 @@ public class CameraServiceImpl implements CameraService,
 			zoomlevel = 200;
 		}
 		adjustLOD();
-		GameTaskQueueManager.getManager().render(new Callable<Object>() {
+		implementor.render(new Callable<Object>() {
 
 			/*
 			 * (non-Javadoc)
@@ -185,7 +189,7 @@ public class CameraServiceImpl implements CameraService,
 	 */
 	@Override
 	public void centerCamera() {
-		GameTaskQueueManager.getManager().render(new Callable<Object>() {
+		implementor.render(new Callable<Object>() {
 
 			/*
 			 * (non-Javadoc)
@@ -244,7 +248,7 @@ public class CameraServiceImpl implements CameraService,
 	 */
 	@Override
 	public void positionCamera(final Vector3f targetPos) {
-		GameTaskQueueManager.getManager().update(new Callable<Object>() {
+		implementor.update(new Callable<Object>() {
 
 			/*
 			 * (non-Javadoc)
@@ -359,5 +363,13 @@ public class CameraServiceImpl implements CameraService,
 		if (lodChange) {
 			setLOD(lod);
 		}
+	}
+
+	/**
+	 * @param implementor the implementor to set
+	 */
+	@Inject
+	public void setImplementor(JMECanvasImplementor2 implementor) {
+		this.implementor = (JMECanvasImplementor2<GLCanvas>)implementor;
 	}
 }

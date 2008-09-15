@@ -17,12 +17,15 @@ import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
+import org.eclipse.swt.opengl.GLCanvas;
+import org.monklypse.core.JMECanvasImplementor2;
 import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.rcp.views.view3d.View3D;
 import org.rifidi.designer.services.core.entities.FinderService;
 import org.rifidi.designer.services.core.entities.SceneDataService;
 import org.rifidi.designer.services.core.selection.SelectionService;
-import org.rifidi.jmonkey.SWTDisplaySystem;
+import org.rifidi.services.annotations.Inject;
+import org.rifidi.services.registry.ServiceRegistry;
 
 import com.jme.intersection.BoundingPickResults;
 import com.jme.intersection.PickResults;
@@ -32,6 +35,7 @@ import com.jme.math.Vector3f;
 import com.jme.renderer.Camera;
 import com.jme.scene.Node;
 import com.jme.system.DisplaySystem;
+import com.jme.system.canvas.JMECanvasImplementor;
 
 /**
  * A listener that listenes for mouseclicks on the glcanvas and finds the picks.
@@ -42,7 +46,8 @@ public class MousePickListener implements MouseListener, KeyListener {
 	/**
 	 * Logger for this class.
 	 */
-	private static final Log logger=LogFactory.getLog(MousePickListener.class);
+	private static final Log logger = LogFactory
+			.getLog(MousePickListener.class);
 	/**
 	 * Are we selecting more than one entitiy?
 	 */
@@ -67,21 +72,20 @@ public class MousePickListener implements MouseListener, KeyListener {
 	 * Reference to the 3d view.
 	 */
 	private View3D view3D;
+	/**
+	 * Reference to the implementor.
+	 */
+	private JMECanvasImplementor implementor;
 
 	/**
 	 * Constructor.
 	 * 
 	 * @param view3D
 	 *            the 3d view
-	 * @param selectionService
-	 *            the current selection service.
 	 */
-	public MousePickListener(View3D view3D, SelectionService selectionService,
-			SceneDataService sceneDataService, FinderService finderService) {
+	public MousePickListener(View3D view3D) {
 		this.view3D = view3D;
-		this.selectionService = selectionService;
-		this.sceneDataService = sceneDataService;
-		this.finderService = finderService;
+		ServiceRegistry.getInstance().service(this);
 	}
 
 	/*
@@ -107,8 +111,8 @@ public class MousePickListener implements MouseListener, KeyListener {
 			Camera cam = DisplaySystem.getDisplaySystem().getRenderer()
 					.getCamera();
 			// create ray
-			int canvasY = ((SWTDisplaySystem) DisplaySystem.getDisplaySystem())
-					.getCurrentGLCanvas().getSize().y;
+			int canvasY = ((GLCanvas) ((JMECanvasImplementor2) implementor)
+					.getCanvas()).getSize().y;
 			try {
 				Vector3f coord = cam.getWorldCoordinates(new Vector2f(e.x,
 						canvasY - e.y), 0);
@@ -133,7 +137,7 @@ public class MousePickListener implements MouseListener, KeyListener {
 									.getDistance()) {
 
 						node = pickResults.getPickData(count).getTargetMesh()
-								.getParentGeom().getParent();
+								.getParent().getParent();
 						VisualEntity _pickedEntity = finderService
 								.getVisualEntityByNode(node);
 
@@ -198,5 +202,41 @@ public class MousePickListener implements MouseListener, KeyListener {
 		if (e.keyCode == SWT.SHIFT) {
 			multiselect = false;
 		}
+	}
+
+	/**
+	 * @param implementor
+	 *            the implementor to set
+	 */
+	@Inject
+	public void setImplementor(JMECanvasImplementor implementor) {
+		this.implementor = implementor;
+	}
+
+	/**
+	 * @param selectionService
+	 *            the selectionService to set
+	 */
+	@Inject
+	public void setSelectionService(SelectionService selectionService) {
+		this.selectionService = selectionService;
+	}
+
+	/**
+	 * @param sceneDataService
+	 *            the sceneDataService to set
+	 */
+	@Inject
+	public void setSceneDataService(SceneDataService sceneDataService) {
+		this.sceneDataService = sceneDataService;
+	}
+
+	/**
+	 * @param finderService
+	 *            the finderService to set
+	 */
+	@Inject
+	public void setFinderService(FinderService finderService) {
+		this.finderService = finderService;
 	}
 }

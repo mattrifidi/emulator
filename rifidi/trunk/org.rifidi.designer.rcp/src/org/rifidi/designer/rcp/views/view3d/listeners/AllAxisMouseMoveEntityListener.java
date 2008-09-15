@@ -19,7 +19,9 @@ import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.MouseWheelListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.opengl.GLCanvas;
 import org.eclipse.swt.widgets.Display;
+import org.monklypse.core.JMECanvasImplementor2;
 import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.interfaces.VisualEntityHolder;
 import org.rifidi.designer.rcp.views.view3d.View3D;
@@ -27,7 +29,6 @@ import org.rifidi.designer.services.core.camera.CameraService;
 import org.rifidi.designer.services.core.entities.EntitiesService;
 import org.rifidi.designer.services.core.entities.FinderService;
 import org.rifidi.designer.services.core.entities.SceneDataService;
-import org.rifidi.jmonkey.SWTDisplaySystem;
 import org.rifidi.services.annotations.Inject;
 import org.rifidi.services.registry.ServiceRegistry;
 
@@ -41,6 +42,7 @@ import com.jme.math.Vector3f;
 import com.jme.renderer.Camera;
 import com.jme.scene.Node;
 import com.jme.system.DisplaySystem;
+import com.jme.system.canvas.JMECanvasImplementor;
 import com.jme.util.GameTaskQueueManager;
 import com.jmex.physics.DynamicPhysicsNode;
 import com.jmex.physics.PhysicsNode;
@@ -97,6 +99,10 @@ public class AllAxisMouseMoveEntityListener implements MouseListener,
 	 * Translation of the last hit object.
 	 */
 	private Vector3f lastHit;
+	/**
+	 * Reference to the implementor.
+	 */
+	private JMECanvasImplementor implementor;
 
 	/**
 	 * Constructor.
@@ -112,7 +118,9 @@ public class AllAxisMouseMoveEntityListener implements MouseListener,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.swt.events.MouseListener#mouseDoubleClick(org.eclipse.swt.events.MouseEvent)
+	 * @see
+	 * org.eclipse.swt.events.MouseListener#mouseDoubleClick(org.eclipse.swt
+	 * .events.MouseEvent)
 	 */
 	public void mouseDoubleClick(MouseEvent e) {
 	}
@@ -120,7 +128,9 @@ public class AllAxisMouseMoveEntityListener implements MouseListener,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.swt.events.MouseListener#mouseDown(org.eclipse.swt.events.MouseEvent)
+	 * @see
+	 * org.eclipse.swt.events.MouseListener#mouseDown(org.eclipse.swt.events
+	 * .MouseEvent)
 	 */
 	public void mouseDown(MouseEvent e) {
 		if (e.button == 1 || e.button == 3) {
@@ -128,8 +138,8 @@ public class AllAxisMouseMoveEntityListener implements MouseListener,
 			Camera cam = DisplaySystem.getDisplaySystem().getRenderer()
 					.getCamera();
 			// create ray
-			int canvasY = ((SWTDisplaySystem) DisplaySystem.getDisplaySystem())
-					.getCurrentGLCanvas().getSize().y;
+			int canvasY = ((GLCanvas) ((JMECanvasImplementor2) implementor)
+					.getCanvas()).getSize().y;
 			Vector3f coord = cam.getWorldCoordinates(new Vector2f(e.x, canvasY
 					- e.y), 0);
 			Vector3f coord2 = cam.getWorldCoordinates(new Vector2f(e.x, canvasY
@@ -146,7 +156,7 @@ public class AllAxisMouseMoveEntityListener implements MouseListener,
 			// around the room and is hit first, darn
 			for (int count = 0; count < pickResults.getNumber(); count++) {
 				node = pickResults.getPickData(count).getTargetMesh()
-						.getParentGeom().getParent();
+						.getParent().getParent();
 
 				pickedEntity = finderService.getVisualEntityByNode(node);
 			}
@@ -221,7 +231,8 @@ public class AllAxisMouseMoveEntityListener implements MouseListener,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.swt.events.MouseListener#mouseUp(org.eclipse.swt.events.MouseEvent)
+	 * @seeorg.eclipse.swt.events.MouseListener#mouseUp(org.eclipse.swt.events.
+	 * MouseEvent)
 	 */
 	public void mouseUp(MouseEvent e) {
 		view3D.showMousePointer();
@@ -256,7 +267,9 @@ public class AllAxisMouseMoveEntityListener implements MouseListener,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.swt.events.MouseMoveListener#mouseMove(org.eclipse.swt.events.MouseEvent)
+	 * @see
+	 * org.eclipse.swt.events.MouseMoveListener#mouseMove(org.eclipse.swt.events
+	 * .MouseEvent)
 	 */
 	private boolean ignore = false;
 
@@ -329,7 +342,9 @@ public class AllAxisMouseMoveEntityListener implements MouseListener,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.swt.events.MouseWheelListener#mouseScrolled(org.eclipse.swt.events.MouseEvent)
+	 * @see
+	 * org.eclipse.swt.events.MouseWheelListener#mouseScrolled(org.eclipse.swt
+	 * .events.MouseEvent)
 	 */
 	@Override
 	public void mouseScrolled(MouseEvent e) {
@@ -381,6 +396,15 @@ public class AllAxisMouseMoveEntityListener implements MouseListener,
 	@Inject
 	public void setEntitiesService(EntitiesService entitiesService) {
 		this.entitiesService = entitiesService;
+	}
+
+	/**
+	 * @param implementor
+	 *            the implementor to set
+	 */
+	@Inject
+	public void setImplementor(JMECanvasImplementor implementor) {
+		this.implementor = implementor;
 	}
 
 	/**

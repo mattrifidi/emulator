@@ -16,9 +16,10 @@ import com.jme.image.Texture;
 import com.jme.renderer.ColorRGBA;
 import com.jme.renderer.Renderer;
 import com.jme.scene.Node;
-import com.jme.scene.SceneElement;
+import com.jme.scene.Spatial;
 import com.jme.scene.Text;
-import com.jme.scene.state.AlphaState;
+import com.jme.scene.Spatial.TextureCombineMode;
+import com.jme.scene.state.BlendState;
 import com.jme.scene.state.RenderState;
 import com.jme.scene.state.TextureState;
 import com.jme.system.DisplaySystem;
@@ -49,29 +50,29 @@ public class FadingTextNode {
 		TextureState texState = DisplaySystem.getDisplaySystem().getRenderer().createTextureState();
 		texState.setTexture( TextureManager.loadTexture(
 				SimpleGame.class.getClassLoader().getResource("com/jme/app/defaultfont.tga"),
-				Texture.MM_LINEAR_LINEAR, Texture.FM_LINEAR,
-				Image.GUESS_FORMAT_NO_S3TC, 1.0f, true) );
+				Texture.MinificationFilter.BilinearNoMipMaps, Texture.MagnificationFilter.Bilinear,
+				Image.Format.GuessNoCompression, 1.0f, true) );
 		texState.setEnabled(true);
 
 		// create alphastate for the text overlay element
-		AlphaState as = DisplaySystem.getDisplaySystem().getRenderer().createAlphaState();
-		as.setDstFunction(AlphaState.DB_ONE_MINUS_SRC_ALPHA);
-		as.setSrcFunction(AlphaState.SB_SRC_ALPHA);
+		BlendState as = DisplaySystem.getDisplaySystem().getRenderer().createBlendState();
+		as.setDestinationFunction(BlendState.DestinationFunction.OneMinusSourceAlpha);
+		as.setSourceFunction(BlendState.SourceFunction.SourceAlpha);
 		as.setBlendEnabled(true);
 		as.setEnabled(true);
 
 		// Initialize the text element
 		textGeom = Text.createDefaultTextLabel( text + "-Label" );
-		textGeom.setTextureCombineMode( TextureState.REPLACE );
-		textGeom.setCullMode( SceneElement.CULL_NEVER );
+		textGeom.setTextureCombineMode( TextureCombineMode.Replace );
+		textGeom.setCullHint( Spatial.CullHint.Never );
 		textGeom.setRenderState(texState);
 		textGeom.print(text);
 
 		// Initialize the node that will render the text element
 		textNode = new Node( "TextNode_"+text );
-		textNode.setRenderState( textGeom.getRenderState( RenderState.RS_ALPHA ) );
+		textNode.setRenderState( textGeom.getRenderState( RenderState.RS_BLEND ) );
 		textNode.setRenderState( textGeom.getRenderState( RenderState.RS_TEXTURE ) );
-		textNode.setCullMode( SceneElement.CULL_NEVER );
+		textNode.setCullHint( Spatial.CullHint.Never );
 		textNode.attachChild( textGeom );
 
 		// make sure text node is up to date

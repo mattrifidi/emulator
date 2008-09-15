@@ -30,7 +30,7 @@ import com.jme.input.InputHandler;
 import com.jme.renderer.ColorRGBA;
 import com.jme.scene.Node;
 import com.jme.scene.Spatial;
-import com.jme.scene.state.AlphaState;
+import com.jme.scene.state.BlendState;
 import com.jme.scene.state.MaterialState;
 import com.jme.scene.state.RenderState;
 import com.jme.system.DisplaySystem;
@@ -68,7 +68,7 @@ public class WatchAreaEntity extends VisualEntity implements NeedsPhysics,
 	/**
 	 * Shared alphastate.
 	 */
-	private static AlphaState as;
+	private static BlendState as;
 	/**
 	 * Running state of this entity.
 	 */
@@ -129,14 +129,14 @@ public class WatchAreaEntity extends VisualEntity implements NeedsPhysics,
 		}
 		if (as == null) {
 			as = DisplaySystem.getDisplaySystem().getRenderer()
-					.createAlphaState();
+					.createBlendState();
 			as.setBlendEnabled(true);
-			as.setSrcFunction(AlphaState.SB_SRC_ALPHA);
-			as.setDstFunction(AlphaState.DB_ONE);
+			as.setSourceFunction(BlendState.SourceFunction.SourceAlpha);
+			as.setDestinationFunction(BlendState.DestinationFunction.One);
 			as.setEnabled(true);
 		}
 
-		getNode().clearRenderState(RenderState.RS_ALPHA);
+		getNode().clearRenderState(RenderState.RS_BLEND);
 		getNode().clearRenderState(RenderState.RS_MATERIAL);
 		getNode().setRenderState(as);
 		getNode().updateRenderState();
@@ -176,11 +176,10 @@ public class WatchAreaEntity extends VisualEntity implements NeedsPhysics,
 	public void setCollisionHandler(InputHandler collisionHandler) {
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/* (non-Javadoc)
 	 * @see org.rifidi.designer.entities.interfaces.NeedsPhysics#setPhysicsSpace(com.jmex.physics.PhysicsSpace)
 	 */
+	@Override
 	public void setPhysicsSpace(PhysicsSpace physicsSpace) {
 		this.physicsSpace = physicsSpace;
 	}

@@ -15,12 +15,13 @@ import java.util.concurrent.Callable;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseMoveListener;
+import org.eclipse.swt.opengl.GLCanvas;
+import org.monklypse.core.Helpers;
+import org.monklypse.core.JMECanvasImplementor2;
 import org.rifidi.designer.entities.internal.WatchAreaEntity;
 import org.rifidi.designer.rcp.views.view3d.View3D;
 import org.rifidi.designer.services.core.entities.EntitiesService;
 import org.rifidi.designer.services.core.entities.SceneDataService;
-import org.rifidi.jmeswt.utils.Helpers;
-import org.rifidi.jmonkey.SWTDisplaySystem;
 import org.rifidi.services.annotations.Inject;
 import org.rifidi.services.registry.ServiceRegistry;
 
@@ -31,9 +32,10 @@ import com.jme.renderer.ColorRGBA;
 import com.jme.renderer.Renderer;
 import com.jme.scene.Node;
 import com.jme.scene.shape.Box;
-import com.jme.scene.state.AlphaState;
+import com.jme.scene.state.BlendState;
 import com.jme.scene.state.MaterialState;
 import com.jme.system.DisplaySystem;
+import com.jme.system.canvas.JMECanvasImplementor;
 import com.jme.util.GameTaskQueueManager;
 
 /**
@@ -44,24 +46,24 @@ import com.jme.util.GameTaskQueueManager;
 public class WatchAreaDrawMouseListener implements MouseListener,
 		MouseMoveListener {
 
-	/**
-	 * Reference to the 3d view.
-	 */
+	/** Reference to the 3d view. */
 	private View3D view3D;
-
+	/** The watchare that gets manipulated */
 	private Box box;
-
+	/** Node that the box is attached to */
 	private Node boxNode;
-
+	/** Coordinates of the box startpoint */
 	private float startX, startZ;
-
+	/** true if the runnable is currently being executed */
 	private boolean executing = false;
-
+	/** true if the button is pressed */
 	private boolean pressed = true;
-
+	/** Reference to the entities service. */
 	private EntitiesService entitiesService;
-
+	/** Reference to the scene data service. */
 	private SceneDataService sceneDataService;
+	/** Reference to the implementor */
+	private JMECanvasImplementor implementor;
 
 	/**
 	 * Constructor.
@@ -77,7 +79,9 @@ public class WatchAreaDrawMouseListener implements MouseListener,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.swt.events.MouseListener#mouseDoubleClick(org.eclipse.swt.events.MouseEvent)
+	 * @see
+	 * org.eclipse.swt.events.MouseListener#mouseDoubleClick(org.eclipse.swt
+	 * .events.MouseEvent)
 	 */
 	public void mouseDoubleClick(MouseEvent e) {
 	}
@@ -85,7 +89,9 @@ public class WatchAreaDrawMouseListener implements MouseListener,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.swt.events.MouseListener#mouseDown(org.eclipse.swt.events.MouseEvent)
+	 * @see
+	 * org.eclipse.swt.events.MouseListener#mouseDown(org.eclipse.swt.events
+	 * .MouseEvent)
 	 */
 	public void mouseDown(MouseEvent e) {
 		if (e.button == 1) {
@@ -93,8 +99,8 @@ public class WatchAreaDrawMouseListener implements MouseListener,
 			Camera cam = DisplaySystem.getDisplaySystem().getRenderer()
 					.getCamera();
 			// create ray
-			int canvasY = ((SWTDisplaySystem) DisplaySystem.getDisplaySystem())
-					.getCurrentGLCanvas().getSize().y;
+			int canvasY = ((GLCanvas) ((JMECanvasImplementor2) implementor)
+					.getCanvas()).getSize().y;
 			Vector3f coord = cam.getWorldCoordinates(new Vector2f(e.x, canvasY
 					- e.y), 0);
 			Vector3f coord2 = cam.getWorldCoordinates(new Vector2f(e.x, canvasY
@@ -130,11 +136,12 @@ public class WatchAreaDrawMouseListener implements MouseListener,
 					ms.setEmissive(new ColorRGBA(0, 0, 1, .3f));
 					ms.setShininess(1);
 					ms.setSpecular(new ColorRGBA(0, 0, 1, .3f));
-					AlphaState as = DisplaySystem.getDisplaySystem()
-							.getRenderer().createAlphaState();
+					BlendState as = DisplaySystem.getDisplaySystem()
+							.getRenderer().createBlendState();
 					as.setBlendEnabled(true);
-					as.setSrcFunction(AlphaState.SB_SRC_ALPHA);
-					as.setDstFunction(AlphaState.DB_ONE);
+					as.setSourceFunction(BlendState.SourceFunction.SourceAlpha);
+					as
+							.setDestinationFunction(BlendState.DestinationFunction.One);
 					as.setEnabled(true);
 					sceneDataService.getCurrentSceneData().getRoomNode()
 							.attachChild(boxNode);
@@ -174,7 +181,8 @@ public class WatchAreaDrawMouseListener implements MouseListener,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.swt.events.MouseListener#mouseUp(org.eclipse.swt.events.MouseEvent)
+	 * @seeorg.eclipse.swt.events.MouseListener#mouseUp(org.eclipse.swt.events.
+	 * MouseEvent)
 	 */
 	public void mouseUp(MouseEvent e) {
 		if (e.button == 1 && pressed) {
@@ -208,7 +216,9 @@ public class WatchAreaDrawMouseListener implements MouseListener,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.swt.events.MouseMoveListener#mouseMove(org.eclipse.swt.events.MouseEvent)
+	 * @see
+	 * org.eclipse.swt.events.MouseMoveListener#mouseMove(org.eclipse.swt.events
+	 * .MouseEvent)
 	 */
 	@Override
 	public void mouseMove(MouseEvent e) {
@@ -216,8 +226,8 @@ public class WatchAreaDrawMouseListener implements MouseListener,
 			Camera cam = DisplaySystem.getDisplaySystem().getRenderer()
 					.getCamera();
 			// create ray
-			int canvasY = ((SWTDisplaySystem) DisplaySystem.getDisplaySystem())
-					.getCurrentGLCanvas().getSize().y;
+			int canvasY = ((GLCanvas) ((JMECanvasImplementor2) implementor)
+					.getCanvas()).getSize().y;
 			Vector3f coord = cam.getWorldCoordinates(new Vector2f(e.x, canvasY
 					- e.y), 0);
 			Vector3f coord2 = cam.getWorldCoordinates(new Vector2f(e.x, canvasY
@@ -239,7 +249,9 @@ public class WatchAreaDrawMouseListener implements MouseListener,
 							/*
 							 * (non-Javadoc)
 							 * 
-							 * @see java.util.concurrent.Callable#call()
+							 * CanvasImplementor2)implementor).getCanvas()
+							 * .getCurrentGLCanvas()@see
+							 * java.util.concurrent.Callable#call()
 							 */
 							@Override
 							public Object call() throws Exception {
@@ -288,6 +300,15 @@ public class WatchAreaDrawMouseListener implements MouseListener,
 	@Inject
 	public void setSceneDataService(SceneDataService sceneDataService) {
 		this.sceneDataService = sceneDataService;
+	}
+
+	/**
+	 * @param implementor
+	 *            the implementor to set
+	 */
+	@Inject
+	public void setImplementor(JMECanvasImplementor implementor) {
+		this.implementor = implementor;
 	}
 
 }

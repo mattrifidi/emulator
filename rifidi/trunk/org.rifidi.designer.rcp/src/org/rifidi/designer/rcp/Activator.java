@@ -8,6 +8,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.monklypse.core.JMECanvasImplementor2;
 import org.osgi.framework.BundleContext;
 import org.rifidi.designer.entities.RMIManager;
 import org.rifidi.designer.rcp.game.DesignerGame;
@@ -59,10 +60,6 @@ public class Activator extends AbstractUIPlugin {
 	 * Reference to the current display.
 	 */
 	public static Display display;
-	/**
-	 * Reference to our game.
-	 */
-	public DesignerGame designerGame;
 
 	/**
 	 * The constructor.
@@ -73,7 +70,9 @@ public class Activator extends AbstractUIPlugin {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
+	 * @see
+	 * org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext
+	 * )
 	 */
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
@@ -90,7 +89,6 @@ public class Activator extends AbstractUIPlugin {
 		if (!folder.exists()) {
 			folder.create(true, true, null);
 		}
-
 		context.registerService(CablingService.class.getName(),
 				new CablingServiceImpl(), null);
 		context.registerService(CameraService.class.getName(),
@@ -105,16 +103,20 @@ public class Activator extends AbstractUIPlugin {
 				new EventsServiceImpl(), null);
 		context.registerService(SelectionService.class.getName(),
 				new SelectionServiceImpl(), null);
-		designerGame = new DesignerGame("designer", 10, 20, 754, 584, null);
+
 		context.registerService(new String[] { WorldService.class.getName(),
 				CommandStateService.class.getName(),
-				HighlightingService.class.getName() }, designerGame, null);
+				HighlightingService.class.getName(),
+				JMECanvasImplementor2.class.getName() }, new DesignerGame(
+				"designer", 754, 584), null);
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
+	 * @see
+	 * org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext
+	 * )
 	 */
 	public void stop(BundleContext context) throws Exception {
 		plugin = null;

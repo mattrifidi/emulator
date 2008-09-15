@@ -48,7 +48,8 @@ public class GridNode extends Node {
 
 		CullState cs = DisplaySystem.getDisplaySystem().getRenderer()
 				.createCullState();
-		cs.setCullMode(CullState.CS_NONE);
+		//TODO: needed?
+		//cs.setCullHint(CullHint.);
 		cs.setEnabled(true);
 		this.setRenderState(cs);
 

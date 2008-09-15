@@ -28,7 +28,6 @@ import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.opengl.GLCanvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -39,6 +38,8 @@ import org.eclipse.ui.IPerspectiveListener;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.part.ViewPart;
+import org.monklypse.core.JMECanvasImplementor2;
+import org.monklypse.core.JMEComposite;
 import org.rifidi.designer.entities.Entity;
 import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.wizards.RifidiEntityWizard;
@@ -46,7 +47,6 @@ import org.rifidi.designer.library.EntityLibraryReference;
 import org.rifidi.designer.library.EntityWizardIface;
 import org.rifidi.designer.library.EntityWizardRifidiIface;
 import org.rifidi.designer.rcp.Activator;
-import org.rifidi.designer.rcp.game.DesignerGame;
 import org.rifidi.designer.rcp.views.view3d.listeners.AllAxisMouseMoveEntityListener;
 import org.rifidi.designer.rcp.views.view3d.listeners.Editor3DDropTargetListener;
 import org.rifidi.designer.rcp.views.view3d.listeners.MouseMoveEntityListener;
@@ -108,6 +108,7 @@ public class View3D extends ViewPart implements IPerspectiveListener,
 	 */
 	private GLCanvas glCanvas;
 
+	private JMEComposite jmeComposite;
 	/**
 	 * The scenedata service.
 	 */
@@ -135,9 +136,8 @@ public class View3D extends ViewPart implements IPerspectiveListener,
 
 	// miscellany & NEW STUFF
 	private Point oldpos;
-	private DesignerGame designerGame;
-
-	private static boolean initialized = false;
+	/** Reference to the implementor. */
+	private JMECanvasImplementor2<GLCanvas> designerGame;
 
 	/**
 	 * 
@@ -150,20 +150,17 @@ public class View3D extends ViewPart implements IPerspectiveListener,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.ui.part.WorkbenchPart#createPartControl(org.eclipse.swt.widgets.Composite)
+	 * @see
+	 * org.eclipse.ui.part.WorkbenchPart#createPartControl(org.eclipse.swt.widgets
+	 * .Composite)
 	 */
 	@Override
 	public void createPartControl(final Composite parent) {
 		getViewSite().getWorkbenchWindow().addPerspectiveListener(this);
 		TextureManager.clearCache();
 
-		Composite composite = new Composite(parent, SWT.None);
-		composite.setLayout(new FillLayout());
-		designerGame = Activator.getDefault().designerGame;
-		designerGame.setParent(composite);
-		designerGame.start();
-		glCanvas = designerGame.getGlCanvas();
-
+		jmeComposite = new JMEComposite(parent, designerGame);
+		glCanvas = designerGame.getCanvas();
 		// let glcanvas have focus by default
 		glCanvas.forceFocus();
 
@@ -188,13 +185,6 @@ public class View3D extends ViewPart implements IPerspectiveListener,
 		modeMap.put(Mode.PickMode, new PickMode(this));
 		modeMap.put(Mode.WatchAreaMode, new WatchAreaMode(this));
 		modeMap.put(Mode.MoveMode, new MoveMode(this));
-
-		if (!initialized) {
-			cameraService.createCamera();
-		} else {
-			switchMode(Mode.PickMode);
-		}
-		initialized = true;
 
 		MenuManager menuMgr = new MenuManager();
 		menuMgr.add(new GroupMarker(IWorkbenchActionConstants.MB_ADDITIONS));
@@ -222,8 +212,9 @@ public class View3D extends ViewPart implements IPerspectiveListener,
 	@SuppressWarnings("unchecked")
 	public void loadScene(final IFile file) {
 		logger.debug("setting up world");
-		//change the window title
-		Display.getCurrent().getActiveShell().setText("Rifidi Designer: "+file.getName());
+		// change the window title
+		Display.getCurrent().getActiveShell().setText(
+				"Rifidi Designer: " + file.getName());
 		sceneDataService.loadScene(Display.getCurrent(), file);
 		switchMode(Mode.PickMode);
 	}
@@ -276,7 +267,9 @@ public class View3D extends ViewPart implements IPerspectiveListener,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.services.core.entities.NewEntityListener#entityAdded(org.rifidi.designer.entities.VisualEntity)
+	 * @see
+	 * org.rifidi.designer.services.core.entities.NewEntityListener#entityAdded
+	 * (org.rifidi.designer.entities.VisualEntity)
 	 */
 	@Override
 	public void entityAdded(VisualEntity ent) {
@@ -314,7 +307,7 @@ public class View3D extends ViewPart implements IPerspectiveListener,
 	 */
 	public void hideMousePointer() {
 		oldpos = Display.getCurrent().getCursorLocation();
-		designerGame.hideMouse();
+		// designerGame.hideMouse();
 	}
 
 	/**
@@ -325,21 +318,22 @@ public class View3D extends ViewPart implements IPerspectiveListener,
 			Display.getCurrent().setCursorLocation(oldpos);
 		}
 		oldpos = null;
-		designerGame.showMouse();
+		// designerGame.showMouse();
 	}
 
 	/**
 	 * Toggle the state of the grid between enabled and disabled.
 	 */
 	public void toggleGrid() {
-		designerGame.toggleGrid();
+		// designerGame.toggleGrid();
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.ui.IPerspectiveListener#perspectiveActivated(org.eclipse.ui.IWorkbenchPage,
-	 *      org.eclipse.ui.IPerspectiveDescriptor)
+	 * @see
+	 * org.eclipse.ui.IPerspectiveListener#perspectiveActivated(org.eclipse.
+	 * ui.IWorkbenchPage, org.eclipse.ui.IPerspectiveDescriptor)
 	 */
 	@Override
 	public void perspectiveActivated(IWorkbenchPage page,
@@ -356,8 +350,9 @@ public class View3D extends ViewPart implements IPerspectiveListener,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.ui.IPerspectiveListener#perspectiveChanged(org.eclipse.ui.IWorkbenchPage,
-	 *      org.eclipse.ui.IPerspectiveDescriptor, java.lang.String)
+	 * @see
+	 * org.eclipse.ui.IPerspectiveListener#perspectiveChanged(org.eclipse.ui
+	 * .IWorkbenchPage, org.eclipse.ui.IPerspectiveDescriptor, java.lang.String)
 	 */
 	@Override
 	public void perspectiveChanged(IWorkbenchPage page,
@@ -425,8 +420,7 @@ public class View3D extends ViewPart implements IPerspectiveListener,
 		 */
 		public PickMode(final View3D view3d) {
 			moveListener = new MouseMoveEntityListener(view3d);
-			MousePickListener pickListener = new MousePickListener(view3d,
-					selectionService, sceneDataService, finderService);
+			MousePickListener pickListener = new MousePickListener(view3d);
 			addMouseMoveListener(moveListener);
 			addMouseListener(pickListener);
 			addKeyListener(pickListener);
@@ -436,7 +430,9 @@ public class View3D extends ViewPart implements IPerspectiveListener,
 		/*
 		 * (non-Javadoc)
 		 * 
-		 * @see org.rifidi.designer.rcp.views.view3d.mode.InteractionMode#activate(org.eclipse.swt.widgets.Control)
+		 * @see
+		 * org.rifidi.designer.rcp.views.view3d.mode.InteractionMode#activate
+		 * (org.eclipse.swt.widgets.Control)
 		 */
 		@Override
 		public void activate(Control control) {
@@ -470,7 +466,9 @@ public class View3D extends ViewPart implements IPerspectiveListener,
 		/*
 		 * (non-Javadoc)
 		 * 
-		 * @see org.rifidi.designer.rcp.views.view3d.mode.InteractionMode#activate(org.eclipse.swt.widgets.Control)
+		 * @see
+		 * org.rifidi.designer.rcp.views.view3d.mode.InteractionMode#activate
+		 * (org.eclipse.swt.widgets.Control)
 		 */
 		@Override
 		public void activate(Control control) {
@@ -512,7 +510,8 @@ public class View3D extends ViewPart implements IPerspectiveListener,
 	// * (non-Javadoc)
 	// *
 	// * @see
-	// org.rifidi.designer.rcp.views.view3d.mode.InteractionMode#activate(org.eclipse.swt.widgets.Control)
+	// org.rifidi.designer.rcp.views.view3d.mode.InteractionMode#activate(org.
+	// eclipse.swt.widgets.Control)
 	// */
 	// @Override
 	// public void activate(Control control) {
@@ -546,7 +545,9 @@ public class View3D extends ViewPart implements IPerspectiveListener,
 		/*
 		 * (non-Javadoc)
 		 * 
-		 * @see org.rifidi.designer.rcp.views.view3d.mode.InteractionMode#activate(org.eclipse.swt.widgets.Control)
+		 * @see
+		 * org.rifidi.designer.rcp.views.view3d.mode.InteractionMode#activate
+		 * (org.eclipse.swt.widgets.Control)
 		 */
 		@Override
 		public void activate(Control control) {
@@ -580,7 +581,9 @@ public class View3D extends ViewPart implements IPerspectiveListener,
 		/*
 		 * (non-Javadoc)
 		 * 
-		 * @see org.rifidi.designer.rcp.views.view3d.mode.InteractionMode#activate(org.eclipse.swt.widgets.Control)
+		 * @see
+		 * org.rifidi.designer.rcp.views.view3d.mode.InteractionMode#activate
+		 * (org.eclipse.swt.widgets.Control)
 		 */
 		@Override
 		public void activate(Control control) {
@@ -598,5 +601,14 @@ public class View3D extends ViewPart implements IPerspectiveListener,
 	@Inject
 	public void setFinderService(FinderService finderService) {
 		this.finderService = finderService;
+	}
+
+	/**
+	 * @param designerGame
+	 *            the designerGame to set
+	 */
+	@Inject
+	public void setDesignerGame(JMECanvasImplementor2<GLCanvas> designerGame) {
+		this.designerGame = designerGame;
 	}
 }
