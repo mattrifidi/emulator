@@ -13,17 +13,6 @@
       </toc>
    </extension>
    <extension
-         point="org.eclipse.ui.editors">
-      <editor
-            class="org.rifidi.designer.ide.converter.editor.ColladaEditor"
-            default="false"
-            extensions="dae,3ds,obj,md2,md3,ms3d"
-            icon="icons/applications-system.png"
-            id="org.rifidi.designer.ide.converter.colladaviewer"
-            name="Collada Viewer">
-      </editor>
-   </extension>
-   <extension
          point="org.eclipse.ui.commands">
       <command
             description="export the loaded file for jme"

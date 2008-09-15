@@ -35,22 +35,17 @@ import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.DropTargetListener;
 import org.eclipse.swt.dnd.FileTransfer;
 import org.eclipse.swt.dnd.Transfer;
-import org.eclipse.swt.events.ControlEvent;
-import org.eclipse.swt.events.ControlListener;
-import org.eclipse.swt.opengl.GLCanvas;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.dialogs.SaveAsDialog;
 import org.eclipse.ui.part.ViewPart;
+import org.monklypse.core.JMEComposite;
 import org.rifidi.designer.ide.converter.editor.FixedDirectoryResourceLocator;
-import org.rifidi.designer.ide.converter.editor.game.EditorGame;
-import org.rifidi.jmeswt.SWTBaseGame;
+import org.rifidi.designer.ide.converter.editor.implementor.ConverterImplementor;
 
 import com.jme.scene.Node;
 import com.jme.scene.Spatial;
-import com.jme.system.DisplaySystem;
 import com.jme.util.TextureManager;
 import com.jme.util.export.binary.BinaryExporter;
 import com.jme.util.export.binary.BinaryImporter;
@@ -69,7 +64,7 @@ import com.jmex.model.converters.ObjToJme;
  * 
  */
 public class View3d extends ViewPart {
-	public static final String ID="org.rifidi.designer.ide.converter.view3d";
+	public static final String ID = "org.rifidi.designer.ide.converter.view3d";
 	/**
 	 * Logger for this class.
 	 */
@@ -78,12 +73,12 @@ public class View3d extends ViewPart {
 	/**
 	 * The game instance of this editor.
 	 */
-	private SWTBaseGame game;
+	private ConverterImplementor game;
 
 	/**
-	 * The GLCanvas for this editor
+	 * The composite for the GLCanvas.
 	 */
-	private GLCanvas glCanvas;
+	private JMEComposite composite;
 	/**
 	 * The node that contains the model.
 	 */
@@ -109,21 +104,24 @@ public class View3d extends ViewPart {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.ui.part.WorkbenchPart#createPartControl(org.eclipse.swt.widgets.Composite)
+	 * @see
+	 * org.eclipse.ui.part.WorkbenchPart#createPartControl(org.eclipse.swt.widgets
+	 * .Composite)
 	 */
 	@Override
 	public void createPartControl(Composite parent) {
-		game = new EditorGame(getPartName(), 640, 480, parent, 10, 20);
-		game.start();
-		glCanvas = game.getGlCanvas();
+		game = new ConverterImplementor(getPartName(), 640, 480);
+		composite = new JMEComposite(parent, game);
 		int operations = DND.DROP_MOVE | DND.DROP_COPY | DND.DROP_DEFAULT;
-		DropTarget target = new DropTarget(glCanvas, operations);
+		DropTarget target = new DropTarget(game.getCanvas(), operations);
 		target.addDropListener(new DropTargetListener() {
 
 			/*
 			 * (non-Javadoc)
 			 * 
-			 * @see org.eclipse.swt.dnd.DropTargetListener#dragEnter(org.eclipse.swt.dnd.DropTargetEvent)
+			 * @see
+			 * org.eclipse.swt.dnd.DropTargetListener#dragEnter(org.eclipse.
+			 * swt.dnd.DropTargetEvent)
 			 */
 			@Override
 			public void dragEnter(DropTargetEvent event) {
@@ -132,7 +130,9 @@ public class View3d extends ViewPart {
 			/*
 			 * (non-Javadoc)
 			 * 
-			 * @see org.eclipse.swt.dnd.DropTargetListener#dragLeave(org.eclipse.swt.dnd.DropTargetEvent)
+			 * @see
+			 * org.eclipse.swt.dnd.DropTargetListener#dragLeave(org.eclipse.
+			 * swt.dnd.DropTargetEvent)
 			 */
 			@Override
 			public void dragLeave(DropTargetEvent event) {
@@ -141,7 +141,9 @@ public class View3d extends ViewPart {
 			/*
 			 * (non-Javadoc)
 			 * 
-			 * @see org.eclipse.swt.dnd.DropTargetListener#dragOperationChanged(org.eclipse.swt.dnd.DropTargetEvent)
+			 * @see
+			 * org.eclipse.swt.dnd.DropTargetListener#dragOperationChanged(org
+			 * .eclipse.swt.dnd.DropTargetEvent)
 			 */
 			@Override
 			public void dragOperationChanged(DropTargetEvent event) {
@@ -150,7 +152,9 @@ public class View3d extends ViewPart {
 			/*
 			 * (non-Javadoc)
 			 * 
-			 * @see org.eclipse.swt.dnd.DropTargetListener#dragOver(org.eclipse.swt.dnd.DropTargetEvent)
+			 * @see
+			 * org.eclipse.swt.dnd.DropTargetListener#dragOver(org.eclipse.swt
+			 * .dnd.DropTargetEvent)
 			 */
 			@Override
 			public void dragOver(DropTargetEvent event) {
@@ -159,7 +163,9 @@ public class View3d extends ViewPart {
 			/*
 			 * (non-Javadoc)
 			 * 
-			 * @see org.eclipse.swt.dnd.DropTargetListener#drop(org.eclipse.swt.dnd.DropTargetEvent)
+			 * @see
+			 * org.eclipse.swt.dnd.DropTargetListener#drop(org.eclipse.swt.dnd
+			 * .DropTargetEvent)
 			 */
 			@Override
 			public void drop(DropTargetEvent event) {
@@ -174,7 +180,9 @@ public class View3d extends ViewPart {
 			/*
 			 * (non-Javadoc)
 			 * 
-			 * @see org.eclipse.swt.dnd.DropTargetListener#dropAccept(org.eclipse.swt.dnd.DropTargetEvent)
+			 * @see
+			 * org.eclipse.swt.dnd.DropTargetListener#dropAccept(org.eclipse
+			 * .swt.dnd.DropTargetEvent)
 			 */
 			@Override
 			public void dropAccept(DropTargetEvent event) {
@@ -183,13 +191,10 @@ public class View3d extends ViewPart {
 		FileTransfer fileTransfer = FileTransfer.getInstance();
 		Transfer[] types = new Transfer[] { fileTransfer };
 		target.setTransfer(types);
-		ResizeListener resizeListener = new ResizeListener();
-		glCanvas.addControlListener(resizeListener);
 		MenuManager menuMgr = new MenuManager();
-		menuMgr.add(
-				new GroupMarker(IWorkbenchActionConstants.MB_ADDITIONS));
-		Menu menu = menuMgr.createContextMenu(glCanvas);
-		glCanvas.setMenu(menu);	
+		menuMgr.add(new GroupMarker(IWorkbenchActionConstants.MB_ADDITIONS));
+		Menu menu = menuMgr.createContextMenu(game.getCanvas());
+		game.getCanvas().setMenu(menu);
 	}
 
 	/*
@@ -203,20 +208,6 @@ public class View3d extends ViewPart {
 
 	}
 
-	private void resize() {
-		game.getDisplaySys().setWidth(glCanvas.getSize().x);
-		game.getDisplaySys().setHeight(glCanvas.getSize().y);
-		game.getDisplaySys().getRenderer().reinit(glCanvas.getSize().x,
-				glCanvas.getSize().y);
-		game.getDisplaySys().getRenderer().getCamera().setFrustumPerspective(
-				45.0f,
-				(float) DisplaySystem.getDisplaySystem().getRenderer()
-						.getWidth()
-						/ (float) DisplaySystem.getDisplaySystem()
-								.getRenderer().getHeight(), 1, 1000);
-		game.getDisplaySys().getRenderer().getCamera().update();
-	}
-
 	private void load(final IFile file) {
 		final String extension = file.getFileExtension();
 		if (!containers.contains(file.getParent())) {
@@ -225,17 +216,19 @@ public class View3d extends ViewPart {
 					new FixedDirectoryResourceLocator(file.getParent()));
 			containers.add(file.getParent());
 		}
-		if(model!=null){
+		if (model != null) {
 			model.removeFromParent();
 			TextureManager.clearCache();
 		}
-		
+
 		Job job = new Job("Load " + getPartName() + " job") {
 
 			/*
 			 * (non-Javadoc)
 			 * 
-			 * @see org.eclipse.core.runtime.jobs.Job#run(org.eclipse.core.runtime.IProgressMonitor)
+			 * @see
+			 * org.eclipse.core.runtime.jobs.Job#run(org.eclipse.core.runtime
+			 * .IProgressMonitor)
 			 */
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
@@ -333,7 +326,7 @@ public class View3d extends ViewPart {
 					}
 				}
 
-				game.getUpdateQueue().enqueue(new Callable<Object>() {
+				game.update(new Callable<Object>() {
 
 					/*
 					 * (non-Javadoc)
@@ -361,14 +354,14 @@ public class View3d extends ViewPart {
 		job.schedule();
 
 	}
-	
+
 	public void doSaveAs() {
-		SaveAsDialog savy = new SaveAsDialog(glCanvas.getShell());
+		SaveAsDialog savy = new SaveAsDialog(game.getCanvas().getShell());
 		savy.open();
 		if (savy.getResult() != null) {
 			final IFile file = ResourcesPlugin.getWorkspace().getRoot()
 					.getFile(savy.getResult());
-			game.getUpdateQueue().enqueue(new Callable<Object>() {
+			game.update(new Callable<Object>() {
 
 				/*
 				 * (non-Javadoc)
@@ -397,30 +390,5 @@ public class View3d extends ViewPart {
 			});
 
 		}
-	}
-	
-	private class ResizeListener implements ControlListener {
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see org.eclipse.swt.events.ControlListener#controlMoved(org.eclipse.swt.events.ControlEvent)
-		 */
-		@Override
-		public void controlMoved(ControlEvent e) {
-			// TODO Auto-generated method stub
-
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see org.eclipse.swt.events.ControlListener#controlResized(org.eclipse.swt.events.ControlEvent)
-		 */
-		@Override
-		public void controlResized(ControlEvent e) {
-			resize();
-		}
-
 	}
 }
