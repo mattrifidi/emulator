@@ -175,6 +175,8 @@ public class SelectCommand implements Command {
 			// }
 			// }
 			// }
+			
+			
 		} catch (NoSuchElementException e) {
 			/*
 			 * if we get here... we run out of tokens prematurely... Our job now is
