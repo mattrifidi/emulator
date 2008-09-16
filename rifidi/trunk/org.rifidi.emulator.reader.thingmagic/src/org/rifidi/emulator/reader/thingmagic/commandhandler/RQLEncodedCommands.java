@@ -3,14 +3,11 @@
  */
 package org.rifidi.emulator.reader.thingmagic.commandhandler;
 
-import java.util.ArrayList;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.rifidi.emulator.reader.command.CommandObject;
 import org.rifidi.emulator.reader.module.abstract_.AbstractReaderSharedResources;
 import org.rifidi.emulator.reader.thingmagic.commandobjects.Command;
-import org.rifidi.emulator.reader.thingmagic.module.ThingMagicReaderSharedResources;
 
 /**
  * @author jmaine

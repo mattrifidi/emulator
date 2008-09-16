@@ -51,10 +51,10 @@ public class ThingMagicProtocol implements Protocol {
 				while (tokenFinder.find()) {
 					String temp = tokenFinder.group();
 					/*
-					 * no need to add empty strings at tokens.
+					 * no need to add empty strings at tokens or
+					 * strings with just white space.
 					 */
-					// TODO: Figure out why we are getting empty stings as tokens.
-					if (temp.equals(""))
+					if (temp.equals("") || temp.matches("\\s+"))
 						continue;
 					logger.debug(temp);
 					removedString.add(temp);

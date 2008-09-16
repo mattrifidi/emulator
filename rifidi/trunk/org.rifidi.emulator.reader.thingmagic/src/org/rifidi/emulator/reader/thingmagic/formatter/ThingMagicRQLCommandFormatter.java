@@ -42,7 +42,7 @@ public class ThingMagicRQLCommandFormatter implements CommandFormatter {
 
 		/* the command handler name */
 		retVal.add("execute");
-
+		
 		/* split around the white spaces */
 		String temp[] = commandTrimmed.split("\\s");
 		/* grab the command name */
