@@ -17,6 +17,7 @@ import org.apache.commons.logging.LogFactory;
 import org.rifidi.emulator.common.ControlSignal;
 import org.rifidi.emulator.reader.alien.command.exception.AlienExceptionHandler;
 import org.rifidi.emulator.reader.alien.module.AlienReaderSharedResources;
+import org.rifidi.emulator.reader.alien.uptime.AlienUptime;
 import org.rifidi.emulator.reader.command.CommandObject;
 import org.rifidi.emulator.reader.module.abstract_.AbstractReaderSharedResources;
 import org.rifidi.emulator.reader.sharedrc.properties.ReaderProperty;
@@ -219,6 +220,9 @@ public class AlienGeneral {
 	 */
 	public CommandObject uptime(CommandObject arg,
 			AbstractReaderSharedResources asr) {
+		ReaderProperty rp = asr.getPropertyMap().get(arg.getDisplayName().toLowerCase());
+		System.out.println("The readerProperty: " + rp);
+		rp.setPropertyValue(String.valueOf(AlienUptime.getInstance().getUptimeInSeconds()));
 		return AlienCommon.getter_setter(arg, asr);
 	}
 

@@ -154,7 +154,6 @@ public class AlienExceptionHandler extends GenericExceptionHandler {
 	@Override
 	public CommandObject methodInvocationError(ArrayList<Object> arg,
 			CommandObject obj) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 }

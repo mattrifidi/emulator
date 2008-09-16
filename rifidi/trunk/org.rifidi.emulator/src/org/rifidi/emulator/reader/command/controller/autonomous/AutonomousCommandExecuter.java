@@ -100,7 +100,6 @@ public class AutonomousCommandExecuter implements Runnable {
 	 * @param period
 	 *            The period between command generations.
 	 * @param value
-	 * 			TODO: Possibly change this to a long?  
 	 * 			  The amount of time in ms the command will run for, or the
 	 * 			  number of cycles the command will run for.  
 	 * @param state
@@ -183,11 +182,9 @@ public class AutonomousCommandExecuter implements Runnable {
 				} catch (CommunicationException e1) {
 					/* The underlying communication was interrupted, stop. */
 					this.interrupt();
-
 				} catch (CommandControllerException e) {
 					/* The CommandController was interrupted, stop. */
 					this.interrupt();
-
 				}
 
 				if (state

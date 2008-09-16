@@ -167,3 +167,4 @@ Export-Package: edu.uark.csce.llrp,
  org.xml.sax,
  org.xml.sax.ext,
  org.xml.sax.helpers
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6

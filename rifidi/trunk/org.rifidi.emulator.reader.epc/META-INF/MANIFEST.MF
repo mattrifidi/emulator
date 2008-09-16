@@ -16,3 +16,4 @@ Require-Bundle: org.rifidi.dependencies,
  org.rifidi.emulator,
  org.rifidi.common.utilities,
  org.rifidi.services.tags;bundle-version="2.0.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6

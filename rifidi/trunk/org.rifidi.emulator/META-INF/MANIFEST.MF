@@ -1,4 +1,5 @@
 Manifest-Version: 1.0
+Bundle-RequiredExecutionEnvironment:  JavaSE-1.6
 Bundle-ManifestVersion: 2
 Bundle-Name: Emulator Plug-in
 Bundle-SymbolicName: org.rifidi.emulator
@@ -37,7 +38,6 @@ Export-Package: org.rifidi.emulator;uses:="org.osgi.framework",
  org.rifidi.emulator.io.comm.logFormatter,
  org.rifidi.emulator.io.comm.serial;uses:="junit.framework",
  org.rifidi.emulator.io.comm.streamreader,
- org.rifidi.emulator.io.comm.tcpclient,
  org.rifidi.emulator.io.protocol,
  org.rifidi.emulator.log;uses:="org.apache.log4j,org.apache.log4j.spi",
  org.rifidi.emulator.reader.command;uses:="org.rifidi.emulator.reader.sharedrc.properties",
@@ -65,7 +65,6 @@ Export-Package: org.rifidi.emulator;uses:="org.osgi.framework",
  org.rifidi.emulator.reader.formatter,
  org.rifidi.emulator.reader.module;uses:="org.rifidi.emulator.reader.module.abstract_",
  org.rifidi.emulator.reader.module.abstract_;uses:="junit.framework",
- org.rifidi.emulator.reader.module.factory;uses:="junit.framework",
  org.rifidi.emulator.reader.properties.xml,
  org.rifidi.emulator.reader.sharedrc.GPIO;uses:="org.rifidi.emulator.rmi.client",
  org.rifidi.emulator.reader.sharedrc.properties,
@@ -77,9 +76,10 @@ Export-Package: org.rifidi.emulator;uses:="org.osgi.framework",
  org.rifidi.emulator.reader.source,
  org.rifidi.emulator.rmi.client;uses:="gnu.cajo.utils.extra,gnu.cajo.invoke,org.rifidi.emulator.tags",
  org.rifidi.emulator.rmi.server;uses:="org.rifidi.emulator.reader.module,gnu.cajo.invoke",
- org.rifidi.emulator.xml;uses:="org.rifidi.emulator.reader.command,junit.framework",
  org.rifidi.utilities,
  org.rifidi.utilities.comm.CRC,
  org.rifidi.utilities.device;uses:="junit.framework",
  org.rifidi.utilities.formatting
 Eclipse-LazyStart: true
+Bundle-ActivationPolicy: lazy
+

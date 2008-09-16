@@ -36,7 +36,6 @@ public class AlientTagListFormatter {
 	/**
 	 * The logger for this class.
 	 */
-	@SuppressWarnings("unused")
 	private static Log logger = LogFactory.getLog(AlientTagListFormatter.class);
 
 	public AlientTagListFormatter(TagListFormatReaderProperty format,
