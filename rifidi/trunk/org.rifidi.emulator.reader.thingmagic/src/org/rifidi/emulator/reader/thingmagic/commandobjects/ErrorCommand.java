@@ -18,7 +18,7 @@ public class ErrorCommand implements Command {
 	public ArrayList<Object> execute() {
 		ArrayList<Object> retVal = new ArrayList<Object>();
 		retVal.add(errorMessage);
-		
+		retVal.add("");
 		return retVal;
 	}
 

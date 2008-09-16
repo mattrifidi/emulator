@@ -134,6 +134,11 @@ public class DeclareCommand implements Command {
 						"Error 0100:     syntax error at '" + token + "'");
 			}
 
+			
+			/*
+			 * The SelectCommand and UpdateCommand both check for the semicolon 
+			 * at the end, so we don't have to do that here.
+			 */
 		} catch (NoSuchElementException e) {
 			/*
 			 * if we get here... we run out of tokens prematurely... Our job now

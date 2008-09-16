@@ -176,6 +176,23 @@ public class SelectCommand implements Command {
 			// }
 			// }
 			
+			// check if the command correctly ends in a semicolon
+			if (tokenIterator.hasNext()){
+				token = tokenIterator.next();
+				
+				if (token.matches("\\s*")){
+					token = tokenIterator.next();
+				}
+				
+				if (!token.equals(";")){
+					throw new CommandCreationExeption(
+							"Error 0100:     syntax error at '" + token + "'");
+				}
+			} else {
+				throw new CommandCreationExeption(
+						"Error 0100:     syntax error at '\n'");
+			}
+			
 			
 		} catch (NoSuchElementException e) {
 			/*

@@ -5,6 +5,8 @@ package org.rifidi.emulator.reader.thingmagic.io.protocol;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -40,22 +42,26 @@ public class ThingMagicProtocol implements Protocol {
 		List<byte[]> removed = new ArrayList<byte[]>();
 		String stringData = new String(data);
 		
-		/* This regular expression verifies that each command is terminated with a semicolon. */
-		if (!stringData.matches("^\\s*?([[\\w\\W]&&[^;]]*?;\\s*?)+?$")) 
-			throw new ProtocolValidationException();
+		List<String> removedString = new ArrayList<String>();
+		Pattern tokenizer = Pattern.compile(
+				"[^;]+;|[^;]+", Pattern.CASE_INSENSITIVE
+								| Pattern.DOTALL);
+				Matcher tokenFinder = tokenizer.matcher(stringData);
+
+				while (tokenFinder.find()) {
+					String temp = tokenFinder.group();
+					/*
+					 * no need to add empty strings at tokens.
+					 */
+					// TODO: Figure out why we are getting empty stings as tokens.
+					if (temp.equals(""))
+						continue;
+					logger.debug(temp);
+					removedString.add(temp);
+				}
 		
-		/* force incoming command to lower case */
-		//stringData = stringData.toUpperCase();
+
 		
-		/* split the string and eat the leading white spaces
-		 *  in front of each semicolon.
-		 */
-		String[] removedString = stringData.split(";\\s*");
-		
-		/* eat all white space in front of the string at index zero. */
-		while (removedString[0].matches("^\\s+.*")){
-			removedString[0] = removedString[0].substring(1);
-		}
 	
 		for (String s: removedString){
 			removed.add(s.getBytes());

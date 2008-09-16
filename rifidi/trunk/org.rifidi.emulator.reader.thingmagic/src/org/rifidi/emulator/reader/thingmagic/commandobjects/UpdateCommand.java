@@ -111,6 +111,23 @@ public class UpdateCommand implements Command {
 			token = tokenIterator.next();
 
 			parseKeyValuePairs(tokenIterator);
+			
+			// check if the command correctly ends in a semicolon
+			if (tokenIterator.hasNext()){
+				token = tokenIterator.next();
+				
+				if (token.matches("\\s*")){
+					token = tokenIterator.next();
+				}
+				
+				if (!token.equals(";")){
+					throw new CommandCreationExeption(
+							"Error 0100:     syntax error at '" + token + "'");
+				}
+			} else {
+				throw new CommandCreationExeption(
+						"Error 0100:     syntax error at '\n'");
+			}
 		} catch (NoSuchElementException e) {
 			/*
 			 * if we get here... we run out of tokens prematurely... Our job now is
