@@ -14,7 +14,6 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
-import org.rifidi.ui.common.registry.ReaderRegistry;
 import org.rifidi.ui.common.validators.IpAddressValidator;
 
 /**

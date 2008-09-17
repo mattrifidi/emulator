@@ -29,3 +29,5 @@ Export-Package: org.rifidi.emulator.reader.llrp,
  org.rifidi.emulator.reader.llrp.trigger,
  org.rifidi.emulator.reader.llrp.util,
  org.rifidi.emulator.reader.llrp.utils
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy

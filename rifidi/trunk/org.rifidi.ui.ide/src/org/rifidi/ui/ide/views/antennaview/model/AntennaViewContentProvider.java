@@ -21,7 +21,6 @@ public class AntennaViewContentProvider implements IStructuredContentProvider {
 	 * 
 	 * @see org.eclipse.jface.viewers.IStructuredContentProvider#getElements(java.lang.Object)
 	 */
-	@SuppressWarnings("unchecked")
 	public Object[] getElements(Object inputElement) {
 		// If input is a UIAntenna get the list of tags out of it
 		if (inputElement instanceof UIAntenna) {

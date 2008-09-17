@@ -33,13 +33,16 @@ public class ReaderEditor extends EditorPart {
 
 	public static final String ID = "org.rifidi.ui.ide.editors.ReaderEditor";
 
+	@SuppressWarnings("unused")
 	private Log logger = LogFactory.getLog(ReaderEditor.class);
 
+	@SuppressWarnings("unused")
 	private IEditorSite site;
 	private ReaderEditorInput input;
 	private UIReader reader;
 
 	private ScrolledComposite mainComposite;
+	@SuppressWarnings("unused")
 	private CTabItem[] tabItems;
 	private Composite gpioChild;
 

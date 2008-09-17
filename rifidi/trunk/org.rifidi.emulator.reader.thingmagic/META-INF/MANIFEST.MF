@@ -19,3 +19,4 @@ Export-Package: org.rifidi.emulator.reader.thingmagic,
  org.rifidi.emulator.reader.thingmagic.io.protocol,
  org.rifidi.emulator.reader.thingmagic.module
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy

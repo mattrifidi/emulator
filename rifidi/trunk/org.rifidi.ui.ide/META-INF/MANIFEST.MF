@@ -14,3 +14,5 @@ Require-Bundle: org.eclipse.core.runtime,
  org.rifidi.services,
  org.rifidi.services.tags
 Eclipse-LazyStart: true
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6

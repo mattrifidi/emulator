@@ -3,7 +3,6 @@ package org.rifidi.ui.ide.perspectives;
 import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
-import org.rifidi.ui.ide.views.antennaview.AntennaView;
 import org.rifidi.ui.ide.views.consoleview.ConsoleView;
 import org.rifidi.ui.ide.views.readerview.ReaderView;
 import org.rifidi.ui.ide.views.tagview.TagView;

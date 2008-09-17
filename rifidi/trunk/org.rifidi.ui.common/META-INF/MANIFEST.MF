@@ -22,3 +22,5 @@ Export-Package: org.rifidi.ui.common,
  org.rifidi.ui.common.wizards.reader.exceptions,
  org.rifidi.ui.common.wizards.reader.pages,
  org.rifidi.ui.common.wizards.tag
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy

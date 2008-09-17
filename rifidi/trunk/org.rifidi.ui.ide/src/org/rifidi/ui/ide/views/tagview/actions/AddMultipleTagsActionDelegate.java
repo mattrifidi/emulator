@@ -1,8 +1,5 @@
 package org.rifidi.ui.ide.views.tagview.actions;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.wizard.WizardDialog;
@@ -10,7 +7,6 @@ import org.eclipse.ui.IViewActionDelegate;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
-import org.rifidi.services.tags.impl.RifidiTag;
 import org.rifidi.ui.common.wizards.tag.MultipleNewTagsWizard;
 import org.rifidi.ui.ide.views.tagview.TagView;
 
@@ -47,7 +43,7 @@ public class AddMultipleTagsActionDelegate implements IViewActionDelegate, IWork
 	 * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
 	 */
 	public void run(IAction action) {
-		List<RifidiTag> tagList = new ArrayList<RifidiTag>();
+		//List<RifidiTag> tagList = new ArrayList<RifidiTag>();
 		MultipleNewTagsWizard wizard = new MultipleNewTagsWizard();
 		WizardDialog wizardDialog = new WizardDialog(view.getSite().getShell(),
 				wizard);

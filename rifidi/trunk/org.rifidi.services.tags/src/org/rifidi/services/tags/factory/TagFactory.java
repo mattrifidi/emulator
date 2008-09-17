@@ -13,7 +13,6 @@ package org.rifidi.services.tags.factory;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 
 import org.rifidi.services.tags.IGen1Tag;
 import org.rifidi.services.tags.enums.TagGen;
