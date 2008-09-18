@@ -17,4 +17,5 @@ Require-Bundle: org.eclipse.swt;bundle-version="3.4.0",
 Export-Package: org.rifidi.dynamicswtforms.ui.exceptions,
  org.rifidi.dynamicswtforms.ui.form,
  org.rifidi.dynamicswtforms.ui.widgets,
- org.rifidi.dynamicswtforms.ui.widgets.listeners
+ org.rifidi.dynamicswtforms.ui.widgets.listeners,
+ org.rifidi.dynamicswtforms.ui.widgets.standard
