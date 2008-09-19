@@ -14,7 +14,6 @@ package org.rifidi.emulator.reader.symbol.module;
 import org.apache.commons.logging.LogFactory;
 import org.rifidi.emulator.common.PowerControllable;
 import org.rifidi.emulator.reader.module.abstract_.AbstractSuspendedPowerState;
-import org.rifidi.emulator.reader.symbol.tagbuffer.SymbolTagMemory;
 
 /**
  * Represents a suspended state of the symbol reader.

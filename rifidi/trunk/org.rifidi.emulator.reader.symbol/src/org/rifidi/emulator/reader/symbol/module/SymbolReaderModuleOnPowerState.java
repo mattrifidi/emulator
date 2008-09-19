@@ -14,7 +14,6 @@ package org.rifidi.emulator.reader.symbol.module;
 import org.apache.commons.logging.LogFactory;
 import org.rifidi.emulator.common.PowerControllable;
 import org.rifidi.emulator.reader.module.abstract_.AbstractOnPowerState;
-import org.rifidi.emulator.reader.symbol.tagbuffer.SymbolTagMemory;
 
 /**
  * 
@@ -88,7 +87,7 @@ public class SymbolReaderModuleOnPowerState extends AbstractOnPowerState {
 		rm.getSharedResources().getInteractiveHttpConnectionSignal()
 				.setControlVariableValue(false);
 		
-		SymbolReaderSharedResources ssr = rm.getSharedResources();
+		//SymbolReaderSharedResources ssr = rm.getSharedResources();
 
 		rm.changePowerState(SymbolReaderModuleOffPowerState.getInstance());
 		

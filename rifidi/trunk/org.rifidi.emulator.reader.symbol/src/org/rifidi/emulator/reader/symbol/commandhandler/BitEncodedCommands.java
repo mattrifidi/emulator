@@ -26,6 +26,7 @@ public class BitEncodedCommands {
 	/*
 	 * The logger for this class.
 	 */
+	@SuppressWarnings("unused")
 	private static Log logger = LogFactory.getLog(BitEncodedCommands.class);
 
 	public CommandObject setSystemParameter(CommandObject arg,
