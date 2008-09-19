@@ -407,7 +407,7 @@ public class TestClient {
 	 * @return
 	 * @author kyle Neumeier - kyle@pramari.com
 	 */
-	private AccessSpec createAccessSpec(int accessSpecID, int roSpecID) {
+	public AccessSpec createAccessSpec(int accessSpecID, int roSpecID) {
 		AccessSpec as = new AccessSpec();
 		as.setAccessSpecID(accessSpecID);
 		as.setAntennaId((short) 0); // perform on all antennas
