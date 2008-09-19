@@ -13,7 +13,6 @@ package org.rifidi.designer.library.basemodels.pusharm;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.Stack;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -35,6 +34,7 @@ import com.jme.input.InputHandler;
 import com.jme.input.action.InputAction;
 import com.jme.input.action.InputActionEvent;
 import com.jme.input.util.SyntheticButton;
+import com.jme.math.Quaternion;
 import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.renderer.Renderer;
@@ -146,7 +146,7 @@ public class PusharmEntity extends VisualEntity implements SceneControl,
 	 */
 	@Override
 	public void init() {
-		Node mainNode=new Node();
+		Node mainNode = new Node();
 		mainNode.setModelBound(new BoundingBox());
 		Node node = new Node("maingeometry");
 		node.setModelBound(new BoundingBox());
@@ -175,10 +175,12 @@ public class PusharmEntity extends VisualEntity implements SceneControl,
 			for (Spatial sp : bodyNode.getChildren()) {
 				sp.clearRenderState(RenderState.RS_TEXTURE);
 			}
-
+			bodyNode.setLocalRotation(new Quaternion(new float[]{(float)Math.toRadians(270),0,0}));
+			bodyNode.setLocalTranslation(new Vector3f(0,3.5f,0));
 			bodyNode.updateRenderState();
 			Node armNode = (Node) BinaryImporter.getInstance()
 					.load(arm.toURL());
+			armNode.setLocalRotation(new Quaternion(new float[]{(float)Math.toRadians(90),0,0}));
 			armPhysics = physicsSpace.createStaticNode();
 			armPhysics.attachChild(armNode);
 			armPhysics.setName("armPhysics");
@@ -228,13 +230,13 @@ public class PusharmEntity extends VisualEntity implements SceneControl,
 
 			getNode().updateGeometricState(0, true);
 			getNode().updateWorldBound();
-			Node _node=new Node("hiliter");
-			System.out.println(((BoundingBox) bodyNode
-					.getWorldBound()).getCenter().clone().subtractLocal(
+			Node _node = new Node("hiliter");
+			System.out.println(((BoundingBox) bodyNode.getWorldBound())
+					.getCenter().clone().subtractLocal(
 							getNode().getLocalTranslation()));
 			Box box = new Box("hiliter", ((BoundingBox) bodyNode
 					.getWorldBound()).getCenter().clone().subtractLocal(
-							getNode().getLocalTranslation()), 3f, 3.5f, 2.0f);
+					getNode().getLocalTranslation()), 3f, 3.5f, 2.0f);
 			box.setModelBound(new BoundingBox());
 			box.updateModelBound();
 			_node.attachChild(box);
@@ -242,7 +244,7 @@ public class PusharmEntity extends VisualEntity implements SceneControl,
 			_node.updateModelBound();
 			_node.setCullHint(CullHint.Always);
 			getNode().attachChild(_node);
-			
+
 		} catch (IOException e) {
 			logger.error("Unable to load jme: " + e);
 		}
@@ -266,7 +268,9 @@ public class PusharmEntity extends VisualEntity implements SceneControl,
 		if (running)
 			turnOn();
 	}
-	private Node oldCol=null;
+
+	private Node oldCol = null;
+
 	private void prepare() {
 		// set up collisions to trigger the pusharm
 		triggerSpace.generatePhysicsGeometry();
@@ -278,11 +282,11 @@ public class PusharmEntity extends VisualEntity implements SceneControl,
 						.getTriggerData()).getNode2() : ((ContactInfo) evt
 						.getTriggerData()).getNode1();
 
-				if (collider != armPhysics && !collider.equals(oldCol)){
-					oldCol=collider;
+				if (collider != armPhysics && !collider.equals(oldCol)) {
+					oldCol = collider;
 					trigger(collider);
 				}
-					
+
 			}
 		};
 		SyntheticButton intersect = triggerSpace.getCollisionEventHandler();
@@ -359,10 +363,11 @@ public class PusharmEntity extends VisualEntity implements SceneControl,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.entities.interfaces.Trigger#trigger(java.lang.Object)
+	 * @see
+	 * org.rifidi.designer.entities.interfaces.Trigger#trigger(java.lang.Object)
 	 */
 	public void trigger(Object source) {
-		
+
 		if (running && !paused && !activationStack.isEmpty()
 				&& activationStack.pop()) {
 			if (st.getCurTime() == st.getMaxTime())
@@ -446,7 +451,9 @@ public class PusharmEntity extends VisualEntity implements SceneControl,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.entities.interfaces.NeedsPhysics#setCollisionHandler(com.jme.input.InputHandler)
+	 * @see
+	 * org.rifidi.designer.entities.interfaces.NeedsPhysics#setCollisionHandler
+	 * (com.jme.input.InputHandler)
 	 */
 	public void setCollisionHandler(InputHandler collisionHandler) {
 		this.collisionHandler = collisionHandler;
@@ -455,7 +462,9 @@ public class PusharmEntity extends VisualEntity implements SceneControl,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.entities.interfaces.NeedsPhysics#setPhysicsSpace(com.jmex.physics.PhysicsSpace)
+	 * @see
+	 * org.rifidi.designer.entities.interfaces.NeedsPhysics#setPhysicsSpace(
+	 * com.jmex.physics.PhysicsSpace)
 	 */
 	public void setPhysicsSpace(PhysicsSpace physicsSpace) {
 		this.physicsSpace = physicsSpace;
@@ -492,11 +501,13 @@ public class PusharmEntity extends VisualEntity implements SceneControl,
 
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.rifidi.designer.entities.VisualEntity#getBoundingNode()
 	 */
 	@Override
 	public Node getBoundingNode() {
-		return (Node)getNode().getChild("hiliter");
+		return (Node) getNode().getChild("hiliter");
 	}
 }

@@ -10,10 +10,6 @@
  */
 package org.rifidi.designer.library.basemodels.boxproducerSGTIN96;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,7 +43,6 @@ import com.jme.scene.state.MaterialState;
 import com.jme.scene.state.BlendState.DestinationFunction;
 import com.jme.scene.state.BlendState.SourceFunction;
 import com.jme.system.DisplaySystem;
-import com.jme.util.export.binary.BinaryImporter;
 
 /**
  * BoxproducerEntityGID96: Used for generating boxes.
@@ -131,24 +126,9 @@ public class BoxproducerEntitySGTIN96 extends VisualEntity implements
 	@Override
 	public void init() {
 		if (model == null) {
-			URI modelpath = null;
-			try {
-				modelpath = getClass()
-						.getClassLoader()
-						.getResource(
-								"org/rifidi/designer/library/basemodels/boxproducer/blankdisc.jme")
-						.toURI();
-			} catch (URISyntaxException e) {
-				e.printStackTrace();
-			}
-			try {
-				model = (Node) BinaryImporter.getInstance().load(
-						modelpath.toURL());
-			} catch (MalformedURLException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			model = new Node();
+			model.attachChild(new Box("producer", new Vector3f(0, 12f, 0), 3f,
+					.5f, 3f));
 		}
 		setCollides(false);
 
@@ -168,7 +148,6 @@ public class BoxproducerEntitySGTIN96 extends VisualEntity implements
 
 		Node node = new Node(getEntityId());
 		Node sharednode = new SharedNode("maingeometry", model);
-		sharednode.setLocalTranslation(0, 12, 0);
 		node.attachChild(sharednode);
 
 		sharednode.setRenderQueueMode(Renderer.QUEUE_TRANSPARENT);
@@ -205,27 +184,9 @@ public class BoxproducerEntitySGTIN96 extends VisualEntity implements
 	@Override
 	public void loaded() {
 		if (model == null) {
-			URI modelpath = null;
-			try {
-				modelpath = getClass()
-						.getClassLoader()
-						.getResource(
-								"org/rifidi/designer/library/basemodels/boxproducer/blankdisc.jme")
-						// .getResource(
-						// "org/rifidi/designer/library/basemodels/boxproducer/boxproducer_saucer.jme"
-						// )
-						.toURI();
-			} catch (URISyntaxException e) {
-				e.printStackTrace();
-			}
-			try {
-				model = (Node) BinaryImporter.getInstance().load(
-						modelpath.toURL());
-			} catch (MalformedURLException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			model = new Node();
+			model.attachChild(new Box("producer", new Vector3f(0, 12f, 0), 3f,
+					.5f, 3f));
 		}
 		thread = new BoxproducerEntityThread(this, productService, products);
 		thread.setInterval((int) speed * 1000);

@@ -119,6 +119,7 @@ public class Shelf extends VisualEntity implements VisualEntityHolder,
 		}
 		model.setLocalTranslation(new Vector3f(0, 3.7f, 0));
 		model.setLocalScale(5.0f);
+		model.setLocalRotation(new Quaternion(new float[]{(float)Math.toRadians(270),0,0}));;
 		node.attachChild(model);
 		entities = new ArrayList<VisualEntity>();
 		positions = new ArrayList<Position>();

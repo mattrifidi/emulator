@@ -130,24 +130,8 @@ public class BoxproducerEntity extends VisualEntity implements SceneControl,
 	@Override
 	public void init() {
 		if (model == null) {
-			URI modelpath = null;
-			try {
-				modelpath = getClass()
-						.getClassLoader()
-						.getResource(
-								"org/rifidi/designer/library/basemodels/boxproducer/blankdisc.jme")
-						.toURI();
-			} catch (URISyntaxException e) {
-				e.printStackTrace();
-			}
-			try {
-				model = (Node) BinaryImporter.getInstance().load(
-						modelpath.toURL());
-			} catch (MalformedURLException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			model=new Node();
+			model.attachChild(new Box("producer", new Vector3f(0, 12f, 0), 3f, .5f, 3f));
 		}
 		setCollides(false);
 
@@ -167,7 +151,6 @@ public class BoxproducerEntity extends VisualEntity implements SceneControl,
 
 		Node node = new Node(getEntityId());
 		Node sharednode = new SharedNode("maingeometry", model);
-		sharednode.setLocalTranslation(0, 12, 0);
 		node.attachChild(sharednode);
 
 		sharednode.setRenderQueueMode(Renderer.QUEUE_TRANSPARENT);
@@ -204,27 +187,8 @@ public class BoxproducerEntity extends VisualEntity implements SceneControl,
 	@Override
 	public void loaded() {
 		if (model == null) {
-			URI modelpath = null;
-			try {
-				modelpath = getClass()
-						.getClassLoader()
-						.getResource(
-								"org/rifidi/designer/library/basemodels/boxproducer/blankdisc.jme")
-						// .getResource(
-						// "org/rifidi/designer/library/basemodels/boxproducer/boxproducer_saucer.jme"
-						// )
-						.toURI();
-			} catch (URISyntaxException e) {
-				e.printStackTrace();
-			}
-			try {
-				model = (Node) BinaryImporter.getInstance().load(
-						modelpath.toURL());
-			} catch (MalformedURLException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			model=new Node();
+			model.attachChild(new Box("producer", new Vector3f(0, 12f, 0), 3f, .5f, 3f));
 		}
 		thread = new BoxproducerEntityThread(this, productService, products);
 		thread.setInterval((int) speed * 1000);
