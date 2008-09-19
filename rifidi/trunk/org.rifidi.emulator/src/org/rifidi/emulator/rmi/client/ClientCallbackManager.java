@@ -7,6 +7,7 @@ import gnu.cajo.invoke.RemoteInvoke;
 import gnu.cajo.utils.extra.ItemProxy;
 
 /**
+ * An abstract implementation of ClientCallbackInterface
  * @author Kyle Neumeier - kyle@pramari.com
  * 
  */
