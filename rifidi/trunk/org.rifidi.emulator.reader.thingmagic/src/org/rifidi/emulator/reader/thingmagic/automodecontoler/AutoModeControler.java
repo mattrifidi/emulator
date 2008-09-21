@@ -19,7 +19,11 @@ public class AutoModeControler implements Runnable{
 
 	private List<Command> commands;
 
-	private long repeat;
+	private long repeat = 0;
+
+	private long cursorListRepeat = 0;
+	
+	private Thread thread;
 
 	public AutoModeControler(Communication comm) {
 		// TODO Auto-generated constructor stub
@@ -31,6 +35,11 @@ public class AutoModeControler implements Runnable{
 	public void start(List<Command> commands, long repeat){
 		this.commands = commands;
 		this.repeat = repeat;
+		
+		running = true;
+		
+		thread = new Thread(this);
+		thread.start();
 	}
 
 	@Override
@@ -66,10 +75,24 @@ public class AutoModeControler implements Runnable{
 					}
 				}
 			}
+			
+			if (cursorListRepeat > 0) {
+				try {
+					wait(cursorListRepeat);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					//e.printStackTrace();
+				}
+			}
+			
 		}
 		
 	}
 
+	
+	public void setCursorListRepeat(long cursorListRepeat){
+		this.cursorListRepeat = cursorListRepeat;
+	}
 	public void stop(){
 		running = false;
 	}

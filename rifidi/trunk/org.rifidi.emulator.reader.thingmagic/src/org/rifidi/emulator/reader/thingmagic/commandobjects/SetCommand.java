@@ -13,37 +13,56 @@ import org.rifidi.emulator.reader.thingmagic.commandobjects.exceptions.CommandCr
 import org.rifidi.emulator.reader.thingmagic.module.ThingMagicReaderSharedResources;
 
 public class SetCommand implements Command {
-	private static Log logger = LogFactory.getLog(SelectCommand.class);
-	
+	private static Log logger = LogFactory.getLog(SetCommand.class);
+
+	private ESetSubCommand commandSwitch;
+
 	private String command;
 	private ThingMagicReaderSharedResources tmsr;
 
-	public SetCommand(String command, ThingMagicReaderSharedResources tmsr) throws CommandCreationExeption {
+	/*
+	 * Used only to set the delay time between cursor list repeats.
+	 */
+	private long cursorListDelayRepeat;
+
+	/*
+	 * Used only when starting AutoMode
+	 */
+	private List<Command> cursorList = new ArrayList<Command>();
+
+	/*
+	 * Again... only used when starting AutoMode.
+	 */
+	private long repeat = 0;
+
+	
+	/*
+	 * KLUGE: This is one of the hardest commands to understand (code wise).
+	 * Don't modify unless you read and understand 
+	 * the RQL Manual (Mercury 4, ThingMagic RFID Reader).
+	 * 
+	 * The reason is that there are three possible syntaxes depending on what
+	 * one wants to do... This makes it slightly hard to code and understand.
+	 */
+	public SetCommand(String command, ThingMagicReaderSharedResources tmsr)
+			throws CommandCreationExeption {
 		// TODO Auto-generated constructor stub
 		this.command = command;
 		this.tmsr = tmsr;
-		
+
 		List<String> tokens = new ArrayList<String>();
 
 		logger.debug("Parsing command: " + command);
 
 		Pattern tokenizer = Pattern.compile(
-				//anything less...
-				"[^\\s\\w,<>=\\(\\)\\u0027]|" +
-				//groups we are looking for...
-				"\\w+|" +
-				"\\u0027|" +
-				"\\s*<>\\*|" +
-				"\\s*>=\\s*|" +
-				"\\s*<=\\s*|" +
-				"\\s*=\\s*|" +
-				"\\s*,\\s*|" +
-				"\\s*>\\s*|" +
-				"\\s*<\\s*|" +
-				"\\s?+|" +
-				"\\(|" +
-				"\\)|",
-				Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
+		// anything less...
+				"[^\\s\\w,<>=\\(\\)\\u0027]|"
+						+
+						// groups we are looking for...
+						"\\w+|" + "\\u0027|" + "\\s*<>\\*|" + "\\s*>=\\s*|"
+						+ "\\s*<=\\s*|" + "\\s*=\\s*|" + "\\s*,\\s*|"
+						+ "\\s*>\\s*|" + "\\s*<\\s*|" + "\\s?+|" + "\\(|"
+						+ "\\)|", Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
 		Matcher tokenFinder = tokenizer.matcher(command.toLowerCase().trim());
 
 		while (tokenFinder.find()) {
@@ -60,22 +79,60 @@ public class SetCommand implements Command {
 		ListIterator<String> tokenIterator = tokens.listIterator();
 
 		String token = tokenIterator.next();
-		
-		if (!token.equals("fetch"))
+
+		if (!token.equals("set"))
 			throw new CommandCreationExeption(
 					"Error 0100:     syntax error at '" + token + "'");
-		
+
 		try {
-			
-			// check if the command correctly ends in a semicolon
-			if (tokenIterator.hasNext()){
+
+			token = tokenIterator.next();
+
+			if (!token.matches("\\s*")) {
+				throw new CommandCreationExeption(
+						"Error 0100:     syntax error at '" + token + "'");
+			}
+
+			/*
+			 * here possible syntax can diverge into two possible directions...
+			 */
+			token = tokenIterator.next();
+			if (token.matches("auto")) {
+				logger.debug("Expecting to turn on or off AutoMode");
+
+				/*
+				 * here possible syntax can diverge into two possible directions
+				 */
 				token = tokenIterator.next();
-				
-				if (token.matches("\\s*")){
+				if (token.matches("\\s*=\\s*")) {
+					logger.debug("Expecting to turn of AutoMode");
+					setUpStop(tokenIterator);
+				} else if (token.matches("\\s*")) {
+					logger.debug("Expecting to turn of AutoMode");
+					setUpStart(tokenIterator);
+				} else {
+					throw new CommandCreationExeption(
+							"Error 0100:     syntax error at '" + token
+									+ "'");
+				}
+
+			} else if (token.matches("repeat")) {
+				logger.debug("Expecting to set cursorListRepeatDelay");
+				setUpCursorListDelay(tokenIterator);
+			} else {
+				throw new CommandCreationExeption(
+						"Error 0100:     syntax error at '" + token + "'");
+			}
+
+			// check if the command correctly ends in a semicolon
+			if (tokenIterator.hasNext()) {
+				token = tokenIterator.next();
+
+				if (token.matches("\\s*")) {
 					token = tokenIterator.next();
 				}
-				
-				if (!token.equals(";")){
+
+				if (!token.equals(";")) {
 					throw new CommandCreationExeption(
 							"Error 0100:     syntax error at '" + token + "'");
 				}
@@ -83,7 +140,7 @@ public class SetCommand implements Command {
 				throw new CommandCreationExeption(
 						"Error 0100:     syntax error at '\n'");
 			}
-			
+
 		} catch (NoSuchElementException e) {
 			/*
 			 * if we get here... we run out of tokens prematurely... Our job now
@@ -105,13 +162,153 @@ public class SetCommand implements Command {
 					"Error 0100:     syntax error at '" + token + "'");
 
 		}
+
+	}
+	
+	/*
+	 * Helper methods to make reading code easer.
+	 */
+	
+	private void setUpStart(ListIterator<String> tokenIterator) throws CommandCreationExeption{
+		/*
+		 * we are expecting a "turn on" command
+		 */
+		String token;
+		do {
+
+			token = tokenIterator.next();
+			if (!token.matches("\\w*")) {
+				throw new CommandCreationExeption(
+						"Error 0100:     syntax error at '" + token
+								+ "'");
+			}
+
+			if (!tmsr.getCursorCommandRegistry().containsKey(token)) {
+				throw new CommandCreationExeption(
+						"Error 0100:	Cursor does not exist");
+			}
+			
+			cursorList.add(tmsr.getCursorCommandRegistry().get(token));
+			
+			token = tokenIterator.next();
+			
+		} while (token.matches("\\s*,\\s*"));
 		
+		if (!token.matches("\\s*=\\s*")){
+			throw new CommandCreationExeption(
+					"Error 0100:     syntax error at '" + token
+							+ "'");
+		}
+		
+		token = tokenIterator.next();
+		
+		if (!token.equalsIgnoreCase("ON")){
+			throw new CommandCreationExeption(
+					"Error 0100:     syntax error at '" + token
+							+ "'");
+		}
+		
+		token = tokenIterator.next();
+		if (token.matches("\\s*,\\s*")){
+			
+			token = tokenIterator.next();
+			if (!token.equals("repeat")){
+				throw new CommandCreationExeption(
+						"Error 0100:     syntax error at '" + token
+								+ "'");
+			}
+			
+			token = tokenIterator.next();
+			
+			if (token.matches("\\s*=\\s*")){
+				throw new CommandCreationExeption(
+						"Error 0100:     syntax error at '" + token
+								+ "'");
+			}
+			
+			token = tokenIterator.next();
+			try {
+				repeat = Long.parseLong(token);
+			} catch (NumberFormatException e) {
+				throw new CommandCreationExeption(
+						"Error 0100:     syntax error at '" + token + "'");
+			}
+		} else {
+			/*
+			 * rewind one token.
+			 */
+			tokenIterator.previous();
+		}
+		
+		commandSwitch = ESetSubCommand.START;
+	}
+	
+	private void setUpStop(ListIterator<String> tokenIterator) throws CommandCreationExeption{
+		/*
+		 * we are expecting a "turn off" command
+		 */
+		String token = tokenIterator.next();
+
+		if (!token.equalsIgnoreCase("OFF")) {
+			throw new CommandCreationExeption(
+					"Error 0100:     syntax error at '" + token
+							+ "'");
+		}
+
+		/*
+		 * Tell the execute method we are stopping.
+		 */
+		commandSwitch = ESetSubCommand.STOP;
 	}
 
+	private void setUpCursorListDelay(ListIterator<String> tokenIterator) throws CommandCreationExeption{
+		
+		String token = tokenIterator.next();
+		if (!token.matches("\\*=\\*")) {
+			throw new CommandCreationExeption(
+					"Error 0100:     syntax error at '" + token + "'");
+		}
+
+		/*
+		 * try to set the value on how long we delay before we repeat
+		 * the cursor list again.
+		 */
+		token = tokenIterator.next();
+		try {
+			cursorListDelayRepeat = Long.parseLong(token);
+
+			/*
+			 * Tell the execute method that we are setting the cursor
+			 * list delay repeat value.
+			 */
+			commandSwitch = ESetSubCommand.SET_CURSOR_LIST_REPEAT;
+		} catch (NumberFormatException e) {
+			throw new CommandCreationExeption(
+					"Error 0100:     syntax error at '" + token + "'");
+		}
+	}
 	@Override
 	public ArrayList<Object> execute() {
 		// TODO Auto-generated method stub
-		return null;
+		if (commandSwitch == ESetSubCommand.START) {
+			logger.debug("Staring AutoMode");
+			tmsr.getAutoModeControler().start(cursorList, repeat);
+		}
+
+		if (commandSwitch == ESetSubCommand.STOP) {
+			logger.debug("Stopping AutoMode");
+			tmsr.getAutoModeControler().stop();
+		}
+
+		if (commandSwitch == ESetSubCommand.SET_CURSOR_LIST_REPEAT) {
+			logger.debug("Settig Cursor List Delay Repeat Value");
+			tmsr.getAutoModeControler().setCursorListRepeat(
+					cursorListDelayRepeat);
+		}
+
+		ArrayList<Object> retVal = new ArrayList<Object>();
+		retVal.add("");
+		return retVal;
 	}
 
 	@Override
