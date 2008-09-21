@@ -148,7 +148,7 @@ public class ZoomableLWJGLCamera extends LWJGLCamera {
 				cameraValues[0] = getLeft();
 				cameraValues[1] = getUp();
 				cameraValues[2] = getDirection();
-				setAxes(new Vector3f(-1, 0, 0), new Vector3f(0, 1, -0.5f),
+				setAxes(new Vector3f(-1, 0, 0), new Vector3f(0, 0, -1),
 						new Vector3f(0, -1, 0));
 				apply();
 			}

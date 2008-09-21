@@ -519,16 +519,11 @@ public class DesignerGame extends SWTDefaultImplementor implements
 									.getWorldBound()).xExtent, 2,
 									((BoundingBox) sceneData.getRoomNode()
 											.getWorldBound()).zExtent));
-					offy.getCamera()
-							.setDirection(new Vector3f(0f, -1f, -.001f));
-					offy.getCamera().lookAt(
-							new Vector3f(((BoundingBox) sceneData.getRoomNode()
-									.getWorldBound()).xExtent, 0,
-									((BoundingBox) sceneData.getRoomNode()
-											.getWorldBound()).zExtent - 1),
-							new Vector3f(0, 1, 0));
 					offy.getCamera().setParallelProjection(true);
 
+					offy.getCamera().setAxes(new Vector3f(-1, 0, 0), new Vector3f(0, 0, -1),
+							new Vector3f(0, -1, 0));
+					
 					float ratio = ((BoundingBox) sceneData.getRoomNode()
 							.getWorldBound()).xExtent
 							/ ((BoundingBox) sceneData.getRoomNode()
