@@ -144,5 +144,12 @@ public class AutoStateController implements Runnable {
 		currentState = AutoStateEnums.Off;
 
 	}
+	
+	/**
+	 * 
+	 */
+	public void clearAutoEvluationStateTags() {
+		this.evaluationState.clearPreviousTagList();
+	}
 
 }

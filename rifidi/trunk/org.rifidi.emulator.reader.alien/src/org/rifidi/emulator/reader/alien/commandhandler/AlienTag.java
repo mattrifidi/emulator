@@ -186,7 +186,6 @@ public class AlienTag {
 	 */
 	public CommandObject persistTime(CommandObject arg,
 			AbstractReaderSharedResources asr) {
-
 		if (!AlienCommon.checkIntegerArg(arg)) {
 			ArrayList<Object> retVal;
 			String i = arg.getCurrentQueryName();
@@ -284,6 +283,14 @@ public class AlienTag {
 	 */
 	public CommandObject clearTagList(CommandObject arg,
 			AbstractReaderSharedResources asr) {
+		
+		try {
+			asr.getTagMemory().clear();
+			AlienReaderSharedResources arsr = (AlienReaderSharedResources) asr;
+			arsr.getAutoStateController().clearAutoEvluationStateTags();
+		} catch (Exception e) {
+		}
+
 		return AlienCommon.returnCommandDefaultValue(arg, asr);
 	}
 

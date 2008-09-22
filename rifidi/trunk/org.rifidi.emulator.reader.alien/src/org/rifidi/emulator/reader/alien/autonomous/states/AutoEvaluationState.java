@@ -84,12 +84,12 @@ public class AutoEvaluationState implements AutoState, Observer {
 
 		// ifTaglist has tags, do autoTrue
 		if (!stateIsStopped) {
-			if (!currentTags.isEmpty() && !anyNewTags(oldTags, currentTags)) {
-				autoTrue();
-				this.evalTrig = EvaluationTriggerCondition.True;
-			} else {
+			if (currentTags.isEmpty() || !anyNewTags(oldTags, currentTags)) {
 				autoFalse();
 				this.evalTrig = EvaluationTriggerCondition.False;
+			} else {
+				autoTrue();
+				this.evalTrig = EvaluationTriggerCondition.True;
 			}
 			logger.debug("Done setting eval GPO");
 		}
@@ -284,6 +284,13 @@ public class AutoEvaluationState implements AutoState, Observer {
 			this.donepausing = true;
 		}
 
+	}
+
+	/**
+	 * Clears the tag list, in case a clearTagList was called.  
+	 */
+	public void clearPreviousTagList() {
+		this.oldTags.clear();
 	}
 
 }
