@@ -85,20 +85,20 @@ public class UpdateCommand implements Command {
 		try {
 			token = tokenIterator.next();
 
-			if (!token.matches("\\s+"))
+			if (!token.matches(WHITE_SPACE))
 				throw new CommandCreationExeption(
 						"Error 0100:     syntax error at '" + token + "'");
 
 			token = tokenIterator.next();
 
 			table = token;
-			if (!table.matches("\\w+"))
+			if (!table.matches(A_WORD))
 				throw new CommandCreationExeption(
 						"Error 0100:     syntax error at '" + table + "'");
 
 			token = tokenIterator.next();
 
-			if (!token.matches("\\s+"))
+			if (!token.matches(WHITE_SPACE))
 				throw new CommandCreationExeption(
 						"Error 0100:     syntax error at '" + token + "'");
 
@@ -116,7 +116,7 @@ public class UpdateCommand implements Command {
 			if (tokenIterator.hasNext()){
 				token = tokenIterator.next();
 				
-				if (token.matches("\\s*")){
+				if (token.matches(WHITE_SPACE)){
 					token = tokenIterator.next();
 				}
 				
@@ -142,7 +142,7 @@ public class UpdateCommand implements Command {
 			 */
 
 			token = tokenIterator.previous();
-			while (token.matches("\\s+")) {
+			while (token.matches(WHITE_SPACE)) {
 				token = tokenIterator.previous();
 			}
 			logger.debug("Premature end of token list detected.");
@@ -184,7 +184,7 @@ public class UpdateCommand implements Command {
 		do {
 			token = tokenIterator.next();
 
-			if (!token.matches("\\w+"))
+			if (!token.matches(A_WORD))
 				throw new CommandCreationExeption(
 						"Error 0100:     syntax error at '" + token + "'");
 
@@ -192,7 +192,7 @@ public class UpdateCommand implements Command {
 
 			token = tokenIterator.next();
 
-			if (!token.matches("\\s*=\\s*"))
+			if (!token.matches(EQUALS_WITH_WS))
 				throw new CommandCreationExeption(
 						"Error 0100:     syntax error at '" + token + "'");
 
@@ -222,7 +222,7 @@ public class UpdateCommand implements Command {
 				break;
 
 			token = tokenIterator.next();
-		} while (token.matches("\\s,\\s"));
+		} while (token.matches(COMMA_WITH_WS));
 	}
 
 	@Override

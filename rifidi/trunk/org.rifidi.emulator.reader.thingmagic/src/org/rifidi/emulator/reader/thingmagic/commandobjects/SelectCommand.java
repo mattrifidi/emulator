@@ -83,7 +83,7 @@ public class SelectCommand implements Command {
 			/*
 			 * Look for white spaces
 			 */
-			if (!token.matches("\\s+")) {
+			if (!token.matches(WHITE_SPACE)) {
 				throw new CommandCreationExeption(
 						"Error 0100:     syntax error at '" + token + "'");
 			}
@@ -95,7 +95,7 @@ public class SelectCommand implements Command {
 				/*
 				 * look a word
 				 */
-				if (token.matches("\\w+")) {
+				if (token.matches(A_WORD)) {
 					columns.add(token);
 				} else {
 					throw new CommandCreationExeption(
@@ -106,11 +106,11 @@ public class SelectCommand implements Command {
 				 * look for a comma with any number of white spaces on either
 				 * side.
 				 */
-			} while (token.matches("\\s*,\\s*"));
+			} while (token.matches(COMMA_WITH_WS));
 
 			if (tokenIterator.next().equals("from")) {
 
-				if (!token.matches("\\s+"))
+				if (!token.matches(WHITE_SPACE))
 					throw new CommandCreationExeption(
 							"Error 0100:     syntax error at 'from'");
 
@@ -123,7 +123,7 @@ public class SelectCommand implements Command {
 			/*
 			 * Look for white spaces
 			 */
-			if (!token.matches("\\s+")) {
+			if (!token.matches(WHITE_SPACE)) {
 				throw new CommandCreationExeption(
 						"Error 0100:     syntax error at '" + token + "'");
 			}
@@ -133,7 +133,7 @@ public class SelectCommand implements Command {
 			/*
 			 * Look for words
 			 */
-			if (token.matches("\\w+")) {
+			if (token.matches(A_WORD)) {
 				table = token;
 			} else {
 				throw new CommandCreationExeption(
@@ -180,7 +180,7 @@ public class SelectCommand implements Command {
 			if (tokenIterator.hasNext()){
 				token = tokenIterator.next();
 				
-				if (token.matches("\\s*")){
+				if (token.matches(WHITE_SPACE)){
 					token = tokenIterator.next();
 				}
 				

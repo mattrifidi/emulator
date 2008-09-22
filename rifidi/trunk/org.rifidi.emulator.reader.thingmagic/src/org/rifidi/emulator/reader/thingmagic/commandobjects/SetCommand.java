@@ -88,7 +88,7 @@ public class SetCommand implements Command {
 
 			token = tokenIterator.next();
 
-			if (!token.matches("\\s*")) {
+			if (!token.matches(WHITE_SPACE)) {
 				throw new CommandCreationExeption(
 						"Error 0100:     syntax error at '" + token + "'");
 			}
@@ -104,10 +104,10 @@ public class SetCommand implements Command {
 				 * here possible syntax can diverge into two possible directions
 				 */
 				token = tokenIterator.next();
-				if (token.matches("\\s*=\\s*")) {
+				if (token.matches(EQUALS_WITH_WS)) {
 					logger.debug("Expecting to turn of AutoMode");
 					setUpStop(tokenIterator);
-				} else if (token.matches("\\s*")) {
+				} else if (token.matches(WHITE_SPACE)) {
 					logger.debug("Expecting to turn of AutoMode");
 					setUpStart(tokenIterator);
 				} else {
@@ -128,7 +128,7 @@ public class SetCommand implements Command {
 			if (tokenIterator.hasNext()) {
 				token = tokenIterator.next();
 
-				if (token.matches("\\s*")) {
+				if (token.matches(WHITE_SPACE)) {
 					token = tokenIterator.next();
 				}
 
@@ -154,7 +154,7 @@ public class SetCommand implements Command {
 			 */
 
 			token = tokenIterator.previous();
-			while (token.matches("\\s+")) {
+			while (token.matches(WHITE_SPACE)) {
 				token = tokenIterator.previous();
 			}
 			logger.debug("Premature end of token list detected.");
@@ -177,7 +177,7 @@ public class SetCommand implements Command {
 		do {
 
 			token = tokenIterator.next();
-			if (!token.matches("\\w*")) {
+			if (!token.matches(WHITE_SPACE)) {
 				throw new CommandCreationExeption(
 						"Error 0100:     syntax error at '" + token
 								+ "'");
@@ -192,9 +192,9 @@ public class SetCommand implements Command {
 			
 			token = tokenIterator.next();
 			
-		} while (token.matches("\\s*,\\s*"));
+		} while (token.matches(COMMA_WITH_WS));
 		
-		if (!token.matches("\\s*=\\s*")){
+		if (!token.matches(EQUALS_WITH_WS)){
 			throw new CommandCreationExeption(
 					"Error 0100:     syntax error at '" + token
 							+ "'");
@@ -209,7 +209,7 @@ public class SetCommand implements Command {
 		}
 		
 		token = tokenIterator.next();
-		if (token.matches("\\s*,\\s*")){
+		if (token.matches(COMMA_WITH_WS)){
 			
 			token = tokenIterator.next();
 			if (!token.equals("repeat")){
@@ -220,7 +220,7 @@ public class SetCommand implements Command {
 			
 			token = tokenIterator.next();
 			
-			if (token.matches("\\s*=\\s*")){
+			if (token.matches(EQUALS_WITH_WS)){
 				throw new CommandCreationExeption(
 						"Error 0100:     syntax error at '" + token
 								+ "'");
@@ -264,7 +264,7 @@ public class SetCommand implements Command {
 	private void setUpCursorListDelay(ListIterator<String> tokenIterator) throws CommandCreationExeption{
 		
 		String token = tokenIterator.next();
-		if (!token.matches("\\*=\\*")) {
+		if (!token.matches(EQUALS_WITH_WS)) {
 			throw new CommandCreationExeption(
 					"Error 0100:     syntax error at '" + token + "'");
 		}

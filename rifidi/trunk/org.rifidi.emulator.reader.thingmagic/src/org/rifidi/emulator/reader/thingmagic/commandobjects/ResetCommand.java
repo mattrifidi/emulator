@@ -7,7 +7,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.rifidi.emulator.reader.thingmagic.commandobjects.exceptions.CommandCreationExeption;
-import org.rifidi.emulator.reader.thingmagic.commandregistry.CursorCommandRegistry;
 import org.rifidi.emulator.reader.thingmagic.module.ThingMagicReaderSharedResources;
 
 public class ResetCommand implements Command {
@@ -62,7 +61,7 @@ public class ResetCommand implements Command {
 		if (tokenIterator.hasNext()){
 			token = tokenIterator.next();
 			
-			if (token.matches("\\s*")){
+			if (token.matches(WHITE_SPACE)){
 				token = tokenIterator.next();
 			}
 			

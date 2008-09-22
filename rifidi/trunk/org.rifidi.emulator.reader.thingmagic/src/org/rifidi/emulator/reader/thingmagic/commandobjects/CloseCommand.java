@@ -67,12 +67,12 @@ public class CloseCommand implements Command {
 		try {
 			token = tokenIterator.next();
 
-			if (!token.matches("\\s+"))
+			if (!token.matches(WHITE_SPACE))
 				throw new CommandCreationExeption(
 						"Error 0100:     syntax error at '" + token + "'");
 
 			token = tokenIterator.next();
-			if (token.matches("\\w+")) {
+			if (token.matches(A_WORD)) {
 				cursorName = token;
 				logger.debug("Cursor name is " + cursorName);
 			} else {
@@ -84,7 +84,7 @@ public class CloseCommand implements Command {
 			if (tokenIterator.hasNext()){
 				token = tokenIterator.next();
 				
-				if (token.matches("\\s*")){
+				if (token.matches(WHITE_SPACE)){
 					token = tokenIterator.next();
 				}
 				
@@ -109,7 +109,7 @@ public class CloseCommand implements Command {
 			 */
 
 			token = tokenIterator.previous();
-			while (token.matches("\\s+")) {
+			while (token.matches(WHITE_SPACE)) {
 				token = tokenIterator.previous();
 			}
 			logger.debug("Premature end of token list detected.");
