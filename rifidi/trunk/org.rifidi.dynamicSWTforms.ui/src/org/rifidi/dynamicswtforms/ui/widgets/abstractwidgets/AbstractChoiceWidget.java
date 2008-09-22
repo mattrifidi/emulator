@@ -11,22 +11,30 @@ import org.rifidi.dynamicswtforms.ui.widgets.data.AbstractWidgetData;
 import org.rifidi.dynamicswtforms.ui.widgets.data.ChoiceWidgetData;
 
 /**
- * @author kyle
- *
+ * This is a convenience abstract class to use for widgets who want to display a
+ * choice widget as a combo control. Implementors will still need to build the
+ * control
+ * 
+ * @author Kyle Neumeier - kyle@pramari.com
+ * 
  */
 public abstract class AbstractChoiceWidget extends AbstractWidget {
 
+	/**
+	 * The combo control
+	 */
 	protected Combo combo;
-	
+
 	/**
 	 * @param data
 	 */
 	public AbstractChoiceWidget(AbstractWidgetData data) {
 		super(data);
-		// TODO Auto-generated constructor stub
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.rifidi.dynamicswtforms.ui.widgets.DynamicSWTFormWidget#disable()
 	 */
 	@Override
@@ -35,7 +43,9 @@ public abstract class AbstractChoiceWidget extends AbstractWidget {
 
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.rifidi.dynamicswtforms.ui.widgets.DynamicSWTFormWidget#enable()
 	 */
 	@Override
@@ -45,8 +55,11 @@ public abstract class AbstractChoiceWidget extends AbstractWidget {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see org.rifidi.dynamicswtforms.ui.widgets.DynamicSWTFormWidget#getValue()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.rifidi.dynamicswtforms.ui.widgets.DynamicSWTFormWidget#getValue()
 	 */
 	@Override
 	public String getValue() {
@@ -57,8 +70,12 @@ public abstract class AbstractChoiceWidget extends AbstractWidget {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see org.rifidi.dynamicswtforms.ui.widgets.DynamicSWTFormWidget#setValue(java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.rifidi.dynamicswtforms.ui.widgets.DynamicSWTFormWidget#setValue(java
+	 * .lang.String)
 	 */
 	@Override
 	public String setValue(String value) {
@@ -72,8 +89,11 @@ public abstract class AbstractChoiceWidget extends AbstractWidget {
 		return null;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.rifidi.dynamicswtforms.ui.widgets.DynamicSWTFormWidget#validate()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.rifidi.dynamicswtforms.ui.widgets.DynamicSWTFormWidget#validate()
 	 */
 	@Override
 	public String validate() {

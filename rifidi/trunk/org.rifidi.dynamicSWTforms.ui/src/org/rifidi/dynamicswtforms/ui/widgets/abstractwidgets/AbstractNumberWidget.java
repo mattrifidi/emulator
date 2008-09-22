@@ -3,19 +3,22 @@
  */
 package org.rifidi.dynamicswtforms.ui.widgets.abstractwidgets;
 
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Spinner;
 import org.rifidi.dynamicswtforms.ui.widgets.AbstractWidget;
 import org.rifidi.dynamicswtforms.ui.widgets.data.AbstractWidgetData;
 
 /**
- * @author kyle
- *
+ *This is a convenience abstract class to use for widgets who want to display a
+ * number widget as a spinner control. Implementors will still need to build the
+ * control
+ * 
+ * @author Kyle Neumeier - kyle@pramari.com
+ * 
  */
 public abstract class AbstractNumberWidget extends AbstractWidget {
 
 	protected Spinner spinner;
-	
+
 	/**
 	 * @param data
 	 */
@@ -24,7 +27,9 @@ public abstract class AbstractNumberWidget extends AbstractWidget {
 		// TODO Auto-generated constructor stub
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.rifidi.dynamicswtforms.ui.widgets.DynamicSWTFormWidget#disable()
 	 */
 	@Override
@@ -33,7 +38,9 @@ public abstract class AbstractNumberWidget extends AbstractWidget {
 
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.rifidi.dynamicswtforms.ui.widgets.DynamicSWTFormWidget#enable()
 	 */
 	@Override
@@ -43,16 +50,23 @@ public abstract class AbstractNumberWidget extends AbstractWidget {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see org.rifidi.dynamicswtforms.ui.widgets.DynamicSWTFormWidget#getValue()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.rifidi.dynamicswtforms.ui.widgets.DynamicSWTFormWidget#getValue()
 	 */
 	@Override
 	public String getValue() {
 		return spinner.getText();
 	}
 
-	/* (non-Javadoc)
-	 * @see org.rifidi.dynamicswtforms.ui.widgets.DynamicSWTFormWidget#setValue(java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.rifidi.dynamicswtforms.ui.widgets.DynamicSWTFormWidget#setValue(java
+	 * .lang.String)
 	 */
 	@Override
 	public String setValue(String value) {
@@ -67,8 +81,11 @@ public abstract class AbstractNumberWidget extends AbstractWidget {
 		return null;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.rifidi.dynamicswtforms.ui.widgets.DynamicSWTFormWidget#validate()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.rifidi.dynamicswtforms.ui.widgets.DynamicSWTFormWidget#validate()
 	 */
 	@Override
 	public String validate() {

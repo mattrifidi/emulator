@@ -12,13 +12,28 @@ import org.rifidi.dynamicswtforms.ui.widgets.data.AbstractWidgetData;
 import org.rifidi.dynamicswtforms.ui.widgets.data.StringWidgetData;
 
 /**
- * @author kyle
- *
+ * This is a convenience abstract class to use for widgets who want to display a
+ * string widget as a Text control. Implementors will still need to build the
+ * control
+ * 
+ * @author Kyle Neumeier - kyle@pramari.com
+ * 
  */
 public abstract class AbstractStringWidget extends AbstractWidget {
 
+	/**
+	 * The Text control
+	 */
 	protected Text text;
+	
+	/**
+	 * The regular expression
+	 */
 	private Pattern regexPattern;
+	
+	/**
+	 * The regular expression matcher object used for validation
+	 */
 	private Matcher matcher;
 	
 	/**

@@ -14,16 +14,37 @@ import org.rifidi.dynamicswtforms.ui.widgets.abstractwidgets.AbstractChoiceWidge
 import org.rifidi.dynamicswtforms.ui.widgets.data.AbstractWidgetData;
 import org.rifidi.dynamicswtforms.ui.widgets.data.ChoiceWidgetData;
 
+/**
+ * A default implementation of the Choice Widget, which uses a combo control to
+ * allow users to pick between choices
+ * 
+ * @author Kyle Neumeier - kyle@pramari.com
+ * 
+ */
 public class ChoiceWidget extends AbstractChoiceWidget {
 
+	/**
+	 * Set to true if the user has modified the data since the last time the
+	 * listeners have been notified
+	 */
 	private boolean dirty;
 
+	/**
+	 * Construct a new ChoiceWidget
+	 * 
+	 * @param data
+	 *            ChoiceWidgetData
+	 */
 	public ChoiceWidget(AbstractWidgetData data) {
 		super(data);
 	}
 
+	/**
+	 * link {@link AbstractChoiceWidget#createControl(Composite)}
+	 */
 	@Override
 	public void createControl(Composite parent) {
+		// create the combo
 		combo = new Combo(parent, SWT.BORDER);
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
@@ -38,6 +59,7 @@ public class ChoiceWidget extends AbstractChoiceWidget {
 		combo.select(choices.indexOf(data.getDefaultValue()));
 		combo.setEnabled(data.isEditable());
 
+		// if the selection changes, change dirty to true
 		combo.addSelectionListener(new SelectionListener() {
 			@Override
 			// This method is called when enter is pressed
@@ -51,6 +73,7 @@ public class ChoiceWidget extends AbstractChoiceWidget {
 			}
 		});
 
+		// notify the listeners if enter is pressed and dirty is true
 		combo.addKeyListener(new KeyListener() {
 
 			@Override
@@ -67,11 +90,7 @@ public class ChoiceWidget extends AbstractChoiceWidget {
 					}
 				} else
 					notifyListenersKeyReleased();
-
 			}
-
 		});
-
 	}
-
 }

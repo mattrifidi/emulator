@@ -14,14 +14,36 @@ import org.rifidi.dynamicswtforms.ui.widgets.data.FloatWidgetData;
 import org.rifidi.dynamicswtforms.ui.widgets.data.IntegerWidgetData;
 import org.rifidi.dynamicswtforms.xml.constants.FormElementType;
 
+/**
+ * A default implementation of a Number Widget, which uses a spinner for
+ * Integers and Floats. One problem with this implemetation is that a spinenr
+ * cannot display anything larger than MAX_INT, so is not really big enough for
+ * a true Float
+ * 
+ * @author Kyle Neumeier - kyle@pramari.com
+ * 
+ */
 public class NumberWidget extends AbstractNumberWidget {
 
+	/**
+	 * Set to true if the user has modified the data since the last time the
+	 * listeners have been notified
+	 */
 	private boolean dirty = false;
 
+	/**
+	 * Construct a new Number widget
+	 * 
+	 * @param data
+	 *            An IntegerWidgetData or FloatWidgetData
+	 */
 	public NumberWidget(AbstractWidgetData data) {
 		super(data);
 	}
 
+	/**
+	 * {@link AbstractNumberWidget#createControl(Composite)}
+	 */
 	@Override
 	public void createControl(Composite parent) {
 		spinner = new Spinner(parent, SWT.BORDER);
@@ -41,6 +63,9 @@ public class NumberWidget extends AbstractNumberWidget {
 
 	}
 
+	/**
+	 * Build a spinner for an integer
+	 */
 	private void buildIntegerSpinner() {
 		IntegerWidgetData intData = (IntegerWidgetData) data;
 		if (intData.maxValue() > Integer.MAX_VALUE) {
@@ -88,6 +113,9 @@ public class NumberWidget extends AbstractNumberWidget {
 		});
 	}
 
+	/**
+	 * Build a spinner for a Float
+	 */
 	private void buildFloatSpinner() {
 		FloatWidgetData floatData = (FloatWidgetData) data;
 		spinner.setDigits(floatData.getNumDecimalPlaces());
@@ -110,7 +138,5 @@ public class NumberWidget extends AbstractNumberWidget {
 
 		spinner.setSelection(value);
 	}
-
-
 
 }

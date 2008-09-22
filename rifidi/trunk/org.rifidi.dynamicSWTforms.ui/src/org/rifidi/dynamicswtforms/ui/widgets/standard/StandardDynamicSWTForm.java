@@ -22,55 +22,97 @@ import org.rifidi.dynamicswtforms.ui.widgets.standard.impl.NumberWidget;
 import org.rifidi.dynamicswtforms.ui.widgets.standard.impl.StringWidget;
 import org.rifidi.dynamicswtforms.xml.constants.FormElementType;
 
+/**
+ * This is the default implementation of a Form. It looks like a table with one
+ * column having labels and the other column having widgets. In addition, it can
+ * display errors by showing a red x near the widget that has a problem
+ * 
+ * @author Kyle Neumeier - kyle@pramari.com
+ * 
+ */
 public class StandardDynamicSWTForm extends AbstractDynamicSWTForm {
 
+	/**
+	 * If true, display errors
+	 */
 	private boolean displayErrors;
-	
+
+	/**
+	 * A list of error icons to turn on and off
+	 */
 	private ArrayList<Label> errorIcons;
-	
+
+	/**
+	 * Creates a new form from a pre-processed xml
+	 * 
+	 * @param formRoot
+	 *            The Form XML
+	 * @param displayErrors
+	 *            true if errors should be displayed
+	 */
 	public StandardDynamicSWTForm(Element formRoot, boolean displayErrors) {
 		super(formRoot);
 		this.displayErrors = displayErrors;
 		this.errorIcons = new ArrayList<Label>();
 	}
-	
-	public StandardDynamicSWTForm(String xml, boolean displayErrors) throws DynamicSWTFormInvalidXMLException{
+
+	/**
+	 * 
+	 * Creates a new form from an XML String
+	 * 
+	 * @param formRoot
+	 *            The Form XML
+	 * @param displayErrors
+	 *            true if errors should be displayed
+	 * @throws DynamicSWTFormInvalidXMLException
+	 *             if there was a problem with the XML string
+	 */
+	public StandardDynamicSWTForm(String xml, boolean displayErrors)
+			throws DynamicSWTFormInvalidXMLException {
 		super(xml);
 		this.displayErrors = displayErrors;
 		this.errorIcons = new ArrayList<Label>();
 	}
-	
-	
+
+	/**
+	 * {@link AbstractDynamicSWTForm#createControls(Composite)}
+	 */
+	@Override
 	public void createControls(Composite parent) {
 
+		// create the main composite for this form
 		Composite formComposite = new Composite(parent, SWT.NONE);
 		GridLayout formCompositeLayout = new GridLayout(1, false);
-		formCompositeLayout.marginHeight=0;
+		formCompositeLayout.marginHeight = 0;
 		formComposite.setLayout(formCompositeLayout);
-		
+
+		// create the composite that all the widgets will go into
 		Composite widgetCompsoite;
-		
-		if (this.displayErrors) {		
+
+		if (this.displayErrors) {
+			// if we should display errors, add a column for error icons
 			widgetCompsoite = new Composite(formComposite, SWT.NONE);
 			GridLayout widgetCompositeLayout = new GridLayout();
 			widgetCompositeLayout.makeColumnsEqualWidth = false;
 			widgetCompositeLayout.numColumns = 3;
 			widgetCompsoite.setLayout(widgetCompositeLayout);
 
-
 		} else {
+			// if we should not display errors, just make two columns
 			widgetCompsoite = new Composite(formComposite, SWT.NONE);
 			GridLayout widgetCompositeLayout = new GridLayout();
 			widgetCompositeLayout.makeColumnsEqualWidth = false;
 			widgetCompositeLayout.numColumns = 2;
-			if(formRoot.getChildren().size()==0){
-				widgetCompositeLayout.verticalSpacing=0;
-				widgetCompositeLayout.marginHeight=1;
+			if (formRoot.getChildren().size() == 0) {
+				widgetCompositeLayout.verticalSpacing = 0;
+				widgetCompositeLayout.marginHeight = 1;
 			}
 			widgetCompsoite.setLayout(widgetCompositeLayout);
 		}
 
 		List<Element> children = formRoot.getChildren();
+
+		// step through each XML node and create a widget for it
 		for (Element child : children) {
 			// createWidget
 			FormElementType type = null;
@@ -109,25 +151,37 @@ public class StandardDynamicSWTForm extends AbstractDynamicSWTForm {
 			}
 
 			this.widgets.add(widget);
+
+			// add a label
 			widget.createLabel(widgetCompsoite);
+
+			// add the newly created control
 			widget.createControl(widgetCompsoite);
+
+			// add a listner
 			widget.addListener(this);
-
 		}
-
 	}
-	
+
+	/**
+	 * {@link AbstractDynamicSWTForm#setError(String, String)}
+	 */
+	@Override
 	public void setError(String widgetName, String message) {
-		for(DynamicSWTFormWidget w : widgets){
-			if(w.getElementName().equalsIgnoreCase(widgetName)){
+		for (DynamicSWTFormWidget w : widgets) {
+			if (w.getElementName().equalsIgnoreCase(widgetName)) {
 				errorIcons.get(widgets.indexOf(w)).setVisible(true);
 			}
 		}
 	}
 
+	/**
+	 * {@link AbstractDynamicSWTForm#unsetError(String)}
+	 */
+	@Override
 	public void unsetError(String widgetName) {
-		for(DynamicSWTFormWidget w : widgets){
-			if(w.getElementName().equalsIgnoreCase(widgetName)){
+		for (DynamicSWTFormWidget w : widgets) {
+			if (w.getElementName().equalsIgnoreCase(widgetName)) {
 				errorIcons.get(widgets.indexOf(w)).setVisible(false);
 			}
 		}
