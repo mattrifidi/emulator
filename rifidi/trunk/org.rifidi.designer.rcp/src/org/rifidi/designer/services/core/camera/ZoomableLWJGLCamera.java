@@ -49,9 +49,11 @@ public class ZoomableLWJGLCamera extends LWJGLCamera {
 	 */
 	public ZoomableLWJGLCamera(DesignerGame implementor, int width, int height) {
 		super(width, height);
-		setFrustum(-100f, 1000.0f, -(baseFrustumvalue + zoomlevel) * 4 / 3,
-				(baseFrustumvalue + zoomlevel) * 4 / 3,
-				-(baseFrustumvalue + zoomlevel), (baseFrustumvalue + zoomlevel));
+		setFrustum(-200f, 1000.0f,
+				-(baseFrustumvalue + zoomlevel + zoomoffset) * 4 / 3,
+				(baseFrustumvalue + zoomlevel + zoomoffset) * 4 / 3,
+				-(baseFrustumvalue + zoomlevel + zoomoffset),
+				(baseFrustumvalue + zoomlevel + zoomoffset));
 
 		setLocation(new Vector3f(4.3f, 2, 4.6f));
 		lookAt(new Vector3f(3.7f, 1, 3), Vector3f.UNIT_Y);
@@ -126,7 +128,7 @@ public class ZoomableLWJGLCamera extends LWJGLCamera {
 	/**
 	 * Check if lod has changed and apply it.
 	 */
-	private void adjustLOD() {
+	public void adjustLOD() {
 		if (zoomlevel + zoomoffset <= -30) {
 			if (lod != 0) {
 				lod = 0;

@@ -509,6 +509,7 @@ public class DesignerGame extends SWTDefaultImplementor implements
 								2, (int) ((BoundingBox) sceneData.getRoomNode()
 										.getWorldBound()).zExtent / 2));
 				getCamera().getLocation().addLocal(new Vector3f(-5, 0, -15));
+				((ZoomableLWJGLCamera)getCamera()).adjustLOD();
 				getCamera().update();
 				// adjust minimpa camera
 				if (offy.isSupported()) {
