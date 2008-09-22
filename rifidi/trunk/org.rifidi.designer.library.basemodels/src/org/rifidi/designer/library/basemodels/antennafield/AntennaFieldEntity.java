@@ -40,10 +40,12 @@ import org.rifidi.services.tags.impl.RifidiTag;
 
 import com.jme.bounding.BoundingBox;
 import com.jme.input.InputHandler;
+import com.jme.math.Quaternion;
 import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.renderer.Renderer;
 import com.jme.scene.Node;
+import com.jme.scene.SharedNode;
 import com.jme.scene.SwitchNode;
 import com.jme.scene.shape.Box;
 import com.jme.scene.state.BlendState;
@@ -51,7 +53,6 @@ import com.jme.scene.state.MaterialState;
 import com.jme.scene.state.BlendState.DestinationFunction;
 import com.jme.scene.state.BlendState.SourceFunction;
 import com.jme.system.DisplaySystem;
-import com.jme.util.GameTaskQueueManager;
 import com.jme.util.export.binary.BinaryImporter;
 import com.jmex.physics.PhysicsNode;
 import com.jmex.physics.PhysicsSpace;
@@ -67,25 +68,36 @@ import com.jmex.physics.material.Material;
  */
 public class AntennaFieldEntity extends VisualEntity implements Switch,
 		NeedsPhysics, Field, ChildEntity {
+	/** Logger for this class. */
 	private static Log logger = LogFactory.getLog(AntennaFieldEntity.class);
+	/**
+	 * The entity is the key and the value is the tag associated with the
+	 * entity.
+	 */
 	private Map<Entity, RifidiTag> seenTags = new HashMap<Entity, RifidiTag>();
+	/** Map of entities and a timestamp when they were lakst seen. */
 	private Map<Entity, Long> seen = new HashMap<Entity, Long>();
-	// interface used for communicating with the reader
+	/** interface used for communicating with the reader */
 	private ReaderModuleManagerInterface readerInterface;
-	// this antenna's index
+	/** this antenna's index */
 	private int antennaNum;
+	/** True if the scene is in running state. */
 	private boolean running;
-
-	private InputHandler collisionHandler;
+	/** Reference to the physics space */
 	private PhysicsSpace physicsSpace;
+	/** Initial translation of the antenna. */
 	private Vector3f baseTranslation;
+	/** Initial rotation of the antenna. */
 	private Vector3f baseRotation;
+	/** The entity this antenna is attached to. */
 	private VisualEntity parent;
+	/** The factor by which the field gets resized. */
 	private float factor;
-	// transparency
+	/** Transparency states. */
 	private BlendState as;
 	private MaterialState ms;
 
+	/** Thread for checking the field for entites in it. */
 	private AntennaFieldThread antennaFieldThread;
 	/**
 	 * Reference to the events service.
@@ -99,6 +111,10 @@ public class AntennaFieldEntity extends VisualEntity implements Switch,
 	 * LOD node.
 	 */
 	private SwitchNode switchNode;
+	/**
+	 * The shared model we create the shared meshes from.
+	 */
+	private static Node model = null;
 
 	/**
 	 * Default constructor (used by JAXB)
@@ -167,7 +183,8 @@ public class AntennaFieldEntity extends VisualEntity implements Switch,
 	}
 
 	private void prepare() {
-		if (switchNode == null) {
+		// Load the model if it idn't loaded yet.
+		if (model == null) {
 			URI modelpath = null;
 			try {
 				modelpath = getClass()
@@ -179,18 +196,25 @@ public class AntennaFieldEntity extends VisualEntity implements Switch,
 				e.printStackTrace();
 			}
 			try {
-				switchNode = new SwitchNode();
-				switchNode.attachChild((Node) BinaryImporter.getInstance()
-						.load(modelpath.toURL()));
-				switchNode.attachChild(new Box("iii", Vector3f.ZERO.clone(), 1,
-						1, 1));
-				switchNode.setActiveChild(0);
+				model = (Node) BinaryImporter.getInstance().load(
+						modelpath.toURL());
+				model.setLocalRotation(new Quaternion(new float[] {
+						(float) Math.toRadians(270), 0, 0 }));
 			} catch (MalformedURLException e) {
 				logger.fatal(e);
 			} catch (IOException e) {
 				logger.fatal(e);
 			}
 		}
+		// Create the switchnode if it is not yet created.
+		if (switchNode == null) {
+			switchNode = new SwitchNode();
+			switchNode.attachChild(new SharedNode(model));
+			switchNode.attachChild(new Box("iii", Vector3f.ZERO.clone(), 1, 1,
+					1));
+			switchNode.setActiveChild(0);
+		}
+		// Enable transparency
 		as = DisplaySystem.getDisplaySystem().getRenderer().createBlendState();
 		as.setBlendEnabled(true);
 		as.setSourceFunction(SourceFunction.SourceAlpha);
@@ -218,6 +242,7 @@ public class AntennaFieldEntity extends VisualEntity implements Switch,
 	 */
 	public void turnOn() {
 		if (!running == true) {
+			// attach the node to the scene and enable the collision checks
 			update(new Callable<Object>() {
 
 				/*
@@ -249,7 +274,8 @@ public class AntennaFieldEntity extends VisualEntity implements Switch,
 	 */
 	public void turnOff() {
 		if (!running == false) {
-			GameTaskQueueManager.getManager().update(new Callable<Object>() {
+			// detach the node from the scene and disable the collision checks
+			update(new Callable<Object>() {
 
 				/*
 				 * (non-Javadoc)
@@ -280,12 +306,15 @@ public class AntennaFieldEntity extends VisualEntity implements Switch,
 	@Override
 	public void fieldEntered(Entity entity) {
 		if (entity.getUserData() instanceof RifidiTag) {
+			// add action to the thread for processing
 			antennaFieldThread.addAction(new AntennaFieldAction(true,
 					(RifidiTag) entity.getUserData()));
+			// publish collision event
 			eventsService.publish(new TagEvent(
 					(RifidiTag) entity.getUserData(), readerInterface,
 					antennaNum, true));
 		}
+		// inform the parent of the collision
 		((GateEntity) getParent()).tagSeen();
 	}
 
@@ -348,7 +377,6 @@ public class AntennaFieldEntity extends VisualEntity implements Switch,
 	 * (com.jme.input.InputHandler)
 	 */
 	public void setCollisionHandler(InputHandler collisionHandler) {
-		this.collisionHandler = collisionHandler;
 	}
 
 	/*
@@ -416,9 +444,14 @@ public class AntennaFieldEntity extends VisualEntity implements Switch,
 		this.factor = factor;
 	}
 
+	/**
+	 * Change the size factor of the field.
+	 * 
+	 * @param newFactor
+	 */
 	public void updateFactor(float newFactor) {
 		this.factor = newFactor;
-		GameTaskQueueManager.getManager().update(new Callable<Object>() {
+		update(new Callable<Object>() {
 
 			/*
 			 * (non-Javadoc)
@@ -438,6 +471,27 @@ public class AntennaFieldEntity extends VisualEntity implements Switch,
 			}
 
 		});
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.rifidi.designer.entities.VisualEntity#setLOD(int)
+	 */
+	@Override
+	public void setLOD(int lod) {
+		// switchNode.setActiveChild(lod);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.rifidi.designer.entities.VisualEntity#getBoundingNode()
+	 */
+	@Override
+	public Node getBoundingNode() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	/**
@@ -465,27 +519,6 @@ public class AntennaFieldEntity extends VisualEntity implements Switch,
 	@Inject
 	public void setFieldService(FieldService fieldService) {
 		this.fieldService = fieldService;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.rifidi.designer.entities.VisualEntity#setLOD(int)
-	 */
-	@Override
-	public void setLOD(int lod) {
-		// switchNode.setActiveChild(lod);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.rifidi.designer.entities.VisualEntity#getBoundingNode()
-	 */
-	@Override
-	public Node getBoundingNode() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

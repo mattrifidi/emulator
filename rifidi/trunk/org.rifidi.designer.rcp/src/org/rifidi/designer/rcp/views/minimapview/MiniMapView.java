@@ -31,7 +31,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Scale;
 import org.eclipse.ui.part.ViewPart;
-import org.monklypse.core.JMECanvasImplementor2;
 import org.rifidi.designer.rcp.GlobalProperties;
 import org.rifidi.designer.rcp.game.DesignerGame;
 import org.rifidi.designer.rcp.views.view3d.listeners.ZoomMouseWheelListener;
@@ -42,7 +41,6 @@ import org.rifidi.services.registry.ServiceRegistry;
 import com.jme.math.Vector2f;
 import com.jme.math.Vector3f;
 import com.jme.renderer.Camera;
-import com.jmex.swt.lwjgl.LWJGLSWTCanvas;
 
 /**
  * Minimap that displays an eagle eye rendering of the map currently displayed.
@@ -97,7 +95,7 @@ public class MiniMapView extends ViewPart {
 	private int size = 0;
 
 	private DesignerGame implementor;
-	
+
 	/**
 	 * Constructor.
 	 */
@@ -147,7 +145,8 @@ public class MiniMapView extends ViewPart {
 					centerOn(e.x - 15, e.y - 15);
 			}
 		});
-		label.addMouseWheelListener(new ZoomMouseWheelListener((ZoomableLWJGLCamera)implementor.getRenderer().getCamera()));
+		label.addMouseWheelListener(new ZoomMouseWheelListener(
+				(ZoomableLWJGLCamera) implementor.getRenderer().getCamera()));
 	}
 
 	/**
@@ -176,9 +175,11 @@ public class MiniMapView extends ViewPart {
 			float scale = Math.abs(one.y / dir.y);
 			dir.multLocal(scale);
 			final Vector3f pos = one.add(dir);
-			implementor.render(new Callable<Object>(){
+			implementor.render(new Callable<Object>() {
 
-				/* (non-Javadoc)
+				/*
+				 * (non-Javadoc)
+				 * 
 				 * @see java.util.concurrent.Callable#call()
 				 */
 				@Override
@@ -187,7 +188,7 @@ public class MiniMapView extends ViewPart {
 					return null;
 				}
 
-			});			
+			});
 		}
 	}
 
@@ -204,7 +205,8 @@ public class MiniMapView extends ViewPart {
 	 *            the coordinate of the bottom-right corner of the frame
 	 */
 	private void drawFrame() {
-		Vector3f location = implementor.getRenderer().getCamera().getLocation().clone();
+		Vector3f location = implementor.getRenderer().getCamera().getLocation()
+				.clone();
 		location = mapCamera.getScreenCoordinates(location);
 		location.y = 200 - location.y;
 		int delta = 20;
@@ -333,7 +335,8 @@ public class MiniMapView extends ViewPart {
 	}
 
 	/**
-	 * @param implementor the implementor to set
+	 * @param implementor
+	 *            the implementor to set
 	 */
 	@Inject
 	public void setImplementor(DesignerGame implementor) {

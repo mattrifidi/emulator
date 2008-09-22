@@ -141,7 +141,7 @@ public abstract class VisualEntity extends Entity {
 	 * @param callable
 	 */
 	public void update(Callable<Object> callable){
-		renderQueue.enqueue(callable);
+		updateQueue.enqueue(callable);
 	}
 	
 	/**
@@ -149,7 +149,7 @@ public abstract class VisualEntity extends Entity {
 	 * @param callable
 	 */
 	public void render(Callable<Object> callable){
-		updateQueue.enqueue(callable);
+		renderQueue.enqueue(callable);
 	}
 
 	/**

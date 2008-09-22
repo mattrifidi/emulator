@@ -77,7 +77,7 @@ public class GPIOPerspective implements IPerspectiveFactory,
 		layout.addStandaloneView(
 				"org.rifidi.designer.rcp.views.entityview.EntityView", true,
 				IPageLayout.LEFT, 0.25f, layout.getEditorArea());
-		layout.addStandaloneView("org.rifidi.designer.rcp.views.View3D", false,
+		layout.addStandaloneView("org.rifidi.designer.rcp.views.MiniMapView", false,
 				IPageLayout.BOTTOM, 0.55f,
 				"org.rifidi.designer.rcp.views.entityview.EntityView");
 		PlatformUI.getWorkbench().getActiveWorkbenchWindow()

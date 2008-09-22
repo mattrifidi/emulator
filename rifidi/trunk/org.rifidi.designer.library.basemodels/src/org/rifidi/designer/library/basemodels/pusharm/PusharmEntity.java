@@ -231,9 +231,6 @@ public class PusharmEntity extends VisualEntity implements SceneControl,
 			getNode().updateGeometricState(0, true);
 			getNode().updateWorldBound();
 			Node _node = new Node("hiliter");
-			System.out.println(((BoundingBox) bodyNode.getWorldBound())
-					.getCenter().clone().subtractLocal(
-							getNode().getLocalTranslation()));
 			Box box = new Box("hiliter", ((BoundingBox) bodyNode
 					.getWorldBound()).getCenter().clone().subtractLocal(
 					getNode().getLocalTranslation()), 3f, 3.5f, 2.0f);
@@ -306,7 +303,7 @@ public class PusharmEntity extends VisualEntity implements SceneControl,
 			st = new SpatialTransformer(1);
 			st.setObject(getNode().getChild("armPhysics"), 0, -1);
 			st.setPosition(0, 0.0f, minpos);
-			st.setPosition(0, 0.5f * speed, maxpos);
+			st.setPosition(0, 0.8f * speed, maxpos);
 			st.setPosition(0, speed, minpos);
 			st.interpolateMissing();
 			st.setCurTime(st.getMaxTime());
@@ -322,7 +319,7 @@ public class PusharmEntity extends VisualEntity implements SceneControl,
 			st = new SpatialTransformer(1);
 			st.setObject(getNode().getChild("armPhysics"), 0, -1);
 			st.setPosition(0, 0.0f, minpos);
-			st.setPosition(0, 0.5f * speed, maxpos);
+			st.setPosition(0, 0.8f * speed, maxpos);
 			st.setPosition(0, speed, minpos);
 			st.interpolateMissing();
 			st.setCurTime(st.getMaxTime());

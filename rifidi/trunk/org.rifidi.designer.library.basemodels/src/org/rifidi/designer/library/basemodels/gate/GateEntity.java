@@ -294,6 +294,7 @@ public class GateEntity extends VisualEntity implements RifidiEntity, Switch,
 						((AntennaFieldEntity) antenna).turnOn();
 					}
 				} catch (Exception e) {
+					e.printStackTrace();
 					logger.error("Problem turning on gate: " + e);
 				}
 			}

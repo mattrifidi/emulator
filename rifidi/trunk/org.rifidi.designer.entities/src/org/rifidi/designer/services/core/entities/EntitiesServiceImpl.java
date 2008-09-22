@@ -626,11 +626,13 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	private void initEntity(Entity entity, SceneData sceneData, boolean isNew) {
 		// reassociate the entities with their nodes if it is loaded, skip if it
 		// is a new one
-		if (entity instanceof VisualEntity && !isNew) {
+		if (entity instanceof VisualEntity) {
 			((VisualEntity) entity).setUpdateQueue(implementor.getUpdateQueue());
 			((VisualEntity) entity).setRenderQueue(implementor.getRenderQueue());
-			((VisualEntity) entity).setNode((Node) sceneData.getRootNode()
-					.getChild(entity.getEntityId().toString()));
+			if(!isNew){
+				((VisualEntity) entity).setNode((Node) sceneData.getRootNode()
+						.getChild(entity.getEntityId().toString()));	
+			}
 		}
 		if (entity instanceof RifidiEntity) {
 			((RifidiEntity) entity)

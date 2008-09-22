@@ -38,7 +38,6 @@ import org.eclipse.ui.IPerspectiveListener;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.part.ViewPart;
-import org.monklypse.core.JMECanvasImplementor2;
 import org.monklypse.core.JMEComposite;
 import org.rifidi.designer.entities.Entity;
 import org.rifidi.designer.entities.VisualEntity;
@@ -52,7 +51,6 @@ import org.rifidi.designer.rcp.views.view3d.listeners.AllAxisMouseMoveEntityList
 import org.rifidi.designer.rcp.views.view3d.listeners.Editor3DDropTargetListener;
 import org.rifidi.designer.rcp.views.view3d.listeners.MouseMoveEntityListener;
 import org.rifidi.designer.rcp.views.view3d.listeners.MousePickListener;
-import org.rifidi.designer.rcp.views.view3d.listeners.ResizeListener;
 import org.rifidi.designer.rcp.views.view3d.listeners.WatchAreaDrawMouseListener;
 import org.rifidi.designer.rcp.views.view3d.listeners.ZoomMouseWheelListener;
 import org.rifidi.designer.rcp.views.view3d.mode.InteractionMode;
@@ -76,6 +74,12 @@ import com.jme.util.TextureManager;
  */
 public class View3D extends ViewPart implements IPerspectiveListener,
 		NewEntityListener {
+
+	/**
+	 * ID.
+	 */
+	public static final String ID = "org.rifidi.designer.rcp.views.View3D";
+
 	/**
 	 * Enum for the different modes the 3dview supports.
 	 */
@@ -94,11 +98,6 @@ public class View3D extends ViewPart implements IPerspectiveListener,
 	private static Mode currentMode;
 
 	private Map<Mode, InteractionMode> modeMap;
-
-	/**
-	 * ID.
-	 */
-	public static final String ID = "org.rifidi.designer.rcp.views.View3D";
 	/**
 	 * Logger.
 	 */
@@ -157,11 +156,8 @@ public class View3D extends ViewPart implements IPerspectiveListener,
 
 		jmeComposite = new JMEComposite(parent, designerGame);
 		glCanvas = designerGame.getCanvas();
-		System.out.println(designerGame.getRenderer().getCamera());
 		// let glcanvas have focus by default
 		glCanvas.forceFocus();
-
-		glCanvas.addListener(SWT.Resize, new ResizeListener());
 
 		IToolBarManager mgr = getViewSite().getActionBars().getToolBarManager();
 		mgr.add(new GroupMarker(IWorkbenchActionConstants.MB_ADDITIONS));
@@ -323,7 +319,7 @@ public class View3D extends ViewPart implements IPerspectiveListener,
 	 * Toggle the state of the grid between enabled and disabled.
 	 */
 	public void toggleGrid() {
-		// designerGame.toggleGrid();
+		designerGame.toggleGrid();
 	}
 
 	/*
@@ -414,7 +410,8 @@ public class View3D extends ViewPart implements IPerspectiveListener,
 			addMouseListener(pickListener);
 			addKeyListener(pickListener);
 			addMouseWheelListener(new ZoomMouseWheelListener(
-					(ZoomableLWJGLCamera) designerGame.getRenderer().getCamera()));
+					(ZoomableLWJGLCamera) designerGame.getRenderer()
+							.getCamera()));
 		}
 
 		/*
@@ -451,7 +448,8 @@ public class View3D extends ViewPart implements IPerspectiveListener,
 			addMouseListener(moveListener);
 			addMouseMoveListener(moveListener);
 			addMouseWheelListener(new ZoomMouseWheelListener(
-					(ZoomableLWJGLCamera) designerGame.getRenderer().getCamera()));
+					(ZoomableLWJGLCamera) designerGame.getRenderer()
+							.getCamera()));
 		}
 
 		/*
@@ -531,7 +529,8 @@ public class View3D extends ViewPart implements IPerspectiveListener,
 			addMouseMoveListener(watchAreaDrawMouseListener);
 			addMouseListener(watchAreaDrawMouseListener);
 			addMouseWheelListener(new ZoomMouseWheelListener(
-					(ZoomableLWJGLCamera) designerGame.getRenderer().getCamera()));
+					(ZoomableLWJGLCamera) designerGame.getRenderer()
+							.getCamera()));
 		}
 
 		/*
@@ -603,4 +602,5 @@ public class View3D extends ViewPart implements IPerspectiveListener,
 	public void setDesignerGame(DesignerGame designerGame) {
 		this.designerGame = designerGame;
 	}
+
 }

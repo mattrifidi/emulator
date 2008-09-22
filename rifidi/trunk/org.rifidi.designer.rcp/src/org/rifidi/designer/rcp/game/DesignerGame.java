@@ -916,6 +916,10 @@ public class DesignerGame extends SWTDefaultImplementor implements
 	 */
 	@Override
 	public void resizeCanvas(int width, int height) {
+		//don't resize if the canvas was hidden
+		if(width==0 && height==0){
+			return;
+		}
 		if (width > height) {
 			getRenderer().reinit(width, (int) (width * .8));
 			return;
