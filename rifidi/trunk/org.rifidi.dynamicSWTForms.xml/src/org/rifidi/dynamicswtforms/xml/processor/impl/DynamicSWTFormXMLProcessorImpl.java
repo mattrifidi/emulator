@@ -74,8 +74,7 @@ public class DynamicSWTFormXMLProcessorImpl implements
 		Form anntoations = clazz.getAnnotation(Form.class);
 
 		Element annotationNode = doc.createElement(FormData.DYNAMIC_SWT_FORM.name());
-		annotationNode.setAttribute(FormData.NAME.name(), clazz
-				.getSimpleName());
+		annotationNode.setAttribute(FormData.NAME.name(), anntoations.name());
 		if (anntoations != null) {
 			for (FormElement w : anntoations.formElements()) {
 				annotationNode.appendChild(processFormElement(w, doc));
