@@ -29,6 +29,8 @@ import org.apache.commons.logging.LogFactory;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.graphics.ImageData;
@@ -333,6 +335,28 @@ public class DesignerGame extends SWTDefaultImplementor implements
 	public void simpleSetup() {
 		setCamera(new ZoomableLWJGLCamera(this, 754, 584));
 		getCanvas().addKeyListener(this);
+		//clear keylist if the canvas loses the focus
+		getCanvas().addFocusListener(new FocusListener(){
+
+			/* (non-Javadoc)
+			 * @see org.eclipse.swt.events.FocusListener#focusGained(org.eclipse.swt.events.FocusEvent)
+			 */
+			@Override
+			public void focusGained(FocusEvent e) {
+			}
+
+			/* (non-Javadoc)
+			 * @see org.eclipse.swt.events.FocusListener#focusLost(org.eclipse.swt.events.FocusEvent)
+			 */
+			@Override
+			public void focusLost(FocusEvent e) {
+				updownleftright[0] = false;
+				updownleftright[1] = false;
+				updownleftright[2] = false;
+				updownleftright[3] = false;
+			}
+			
+		});
 
 		offy = new LWJGLOffscreenRenderer(200, 200,
 				(LWJGLRenderer) getRenderer());
