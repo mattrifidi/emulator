@@ -8,15 +8,14 @@ import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Spinner;
-import org.rifidi.dynamicswtforms.ui.widgets.AbstractWidget;
+import org.rifidi.dynamicswtforms.ui.widgets.abstractwidgets.AbstractNumberWidget;
 import org.rifidi.dynamicswtforms.ui.widgets.data.AbstractWidgetData;
 import org.rifidi.dynamicswtforms.ui.widgets.data.FloatWidgetData;
 import org.rifidi.dynamicswtforms.ui.widgets.data.IntegerWidgetData;
 import org.rifidi.dynamicswtforms.xml.constants.FormElementType;
 
-public class NumberWidget extends AbstractWidget {
+public class NumberWidget extends AbstractNumberWidget {
 
-	private Spinner spinner;
 	private boolean dirty = false;
 
 	public NumberWidget(AbstractWidgetData data) {
@@ -112,43 +111,6 @@ public class NumberWidget extends AbstractWidget {
 		spinner.setSelection(value);
 	}
 
-	@Override
-	public String getValue() {
-		return spinner.getText();
 
-	}
-
-	@Override
-	public String setValue(String value) {
-		try {
-			int intval = Integer.parseInt(value);
-			this.spinner.setSelection(intval);
-
-		} catch (NumberFormatException ex) {
-			return "Cannot convert " + value + " to integer";
-
-		}
-		return null;
-
-	}
-
-	@Override
-	public String validate() {
-		return null;
-	}
-
-	@Override
-	public void disable() {
-		this.spinner.setEnabled(false);
-
-	}
-
-	@Override
-	public void enable() {
-		if (this.data.isEditable()) {
-			this.spinner.setEnabled(true);
-		}
-
-	}
 
 }

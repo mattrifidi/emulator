@@ -1,8 +1,5 @@
 package org.rifidi.dynamicswtforms.ui.widgets.standard.impl;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
@@ -13,24 +10,15 @@ import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
-import org.rifidi.dynamicswtforms.ui.widgets.AbstractWidget;
+import org.rifidi.dynamicswtforms.ui.widgets.abstractwidgets.AbstractStringWidget;
 import org.rifidi.dynamicswtforms.ui.widgets.data.AbstractWidgetData;
-import org.rifidi.dynamicswtforms.ui.widgets.data.StringWidgetData;
 
-public class StringWidget extends AbstractWidget {
+public class StringWidget extends AbstractStringWidget {
 
-	private Text text;
-	private Pattern regexPattern;
-	private Matcher matcher;
 	private boolean dirty;
 	
 	public StringWidget(AbstractWidgetData data) {
 		super(data);
-		String regexString = ((StringWidgetData)data).getRegex();
-		if(regexString!=null){
-			regexPattern = Pattern.compile(regexString);
-		}
-		
 	}
 
 	@Override
@@ -86,48 +74,6 @@ public class StringWidget extends AbstractWidget {
 
 			}
 		});
-	}
-
-	@Override
-	public String getValue() {
-		return text.getText();
-
-	}
-
-	@Override
-	public String setValue(String value) {
-		text.setText(value);
-		return null;
-
-	}
-
-	@Override
-	public String validate() {
-		if (regexPattern != null) {
-			if (matcher == null) {
-				matcher = regexPattern.matcher(text.getText());
-			} else {
-				matcher.reset(text.getText());
-			}
-			if (!matcher.matches()) {
-				return data.getDisplayName() + " is invalid";
-			}
-		}
-		return null;
-	}
-
-	@Override
-	public void disable() {
-		this.text.setEditable(false);
-		
-	}
-
-	@Override
-	public void enable() {
-		if(data.isEditable()){
-			this.text.setEditable(true);
-		}
-		
 	}
 
 }

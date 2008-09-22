@@ -10,13 +10,12 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
-import org.rifidi.dynamicswtforms.ui.widgets.AbstractWidget;
+import org.rifidi.dynamicswtforms.ui.widgets.abstractwidgets.AbstractChoiceWidget;
 import org.rifidi.dynamicswtforms.ui.widgets.data.AbstractWidgetData;
 import org.rifidi.dynamicswtforms.ui.widgets.data.ChoiceWidgetData;
 
-public class ChoiceWidget extends AbstractWidget {
+public class ChoiceWidget extends AbstractChoiceWidget {
 
-	private Combo combo;
 	private boolean dirty;
 
 	public ChoiceWidget(AbstractWidgetData data) {
@@ -72,47 +71,6 @@ public class ChoiceWidget extends AbstractWidget {
 			}
 
 		});
-
-	}
-
-	@Override
-	public String getValue() {
-		try {
-			return combo.getItem(combo.getSelectionIndex());
-		} catch (IllegalArgumentException ex) {
-			return null;
-		}
-	}
-
-	@Override
-	public String setValue(String value) {
-		List<String> choices = ((ChoiceWidgetData) data).possibleChoices();
-
-		int index = choices.indexOf(value);
-		if (index == -1) {
-			return value + " is not a valid choice";
-		}
-		combo.select(choices.indexOf(value));
-		return null;
-
-	}
-
-	@Override
-	public String validate() {
-		return null;
-	}
-
-	@Override
-	public void disable() {
-		this.combo.setEnabled(false);
-
-	}
-
-	@Override
-	public void enable() {
-		if (data.isEditable()) {
-			this.combo.setEnabled(true);
-		}
 
 	}
 
