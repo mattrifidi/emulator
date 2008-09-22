@@ -39,7 +39,9 @@ public class DynamicSWTFormXMLProcessorImpl implements
 			db = dbf.newDocumentBuilder();
 			Document doc = db.newDocument();
 			Element e = processClass(clazz, doc);
-			doc.appendChild(e);
+			if (e != null) {
+				doc.appendChild(e);
+			}
 			return doc;
 		} catch (ParserConfigurationException e) {
 			throw new DynamicSWTFormAnnotationException(e);
@@ -60,7 +62,10 @@ public class DynamicSWTFormXMLProcessorImpl implements
 			Document doc = db.newDocument();
 			Element root = doc.createElement(rootName);
 			for (Class<?> clazz : classes) {
-				root.appendChild(processClass(clazz, doc));
+				Element e = processClass(clazz, doc);
+				if (e != null) {
+					root.appendChild(e);
+				}
 			}
 			doc.appendChild(root);
 
@@ -73,14 +78,19 @@ public class DynamicSWTFormXMLProcessorImpl implements
 	private Element processClass(Class<?> clazz, Document doc) {
 		Form anntoations = clazz.getAnnotation(Form.class);
 
-		Element annotationNode = doc.createElement(FormData.DYNAMIC_SWT_FORM.name());
-		annotationNode.setAttribute(FormData.NAME.name(), anntoations.name());
 		if (anntoations != null) {
+			Element annotationNode = doc
+					.createElement(FormData.DYNAMIC_SWT_FORM.name());
+			annotationNode.setAttribute(FormData.NAME.name(), anntoations
+					.name());
+
 			for (FormElement w : anntoations.formElements()) {
 				annotationNode.appendChild(processFormElement(w, doc));
 			}
+			return annotationNode;
 		}
-		return annotationNode;
+		return null;
+
 	}
 
 	private Element processFormElement(FormElement formElement, Document doc) {
@@ -102,8 +112,7 @@ public class DynamicSWTFormXMLProcessorImpl implements
 				.appendChild(doc.createTextNode(formElement.defaultValue()));
 		element.appendChild(defaultValue);
 
-		Element editable = doc.createElement(FormElementData.EDITABLE
-				.name());
+		Element editable = doc.createElement(FormElementData.EDITABLE.name());
 		editable.appendChild(doc.createTextNode(Boolean.toString(formElement
 				.editable())));
 		element.appendChild(editable);
@@ -211,8 +220,7 @@ public class DynamicSWTFormXMLProcessorImpl implements
 					FormElementData.POSSIBLE_VALUES.name());
 			for (String value : possibleValues) {
 				Element valueElement = element.getOwnerDocument()
-						.createElement(
-								FormElementData.POSSIBLE_VALUE.name());
+						.createElement(FormElementData.POSSIBLE_VALUE.name());
 				valueElement.appendChild(element.getOwnerDocument()
 						.createTextNode(value));
 				values.appendChild(valueElement);
