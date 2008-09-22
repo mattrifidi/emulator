@@ -33,7 +33,7 @@ public interface Switch {
 	boolean isRunning();
 
 	/**
-	 * Stop the entity. Stoppes the execution and resets the entity to start
+	 * Stop the entity. Stops the execution and resets the entity to start
 	 * state.
 	 * 
 	 */

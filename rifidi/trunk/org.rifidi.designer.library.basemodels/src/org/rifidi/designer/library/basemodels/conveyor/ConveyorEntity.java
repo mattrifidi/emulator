@@ -24,6 +24,7 @@ import org.rifidi.designer.entities.annotations.Property;
 import org.rifidi.designer.entities.databinding.annotations.MonitoredProperties;
 import org.rifidi.designer.entities.interfaces.Directional;
 import org.rifidi.designer.entities.interfaces.NeedsPhysics;
+import org.rifidi.designer.entities.interfaces.SceneControl;
 import org.rifidi.designer.entities.interfaces.Switch;
 
 import com.jme.bounding.BoundingBox;
@@ -57,7 +58,7 @@ import com.jmex.physics.material.Material;
 @XmlRootElement
 @MonitoredProperties(names = { "name" })
 public class ConveyorEntity extends VisualEntity implements Switch,
-		Directional, NeedsPhysics {
+		Directional, NeedsPhysics, SceneControl {
 	/**
 	 * Logger for this class.
 	 */
@@ -391,6 +392,35 @@ public class ConveyorEntity extends VisualEntity implements Switch,
 	@Override
 	public Node getBoundingNode() {
 		return (Node) getNode().getChild("hiliter");
+	}
+
+	/* (non-Javadoc)
+	 * @see org.rifidi.designer.entities.interfaces.SceneControl#pause()
+	 */
+	@Override
+	public void pause() {
+		((PhysicsNode) getNode().getChild("maingeometry"))
+		.setMaterial(null);
+	}
+
+	/* (non-Javadoc)
+	 * @see org.rifidi.designer.entities.interfaces.SceneControl#reset()
+	 */
+	@Override
+	public void reset() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see org.rifidi.designer.entities.interfaces.SceneControl#start()
+	 */
+	@Override
+	public void start() {
+		if(rollerMaterial!=null){
+			((PhysicsNode) getNode().getChild("maingeometry"))
+			.setMaterial(rollerMaterial);	
+		}
 	}
 
 }

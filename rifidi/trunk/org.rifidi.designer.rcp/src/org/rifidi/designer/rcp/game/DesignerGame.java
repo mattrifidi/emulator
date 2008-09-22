@@ -569,6 +569,7 @@ public class DesignerGame extends SWTDefaultImplementor implements
 					offy.getCamera().apply();
 				}
 				createGrid();
+				getRootNode().updateRenderState();
 				return null;
 			}
 
