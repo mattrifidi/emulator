@@ -19,7 +19,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.monklypse.core.NodeHelper;
 import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.annotations.Property;
 import org.rifidi.designer.entities.databinding.annotations.MonitoredProperties;
@@ -115,7 +114,8 @@ public class ConveyorEntity extends VisualEntity implements Switch,
 		basicTrans = DisplaySystem.getDisplaySystem().getRenderer()
 				.createBlendState();
 		basicTrans.setBlendEnabled(true);
-		basicTrans.setDestinationFunction(DestinationFunction.OneMinusSourceAlpha);
+		basicTrans
+				.setDestinationFunction(DestinationFunction.OneMinusSourceAlpha);
 		basicTrans.setSourceFunction(SourceFunction.SourceAlpha);
 		basicTrans.setEnabled(true);
 		setName("Conveyor");
@@ -137,7 +137,7 @@ public class ConveyorEntity extends VisualEntity implements Switch,
 	public void setSpeed(float speed) {
 		this.speed = speed;
 		if (getNode() != null) {
-			rollerMaterial.setSurfaceMotion(Vector3f.UNIT_Y.mult(speed));
+			rollerMaterial.setSurfaceMotion(Vector3f.UNIT_X.mult(speed));
 		}
 	}
 
@@ -192,7 +192,8 @@ public class ConveyorEntity extends VisualEntity implements Switch,
 	public void loaded() {
 		prepare();
 		rollerMaterial = new Material("Roller");
-		((PhysicsNode)getNode().getChild("maingeometry")).setMaterial(rollerMaterial);
+		((PhysicsNode) getNode().getChild("maingeometry"))
+				.setMaterial(rollerMaterial);
 		switchNode = (SwitchNode) getNode().getChild("switchnode");
 		if (active) {
 			active = false;
@@ -225,8 +226,9 @@ public class ConveyorEntity extends VisualEntity implements Switch,
 					lod[count].updateGeometricState(0f, true);
 					lod[count].updateModelBound();
 					lod[count].updateWorldBound();
-					if(count==3){
-						lod[count].setLocalScale(new Vector3f(1.0f,0.9f,1.0f));
+					if (count == 3) {
+						lod[count]
+								.setLocalScale(new Vector3f(1.0f, 0.9f, 1.0f));
 					}
 				} catch (MalformedURLException e) {
 					logger.debug(e);
@@ -263,8 +265,7 @@ public class ConveyorEntity extends VisualEntity implements Switch,
 	@Override
 	public void turnOff() {
 		if (active) {
-			rollerMaterial.setSurfaceMotion(
-					Vector3f.ZERO);
+			rollerMaterial.setSurfaceMotion(Vector3f.ZERO);
 			// rollers.setActive(true);
 			active = false;
 		}
@@ -307,7 +308,9 @@ public class ConveyorEntity extends VisualEntity implements Switch,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.entities.interfaces.Directional#showDirectionalIndicator()
+	 * @see
+	 * org.rifidi.designer.entities.interfaces.Directional#showDirectionalIndicator
+	 * ()
 	 */
 	public void showDirectionalIndicator() {
 		if (speed > 0) {
@@ -338,7 +341,9 @@ public class ConveyorEntity extends VisualEntity implements Switch,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.entities.interfaces.Directional#hideDirectionalIndicator()
+	 * @see
+	 * org.rifidi.designer.entities.interfaces.Directional#hideDirectionalIndicator
+	 * ()
 	 */
 	public void hideDirectionalIndicator() {
 		forwardIndicator.removeFromParent();
@@ -348,7 +353,9 @@ public class ConveyorEntity extends VisualEntity implements Switch,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.entities.interfaces.NeedsPhysics#setCollisionHandler(com.jme.input.InputHandler)
+	 * @see
+	 * org.rifidi.designer.entities.interfaces.NeedsPhysics#setCollisionHandler
+	 * (com.jme.input.InputHandler)
 	 */
 	public void setCollisionHandler(InputHandler collisionHandler) {
 	}
@@ -356,7 +363,9 @@ public class ConveyorEntity extends VisualEntity implements Switch,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.entities.interfaces.NeedsPhysics#setPhysicsSpace(com.jmex.physics.PhysicsSpace)
+	 * @see
+	 * org.rifidi.designer.entities.interfaces.NeedsPhysics#setPhysicsSpace(
+	 * com.jmex.physics.PhysicsSpace)
 	 */
 	public void setPhysicsSpace(PhysicsSpace physicsSpace) {
 		this.physicsSpace = physicsSpace;

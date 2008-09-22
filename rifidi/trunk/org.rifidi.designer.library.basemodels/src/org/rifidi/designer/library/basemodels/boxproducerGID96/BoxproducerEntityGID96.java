@@ -10,10 +10,6 @@
  */
 package org.rifidi.designer.library.basemodels.boxproducerGID96;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,7 +43,6 @@ import com.jme.scene.state.MaterialState;
 import com.jme.scene.state.BlendState.DestinationFunction;
 import com.jme.scene.state.BlendState.SourceFunction;
 import com.jme.system.DisplaySystem;
-import com.jme.util.export.binary.BinaryImporter;
 
 /**
  * BoxproducerEntityGID96: Used for generating boxes.
@@ -130,8 +125,9 @@ public class BoxproducerEntityGID96 extends VisualEntity implements
 	@Override
 	public void init() {
 		if (model == null) {
-			model=new Node();
-			model.attachChild(new Box("producer", new Vector3f(0, 12f, 0), 3f, .5f, 3f));
+			model = new Node();
+			model.attachChild(new Box("producer", new Vector3f(0, 12f, 0), 3f,
+					.5f, 3f));
 		}
 		setCollides(false);
 
@@ -187,8 +183,9 @@ public class BoxproducerEntityGID96 extends VisualEntity implements
 	@Override
 	public void loaded() {
 		if (model == null) {
-			model=new Node();
-			model.attachChild(new Box("producer", new Vector3f(0, 12f, 0), 3f, .5f, 3f));
+			model = new Node();
+			model.attachChild(new Box("producer", new Vector3f(0, 12f, 0), 3f,
+					.5f, 3f));
 		}
 		thread = new BoxproducerEntityThread(this, productService, products);
 		thread.setInterval((int) speed * 1000);
