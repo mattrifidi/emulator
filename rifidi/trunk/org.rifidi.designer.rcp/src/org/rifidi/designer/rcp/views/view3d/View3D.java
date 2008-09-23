@@ -300,7 +300,7 @@ public class View3D extends ViewPart implements IPerspectiveListener,
 	 */
 	public void hideMousePointer() {
 		oldpos = Display.getCurrent().getCursorLocation();
-		// designerGame.hideMouse();
+		designerGame.hideMouse();
 	}
 
 	/**
@@ -311,7 +311,7 @@ public class View3D extends ViewPart implements IPerspectiveListener,
 			Display.getCurrent().setCursorLocation(oldpos);
 		}
 		oldpos = null;
-		// designerGame.showMouse();
+		designerGame.showMouse();
 	}
 
 	/**

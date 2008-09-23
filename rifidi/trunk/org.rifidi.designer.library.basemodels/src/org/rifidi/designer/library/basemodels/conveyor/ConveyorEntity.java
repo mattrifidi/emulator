@@ -181,7 +181,7 @@ public class ConveyorEntity extends VisualEntity implements Switch,
 				((BoundingBox) box.getModelBound()).xExtent * 2 - .2f,
 				((BoundingBox) box.getModelBound()).zExtent * 2);
 		quad.setLocalTranslation(new Vector3f(0f, ((BoundingBox) box
-				.getModelBound()).yExtent * 2 + .01f, 0f));
+				.getModelBound()).yExtent * 2 - .08f, 0f));
 		quad.setLocalRotation(new Quaternion(new float[] {
 				(float) Math.toRadians(-90), (float) Math.toRadians(180), 0 }));
 		TextureState text = DisplaySystem.getDisplaySystem().getRenderer()

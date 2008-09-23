@@ -29,12 +29,17 @@ import org.apache.commons.logging.LogFactory;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.PaletteData;
+import org.eclipse.swt.graphics.RGB;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 import org.lwjgl.opengl.EXTFramebufferObject;
 import org.monklypse.core.SWTDefaultImplementor;
@@ -83,6 +88,7 @@ import com.jme.util.geom.Debugger;
 import com.jmex.game.state.BasicGameState;
 import com.jmex.game.state.GameStateManager;
 import com.jmex.physics.PhysicsDebugger;
+import com.jmex.swt.lwjgl.LWJGLSWTCanvas;
 
 /**
  * 
@@ -200,7 +206,11 @@ public class DesignerGame extends SWTDefaultImplementor implements
 	 * Phongshader for walls.
 	 */
 	private FragmentProgramState phong;
-
+	/**
+	 * Cursors for the canvas.
+	 */
+	private Cursor invisibleCursor, defaultCursor;
+	
 	/**
 	 * @param name
 	 * @param width
@@ -208,6 +218,7 @@ public class DesignerGame extends SWTDefaultImplementor implements
 	 */
 	public DesignerGame(String name, int width, int height) {
 		super(width, height);
+		
 		hilited = new HashMap<ColorRGBA, List<VisualEntity>>();
 		hilited.put(ColorRGBA.blue, new ArrayList<VisualEntity>());
 		fragmentPrograms = new HashMap<ColorRGBA, FragmentProgramState>();
@@ -953,6 +964,30 @@ public class DesignerGame extends SWTDefaultImplementor implements
 		getRenderer().reinit((int) (height * .8), height);
 	}
 
+	public void showMouse(){
+		getCanvas().setCursor(defaultCursor);
+	}
+	
+	public void hideMouse(){
+		getCanvas().setCursor(invisibleCursor);	
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.monklypse.core.JMECanvasImplementor2#setCanvas(java.lang.Object)
+	 */
+	@Override
+	public void setCanvas(LWJGLSWTCanvas canvas) {
+		super.setCanvas(canvas);
+		
+		Color white = Display.getCurrent().getSystemColor(SWT.COLOR_WHITE);
+		Color black = Display.getCurrent().getSystemColor(SWT.COLOR_BLACK);
+		PaletteData palette = new PaletteData(new RGB[] { white.getRGB(),
+				black.getRGB() });
+		ImageData sourceData = new ImageData(16, 16, 1, palette);
+		sourceData.transparentPixel = 0;
+		invisibleCursor = new Cursor(Display.getCurrent(), sourceData, 0, 0);
+		defaultCursor = canvas.getCursor();
+	}
 	/**
 	 * Action that is submitted to the update thread to keep the highlights
 	 * pulsing.
