@@ -287,7 +287,7 @@ public class AutoEvaluationState implements AutoState, Observer {
 	}
 
 	/**
-	 * Clears the tag list, in case a clearTagList was called.  
+	 * Clears the tag list, in case a clearTagList was called.
 	 */
 	public void clearPreviousTagList() {
 		this.oldTags.clear();

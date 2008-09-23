@@ -36,7 +36,9 @@ public class AlienExceptionHandler extends GenericExceptionHandler {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.emulator.reader.command.exception.GenericExceptionHandler#commandNotFoundError(byte[])
+	 * @see
+	 * org.rifidi.emulator.reader.command.exception.GenericExceptionHandler#
+	 * commandNotFoundError(byte[])
 	 */
 	@Override
 	public ArrayList<Object> commandNotFoundError(ArrayList<Object> arg,
@@ -52,7 +54,9 @@ public class AlienExceptionHandler extends GenericExceptionHandler {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.emulator.reader.command.exception.GenericExceptionHandler#invalidCommandError(byte[])
+	 * @see
+	 * org.rifidi.emulator.reader.command.exception.GenericExceptionHandler#
+	 * invalidCommandError(byte[])
 	 */
 	@Override
 	public ArrayList<Object> invalidCommandError(ArrayList<Object> arg,
@@ -105,7 +109,7 @@ public class AlienExceptionHandler extends GenericExceptionHandler {
 		}
 		return this.errorFormat("Error 134: No Tag Found", retVal, obj);
 	}
-	
+
 	/**
 	 * This is used when a programming function (program, erase, etc.) is used,
 	 * but the tag is locked
@@ -125,7 +129,9 @@ public class AlienExceptionHandler extends GenericExceptionHandler {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.emulator.reader.command.exception.GenericExceptionHandler#malformedMessageError(byte[])
+	 * @see
+	 * org.rifidi.emulator.reader.command.exception.GenericExceptionHandler#
+	 * malformedMessageError(byte[])
 	 */
 	@Override
 	public ArrayList<Object> malformedMessageError(ArrayList<Object> arg,
@@ -135,6 +141,20 @@ public class AlienExceptionHandler extends GenericExceptionHandler {
 			retVal += i.toString();
 		}
 		return this.errorFormat("Error: Malformed Message.", retVal, obj);
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public ArrayList<Object> outOfRangeError(ArrayList<Object> arg,
+			CommandObject obj) {
+		String retVal = "";
+		for (Object i : arg) {
+			retVal += i.toString();
+		}
+		return this.errorFormat("Error 10: Value out of range.  Legal "
+				+ "limits are between 0 and 255.  ", retVal, obj);
 	}
 
 	/* Private method that takes care of any formatting involved in the process */

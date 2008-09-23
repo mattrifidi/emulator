@@ -14,8 +14,9 @@ import org.rifidi.emulator.reader.command.CommandObject;
 import org.rifidi.emulator.reader.module.abstract_.AbstractReaderSharedResources;
 
 /**
- * @author kyle
+ * External IO commands for the Alien.
  * 
+ * @author kyle
  */
 public class AlienExternalIO {
 
@@ -32,14 +33,24 @@ public class AlienExternalIO {
 	 */
 	public CommandObject getExternalInput(CommandObject arg,
 			AbstractReaderSharedResources asr) {
-		int numGPIPorts = asr.getGpioController().getNumGPIPorts();
-		BigInteger bitMap = new BigInteger("0");
-		for (int i = 0; i < numGPIPorts; i++) {
-			if (asr.getGpioController().getGPIState(i)) {
-				bitMap = bitMap.setBit(i);
+		try {
+			int numGPIPorts = asr.getGpioController().getNumGPIPorts();
+			BigInteger bitMap = new BigInteger("0");
+			for (int i = 0; i < numGPIPorts; i++) {
+				if (asr.getGpioController().getGPIState(i)) {
+					bitMap = bitMap.setBit(i);
+				}
 			}
+			arg.getArguments().add(Integer.toString(bitMap.intValue()));
+		} catch (Exception e) {
+			ArrayList<Object> retVal;
+			String i = arg.getCurrentQueryName();
+			ArrayList<Object> tempVal = new ArrayList<Object>();
+			tempVal.add(i);
+			retVal = new AlienExceptionHandler().outOfRangeError(tempVal, arg);
+			arg.setReturnValue(retVal);
+			return arg;
 		}
-		arg.getArguments().add(Integer.toString(bitMap.intValue()));
 		return (AlienCommon.getter_setter(arg, asr));
 	}
 
@@ -54,29 +65,39 @@ public class AlienExternalIO {
 	 */
 	public CommandObject externalOutput(CommandObject arg,
 			AbstractReaderSharedResources asr) {
-		if (arg.getArguments().size() > 0) {
-			ArrayList<Integer> selectedPorts = new ArrayList<Integer>();
-			ArrayList<Integer> unselectedPorts = new ArrayList<Integer>();
-			String num = (String) arg.getArguments().get(0);
-			int bitMap = Integer.parseInt(num);
-			GPOController.setPorts(selectedPorts, unselectedPorts, bitMap);
+		try {
+			if (arg.getArguments().size() > 0) {
+				ArrayList<Integer> selectedPorts = new ArrayList<Integer>();
+				ArrayList<Integer> unselectedPorts = new ArrayList<Integer>();
+				String num = (String) arg.getArguments().get(0);
+				int bitMap = Integer.parseInt(num);
+				GPOController.setPorts(selectedPorts, unselectedPorts, bitMap);
 
-			for (Integer i : selectedPorts) {
-				asr.getGpioController().setGPOHight(i);
-			}
-			for (Integer i : unselectedPorts) {
-				asr.getGpioController().setGPOLow(i);
-			}
-
-		} else {
-			int numGPOPorts = asr.getGpioController().getNumGPOPorts();
-			BigInteger bitMap = new BigInteger("0");
-			for (int i = 0; i < numGPOPorts; i++) {
-				if (asr.getGpioController().getGPOState(i)) {
-					bitMap = bitMap.setBit(i);
+				for (Integer i : selectedPorts) {
+					asr.getGpioController().setGPOHight(i);
 				}
+				for (Integer i : unselectedPorts) {
+					asr.getGpioController().setGPOLow(i);
+				}
+
+			} else {
+				int numGPOPorts = asr.getGpioController().getNumGPOPorts();
+				BigInteger bitMap = new BigInteger("0");
+				for (int i = 0; i < numGPOPorts; i++) {
+					if (asr.getGpioController().getGPOState(i)) {
+						bitMap = bitMap.setBit(i);
+					}
+				}
+				arg.getArguments().add(Integer.toString(bitMap.intValue()));
 			}
-			arg.getArguments().add(Integer.toString(bitMap.intValue()));
+		} catch (Exception e) {
+			ArrayList<Object> retVal;
+			String i = arg.getCurrentQueryName();
+			ArrayList<Object> tempVal = new ArrayList<Object>();
+			tempVal.add(i);
+			retVal = new AlienExceptionHandler().outOfRangeError(tempVal, arg);
+			arg.setReturnValue(retVal);
+			return arg;
 		}
 		return (AlienCommon.getter_setter(arg, asr));
 	}
@@ -93,29 +114,40 @@ public class AlienExternalIO {
 	public CommandObject invertExternalOutput(CommandObject arg,
 			AbstractReaderSharedResources asr) {
 		logger.debug("got into invertExternalOutput");
-		if (arg.getArguments().size() != 0){
-			logger.debug("hello");
-			String temp = (String) arg.getArguments().get(0);
-			if (!(temp.equalsIgnoreCase("ON") || temp.equalsIgnoreCase("OFF"))) {
-				String cur = arg.getCurrentQueryName();
-				ArrayList<Object> tempVal = new ArrayList<Object>();
-				tempVal.add(cur);
-				ArrayList<String> PossibleValues = new ArrayList<String>();
-				PossibleValues.add("ON");
-				PossibleValues.add("OFF");
-				ArrayList<Object> retVal = new AlienExceptionHandler().error10(
-						tempVal, arg, PossibleValues);
-				arg.setReturnValue(retVal);
-				return arg;
+		try {
+			if (arg.getArguments().size() != 0) {
+				logger.debug("hello");
+				String temp = (String) arg.getArguments().get(0);
+				if (!(temp.equalsIgnoreCase("ON") || temp
+						.equalsIgnoreCase("OFF"))) {
+					String cur = arg.getCurrentQueryName();
+					ArrayList<Object> tempVal = new ArrayList<Object>();
+					tempVal.add(cur);
+					ArrayList<String> PossibleValues = new ArrayList<String>();
+					PossibleValues.add("ON");
+					PossibleValues.add("OFF");
+					ArrayList<Object> retVal = new AlienExceptionHandler()
+							.error10(tempVal, arg, PossibleValues);
+					arg.setReturnValue(retVal);
+					return arg;
+				}
+				if (temp.equalsIgnoreCase("ON")) {
+					asr.getGpioController().setInvertGPO(true);
+				}
+				if (temp.equalsIgnoreCase("OFF")) {
+					asr.getGpioController().setInvertGPO(false);
+				}
+
 			}
-			if (temp.equalsIgnoreCase("ON")) {
-				asr.getGpioController().setInvertGPO(true);
-			}
-			if (temp.equalsIgnoreCase("OFF")) {
-				asr.getGpioController().setInvertGPO(false);
-			}
-			
-		} 
+		} catch (Exception e) {
+			ArrayList<Object> retVal;
+			String i = arg.getCurrentQueryName();
+			ArrayList<Object> tempVal = new ArrayList<Object>();
+			tempVal.add(i);
+			retVal = new AlienExceptionHandler().outOfRangeError(tempVal, arg);
+			arg.setReturnValue(retVal);
+			return arg;
+		}
 		return AlienCommon.getter_setter(arg, asr);
 	}
 
@@ -130,26 +162,37 @@ public class AlienExternalIO {
 	 */
 	public CommandObject invertExternalInput(CommandObject arg,
 			AbstractReaderSharedResources asr) {
-		if (arg.getArguments().size() != 0) {
-			String temp = (String) arg.getArguments().get(0);
-			if (!(temp.equalsIgnoreCase("ON") || temp.equalsIgnoreCase("OFF"))) {
-				String cur = arg.getCurrentQueryName();
-				ArrayList<Object> tempVal = new ArrayList<Object>();
-				tempVal.add(cur);
-				ArrayList<String> PossibleValues = new ArrayList<String>();
-				PossibleValues.add("ON");
-				PossibleValues.add("OFF");
-				ArrayList<Object> retVal = new AlienExceptionHandler().error10(
-						tempVal, arg, PossibleValues);
-				arg.setReturnValue(retVal);
-				return arg;
+		try {
+			if (arg.getArguments().size() != 0) {
+				String temp = (String) arg.getArguments().get(0);
+				if (!(temp.equalsIgnoreCase("ON") || temp
+						.equalsIgnoreCase("OFF"))) {
+					String cur = arg.getCurrentQueryName();
+					ArrayList<Object> tempVal = new ArrayList<Object>();
+					tempVal.add(cur);
+					ArrayList<String> PossibleValues = new ArrayList<String>();
+					PossibleValues.add("ON");
+					PossibleValues.add("OFF");
+					ArrayList<Object> retVal = new AlienExceptionHandler()
+							.error10(tempVal, arg, PossibleValues);
+					arg.setReturnValue(retVal);
+					return arg;
+				}
+				if (temp.equalsIgnoreCase("ON")) {
+					asr.getGpioController().setInvertGPI(true);
+				}
+				if (temp.equalsIgnoreCase("OFF")) {
+					asr.getGpioController().setInvertGPI(false);
+				}
 			}
-			if (temp.equalsIgnoreCase("ON")) {
-				asr.getGpioController().setInvertGPI(true);
-			}
-			if (temp.equalsIgnoreCase("OFF")) {
-				asr.getGpioController().setInvertGPI(false);
-			}
+		} catch (Exception e) {
+			ArrayList<Object> retVal;
+			String i = arg.getCurrentQueryName();
+			ArrayList<Object> tempVal = new ArrayList<Object>();
+			tempVal.add(i);
+			retVal = new AlienExceptionHandler().outOfRangeError(tempVal, arg);
+			arg.setReturnValue(retVal);
+			return arg;
 		}
 		return AlienCommon.getter_setter(arg, asr);
 	}
@@ -165,6 +208,7 @@ public class AlienExternalIO {
 	 */
 	public CommandObject initExternalOutput(CommandObject arg,
 			AbstractReaderSharedResources asr) {
+		//TODO: Maybe adjust this to return an error when their are no GPIOs?
 		return (AlienCommon.getter_setter(arg, asr));
 	}
 
