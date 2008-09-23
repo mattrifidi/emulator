@@ -88,7 +88,7 @@ public class CableCreateCommand extends Command {
 	 * @see org.eclipse.gef.commands.Command#redo()
 	 */
 	public void redo() {
-		cablingService.destroyCable(cable);
+		cablingService.createCable(cable);
 	}
 
 	public void setTarget(GPI target) {
