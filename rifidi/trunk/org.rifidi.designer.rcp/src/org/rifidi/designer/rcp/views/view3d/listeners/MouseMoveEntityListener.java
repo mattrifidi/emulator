@@ -32,9 +32,11 @@ import org.rifidi.designer.services.core.selection.SelectionService;
 import org.rifidi.services.annotations.Inject;
 import org.rifidi.services.registry.ServiceRegistry;
 
+import com.jme.bounding.BoundingBox;
 import com.jme.math.Quaternion;
 import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
+import com.jme.scene.shape.Box;
 import com.jmex.physics.DynamicPhysicsNode;
 
 /**
@@ -151,17 +153,23 @@ public class MouseMoveEntityListener implements MouseMoveListener,
 		for (Entity target : selectionService.getSelectionList()) {
 			if (target instanceof VisualEntity) {
 
+				entitiesService.getCollisionOctree().removeEntity(
+						(VisualEntity) target);
+				BoundingBox modelBound = (BoundingBox) ((VisualEntity) target)
+						.getBoundingNode().getWorldBound();
+				Box boxxy = new Box("boom", new Vector3f(-0.1f, modelBound
+						.getCenter().y, -0.1f), new Vector3f(0.1f, 0, 0.1f));
+				((VisualEntity) target).getNode().attachChild(boxxy);
+				((VisualEntity) target).getNode().updateRenderState();
+
 				// store the data for this entity
 				Target targetData = new Target(
 						(Vector3f) ((VisualEntity) target).getNode()
 								.getLocalTranslation().clone(), new Quaternion(
 								((VisualEntity) target).getNode()
-										.getLocalRotation()));
-
+										.getLocalRotation()), boxxy);
 				// add to listing of target info
 				realTargets.put((VisualEntity) target, targetData);
-				entitiesService.getCollisionOctree().removeEntity(
-						(VisualEntity) target);
 			}
 		}
 
@@ -259,7 +267,7 @@ public class MouseMoveEntityListener implements MouseMoveListener,
 			// recenter the cursor
 			Display.getCurrent().setCursorLocation(center);
 			ignore = true;
-			
+
 			// check if the selected geometries are still valid
 			int count = 0;
 			for (VisualEntity target : realTargets.keySet()) {
@@ -329,8 +337,8 @@ public class MouseMoveEntityListener implements MouseMoveListener,
 					((DynamicPhysicsNode) target.getNode())
 							.setLinearVelocity(Vector3f.ZERO);
 				}
+				realTargets.get(target).heightindicator.removeFromParent();
 				entitiesService.getCollisionOctree().insertEntity(target);
-
 			}
 		}
 	}
@@ -352,21 +360,25 @@ public class MouseMoveEntityListener implements MouseMoveListener,
 		 * Rotation quaternion.
 		 */
 		public Quaternion quaternion;
+		/**
+		 * Height indicator.
+		 */
+		public Box heightindicator;
 
 		/**
 		 * Constructor.
 		 * 
 		 * @param translation
 		 *            original translation
-		 * @param originalPattern
-		 *            original pattern
 		 * @param quat
 		 *            original rotation quaternion
+		 * @param heightindicator
+		 *            box that is used to display the elevation of an entity
 		 */
-		public Target(Vector3f translation, Quaternion quat) {
-			super();
+		public Target(Vector3f translation, Quaternion quat, Box heightindicator) {
 			this.translation = translation;
 			this.quaternion = quat;
+			this.heightindicator = heightindicator;
 		}
 	}
 

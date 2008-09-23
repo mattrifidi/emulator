@@ -28,6 +28,8 @@ import org.rifidi.designer.entities.interfaces.SceneControl;
 import org.rifidi.designer.entities.interfaces.Switch;
 
 import com.jme.bounding.BoundingBox;
+import com.jme.image.Texture.MagnificationFilter;
+import com.jme.image.Texture.MinificationFilter;
 import com.jme.input.InputHandler;
 import com.jme.math.FastMath;
 import com.jme.math.Quaternion;
@@ -38,10 +40,13 @@ import com.jme.scene.SharedNode;
 import com.jme.scene.SwitchNode;
 import com.jme.scene.Spatial.CullHint;
 import com.jme.scene.shape.Box;
+import com.jme.scene.shape.Quad;
 import com.jme.scene.state.BlendState;
+import com.jme.scene.state.TextureState;
 import com.jme.scene.state.BlendState.DestinationFunction;
 import com.jme.scene.state.BlendState.SourceFunction;
 import com.jme.system.DisplaySystem;
+import com.jme.util.TextureManager;
 import com.jme.util.export.binary.BinaryImporter;
 import com.jmex.physics.PhysicsNode;
 import com.jmex.physics.PhysicsSpace;
@@ -107,6 +112,10 @@ public class ConveyorEntity extends VisualEntity implements Switch,
 	 * Node that contains the different lods.
 	 */
 	private SwitchNode switchNode;
+	/**
+	 * Quad that indicates the movement direction of the conveyor.
+	 */
+	private Quad quad;
 
 	/**
 	 * Constructor.
@@ -139,6 +148,15 @@ public class ConveyorEntity extends VisualEntity implements Switch,
 		this.speed = speed;
 		if (getNode() != null) {
 			rollerMaterial.setSurfaceMotion(Vector3f.UNIT_X.mult(speed));
+			if (speed < 0) {
+				quad.setLocalRotation(new Quaternion(new float[] {
+						(float) Math.toRadians(-90), 0, 0 }));
+			} else {
+				quad.setLocalRotation(new Quaternion(new float[] {
+						(float) Math.toRadians(-90),
+						(float) Math.toRadians(180), 0 }));
+			}
+			
 		}
 	}
 
@@ -177,6 +195,27 @@ public class ConveyorEntity extends VisualEntity implements Switch,
 				2f, ((BoundingBox) phys.getWorldBound()).yExtent + 0.01f, 5f);
 		box.setModelBound(new BoundingBox());
 		box.updateModelBound();
+		quad = new Quad("arrows",
+				((BoundingBox) box.getModelBound()).xExtent * 2 - .2f,
+				((BoundingBox) box.getModelBound()).zExtent * 2);
+		quad.setLocalTranslation(new Vector3f(0f, ((BoundingBox) box
+				.getModelBound()).yExtent * 2 + .01f, 0f));
+		quad.setLocalRotation(new Quaternion(new float[] {
+				(float) Math.toRadians(-90), (float) Math.toRadians(180), 0 }));
+		TextureState text = DisplaySystem.getDisplaySystem().getRenderer()
+				.createTextureState();
+		text.setTexture(TextureManager.loadTexture("arrow",
+				MinificationFilter.Trilinear, MagnificationFilter.Bilinear));
+		quad.setRenderState(text);
+		BlendState blend = DisplaySystem.getDisplaySystem().getRenderer()
+				.createBlendState();
+		blend.setBlendEnabled(true);
+		blend.setSourceFunction(BlendState.SourceFunction.SourceAlpha);
+		blend
+				.setDestinationFunction(BlendState.DestinationFunction.OneMinusSourceAlpha);
+		blend.setEnabled(true);
+		quad.setRenderState(blend);
+		getNode().attachChild(quad);
 		_node.attachChild(box);
 		_node.setModelBound(new BoundingBox());
 		_node.updateModelBound();
