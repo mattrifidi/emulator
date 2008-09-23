@@ -172,6 +172,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	public void deleteEntities(final List<Entity> entities) {
 		List<VisualEntity> visuals = new ArrayList<VisualEntity>();
 		for (Entity entity : entities) {
+			entity.setDeleted(true);
 			if (entity instanceof VisualEntity) {
 				visuals.add((VisualEntity) entity);
 				nodeToEntity.remove(((VisualEntity) entity).getNode());

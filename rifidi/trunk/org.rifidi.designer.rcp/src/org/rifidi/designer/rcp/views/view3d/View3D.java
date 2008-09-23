@@ -182,7 +182,6 @@ public class View3D extends ViewPart implements IPerspectiveListener,
 		MenuManager menuMgr = new MenuManager();
 		menuMgr.add(new GroupMarker(IWorkbenchActionConstants.MB_ADDITIONS));
 		getSite().registerContextMenu(menuMgr, selectionService);
-
 		Control control = glCanvas;
 		Menu menu = menuMgr.createContextMenu(control);
 		control.setMenu(menu);

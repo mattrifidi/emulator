@@ -43,6 +43,10 @@ public abstract class Entity {
 	 * The user data object for this entity.
 	 */
 	private Object userData;
+	/**
+	 * Set to true if the entity is delted.
+	 */
+	private boolean deleted = false;
 
 	/**
 	 * @return the entityId
@@ -127,5 +131,27 @@ public abstract class Entity {
 	 */
 	public void setUserData(Object userData) {
 		this.userData = userData;
+	}
+
+	/**
+	 * As it might happen that a controlelr in eclipse holds a reference to an
+	 * entity that got deleted by someone else we need to check if the entity is
+	 * still valid.
+	 * 
+	 * @return the deleted
+	 */
+	public boolean isDeleted() {
+		return this.deleted;
+	}
+
+	/**
+	 * Set to true to indicate that this entity is delted and shouldn't be used
+	 * anymore.
+	 * 
+	 * @param deleted
+	 *            the deleted to set
+	 */
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
 	}
 }

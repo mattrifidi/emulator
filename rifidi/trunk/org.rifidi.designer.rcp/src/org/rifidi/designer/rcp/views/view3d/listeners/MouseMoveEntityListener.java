@@ -115,7 +115,7 @@ public class MouseMoveEntityListener implements MouseMoveListener,
 	/**
 	 * Used for collisionchecking in the octree.
 	 */
-	private Set<VisualEntity> colls=new HashSet<VisualEntity>();
+	private Set<VisualEntity> colls = new HashSet<VisualEntity>();
 
 	/**
 	 * Constructor.
@@ -160,7 +160,8 @@ public class MouseMoveEntityListener implements MouseMoveListener,
 
 				// add to listing of target info
 				realTargets.put((VisualEntity) target, targetData);
-				entitiesService.getCollisionOctree().removeEntity((VisualEntity) target);
+				entitiesService.getCollisionOctree().removeEntity(
+						(VisualEntity) target);
 			}
 		}
 
@@ -170,9 +171,11 @@ public class MouseMoveEntityListener implements MouseMoveListener,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.swt.events.MouseMoveListener#mouseMove(org.eclipse.swt.events.MouseEvent)
+	 * @see
+	 * org.eclipse.swt.events.MouseMoveListener#mouseMove(org.eclipse.swt.events
+	 * .MouseEvent)
 	 */
-	
+
 	public void mouseMove(MouseEvent e) {
 		if (!ignore && inPlacement) {
 
@@ -187,21 +190,23 @@ public class MouseMoveEntityListener implements MouseMoveListener,
 			vec.x = (int) vec.x;
 			vec.z = (int) vec.z;
 
-			//clear the set
+			// clear the set
 			colls.clear();
-			//find the ones that are colliding and remove the ones that stopped colliding
+			// find the ones that are colliding and remove the ones that stopped
+			// colliding
 			Set<VisualEntity> newColliders = new HashSet<VisualEntity>();
 			Set<VisualEntity> removedColliders = new HashSet<VisualEntity>();
 			for (VisualEntity target : realTargets.keySet()) {
-				entitiesService.getCollisionOctree().findCollisions(target, colls);
+				entitiesService.getCollisionOctree().findCollisions(target,
+						colls);
 			}
-			for(VisualEntity res:colls){
-				if(!colliders.contains(res)){
+			for (VisualEntity res : colls) {
+				if (!colliders.contains(res)) {
 					newColliders.add(res);
 				}
 			}
-			for(VisualEntity res:colliders){
-				if(!colls.contains(res)){
+			for (VisualEntity res : colliders) {
+				if (!colls.contains(res)) {
 					removedColliders.add(res);
 				}
 			}
@@ -211,14 +216,15 @@ public class MouseMoveEntityListener implements MouseMoveListener,
 			if (removedColliders.size() > 0) {
 				colliders.removeAll(removedColliders);
 			}
-			
-			if(newColliders.size() > 0 || removedColliders.size() > 0){
-				highlightingService.changeHighlighting(ColorRGBA.red, colliders);
+
+			if (newColliders.size() > 0 || removedColliders.size() > 0) {
+				highlightingService
+						.changeHighlighting(ColorRGBA.red, colliders);
 			}
-			
+
 			Set<VisualEntity> collidesWithFloorNew = new HashSet<VisualEntity>();
 			Set<VisualEntity> stoppedCollidingWithFloor = new HashSet<VisualEntity>();
-			//check for collisions with the floorplan
+			// check for collisions with the floorplan
 			for (VisualEntity target : realTargets.keySet()) {
 				if (entitiesService.collidesWithScene(target)) {
 					if (!collidesWithFloor.contains(target)) {
@@ -250,20 +256,32 @@ public class MouseMoveEntityListener implements MouseMoveListener,
 			for (VisualEntity target : realTargets.keySet()) {
 				target.getNode().getLocalTranslation().addLocal(vec);
 			}
-
 			// recenter the cursor
 			Display.getCurrent().setCursorLocation(center);
 			ignore = true;
-			this.colliders = colliders;
+			
+			// check if the selected geometries are still valid
+			int count = 0;
+			for (VisualEntity target : realTargets.keySet()) {
+				if (target.isDeleted()) {
+					count++;
+				}
+			}
+			if (count == realTargets.size()) {
+				view3D.switchMode(View3D.Mode.PickMode);
+				inPlacement = false;
+			}
 		} else if (ignore == true) {
 			ignore = false;
 		}
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.swt.events.MouseListener#mouseDoubleClick(org.eclipse.swt.events.MouseEvent)
+	 * @see
+	 * org.eclipse.swt.events.MouseListener#mouseDoubleClick(org.eclipse.swt
+	 * .events.MouseEvent)
 	 */
 	public void mouseDoubleClick(MouseEvent e) {
 	}
@@ -271,10 +289,13 @@ public class MouseMoveEntityListener implements MouseMoveListener,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.swt.events.MouseListener#mouseDown(org.eclipse.swt.events.MouseEvent)
+	 * @see
+	 * org.eclipse.swt.events.MouseListener#mouseDown(org.eclipse.swt.events
+	 * .MouseEvent)
 	 */
 	public void mouseDown(MouseEvent e) {
-		if (colliders.size() == 0 && collidesWithFloor.size()==0 && e.button == 1) {
+		if (colliders.size() == 0 && collidesWithFloor.size() == 0
+				&& e.button == 1) {
 			drop();
 			view3D.switchMode(View3D.Mode.PickMode);
 			inPlacement = false;
@@ -284,11 +305,13 @@ public class MouseMoveEntityListener implements MouseMoveListener,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.swt.events.MouseListener#mouseUp(org.eclipse.swt.events.MouseEvent)
+	 * @seeorg.eclipse.swt.events.MouseListener#mouseUp(org.eclipse.swt.events.
+	 * MouseEvent)
 	 */
 	public void mouseUp(MouseEvent e) {
 		// drop it
-		if (colliders.size() == 0 && collidesWithFloor.size()==0 && e.button == 1) {
+		if (colliders.size() == 0 && collidesWithFloor.size() == 0
+				&& e.button == 1) {
 			drop();
 			view3D.switchMode(View3D.Mode.PickMode);
 			inPlacement = false;
@@ -300,13 +323,15 @@ public class MouseMoveEntityListener implements MouseMoveListener,
 	 */
 	public void drop() {
 		for (VisualEntity target : realTargets.keySet()) {
+			if (!target.isDeleted()) {
+				// activate physics handling for this node
+				if (target.getNode() instanceof DynamicPhysicsNode) {
+					((DynamicPhysicsNode) target.getNode())
+							.setLinearVelocity(Vector3f.ZERO);
+				}
+				entitiesService.getCollisionOctree().insertEntity(target);
 
-			// activate physics handling for this node
-			if (target.getNode() instanceof DynamicPhysicsNode) {
-				((DynamicPhysicsNode) target.getNode())
-						.setLinearVelocity(Vector3f.ZERO);
 			}
-			entitiesService.getCollisionOctree().insertEntity(target);
 		}
 	}
 

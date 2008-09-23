@@ -302,8 +302,8 @@ public class ConveyorEntity extends VisualEntity implements Switch,
 	 */
 	@Override
 	public void destroy() {
-		((PhysicsNode) getNode()).setActive(false);
 		getNode().removeFromParent();
+		((PhysicsNode) getNode().getChild("maingeometry")).delete();
 	}
 
 	/*
@@ -394,32 +394,37 @@ public class ConveyorEntity extends VisualEntity implements Switch,
 		return (Node) getNode().getChild("hiliter");
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.rifidi.designer.entities.interfaces.SceneControl#pause()
 	 */
 	@Override
 	public void pause() {
-		((PhysicsNode) getNode().getChild("maingeometry"))
-		.setMaterial(null);
+		((PhysicsNode) getNode().getChild("maingeometry")).setMaterial(null);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.rifidi.designer.entities.interfaces.SceneControl#reset()
 	 */
 	@Override
 	public void reset() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.rifidi.designer.entities.interfaces.SceneControl#start()
 	 */
 	@Override
 	public void start() {
-		if(rollerMaterial!=null){
+		if (rollerMaterial != null) {
 			((PhysicsNode) getNode().getChild("maingeometry"))
-			.setMaterial(rollerMaterial);	
+					.setMaterial(rollerMaterial);
 		}
 	}
 
