@@ -22,7 +22,6 @@ import org.apache.commons.logging.LogFactory;
 import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.annotations.Property;
 import org.rifidi.designer.entities.databinding.annotations.MonitoredProperties;
-import org.rifidi.designer.entities.interfaces.Directional;
 import org.rifidi.designer.entities.interfaces.NeedsPhysics;
 import org.rifidi.designer.entities.interfaces.SceneControl;
 import org.rifidi.designer.entities.interfaces.Switch;
@@ -34,7 +33,6 @@ import com.jme.input.InputHandler;
 import com.jme.math.FastMath;
 import com.jme.math.Quaternion;
 import com.jme.math.Vector3f;
-import com.jme.renderer.Renderer;
 import com.jme.scene.Node;
 import com.jme.scene.SharedNode;
 import com.jme.scene.SwitchNode;
@@ -63,7 +61,7 @@ import com.jmex.physics.material.Material;
 @XmlRootElement
 @MonitoredProperties(names = { "name" })
 public class ConveyorEntity extends VisualEntity implements Switch,
-		Directional, NeedsPhysics, SceneControl {
+		NeedsPhysics, SceneControl {
 	/**
 	 * Logger for this class.
 	 */
@@ -72,22 +70,6 @@ public class ConveyorEntity extends VisualEntity implements Switch,
 	 * Alphastate for the directional pointer.
 	 */
 	private BlendState basicTrans = null;
-	/**
-	 * Node for the directional pointer.
-	 */
-	// private static Node forwardIndicatorOrig;
-	/**
-	 * Flipped directional pointer.
-	 */
-	// private static Node reverseIndicatorOrig;
-	/**
-	 * Modified forward indicator.
-	 */
-	private Node forwardIndicator;
-	/**
-	 * Modified reverse indicator.
-	 */
-	private Node reverseIndicator;
 	/**
 	 * Switch status on/off.
 	 */
@@ -156,7 +138,7 @@ public class ConveyorEntity extends VisualEntity implements Switch,
 						(float) Math.toRadians(-90),
 						(float) Math.toRadians(180), 0 }));
 			}
-			
+
 		}
 	}
 
@@ -277,8 +259,6 @@ public class ConveyorEntity extends VisualEntity implements Switch,
 				}
 			}
 		}
-		// forwardIndicator = new SharedNode("shared_", forwardIndicatorOrig);
-		// reverseIndicator = new SharedNode("shared_", reverseIndicatorOrig);
 
 	}
 
@@ -343,51 +323,6 @@ public class ConveyorEntity extends VisualEntity implements Switch,
 	public void destroy() {
 		getNode().removeFromParent();
 		((PhysicsNode) getNode().getChild("maingeometry")).delete();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.rifidi.designer.entities.interfaces.Directional#showDirectionalIndicator
-	 * ()
-	 */
-	public void showDirectionalIndicator() {
-		if (speed > 0) {
-			forwardIndicator.setRenderState(basicTrans);
-			forwardIndicator.setRenderQueueMode(Renderer.QUEUE_TRANSPARENT);
-			forwardIndicator.setLocalTranslation(0, 5, 0);
-			forwardIndicator.setLocalRotation(new Quaternion().fromAngleAxis(
-					90 * FastMath.DEG_TO_RAD, Vector3f.UNIT_X));
-
-			getNode().attachChild(forwardIndicator);
-			// logger.debug(forwardIndicator.getName() + " " +
-			// forwardIndicator.getLocalRotation());
-		} else {
-			reverseIndicator.setRenderState(basicTrans);
-			reverseIndicator.setRenderQueueMode(Renderer.QUEUE_TRANSPARENT);
-			reverseIndicator.setLocalTranslation(0, 5, 0);
-			reverseIndicator.setLocalRotation(new Quaternion().fromAngleAxis(
-					90 * FastMath.DEG_TO_RAD, Vector3f.UNIT_X).multLocal(
-					new Quaternion().fromAngleAxis(180 * FastMath.DEG_TO_RAD,
-							Vector3f.UNIT_Z)));
-
-			getNode().attachChild(reverseIndicator);
-			// logger.debug(reverseIndicator.getName() + " " +
-			// reverseIndicator.getLocalRotation());
-		}
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.rifidi.designer.entities.interfaces.Directional#hideDirectionalIndicator
-	 * ()
-	 */
-	public void hideDirectionalIndicator() {
-		forwardIndicator.removeFromParent();
-		reverseIndicator.removeFromParent();
 	}
 
 	/*
