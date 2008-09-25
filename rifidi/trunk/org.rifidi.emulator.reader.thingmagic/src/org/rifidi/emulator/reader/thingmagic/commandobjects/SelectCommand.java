@@ -140,42 +140,7 @@ public class SelectCommand implements Command {
 						"Error 0100:     syntax error at '" + token + "'");
 			}
 
-			// index++;
-			// if (tokens.size() < index) {
-			// /*
-			// * Look for white spaces
-			// */
-			// if (!tokens.get(index).matches("\\s+")) {
-			// // TODO throw an exception
-			// } else {
-			// index++;
-			//
-			// if ((tokens.size() < index)
-			// && (tokens.get(index).matches("where"))) {
-			//
-			// /*
-			// * Look for white spaces
-			// */
-			// if (!tokens.get(index).matches("\\s+")) {
-			// // TODO throw an exception
-			// }
-			// index++;
-			//
-			// for (; index < tokens.size(); index++) {
-			// if (tokens.get(index).equals("set"))
-			// break;
-			// // TODO parse where clause
-			// // whereClause.append(args.get(index));
-			// }
-			// }
-			//
-			// if ((tokens.size() < index)
-			// && (tokens.get(index).matches("set"))) {
-			// // TODO implement the set clause
-			// }
-			// }
-			// }
-			
+	
 			// check if the command correctly ends in a semicolon
 			if (tokenIterator.hasNext()){
 				token = tokenIterator.next();
