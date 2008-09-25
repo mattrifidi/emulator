@@ -986,6 +986,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 						.normalizeLocal();
 				coords.subtractLocal(direction.mult(coords.y/direction.y));
 				coords.setY(0);
+				//round the values to place it on the grid
 				coords.x=(float)Math.floor(coords.x);
 				coords.z=(float)Math.floor(coords.z);
 				((VisualEntity) newentity).getNode()
