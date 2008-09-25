@@ -82,7 +82,7 @@ public class CablingServiceImpl implements CablingService,
 	 */
 	@Override
 	public void createCable(CableEntity cableEntity) {
-		entitiesService.addEntity(cableEntity, false, null);
+		entitiesService.addEntity(cableEntity, null, null);
 		cableList.add(cableEntity);
 		triggerCableListeners();
 	}

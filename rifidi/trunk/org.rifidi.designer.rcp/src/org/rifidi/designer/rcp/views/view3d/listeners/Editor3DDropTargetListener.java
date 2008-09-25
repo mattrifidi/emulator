@@ -13,6 +13,8 @@ package org.rifidi.designer.rcp.views.view3d.listeners;
 import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.DropTargetListener;
 import org.eclipse.swt.dnd.TextTransfer;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.widgets.Control;
 import org.rifidi.designer.library.EntityLibraryRegistry;
 import org.rifidi.designer.rcp.views.view3d.View3D;
 
@@ -41,7 +43,9 @@ public class Editor3DDropTargetListener implements DropTargetListener {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.swt.dnd.DropTargetListener#dragEnter(org.eclipse.swt.dnd.DropTargetEvent)
+	 * @see
+	 * org.eclipse.swt.dnd.DropTargetListener#dragEnter(org.eclipse.swt.dnd.
+	 * DropTargetEvent)
 	 */
 	public void dragEnter(DropTargetEvent event) {
 	}
@@ -49,7 +53,9 @@ public class Editor3DDropTargetListener implements DropTargetListener {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.swt.dnd.DropTargetListener#dragLeave(org.eclipse.swt.dnd.DropTargetEvent)
+	 * @see
+	 * org.eclipse.swt.dnd.DropTargetListener#dragLeave(org.eclipse.swt.dnd.
+	 * DropTargetEvent)
 	 */
 	public void dragLeave(DropTargetEvent event) {
 	}
@@ -57,7 +63,9 @@ public class Editor3DDropTargetListener implements DropTargetListener {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.swt.dnd.DropTargetListener#dragOperationChanged(org.eclipse.swt.dnd.DropTargetEvent)
+	 * @see
+	 * org.eclipse.swt.dnd.DropTargetListener#dragOperationChanged(org.eclipse
+	 * .swt.dnd.DropTargetEvent)
 	 */
 	public void dragOperationChanged(DropTargetEvent event) {
 	}
@@ -65,7 +73,8 @@ public class Editor3DDropTargetListener implements DropTargetListener {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.swt.dnd.DropTargetListener#dragOver(org.eclipse.swt.dnd.DropTargetEvent)
+	 * @seeorg.eclipse.swt.dnd.DropTargetListener#dragOver(org.eclipse.swt.dnd.
+	 * DropTargetEvent)
 	 */
 	public void dragOver(DropTargetEvent event) {
 	}
@@ -73,21 +82,37 @@ public class Editor3DDropTargetListener implements DropTargetListener {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.swt.dnd.DropTargetListener#drop(org.eclipse.swt.dnd.DropTargetEvent)
+	 * @seeorg.eclipse.swt.dnd.DropTargetListener#drop(org.eclipse.swt.dnd.
+	 * DropTargetEvent)
 	 */
 	public void drop(DropTargetEvent event) {
+		Point pos = getPosition(view3D.getGlCanvas());
+		pos.x = event.x - pos.x;
+		pos.y = view3D.getGlCanvas().getSize().y - (event.y - pos.y);
 		if (TextTransfer.getInstance().isSupportedType(event.currentDataType)) {
 			// get the EntityLibraryReference and hand it to the editor to
 			// create an Entity
 			view3D.createNewEntity(EntityLibraryRegistry.getInstance()
-					.getEntityLibraryReference((String) event.data));
+					.getEntityLibraryReference((String) event.data), pos);
 		}
+	}
+
+	private Point getPosition(Control control) {
+		if (control.getParent() == null) {
+			return control.getLocation();
+		}
+		Point ret = getPosition(control.getParent());
+		ret.x += control.getLocation().x;
+		ret.y += control.getLocation().y;
+		return ret;
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.swt.dnd.DropTargetListener#dropAccept(org.eclipse.swt.dnd.DropTargetEvent)
+	 * @see
+	 * org.eclipse.swt.dnd.DropTargetListener#dropAccept(org.eclipse.swt.dnd
+	 * .DropTargetEvent)
 	 */
 	public void dropAccept(DropTargetEvent event) {
 	}

@@ -33,6 +33,7 @@ import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Display;
 import org.monklypse.core.SWTDefaultImplementor;
 import org.rifidi.designer.entities.Activator;
@@ -61,10 +62,13 @@ import org.rifidi.services.tags.impl.RifidiTag;
 
 import com.jme.bounding.BoundingBox;
 import com.jme.input.InputHandler;
+import com.jme.math.Vector2f;
+import com.jme.math.Vector3f;
 import com.jme.scene.Node;
 import com.jme.scene.Spatial;
 import com.jme.scene.TriMesh;
 import com.jme.scene.state.RenderState;
+import com.jme.system.DisplaySystem;
 import com.jme.util.TextureManager;
 import com.jme.util.export.binary.BinaryExporter;
 import com.jme.util.export.binary.BinaryImporter;
@@ -134,11 +138,14 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * org.rifidi.services.registry.core.entities.EntitiesService#addEntity(
-	 * org.rifidi.designer.entities.Entity, java.lang.Boolean)
+	 * org.rifidi.designer.services.core.entities.EntitiesService#addEntity(
+	 * org.rifidi.designer.entities.Entity,
+	 * org.rifidi.designer.services.core.entities.NewEntityListener,
+	 * org.eclipse.swt.graphics.Point)
 	 */
 	@Override
-	public void addEntity(Entity ent, Boolean center, NewEntityListener listener) {
+	public void addEntity(Entity ent, NewEntityListener newEntityListener,
+			Point screenPos) {
 		int namecount = 0;
 		String orgName = ent.getName();
 		while (sceneData.getEntityNames().contains(ent.getName())) {
@@ -155,7 +162,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 
 		if (ent instanceof VisualEntity) {
 			implementor.update(new UpdateCallable(sceneData.getRootNode(),
-					(VisualEntity) ent, center, listener));
+					(VisualEntity) ent, screenPos, newEntityListener));
 		} else {
 			ent.setEntityId(sceneData.getNextID().toString());
 		}
@@ -347,7 +354,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 		sceneData.getProducedEntities().addEntity(product);
 		if (product instanceof VisualEntity) {
 			implementor.update(new UpdateCallable(sceneData.getRootNode(),
-					(VisualEntity) product, false, null));
+					(VisualEntity) product, null, null));
 		}
 	}
 
@@ -628,11 +635,13 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 		// reassociate the entities with their nodes if it is loaded, skip if it
 		// is a new one
 		if (entity instanceof VisualEntity) {
-			((VisualEntity) entity).setUpdateQueue(implementor.getUpdateQueue());
-			((VisualEntity) entity).setRenderQueue(implementor.getRenderQueue());
-			if(!isNew){
+			((VisualEntity) entity)
+					.setUpdateQueue(implementor.getUpdateQueue());
+			((VisualEntity) entity)
+					.setRenderQueue(implementor.getRenderQueue());
+			if (!isNew) {
 				((VisualEntity) entity).setNode((Node) sceneData.getRootNode()
-						.getChild(entity.getEntityId().toString()));	
+						.getChild(entity.getEntityId().toString()));
 			}
 		}
 		if (entity instanceof RifidiEntity) {
@@ -923,13 +932,13 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 		 */
 		private Node rootNode;
 		/**
-		 * Center the camera on the object?
-		 */
-		private boolean center;
-		/**
 		 * Callback for new entities.
 		 */
 		private NewEntityListener listener;
+		/**
+		 * Position of the entity on the screen.
+		 */
+		private Point screenPos;
 
 		/**
 		 * Constructor.
@@ -938,15 +947,16 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 		 *            scene root
 		 * @param newentity
 		 *            entity to add
-		 * @param center
-		 *            center on the entity
+		 * @param screenPos
+		 *            screen position where the entity should be put
+		 * 
 		 */
 		public UpdateCallable(final Node rootNode, final Entity newentity,
-				final boolean center, NewEntityListener listener) {
+				final Point screenPos, final NewEntityListener listener) {
 			this.newentity = newentity;
 			this.rootNode = rootNode;
-			this.center = center;
 			this.listener = listener;
+			this.screenPos = screenPos;
 		}
 
 		public Object call() throws Exception {
@@ -964,14 +974,22 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 				}
 			}
 			// center the object in the scene
-			if (center) {
-				((VisualEntity) newentity).getNode().setLocalTranslation(
-						(float) Math.floor(((BoundingBox) sceneData
-								.getRoomNode().getWorldBound()).xExtent),
-						((VisualEntity) newentity).getNode()
-								.getLocalTranslation().y,
-						(float) Math.floor(((BoundingBox) sceneData
-								.getRoomNode().getWorldBound()).zExtent));
+
+			if (screenPos != null) {
+				Vector3f coords = DisplaySystem.getDisplaySystem()
+						.getRenderer().getCamera().getWorldCoordinates(
+								new Vector2f(screenPos.x, screenPos.y), 0);
+				Vector3f coords2 = DisplaySystem.getDisplaySystem()
+						.getRenderer().getCamera().getWorldCoordinates(
+								new Vector2f(screenPos.x, screenPos.y), 1);
+				Vector3f direction = coords.subtract(coords2)
+						.normalizeLocal();
+				coords.subtractLocal(direction.mult(coords.y/direction.y));
+				coords.setY(0);
+				coords.x=(float)Math.floor(coords.x);
+				coords.z=(float)Math.floor(coords.z);
+				((VisualEntity) newentity).getNode()
+						.setLocalTranslation(coords);
 			}
 			if (listener != null) {
 				sceneData.getDisplay().asyncExec(new Runnable() {

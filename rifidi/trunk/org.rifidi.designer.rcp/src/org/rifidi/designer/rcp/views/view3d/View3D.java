@@ -219,8 +219,11 @@ public class View3D extends ViewPart implements IPerspectiveListener,
 	 * 
 	 * @param ref
 	 *            the library
+	 * @param screenPos
+	 *            position on the screen where the entity should be created
 	 */
-	public void createNewEntity(final EntityLibraryReference ref) {
+	public void createNewEntity(final EntityLibraryReference ref,
+			Point screenPos) {
 		worldService.pause();
 		try {
 			Entity ent = null;
@@ -248,7 +251,7 @@ public class View3D extends ViewPart implements IPerspectiveListener,
 			} else {
 				ent = (Entity) ref.getEntityClass().newInstance();
 			}
-			entitiesService.addEntity(ent, true, this);
+			entitiesService.addEntity(ent, this, screenPos);
 
 		} catch (InstantiationException e) {
 			logger.error("Failed instantiating wizard: \n" + e);

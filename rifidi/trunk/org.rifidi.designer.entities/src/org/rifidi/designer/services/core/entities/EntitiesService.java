@@ -13,6 +13,7 @@ package org.rifidi.designer.services.core.entities;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.swt.graphics.Point;
 import org.rifidi.designer.entities.Entity;
 import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.grouping.EntityGroup;
@@ -32,13 +33,14 @@ public interface EntitiesService {
 	 * Add a new entity to the scene.
 	 * 
 	 * @param ent
-	 * @param center
-	 *            true if the entity should be centered in the scene.
 	 * @param newEntityListener
 	 *            a callback for the submitter of the new entity.
+	 * @param screenPos
+	 *            position on the screen where the entity should be created
+	 *            (can be null)
 	 */
-	void addEntity(Entity ent, Boolean center,
-			NewEntityListener newEntityListener);
+	void addEntity(Entity ent, NewEntityListener newEntityListener,
+			Point screenPos);
 
 	/**
 	 * Delete entities from the scene

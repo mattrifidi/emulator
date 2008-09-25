@@ -189,7 +189,7 @@ public class WatchAreaDrawMouseListener implements MouseListener,
 			watchAreaEntity.setNode(boxNode);
 			if (box.getLocalScale().x > 0 && box.getLocalScale().y > 0
 					&& box.getLocalScale().z > 0) {
-				entitiesService.addEntity(watchAreaEntity, false, null);
+				entitiesService.addEntity(watchAreaEntity, null, null);
 			} else {
 				Helpers.waitOnCallabel(new Callable<Object>() {
 
