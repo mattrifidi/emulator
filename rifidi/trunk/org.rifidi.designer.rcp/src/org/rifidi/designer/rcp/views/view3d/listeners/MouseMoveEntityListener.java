@@ -157,10 +157,13 @@ public class MouseMoveEntityListener implements MouseMoveListener,
 						(VisualEntity) target);
 				BoundingBox modelBound = (BoundingBox) ((VisualEntity) target)
 						.getBoundingNode().getWorldBound();
-				Box boxxy = new Box("boom", new Vector3f(-0.1f, modelBound
-						.getCenter().y, -0.1f), new Vector3f(0.1f, 0, 0.1f));
-				((VisualEntity) target).getNode().attachChild(boxxy);
-				((VisualEntity) target).getNode().updateRenderState();
+				Box boxxy = null;
+				if(modelBound.getCenter().y-modelBound.yExtent>0.2){
+					boxxy = new Box("boom", new Vector3f(-0.1f, modelBound
+							.getCenter().y, -0.1f), new Vector3f(0.1f, 0, 0.1f));
+					((VisualEntity) target).getNode().attachChild(boxxy);
+					((VisualEntity) target).getNode().updateRenderState();	
+				}
 
 				// store the data for this entity
 				Target targetData = new Target(
@@ -337,7 +340,9 @@ public class MouseMoveEntityListener implements MouseMoveListener,
 					((DynamicPhysicsNode) target.getNode())
 							.setLinearVelocity(Vector3f.ZERO);
 				}
-				realTargets.get(target).heightindicator.removeFromParent();
+				if(realTargets.get(target).heightindicator != null){
+					realTargets.get(target).heightindicator.removeFromParent();	
+				}
 				entitiesService.getCollisionOctree().insertEntity(target);
 			}
 		}

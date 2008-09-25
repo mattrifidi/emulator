@@ -116,6 +116,10 @@ public class ZoomableLWJGLCamera extends LWJGLCamera {
 						(baseFrustumvalue + zoomlevel + zoomoffset) * 4 / 3,
 						-(baseFrustumvalue + zoomlevel + zoomoffset),
 						(baseFrustumvalue + zoomlevel + zoomoffset));
+				System.out.println(-(baseFrustumvalue + zoomlevel + zoomoffset) * 4 / 3+" "+
+						(baseFrustumvalue + zoomlevel + zoomoffset) * 4 / 3+" "+
+						-(baseFrustumvalue + zoomlevel + zoomoffset)+" "+
+						(baseFrustumvalue + zoomlevel + zoomoffset));
 				update();
 				apply();
 
@@ -150,8 +154,10 @@ public class ZoomableLWJGLCamera extends LWJGLCamera {
 				cameraValues[0] = getLeft();
 				cameraValues[1] = getUp();
 				cameraValues[2] = getDirection();
-				setAxes(new Vector3f(-1, 0, 0), new Vector3f(0, 0, -1),
-						new Vector3f(0, -1, 0));
+				setAxes(new Vector3f(-1f, 0f, 0f), new Vector3f(0f, 0f, -1f),
+						new Vector3f(0f, -1f, 0f));
+
+				update();
 				apply();
 			}
 		}
