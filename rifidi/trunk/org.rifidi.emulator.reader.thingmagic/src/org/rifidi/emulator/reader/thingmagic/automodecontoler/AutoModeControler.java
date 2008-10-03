@@ -1,3 +1,14 @@
+/*
+ *  AutoModeControler.java
+ *
+ *  Created:	September 14, 2008
+ *  Project:	RiFidi Emulator - A Software Simulation Tool for RFID Devices
+ *  				http://www.rifidi.org
+ *  				http://rifidi.sourceforge.net
+ *  Copyright:	Pramari LLC and the Rifidi Project
+ *  License:	Lesser GNU Public License (LGPL)
+ *  				http://www.opensource.org/licenses/lgpl-license.html
+ */
 package org.rifidi.emulator.reader.thingmagic.automodecontoler;
 
 import java.util.List;
@@ -8,7 +19,10 @@ import org.rifidi.emulator.io.comm.Communication;
 import org.rifidi.emulator.io.comm.CommunicationException;
 import org.rifidi.emulator.reader.thingmagic.commandobjects.Command;
 
-
+/**
+ * @author Jerry Maine - jerry@pramari.com
+ *
+ */
 public class AutoModeControler implements Runnable{
 	private static Log logger = LogFactory
 	.getLog(AutoModeControler.class);

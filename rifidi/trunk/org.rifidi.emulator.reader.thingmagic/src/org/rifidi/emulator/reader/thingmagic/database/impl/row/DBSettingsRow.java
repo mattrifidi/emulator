@@ -1,3 +1,14 @@
+/*
+ *  DBSettingsRow.java
+ *
+ *  Created:	August 11, 2008
+ *  Project:	RiFidi Emulator - A Software Simulation Tool for RFID Devices
+ *  				http://www.rifidi.org
+ *  				http://rifidi.sourceforge.net
+ *  Copyright:	Pramari LLC and the Rifidi Project
+ *  License:	Lesser GNU Public License (LGPL)
+ *  				http://www.opensource.org/licenses/lgpl-license.html
+ */
 package org.rifidi.emulator.reader.thingmagic.database.impl.row;
 
 import java.text.DateFormat;
@@ -9,6 +20,10 @@ import java.util.TimeZone;
 
 import org.rifidi.emulator.reader.thingmagic.database.IDBRow;
 
+/**
+ * @author Jerry Maine - jerry@pramari.com
+ *
+ */
 public class DBSettingsRow implements IDBRow {
 
 	private static String CURRENT_TIME = "current_time";
@@ -90,6 +105,12 @@ public class DBSettingsRow implements IDBRow {
 		 * unmodifiable.
 		 */
 		return get(key);
+	}
+
+	@Override
+	public int compareToValue(String key, String testValue) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }

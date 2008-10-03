@@ -1,3 +1,14 @@
+/*
+ *  SelectCommand.java
+ *
+ *  Created:	August 7, 2008
+ *  Project:	RiFidi Emulator - A Software Simulation Tool for RFID Devices
+ *  				http://www.rifidi.org
+ *  				http://rifidi.sourceforge.net
+ *  Copyright:	Pramari LLC and the Rifidi Project
+ *  License:	Lesser GNU Public License (LGPL)
+ *  				http://www.opensource.org/licenses/lgpl-license.html
+ */
 package org.rifidi.emulator.reader.thingmagic.commandobjects;
 
 import java.util.ArrayList;
@@ -10,11 +21,16 @@ import java.util.regex.Pattern;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.rifidi.emulator.reader.thingmagic.commandobjects.exceptions.CommandCreationExeption;
+import org.rifidi.emulator.reader.thingmagic.conditional.MasterFilter;
 import org.rifidi.emulator.reader.thingmagic.database.IDBRow;
 import org.rifidi.emulator.reader.thingmagic.database.IDBTable;
 import org.rifidi.emulator.reader.thingmagic.database.impl.DBTagID;
 import org.rifidi.emulator.reader.thingmagic.module.ThingMagicReaderSharedResources;
 
+/**
+ * @author Jerry Maine - jerry@pramari.com
+ *
+ */
 public class SelectCommand implements Command {
 	private static Log logger = LogFactory.getLog(SelectCommand.class);
 
@@ -24,6 +40,8 @@ public class SelectCommand implements Command {
 	private String table;
 
 	private ThingMagicReaderSharedResources tmsr;
+
+	private MasterFilter filter;
 
 	public SelectCommand(String command, ThingMagicReaderSharedResources tmsr)
 			throws CommandCreationExeption {
@@ -140,6 +158,31 @@ public class SelectCommand implements Command {
 						"Error 0100:     syntax error at '" + token + "'");
 			}
 
+			
+			if (tokenIterator.hasNext()){
+				token = tokenIterator.next();
+			
+				if (token.matches(WHITE_SPACE)){
+					
+					if(tokenIterator.hasNext()){
+						token = tokenIterator.next();
+						
+						if (token.equals("where")){
+							
+							token = tokenIterator.next();
+						
+							if (!token.matches(WHITE_SPACE)) {
+								throw new CommandCreationExeption(
+										"Error 0100:     syntax error at '" + token + "'");
+							}
+							
+							filter = new MasterFilter(tokenIterator, table, tmsr);
+						}
+					}
+						
+					
+				}
+			}
 	
 			// check if the command correctly ends in a semicolon
 			if (tokenIterator.hasNext()){

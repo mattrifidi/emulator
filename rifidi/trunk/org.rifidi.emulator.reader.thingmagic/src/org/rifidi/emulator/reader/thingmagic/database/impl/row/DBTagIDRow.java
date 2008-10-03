@@ -1,5 +1,17 @@
+/*
+ *  DBTagDataRow.java
+ *
+ *  Created:	August 7, 2008
+ *  Project:	RiFidi Emulator - A Software Simulation Tool for RFID Devices
+ *  				http://www.rifidi.org
+ *  				http://rifidi.sourceforge.net
+ *  Copyright:	Pramari LLC and the Rifidi Project
+ *  License:	Lesser GNU Public License (LGPL)
+ *  				http://www.opensource.org/licenses/lgpl-license.html
+ */
 package org.rifidi.emulator.reader.thingmagic.database.impl.row;
 
+import java.math.BigInteger;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
@@ -11,6 +23,10 @@ import org.rifidi.emulator.reader.thingmagic.database.impl.DBTagID;
 import org.rifidi.services.tags.enums.TagGen;
 import org.rifidi.services.tags.impl.RifidiTag;
 
+/**
+ * @author Jerry Maine - jerry@pramari.com
+ *
+ */
 //TODO implement this better.
 public class DBTagIDRow implements IDBRow {
 	private static Log logger = LogFactory.getLog(DBTagID.class);
@@ -255,5 +271,44 @@ public class DBTagIDRow implements IDBRow {
 	@Override
 	public int hashCode() {
 		return tag.hashCode();
+	}
+
+	@Override
+	public int compareToValue(String key, String testValue) {
+		// TODO Auto-generated method stub
+		
+		if (key.equals(ID)){
+			BigInteger id  = new BigInteger(tag.toString().replace(" ", ""), 16);
+			
+			BigInteger id2 = new BigInteger(testValue.substring(2), 16);
+			
+			return id.compareTo(id2);
+		}
+		
+		if (key.equals(PROTOCOL_ID)){
+			int protocolID = 0;
+			switch(tag.getTag().getTagGeneration()){
+				case GEN1:
+					protocolID = 1;
+				break;
+				case GEN2:
+					protocolID = 12;
+			}
+			
+			int protocolIDTest = 0;
+			if (testValue.equalsIgnoreCase("GEN1")){
+				protocolIDTest = 12;
+			}
+			
+			if (testValue.equalsIgnoreCase("EPC1")){
+				protocolIDTest = 1;
+			}
+			
+			return protocolID - protocolIDTest;
+		}
+		
+		
+		
+		return Integer.valueOf(get(key)) - Integer.valueOf(testValue);
 	}
 }

@@ -1,5 +1,13 @@
-/**
- * 
+/*
+ *  ThingMagicProtocol.java
+ *
+ *  Created:	May 5, 2008
+ *  Project:	RiFidi Emulator - A Software Simulation Tool for RFID Devices
+ *  				http://www.rifidi.org
+ *  				http://rifidi.sourceforge.net
+ *  Copyright:	Pramari LLC and the Rifidi Project
+ *  License:	Lesser GNU Public License (LGPL)
+ *  				http://www.opensource.org/licenses/lgpl-license.html
  */
 package org.rifidi.emulator.reader.thingmagic.io.protocol;
 
@@ -14,7 +22,7 @@ import org.rifidi.emulator.io.protocol.Protocol;
 import org.rifidi.emulator.io.protocol.ProtocolValidationException;
 
 /**
- * @author jmaine
+ * @author Jerry Maine - jerry@pramari.com
  *
  */
 public class ThingMagicProtocol implements Protocol {
@@ -27,7 +35,7 @@ public class ThingMagicProtocol implements Protocol {
 	@Override
 	public final byte[] addProtocol(final byte[] data) {
 		// TODO Auto-generated method stub
-		logger.debug("ThingMagicProtocal.addProtocol() called: " + new String(data));
+		logger.debug("ThingMagicProtocol.addProtocol() called: " + new String(data));
 		return data;
 	}
 

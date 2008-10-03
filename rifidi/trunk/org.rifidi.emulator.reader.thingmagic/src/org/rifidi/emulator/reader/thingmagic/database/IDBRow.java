@@ -1,7 +1,21 @@
+/*
+ *  IDBRow.java
+ *
+ *  Created:	August 7, 2008
+ *  Project:	RiFidi Emulator - A Software Simulation Tool for RFID Devices
+ *  				http://www.rifidi.org
+ *  				http://rifidi.sourceforge.net
+ *  Copyright:	Pramari LLC and the Rifidi Project
+ *  License:	Lesser GNU Public License (LGPL)
+ *  				http://www.opensource.org/licenses/lgpl-license.html
+ */
 package org.rifidi.emulator.reader.thingmagic.database;
 
 
-
+/**
+ * @author Jerry Maine - jerry@pramari.com
+ *
+ */
 public interface IDBRow {
 	public boolean containsColumn(String column);
 	public boolean isWritable(String column);
@@ -11,4 +25,6 @@ public interface IDBRow {
 	public String put(String key, String value);
 	
 	public String get(String key);
+	
+	public int compareToValue(String key, String testValue);
 }

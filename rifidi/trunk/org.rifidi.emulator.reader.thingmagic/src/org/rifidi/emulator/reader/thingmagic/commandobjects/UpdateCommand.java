@@ -1,3 +1,14 @@
+/*
+ *  Activator.java
+ *
+ *  Created:	August 7, 2008
+ *  Project:	RiFidi Emulator - A Software Simulation Tool for RFID Devices
+ *  				http://www.rifidi.org
+ *  				http://rifidi.sourceforge.net
+ *  Copyright:	Pramari LLC and the Rifidi Project
+ *  License:	Lesser GNU Public License (LGPL)
+ *  				http://www.opensource.org/licenses/lgpl-license.html
+ */
 package org.rifidi.emulator.reader.thingmagic.commandobjects;
 
 import java.util.ArrayList;
@@ -16,6 +27,10 @@ import org.rifidi.emulator.reader.thingmagic.database.IDBRow;
 import org.rifidi.emulator.reader.thingmagic.database.IDBTable;
 import org.rifidi.emulator.reader.thingmagic.module.ThingMagicReaderSharedResources;
 
+/**
+ * @author Jerry Maine - jerry@pramari.com
+ *
+ */
 public class UpdateCommand implements Command {
 	private static Log logger = LogFactory.getLog(UpdateCommand.class);
 

@@ -1,8 +1,23 @@
+/*
+ *  DBIORow.java
+ *
+ *  Created:	August 13, 2008
+ *  Project:	RiFidi Emulator - A Software Simulation Tool for RFID Devices
+ *  				http://www.rifidi.org
+ *  				http://rifidi.sourceforge.net
+ *  Copyright:	Pramari LLC and the Rifidi Project
+ *  License:	Lesser GNU Public License (LGPL)
+ *  				http://www.opensource.org/licenses/lgpl-license.html
+ */
 package org.rifidi.emulator.reader.thingmagic.database.impl.row;
 
 import org.rifidi.emulator.reader.sharedrc.GPIO.GPIOController;
 import org.rifidi.emulator.reader.thingmagic.database.IDBRow;
 
+/**
+ * @author Jerry Maine - jerry@pramari.com
+ *
+ */
 public class DBIORow implements IDBRow {
 
 	private GPIOController gpioController;
@@ -74,6 +89,12 @@ public class DBIORow implements IDBRow {
 		}
 
 		return null;
+	}
+
+	@Override
+	public int compareToValue(String key, String testValue) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }

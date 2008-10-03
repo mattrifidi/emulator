@@ -1,3 +1,14 @@
+/*
+ *  DBSavedSettingRow.java
+ *
+ *  Created:	August 13, 2008
+ *  Project:	RiFidi Emulator - A Software Simulation Tool for RFID Devices
+ *  				http://www.rifidi.org
+ *  				http://rifidi.sourceforge.net
+ *  Copyright:	Pramari LLC and the Rifidi Project
+ *  License:	Lesser GNU Public License (LGPL)
+ *  				http://www.opensource.org/licenses/lgpl-license.html
+ */
 package org.rifidi.emulator.reader.thingmagic.database.impl.row;
 
 import java.util.HashMap;
@@ -5,6 +16,10 @@ import java.util.Map;
 
 import org.rifidi.emulator.reader.thingmagic.database.IDBRow;
 
+/**
+ * @author Jerry Maine - jerry@pramari.com
+ *
+ */
 public class DBSavedSettingRow implements IDBRow {
 
 	private static Map<String, String> savedSettings = new HashMap<String, String>();
@@ -70,6 +85,12 @@ public class DBSavedSettingRow implements IDBRow {
 			return value;
 		}
 		return null;
+	}
+
+	@Override
+	public int compareToValue(String key, String testValue) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }
