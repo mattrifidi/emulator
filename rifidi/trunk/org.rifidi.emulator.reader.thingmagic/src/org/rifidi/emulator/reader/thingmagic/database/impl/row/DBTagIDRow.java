@@ -310,7 +310,7 @@ public class DBTagIDRow implements IDBRow {
 			return protocolID - protocolIDTest;
 		}
 		
-		logger.debug("" + get(key));
+		logger.debug("Value: " + get(key));
 		logger.debug("Test Value: " + testValue);
 		
 		return Integer.valueOf(get(key)) - Integer.valueOf(testValue);
