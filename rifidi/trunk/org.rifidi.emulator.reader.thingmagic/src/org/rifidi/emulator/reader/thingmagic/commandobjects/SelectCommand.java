@@ -266,11 +266,20 @@ public class SelectCommand implements Command {
 
 		tmsr.getDataBase().getTable(table).preTableAccess(null);
 
+		//TODO implement this better.
+		List<IDBRow> rows = new ArrayList<IDBRow>();
+		for (int x = 0; x < tmsr.getDataBase().getTable(table).size(); x++){
+			rows.add(tmsr.getDataBase().getTable(table).get(x));
+		}
+		
+		if (filter != null){
+			rows = filter.filter(rows);
+		}
 		/*
 		 * Do the select database work.
 		 */
-		for (int x = 0; x < tmsr.getDataBase().getTable(table).size(); x++) {
-			IDBRow row = tmsr.getDataBase().getTable(table).get(x);
+		for (int x = 0; x < rows.size(); x++) {
+			IDBRow row = rows.get(x);
 
 			StringBuffer buff = new StringBuffer();
 			for (int y = 0; y < columns.size(); y++) {

@@ -53,10 +53,10 @@ public class DBTagID implements IDBTable, TagMemory {
 	@Override
 	public int size() {
 		// TODO Auto-generated method stub
-		if (!suspended) {
-			return tags.size();
-		} else {
+		if (suspended) {
 			return 0;
+		} else {
+			return tags.size();	
 		}
 	}
 
@@ -74,11 +74,13 @@ public class DBTagID implements IDBTable, TagMemory {
 
 	@Override
 	public void resume() {
+		//TODO Should we inform shared resources of this??
 		this.suspended = false;
 	}
 
 	@Override
 	public void suspend() {
+		//TODO Should we inform shared resources of this??
 		this.suspended = true;
 	}
 

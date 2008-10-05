@@ -14,6 +14,8 @@ package org.rifidi.emulator.reader.thingmagic.conditional;
 import java.util.List;
 import java.util.ListIterator;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.rifidi.emulator.reader.thingmagic.commandobjects.exceptions.CommandCreationExeption;
 import org.rifidi.emulator.reader.thingmagic.database.IDBRow;
 import org.rifidi.emulator.reader.thingmagic.module.ThingMagicReaderSharedResources;
@@ -23,9 +25,11 @@ import org.rifidi.emulator.reader.thingmagic.module.ThingMagicReaderSharedResour
  *
  */
 public class MasterFilter implements IFilter {
-
+	private static Log logger = LogFactory.getLog(MasterFilter.class);
+	
 	IFilter root;
 	public MasterFilter(ListIterator<String> tokenIterator, String table, ThingMagicReaderSharedResources tmsr ) throws CommandCreationExeption{
+		logger.debug("Creating Master Filter...");
 		
 		root = new SingleFilter(tokenIterator, table, tmsr);
 	}
@@ -33,7 +37,7 @@ public class MasterFilter implements IFilter {
 	
 	@Override
 	public List<IDBRow> filter(List<IDBRow> rows) {
-		// TODO Auto-generated method stub
+		logger.debug("Filtering.... ");
 		return root.filter(rows);
 	}
 

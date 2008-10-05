@@ -256,6 +256,7 @@ public class UpdateCommand implements Command {
 		/*
 		 * Do the udpate database work.
 		 */
+		//TODO add filter capability to this method.
 		for (int x = 0; x < tmsr.getDataBase().getTable(table).size(); x++) {
 			IDBRow row = tmsr.getDataBase().getTable(table).get(x);
 

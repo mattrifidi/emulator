@@ -142,6 +142,7 @@ public class DBTagIDRow implements IDBRow {
 			return "0x" + tag.toString().replace(" ", "");
 		}
 
+		//TODO Match this with what is displayed on the gui (antenna_id is 1 to 4, inclusive)
 		if (key.equals(ANTENNA_ID)) {
 			Integer antenna = tag.getAntennaLastSeen();
 			antenna++;
@@ -277,6 +278,7 @@ public class DBTagIDRow implements IDBRow {
 	public int compareToValue(String key, String testValue) {
 		// TODO Auto-generated method stub
 		
+		//TODO add a check to see if the format is correct for ID.
 		if (key.equals(ID)){
 			BigInteger id  = new BigInteger(tag.toString().replace(" ", ""), 16);
 			
@@ -298,16 +300,18 @@ public class DBTagIDRow implements IDBRow {
 			int protocolIDTest = 0;
 			if (testValue.equalsIgnoreCase("GEN1")){
 				protocolIDTest = 12;
-			}
-			
-			if (testValue.equalsIgnoreCase("EPC1")){
+			} else if (testValue.equalsIgnoreCase("EPC1")){
 				protocolIDTest = 1;
+			} else {
+				//TODO: Deal with when this fails
+				protocolIDTest = Integer.valueOf(testValue);
 			}
 			
 			return protocolID - protocolIDTest;
 		}
 		
-		
+		logger.debug("" + get(key));
+		logger.debug("Test Value: " + testValue);
 		
 		return Integer.valueOf(get(key)) - Integer.valueOf(testValue);
 	}
