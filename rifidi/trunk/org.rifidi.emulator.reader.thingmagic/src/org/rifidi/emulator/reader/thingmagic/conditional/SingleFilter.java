@@ -87,7 +87,22 @@ public class SingleFilter implements IFilter {
 		token = tokenIterator.next();
 
 		// TODO add sanity test here.
-		testValue = token;
+		if(token.equals("'")){
+			/*
+			 * gather the quoted string... including the quotes
+			 */			
+			StringBuffer valueBuffer = new StringBuffer();
+			valueBuffer.append(token);
+			token = tokenIterator.next();
+			while (!token.equals("'")) {
+				valueBuffer.append(token);
+				token = tokenIterator.next();
+			}
+			valueBuffer.append(token);
+			testValue = valueBuffer.toString();
+		} else {
+			testValue = token;
+		}
 	}
 
 	@Override

@@ -298,13 +298,18 @@ public class DBTagIDRow implements IDBRow {
 			}
 			
 			int protocolIDTest = 0;
-			if (testValue.equalsIgnoreCase("GEN1")){
+			if (testValue.equalsIgnoreCase("'GEN2'")){
 				protocolIDTest = 12;
-			} else if (testValue.equalsIgnoreCase("EPC1")){
+			} else if (testValue.equalsIgnoreCase("'EPC1'")){
 				protocolIDTest = 1;
 			} else {
 				//TODO: Deal with when this fails
-				protocolIDTest = Integer.valueOf(testValue);
+				try{
+					protocolIDTest = Integer.valueOf(testValue);
+				} catch (NumberFormatException e){
+					//TODO Deal with this.
+					logger.debug(e);
+				}
 			}
 			
 			return protocolID - protocolIDTest;

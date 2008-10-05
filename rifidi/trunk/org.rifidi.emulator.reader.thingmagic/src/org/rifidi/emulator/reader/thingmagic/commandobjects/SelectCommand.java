@@ -69,7 +69,7 @@ public class SelectCommand implements Command {
 				"\\(|" +
 				"\\)|",
 				Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
-		Matcher tokenFinder = tokenizer.matcher(command.toLowerCase().trim());
+		Matcher tokenFinder = tokenizer.matcher(command.trim());
 
 		while (tokenFinder.find()) {
 			String temp = tokenFinder.group();
