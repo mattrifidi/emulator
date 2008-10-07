@@ -81,8 +81,8 @@ public class SingleFilter implements IFilter {
 
 		token = tokenIterator.next();
 
-		// TODO add sanity test here.
 		if (token.equals("'")) {
+			//TODO is this true with other tables??
 			if (!attribute.equalsIgnoreCase("protocol_id")) {
 				throw new CommandCreationExeption(
 						"Error 0100:	Only protocol_id can be used with a string in a WHERE clause");
