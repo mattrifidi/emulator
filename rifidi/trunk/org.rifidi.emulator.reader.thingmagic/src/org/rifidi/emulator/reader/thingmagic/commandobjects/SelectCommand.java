@@ -240,6 +240,7 @@ public class SelectCommand extends Command {
 			rows.add(tmsr.getDataBase().getTable(table).get(x));
 		}
 
+		//TODO: ThingMagic reader ignores the filter when it is not the tag_id or tag_data tables
 		if (filter != null) {
 			rows = filter.filter(rows);
 		}
