@@ -40,7 +40,7 @@ public class SingleFilter implements IFilter {
 	public SingleFilter(ListIterator<String> tokenIterator, String table,
 			ThingMagicReaderSharedResources tmsr)
 			throws CommandCreationExeption {
-		logger.debug("Creating Single fliter...");
+		logger.debug("Creating Single filter...");
 
 		DataBase db = tmsr.getDataBase();
 
@@ -51,18 +51,21 @@ public class SingleFilter implements IFilter {
 		}
 
 		if (!token.matches(Command.A_WORD)) {
-			throw new CommandCreationExeption();
+			throw new CommandCreationExeption("Error 0100:	syntax error at '"
+					+ token + "'");
 		}
 
 		attribute = token;
 
-		//TODO Move this check into the master filter class.
-		if (db.getTable(table).size() == 0){
+		// TODO Move this check into the master filter class.
+		if (db.getTable(table).size() == 0) {
 			logger.debug("Filter disabled... no tags to filter");
 			ignore = true;
 			return;
 		}
-		
+
+		// TODO it doesn't really throw an error here... must figure out how to
+		// deal with it.
 		if (!db.getTable(table).get(0).containsColumn(attribute)) {
 			throw new CommandCreationExeption();
 		}
@@ -81,16 +84,21 @@ public class SingleFilter implements IFilter {
 		} else if (token.matches(Command.NOT_EQUALS_W_WS)) {
 			compareOperator = ECompareOperator.NOT_EQUAL;
 		} else {
-			throw new CommandCreationExeption();
+			throw new CommandCreationExeption("Error 0100:	syntax error at '"
+					+ token + "'");
 		}
 
 		token = tokenIterator.next();
 
 		// TODO add sanity test here.
-		if(token.equals("'")){
+		if (token.equals("'")) {
+			if (!attribute.equalsIgnoreCase("protocol_id")) {
+				throw new CommandCreationExeption(
+						"Error 0100:	Only protocol_id can be used with a string in a WHERE clause");
+			}
 			/*
 			 * gather the quoted string... including the quotes
-			 */			
+			 */
 			StringBuffer valueBuffer = new StringBuffer();
 			valueBuffer.append(token);
 			token = tokenIterator.next();
@@ -109,11 +117,11 @@ public class SingleFilter implements IFilter {
 	public List<IDBRow> filter(List<IDBRow> rows) {
 		// TODO Auto-generated method stub
 
-		//TODO this might be a subtle bug... not sure though
-		if (ignore){
+		// TODO this might be a subtle bug... not sure though
+		if (ignore) {
 			return rows;
 		}
-		
+
 		List<IDBRow> retVal = new ArrayList<IDBRow>();
 
 		for (IDBRow row : rows) {

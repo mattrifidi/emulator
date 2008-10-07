@@ -27,7 +27,7 @@ import org.rifidi.emulator.reader.thingmagic.module.ThingMagicReaderSharedResour
  * @author Jerry Maine - jerry@pramari.com
  *
  */
-public class SetCommand implements Command {
+public class SetCommand extends Command {
 	private static Log logger = LogFactory.getLog(SetCommand.class);
 
 	private ESetSubCommand commandSwitch;

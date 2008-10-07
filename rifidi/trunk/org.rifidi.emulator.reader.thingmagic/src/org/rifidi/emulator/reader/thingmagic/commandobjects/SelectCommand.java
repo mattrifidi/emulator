@@ -31,7 +31,7 @@ import org.rifidi.emulator.reader.thingmagic.module.ThingMagicReaderSharedResour
  * @author Jerry Maine - jerry@pramari.com
  *
  */
-public class SelectCommand implements Command {
+public class SelectCommand extends Command {
 	private static Log logger = LogFactory.getLog(SelectCommand.class);
 
 	private String command;

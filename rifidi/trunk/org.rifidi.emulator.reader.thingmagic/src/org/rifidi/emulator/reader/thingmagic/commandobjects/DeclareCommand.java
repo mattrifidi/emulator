@@ -27,7 +27,7 @@ import org.rifidi.emulator.reader.thingmagic.module.ThingMagicReaderSharedResour
  * @author Jerry Maine - jerry@pramari.com
  *
  */
-public class DeclareCommand implements Command {
+public class DeclareCommand extends Command {
 	private static Log logger = LogFactory.getLog(DeclareCommand.class);
 
 	private String cursorName;

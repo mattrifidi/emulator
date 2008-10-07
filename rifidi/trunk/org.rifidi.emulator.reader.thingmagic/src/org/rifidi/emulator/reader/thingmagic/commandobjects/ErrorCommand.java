@@ -17,7 +17,7 @@ import java.util.ArrayList;
  * @author Jerry Maine - jerry@pramari.com
  *
  */
-public class ErrorCommand implements Command {
+public class ErrorCommand extends Command {
 
 	private String errorMessage;
 

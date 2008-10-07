@@ -24,7 +24,7 @@ import org.rifidi.emulator.reader.thingmagic.module.ThingMagicReaderSharedResour
  * @author Jerry Maine - jerry@pramari.com
  *
  */
-public class ResetCommand implements Command {
+public class ResetCommand extends Command {
 
 	private String command;
 	private ThingMagicReaderSharedResources tmsr;

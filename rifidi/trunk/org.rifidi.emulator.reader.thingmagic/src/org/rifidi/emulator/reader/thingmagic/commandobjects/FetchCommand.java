@@ -28,7 +28,7 @@ import org.rifidi.emulator.reader.thingmagic.module.ThingMagicReaderSharedResour
  * @author Jerry Maine - jerry@pramari.com
  *
  */
-public class FetchCommand implements Command {
+public class FetchCommand extends Command {
 	private static Log logger = LogFactory.getLog(FetchCommand.class);
 	
 	

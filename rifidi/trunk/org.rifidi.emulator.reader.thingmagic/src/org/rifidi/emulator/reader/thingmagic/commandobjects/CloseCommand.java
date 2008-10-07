@@ -27,7 +27,7 @@ import org.rifidi.emulator.reader.thingmagic.module.ThingMagicReaderSharedResour
  * @author Jerry Maine - jerry@pramari.com
  *
  */
-public class CloseCommand implements Command {
+public class CloseCommand extends Command {
 	private static Log logger = LogFactory.getLog(DeclareCommand.class);
 
 	private ThingMagicReaderSharedResources tmsr;

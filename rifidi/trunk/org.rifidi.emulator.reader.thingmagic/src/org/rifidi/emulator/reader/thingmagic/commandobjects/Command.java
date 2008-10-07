@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
  * @author Jerry Maine - jerry@pramari.com
  *
  */
-public interface Command {
+public abstract class Command {
 
 	final static public String A_WORD = "\\w+";
 
@@ -48,12 +48,12 @@ public interface Command {
 					+ "\\s*>\\s*|" + "\\s*<\\s*|" + "\\s?+|" + "\\(|" + "\\)|",
 			Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
 
-	public ArrayList<Object> execute();
+	public abstract ArrayList<Object> execute();
 
 	/**
 	 * 
 	 * @return the original unmodified command sent to the constructor of the
 	 *         command object
 	 */
-	public String toCommandString();
+	public abstract String toCommandString();
 }

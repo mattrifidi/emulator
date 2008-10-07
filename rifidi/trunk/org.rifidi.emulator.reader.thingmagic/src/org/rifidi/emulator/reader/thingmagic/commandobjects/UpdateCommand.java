@@ -31,7 +31,7 @@ import org.rifidi.emulator.reader.thingmagic.module.ThingMagicReaderSharedResour
  * @author Jerry Maine - jerry@pramari.com
  *
  */
-public class UpdateCommand implements Command {
+public class UpdateCommand extends Command {
 	private static Log logger = LogFactory.getLog(UpdateCommand.class);
 
 	private String command;
