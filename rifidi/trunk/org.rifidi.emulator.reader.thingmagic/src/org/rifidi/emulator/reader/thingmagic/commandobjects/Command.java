@@ -40,6 +40,15 @@ public abstract class Command {
 
 	final static public String NOT_EQUALS_W_WS = "\\s*<>\\s*";
 
+	/*
+	 * This regex looks for a Word, or a series of spaces on either side of any
+	 * single comparison operator or comma, or a single parentheses (opening or
+	 * closing). At the last ... any dangling spaces not attached to the above
+	 * groups and then anything else as a single group.
+	 * 
+	 * This makes it really easy to parse the command string as it becomes
+	 * really predictable tokens.
+	 */
 	static private Pattern TOKENIZER = Pattern.compile(
 			// anything less...
 			"[^\\s\\w,<>=\\(\\)\\u0027]|"
@@ -49,6 +58,7 @@ public abstract class Command {
 					+ "\\s*<=\\s*|" + "\\s*=\\s*|" + "\\s*,\\s*|"
 					+ "\\s*>\\s*|" + "\\s*<\\s*|" + "\\s?+|" + "\\(|" + "\\)|",
 			Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
+
 	/*
 	 * common method to tokenize the command used by most command objects.
 	 */

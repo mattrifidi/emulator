@@ -15,8 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -25,7 +23,7 @@ import org.rifidi.emulator.reader.thingmagic.module.ThingMagicReaderSharedResour
 
 /**
  * @author Jerry Maine - jerry@pramari.com
- *
+ * 
  */
 public class DeclareCommand extends Command {
 	private static Log logger = LogFactory.getLog(DeclareCommand.class);
@@ -44,35 +42,7 @@ public class DeclareCommand extends Command {
 		this.tmsr = tmsr;
 		this.command = command;
 
-		List<String> tokens = new ArrayList<String>();
-		/*
-		 * This regex looks for a Word, or a series of spaces on either side of
-		 * any single comparison operator or comma, or a single parentheses
-		 * (opening or closing). At the last ... any dangling spaces not
-		 * attached to the above groups and then anything else as a single
-		 * group.
-		 * 
-		 * This makes it really easy to parse the command string as it becomes
-		 * really predictable tokens.
-		 */
-		Pattern tokenizer = Pattern.compile(
-		// anything less...
-				"[^\\s\\w]+|" +
-				// groups we are looking for...
-						"\\w+|" + "\\s+", Pattern.CASE_INSENSITIVE
-						| Pattern.DOTALL);
-		Matcher tokenFinder = tokenizer.matcher(command.toLowerCase().trim());
-
-		while (tokenFinder.find()) {
-			String temp = tokenFinder.group();
-			/*
-			 * no need to add empty strings at tokens.
-			 */
-			// TODO: Figure out why we are getting empty stings as tokens.
-			if (temp.equals(""))
-				continue;
-			tokens.add(temp);
-		}
+		List<String> tokens = tokenizer(command);
 
 		ListIterator<String> tokenIterator = tokens.listIterator();
 
@@ -149,9 +119,8 @@ public class DeclareCommand extends Command {
 						"Error 0100:     syntax error at '" + token + "'");
 			}
 
-			
 			/*
-			 * The SelectCommand and UpdateCommand both check for the semicolon 
+			 * The SelectCommand and UpdateCommand both check for the semicolon
 			 * at the end, so we don't have to do that here.
 			 */
 		} catch (NoSuchElementException e) {

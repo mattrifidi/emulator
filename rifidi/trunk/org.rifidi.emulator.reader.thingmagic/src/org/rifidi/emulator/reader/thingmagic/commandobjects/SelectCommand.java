@@ -15,8 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -29,7 +27,7 @@ import org.rifidi.emulator.reader.thingmagic.module.ThingMagicReaderSharedResour
 
 /**
  * @author Jerry Maine - jerry@pramari.com
- *
+ * 
  */
 public class SelectCommand extends Command {
 	private static Log logger = LogFactory.getLog(SelectCommand.class);
@@ -47,40 +45,12 @@ public class SelectCommand extends Command {
 			throws CommandCreationExeption {
 		this.tmsr = tmsr;
 		this.command = command;
-		List<String> tokens = new ArrayList<String>();
+
 		// TODO Auto-generated constructor stub
 
 		logger.debug("Parsing command: " + command);
 
-		Pattern tokenizer = Pattern.compile(
-				//anything less...
-				"[^\\s\\w,<>=\\(\\)\\u0027]|" +
-				//groups we are looking for...
-				"\\w+|" +
-				"\\u0027|" +
-				"\\s*<>\\*|" +
-				"\\s*>=\\s*|" +
-				"\\s*<=\\s*|" +
-				"\\s*=\\s*|" +
-				"\\s*,\\s*|" +
-				"\\s*>\\s*|" +
-				"\\s*<\\s*|" +
-				"\\s?+|" +
-				"\\(|" +
-				"\\)|",
-				Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
-		Matcher tokenFinder = tokenizer.matcher(command.trim());
-
-		while (tokenFinder.find()) {
-			String temp = tokenFinder.group();
-			/*
-			 * no need to add empty strings at tokens.
-			 */
-			// TODO: Figure out why we are getting empty stings as tokens.
-			if (temp.equals(""))
-				continue;
-			tokens.add(temp);
-		}
+		List<String> tokens = tokenizer(command);
 
 		ListIterator<String> tokenIterator = tokens.listIterator();
 
@@ -158,41 +128,41 @@ public class SelectCommand extends Command {
 						"Error 0100:     syntax error at '" + token + "'");
 			}
 
-			
-			if (tokenIterator.hasNext()){
+			if (tokenIterator.hasNext()) {
 				token = tokenIterator.next();
-			
-				if (token.matches(WHITE_SPACE)){
-					
-					if(tokenIterator.hasNext()){
+
+				if (token.matches(WHITE_SPACE)) {
+
+					if (tokenIterator.hasNext()) {
 						token = tokenIterator.next();
-						
-						if (token.equals("where")){
-							
+
+						if (token.equals("where")) {
+
 							token = tokenIterator.next();
-						
+
 							if (!token.matches(WHITE_SPACE)) {
 								throw new CommandCreationExeption(
-										"Error 0100:     syntax error at '" + token + "'");
+										"Error 0100:     syntax error at '"
+												+ token + "'");
 							}
-							
-							filter = new MasterFilter(tokenIterator, table, tmsr);
+
+							filter = new MasterFilter(tokenIterator, table,
+									tmsr);
 						}
 					}
-						
-					
+
 				}
 			}
-	
+
 			// check if the command correctly ends in a semicolon
-			if (tokenIterator.hasNext()){
+			if (tokenIterator.hasNext()) {
 				token = tokenIterator.next();
-				
-				if (token.matches(WHITE_SPACE)){
+
+				if (token.matches(WHITE_SPACE)) {
 					token = tokenIterator.next();
 				}
-				
-				if (!token.equals(";")){
+
+				if (!token.equals(";")) {
 					throw new CommandCreationExeption(
 							"Error 0100:     syntax error at '" + token + "'");
 				}
@@ -200,14 +170,12 @@ public class SelectCommand extends Command {
 				throw new CommandCreationExeption(
 						"Error 0100:     syntax error at '\n'");
 			}
-			
-			
+
 		} catch (NoSuchElementException e) {
 			/*
-			 * if we get here... we run out of tokens prematurely... Our job now is
-			 * to walk backwards to find the last non space tokens and
-			 * throw an exception saying that there is an syntax error at that
-			 * point.
+			 * if we get here... we run out of tokens prematurely... Our job now
+			 * is to walk backwards to find the last non space tokens and throw
+			 * an exception saying that there is an syntax error at that point.
 			 */
 
 			/*
@@ -266,13 +234,13 @@ public class SelectCommand extends Command {
 
 		tmsr.getDataBase().getTable(table).preTableAccess(null);
 
-		//TODO implement this better.
+		// TODO implement this better.
 		List<IDBRow> rows = new ArrayList<IDBRow>();
-		for (int x = 0; x < tmsr.getDataBase().getTable(table).size(); x++){
+		for (int x = 0; x < tmsr.getDataBase().getTable(table).size(); x++) {
 			rows.add(tmsr.getDataBase().getTable(table).get(x));
 		}
-		
-		if (filter != null){
+
+		if (filter != null) {
 			rows = filter.filter(rows);
 		}
 		/*
@@ -289,17 +257,18 @@ public class SelectCommand extends Command {
 			}
 			retVal.add(buff.toString());
 		}
-		
+
 		/*
 		 * there must be a blank line at the end.. even if we didn't send
 		 * something useful back.
 		 * 
-		 * When the messages are formated for return (in ThingMagicRQLCommandFormatter)
-		 * a new line is appended to each string even if it is an empty string.
+		 * When the messages are formated for return (in
+		 * ThingMagicRQLCommandFormatter) a new line is appended to each string
+		 * even if it is an empty string.
 		 */
-		//place holder for newline.
+		// place holder for newline.
 		retVal.add("");
-		
+
 		return retVal;
 	}
 

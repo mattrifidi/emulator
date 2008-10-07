@@ -47,46 +47,7 @@ public class UpdateCommand extends Command {
 		this.command = command;
 		this.tmsr = tmsr;
 
-		List<String> tokens = new ArrayList<String>();
-		/*
-		 * This regex looks for a Word, or a series of spaces on either side of
-		 * any single comparison operator or comma, or a single parentheses
-		 * (opening or closing). At the last ... any dangling spaces not
-		 * attached to the above groups and then anything else as a single
-		 * group.
-		 * 
-		 * This makes it really easy to parse the command string as it becomes
-		 * really predictable tokens.
-		 */
-		Pattern tokenizer = Pattern.compile(
-				//anything less...
-				"[^\\s\\w,<>=\\(\\)\\u0027]|" +
-				//groups we are looking for...
-				"\\w+|" +
-				"\\u0027|" +
-				"\\s*<>\\*|" +
-				"\\s*>=\\s*|" +
-				"\\s*<=\\s*|" +
-				"\\s*=\\s*|" +
-				"\\s*,\\s*|" +
-				"\\s*>\\s*|" +
-				"\\s*<\\s*|" +
-				"\\s?+|" +
-				"\\(|" +
-				"\\)|",
-				Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
-		Matcher tokenFinder = tokenizer.matcher(command.toLowerCase().trim());
-
-		while (tokenFinder.find()) {
-			String temp = tokenFinder.group();
-			/*
-			 * no need to add empty strings at tokens.
-			 */
-			// TODO: Figure out why we are getting empty stings as tokens.
-			if (temp.equals(""))
-				continue;
-			tokens.add(temp);
-		}
+		List<String> tokens = tokenizer(command);
 
 		logger.debug(tokens);
 
