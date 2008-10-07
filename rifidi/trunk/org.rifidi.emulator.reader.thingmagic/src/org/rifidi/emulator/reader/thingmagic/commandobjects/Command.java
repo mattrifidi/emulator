@@ -12,11 +12,13 @@
 package org.rifidi.emulator.reader.thingmagic.commandobjects;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
  * @author Jerry Maine - jerry@pramari.com
- *
+ * 
  */
 public abstract class Command {
 
@@ -27,18 +29,18 @@ public abstract class Command {
 	final static public String COMMA_WITH_WS = "\\s*,\\s*";
 
 	final static public String EQUALS_WITH_WS = "\\s*=\\s*";
-	
+
 	final static public String GREATER_THAN_WITH_WS = "\\s*>\\*";
-	
+
 	final static public String LESS_THAN_WITH_WS = "\\s*<\\s*";
-	
+
 	final static public String GREATER_THAN_EQUALS_W_WS = "\\s*>=\\*";
-	
+
 	final static public String LESS_THAN_EQUALS_W_WS = "\\s*<=\\*";
-	
+
 	final static public String NOT_EQUALS_W_WS = "\\s*<>\\s*";
-	
-	static public Pattern TOKENIZER = Pattern.compile(
+
+	static private Pattern TOKENIZER = Pattern.compile(
 			// anything less...
 			"[^\\s\\w,<>=\\(\\)\\u0027]|"
 					+
@@ -47,6 +49,25 @@ public abstract class Command {
 					+ "\\s*<=\\s*|" + "\\s*=\\s*|" + "\\s*,\\s*|"
 					+ "\\s*>\\s*|" + "\\s*<\\s*|" + "\\s?+|" + "\\(|" + "\\)|",
 			Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
+	/*
+	 * common method to tokenize the command used by most command objects.
+	 */
+	protected List<String> tokenizer(String command) {
+		List<String> tokens = new ArrayList<String>();
+		Matcher tokenFinder = TOKENIZER.matcher(command.trim());
+
+		while (tokenFinder.find()) {
+			String temp = tokenFinder.group();
+			/*
+			 * no need to add empty strings at tokens.
+			 */
+			// TODO: Figure out why we are getting empty stings as tokens.
+			if (temp.equals(""))
+				continue;
+			tokens.add(temp);
+		}
+		return tokens;
+	}
 
 	public abstract ArrayList<Object> execute();
 

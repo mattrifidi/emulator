@@ -28,9 +28,16 @@ public class MasterFilter implements IFilter {
 	private static Log logger = LogFactory.getLog(MasterFilter.class);
 	
 	IFilter root;
+
+	private boolean ignore;
+	
 	public MasterFilter(ListIterator<String> tokenIterator, String table, ThingMagicReaderSharedResources tmsr ) throws CommandCreationExeption{
 		logger.debug("Creating Master Filter...");
-		
+		if (tmsr.getDataBase().getTable(table).size() == 0) {
+			logger.debug("Filter disabled... no tags to filter");
+			ignore = true;
+			return;
+		}
 		root = new SingleFilter(tokenIterator, table, tmsr);
 	}
 	
@@ -38,6 +45,11 @@ public class MasterFilter implements IFilter {
 	@Override
 	public List<IDBRow> filter(List<IDBRow> rows) {
 		logger.debug("Filtering.... ");
+		// TODO this might be a subtle bug... not sure though
+		if (ignore) {
+			return rows;
+		}
+		
 		return root.filter(rows);
 	}
 

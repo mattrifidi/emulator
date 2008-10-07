@@ -35,8 +35,6 @@ public class SingleFilter implements IFilter {
 
 	private String testValue;
 
-	private boolean ignore = false;
-
 	public SingleFilter(ListIterator<String> tokenIterator, String table,
 			ThingMagicReaderSharedResources tmsr)
 			throws CommandCreationExeption {
@@ -56,13 +54,6 @@ public class SingleFilter implements IFilter {
 		}
 
 		attribute = token;
-
-		// TODO Move this check into the master filter class.
-		if (db.getTable(table).size() == 0) {
-			logger.debug("Filter disabled... no tags to filter");
-			ignore = true;
-			return;
-		}
 
 		// TODO it doesn't really throw an error here... must figure out how to
 		// deal with it.
@@ -109,6 +100,16 @@ public class SingleFilter implements IFilter {
 			valueBuffer.append(token);
 			testValue = valueBuffer.toString();
 		} else {
+			//TODO Figure out a better way of testing if it is a valid number.
+			/*
+			 * Test if it is a valid number... if not throw an CommandCreationExeption 
+			 */
+			try {
+				Integer.valueOf(token);
+			} catch (NumberFormatException e){
+				throw new CommandCreationExeption("Error 0100:	syntax error at '"
+						+ token + "'");
+			}
 			testValue = token;
 		}
 	}
@@ -116,11 +117,6 @@ public class SingleFilter implements IFilter {
 	@Override
 	public List<IDBRow> filter(List<IDBRow> rows) {
 		// TODO Auto-generated method stub
-
-		// TODO this might be a subtle bug... not sure though
-		if (ignore) {
-			return rows;
-		}
 
 		List<IDBRow> retVal = new ArrayList<IDBRow>();
 
