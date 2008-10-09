@@ -646,9 +646,8 @@ public class DesignerGame extends SWTDefaultImplementor implements
 	 * Reposition the camera if any motion keys are held down.
 	 */
 	public void performCameraMotion() {
-
-		float keyspeed = 0.5f;
-		Camera cam = DisplaySystem.getDisplaySystem().getRenderer().getCamera();
+		ZoomableLWJGLCamera cam = (ZoomableLWJGLCamera)DisplaySystem.getDisplaySystem().getRenderer().getCamera();
+		float keyspeed = 0.9f + (cam.getZoomlevel()/20);
 		if (updownleftright[2]) {
 			cam.setLocation(cam.getLocation()
 					.add(new Vector3f(-keyspeed, 0, 0)));

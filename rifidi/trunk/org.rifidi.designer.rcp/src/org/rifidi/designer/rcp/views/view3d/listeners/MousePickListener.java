@@ -36,7 +36,6 @@ import com.jme.math.Vector3f;
 import com.jme.renderer.Camera;
 import com.jme.scene.Node;
 import com.jme.system.DisplaySystem;
-import com.jme.system.canvas.JMECanvasImplementor;
 
 /**
  * A listener that listenes for mouseclicks on the glcanvas and finds the picks.

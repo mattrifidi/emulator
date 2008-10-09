@@ -108,15 +108,15 @@ public class ZoomableLWJGLCamera extends LWJGLCamera {
 			if (lod != 0) {
 				lod = 0;
 			}
-		} else if (zoomlevel + zoomoffset <= -20) {
+		} else if (zoomlevel + zoomoffset <= -10) {
 			if (lod != 1) {
 				lod = 1;
 			}
-		} else if (zoomlevel + zoomoffset <= 60) {
+		} else if (zoomlevel + zoomoffset <= 70) {
 			if (lod != 2) {
 				lod = 2;
 			}
-		} else if (zoomlevel + zoomoffset > 60) {
+		} else if (zoomlevel + zoomoffset > 70) {
 			if (lod != 3) {
 				lod = 3;
 			}
@@ -253,5 +253,12 @@ public class ZoomableLWJGLCamera extends LWJGLCamera {
 			return null;
 		}
 
+	}
+
+	/**
+	 * @return the zoomlevel
+	 */
+	public int getZoomlevel() {
+		return this.zoomlevel;
 	}
 }
