@@ -246,9 +246,8 @@ public class AllAxisMouseMoveEntityListener implements MouseListener,
 			// drop it
 			if (pickedEntity != null
 					&& pickedEntity.getNode() instanceof PhysicsNode) {
-				implementor.update(
-						new ActivationCallable((PhysicsNode) pickedEntity
-								.getNode()));
+				implementor.update(new ActivationCallable(
+						(PhysicsNode) pickedEntity.getNode()));
 				pickedEntity = null;
 			}
 		}
@@ -347,10 +346,10 @@ public class AllAxisMouseMoveEntityListener implements MouseListener,
 		}
 		if (e.count > 0) {
 			((ZoomableLWJGLCamera) implementor.getRenderer().getCamera())
-					.zoomIn();
+					.zoomIn(e.x, ((GLCanvas) e.widget).getSize().y - e.y);
 			return;
 		}
-		((ZoomableLWJGLCamera) implementor.getRenderer().getCamera()).zoomOut();
+		((ZoomableLWJGLCamera) implementor.getRenderer().getCamera()).zoomOut(e.x, ((GLCanvas) e.widget).getSize().y - e.y);
 	}
 
 	/**

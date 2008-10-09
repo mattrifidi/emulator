@@ -12,6 +12,7 @@ package org.rifidi.designer.rcp.views.view3d.listeners;
 
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseWheelListener;
+import org.eclipse.swt.opengl.GLCanvas;
 import org.rifidi.designer.services.core.camera.ZoomableLWJGLCamera;
 
 /**
@@ -30,20 +31,21 @@ public class ZoomMouseWheelListener implements MouseWheelListener {
 	 * Constructor.
 	 */
 	public ZoomMouseWheelListener(ZoomableLWJGLCamera camera) {
-		this.camera=camera;
+		this.camera = camera;
 	}
-
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.swt.events.MouseWheelListener#mouseScrolled(org.eclipse.swt.events.MouseEvent)
+	 * @see
+	 * org.eclipse.swt.events.MouseWheelListener#mouseScrolled(org.eclipse.swt
+	 * .events.MouseEvent)
 	 */
 	public void mouseScrolled(MouseEvent e) {
-		if(e.count>0){
-			camera.zoomIn();
+		if (e.count > 0) {
+			camera.zoomIn(e.x, ((GLCanvas)e.widget).getSize().y - e.y);
 			return;
 		}
-		camera.zoomOut();
+		camera.zoomOut(e.x, ((GLCanvas)e.widget).getSize().y - e.y);
 	}
 }
