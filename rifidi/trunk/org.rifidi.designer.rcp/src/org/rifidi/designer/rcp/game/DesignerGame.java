@@ -87,6 +87,7 @@ import com.jme.system.DisplaySystem;
 import com.jme.util.geom.Debugger;
 import com.jmex.game.state.BasicGameState;
 import com.jmex.game.state.GameStateManager;
+import com.jmex.model.collada.schema.ambientType;
 import com.jmex.physics.PhysicsDebugger;
 import com.jmex.swt.lwjgl.LWJGLSWTCanvas;
 
@@ -414,14 +415,29 @@ public class DesignerGame extends SWTDefaultImplementor implements
 
 		// create a default light
 		ls = DisplaySystem.getDisplaySystem().getRenderer().createLightState();
-		ls.setGlobalAmbient(new ColorRGBA(1f, 1f, 1f, .1f));
 		ls.setEnabled(true);
+		
+		
 		DirectionalLight light = new DirectionalLight();
-		light.setDiffuse(new ColorRGBA(1.0f, 1.0f, 1.0f, 1.0f));
-		light.setAmbient(new ColorRGBA(.5f, .5f, .5f, .5f));
-		light.setDirection(new Vector3f(1, -1, 0));
+		light.setAmbient(new ColorRGBA(1f, 1f, 1f, 0f));
+		light.setEnabled(true);		
+		ls.attach(light);
+		
+		light = new DirectionalLight();
+		light.setDiffuse(new ColorRGBA(1.0f, 1.0f, 1.0f, 0f));
+		light.setAmbient(new ColorRGBA(0f, 0f, 0f, 0f));
+		light.setDirection(new Vector3f(0, -1, 0));
 		light.setEnabled(true);
 		ls.attach(light);
+		
+//		light = new DirectionalLight();
+//		light.setDiffuse(new ColorRGBA(1.0f, 1.0f, 1.0f, 0f));
+//		light.setAmbient(new ColorRGBA(0f, 0f, 0f, 0f));
+//		light.setDirection(new Vector3f(1, 0, 0));
+//		light.setEnabled(true);
+//		ls.attach(light);
+		
+		
 		InputStream arb = this.getClass().getClassLoader().getResourceAsStream(
 				"/org/rifidi/designer/rcp/game/phong.arb");
 		BufferedReader br = new BufferedReader(new InputStreamReader(arb));
