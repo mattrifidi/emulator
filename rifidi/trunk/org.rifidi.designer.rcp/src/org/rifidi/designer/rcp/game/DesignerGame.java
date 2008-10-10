@@ -415,6 +415,7 @@ public class DesignerGame extends SWTDefaultImplementor implements
 
 		// create a default light
 		ls = DisplaySystem.getDisplaySystem().getRenderer().createLightState();
+		ls.setTwoSidedLighting(false);
 		ls.setEnabled(true);
 		
 		
@@ -429,11 +430,18 @@ public class DesignerGame extends SWTDefaultImplementor implements
 		light.setDirection(new Vector3f(0, -1, 0));
 		light.setEnabled(true);
 		ls.attach(light);
+
+		light = new DirectionalLight();
+		light.setDiffuse(new ColorRGBA(.4f, .4f, .4f, 0f));
+		light.setAmbient(new ColorRGBA(0f, 0f, 0f, 0f));
+		light.setDirection(new Vector3f(1, 0, 0));
+		light.setEnabled(true);
+		ls.attach(light);
 		
 //		light = new DirectionalLight();
 //		light.setDiffuse(new ColorRGBA(1.0f, 1.0f, 1.0f, 0f));
 //		light.setAmbient(new ColorRGBA(0f, 0f, 0f, 0f));
-//		light.setDirection(new Vector3f(1, 0, 0));
+//		light.setDirection(new Vector3f(0, 0, 1));
 //		light.setEnabled(true);
 //		ls.attach(light);
 		

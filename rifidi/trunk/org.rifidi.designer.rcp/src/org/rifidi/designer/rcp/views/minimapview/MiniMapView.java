@@ -11,6 +11,7 @@
 package org.rifidi.designer.rcp.views.minimapview;
 
 import java.util.concurrent.Callable;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -96,11 +97,13 @@ public class MiniMapView extends ViewPart {
 
 	private DesignerGame implementor;
 
+	private WaitingCallable waitingCallable;
 	/**
 	 * Constructor.
 	 */
 	public MiniMapView() {
 		ServiceRegistry.getInstance().service(this);
+		waitingCallable=new WaitingCallable();
 	}
 
 	/*
@@ -158,7 +161,7 @@ public class MiniMapView extends ViewPart {
 	 *            minimap y coordinate to center on
 	 */
 	private void centerOn(int x, int y) {
-		if (label.getImage() != null) {
+		if (label.getImage() != null && waitingCallable.running.compareAndSet(false, true)) {
 			// determine where the user clicked on the map
 			int width = label.getImage().getBounds().width;
 			int height = label.getImage().getBounds().height;
@@ -174,21 +177,8 @@ public class MiniMapView extends ViewPart {
 			// scale the direction out to the ground plane
 			float scale = Math.abs(one.y / dir.y);
 			dir.multLocal(scale);
-			final Vector3f pos = one.add(dir);
-			implementor.render(new Callable<Object>() {
-
-				/*
-				 * (non-Javadoc)
-				 * 
-				 * @see java.util.concurrent.Callable#call()
-				 */
-				@Override
-				public Object call() throws Exception {
-					implementor.getRenderer().getCamera().setLocation(pos);
-					return null;
-				}
-
-			});
+			waitingCallable.pos=one.add(dir);
+			implementor.render(waitingCallable);
 		}
 	}
 
@@ -389,6 +379,22 @@ public class MiniMapView extends ViewPart {
 			this.keepRunning = keepRunning;
 		}
 
+	}
+	
+	private class WaitingCallable implements Callable<Object>{
+
+		public AtomicBoolean running=new AtomicBoolean(false);
+		public Vector3f pos;
+		/* (non-Javadoc)
+		 * @see java.util.concurrent.Callable#call()
+		 */
+		@Override
+		public Object call() throws Exception {
+			implementor.getRenderer().getCamera().setLocation(pos);
+			running.compareAndSet(true, false);
+			return null;
+		}
+		
 	}
 
 }
