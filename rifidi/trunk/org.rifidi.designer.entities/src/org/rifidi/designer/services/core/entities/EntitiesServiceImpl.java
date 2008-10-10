@@ -562,6 +562,13 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 					for (EntityGroup entityGroup : sceneData.getEntityGroups()) {
 						entityGroup.setSceneData(sceneData);
 					}
+
+					// has to be the last step!!!
+					for (Entity entity : sceneData.getEntities()) {
+						if (entity instanceof VisualEntity) {
+							((VisualEntity) entity).loaded();
+						}
+					}
 				}
 
 			} catch (IOException e) {
@@ -661,10 +668,6 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 			iinitService.init(entity);
 		} catch (InitializationException e) {
 			e.printStackTrace();
-		}
-		// has to be the last step!!!
-		if (!isNew && entity instanceof VisualEntity) {
-			((VisualEntity) entity).loaded();
 		}
 	}
 
@@ -982,13 +985,12 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 				Vector3f coords2 = DisplaySystem.getDisplaySystem()
 						.getRenderer().getCamera().getWorldCoordinates(
 								new Vector2f(screenPos.x, screenPos.y), 1);
-				Vector3f direction = coords.subtract(coords2)
-						.normalizeLocal();
-				coords.subtractLocal(direction.mult(coords.y/direction.y));
+				Vector3f direction = coords.subtract(coords2).normalizeLocal();
+				coords.subtractLocal(direction.mult(coords.y / direction.y));
 				coords.setY(0);
-				//round the values to place it on the grid
-				coords.x=(float)Math.floor(coords.x);
-				coords.z=(float)Math.floor(coords.z);
+				// round the values to place it on the grid
+				coords.x = (float) Math.floor(coords.x);
+				coords.z = (float) Math.floor(coords.z);
 				((VisualEntity) newentity).getNode()
 						.setLocalTranslation(coords);
 			}

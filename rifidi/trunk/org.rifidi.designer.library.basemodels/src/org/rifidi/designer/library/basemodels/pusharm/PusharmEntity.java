@@ -312,8 +312,9 @@ public class PusharmEntity extends VisualEntity implements SceneControl,
 			return;
 		}
 		if (st != null) {
-			getNode().removeController(st);
+
 			st.setCurTime(st.getMaxTime());
+			getNode().removeController(st);
 			boolean active = st.isActive();
 			st.setActive(false);
 			st = new SpatialTransformer(1);
