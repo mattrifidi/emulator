@@ -190,9 +190,11 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 						if (ve != null) {
 							nodeToEntity.remove(ve.getNode());
 							sceneData.getSyncedEntities().remove(ve);
+							collisionOctree.removeEntity((VisualEntity)entity);
 						}
 					}
 				}
+				collisionOctree.removeEntity((VisualEntity)entity);
 			}
 			sceneData.getSyncedEntities().remove(entity);
 			sceneData.getDefaultGroup().removeEntity(entity);
