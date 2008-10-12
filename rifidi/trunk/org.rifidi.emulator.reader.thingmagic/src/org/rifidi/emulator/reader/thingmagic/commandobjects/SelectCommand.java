@@ -148,13 +148,21 @@ public class SelectCommand extends Command {
 
 							filter = new MasterFilter(tokenIterator, table,
 									tmsr);
+						} else {
+							//No where clause found... back up..
+							tokenIterator.previous();
+							tokenIterator.previous();
 						}
 					}
 
+				} else {
+					//No where clause found... back up..
+					tokenIterator.previous();
 				}
 			}
 
 			// check if the command correctly ends in a semicolon
+			logger.debug("Checking for correct terminating sequence...");
 			if (tokenIterator.hasNext()) {
 				token = tokenIterator.next();
 

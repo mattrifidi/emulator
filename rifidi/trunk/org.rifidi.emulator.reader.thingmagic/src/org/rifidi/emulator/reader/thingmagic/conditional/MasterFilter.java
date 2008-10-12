@@ -36,7 +36,6 @@ public class MasterFilter implements IFilter {
 		if (tmsr.getDataBase().getTable(table).size() == 0) {
 			logger.debug("Filter disabled... no tags to filter");
 			ignore = true;
-			return;
 		}
 		root = new SingleFilter(tokenIterator, table, tmsr);
 	}

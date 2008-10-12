@@ -30,13 +30,13 @@ public abstract class Command {
 
 	final static public String EQUALS_WITH_WS = "\\s*=\\s*";
 
-	final static public String GREATER_THAN_WITH_WS = "\\s*>\\*";
+	final static public String GREATER_THAN_WITH_WS = "\\s*>\\s*";
 
 	final static public String LESS_THAN_WITH_WS = "\\s*<\\s*";
 
-	final static public String GREATER_THAN_EQUALS_W_WS = "\\s*>=\\*";
+	final static public String GREATER_THAN_EQUALS_W_WS = "\\s*>=\\s*";
 
-	final static public String LESS_THAN_EQUALS_W_WS = "\\s*<=\\*";
+	final static public String LESS_THAN_EQUALS_W_WS = "\\s*<=\\s*";
 
 	final static public String NOT_EQUALS_W_WS = "\\s*<>\\s*";
 
@@ -50,13 +50,17 @@ public abstract class Command {
 	 * really predictable tokens.
 	 */
 	static private Pattern TOKENIZER = Pattern.compile(
+			/*NOTE: Order of groups here is *very* important! 
+			 * Evaluates first left to right!
+			 */
 			// anything less...
 			"[^\\s\\w,<>=\\(\\)\\u0027]|"
 					+
 					// groups we are looking for...
-					"\\w+|" + "\\u0027|" + "\\s*<>\\*|" + "\\s*>=\\s*|"
+					//TODO: Use the constants above for this.
+					"\\w+|" + "\\u0027|" + "\\s*<>\\s*|" + "\\s*>=\\s*|"
 					+ "\\s*<=\\s*|" + "\\s*=\\s*|" + "\\s*,\\s*|"
-					+ "\\s*>\\s*|" + "\\s*<\\s*|" + "\\s?+|" + "\\(|" + "\\)|",
+					+ "\\s*>\\s*|" + "\\s*<\\s*|" + "\\s+|" + "\\(|" + "\\)|",
 			Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
 
 	/*

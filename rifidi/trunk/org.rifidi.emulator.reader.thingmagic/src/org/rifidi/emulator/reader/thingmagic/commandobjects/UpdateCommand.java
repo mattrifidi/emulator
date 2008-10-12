@@ -17,8 +17,6 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -29,7 +27,7 @@ import org.rifidi.emulator.reader.thingmagic.module.ThingMagicReaderSharedResour
 
 /**
  * @author Jerry Maine - jerry@pramari.com
- *
+ * 
  */
 public class UpdateCommand extends Command {
 	private static Log logger = LogFactory.getLog(UpdateCommand.class);
@@ -87,16 +85,16 @@ public class UpdateCommand extends Command {
 			token = tokenIterator.next();
 
 			parseKeyValuePairs(tokenIterator);
-			
+
 			// check if the command correctly ends in a semicolon
-			if (tokenIterator.hasNext()){
+			if (tokenIterator.hasNext()) {
 				token = tokenIterator.next();
-				
-				if (token.matches(WHITE_SPACE)){
+
+				if (token.matches(WHITE_SPACE)) {
 					token = tokenIterator.next();
 				}
-				
-				if (!token.equals(";")){
+
+				if (!token.equals(";")) {
 					throw new CommandCreationExeption(
 							"Error 0100:     syntax error at '" + token + "'");
 				}
@@ -106,10 +104,9 @@ public class UpdateCommand extends Command {
 			}
 		} catch (NoSuchElementException e) {
 			/*
-			 * if we get here... we run out of tokens prematurely... Our job now is
-			 * to walk backwards to find the last non space tokens and
-			 * throw an exception saying that there is an syntax error at that
-			 * point.
+			 * if we get here... we run out of tokens prematurely... Our job now
+			 * is to walk backwards to find the last non space tokens and throw
+			 * an exception saying that there is an syntax error at that point.
 			 */
 
 			/*
@@ -187,12 +184,13 @@ public class UpdateCommand extends Command {
 				valueBuffer.append(token);
 				token = tokenIterator.next();
 			}
-			logger.debug("key: " + key + " value: '" + valueBuffer.toString() + "'");
+			logger.debug("key: " + key + " value: '" + valueBuffer.toString()
+					+ "'");
 			keyValuePairs.put(key, valueBuffer.toString());
 
 			/*
-			 * if we have no more tokens. it is valid.. and we should
-			 * break here.
+			 * if we have no more tokens. it is valid.. and we should break
+			 * here.
 			 */
 			if (!tokenIterator.hasNext())
 				break;
@@ -217,7 +215,7 @@ public class UpdateCommand extends Command {
 		/*
 		 * Do the udpate database work.
 		 */
-		//TODO add filter capability to this method.
+		// TODO add filter capability to this method.
 		for (int x = 0; x < tmsr.getDataBase().getTable(table).size(); x++) {
 			IDBRow row = tmsr.getDataBase().getTable(table).get(x);
 
@@ -230,17 +228,18 @@ public class UpdateCommand extends Command {
 			}
 			retVal.add(buff.toString());
 		}
-		
+
 		/*
 		 * there must be a blank line at the end.. even if we didn't send
 		 * something useful back.
 		 * 
-		 * When the messages are formated for return (in ThingMagicRQLCommandFormatter)
-		 * a new line is appended to each string even if it is an empty string.
+		 * When the messages are formated for return (in
+		 * ThingMagicRQLCommandFormatter) a new line is appended to each string
+		 * even if it is an empty string.
 		 */
-		//place holder for newline.
+		// place holder for newline.
 		retVal.add("");
-		
+
 		return retVal;
 	}
 

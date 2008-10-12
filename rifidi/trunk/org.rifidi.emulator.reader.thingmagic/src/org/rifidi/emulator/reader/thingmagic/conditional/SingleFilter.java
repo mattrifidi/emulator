@@ -57,8 +57,11 @@ public class SingleFilter implements IFilter {
 
 		attribute = token;
 
+		logger.debug("Attribue found: " + attribute);
+
 		// TODO See if this behavior is correct.
-		if (!db.getTable(table).get(0).containsColumn(attribute)) {
+		if ((db.getTable(table).size() == 0)
+				|| (!db.getTable(table).get(0).containsColumn(attribute))) {
 			unknown = true;
 		}
 		token = tokenIterator.next();
@@ -76,6 +79,7 @@ public class SingleFilter implements IFilter {
 		} else if (token.matches(Command.NOT_EQUALS_W_WS)) {
 			compareOperator = ECompareOperator.NOT_EQUAL;
 		} else {
+			logger.debug("No valid compare operator found: " + token);
 			throw new CommandCreationExeption("Error 0100:	syntax error at '"
 					+ token + "'");
 		}
@@ -83,7 +87,7 @@ public class SingleFilter implements IFilter {
 		token = tokenIterator.next();
 
 		if (token.equals("'")) {
-			//TODO is this true with other tables??
+			// TODO is this true with other tables??
 			if (!attribute.equalsIgnoreCase("protocol_id")) {
 				throw new CommandCreationExeption(
 						"Error 0100:	Only protocol_id can be used with a string in a WHERE clause");
@@ -100,18 +104,22 @@ public class SingleFilter implements IFilter {
 			}
 			valueBuffer.append(token);
 			testValue = valueBuffer.toString();
+			logger.debug("Found string:  " + testValue);
 		} else {
-			//TODO Figure out a better way of testing if it is a valid number.
+			// TODO Figure out a better way of testing if it is a valid number.
 			/*
-			 * Test if it is a valid number... if not throw an CommandCreationExeption 
+			 * Test if it is a valid number... if not throw an
+			 * CommandCreationExeption
 			 */
 			try {
 				Integer.valueOf(token);
-			} catch (NumberFormatException e){
-				throw new CommandCreationExeption("Error 0100:	syntax error at '"
-						+ token + "'");
+			} catch (NumberFormatException e) {
+				throw new CommandCreationExeption(
+						"Error 0100:	syntax error at '" + token + "'");
 			}
+
 			testValue = token;
+			logger.debug("Found number: " + testValue);
 		}
 	}
 
@@ -122,10 +130,10 @@ public class SingleFilter implements IFilter {
 		List<IDBRow> retVal = new ArrayList<IDBRow>();
 
 		// TODO See if this behavior is correct.
-		if (unknown){
+		if (unknown) {
 			return retVal;
 		}
-		
+
 		for (IDBRow row : rows) {
 			if (compareOperator == ECompareOperator.EQUAL) {
 				if (row.compareToValue(attribute, testValue) == 0)
