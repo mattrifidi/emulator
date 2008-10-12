@@ -35,6 +35,8 @@ public class SingleFilter implements IFilter {
 
 	private String testValue;
 
+	private boolean unknown;
+
 	public SingleFilter(ListIterator<String> tokenIterator, String table,
 			ThingMagicReaderSharedResources tmsr)
 			throws CommandCreationExeption {
@@ -55,10 +57,9 @@ public class SingleFilter implements IFilter {
 
 		attribute = token;
 
-		// TODO it doesn't really throw an error here... must figure out how to
-		// deal with it.
+		// TODO See if this behavior is correct.
 		if (!db.getTable(table).get(0).containsColumn(attribute)) {
-			throw new CommandCreationExeption();
+			unknown = true;
 		}
 		token = tokenIterator.next();
 
@@ -120,6 +121,11 @@ public class SingleFilter implements IFilter {
 
 		List<IDBRow> retVal = new ArrayList<IDBRow>();
 
+		// TODO See if this behavior is correct.
+		if (unknown){
+			return retVal;
+		}
+		
 		for (IDBRow row : rows) {
 			if (compareOperator == ECompareOperator.EQUAL) {
 				if (row.compareToValue(attribute, testValue) == 0)
