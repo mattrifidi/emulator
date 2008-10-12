@@ -208,6 +208,7 @@ public class View3D extends ViewPart implements IPerspectiveListener,
 		// change the window title
 		Display.getCurrent().getActiveShell().setText(
 				"Rifidi Designer: " + file.getName());
+		
 		sceneDataService.loadScene(Display.getCurrent(), file);
 		switchMode(Mode.PickMode);
 	}
