@@ -30,7 +30,7 @@ import org.rifidi.ui.common.wizards.reader.pages.NewReaderGPIOWizardPage;
 import org.xml.sax.SAXException;
 
 /**
- * Wizard for the creation of a PusharmEntity.
+ * Wizard for the creation of a DestroyerEntity.
  * 
  * @author Jochen Mader Oct 1, 2007
  * 

@@ -21,6 +21,7 @@ import org.rifidi.designer.library.basemodels.antennafield.AntennaFieldEntity;
 import org.rifidi.designer.library.basemodels.boxproducer.BoxproducerEntity;
 import org.rifidi.designer.library.basemodels.cardbox.CardboxEntity;
 import org.rifidi.designer.library.basemodels.conveyor.ConveyorEntity;
+import org.rifidi.designer.library.basemodels.destroyer.DestroyerEntity;
 import org.rifidi.designer.library.basemodels.gate.GateEntity;
 import org.rifidi.designer.library.basemodels.gate.GateEntityWizard;
 import org.rifidi.designer.library.basemodels.infrared.InfraredEntity;
@@ -89,6 +90,15 @@ public class BasemodelsLibrary implements EntityLibrary {
 		gateRef.setEntityClass(GateEntity.class);
 		gateRef.setHidden(false);
 		library.add(gateRef);
+		EntityLibraryReference destroyerRef = new EntityLibraryReference();
+		destroyerRef.setId(DestroyerEntity.class.getName());
+		destroyerRef.setImageDescriptor(Activator.getDefault().getImageRegistry()
+				.getDescriptor(DestroyerEntity.class.getName()));
+		destroyerRef.setLibrary(BasemodelsLibrary.class);
+		destroyerRef.setName("Destroyer");
+		destroyerRef.setEntityClass(DestroyerEntity.class);
+		destroyerRef.setHidden(false);
+		library.add(destroyerRef);
 		EntityLibraryReference antennaRef = new EntityLibraryReference();
 		antennaRef.setId(AntennaFieldEntity.class.getName());
 		antennaRef.setImageDescriptor(Activator.getDefault().getImageRegistry()

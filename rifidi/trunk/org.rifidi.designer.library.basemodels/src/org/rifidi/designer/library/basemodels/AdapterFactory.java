@@ -27,6 +27,7 @@ import org.rifidi.designer.library.basemodels.cardbox.CardboxEntity;
 import org.rifidi.designer.library.basemodels.cardbox.CardboxEntityWorkbenchAdapter;
 import org.rifidi.designer.library.basemodels.conveyor.ConveyorEntity;
 import org.rifidi.designer.library.basemodels.conveyor.ConveyorEntityWorkbenchAdapter;
+import org.rifidi.designer.library.basemodels.destroyer.DestroyerEntity;
 import org.rifidi.designer.library.basemodels.gate.GateEntity;
 import org.rifidi.designer.library.basemodels.gate.GateEntityWorkbenchAdapter;
 import org.rifidi.designer.library.basemodels.infrared.InfraredEntity;
@@ -52,8 +53,9 @@ public class AdapterFactory implements IAdapterFactory {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.core.runtime.IAdapterFactory#getAdapter(java.lang.Object,
-	 *      java.lang.Class)
+	 * @see
+	 * org.eclipse.core.runtime.IAdapterFactory#getAdapter(java.lang.Object,
+	 * java.lang.Class)
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -134,6 +136,13 @@ public class AdapterFactory implements IAdapterFactory {
 			}
 			if (IActionFilter.class.equals(adapterType)) {
 				return new SwitchActionFilterAdapter();
+			}
+			if (IPropertySource.class.equals(adapterType)) {
+				return new DefaultPropertySource((Entity) adaptableObject);
+			}
+		} else if (adaptableObject instanceof DestroyerEntity) {
+			if (IWorkbenchAdapter.class.equals(adapterType)) {
+				return new PusharmEntityWorkbenchAdapter();
 			}
 			if (IPropertySource.class.equals(adapterType)) {
 				return new DefaultPropertySource((Entity) adaptableObject);
