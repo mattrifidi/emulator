@@ -67,7 +67,7 @@ public class DestroyerEntity extends VisualEntity implements NeedsPhysics {
 	 * Constructor
 	 */
 	public DestroyerEntity() {
-		setName("Pusharm");
+		setName("Destroyer");
 	}
 
 	/*
