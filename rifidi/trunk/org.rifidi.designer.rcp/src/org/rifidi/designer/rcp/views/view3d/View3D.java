@@ -16,6 +16,10 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.action.GroupMarker;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
@@ -35,9 +39,12 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IPerspectiveDescriptor;
 import org.eclipse.ui.IPerspectiveListener;
+import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
+import org.eclipse.ui.progress.UIJob;
 import org.monklypse.core.JMEComposite;
 import org.rifidi.designer.entities.Entity;
 import org.rifidi.designer.entities.VisualEntity;
@@ -208,8 +215,33 @@ public class View3D extends ViewPart implements IPerspectiveListener,
 		// change the window title
 		Display.getCurrent().getActiveShell().setText(
 				"Rifidi Designer: " + file.getName());
-		
-		sceneDataService.loadScene(Display.getCurrent(), file);
+		worldService.pause();
+//		IWorkbench wb = PlatformUI.getWorkbench();
+//		wb.getProgressService();
+//		UIJob job = new UIJob("Long Running Job") {
+//			
+//			/* (non-Javadoc)
+//			 * @see org.eclipse.ui.progress.UIJob#runInUIThread(org.eclipse.core.runtime.IProgressMonitor)
+//			 */
+//			@Override
+//			public IStatus runInUIThread(IProgressMonitor monitor) {
+				sceneDataService.loadScene(Display.getCurrent(), file);
+//				if (monitor.isCanceled())
+//					return Status.CANCEL_STATUS;
+//				return Status.OK_STATUS;
+//			}
+//		};
+		// job.addJobChangeListener(new JobChangeAdapter() {
+		// public void done(IJobChangeEvent event) {
+		// if (event.getResult().isOK())
+		// postMessage("Job completed successfully");
+		// else
+		// postError("Job did not complete successfully");
+		// }
+		// });
+//		job.setUser(true);
+//		job.schedule(); // start as soon as possible
+
 		switchMode(Mode.PickMode);
 	}
 

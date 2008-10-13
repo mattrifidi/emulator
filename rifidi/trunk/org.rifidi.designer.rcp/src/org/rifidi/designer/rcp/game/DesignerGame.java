@@ -70,7 +70,6 @@ import org.rifidi.utilities.grid.GridNode;
 import com.jme.bounding.BoundingBox;
 import com.jme.light.DirectionalLight;
 import com.jme.math.Vector3f;
-import com.jme.renderer.Camera;
 import com.jme.renderer.ColorRGBA;
 import com.jme.renderer.Renderer;
 import com.jme.renderer.lwjgl.LWJGLRenderer;
@@ -87,7 +86,6 @@ import com.jme.system.DisplaySystem;
 import com.jme.util.geom.Debugger;
 import com.jmex.game.state.BasicGameState;
 import com.jmex.game.state.GameStateManager;
-import com.jmex.model.collada.schema.ambientType;
 import com.jmex.physics.PhysicsDebugger;
 import com.jmex.swt.lwjgl.LWJGLSWTCanvas;
 
@@ -211,7 +209,7 @@ public class DesignerGame extends SWTDefaultImplementor implements
 	 * Cursors for the canvas.
 	 */
 	private Cursor invisibleCursor, defaultCursor;
-	
+
 	/**
 	 * @param name
 	 * @param width
@@ -219,7 +217,7 @@ public class DesignerGame extends SWTDefaultImplementor implements
 	 */
 	public DesignerGame(String name, int width, int height) {
 		super(width, height);
-		
+
 		hilited = new HashMap<ColorRGBA, List<VisualEntity>>();
 		hilited.put(ColorRGBA.blue, new ArrayList<VisualEntity>());
 		fragmentPrograms = new HashMap<ColorRGBA, FragmentProgramState>();
@@ -347,18 +345,26 @@ public class DesignerGame extends SWTDefaultImplementor implements
 	public void simpleSetup() {
 		setCamera(new ZoomableLWJGLCamera(this, 754, 584));
 		getCanvas().addKeyListener(this);
-		//clear keylist if the canvas loses the focus
-		getCanvas().addFocusListener(new FocusListener(){
+		// clear keylist if the canvas loses the focus
+		getCanvas().addFocusListener(new FocusListener() {
 
-			/* (non-Javadoc)
-			 * @see org.eclipse.swt.events.FocusListener#focusGained(org.eclipse.swt.events.FocusEvent)
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see
+			 * org.eclipse.swt.events.FocusListener#focusGained(org.eclipse.
+			 * swt.events.FocusEvent)
 			 */
 			@Override
 			public void focusGained(FocusEvent e) {
 			}
 
-			/* (non-Javadoc)
-			 * @see org.eclipse.swt.events.FocusListener#focusLost(org.eclipse.swt.events.FocusEvent)
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see
+			 * org.eclipse.swt.events.FocusListener#focusLost(org.eclipse.swt
+			 * .events.FocusEvent)
 			 */
 			@Override
 			public void focusLost(FocusEvent e) {
@@ -367,7 +373,7 @@ public class DesignerGame extends SWTDefaultImplementor implements
 				updownleftright[2] = false;
 				updownleftright[3] = false;
 			}
-			
+
 		});
 
 		offy = new LWJGLOffscreenRenderer(200, 200,
@@ -417,13 +423,12 @@ public class DesignerGame extends SWTDefaultImplementor implements
 		ls = DisplaySystem.getDisplaySystem().getRenderer().createLightState();
 		ls.setTwoSidedLighting(false);
 		ls.setEnabled(true);
-		
-		
+
 		DirectionalLight light = new DirectionalLight();
 		light.setAmbient(new ColorRGBA(1f, 1f, 1f, 0f));
-		light.setEnabled(true);		
+		light.setEnabled(true);
 		ls.attach(light);
-		
+
 		light = new DirectionalLight();
 		light.setDiffuse(new ColorRGBA(1.0f, 1.0f, 1.0f, 0f));
 		light.setAmbient(new ColorRGBA(0f, 0f, 0f, 0f));
@@ -437,15 +442,14 @@ public class DesignerGame extends SWTDefaultImplementor implements
 		light.setDirection(new Vector3f(1, 0, 0));
 		light.setEnabled(true);
 		ls.attach(light);
-		
-//		light = new DirectionalLight();
-//		light.setDiffuse(new ColorRGBA(1.0f, 1.0f, 1.0f, 0f));
-//		light.setAmbient(new ColorRGBA(0f, 0f, 0f, 0f));
-//		light.setDirection(new Vector3f(0, 0, 1));
-//		light.setEnabled(true);
-//		ls.attach(light);
-		
-		
+
+		// light = new DirectionalLight();
+		// light.setDiffuse(new ColorRGBA(1.0f, 1.0f, 1.0f, 0f));
+		// light.setAmbient(new ColorRGBA(0f, 0f, 0f, 0f));
+		// light.setDirection(new Vector3f(0, 0, 1));
+		// light.setEnabled(true);
+		// ls.attach(light);
+
 		InputStream arb = this.getClass().getClassLoader().getResourceAsStream(
 				"/org/rifidi/designer/rcp/game/phong.arb");
 		BufferedReader br = new BufferedReader(new InputStreamReader(arb));
@@ -568,7 +572,7 @@ public class DesignerGame extends SWTDefaultImplementor implements
 								2, (int) ((BoundingBox) sceneData.getRoomNode()
 										.getWorldBound()).zExtent / 2));
 				getCamera().getLocation().addLocal(new Vector3f(-5, 0, -15));
-				((ZoomableLWJGLCamera)getCamera()).adjustLOD();
+				((ZoomableLWJGLCamera) getCamera()).adjustLOD();
 				getCamera().update();
 				// adjust minimpa camera
 				if (offy.isSupported()) {
@@ -581,9 +585,9 @@ public class DesignerGame extends SWTDefaultImplementor implements
 											.getWorldBound()).zExtent));
 					offy.getCamera().setParallelProjection(true);
 
-					offy.getCamera().setAxes(new Vector3f(-1, 0, 0), new Vector3f(0, 0, -1),
-							new Vector3f(0, -1, 0));
-					
+					offy.getCamera().setAxes(new Vector3f(-1, 0, 0),
+							new Vector3f(0, 0, -1), new Vector3f(0, -1, 0));
+
 					float ratio = ((BoundingBox) sceneData.getRoomNode()
 							.getWorldBound()).xExtent
 							/ ((BoundingBox) sceneData.getRoomNode()
@@ -670,8 +674,9 @@ public class DesignerGame extends SWTDefaultImplementor implements
 	 * Reposition the camera if any motion keys are held down.
 	 */
 	public void performCameraMotion() {
-		ZoomableLWJGLCamera cam = (ZoomableLWJGLCamera)DisplaySystem.getDisplaySystem().getRenderer().getCamera();
-		float keyspeed = 0.9f + (cam.getZoomlevel()/20);
+		ZoomableLWJGLCamera cam = (ZoomableLWJGLCamera) DisplaySystem
+				.getDisplaySystem().getRenderer().getCamera();
+		float keyspeed = 0.9f + (cam.getZoomlevel() / 20);
 		if (updownleftright[2]) {
 			cam.setLocation(cam.getLocation()
 					.add(new Vector3f(-keyspeed, 0, 0)));
@@ -699,13 +704,14 @@ public class DesignerGame extends SWTDefaultImplementor implements
 	 */
 	@Override
 	public void pause() {
-		// updateThread.setPaused(true);
-		for (Entity entity : sceneData.getSearchableEntities()) {
-			if (entity instanceof SceneControl) {
-				((SceneControl) entity).pause();
+		if(sceneData!=null){
+			for (Entity entity : sceneData.getSearchableEntities()) {
+				if (entity instanceof SceneControl) {
+					((SceneControl) entity).pause();
+				}
 			}
+			worldState = WorldStates.Paused;	
 		}
-		worldState = WorldStates.Paused;
 	}
 
 	/*
@@ -976,8 +982,8 @@ public class DesignerGame extends SWTDefaultImplementor implements
 	 */
 	@Override
 	public void resizeCanvas(int width, int height) {
-		//don't resize if the canvas was hidden
-		if(width==0 && height==0){
+		// don't resize if the canvas was hidden
+		if (width == 0 && height == 0) {
 			return;
 		}
 		if (width > height) {
@@ -987,21 +993,23 @@ public class DesignerGame extends SWTDefaultImplementor implements
 		getRenderer().reinit((int) (height * .8), height);
 	}
 
-	public void showMouse(){
+	public void showMouse() {
 		getCanvas().setCursor(defaultCursor);
 	}
-	
-	public void hideMouse(){
-		getCanvas().setCursor(invisibleCursor);	
+
+	public void hideMouse() {
+		getCanvas().setCursor(invisibleCursor);
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.monklypse.core.JMECanvasImplementor2#setCanvas(java.lang.Object)
 	 */
 	@Override
 	public void setCanvas(LWJGLSWTCanvas canvas) {
 		super.setCanvas(canvas);
-		
+
 		Color white = Display.getCurrent().getSystemColor(SWT.COLOR_WHITE);
 		Color black = Display.getCurrent().getSystemColor(SWT.COLOR_BLACK);
 		PaletteData palette = new PaletteData(new RGB[] { white.getRGB(),
@@ -1011,6 +1019,7 @@ public class DesignerGame extends SWTDefaultImplementor implements
 		invisibleCursor = new Cursor(Display.getCurrent(), sourceData, 0, 0);
 		defaultCursor = canvas.getCursor();
 	}
+
 	/**
 	 * Action that is submitted to the update thread to keep the highlights
 	 * pulsing.

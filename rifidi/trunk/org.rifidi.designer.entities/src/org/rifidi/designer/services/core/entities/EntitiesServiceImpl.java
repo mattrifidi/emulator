@@ -60,6 +60,8 @@ import org.rifidi.services.tags.impl.C1G1Tag;
 import org.rifidi.services.tags.impl.C1G2Tag;
 import org.rifidi.services.tags.impl.RifidiTag;
 
+import sun.security.acl.WorldGroupImpl;
+
 import com.jme.bounding.BoundingBox;
 import com.jme.input.InputHandler;
 import com.jme.math.Vector2f;
@@ -124,7 +126,6 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	private RoomOctree roomTree = null;
 	/** Default implementor. */
 	private SWTDefaultImplementor implementor;
-
 	/**
 	 * Constructor.
 	 */
@@ -694,6 +695,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	 */
 	@Override
 	public void saveScene() {
+		
 		implementor.update(new Callable<Object>() {
 
 			/*

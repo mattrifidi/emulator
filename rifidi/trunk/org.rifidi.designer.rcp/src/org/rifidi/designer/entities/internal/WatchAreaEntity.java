@@ -23,6 +23,7 @@ import org.rifidi.designer.entities.databinding.annotations.MonitoredProperties;
 import org.rifidi.designer.entities.interfaces.Field;
 import org.rifidi.designer.entities.interfaces.InternalEntity;
 import org.rifidi.designer.entities.interfaces.NeedsPhysics;
+import org.rifidi.designer.entities.interfaces.SceneControl;
 import org.rifidi.designer.entities.interfaces.Switch;
 import org.rifidi.designer.services.core.collision.FieldService;
 import org.rifidi.designer.services.core.events.EventsService;
@@ -48,7 +49,7 @@ import com.jmex.physics.material.Material;
  * 
  */
 @MonitoredProperties(names = { "name" })
-public class WatchAreaEntity extends VisualEntity implements NeedsPhysics,
+public class WatchAreaEntity extends VisualEntity implements NeedsPhysics,SceneControl,
 		Field, Switch, InternalEntity, IAdaptable {
 	/**
 	 * logger for this class.
@@ -326,6 +327,31 @@ public class WatchAreaEntity extends VisualEntity implements NeedsPhysics,
 			return new WatchAreaWorkbenchAdapter();
 		}
 		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.rifidi.designer.entities.interfaces.SceneControl#pause()
+	 */
+	@Override
+	public void pause() {
+		((PhysicsNode) getNode()).setMaterial(null);
+	}
+
+	/* (non-Javadoc)
+	 * @see org.rifidi.designer.entities.interfaces.SceneControl#reset()
+	 */
+	@Override
+	public void reset() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see org.rifidi.designer.entities.interfaces.SceneControl#start()
+	 */
+	@Override
+	public void start() {
+		((PhysicsNode) getNode()).setMaterial(Material.GHOST);
 	}
 
 }

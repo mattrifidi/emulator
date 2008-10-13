@@ -164,7 +164,6 @@ public class ConveyorEntity extends VisualEntity implements Switch,
 		switchNode.attachChildAt(new SharedNode("sharedConv_", lod[3]), 3);
 
 		rollerMaterial = new Material("Roller");
-		phys.setMaterial(rollerMaterial);
 
 		Node _node = new Node("hiliter");
 
