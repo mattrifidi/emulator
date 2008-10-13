@@ -33,6 +33,10 @@ import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Display;
 import org.monklypse.core.SWTDefaultImplementor;
@@ -59,8 +63,6 @@ import org.rifidi.services.tags.impl.C0G1Tag;
 import org.rifidi.services.tags.impl.C1G1Tag;
 import org.rifidi.services.tags.impl.C1G2Tag;
 import org.rifidi.services.tags.impl.RifidiTag;
-
-import sun.security.acl.WorldGroupImpl;
 
 import com.jme.bounding.BoundingBox;
 import com.jme.input.InputHandler;
@@ -126,6 +128,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	private RoomOctree roomTree = null;
 	/** Default implementor. */
 	private SWTDefaultImplementor implementor;
+
 	/**
 	 * Constructor.
 	 */
@@ -191,11 +194,11 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 						if (ve != null) {
 							nodeToEntity.remove(ve.getNode());
 							sceneData.getSyncedEntities().remove(ve);
-							collisionOctree.removeEntity((VisualEntity)entity);
+							collisionOctree.removeEntity((VisualEntity) entity);
 						}
 					}
 				}
-				collisionOctree.removeEntity((VisualEntity)entity);
+				collisionOctree.removeEntity((VisualEntity) entity);
 			}
 			sceneData.getSyncedEntities().remove(entity);
 			sceneData.getDefaultGroup().removeEntity(entity);
@@ -487,12 +490,14 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	 * (org.eclipse.swt.widgets.Display, org.eclipse.core.resources.IFile)
 	 */
 	@SuppressWarnings("unchecked")
-	public void loadScene(Display display, IFile file) {
+	public void loadScene(final Display display, final IFile file) {
 		// invalidate the current sceneData
 		for (SceneDataChangedListener listener : listeners) {
 			listener.destroySceneData(this.sceneData);
 		}
+		// clean up
 		TextureManager.clearCache();
+		// destroy old entities
 		if (sceneData != null) {
 			sceneDataOld = sceneData;
 			implementor.update(new Callable<Object>() {
@@ -517,29 +522,66 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 
 			});
 		}
-		try {
-			// initialize jaxb to know about the classes provided by the
-			// libraries
-			logger.debug("initializing jaxb");
-			List<Class> classes = EntityLibraryRegistry.getInstance()
-					.getEntityClasses();
-			classes.add(org.rifidi.designer.entities.SceneData.class);
-			classes.add(org.rifidi.designer.entities.VisualEntity.class);
-			classes.add(C0G1Tag.class);
-			classes.add(C1G1Tag.class);
-			classes.add(C1G2Tag.class);
-			classes.add(RifidiTag.class);
-			JAXBContext context = JAXBContext.newInstance(classes
-					.toArray(new Class[0]));
-			logger.debug("loading");
-			Unmarshaller unmarshaller = context.createUnmarshaller();
+		Job loadJob = new Job("Load scene") {
 
-			try {
-				Object unm = unmarshaller.unmarshal(file.getContents());
-				sceneData = (SceneData) unm;
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see
+			 * org.eclipse.core.runtime.jobs.Job#run(org.eclipse.core.runtime
+			 * .IProgressMonitor)
+			 */
+			@Override
+			protected IStatus run(final IProgressMonitor monitor) {
+				monitor.beginTask("Load new scene", 100);
+				display.syncExec(new Runnable() {
+
+					/*
+					 * (non-Javadoc)
+					 * 
+					 * @see java.lang.Runnable#run()
+					 */
+					@Override
+					public void run() {
+						try {
+							// initialize jaxb to know about the classes
+							// provided by
+							// the
+							// libraries
+							logger.debug("initializing jaxb");
+							List<Class> classes = EntityLibraryRegistry
+									.getInstance().getEntityClasses();
+							classes
+									.add(org.rifidi.designer.entities.SceneData.class);
+							classes
+									.add(org.rifidi.designer.entities.VisualEntity.class);
+							classes.add(C0G1Tag.class);
+							classes.add(C1G1Tag.class);
+							classes.add(C1G2Tag.class);
+							classes.add(RifidiTag.class);
+							JAXBContext context = JAXBContext
+									.newInstance(classes.toArray(new Class[0]));
+							Unmarshaller unmarshaller = context
+									.createUnmarshaller();
+							Object unm = unmarshaller.unmarshal(file
+									.getContents());
+							sceneData = (SceneData) unm;
+
+						} catch (JAXBException e) {
+							logger.fatal("Unable to load file (JAXB): " + e);
+						} catch (CoreException e) {
+							logger.fatal("Unable to load file (JAXB): " + e);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+
+				});
+
+				monitor.worked(10);
+				monitor.subTask("Convert to scene");
 				sceneData.setDisplay(display);
 				sceneData.setPhysicsSpace(PhysicsSpace.create());
-				// sceneData.getPhysicsSpace().setAutoRestThreshold(2);
 				sceneData.setCollisionHandler(new InputHandler());
 
 				// initialize the JME importer to handle physics
@@ -548,89 +590,117 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 				// if this is a new file create an empty room
 				if (sceneData.getNodeBytes() != null) {
 					// load the model from the stored bytes
-
-					sceneData.setRootNode((Node) BinaryImporter.getInstance()
-							.load(sceneData.getNodeBytes()));
+					try {
+						sceneData.setRootNode((Node) BinaryImporter
+								.getInstance().load(sceneData.getNodeBytes()));
+					} catch (IOException e) {
+						logger.warn("failed loading " + e);
+					}
+					monitor.worked(10);
+					monitor.subTask("Registering entities");
 					for (Entity entity : sceneData.getEntities()) {
 						ServiceRegistry.getInstance().service(entity);
 						sceneData.getEntityNames().add(entity.getName());
 						initEntity(entity, sceneData, false);
 					}
-					for (Entity entity : sceneData.getProducedEntities()
-							.getEntities()) {
-						ServiceRegistry.getInstance().service(entity);
-						sceneData.getEntityNames().add(entity.getName());
-						initEntity(entity, sceneData, false);
-					}
-					for (EntityGroup entityGroup : sceneData.getEntityGroups()) {
-						entityGroup.setSceneData(sceneData);
-					}
+					monitor.worked(10);
+					monitor.subTask("Registering products");
+					display.syncExec(new Runnable(){
 
-					// has to be the last step!!!
-					for (Entity entity : sceneData.getEntities()) {
-						if (entity instanceof VisualEntity) {
-							((VisualEntity) entity).loaded();
+						/* (non-Javadoc)
+						 * @see java.lang.Runnable#run()
+						 */
+						@Override
+						public void run() {
+							for (Entity entity : sceneData.getProducedEntities()
+									.getEntities()) {
+								ServiceRegistry.getInstance().service(entity);
+								sceneData.getEntityNames().add(entity.getName());
+								initEntity(entity, sceneData, false);
+							}
+							for (EntityGroup entityGroup : sceneData.getEntityGroups()) {
+								entityGroup.setSceneData(sceneData);
+							}
+							monitor.worked(10);
+							monitor.subTask("Initialize visual entities");
+							// has to be the last step!!!
+							for (Entity entity : sceneData.getEntities()) {
+								if (entity instanceof VisualEntity) {
+									((VisualEntity) entity).loaded();
+								}
+							}
+						}
+						
+					});
+				}
+				logger.debug("loading: done");
+				monitor.worked(10);
+				monitor.setTaskName("Load room");
+				Node roomnode = EntityLibraryRegistry.getInstance()
+						.getFloorReferences().get(sceneData.getFloorId())
+						.getNode();
+				ArrayList<Spatial> spatlist = new ArrayList<Spatial>(roomnode
+						.getChildren());
+				// turn the geometry into a set of physicsnodes
+				for (Spatial spatial : spatlist) {
+					spatial.removeFromParent();
+					StaticPhysicsNode staticNode = sceneData.getPhysicsSpace()
+							.createStaticNode();
+					staticNode.attachChild(spatial);
+					staticNode.setName(spatial.getName());
+					staticNode.generatePhysicsGeometry();
+					roomnode.attachChild(staticNode);
+				}
+				roomnode.updateWorldBound();
+				roomnode.updateModelBound();
+				roomnode.clearRenderState(RenderState.RS_LIGHT);
+				roomnode.updateRenderState();
+				collisionOctree = new CollisionOctree(1f,
+						(BoundingBox) roomnode.getWorldBound());
+				roomTree = new RoomOctree(1f, (BoundingBox) roomnode
+						.getWorldBound());
+				for (Spatial spatial : spatlist) {
+					if (!"floor".equals(spatial.getName())) {
+						for (Spatial spat : ((Node) spatial).getChildren()) {
+							roomTree.insertMesh((TriMesh) spat);
 						}
 					}
 				}
-
-			} catch (IOException e) {
-				logger.fatal("Unable to load file (IOException): " + e);
-				return;
-			} catch (CoreException e) {
-				logger.fatal("Unable to load file (CoreException): " + e);
-				return;
-			}
-			logger.debug("loading: done");
-		} catch (JAXBException e) {
-			logger.fatal("Unable to load file (JAXB): " + e);
-			return;
-		}
-		Node roomnode = EntityLibraryRegistry.getInstance()
-				.getFloorReferences().get(sceneData.getFloorId()).getNode();
-		ArrayList<Spatial> spatlist = new ArrayList<Spatial>(roomnode
-				.getChildren());
-		// turn the geometry into a set of physicsnodes
-		for (Spatial spatial : spatlist) {
-			spatial.removeFromParent();
-			StaticPhysicsNode staticNode = sceneData.getPhysicsSpace()
-					.createStaticNode();
-			staticNode.attachChild(spatial);
-			staticNode.setName(spatial.getName());
-			staticNode.generatePhysicsGeometry();
-			roomnode.attachChild(staticNode);
-		}
-		roomnode.updateWorldBound();
-		roomnode.updateModelBound();
-		roomnode.clearRenderState(RenderState.RS_LIGHT);
-		roomnode.updateRenderState();
-		collisionOctree = new CollisionOctree(1f, (BoundingBox) roomnode
-				.getWorldBound());
-		roomTree = new RoomOctree(1f, (BoundingBox) roomnode.getWorldBound());
-		for (Spatial spatial : spatlist) {
-			if (!"floor".equals(spatial.getName())) {
-				for (Spatial spat : ((Node) spatial).getChildren()) {
-					roomTree.insertMesh((TriMesh) spat);
+				sceneData.setRoomNode(roomnode);
+				fileOfCurrentScene = file;
+				nodeToEntity = Collections
+						.synchronizedMap(new HashMap<Node, VisualEntity>());
+				sceneData.getRootNode().updateGeometricState(0f, true);
+				// Box marker=new Box("marker",Vector3f.ZERO.clone(),3,3,3);
+				// sceneData.getRootNode().attachChild(marker);
+				for (Entity entity : sceneData.getSearchableEntities()) {
+					if (entity instanceof VisualEntity) {
+						nodeToEntity.put(((VisualEntity) entity).getNode(),
+								(VisualEntity) entity);
+						collisionOctree.insertEntity((VisualEntity) entity);
+					}
 				}
+				display.syncExec(new Runnable(){
+
+					/* (non-Javadoc)
+					 * @see java.lang.Runnable#run()
+					 */
+					@Override
+					public void run() {
+						for (SceneDataChangedListener listener : listeners) {
+							listener.sceneDataChanged(sceneData);
+						}
+					}
+					
+				});
+				monitor.worked(60);
+				monitor.worked(100);
+				return Status.OK_STATUS;
 			}
-		}
-		sceneData.setRoomNode(roomnode);
-		fileOfCurrentScene = file;
-		nodeToEntity = Collections
-				.synchronizedMap(new HashMap<Node, VisualEntity>());
-		sceneData.getRootNode().updateGeometricState(0f, true);
-		// Box marker=new Box("marker",Vector3f.ZERO.clone(),3,3,3);
-		// sceneData.getRootNode().attachChild(marker);
-		for (Entity entity : sceneData.getSearchableEntities()) {
-			if (entity instanceof VisualEntity) {
-				nodeToEntity.put(((VisualEntity) entity).getNode(),
-						(VisualEntity) entity);
-				collisionOctree.insertEntity((VisualEntity) entity);
-			}
-		}
-		for (SceneDataChangedListener listener : listeners) {
-			listener.sceneDataChanged(sceneData);
-		}
+		};
+		loadJob.setUser(true);
+		loadJob.schedule();
+
 	}
 
 	/**
@@ -695,7 +765,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	 */
 	@Override
 	public void saveScene() {
-		
+
 		implementor.update(new Callable<Object>() {
 
 			/*
