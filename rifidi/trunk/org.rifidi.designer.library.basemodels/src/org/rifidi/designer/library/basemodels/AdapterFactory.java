@@ -28,6 +28,7 @@ import org.rifidi.designer.library.basemodels.cardbox.CardboxEntityWorkbenchAdap
 import org.rifidi.designer.library.basemodels.conveyor.ConveyorEntity;
 import org.rifidi.designer.library.basemodels.conveyor.ConveyorEntityWorkbenchAdapter;
 import org.rifidi.designer.library.basemodels.destroyer.DestroyerEntity;
+import org.rifidi.designer.library.basemodels.destroyer.DestroyerEntityWorkbenchAdapter;
 import org.rifidi.designer.library.basemodels.gate.GateEntity;
 import org.rifidi.designer.library.basemodels.gate.GateEntityWorkbenchAdapter;
 import org.rifidi.designer.library.basemodels.infrared.InfraredEntity;
@@ -142,7 +143,7 @@ public class AdapterFactory implements IAdapterFactory {
 			}
 		} else if (adaptableObject instanceof DestroyerEntity) {
 			if (IWorkbenchAdapter.class.equals(adapterType)) {
-				return new PusharmEntityWorkbenchAdapter();
+				return new DestroyerEntityWorkbenchAdapter();
 			}
 			if (IPropertySource.class.equals(adapterType)) {
 				return new DefaultPropertySource((Entity) adaptableObject);

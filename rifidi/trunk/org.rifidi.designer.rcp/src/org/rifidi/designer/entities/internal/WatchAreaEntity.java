@@ -15,6 +15,8 @@ import java.util.concurrent.Callable;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.ui.model.IWorkbenchAdapter;
 import org.rifidi.designer.entities.Entity;
 import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.databinding.annotations.MonitoredProperties;
@@ -47,7 +49,7 @@ import com.jmex.physics.material.Material;
  */
 @MonitoredProperties(names = { "name" })
 public class WatchAreaEntity extends VisualEntity implements NeedsPhysics,
-		Field, Switch, InternalEntity {
+		Field, Switch, InternalEntity, IAdaptable {
 	/**
 	 * logger for this class.
 	 */
@@ -211,6 +213,7 @@ public class WatchAreaEntity extends VisualEntity implements NeedsPhysics,
 			public Object call() throws Exception {
 				getNode().clearRenderState(RenderState.RS_MATERIAL);
 				getNode().setRenderState(msStopped);
+				getNode().updateRenderState();
 				return null;
 			}
 
@@ -236,6 +239,7 @@ public class WatchAreaEntity extends VisualEntity implements NeedsPhysics,
 			public Object call() throws Exception {
 				getNode().clearRenderState(RenderState.RS_MATERIAL);
 				getNode().setRenderState(msStarted);
+				getNode().updateRenderState();
 				return null;
 			}
 
@@ -310,6 +314,17 @@ public class WatchAreaEntity extends VisualEntity implements NeedsPhysics,
 	@Override
 	public Node getBoundingNode() {
 		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
+	 */
+	@Override
+	public Object getAdapter(Class adapter) {
+		if(IWorkbenchAdapter.class.equals(adapter)){
+			return new WatchAreaWorkbenchAdapter();
+		}
 		return null;
 	}
 

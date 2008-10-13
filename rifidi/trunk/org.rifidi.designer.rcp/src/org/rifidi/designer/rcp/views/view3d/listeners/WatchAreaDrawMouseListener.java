@@ -36,7 +36,6 @@ import com.jme.scene.shape.Box;
 import com.jme.scene.state.BlendState;
 import com.jme.scene.state.MaterialState;
 import com.jme.system.DisplaySystem;
-import com.jme.util.GameTaskQueueManager;
 
 /**
  * A listener for drawing watch areas.
@@ -96,26 +95,31 @@ public class WatchAreaDrawMouseListener implements MouseListener,
 	public void mouseDown(MouseEvent e) {
 		if (e.button == 1) {
 			pressed = true;
-			Camera cam = DisplaySystem.getDisplaySystem().getRenderer()
-					.getCamera();
-			// create ray
+//			Camera cam = implementor.getCamera();
+//			// create ray
 			int canvasY = implementor.getCanvas().getSize().y;
-			Vector3f coord = cam.getWorldCoordinates(new Vector2f(e.x, canvasY
-					- e.y), 0);
-			Vector3f coord2 = cam.getWorldCoordinates(new Vector2f(e.x, canvasY
-					- e.y), 1f);
-
-			float m = (coord.y - coord2.y) / (coord.x - coord2.x);
-			float b = -(coord.y - m * coord.x);
-
-			float m2 = (coord.y - coord2.y) / (coord.z - coord2.z);
-			float b2 = -(coord.y - m2 * coord.z);
-
-			startX = b / m;
-			startZ = b2 / m2;
-
+			
+			Vector3f coords = DisplaySystem.getDisplaySystem()
+			.getRenderer().getCamera().getWorldCoordinates(
+					new Vector2f(e.x, canvasY
+							- e.y), 0);
+			Vector3f coords2 = DisplaySystem.getDisplaySystem()
+					.getRenderer().getCamera().getWorldCoordinates(
+							new Vector2f(e.x, canvasY
+									- e.y), 1);
+			Vector3f direction = coords.subtract(coords2).normalizeLocal();
+			coords.subtractLocal(direction.mult(coords.y / direction.y));
+			coords.setY(0);
+			// round the values to place it on the grid
+			coords.x = (float) Math.floor(coords.x);
+			coords.z = (float) Math.floor(coords.z);
+			
+			
+			startX = coords.x;
+			startZ = coords.z;
 			boxNode = new Node();
 			box = new Box("name", Vector3f.ZERO, .5f, 7f, .5f);
+			
 			boxNode.setLocalTranslation(new Vector3f(
 					(float) Math.ceil(startX) - .5f, 5.6f, (float) Math
 							.ceil(startZ) - .5f));
@@ -155,7 +159,7 @@ public class WatchAreaDrawMouseListener implements MouseListener,
 		} else if (e.button == 3) {
 			pressed = false;
 			if (boxNode != null) {
-				Helpers.waitOnCallabel(new Callable<Object>() {
+				implementor.update(new Callable<Object>() {
 
 					/*
 					 * (non-Javadoc)
@@ -165,13 +169,13 @@ public class WatchAreaDrawMouseListener implements MouseListener,
 					@Override
 					public Object call() throws Exception {
 						boxNode.removeFromParent();
+						boxNode = null;
+						box = null;
+						pressed = false;
 						return null;
 					}
+				});
 
-				}, implementor.getUpdateQueue());
-				boxNode = null;
-				box = null;
-				pressed = false;
 			}
 		}
 
@@ -222,63 +226,58 @@ public class WatchAreaDrawMouseListener implements MouseListener,
 	@Override
 	public void mouseMove(MouseEvent e) {
 		if (pressed == true) {
-			Camera cam = DisplaySystem.getDisplaySystem().getRenderer()
-					.getCamera();
 			// create ray
 			int canvasY = ((GLCanvas) ((JMECanvasImplementor2) implementor)
 					.getCanvas()).getSize().y;
-			Vector3f coord = cam.getWorldCoordinates(new Vector2f(e.x, canvasY
-					- e.y), 0);
-			Vector3f coord2 = cam.getWorldCoordinates(new Vector2f(e.x, canvasY
-					- e.y), 1f);
-
-			float m = (coord.y - coord2.y) / (coord.x - coord2.x);
-			float b = -(coord.y - m * coord.x);
-
-			float m2 = (coord.y - coord2.y) / (coord.z - coord2.z);
-			float b2 = -(coord.y - m2 * coord.z);
-
-			final float newX = b / m;
-			final float newZ = b2 / m2;
+			
+			Vector3f coords = DisplaySystem.getDisplaySystem()
+			.getRenderer().getCamera().getWorldCoordinates(
+					new Vector2f(e.x, canvasY
+							- e.y), 0);
+			Vector3f coords2 = DisplaySystem.getDisplaySystem()
+					.getRenderer().getCamera().getWorldCoordinates(
+							new Vector2f(e.x, canvasY
+									- e.y), 1);
+			Vector3f direction = coords.subtract(coords2).normalizeLocal();
+			coords.subtractLocal(direction.mult(coords.y / direction.y));
+			coords.setY(0);
+			// round the values to place it on the grid
+			coords.x = (float) Math.floor(coords.x);
+			coords.z = (float) Math.floor(coords.z);
+			final float newX = coords.x;
+			final float newZ = coords.z;
 			if (!executing && boxNode != null) {
 				executing = true;
-				GameTaskQueueManager.getManager().update(
-						new Callable<Object>() {
+				implementor.update(new Callable<Object>() {
 
-							/*
-							 * (non-Javadoc)
-							 * 
-							 * CanvasImplementor2)implementor).getCanvas()
-							 * .getCurrentGLCanvas()@see
-							 * java.util.concurrent.Callable#call()
-							 */
-							@Override
-							public Object call() throws Exception {
-								float left = startX < newX ? (float) Math
-										.ceil(startX) : (float) Math
-										.floor(newX);
-								float top = startZ < newZ ? (float) Math
-										.ceil(startZ) : (float) Math
-										.floor(newZ);
-								float right = newX > startX ? (float) Math
-										.floor(newX) : (float) Math
-										.ceil(startX);
-								float bottom = newZ > startZ ? (float) Math
-										.floor(newZ) : (float) Math
-										.ceil(startZ);
-								boxNode.getLocalTranslation()
-										.set(
-												new Vector3f((right - left) / 2
-														+ left, 5.6f,
-														(bottom - top) / 2
-																+ top));
-								box.getLocalScale().set(
+					/*
+					 * (non-Javadoc)
+					 * 
+					 * CanvasImplementor2)implementor).getCanvas()
+					 * .getCurrentGLCanvas()@see
+					 * java.util.concurrent.Callable#call()
+					 */
+					@Override
+					public Object call() throws Exception {
+						float left = startX < newX ? (float) Math.ceil(startX)
+								: (float) Math.floor(newX);
+						float top = startZ < newZ ? (float) Math.ceil(startZ)
+								: (float) Math.floor(newZ);
+						float right = newX > startX ? (float) Math.floor(newX)
+								: (float) Math.ceil(startX);
+						float bottom = newZ > startZ ? (float) Math.floor(newZ)
+								: (float) Math.ceil(startZ);
+						boxNode.getLocalTranslation().set(
+								new Vector3f((right - left) / 2 + left, 5.6f,
+										(bottom - top) / 2 + top));
+						box.getLocalScale()
+								.set(
 										new Vector3f((right - left), 1,
 												(bottom - top)));
-								executing = false;
-								return null;
-							}
-						});
+						executing = false;
+						return null;
+					}
+				});
 			}
 		}
 	}
