@@ -11,12 +11,12 @@
 package org.rifidi.designer.rcp.views.view3d.listeners;
 
 import java.util.concurrent.Callable;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.opengl.GLCanvas;
-import org.monklypse.core.Helpers;
 import org.monklypse.core.JMECanvasImplementor2;
 import org.rifidi.designer.entities.internal.WatchAreaEntity;
 import org.rifidi.designer.rcp.game.DesignerGame;
@@ -28,7 +28,6 @@ import org.rifidi.services.registry.ServiceRegistry;
 
 import com.jme.math.Vector2f;
 import com.jme.math.Vector3f;
-import com.jme.renderer.Camera;
 import com.jme.renderer.ColorRGBA;
 import com.jme.renderer.Renderer;
 import com.jme.scene.Node;
@@ -54,9 +53,9 @@ public class WatchAreaDrawMouseListener implements MouseListener,
 	/** Coordinates of the box startpoint */
 	private float startX, startZ;
 	/** true if the runnable is currently being executed */
-	private boolean executing = false;
+	private AtomicBoolean executing = new AtomicBoolean(false);
 	/** true if the button is pressed */
-	private boolean pressed = true;
+	private boolean pressed = false;
 	/** Reference to the entities service. */
 	private EntitiesService entitiesService;
 	/** Reference to the scene data service. */
@@ -95,31 +94,26 @@ public class WatchAreaDrawMouseListener implements MouseListener,
 	public void mouseDown(MouseEvent e) {
 		if (e.button == 1) {
 			pressed = true;
-//			Camera cam = implementor.getCamera();
-//			// create ray
 			int canvasY = implementor.getCanvas().getSize().y;
-			
-			Vector3f coords = DisplaySystem.getDisplaySystem()
-			.getRenderer().getCamera().getWorldCoordinates(
-					new Vector2f(e.x, canvasY
-							- e.y), 0);
-			Vector3f coords2 = DisplaySystem.getDisplaySystem()
-					.getRenderer().getCamera().getWorldCoordinates(
-							new Vector2f(e.x, canvasY
-									- e.y), 1);
+
+			Vector3f coords = DisplaySystem.getDisplaySystem().getRenderer()
+					.getCamera().getWorldCoordinates(
+							new Vector2f(e.x, canvasY - e.y), 0);
+			Vector3f coords2 = DisplaySystem.getDisplaySystem().getRenderer()
+					.getCamera().getWorldCoordinates(
+							new Vector2f(e.x, canvasY - e.y), 1);
 			Vector3f direction = coords.subtract(coords2).normalizeLocal();
 			coords.subtractLocal(direction.mult(coords.y / direction.y));
 			coords.setY(0);
 			// round the values to place it on the grid
 			coords.x = (float) Math.floor(coords.x);
 			coords.z = (float) Math.floor(coords.z);
-			
-			
+
 			startX = coords.x;
 			startZ = coords.z;
 			boxNode = new Node();
 			box = new Box("name", Vector3f.ZERO, .5f, 7f, .5f);
-			
+
 			boxNode.setLocalTranslation(new Vector3f(
 					(float) Math.ceil(startX) - .5f, 5.6f, (float) Math
 							.ceil(startZ) - .5f));
@@ -195,7 +189,7 @@ public class WatchAreaDrawMouseListener implements MouseListener,
 					&& box.getLocalScale().z > 0) {
 				entitiesService.addEntity(watchAreaEntity, null, null);
 			} else {
-				Helpers.waitOnCallabel(new Callable<Object>() {
+				implementor.update(new Callable<Object>() {
 
 					/*
 					 * (non-Javadoc)
@@ -208,7 +202,7 @@ public class WatchAreaDrawMouseListener implements MouseListener,
 						return null;
 					}
 
-				}, implementor.getUpdateQueue());
+				});
 			}
 			boxNode = null;
 			box = null;
@@ -226,18 +220,15 @@ public class WatchAreaDrawMouseListener implements MouseListener,
 	@Override
 	public void mouseMove(MouseEvent e) {
 		if (pressed == true) {
-			// create ray
 			int canvasY = ((GLCanvas) ((JMECanvasImplementor2) implementor)
 					.getCanvas()).getSize().y;
-			
-			Vector3f coords = DisplaySystem.getDisplaySystem()
-			.getRenderer().getCamera().getWorldCoordinates(
-					new Vector2f(e.x, canvasY
-							- e.y), 0);
-			Vector3f coords2 = DisplaySystem.getDisplaySystem()
-					.getRenderer().getCamera().getWorldCoordinates(
-							new Vector2f(e.x, canvasY
-									- e.y), 1);
+
+			Vector3f coords = DisplaySystem.getDisplaySystem().getRenderer()
+					.getCamera().getWorldCoordinates(
+							new Vector2f(e.x, canvasY - e.y), 0);
+			Vector3f coords2 = DisplaySystem.getDisplaySystem().getRenderer()
+					.getCamera().getWorldCoordinates(
+							new Vector2f(e.x, canvasY - e.y), 1);
 			Vector3f direction = coords.subtract(coords2).normalizeLocal();
 			coords.subtractLocal(direction.mult(coords.y / direction.y));
 			coords.setY(0);
@@ -246,8 +237,7 @@ public class WatchAreaDrawMouseListener implements MouseListener,
 			coords.z = (float) Math.floor(coords.z);
 			final float newX = coords.x;
 			final float newZ = coords.z;
-			if (!executing && boxNode != null) {
-				executing = true;
+			if (executing.compareAndSet(false, true) && boxNode != null) {
 				implementor.update(new Callable<Object>() {
 
 					/*
@@ -259,22 +249,27 @@ public class WatchAreaDrawMouseListener implements MouseListener,
 					 */
 					@Override
 					public Object call() throws Exception {
-						float left = startX < newX ? (float) Math.ceil(startX)
-								: (float) Math.floor(newX);
-						float top = startZ < newZ ? (float) Math.ceil(startZ)
-								: (float) Math.floor(newZ);
-						float right = newX > startX ? (float) Math.floor(newX)
-								: (float) Math.ceil(startX);
-						float bottom = newZ > startZ ? (float) Math.floor(newZ)
-								: (float) Math.ceil(startZ);
-						boxNode.getLocalTranslation().set(
-								new Vector3f((right - left) / 2 + left, 5.6f,
-										(bottom - top) / 2 + top));
-						box.getLocalScale()
-								.set(
-										new Vector3f((right - left), 1,
-												(bottom - top)));
-						executing = false;
+						try {
+							float left = startX < newX ? (float) Math
+									.ceil(startX) : (float) Math.floor(newX);
+							float top = startZ < newZ ? (float) Math
+									.ceil(startZ) : (float) Math.floor(newZ);
+							float right = newX > startX ? (float) Math
+									.floor(newX) : (float) Math.ceil(startX);
+							float bottom = newZ > startZ ? (float) Math
+									.floor(newZ) : (float) Math.ceil(startZ);
+							boxNode.getLocalTranslation().set(
+									new Vector3f((right - left) / 2 + left,
+											5.6f, (bottom - top) / 2 + top));
+							box.getLocalScale().set(
+									new Vector3f((right - left), 1,
+											(bottom - top)));
+						} catch (NullPointerException e) {
+							// TODO: yeah, it's ugly but it can happen that this
+							// gets called when the box has been deleted
+						} finally {
+							executing.compareAndSet(true, false);
+						}
 						return null;
 					}
 				});
