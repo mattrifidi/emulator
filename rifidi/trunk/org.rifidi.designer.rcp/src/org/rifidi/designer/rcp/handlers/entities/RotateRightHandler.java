@@ -19,6 +19,7 @@ import org.rifidi.designer.entities.Entity;
 import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.rcp.views.view3d.View3D;
 import org.rifidi.designer.services.core.selection.SelectionService;
+import org.rifidi.services.annotations.Inject;
 import org.rifidi.services.registry.ServiceRegistry;
 
 /**
@@ -67,4 +68,13 @@ public class RotateRightHandler extends AbstractHandler {
 		}
 		return null;
 	}
+
+	/**
+	 * @param selectionService the selectionService to set
+	 */
+	@Inject
+	public void setSelectionService(SelectionService selectionService) {
+		this.selectionService = selectionService;
+	}
+	
 }
