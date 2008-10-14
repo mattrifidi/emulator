@@ -3,7 +3,8 @@ package org.rifidi.emulator.reader.llrp.trigger;
 import java.util.Observable;
 import java.util.Observer;
 
-import org.rifidi.emulator.common.ControlSignal;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.rifidi.utilities.Timer;
 
 /**
@@ -81,6 +82,8 @@ public class TagObservationTrigger implements TimerTrigger, Observer {
 	 * The last timer that this trigger was suspended
 	 */
 	private long lastSuspendTime = 0;
+	
+	private static Log logger = LogFactory.getLog(TagObservationTrigger.class);
 
 	/**
 	 * Public constructor for TagObservationTrigger (see TagObservationTrigger
@@ -141,6 +144,7 @@ public class TagObservationTrigger implements TimerTrigger, Observer {
 	public void updateTagTrigger(int numUniqueTagsSeen) {
 		if (triggetType == 0) {
 			if (numUniqueTagsSeen >= this.numOfTags) {
+				logger.debug("Firing a stop trigger because we have seen " + numUniqueTagsSeen + " tags");
 				specState.fireStopTrigger(this.getClass());
 
 			}
@@ -149,6 +153,7 @@ public class TagObservationTrigger implements TimerTrigger, Observer {
 				long msSinceLastUniqueTag = System.currentTimeMillis()
 						- (lastTagSeenTime - suspendedTime);
 				if (msSinceLastUniqueTag >= t) {
+					logger.debug("Firing a stop trigger because it has been over " + msSinceLastUniqueTag + " ms since last new tag read");
 					specState.fireStopTrigger(this.getClass());
 				}
 			} else {

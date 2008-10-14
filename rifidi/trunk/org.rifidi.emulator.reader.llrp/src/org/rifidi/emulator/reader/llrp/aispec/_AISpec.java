@@ -55,7 +55,6 @@ public class _AISpec implements Observer {
 	/**
 	 * The logger for this class.
 	 */
-	@SuppressWarnings("unused")
 	private static Log logger = LogFactory.getLog(_AISpec.class);
 
 	/**
@@ -91,7 +90,6 @@ public class _AISpec implements Observer {
 	/**
 	 * 
 	 */
-	@SuppressWarnings("unused")
 	private LLRPReaderSharedResources llrpsr;
 
 	/**
@@ -210,7 +208,7 @@ public class _AISpec implements Observer {
 			for (RifidiTag t : tagMem.getTagReport()) {
 
 				t.incrementReadCount();
-
+				
 				TagReportData trd = LLRPReportController.formatTagReport(
 						getReportFormat(), t, roSpecID, specIndex, llrpsr);
 
@@ -251,13 +249,15 @@ public class _AISpec implements Observer {
 					}
 				}
 			}
-			tagMem.clear();
+			
 
 			// if we are using Tag Observation Trigger, update it with new tags
 			if (this.stopTrigger instanceof TagObservationTrigger) {
 				TagObservationTrigger trig = (TagObservationTrigger) stopTrigger;
 				trig.updateTagTrigger(tagMem.getTagReport().size());
 			}
+			
+			tagMem.clear();
 
 			// wait so that this while loop is not so expensive
 			try {
