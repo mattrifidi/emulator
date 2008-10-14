@@ -15,6 +15,6 @@ Require-Bundle: org.eclipse.gef;bundle-version="[3.2.0,4.0.0)",
  org.eclipse.core.databinding,
  org.rifidi.designer.entities
 Bundle-Activator: org.rifidi.designer.rcp.gpioeditor.GPIOPlugin
-Eclipse-LazyStart: true
+Bundle-ActivationPolicy: lazy
 Eclipse-BuddyPolicy: dependent
 Export-Package: org.rifidi.designer.rcp.gpioeditor

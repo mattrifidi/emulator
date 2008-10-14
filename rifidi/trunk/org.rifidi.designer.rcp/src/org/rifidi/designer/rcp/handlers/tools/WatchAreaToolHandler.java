@@ -10,8 +10,6 @@
  */
 package org.rifidi.designer.rcp.handlers.tools;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
@@ -26,15 +24,13 @@ import org.rifidi.designer.rcp.views.view3d.View3D.Mode;
  * 
  */
 public class WatchAreaToolHandler extends AbstractHandler {
-	/**
-	 * Logger for this class.
-	 */
-	private static Log logger = LogFactory.getLog(WatchAreaToolHandler.class);
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.core.commands.AbstractHandler#execute(org.eclipse.core.commands.ExecutionEvent)
+	 * @see
+	 * org.eclipse.core.commands.AbstractHandler#execute(org.eclipse.core.commands
+	 * .ExecutionEvent)
 	 */
 	@Override
 	public Object execute(ExecutionEvent arg0) throws ExecutionException {
@@ -44,7 +40,7 @@ public class WatchAreaToolHandler extends AbstractHandler {
 			view3D.switchMode(Mode.WatchAreaMode);
 			return null;
 		}
-		//view3D.switchMode(Mode.CameraMode);
+		// view3D.switchMode(Mode.CameraMode);
 		return null;
 	}
 

@@ -3,9 +3,6 @@ package org.rifidi.designer.octree;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import com.jme.bounding.BoundingBox;
 import com.jme.math.Vector3f;
 import com.jme.scene.Node;
@@ -24,37 +21,19 @@ public class RoomOctreeNode {
 		LEFT, RIGHT, FRONT, BACK
 	};
 
-	/**
-	 * Logger for this class.
-	 */
-	private static final Log logger = LogFactory.getLog(RoomOctreeNode.class);
-	/**
-	 * Center of this node.
-	 */
+	/** Center of this node. */
 	private Vector3f center;
-	/**
-	 * Sidelength of this node.
-	 */
+	/** Sidelength of this node. */
 	private float extent;
-	/**
-	 * List of nodes attached to this node (empty if this is a leafnode).
-	 */
+	/** List of nodes attached to this node (empty if this is a leafnode). */
 	private List<RoomOctreeNode> nodes;
-	/**
-	 * If this node is a leafnode set this to true.
-	 */
+	/** If this node is a leafnode set this to true. */
 	private boolean leaf = false;
-	/**
-	 * True if any leafs of this node have a child.
-	 */
+	/** True if any leafs of this node have a child. */
 	private boolean hasChildren = false;
-	/**
-	 * Size of the tree.
-	 */
+	/** Size of the tree. */
 	public static int size = 0;
-	/**
-	 * Minimum size of cube.
-	 */
+	/** Minimum size of cube. */
 	private float targetSize;
 
 	/**
@@ -321,8 +300,6 @@ public class RoomOctreeNode {
 	 * 
 	 * @param node
 	 */
-	private static int count = 0;
-
 	public void getTreeAsNode(Node node) {
 		if (leaf && hasChildren) {
 			Box boxy = new Box("node", center.clone(), extent, extent, extent);

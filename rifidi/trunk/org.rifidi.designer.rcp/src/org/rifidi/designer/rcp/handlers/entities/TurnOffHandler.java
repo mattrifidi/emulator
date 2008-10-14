@@ -22,9 +22,6 @@ import org.eclipse.ui.services.IEvaluationService;
 import org.rifidi.designer.entities.Entity;
 import org.rifidi.designer.entities.grouping.EntityGroup;
 import org.rifidi.designer.entities.interfaces.Switch;
-import org.rifidi.designer.services.core.selection.SelectionService;
-import org.rifidi.designer.services.core.selection.SelectionServiceImpl;
-import org.rifidi.services.annotations.Inject;
 import org.rifidi.services.registry.ServiceRegistry;
 
 /**
@@ -37,13 +34,6 @@ import org.rifidi.services.registry.ServiceRegistry;
 public class TurnOffHandler extends AbstractHandler {
 
 	/**
-	 * Reference to the selection service. THis is required because we need to
-	 * update the states of the actions. NOTE: GET RID OF THIS AS SOON AS
-	 * ECLIPSE 3.4 IS OUT
-	 */
-	private SelectionService selectionService;
-
-	/**
 	 * Constructor.
 	 */
 	public TurnOffHandler() {
@@ -53,7 +43,9 @@ public class TurnOffHandler extends AbstractHandler {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.core.commands.AbstractHandler#execute(org.eclipse.core.commands.ExecutionEvent)
+	 * @see
+	 * org.eclipse.core.commands.AbstractHandler#execute(org.eclipse.core.commands
+	 * .ExecutionEvent)
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -73,17 +65,10 @@ public class TurnOffHandler extends AbstractHandler {
 				((Switch) sw).turnOff();
 			}
 		}
-		IEvaluationService service = (IEvaluationService)PlatformUI.getWorkbench().getService(IEvaluationService.class);
+		IEvaluationService service = (IEvaluationService) PlatformUI
+				.getWorkbench().getService(IEvaluationService.class);
 		service.requestEvaluation("org.rifidi.designer.rcp.entities.running");
 		return null;
-	}
-
-	/**
-	 * @param selectionService the selectionService to set
-	 */
-	@Inject
-	public void setSelectionService(SelectionService selectionService) {
-		this.selectionService = selectionService;
 	}
 
 }

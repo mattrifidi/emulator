@@ -43,38 +43,22 @@ import com.jme.system.DisplaySystem;
  * @author Jochen Mader Oct 30, 2007
  */
 public class MousePickListener implements MouseListener, KeyListener {
-	/**
-	 * Logger for this class.
-	 */
+	/** Logger for this class. */
 	private static final Log logger = LogFactory
 			.getLog(MousePickListener.class);
-	/**
-	 * Are we selecting more than one entitiy?
-	 */
+	/** Are we selecting more than one entitiy? */
 	private boolean multiselect = false;
-	/**
-	 * The currently picked entity.
-	 */
+	/** The currently picked entity. */
 	private VisualEntity pickedEntity = null;
-	/**
-	 * Reference to the selection service.
-	 */
+	/** Reference to the selection service. */
 	private SelectionService selectionService;
-	/**
-	 * Reference to the current scene data service.
-	 */
+	/** Reference to the current scene data service. */
 	private SceneDataService sceneDataService;
-	/**
-	 * Reference to the current finder service.
-	 */
+	/** Reference to the current finder service. */
 	private FinderService finderService;
-	/**
-	 * Reference to the 3d view.
-	 */
+	/** Reference to the 3d view. */
 	private View3D view3D;
-	/**
-	 * Reference to the implementor.
-	 */
+	/** Reference to the implementor. */
 	private DesignerGame implementor;
 
 	/**
@@ -111,7 +95,7 @@ public class MousePickListener implements MouseListener, KeyListener {
 			Camera cam = DisplaySystem.getDisplaySystem().getRenderer()
 					.getCamera();
 			// create ray
-			int canvasY = ((GLCanvas) ((JMECanvasImplementor2) implementor)
+			int canvasY = ((GLCanvas) ((JMECanvasImplementor2<?>) implementor)
 					.getCanvas()).getSize().y;
 			try {
 				Vector3f coord = cam.getWorldCoordinates(new Vector2f(e.x,

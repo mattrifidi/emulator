@@ -14,7 +14,6 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 
 import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.interfaces.NeedsPhysics;
@@ -22,7 +21,6 @@ import org.rifidi.designer.entities.interfaces.NeedsPhysics;
 import com.jme.input.InputHandler;
 import com.jme.math.Vector3f;
 import com.jme.scene.Node;
-import com.jme.scene.shape.Box;
 import com.jme.util.export.binary.BinaryImporter;
 import com.jmex.physics.DynamicPhysicsNode;
 import com.jmex.physics.PhysicsSpace;
@@ -34,22 +32,11 @@ import com.jmex.physics.PhysicsSpace;
  * 
  */
 public class RetailBox extends VisualEntity implements NeedsPhysics {
-
-	/**
-	 * Reference to the collision input handler.
-	 */
-	private InputHandler inputHandler;
-	/**
-	 * Reference to the current physics space.
-	 */
+	/** Reference to the current physics space. */
 	private PhysicsSpace physicsSpace;
-	/**
-	 * Model for shared meshes
-	 */
+	/** Model for shared meshes */
 	private static Node model = null;
-	/**
-	 * Translation for initial translation. Never used afterwards.
-	 */
+	/** Translation for initial translation. Never used afterwards. */
 	private Vector3f startTranslation;
 
 	/*
@@ -82,7 +69,7 @@ public class RetailBox extends VisualEntity implements NeedsPhysics {
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
 		}
-		DynamicPhysicsNode phys=physicsSpace.createDynamicNode();
+		DynamicPhysicsNode phys = physicsSpace.createDynamicNode();
 		phys.attachChild(model);
 		phys.setLocalScale(0.5f);
 		phys.setLocalTranslation(startTranslation);
@@ -106,17 +93,20 @@ public class RetailBox extends VisualEntity implements NeedsPhysics {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.entities.interfaces.NeedsPhysics#setCollisionHandler(com.jme.input.InputHandler)
+	 * @see
+	 * org.rifidi.designer.entities.interfaces.NeedsPhysics#setCollisionHandler
+	 * (com.jme.input.InputHandler)
 	 */
 	@Override
 	public void setCollisionHandler(InputHandler collisionHandler) {
-		this.inputHandler = collisionHandler;
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.entities.interfaces.NeedsPhysics#setPhysicsSpace(com.jmex.physics.PhysicsSpace)
+	 * @see
+	 * org.rifidi.designer.entities.interfaces.NeedsPhysics#setPhysicsSpace(
+	 * com.jmex.physics.PhysicsSpace)
 	 */
 	@Override
 	public void setPhysicsSpace(PhysicsSpace physicsSpace) {
@@ -142,7 +132,9 @@ public class RetailBox extends VisualEntity implements NeedsPhysics {
 
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.rifidi.designer.entities.VisualEntity#getBoundingNode()
 	 */
 	@Override

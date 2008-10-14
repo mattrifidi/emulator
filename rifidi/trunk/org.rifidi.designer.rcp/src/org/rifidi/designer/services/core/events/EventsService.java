@@ -29,8 +29,7 @@ public interface EventsService {
 	 * 
 	 * @param eventType
 	 */
-	@SuppressWarnings("unchecked")
-	public void record(Class... eventType);
+	public void record(Class<?>... eventType);
 
 	/**
 	 * Stop recording.

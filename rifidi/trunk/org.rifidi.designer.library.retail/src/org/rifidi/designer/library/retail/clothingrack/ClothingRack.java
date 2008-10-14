@@ -22,7 +22,6 @@ import java.util.concurrent.Callable;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.rifidi.designer.entities.VisualEntity;
-import org.rifidi.designer.entities.interfaces.NeedsPhysics;
 import org.rifidi.designer.entities.interfaces.VisualEntityHolder;
 import org.rifidi.designer.library.retail.Position;
 import org.rifidi.designer.library.retail.clothing.Clothing;
@@ -34,7 +33,6 @@ import org.rifidi.services.tags.impl.RifidiTag;
 import org.rifidi.services.tags.registry.ITagRegistry;
 
 import com.jme.bounding.BoundingBox;
-import com.jme.input.InputHandler;
 import com.jme.math.FastMath;
 import com.jme.math.Quaternion;
 import com.jme.math.Vector3f;
@@ -45,7 +43,6 @@ import com.jme.scene.Spatial.CullHint;
 import com.jme.scene.shape.Box;
 import com.jme.util.export.binary.BinaryImporter;
 import com.jmex.physics.DynamicPhysicsNode;
-import com.jmex.physics.PhysicsSpace;
 
 /**
  * 
@@ -53,48 +50,22 @@ import com.jmex.physics.PhysicsSpace;
  * @author Jochen Mader - jochen@pramari.com - Apr 3, 2008
  * 
  */
-public class ClothingRack extends VisualEntity implements VisualEntityHolder,
-		NeedsPhysics {
-	/**
-	 * Logger for this class.
-	 */
+public class ClothingRack extends VisualEntity implements VisualEntityHolder {
+	/** Logger for this class. */
 	private static final Log logger = LogFactory.getLog(ClothingRack.class);
-	/**
-	 * Reference to the collision input handler.
-	 */
-	private InputHandler inputHandler;
-	/**
-	 * Reference to the current physics space.
-	 */
-	private PhysicsSpace physicsSpace;
-	/**
-	 * Container for entities inside the holder.
-	 */
+	/** Container for entities inside the holder. */
 	private List<VisualEntity> entities;
-	/**
-	 * List of available positions.
-	 */
+	/** List of available positions. */
 	private List<Position> positions;
-
-	/**
-	 * Capacity of the container.
-	 */
+	/** Capacity of the container. */
 	private int capacity = 10;
-	/**
-	 * Number of items currently in the list.
-	 */
+	/** Number of items currently in the list. */
 	private int itemCount = 0;
-	/**
-	 * Model for shared meshes
-	 */
+	/** Model for shared meshes */
 	private static Node[] lod = null;
-	/**
-	 * Reference to the tag registry.
-	 */
+	/** Reference to the tag registry. */
 	private ITagRegistry tagRegistry;
-	/**
-	 * Node that contains the different lods.
-	 */
+	/** Node that contains the different lods. */
 	private SwitchNode switchNode;
 
 	/**
@@ -355,30 +326,6 @@ public class ClothingRack extends VisualEntity implements VisualEntityHolder,
 	@Override
 	public boolean isFull() {
 		return capacity <= itemCount;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.rifidi.designer.entities.interfaces.NeedsPhysics#setCollisionHandler
-	 * (com.jme.input.InputHandler)
-	 */
-	@Override
-	public void setCollisionHandler(InputHandler collisionHandler) {
-		this.inputHandler = collisionHandler;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.rifidi.designer.entities.interfaces.NeedsPhysics#setPhysicsSpace(
-	 * com.jmex.physics.PhysicsSpace)
-	 */
-	@Override
-	public void setPhysicsSpace(PhysicsSpace physicsSpace) {
-		this.physicsSpace = physicsSpace;
 	}
 
 	/*

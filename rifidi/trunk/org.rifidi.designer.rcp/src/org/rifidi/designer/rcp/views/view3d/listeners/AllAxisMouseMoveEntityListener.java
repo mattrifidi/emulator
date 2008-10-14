@@ -133,7 +133,7 @@ public class AllAxisMouseMoveEntityListener implements MouseListener,
 			Camera cam = DisplaySystem.getDisplaySystem().getRenderer()
 					.getCamera();
 			// create ray
-			int canvasY = ((GLCanvas) ((JMECanvasImplementor2) implementor)
+			int canvasY = ((GLCanvas) ((JMECanvasImplementor2<?>) implementor)
 					.getCanvas()).getSize().y;
 			Vector3f coord = cam.getWorldCoordinates(new Vector2f(e.x, canvasY
 					- e.y), 0);

@@ -92,19 +92,6 @@
                type="org.eclipse.ui.views.properties.IPropertySource">
          </adapter>
       </factory>
-      <factory
-            adaptableType="org.rifidi.designer.library.basemodels.conveyor90.Conveyor90Entity"
-            class="org.rifidi.designer.library.basemodels.AdapterFactory">
-         <adapter
-               type="org.eclipse.ui.IActionFilter">
-         </adapter>
-         <adapter
-               type="org.eclipse.ui.model.IWorkbenchAdapter">
-         </adapter>
-         <adapter
-               type="org.eclipse.ui.views.properties.IPropertySource">
-         </adapter>
-      </factory>
 	  <factory
             adaptableType="org.rifidi.designer.library.basemodels.gate.GateEntity"
             class="org.rifidi.designer.library.basemodels.AdapterFactory">

@@ -15,8 +15,6 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.services.IEvaluationService;
-import org.rifidi.designer.services.core.selection.SelectionService;
-import org.rifidi.designer.services.core.selection.SelectionServiceImpl;
 import org.rifidi.designer.services.core.world.WorldService;
 import org.rifidi.services.annotations.Inject;
 import org.rifidi.services.registry.ServiceRegistry;
@@ -29,45 +27,37 @@ import org.rifidi.services.registry.ServiceRegistry;
  */
 public class PauseHandler extends AbstractHandler {
 	/**
-	 * Reference to the selection service.
-	 */
-	private SelectionService selectionService;
-	/**
 	 * Reference to the world service.
 	 */
 	private WorldService worldService;
-	
+
 	/**
 	 * Constructor.
 	 */
-	public PauseHandler(){
+	public PauseHandler() {
 		super();
 		ServiceRegistry.getInstance().service(this);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.core.commands.AbstractHandler#execute(org.eclipse.core.commands.ExecutionEvent)
+	 * @see
+	 * org.eclipse.core.commands.AbstractHandler#execute(org.eclipse.core.commands
+	 * .ExecutionEvent)
 	 */
 	@Override
 	public Object execute(ExecutionEvent arg0) throws ExecutionException {
 		worldService.pause();
-		IEvaluationService service = (IEvaluationService)PlatformUI.getWorkbench().getService(IEvaluationService.class);
+		IEvaluationService service = (IEvaluationService) PlatformUI
+				.getWorkbench().getService(IEvaluationService.class);
 		service.requestEvaluation("org.rifidi.designer.rcp.world.state");
 		return null;
 	}
 
 	/**
-	 * @param selectionService
-	 *            the selectionService to set
-	 */
-	@Inject
-	public void setSelectionService(SelectionService selectionService) {
-		this.selectionService = selectionService;
-	}
-	/**
-	 * @param worldService the worldService to set
+	 * @param worldService
+	 *            the worldService to set
 	 */
 	@Inject
 	public void setWorldService(WorldService worldService) {

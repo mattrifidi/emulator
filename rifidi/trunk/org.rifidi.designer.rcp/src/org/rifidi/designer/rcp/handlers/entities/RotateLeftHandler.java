@@ -18,9 +18,7 @@ import org.eclipse.core.commands.ExecutionException;
 import org.rifidi.designer.entities.Entity;
 import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.rcp.views.view3d.View3D;
-import org.rifidi.designer.services.core.entities.SceneDataService;
 import org.rifidi.designer.services.core.selection.SelectionService;
-import org.rifidi.services.annotations.Inject;
 import org.rifidi.services.registry.ServiceRegistry;
 
 /**
@@ -35,10 +33,6 @@ public class RotateLeftHandler extends AbstractHandler {
 	 * Reference to the selection service.
 	 */
 	private SelectionService selectionService;
-	/**
-	 * Reference to the scene data service.
-	 */
-	private SceneDataService sceneDataService;
 
 	/**
 	 * Constructor.
@@ -51,7 +45,9 @@ public class RotateLeftHandler extends AbstractHandler {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.core.commands.AbstractHandler#execute(org.eclipse.core.commands.ExecutionEvent)
+	 * @see
+	 * org.eclipse.core.commands.AbstractHandler#execute(org.eclipse.core.commands
+	 * .ExecutionEvent)
 	 */
 	@Override
 	public Object execute(ExecutionEvent arg0) throws ExecutionException {
@@ -70,23 +66,5 @@ public class RotateLeftHandler extends AbstractHandler {
 			entity.rotateLeft();
 		}
 		return null;
-	}
-
-	/**
-	 * @param sceneDataService
-	 *            the sceneDataService to set
-	 */
-	@Inject
-	public void setSceneDataService(SceneDataService sceneDataService) {
-		this.sceneDataService = sceneDataService;
-	}
-
-	/**
-	 * @param selectionService
-	 *            the selectionService to set
-	 */
-	@Inject
-	public void setSelectionService(SelectionService selectionService) {
-		this.selectionService = selectionService;
 	}
 }

@@ -14,10 +14,8 @@ import java.util.concurrent.Callable;
 
 import javax.xml.bind.annotation.XmlTransient;
 
-import com.jme.math.FastMath;
 import com.jme.math.Matrix3f;
 import com.jme.math.Quaternion;
-import com.jme.math.Vector3f;
 import com.jme.scene.Node;
 import com.jme.util.GameTaskQueue;
 
@@ -54,9 +52,10 @@ public abstract class VisualEntity extends Entity {
 	 */
 	@XmlTransient
 	private static Matrix3f rotLeft = null;
-	
+
 	@XmlTransient
 	private static Matrix3f rotRight = null;
+
 	/**
 	 * @return the node
 	 */
@@ -87,7 +86,7 @@ public abstract class VisualEntity extends Entity {
 	public void rotateLeft() {
 		if (rotLeft == null) {
 			Quaternion quat = new Quaternion();
-			quat.fromAngles(0f, (float)Math.toRadians(90), 0f);
+			quat.fromAngles(0f, (float) Math.toRadians(90), 0f);
 			rotLeft = quat.toRotationMatrix();
 		}
 
@@ -101,13 +100,13 @@ public abstract class VisualEntity extends Entity {
 	public void rotateRight() {
 		if (rotRight == null) {
 			Quaternion quat = new Quaternion();
-			quat.fromAngles(0f, (float)Math.toRadians(-90), 0f);
+			quat.fromAngles(0f, (float) Math.toRadians(-90), 0f);
 			rotRight = quat.toRotationMatrix();
 		}
 
 		getNode().getLocalRotation().apply(rotRight);
-	}	
-	
+	}
+
 	/**
 	 * @return true if this entity can collide with other entities
 	 */
@@ -133,35 +132,38 @@ public abstract class VisualEntity extends Entity {
 		super.setEntityId(entityId);
 		getNode().setName(entityId);
 	}
-	
 
 	/**
-	 * @param renderQueue the renderQueue to set
+	 * @param renderQueue
+	 *            the renderQueue to set
 	 */
 	public void setRenderQueue(GameTaskQueue renderQueue) {
 		this.renderQueue = renderQueue;
 	}
 
 	/**
-	 * @param updateQueue the updateQueue to set
+	 * @param updateQueue
+	 *            the updateQueue to set
 	 */
 	public void setUpdateQueue(GameTaskQueue updateQueue) {
 		this.updateQueue = updateQueue;
 	}
-	
+
 	/**
 	 * Submit a callable to the update queue.
+	 * 
 	 * @param callable
 	 */
-	public void update(Callable<Object> callable){
+	public void update(Callable<Object> callable) {
 		updateQueue.enqueue(callable);
 	}
-	
+
 	/**
 	 * Submit a callable to the opengl queue.
+	 * 
 	 * @param callable
 	 */
-	public void render(Callable<Object> callable){
+	public void render(Callable<Object> callable) {
 		renderQueue.enqueue(callable);
 	}
 

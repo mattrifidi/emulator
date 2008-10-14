@@ -20,13 +20,11 @@ import java.util.List;
 import java.util.concurrent.Callable;
 
 import org.rifidi.designer.entities.VisualEntity;
-import org.rifidi.designer.entities.interfaces.NeedsPhysics;
 import org.rifidi.designer.entities.interfaces.VisualEntityHolder;
 import org.rifidi.designer.library.retail.Position;
 import org.rifidi.designer.library.retail.retailbox.RetailBox;
 
 import com.jme.bounding.BoundingBox;
-import com.jme.input.InputHandler;
 import com.jme.math.Quaternion;
 import com.jme.math.Vector3f;
 import com.jme.scene.Node;
@@ -34,7 +32,6 @@ import com.jme.scene.Spatial.CullHint;
 import com.jme.scene.shape.Box;
 import com.jme.util.export.binary.BinaryImporter;
 import com.jmex.physics.DynamicPhysicsNode;
-import com.jmex.physics.PhysicsSpace;
 
 /**
  * 
@@ -42,40 +39,20 @@ import com.jmex.physics.PhysicsSpace;
  * @author Jochen Mader - jochen@pramari.com - Apr 3, 2008
  * 
  */
-public class Shelf extends VisualEntity implements VisualEntityHolder,
-		NeedsPhysics {
-
-	/**
-	 * Reference to the collision input handler.
-	 */
-	private InputHandler inputHandler;
-	/**
-	 * Reference to the current physics space.
-	 */
-	private PhysicsSpace physicsSpace;
-	/**
-	 * Container for entities inside the holder.
-	 */
+public class Shelf extends VisualEntity implements VisualEntityHolder {
+	/** Container for entities inside the holder. */
 	private List<VisualEntity> entities;
-	/**
-	 * List of available positions.
-	 */
+	/** List of available positions. */
 	private List<Position> positions;
-	/**
-	 * Capacity of the container.
-	 */
+	/** Capacity of the container. */
 	private int capacity = 9;
-	/**
-	 * Number of currently stored items.
-	 */
+	/** Number of currently stored items. */
 	private int itemCount = 0;
-	/**
-	 * Model for shared meshes
-	 */
+	/** Model for shared meshes */
 	private static Node model = null;
 
 	/**
-	 * 
+	 * Constructor.
 	 */
 	public Shelf() {
 		super();
@@ -119,7 +96,9 @@ public class Shelf extends VisualEntity implements VisualEntityHolder,
 		}
 		model.setLocalTranslation(new Vector3f(0, 3.7f, 0));
 		model.setLocalScale(5.0f);
-		model.setLocalRotation(new Quaternion(new float[]{(float)Math.toRadians(270),0,0}));;
+		model.setLocalRotation(new Quaternion(new float[] {
+				(float) Math.toRadians(270), 0, 0 }));
+		;
 		node.attachChild(model);
 		entities = new ArrayList<VisualEntity>();
 		positions = new ArrayList<Position>();
@@ -287,30 +266,6 @@ public class Shelf extends VisualEntity implements VisualEntityHolder,
 	@Override
 	public boolean isFull() {
 		return capacity <= itemCount;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.rifidi.designer.entities.interfaces.NeedsPhysics#setCollisionHandler
-	 * (com.jme.input.InputHandler)
-	 */
-	@Override
-	public void setCollisionHandler(InputHandler collisionHandler) {
-		this.inputHandler = collisionHandler;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.rifidi.designer.entities.interfaces.NeedsPhysics#setPhysicsSpace(
-	 * com.jmex.physics.PhysicsSpace)
-	 */
-	@Override
-	public void setPhysicsSpace(PhysicsSpace physicsSpace) {
-		this.physicsSpace = physicsSpace;
 	}
 
 	/*

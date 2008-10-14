@@ -20,8 +20,6 @@ import org.rifidi.designer.rcp.gpioeditor.parts.CableEditPart;
 import org.rifidi.designer.rcp.gpioeditor.parts.GPIEditPart;
 import org.rifidi.designer.rcp.gpioeditor.parts.GPIOEditPart;
 import org.rifidi.designer.rcp.gpioeditor.parts.GPOEditPart;
-import org.rifidi.designer.services.core.cabling.CablingService;
-import org.rifidi.services.annotations.Inject;
 import org.rifidi.services.registry.ServiceRegistry;
 
 /**
@@ -40,10 +38,6 @@ public class GPIOEditPartFactory implements EditPartFactory {
 	 * Position counter for GPOs.
 	 */
 	private int gpocount = 0;
-	/**
-	 * Reference to the cabling service.
-	 */
-	private CablingService cablingService;
 
 	/**
 	 * 
@@ -73,14 +67,6 @@ public class GPIOEditPartFactory implements EditPartFactory {
 		}
 		throw new RuntimeException("Missing EditPart for: "
 				+ ((model != null) ? model.getClass().getName() : "null"));
-	}
-
-	/**
-	 * @param cablingService the cablingService to set
-	 */
-	@Inject
-	public void setCablingService(CablingService cablingService) {
-		this.cablingService = cablingService;
 	}
 
 }

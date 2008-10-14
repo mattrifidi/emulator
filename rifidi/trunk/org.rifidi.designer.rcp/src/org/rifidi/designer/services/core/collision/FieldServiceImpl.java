@@ -62,10 +62,6 @@ public class FieldServiceImpl implements FieldService {
 	 * Reference to the finderservice
 	 */
 	private FinderService finderService;
-	/**
-	 * Reference to the scenedataservice.
-	 */
-	private SceneDataService sceneDataService;
 
 	/**
 	 * Constructor.
@@ -212,7 +208,6 @@ public class FieldServiceImpl implements FieldService {
 	@Inject
 	public void setSceneDataService(SceneDataService sceneDataService) {
 		logger.debug("FieldService got SceneDataService");
-		this.sceneDataService = sceneDataService;
 		sceneDataService.addSceneDataChangedListener(this);
 	}
 
@@ -221,7 +216,6 @@ public class FieldServiceImpl implements FieldService {
 	 *            the sceneDataService to unset
 	 */
 	public void unsetSceneDataService(SceneDataService sceneDataService) {
-		this.sceneDataService = null;
 	}
 
 	/**

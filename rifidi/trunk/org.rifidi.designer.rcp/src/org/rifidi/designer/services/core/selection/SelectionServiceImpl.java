@@ -36,25 +36,15 @@ import org.rifidi.services.registry.ServiceRegistry;
  */
 public class SelectionServiceImpl implements SelectionService,
 		SceneDataChangedListener {
-	/**
-	 * Logger for this class.
-	 */
+	/** Logger for this class. */
 	private static Log logger = LogFactory.getLog(SelectionServiceImpl.class);
-	/**
-	 * List of selected entities.
-	 */
+	/** List of selected entities. */
 	private List<Entity> hilited = new ArrayList<Entity>();
-	/**
-	 * List of registered selection listeners.
-	 */
+	/** List of registered selection listeners. */
 	private List<ISelectionChangedListener> selectionListeners = new ArrayList<ISelectionChangedListener>();
-	/**
-	 * reference to the SceneDataService
-	 */
-	private SceneDataService sceneDataService;
 
 	/**
-	 * Constructor.
+	 *  Constructor.
 	 */
 	public SelectionServiceImpl() {
 		logger.debug("SelectionService created");
@@ -64,8 +54,9 @@ public class SelectionServiceImpl implements SelectionService,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.services.registry.core.selection.SelectionService#hilite(org.rifidi.designer.entities.VisualEntity,
-	 *      boolean, boolean)
+	 * @see
+	 * org.rifidi.services.registry.core.selection.SelectionService#hilite(org
+	 * .rifidi.designer.entities.VisualEntity, boolean, boolean)
 	 */
 	@Override
 	public void select(final VisualEntity ent, boolean multiple,
@@ -84,8 +75,9 @@ public class SelectionServiceImpl implements SelectionService,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.services.registry.core.selection.SelectionService#hilite(java.util.List,
-	 *      boolean, Object)
+	 * @see
+	 * org.rifidi.services.registry.core.selection.SelectionService#hilite(java
+	 * .util.List, boolean, Object)
 	 */
 	@Override
 	public void select(final List<VisualEntity> entities,
@@ -102,7 +94,9 @@ public class SelectionServiceImpl implements SelectionService,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.services.registry.core.selection.SelectionService#clearSelection()
+	 * @see
+	 * org.rifidi.services.registry.core.selection.SelectionService#clearSelection
+	 * ()
 	 */
 	@Override
 	public void clearSelection() {
@@ -113,7 +107,9 @@ public class SelectionServiceImpl implements SelectionService,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.services.registry.core.scenedata.SceneDataChangedListener#sceneDataChanged(org.rifidi.designer.entities.SceneData)
+	 * @see
+	 * org.rifidi.services.registry.core.scenedata.SceneDataChangedListener#
+	 * sceneDataChanged(org.rifidi.designer.entities.SceneData)
 	 */
 	@Override
 	public void sceneDataChanged(SceneData sceneData) {
@@ -122,7 +118,9 @@ public class SelectionServiceImpl implements SelectionService,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.services.registry.core.scenedata.SceneDataChangedListener#destroySceneData(org.rifidi.designer.entities.SceneData)
+	 * @see
+	 * org.rifidi.services.registry.core.scenedata.SceneDataChangedListener#
+	 * destroySceneData(org.rifidi.designer.entities.SceneData)
 	 */
 	@Override
 	public void destroySceneData(SceneData sceneData) {
@@ -132,7 +130,9 @@ public class SelectionServiceImpl implements SelectionService,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.services.registry.core.selection.SelectionService#getSelectionList()
+	 * @see
+	 * org.rifidi.services.registry.core.selection.SelectionService#getSelectionList
+	 * ()
 	 */
 	@Override
 	public List<Entity> getSelectionList() {
@@ -142,7 +142,9 @@ public class SelectionServiceImpl implements SelectionService,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.jface.viewers.ISelectionProvider#addSelectionChangedListener(org.eclipse.jface.viewers.ISelectionChangedListener)
+	 * @see
+	 * org.eclipse.jface.viewers.ISelectionProvider#addSelectionChangedListener
+	 * (org.eclipse.jface.viewers.ISelectionChangedListener)
 	 */
 	@Override
 	public void addSelectionChangedListener(ISelectionChangedListener listener) {
@@ -162,7 +164,9 @@ public class SelectionServiceImpl implements SelectionService,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.jface.viewers.ISelectionProvider#removeSelectionChangedListener(org.eclipse.jface.viewers.ISelectionChangedListener)
+	 * @see
+	 * org.eclipse.jface.viewers.ISelectionProvider#removeSelectionChangedListener
+	 * (org.eclipse.jface.viewers.ISelectionChangedListener)
 	 */
 	@Override
 	public void removeSelectionChangedListener(
@@ -173,7 +177,9 @@ public class SelectionServiceImpl implements SelectionService,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.jface.viewers.ISelectionProvider#setSelection(org.eclipse.jface.viewers.ISelection)
+	 * @see
+	 * org.eclipse.jface.viewers.ISelectionProvider#setSelection(org.eclipse
+	 * .jface.viewers.ISelection)
 	 */
 	@Override
 	public void setSelection(ISelection selection) {
@@ -189,8 +195,8 @@ public class SelectionServiceImpl implements SelectionService,
 		for (ISelectionChangedListener listener : selectionListeners) {
 			SelectionChangedEvent event = new SelectionChangedEvent(this,
 					new StructuredSelection(hilited));
-			if(!listener.equals(source)){
-				listener.selectionChanged(event);	
+			if (!listener.equals(source)) {
+				listener.selectionChanged(event);
 			}
 		}
 	}
@@ -210,6 +216,5 @@ public class SelectionServiceImpl implements SelectionService,
 	 *            the sceneDataService to unset
 	 */
 	public void unsetSceneDataService(SceneDataService sceneDataService) {
-		this.sceneDataService = null;
 	}
 }

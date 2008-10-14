@@ -11,8 +11,6 @@
 package org.rifidi.designer.rcp.propertytesters;
 
 import org.eclipse.core.expressions.PropertyTester;
-import org.osgi.framework.ServiceReference;
-import org.rifidi.designer.rcp.Activator;
 import org.rifidi.designer.services.core.world.CommandStateService;
 import org.rifidi.services.annotations.Inject;
 import org.rifidi.services.registry.ServiceRegistry;
@@ -27,7 +25,7 @@ public class WorldPropertytester extends PropertyTester {
 	private CommandStateService commandStateService;
 
 	/**
-	 * 
+	 * Constructor.
 	 */
 	public WorldPropertytester() {
 		ServiceRegistry.getInstance().service(this);
@@ -37,7 +35,7 @@ public class WorldPropertytester extends PropertyTester {
 	 * (non-Javadoc)
 	 * 
 	 * @see org.eclipse.core.expressions.IPropertyTester#test(java.lang.Object,
-	 *      java.lang.String, java.lang.Object[], java.lang.Object)
+	 * java.lang.String, java.lang.Object[], java.lang.Object)
 	 */
 	@Override
 	public boolean test(Object receiver, String property, Object[] args,
@@ -46,7 +44,8 @@ public class WorldPropertytester extends PropertyTester {
 	}
 
 	/**
-	 * @param commandStateService the commandStateService to set
+	 * @param commandStateService
+	 *            the commandStateService to set
 	 */
 	@Inject
 	public void setCommandStateService(CommandStateService commandStateService) {

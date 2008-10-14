@@ -59,7 +59,7 @@ public class FloorElement {
 	/**
 	 * @return the library
 	 */
-	public Class getLibrary() {
+	public Class<?> getLibrary() {
 		return this.library;
 	}
 
@@ -67,7 +67,7 @@ public class FloorElement {
 	 * @param library
 	 *            the library to set
 	 */
-	public void setLibrary(Class library) {
+	public void setLibrary(Class<?> library) {
 		this.library = library;
 	}
 

@@ -10,8 +10,6 @@
  */
 package org.rifidi.designer.rcp.handlers.tools;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
@@ -26,26 +24,24 @@ import org.rifidi.designer.rcp.views.view3d.View3D.Mode;
  * 
  */
 public class MoveToolHandler extends AbstractHandler {
-	/**
-	 * Logger for this class.
-	 */
-	private static Log logger = LogFactory.getLog(MoveToolHandler.class);
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.core.commands.AbstractHandler#execute(org.eclipse.core.commands.ExecutionEvent)
+	 * @see
+	 * org.eclipse.core.commands.AbstractHandler#execute(org.eclipse.core.commands
+	 * .ExecutionEvent)
 	 */
 	@Override
 	public Object execute(ExecutionEvent arg0) throws ExecutionException {
 		View3D view3D = (View3D) PlatformUI.getWorkbench()
 				.getActiveWorkbenchWindow().getActivePage().findView(View3D.ID);
 		view3D.switchMode(Mode.MoveMode);
-//		if (!Mode.MoveMode.equals(view3D.getCurrentMode())) {
-//			
-//			return null;
-//		}
-		//view3D.switchMode(Mode.CameraMode);
+		// if (!Mode.MoveMode.equals(view3D.getCurrentMode())) {
+		//			
+		// return null;
+		// }
+		// view3D.switchMode(Mode.CameraMode);
 		return null;
 	}
 

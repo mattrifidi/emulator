@@ -22,11 +22,9 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Display;
 import org.rifidi.designer.entities.Entity;
-import org.rifidi.designer.entities.SceneData;
 import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.rcp.views.view3d.View3D;
 import org.rifidi.designer.services.core.entities.EntitiesService;
-import org.rifidi.designer.services.core.entities.SceneDataService;
 import org.rifidi.designer.services.core.highlighting.HighlightingService;
 import org.rifidi.designer.services.core.selection.SelectionService;
 import org.rifidi.services.annotations.Inject;
@@ -49,17 +47,11 @@ import com.jmex.physics.DynamicPhysicsNode;
  */
 public class MouseMoveEntityListener implements MouseMoveListener,
 		MouseListener {
-	/**
-	 * Movement delta on the mouse x axis.
-	 */
+	/** Movement delta on the mouse x axis. */
 	float deltaX = 0;
-	/**
-	 * Movement delta on the mouse y axis.
-	 */
+	/** Movement delta on the mouse y axis. */
 	float deltaY = 0;
-	/**
-	 * Counter to keep track of how often we have rotated the object.
-	 */
+	/** Counter to keep track of how often we have rotated the object. */
 	private View3D view3D;
 	/**
 	 * Center of the scree/canvas/whatever, used to reposition the mousepointer
@@ -71,52 +63,26 @@ public class MouseMoveEntityListener implements MouseMoveListener,
 	 * the repositioning).
 	 */
 	private boolean ignore = true;
-	/**
-	 * Mouse movement sensitivity.
-	 */
+	/** Mouse movement sensitivity. */
 	private float sensitivity = 5;
-	/**
-	 * Currently used scene.
-	 */
-	private SceneData sceneData;
-	/**
-	 * Current scene data service.
-	 */
-	private SceneDataService sceneDataService;
-	/**
-	 * Targets of the movement action.
-	 */
+	/** Targets of the movement action. */
 	private Map<VisualEntity, Target> realTargets = new HashMap<VisualEntity, Target>();
-	/**
-	 * List of colliding visual entities.
-	 */
+	/** List of colliding visual entities. */
 	private Set<VisualEntity> colliders;
-	/**
-	 * List of moving entities that collide with the floorplan.
-	 */
+	/** List of moving entities that collide with the floorplan. */
 	private Set<VisualEntity> collidesWithFloor = new HashSet<VisualEntity>();
-	/**
-	 * Indicator for whether an object is being moved.
-	 */
+	/** Indicator for whether an object is being moved. */
 	private boolean inPlacement = false;
 
-	/**
-	 * Reference to selection service currently in use.
-	 */
+	/** Reference to selection service currently in use. */
 	private SelectionService selectionService;
 
-	/**
-	 * Reference to the entities service.
-	 */
+	/** Reference to the entities service. */
 	private EntitiesService entitiesService;
 
-	/**
-	 * Reference to the highlightingservice.
-	 */
+	/** Reference to the highlightingservice. */
 	private HighlightingService highlightingService;
-	/**
-	 * Used for collisionchecking in the octree.
-	 */
+	/** Used for collisionchecking in the octree. */
 	private Set<VisualEntity> colls = new HashSet<VisualEntity>();
 
 	/**
@@ -149,7 +115,6 @@ public class MouseMoveEntityListener implements MouseMoveListener,
 		Display.getCurrent().setCursorLocation(center);
 
 		realTargets.clear();
-		sceneData = sceneDataService.getCurrentSceneData();
 		for (Entity target : selectionService.getSelectionList()) {
 			if (target instanceof VisualEntity) {
 
@@ -158,11 +123,11 @@ public class MouseMoveEntityListener implements MouseMoveListener,
 				BoundingBox modelBound = (BoundingBox) ((VisualEntity) target)
 						.getBoundingNode().getWorldBound();
 				Box boxxy = null;
-				if(modelBound.getCenter().y-modelBound.yExtent>0.2){
+				if (modelBound.getCenter().y - modelBound.yExtent > 0.2) {
 					boxxy = new Box("boom", new Vector3f(-0.1f, modelBound
 							.getCenter().y, -0.1f), new Vector3f(0.1f, 0, 0.1f));
 					((VisualEntity) target).getNode().attachChild(boxxy);
-					((VisualEntity) target).getNode().updateRenderState();	
+					((VisualEntity) target).getNode().updateRenderState();
 				}
 
 				// store the data for this entity
@@ -340,8 +305,8 @@ public class MouseMoveEntityListener implements MouseMoveListener,
 					((DynamicPhysicsNode) target.getNode())
 							.setLinearVelocity(Vector3f.ZERO);
 				}
-				if(realTargets.get(target).heightindicator != null){
-					realTargets.get(target).heightindicator.removeFromParent();	
+				if (realTargets.get(target).heightindicator != null) {
+					realTargets.get(target).heightindicator.removeFromParent();
 				}
 				entitiesService.getCollisionOctree().insertEntity(target);
 			}
@@ -385,15 +350,6 @@ public class MouseMoveEntityListener implements MouseMoveListener,
 			this.quaternion = quat;
 			this.heightindicator = heightindicator;
 		}
-	}
-
-	/**
-	 * @param sceneDataService
-	 *            the sceneDataService to set
-	 */
-	@Inject
-	public void setSceneDataService(SceneDataService sceneDataService) {
-		this.sceneDataService = sceneDataService;
 	}
 
 	/**

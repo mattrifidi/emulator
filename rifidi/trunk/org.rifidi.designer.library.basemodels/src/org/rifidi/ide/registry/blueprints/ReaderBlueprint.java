@@ -25,47 +25,46 @@ public class ReaderBlueprint {
 	private Integer maxantennas;
 	private Integer maxgpis;
 	private Integer maxgpos;
-	@SuppressWarnings("unchecked")
 	private String readerclass;
 	private String readerclassname;
 	private String description;
 	private List<PropertyBlueprint> properties = new ArrayList<PropertyBlueprint>();
 
-//	/**
-//	 * Maximum GPI's this reader can handle with
-//	 * 
-//	 * @return maximum number of GPI's
-//	 */
-//	public Integer getMaxGPIs() {
-//		return maxgpis;
-//	}
-//
-//	/**
-//	 * Maximum GPI's this reader can handle with
-//	 * 
-//	 * @param maxGPIs
-//	 */
-//	public void setMaxGPIs(Integer maxGPIs) {
-//		this.maxgpis = maxGPIs;
-//	}
-//
-//	/**
-//	 * Maximum GPO's this reader can handle with
-//	 * 
-//	 * @return maximum number of GPO's
-//	 */
-//	public Integer getMaxGPOs() {
-//		return maxgpos;
-//	}
-//
-//	/**
-//	 * Maximum GPI's this reader can handle with
-//	 * 
-//	 * @param maxGPOs
-//	 */
-//	public void setMaxGPOs(Integer maxGPOs) {
-//		this.maxgpos = maxGPOs;
-//	}
+	// /**
+	// * Maximum GPI's this reader can handle with
+	// *
+	// * @return maximum number of GPI's
+	// */
+	// public Integer getMaxGPIs() {
+	// return maxgpis;
+	// }
+	//
+	// /**
+	// * Maximum GPI's this reader can handle with
+	// *
+	// * @param maxGPIs
+	// */
+	// public void setMaxGPIs(Integer maxGPIs) {
+	// this.maxgpis = maxGPIs;
+	// }
+	//
+	// /**
+	// * Maximum GPO's this reader can handle with
+	// *
+	// * @return maximum number of GPO's
+	// */
+	// public Integer getMaxGPOs() {
+	// return maxgpos;
+	// }
+	//
+	// /**
+	// * Maximum GPI's this reader can handle with
+	// *
+	// * @param maxGPOs
+	// */
+	// public void setMaxGPOs(Integer maxGPOs) {
+	// this.maxgpos = maxGPOs;
+	// }
 
 	/**
 	 * @return the maxAntennas
@@ -116,7 +115,8 @@ public class ReaderBlueprint {
 	}
 
 	/**
-	 * @param property the property blueprint to add
+	 * @param property
+	 *            the property blueprint to add
 	 */
 	public void addProperty(PropertyBlueprint property) {
 		properties.add(property);
@@ -167,7 +167,8 @@ public class ReaderBlueprint {
 	}
 
 	/**
-	 * @param maxgpis the maxgpis to set
+	 * @param maxgpis
+	 *            the maxgpis to set
 	 */
 	public void setMaxgpis(Integer maxgpis) {
 		this.maxgpis = maxgpis;
@@ -181,7 +182,8 @@ public class ReaderBlueprint {
 	}
 
 	/**
-	 * @param maxgpos the maxgpos to set
+	 * @param maxgpos
+	 *            the maxgpos to set
 	 */
 	public void setMaxgpos(Integer maxgpos) {
 		this.maxgpos = maxgpos;

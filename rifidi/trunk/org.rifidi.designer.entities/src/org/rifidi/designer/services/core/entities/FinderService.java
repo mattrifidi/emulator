@@ -55,6 +55,6 @@ public interface FinderService {
 	 * Get a list of entities depending on their type.
 	 * @return
 	 */
-	List<Entity> getEntitiesByType(Class type);
+	List<Entity> getEntitiesByType(Class<?> type);
 	
 }

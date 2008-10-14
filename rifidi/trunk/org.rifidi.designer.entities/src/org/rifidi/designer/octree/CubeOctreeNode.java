@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.rifidi.designer.entities.VisualEntity;
 
 import com.jme.bounding.BoundingBox;
@@ -21,41 +19,21 @@ import com.jme.scene.shape.Box;
  * 
  */
 public class CubeOctreeNode {
-	/**
-	 * Logger for this class.
-	 */
-	private static final Log logger = LogFactory.getLog(CubeOctreeNode.class);
-	/**
-	 * Center of this node.
-	 */
+	/** Center of this node. */
 	private Vector3f center;
-	/**
-	 * Sidelength of this node.
-	 */
+	/** Sidelength of this node. */
 	private float extent;
-	/**
-	 * List of children of this node (empty if this node is not a leafnode).
-	 */
+	/** List of children of this node (empty if this node is not a leafnode). */
 	private List<VisualEntity> children;
-	/**
-	 * List of nodes attached to this node (empty if this is a leafnode).
-	 */
+	/** List of nodes attached to this node (empty if this is a leafnode). */
 	private List<CubeOctreeNode> nodes;
-	/**
-	 * If this node is a leafnode set this to true.
-	 */
+	/** If this node is a leafnode set this to true. */
 	private boolean leaf = false;
-	/**
-	 * True if any leafs of this node have a child.
-	 */
+	/** True if any leafs of this node have a child. */
 	private boolean hasChildren = false;
-	/**
-	 * Size of the tree.
-	 */
+	/** Size of the tree. */
 	public static int size = 0;
-	/**
-	 * Minimum size of cube.
-	 */
+	/** Minimum size of cube. */
 	private float targetSize;
 
 	/**
@@ -89,7 +67,7 @@ public class CubeOctreeNode {
 	 * @return
 	 */
 	public boolean intersects(Node boundingNode) {
-		if(boundingNode==null){
+		if (boundingNode == null) {
 			return false;
 		}
 		if (boundingNode.getChildren() != null) {
@@ -220,8 +198,6 @@ public class CubeOctreeNode {
 	 * 
 	 * @param node
 	 */
-	private static int count = 0;
-
 	public void getTreeAsNode(Node node) {
 		if (leaf) {
 			Box boxy = new Box("node", center.clone(), extent, extent, extent);

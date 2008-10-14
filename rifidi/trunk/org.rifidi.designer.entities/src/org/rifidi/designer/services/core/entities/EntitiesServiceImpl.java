@@ -463,14 +463,14 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	 * (java.lang.Class)
 	 */
 	@Override
-	public List<Entity> getEntitiesByType(Class type) {
+	public List<Entity> getEntitiesByType(Class<?> type) {
 		List<Entity> entities = new ArrayList<Entity>();
 		synchronized (sceneData.getEntities()) {
 			for (Entity ent : sceneData.getEntities()) {
 				if (ent.getClass().equals(type)) {
 					entities.add(ent);
 				} else {
-					for (Class iface : ent.getClass().getInterfaces()) {
+					for (Class<?> iface : ent.getClass().getInterfaces()) {
 						if (iface.equals(type)) {
 							entities.add(ent);
 							break;
@@ -489,7 +489,6 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	 * org.rifidi.services.registry.core.scenedata.SceneDataService#loadScene
 	 * (org.eclipse.swt.widgets.Display, org.eclipse.core.resources.IFile)
 	 */
-	@SuppressWarnings("unchecked")
 	public void loadScene(final Display display, final IFile file) {
 		// invalidate the current sceneData
 		for (SceneDataChangedListener listener : listeners) {
@@ -549,7 +548,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 							// the
 							// libraries
 							logger.debug("initializing jaxb");
-							List<Class> classes = EntityLibraryRegistry
+							List<Class<?>> classes = EntityLibraryRegistry
 									.getInstance().getEntityClasses();
 							classes
 									.add(org.rifidi.designer.entities.SceneData.class);
@@ -881,7 +880,6 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	 * 
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
 	private byte[] toByteArray(SceneData sceneData) {
 		ByteArrayOutputStream bo = new ByteArrayOutputStream();
 		BinaryExporter jmee = new BinaryExporter();
@@ -894,7 +892,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 		try {
 			sceneData.setNodeBytes(bo.toByteArray());
 			EntityLibraryRegistry.getInstance().getLibraries();
-			List<Class> classes = EntityLibraryRegistry.getInstance()
+			List<Class<?>> classes = EntityLibraryRegistry.getInstance()
 					.getEntityClasses();
 			classes.add(org.rifidi.designer.entities.SceneData.class);
 			classes.add(org.rifidi.designer.entities.VisualEntity.class);

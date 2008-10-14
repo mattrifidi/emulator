@@ -13,8 +13,6 @@ package org.rifidi.designer.entities.internal;
 import java.util.ArrayList;
 import java.util.concurrent.Callable;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.ui.model.IWorkbenchAdapter;
 import org.rifidi.designer.entities.Entity;
@@ -49,39 +47,21 @@ import com.jmex.physics.material.Material;
  * 
  */
 @MonitoredProperties(names = { "name" })
-public class WatchAreaEntity extends VisualEntity implements NeedsPhysics,SceneControl,
-		Field, Switch, InternalEntity, IAdaptable {
-	/**
-	 * logger for this class.
-	 */
-	private static Log logger = LogFactory.getLog(WatchAreaEntity.class);
-	/**
-	 * Reference to the physicsspace.
-	 */
+public class WatchAreaEntity extends VisualEntity implements NeedsPhysics,
+		SceneControl, Field, Switch, InternalEntity, IAdaptable {
+	/** Reference to the physicsspace. */
 	private PhysicsSpace physicsSpace;
-	/**
-	 * Stopped material state.
-	 */
+	/** Stopped material state. */
 	private static MaterialState msStopped;
-	/**
-	 * Started material state.
-	 */
+	/** Started material state. */
 	private static MaterialState msStarted;
-	/**
-	 * Shared alphastate.
-	 */
+	/** Shared alphastate. */
 	private static BlendState as;
-	/**
-	 * Running state of this entity.
-	 */
+	/** Running state of this entity. */
 	private boolean running = false;
-	/**
-	 * Reference to the events service.
-	 */
+	/** Reference to the events service. */
 	private EventsService eventsService;
-	/**
-	 * Reference to the field service
-	 */
+	/** Reference to the field service */
 	private FieldService fieldService;
 
 	/**
@@ -173,13 +153,19 @@ public class WatchAreaEntity extends VisualEntity implements NeedsPhysics,SceneC
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.entities.interfaces.NeedsPhysics#setCollisionHandler(com.jme.input.InputHandler)
+	 * @see
+	 * org.rifidi.designer.entities.interfaces.NeedsPhysics#setCollisionHandler
+	 * (com.jme.input.InputHandler)
 	 */
 	public void setCollisionHandler(InputHandler collisionHandler) {
 	}
 
-	/* (non-Javadoc)
-	 * @see org.rifidi.designer.entities.interfaces.NeedsPhysics#setPhysicsSpace(com.jmex.physics.PhysicsSpace)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.rifidi.designer.entities.interfaces.NeedsPhysics#setPhysicsSpace(
+	 * com.jmex.physics.PhysicsSpace)
 	 */
 	@Override
 	public void setPhysicsSpace(PhysicsSpace physicsSpace) {
@@ -251,7 +237,9 @@ public class WatchAreaEntity extends VisualEntity implements NeedsPhysics,SceneC
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.entities.interfaces.Field#fieldEntered(org.rifidi.designer.entities.Entity)
+	 * @see
+	 * org.rifidi.designer.entities.interfaces.Field#fieldEntered(org.rifidi
+	 * .designer.entities.Entity)
 	 */
 	@Override
 	public void fieldEntered(Entity entity) {
@@ -261,7 +249,9 @@ public class WatchAreaEntity extends VisualEntity implements NeedsPhysics,SceneC
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.entities.interfaces.Field#fieldLeft(org.rifidi.designer.entities.Entity)
+	 * @see
+	 * org.rifidi.designer.entities.interfaces.Field#fieldLeft(org.rifidi.designer
+	 * .entities.Entity)
 	 */
 	@Override
 	public void fieldLeft(Entity entity) {
@@ -318,18 +308,23 @@ public class WatchAreaEntity extends VisualEntity implements NeedsPhysics,SceneC
 		return null;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public Object getAdapter(Class adapter) {
-		if(IWorkbenchAdapter.class.equals(adapter)){
+		if (IWorkbenchAdapter.class.equals(adapter)) {
 			return new WatchAreaWorkbenchAdapter();
 		}
 		return null;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.rifidi.designer.entities.interfaces.SceneControl#pause()
 	 */
 	@Override
@@ -337,16 +332,20 @@ public class WatchAreaEntity extends VisualEntity implements NeedsPhysics,SceneC
 		((PhysicsNode) getNode()).setMaterial(null);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.rifidi.designer.entities.interfaces.SceneControl#reset()
 	 */
 	@Override
 	public void reset() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.rifidi.designer.entities.interfaces.SceneControl#start()
 	 */
 	@Override

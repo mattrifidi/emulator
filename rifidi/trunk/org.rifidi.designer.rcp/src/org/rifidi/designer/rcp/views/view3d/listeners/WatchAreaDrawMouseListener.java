@@ -44,8 +44,6 @@ import com.jme.system.DisplaySystem;
 public class WatchAreaDrawMouseListener implements MouseListener,
 		MouseMoveListener {
 
-	/** Reference to the 3d view. */
-	private View3D view3D;
 	/** The watchare that gets manipulated */
 	private Box box;
 	/** Node that the box is attached to */
@@ -70,7 +68,6 @@ public class WatchAreaDrawMouseListener implements MouseListener,
 	 *            the 3d view
 	 */
 	public WatchAreaDrawMouseListener(View3D view3D) {
-		this.view3D = view3D;
 		ServiceRegistry.getInstance().service(this);
 	}
 
@@ -220,7 +217,7 @@ public class WatchAreaDrawMouseListener implements MouseListener,
 	@Override
 	public void mouseMove(MouseEvent e) {
 		if (pressed == true) {
-			int canvasY = ((GLCanvas) ((JMECanvasImplementor2) implementor)
+			int canvasY = ((GLCanvas) ((JMECanvasImplementor2<?>) implementor)
 					.getCanvas()).getSize().y;
 
 			Vector3f coords = DisplaySystem.getDisplaySystem().getRenderer()

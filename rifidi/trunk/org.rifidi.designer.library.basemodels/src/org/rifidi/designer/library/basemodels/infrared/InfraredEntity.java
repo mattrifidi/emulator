@@ -12,8 +12,6 @@ package org.rifidi.designer.library.basemodels.infrared;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.rifidi.designer.entities.Entity;
 import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.databinding.annotations.MonitoredProperties;
@@ -54,29 +52,15 @@ import com.jmex.physics.material.Material;
 @XmlRootElement
 public class InfraredEntity extends VisualEntity implements SceneControl,
 		Switch, NeedsPhysics, GPO, Field {
-	/**
-	 * Logger for this class.
-	 */
-	private static Log logger = LogFactory.getLog(InfraredEntity.class);
-	/**
-	 * Reference to the current physicsspace
-	 */
+	/** Reference to the current physicsspace */
 	private PhysicsSpace physicsSpace;
-	/**
-	 * Reference to the collision handler.
-	 */
+	/** Reference to the collision handler. */
 	private InputHandler collisionHandler;
-	/**
-	 * Running state of the entity.
-	 */
+	/** Running state of the entity. */
 	private boolean running;
-	/**
-	 * Reference to the cabling service.
-	 */
+	/** Reference to the cabling service. */
 	private CablingService cablingService;
-	/**
-	 * Empty bounding node.
-	 */
+	/** Empty bounding node. */
 	private Node bounding;
 
 	/**
@@ -121,7 +105,7 @@ public class InfraredEntity extends VisualEntity implements SceneControl,
 		setNode(triggerSpace);
 
 		prepare();
-		
+
 		bounding = new Node();
 		bounding.setModelBound(new BoundingBox());
 
@@ -213,7 +197,9 @@ public class InfraredEntity extends VisualEntity implements SceneControl,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.entities.interfaces.NeedsPhysics#setCollisionHandler(com.jme.input.InputHandler)
+	 * @see
+	 * org.rifidi.designer.entities.interfaces.NeedsPhysics#setCollisionHandler
+	 * (com.jme.input.InputHandler)
 	 */
 	public void setCollisionHandler(InputHandler collisionHandler) {
 		this.collisionHandler = collisionHandler;
@@ -222,7 +208,9 @@ public class InfraredEntity extends VisualEntity implements SceneControl,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.entities.interfaces.NeedsPhysics#setPhysicsSpace(com.jmex.physics.PhysicsSpace)
+	 * @see
+	 * org.rifidi.designer.entities.interfaces.NeedsPhysics#setPhysicsSpace(
+	 * com.jmex.physics.PhysicsSpace)
 	 */
 	public void setPhysicsSpace(PhysicsSpace physicsSpace) {
 		this.physicsSpace = physicsSpace;

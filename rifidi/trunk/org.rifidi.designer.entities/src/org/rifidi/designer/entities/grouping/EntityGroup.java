@@ -93,7 +93,6 @@ public class EntityGroup implements IAdaptable {
 	 * @param entities
 	 *            the entities to set
 	 */
-	@SuppressWarnings("unchecked")
 	public void setEntities(final List<Entity> entities) {
 		WritableList writableEntities = new WritableList(entities, Entity.class);
 		writableEntities.getRealm();
@@ -128,7 +127,6 @@ public class EntityGroup implements IAdaptable {
 	 * 
 	 * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
 	 */
-	@SuppressWarnings("unchecked")
 	public Object getAdapter(final Class adapter) {
 		if (IWorkbenchAdapter.class.equals(adapter)) {
 			return new EntityGroupWorkbenchAdapter();

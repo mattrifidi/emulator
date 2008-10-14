@@ -137,6 +137,7 @@ public class NewSceneDataWizardPage extends WizardPage {
 			 * 
 			 * @see org.eclipse.jface.viewers.IStructuredContentProvider#getElements(java.lang.Object)
 			 */
+			@SuppressWarnings("unchecked")
 			@Override
 			public Object[] getElements(Object inputElement) {
 				if (inputElement instanceof Map) {

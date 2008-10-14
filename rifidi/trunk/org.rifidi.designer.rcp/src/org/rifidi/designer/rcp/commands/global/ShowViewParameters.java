@@ -26,6 +26,7 @@ public class ShowViewParameters implements IParameterValues {
 	/* (non-Javadoc)
 	 * @see org.eclipse.core.commands.IParameterValues#getParameterValues()
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public Map getParameterValues() {
 		Map params=new HashMap();

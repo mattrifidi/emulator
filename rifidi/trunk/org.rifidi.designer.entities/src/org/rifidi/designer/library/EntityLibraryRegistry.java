@@ -60,7 +60,7 @@ public class EntityLibraryRegistry implements IRegistryChangeListener {
 	/**
 	 * List of available entites.
 	 */
-	private List<Class> entityClasses;
+	private List<Class<?>> entityClasses;
 	/**
 	 * The extension point.
 	 */
@@ -81,7 +81,7 @@ public class EntityLibraryRegistry implements IRegistryChangeListener {
 				.synchronizedMap(new HashMap<String, EntityLibraryReference>());
 		floorReferences = Collections
 				.synchronizedMap(new HashMap<String, FloorElement>());
-		entityClasses = Collections.synchronizedList(new ArrayList<Class>());
+		entityClasses = Collections.synchronizedList(new ArrayList<Class<?>>());
 		IExtensionRegistry registry = Platform.getExtensionRegistry();
 		registry.addRegistryChangeListener(this, "org.rifidi.designer.library");
 		point = registry.getExtensionPoint("org.rifidi.designer.library");
@@ -116,7 +116,7 @@ public class EntityLibraryRegistry implements IRegistryChangeListener {
 		for (IConfigurationElement configElement : extension
 				.getConfigurationElements()) {
 			try {
-				Class internalentity = Class.forName(configElement
+				Class<?> internalentity = Class.forName(configElement
 						.getAttribute("class"));
 				if (add) {
 					entityClasses.add(internalentity);
@@ -138,7 +138,7 @@ public class EntityLibraryRegistry implements IRegistryChangeListener {
 			for (IConfigurationElement configElement : extension
 					.getConfigurationElements()) {
 				try {
-					Class library = Class.forName(configElement
+					Class<?> library = Class.forName(configElement
 							.getAttribute("class"));
 					if (add) {
 						EntityLibrary lib = (EntityLibrary) library
@@ -198,7 +198,6 @@ public class EntityLibraryRegistry implements IRegistryChangeListener {
 	 * 
 	 * @return list of libraries
 	 */
-	@SuppressWarnings("unchecked")
 	public List<EntityLibrary> getLibraries() {
 		return libraries;
 	}
@@ -208,8 +207,7 @@ public class EntityLibraryRegistry implements IRegistryChangeListener {
 	 * 
 	 * @return list of entity classes
 	 */
-	@SuppressWarnings("unchecked")
-	public List<Class> getEntityClasses() {
+	public List<Class<?>> getEntityClasses() {
 		return entityClasses;
 	}
 

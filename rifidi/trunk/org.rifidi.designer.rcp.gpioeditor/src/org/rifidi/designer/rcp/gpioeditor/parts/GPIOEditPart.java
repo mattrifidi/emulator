@@ -180,6 +180,7 @@ public class GPIOEditPart extends AbstractGraphicalEditPart implements
 	/* (non-Javadoc)
 	 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#getModelTargetConnections()
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	protected List getModelTargetConnections() {
 		return cablingService.getSources((GPI) getModel());

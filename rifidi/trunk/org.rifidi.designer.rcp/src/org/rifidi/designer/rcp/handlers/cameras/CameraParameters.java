@@ -26,6 +26,7 @@ public class CameraParameters implements IParameterValues {
 	/* (non-Javadoc)
 	 * @see org.eclipse.core.commands.IParameterValues#getParameterValues()
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public Map getParameterValues() {
 		Map values=new HashMap();

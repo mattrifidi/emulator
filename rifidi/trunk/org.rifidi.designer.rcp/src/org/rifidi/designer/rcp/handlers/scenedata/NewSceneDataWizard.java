@@ -79,12 +79,11 @@ public class NewSceneDataWizard extends Wizard {
 	 * @param sceneData
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
 	private byte[] toByteArray(SceneData sceneData) {
 		ByteArrayOutputStream fileOutput = new ByteArrayOutputStream();
 		try {
 			EntityLibraryRegistry.getInstance().getLibraries();
-			List<Class> classes = EntityLibraryRegistry.getInstance()
+			List<Class<?>> classes = EntityLibraryRegistry.getInstance()
 					.getEntityClasses();
 			classes.add(org.rifidi.designer.entities.SceneData.class);
 			classes.add(org.rifidi.designer.entities.VisualEntity.class);

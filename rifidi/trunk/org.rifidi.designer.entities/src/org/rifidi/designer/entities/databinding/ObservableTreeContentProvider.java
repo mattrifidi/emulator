@@ -160,7 +160,6 @@ public class ObservableTreeContentProvider implements ITreeContentProvider,
 	 * 
 	 * @param element
 	 */
-	@SuppressWarnings("unchecked")
 	private void monitorElement(final Object element) {
 		if (!observedElements.containsKey(element)) {
 			if (element.getClass().isAnnotationPresent(MonitorThisList.class)) {
@@ -170,7 +169,7 @@ public class ObservableTreeContentProvider implements ITreeContentProvider,
 				try {
 					observedElements.put(element, new ObserverHelper(element));
 					((IObservableList) element.getClass().getMethod(
-							"get" + name, null).invoke(element))
+							"get" + name, (Class<?>[])null).invoke(element))
 							.addListChangeListener(observedElements
 									.get(element));
 				} catch (Exception e) {
@@ -233,7 +232,6 @@ public class ObservableTreeContentProvider implements ITreeContentProvider,
 		 * 
 		 * @param element
 		 */
-		@SuppressWarnings("unchecked")
 		public ObserverHelper(final Object element) {
 			this.element = element;
 		}

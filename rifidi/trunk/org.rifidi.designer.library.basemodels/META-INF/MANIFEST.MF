@@ -5,7 +5,6 @@ Bundle-SymbolicName: org.rifidi.designer.library.basemodels;singleton:=true
 Bundle-Version: 1.0.0
 Bundle-Activator: org.rifidi.designer.library.basemodels.Activator
 Bundle-Vendor: Pramari.LLC
-Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.ui.views,
@@ -19,5 +18,5 @@ Require-Bundle: org.eclipse.ui,
  org.monklypse.jme2;bundle-version="1.0.0",
  org.monklypse.jme2.physics;bundle-version="1.0.0",
  org.monklypse.lwjgl;bundle-version="1.0.0"
-Eclipse-LazyStart: true
+Bundle-ActivationPolicy: lazy
 Eclipse-BuddyPolicy: dependent

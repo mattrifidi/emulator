@@ -100,114 +100,60 @@ public class DesignerGame extends SWTDefaultImplementor implements
 		WorldService, CommandStateService, HighlightingService {
 
 	private static final Log logger = LogFactory.getLog(DesignerGame.class);
-	/**
-	 * Wall transparency. TODO redo trans stuff
-	 */
+	/** Wall transparency. TODO redo trans stuff */
 	private BlendState wallAlpha;
-	/**
-	 * Zbuffer for the rootnode.
-	 */
+	/** Zbuffer for the rootnode. */
 	private ZBufferState zbufferState;
-	/**
-	 * The primary lightstate.
-	 */
+	/** The primary lightstate. */
 	private LightState ls;
-	/**
-	 * Currently used scenedata.
-	 */
+	/** Currently used scenedata. */
 	private SceneData sceneData;
-
-	/**
-	 * Reference to the scenedataservice.
-	 */
+	/** Reference to the scenedataservice. */
 	private SceneDataService sceneDataService;
-	/**
-	 * Offscreenrenderer for the minimap.
-	 */
+	/** Offscreenrenderer for the minimap. */
 	private OffscreenRenderer offy;
-	/**
-	 * Reference to the minimap.
-	 */
+	/** Reference to the minimap. */
 	private MiniMapView miniMapView;
-	/**
-	 * Display minimap every nth frame.
-	 */
+	/** Display minimap every nth frame. */
 	private int minimapCounter = 10;
-	/**
-	 * ImageData for the minimap.
-	 */
+	/** ImageData for the minimap. */
 	private ImageData imgData;
-	/**
-	 * Alpha state used for highlighting.
-	 */
+	/** Alpha state used for highlighting. */
 	private BlendState alphaState;
-	/**
-	 * Fragment program used for highlighting.
-	 */
+	/** Fragment program used for highlighting. */
 	private String fragprog = "!!ARBfp1.0"
 			+ "MOV result.color, program.local[0];"
 			+ "MOV result.color.a, program.local[1].a;" + "END";
-	/**
-	 * Action submitted to the update thread for updating the highlight state.
-	 */
+	/** Action submitted to the update thread for updating the highlight state. */
 	private HilitedRepeatedUpdateAction repeater;
-	/**
-	 * Map of highlighted entities with the highlighting color as the key.
-	 */
+	/** Map of highlighted entities with the highlighting color as the key. */
 	private Map<ColorRGBA, List<VisualEntity>> hilited;
-	/**
-	 * Map of fragment programs by their color.
-	 */
+	/** Map of fragment programs by their color. */
 	private Map<ColorRGBA, FragmentProgramState> fragmentPrograms;
-	/**
-	 * Reference to the selectionservice.
-	 */
-	private SelectionService selectionService;
-	/**
-	 * Reference to the field service.
-	 */
+	/** Reference to the field service. */
 	private FieldService fieldService;
-
-	/**
-	 * The current state of the world.
-	 */
+	/** The current state of the world. */
 	private WorldStates worldState;
-	/**
-	 * Maps WorldStates to command names.
-	 */
+	/** Maps WorldStates to command names. */
 	private Map<WorldStates, List<String>> stateMap;
-	/**
-	 * Boolean indicators for camera directional motion
-	 */
+	/** Boolean indicators for camera directional motion */
 	private boolean[] updownleftright = new boolean[4];
-	/**
-	 * Scene related stuff.
-	 */
+
+	/** Scene related stuff. */
+
 	private boolean gridEnabled = true;
-	/**
-	 * Node for the grid.
-	 */
+	/** Node for the grid. */
 	private GridNode gridNode;
-	/**
-	 * Grid game state.
-	 */
+	/** Grid game state. */
 	private BasicGameState gridState;
 	/**
 	 * List that contains all the spatials that should be rendered by the
 	 * offscreen renderer.
 	 */
 	private List<Spatial> offscreenRenderSpatials;
-	/**
-	 * LOD of the main camera.
-	 */
+	/** LOD of the main camera. */
 	private int sceneLOD;
-	/**
-	 * Phongshader for walls.
-	 */
-	private FragmentProgramState phong;
-	/**
-	 * Cursors for the canvas.
-	 */
+	/** Cursors for the canvas. */
 	private Cursor invisibleCursor, defaultCursor;
 
 	/**
@@ -622,6 +568,7 @@ public class DesignerGame extends SWTDefaultImplementor implements
 	 * org.eclipse.jface.viewers.ISelectionChangedListener#selectionChanged(
 	 * org.eclipse.jface.viewers.SelectionChangedEvent)
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void selectionChanged(SelectionChangedEvent event) {
 		Set<VisualEntity> newHighlights = new HashSet<VisualEntity>();
@@ -704,13 +651,13 @@ public class DesignerGame extends SWTDefaultImplementor implements
 	 */
 	@Override
 	public void pause() {
-		if(sceneData!=null){
+		if (sceneData != null) {
 			for (Entity entity : sceneData.getSearchableEntities()) {
 				if (entity instanceof SceneControl) {
 					((SceneControl) entity).pause();
 				}
 			}
-			worldState = WorldStates.Paused;	
+			worldState = WorldStates.Paused;
 		}
 	}
 
@@ -842,7 +789,6 @@ public class DesignerGame extends SWTDefaultImplementor implements
 	 */
 	@Inject
 	public void setSelectionService(SelectionService selectionService) {
-		this.selectionService = selectionService;
 		selectionService.addSelectionChangedListener(this);
 	}
 
@@ -881,16 +827,15 @@ public class DesignerGame extends SWTDefaultImplementor implements
 			// for those who forget to add the bounding volume
 			if (hilit != null) {
 				hilit.setCullHint(Spatial.CullHint.Dynamic);
-				if(hilit.getChild("hiliter")!=null){
-					Spatial hilite=(Spatial)hilit.getChild("hiliter");
+				if (hilit.getChild("hiliter") != null) {
+					Spatial hilite = (Spatial) hilit.getChild("hiliter");
 					hilite.setRenderState(fragmentPrograms.get(color));
 					hilite.setRenderState(alphaState);
 					hilite.setRenderQueueMode(Renderer.QUEUE_OPAQUE);
-				}
-				else{
+				} else {
 					hilit.setRenderState(fragmentPrograms.get(color));
 					hilit.setRenderState(alphaState);
-					hilit.setRenderQueueMode(Renderer.QUEUE_OPAQUE);	
+					hilit.setRenderQueueMode(Renderer.QUEUE_OPAQUE);
 				}
 				hilit.updateRenderState();
 			}
@@ -900,11 +845,10 @@ public class DesignerGame extends SWTDefaultImplementor implements
 			// for those who forget to add the bounding volume
 			if (hilit != null) {
 				hilit.setCullHint(Spatial.CullHint.Always);
-				if(hilit.getChild("hiliter")!=null){
-					Spatial hilite=(Spatial)hilit.getChild("hiliter");
+				if (hilit.getChild("hiliter") != null) {
+					Spatial hilite = (Spatial) hilit.getChild("hiliter");
 					hilite.clearRenderState(RenderState.RS_FRAGMENT_PROGRAM);
-				}
-				else{
+				} else {
 					hilit.clearRenderState(RenderState.RS_FRAGMENT_PROGRAM);
 				}
 				hilit.updateRenderState();

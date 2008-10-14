@@ -44,7 +44,6 @@ import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.databinding.ObservableTreeContentProvider;
 import org.rifidi.designer.entities.grouping.EntityGroup;
 import org.rifidi.designer.services.core.entities.EntitiesService;
-import org.rifidi.designer.services.core.entities.FinderService;
 import org.rifidi.designer.services.core.entities.SceneDataChangedListener;
 import org.rifidi.designer.services.core.entities.SceneDataService;
 import org.rifidi.designer.services.core.selection.SelectionService;
@@ -59,37 +58,19 @@ import org.rifidi.services.registry.ServiceRegistry;
  */
 public class EntityView extends ViewPart implements ISelectionChangedListener,
 		SceneDataChangedListener {
-	/**
-	 * Eclipse ID
-	 */
+	/** Eclipse ID */
 	public static final String ID = "org.rifidi.designer.rcp.views.entityview.EntityView";
-	/**
-	 * Logger for this class.
-	 */
+	/** Logger for this class. */
 	private static Log logger = LogFactory.getLog(EntityView.class);
-	/**
-	 * View container.
-	 */
+	/** View container. */
 	private Composite container;
-	/**
-	 * Viewer for the entities.
-	 */
+	/** Viewer for the entities. */
 	private TreeViewer viewer;
-	/**
-	 * Reference to the entitiesService.
-	 */
+	/** Reference to the entitiesService. */
 	private EntitiesService entitiesService;
-	/**
-	 * Reference to the selectionService.
-	 */
+	/** Reference to the selectionService. */
 	private SelectionService selectionService;
-	/**
-	 * Reference to the finderService.
-	 */
-	private FinderService finderService;
-	/**
-	 * Reference to the scene data service.
-	 */
+	/** Reference to the scene data service. */
 	private SceneDataService sceneDataService;
 
 	/**
@@ -102,7 +83,9 @@ public class EntityView extends ViewPart implements ISelectionChangedListener,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.ui.part.WorkbenchPart#createPartControl(org.eclipse.swt.widgets.Composite)
+	 * @see
+	 * org.eclipse.ui.part.WorkbenchPart#createPartControl(org.eclipse.swt.widgets
+	 * .Composite)
 	 */
 	@Override
 	public void createPartControl(Composite parent) {
@@ -124,7 +107,9 @@ public class EntityView extends ViewPart implements ISelectionChangedListener,
 			/*
 			 * (non-Javadoc)
 			 * 
-			 * @see org.eclipse.swt.dnd.DropTargetListener#dragEnter(org.eclipse.swt.dnd.DropTargetEvent)
+			 * @see
+			 * org.eclipse.swt.dnd.DropTargetListener#dragEnter(org.eclipse.
+			 * swt.dnd.DropTargetEvent)
 			 */
 			public void dragEnter(DropTargetEvent event) {
 			}
@@ -132,7 +117,9 @@ public class EntityView extends ViewPart implements ISelectionChangedListener,
 			/*
 			 * (non-Javadoc)
 			 * 
-			 * @see org.eclipse.swt.dnd.DropTargetListener#dragLeave(org.eclipse.swt.dnd.DropTargetEvent)
+			 * @see
+			 * org.eclipse.swt.dnd.DropTargetListener#dragLeave(org.eclipse.
+			 * swt.dnd.DropTargetEvent)
 			 */
 			public void dragLeave(DropTargetEvent event) {
 			}
@@ -140,7 +127,9 @@ public class EntityView extends ViewPart implements ISelectionChangedListener,
 			/*
 			 * (non-Javadoc)
 			 * 
-			 * @see org.eclipse.swt.dnd.DropTargetListener#dragOperationChanged(org.eclipse.swt.dnd.DropTargetEvent)
+			 * @see
+			 * org.eclipse.swt.dnd.DropTargetListener#dragOperationChanged(org
+			 * .eclipse.swt.dnd.DropTargetEvent)
 			 */
 			public void dragOperationChanged(DropTargetEvent event) {
 			}
@@ -148,7 +137,9 @@ public class EntityView extends ViewPart implements ISelectionChangedListener,
 			/*
 			 * (non-Javadoc)
 			 * 
-			 * @see org.eclipse.swt.dnd.DropTargetListener#dragOver(org.eclipse.swt.dnd.DropTargetEvent)
+			 * @see
+			 * org.eclipse.swt.dnd.DropTargetListener#dragOver(org.eclipse.swt
+			 * .dnd.DropTargetEvent)
 			 */
 			public void dragOver(DropTargetEvent event) {
 			}
@@ -156,7 +147,9 @@ public class EntityView extends ViewPart implements ISelectionChangedListener,
 			/*
 			 * (non-Javadoc)
 			 * 
-			 * @see org.eclipse.swt.dnd.DropTargetListener#drop(org.eclipse.swt.dnd.DropTargetEvent)
+			 * @see
+			 * org.eclipse.swt.dnd.DropTargetListener#drop(org.eclipse.swt.dnd
+			 * .DropTargetEvent)
 			 */
 			public void drop(DropTargetEvent event) {
 				if (((TreeItem) event.item).getData() instanceof EntityGroup
@@ -170,7 +163,9 @@ public class EntityView extends ViewPart implements ISelectionChangedListener,
 			/*
 			 * (non-Javadoc)
 			 * 
-			 * @see org.eclipse.swt.dnd.DropTargetListener#dropAccept(org.eclipse.swt.dnd.DropTargetEvent)
+			 * @see
+			 * org.eclipse.swt.dnd.DropTargetListener#dropAccept(org.eclipse
+			 * .swt.dnd.DropTargetEvent)
 			 */
 			public void dropAccept(DropTargetEvent event) {
 				if (!(((TreeItem) event.item).getData() instanceof EntityGroup)) {
@@ -216,7 +211,9 @@ public class EntityView extends ViewPart implements ISelectionChangedListener,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.jface.viewers.ISelectionChangedListener#selectionChanged(org.eclipse.jface.viewers.SelectionChangedEvent)
+	 * @see
+	 * org.eclipse.jface.viewers.ISelectionChangedListener#selectionChanged(
+	 * org.eclipse.jface.viewers.SelectionChangedEvent)
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -232,29 +229,31 @@ public class EntityView extends ViewPart implements ISelectionChangedListener,
 			Object ob = iter.next();
 			if (ob instanceof VisualEntity) {
 				hilit.add((VisualEntity) ob);
-				if(event.getSource().equals(viewer)){
+				if (event.getSource().equals(viewer)) {
 					selectionService.select(hilit, true, this);
 				}
 			}
 			if (ob instanceof EntityGroup) {
-				for(Entity ent:((EntityGroup)ob).getEntities()){
-					if(ent instanceof VisualEntity){
-						hilit.add((VisualEntity) ent);		
+				for (Entity ent : ((EntityGroup) ob).getEntities()) {
+					if (ent instanceof VisualEntity) {
+						hilit.add((VisualEntity) ent);
 					}
 				}
-				if(event.getSource().equals(viewer)){
+				if (event.getSource().equals(viewer)) {
 					selectionService.select(hilit, true, this);
 				}
 			}
 		}
-		
+
 		return;
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.services.registry.core.scenedata.SceneDataChangedListener#sceneDataChanged(org.rifidi.designer.entities.SceneData)
+	 * @see
+	 * org.rifidi.services.registry.core.scenedata.SceneDataChangedListener#
+	 * sceneDataChanged(org.rifidi.designer.entities.SceneData)
 	 */
 	@Override
 	public void sceneDataChanged(SceneData sceneData) {
@@ -264,15 +263,16 @@ public class EntityView extends ViewPart implements ISelectionChangedListener,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.services.registry.core.scenedata.SceneDataChangedListener#destroySceneData(org.rifidi.designer.entities.SceneData)
+	 * @see
+	 * org.rifidi.services.registry.core.scenedata.SceneDataChangedListener#
+	 * destroySceneData(org.rifidi.designer.entities.SceneData)
 	 */
 	@Override
 	public void destroySceneData(SceneData sceneData) {
-		try{
-			viewer.setInput(null);	
-		}
-		catch(SWTException e){
-			logger.warn("Problem "+e);
+		try {
+			viewer.setInput(null);
+		} catch (SWTException e) {
+			logger.warn("Problem " + e);
 		}
 	}
 
@@ -306,15 +306,6 @@ public class EntityView extends ViewPart implements ISelectionChangedListener,
 	public void setSelectionService(SelectionService selectionService) {
 		this.selectionService = selectionService;
 		selectionService.addSelectionChangedListener(this);
-	}
-
-	/**
-	 * @param finderService
-	 *            the finderService to set
-	 */
-	@Inject
-	public void setFinderService(FinderService finderService) {
-		this.finderService = finderService;
 	}
 
 	/**

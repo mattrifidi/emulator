@@ -58,7 +58,6 @@ import org.rifidi.designer.rcp.views.view3d.listeners.ZoomMouseWheelListener;
 import org.rifidi.designer.rcp.views.view3d.mode.InteractionMode;
 import org.rifidi.designer.services.core.camera.ZoomableLWJGLCamera;
 import org.rifidi.designer.services.core.entities.EntitiesService;
-import org.rifidi.designer.services.core.entities.FinderService;
 import org.rifidi.designer.services.core.entities.NewEntityListener;
 import org.rifidi.designer.services.core.entities.SceneDataService;
 import org.rifidi.designer.services.core.selection.SelectionService;
@@ -77,60 +76,34 @@ import com.jme.util.TextureManager;
 public class View3D extends ViewPart implements IPerspectiveListener,
 		NewEntityListener {
 
-	/**
-	 * ID.
-	 */
+	/** ID. */
 	public static final String ID = "org.rifidi.designer.rcp.views.View3D";
 
-	/**
-	 * Enum for the different modes the 3dview supports.
-	 */
+	/** Enum for the different modes the 3dview supports. */
 	public static enum Mode {
 		PickMode, CameraMode, PlacementMode, WatchAreaMode, MoveMode
 	};
 
-	/**
-	 * Ugly but required for rotating entites while moving them.
-	 */
+	/** Ugly but required for rotating entites while moving them. */
 	public static boolean moving = false;
 
-	/**
-	 * The currently active mode.
-	 */
+	/** The currently active mode. */
 	private static Mode currentMode;
 
 	private Map<Mode, InteractionMode> modeMap;
-	/**
-	 * Logger.
-	 */
+	/** Logger. */
 	private static Log logger = LogFactory.getLog(View3D.class);
 
-	/**
-	 * The rendering canvas.
-	 */
+	/** The rendering canvas. */
 	private GLCanvas glCanvas;
-
-	private JMEComposite jmeComposite;
-	/**
-	 * The scenedata service.
-	 */
+	/** The scenedata service. */
 	private SceneDataService sceneDataService;
-	/**
-	 * The world service.
-	 */
+	/** The world service. */
 	private WorldService worldService;
-	/**
-	 * The selection service.
-	 */
+	/** The selection service. */
 	private SelectionService selectionService;
-	/**
-	 * The entity service.
-	 */
+	/** The entity service. */
 	private EntitiesService entitiesService;
-	/**
-	 * The finder service.
-	 */
-	private FinderService finderService;
 
 	// miscellany & NEW STUFF
 	private Point oldpos;
@@ -156,7 +129,7 @@ public class View3D extends ViewPart implements IPerspectiveListener,
 	public void createPartControl(final Composite parent) {
 		TextureManager.clearCache();
 
-		jmeComposite = new JMEComposite(parent, designerGame);
+		new JMEComposite(parent, designerGame);
 		glCanvas = designerGame.getCanvas();
 		// let glcanvas have focus by default
 		glCanvas.forceFocus();
@@ -204,14 +177,13 @@ public class View3D extends ViewPart implements IPerspectiveListener,
 	 * @param file
 	 *            the file to load the scene from
 	 */
-	@SuppressWarnings("unchecked")
 	public void loadScene(final IFile file) {
 		logger.debug("setting up world");
 		// change the window title
 		Display.getCurrent().getActiveShell().setText(
 				"Rifidi Designer: " + file.getName());
 		worldService.pause();
-		
+
 		IWorkbench wb = PlatformUI.getWorkbench();
 		wb.getProgressService();
 		sceneDataService.loadScene(Display.getCurrent(), file);
@@ -592,15 +564,6 @@ public class View3D extends ViewPart implements IPerspectiveListener,
 			// ((CameraServiceImpl)
 			// cameraService).setActiveCamera("lookCamera");
 		}
-	}
-
-	/**
-	 * @param finderService
-	 *            the finderService to set
-	 */
-	@Inject
-	public void setFinderService(FinderService finderService) {
-		this.finderService = finderService;
 	}
 
 	/**

@@ -50,54 +50,33 @@ import com.jme.renderer.Camera;
  * @author Dan West - 'Phoenix' - dan@pramari.com
  */
 public class MiniMapView extends ViewPart {
-	/**
-	 * Eclipse ID
-	 */
+	/** Eclipse ID */
 	public static String ID = "org.rifidi.designer.rcp.views.MiniMapView";
-	/**
-	 * Logger
-	 */
+	/** Logger */
 	private static Log logger = LogFactory.getLog(MiniMapView.class);
-	/**
-	 * Camera used to render the map.
-	 */
+	/** Camera used to render the map. */
 	private Camera mapCamera;
-	/**
-	 * Label used to display the map on.
-	 */
+	/** Label used to display the map on. */
 	private Label label;
-	/**
-	 * Map image data.
-	 */
+	/** Map image data. */
 	private ImageData imageData;
-	/**
-	 * Reusable image object.
-	 */
+	/** Reusable image object. */
 	private Image image;
-	/**
-	 * Slider to control zoom.
-	 */
+	/** Slider to control zoom. */
 	private Scale scale;
-	/**
-	 * Used for dragging.
-	 */
+	/** Used for dragging. */
 	private boolean mousedown = false;
-	/**
-	 * Graphics context for manipulating the map image
-	 */
+	/** Graphics context for manipulating the map image */
 	private GC graphicsContext;
-	/**
-	 * true if the view is disposed.
-	 */
+	/** true if the view is disposed. */
 	private boolean disposed = false;
 
 	private Updater updater;
 
-	private int size = 0;
-
 	private DesignerGame implementor;
 
 	private WaitingCallable waitingCallable;
+	
 	/**
 	 * Constructor.
 	 */
@@ -242,7 +221,6 @@ public class MiniMapView extends ViewPart {
 	 *            the minimap image data
 	 */
 	public void setImage(ImageData img, int size) {
-		this.size = size;
 		if (imageData == null) {
 			imageData = img;
 			image = new Image(Display.getCurrent(), img);

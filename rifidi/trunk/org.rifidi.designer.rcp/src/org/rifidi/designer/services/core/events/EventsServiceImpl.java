@@ -27,8 +27,6 @@ import org.eclipse.ui.console.MessageConsole;
 import org.eclipse.ui.console.MessageConsoleStream;
 import org.rifidi.designer.entities.internal.WatchAreaEvent;
 import org.rifidi.designer.rcp.Activator;
-import org.rifidi.designer.services.core.entities.FinderService;
-import org.rifidi.services.annotations.Inject;
 import org.rifidi.services.registry.ServiceRegistry;
 
 /**
@@ -38,49 +36,25 @@ import org.rifidi.services.registry.ServiceRegistry;
  * 
  */
 public class EventsServiceImpl implements EventsService {
-	/**
-	 * Logger for this class.
-	 */
+	/** Logger for this class. */
 	private static Log logger = LogFactory.getLog(EventsServiceImpl.class);
-	/**
-	 * Stack of events that need to be processed.
-	 */
+	/** Stack of events that need to be processed. */
 	private Stack<WorldEvent> eventStack;
-	/**
-	 * Thread for processing the events.
-	 */
+	/** Thread for processing the events. */
 	private ProcessingThread thread;
-	/**
-	 * List of event types to record.
-	 */
-	private List<Class> eventTypes;
-	/**
-	 * Map containing a timestamp as key and the event as value.
-	 */
+	/** List of event types to record. */
+	private List<Class<?>> eventTypes;
+	/** Map containing a timestamp as key and the event as value. */
 	private Map<Long, WorldEvent> recordedEvents;
-	/**
-	 * Reference to the finderservice.
-	 */
-	private FinderService finderService;
-	/**
-	 * Red output stream.
-	 */
+	/** Red output stream. */
 	private MessageConsoleStream msgConsoleStreamRed;
-	/**
-	 * Black output stream.
-	 */
+	/** Black output stream. */
 	private MessageConsoleStream msgConsoleStreamBlack;
-	/**
-	 * Green output stream.
-	 */
+	/** Green output stream. */
 	private MessageConsoleStream msgConsoleStreamGreen;
-	/**
-	 * Set if the events should be recorded.
-	 */
+	/** Set if the events should be recorded. */
 	private boolean recording = false;
-	/**
-	 * Used for deferred initialization.
-	 */
+	/** Used for deferred initialization. */
 	private AtomicBoolean inited = new AtomicBoolean(false);
 
 	/**
@@ -90,11 +64,7 @@ public class EventsServiceImpl implements EventsService {
 		logger.debug("EventsService created");
 		ServiceRegistry.getInstance().service(this);
 		eventStack = new Stack<WorldEvent>();
-		eventTypes = Collections.synchronizedList(new ArrayList<Class>());
-	}
-
-	private void init() {
-
+		eventTypes = Collections.synchronizedList(new ArrayList<Class<?>>());
 	}
 
 	/*
@@ -149,12 +119,13 @@ public class EventsServiceImpl implements EventsService {
 	 * 
 	 * @see org.rifidi.services.registry.core.events.EventsService#record(org.rifidi.services.registry.core.events.EventTypes[])
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
-	public void record(Class... eventType) {
+	public void record(Class<?>... eventType) {
 		recordedEvents.clear();
 		eventTypes.clear();
-		for (Class<WorldEvent> type : eventType) {
-			eventTypes.add(type);
+		for (Class<?> type : eventType) {
+			eventTypes.add((Class<WorldEvent>)type);
 		}
 		recording = true;
 	}
@@ -204,38 +175,12 @@ public class EventsServiceImpl implements EventsService {
 		return recording;
 	}
 
-	/**
-	 * @param finderService
-	 *            the finderService to unset
-	 */
-	public void unsetFinderService(FinderService finderService) {
-		this.finderService = null;
-	}
-
-	/**
-	 * @param finderService
-	 *            the finderService to set
-	 */
-	@Inject
-	public void setFinderService(FinderService finderService) {
-		logger.debug("EventsService got FinderService");
-		this.finderService = finderService;
-	}
-
 	private class ProcessingThread extends Thread {
 
 		/**
 		 * Reference to the event stack.
 		 */
 		private Stack<WorldEvent> eventStack;
-		/**
-		 * Reference to the list of event types that should be recorded.
-		 */
-		private List<Class> eventTypes;
-		/**
-		 * ordered list of recorded events.
-		 */
-		private List<WorldEvent> recorded;
 		private MessageConsoleStream msgConsoleStreamRed;
 		private MessageConsoleStream msgConsoleStreamBlack;
 		private MessageConsoleStream msgConsoleStreamGreen;
@@ -247,12 +192,10 @@ public class EventsServiceImpl implements EventsService {
 		 * @param eventStack
 		 */
 		public ProcessingThread(String name, Stack<WorldEvent> eventStack,
-				List<Class> eventTypes, MessageConsoleStream red,
+				List<Class<?>> eventTypes, MessageConsoleStream red,
 				MessageConsoleStream black, MessageConsoleStream green) {
 			super(name);
 			this.eventStack = eventStack;
-			this.eventTypes = eventTypes;
-			recorded = new ArrayList<WorldEvent>();
 			this.msgConsoleStreamBlack = black;
 			this.msgConsoleStreamRed = red;
 			this.msgConsoleStreamGreen = green;

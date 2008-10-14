@@ -247,7 +247,6 @@ public class SceneData implements IAdaptable, IWorkbenchAdapter {
 	 * @param entities
 	 *            the entities to set
 	 */
-	@SuppressWarnings("unchecked")
 	public void setEntities(final List<Entity> entities) {
 		this.entities = entities;
 		syncedEntities = Collections.synchronizedList(entities);

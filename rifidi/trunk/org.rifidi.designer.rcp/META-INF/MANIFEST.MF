@@ -25,7 +25,7 @@ Require-Bundle: org.eclipse.ui,
  org.monklypse.jme2.physics;bundle-version="1.0.0",
  org.monklypse.lwjgl;bundle-version="1.0.0",
  org.rifidi.designer.entities;bundle-version="1.0.0"
-Eclipse-LazyStart: true
+Bundle-ActivationPolicy: lazy
 Export-Package: org.rifidi.designer.entities.internal,
  org.rifidi.designer.entities.internal.adapters,
  org.rifidi.designer.rcp,
@@ -61,5 +61,4 @@ Export-Package: org.rifidi.designer.entities.internal,
  org.rifidi.designer.services.core.world,
  org.rifidi.utilities.grid
 Eclipse-BuddyPolicy: dependent
-Bundle-ClassPath: FengGUI.jar,
- .
+Bundle-ClassPath: .

@@ -11,7 +11,6 @@
 package org.rifidi.designer.rcp.propertytesters;
 
 import java.util.Collection;
-import java.util.List;
 
 import org.eclipse.core.expressions.PropertyTester;
 import org.rifidi.designer.entities.Entity;
@@ -45,7 +44,7 @@ public class EntityPropertyTester extends PropertyTester {
 	 * (non-Javadoc)
 	 * 
 	 * @see org.eclipse.core.expressions.IPropertyTester#test(java.lang.Object,
-	 *      java.lang.String, java.lang.Object[], java.lang.Object)
+	 * java.lang.String, java.lang.Object[], java.lang.Object)
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -71,7 +70,8 @@ public class EntityPropertyTester extends PropertyTester {
 	}
 
 	/**
-	 * @param finderService the finderService to set
+	 * @param finderService
+	 *            the finderService to set
 	 */
 	@Inject
 	public void setFinderService(FinderService finderService) {

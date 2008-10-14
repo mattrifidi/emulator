@@ -15,8 +15,6 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.rifidi.designer.entities.Entity;
 import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.databinding.annotations.MonitoredProperties;
@@ -50,8 +48,6 @@ import com.jmex.physics.material.Material;
 @MonitoredProperties(names = { "name" })
 @XmlRootElement
 public class DestroyerEntity extends VisualEntity implements NeedsPhysics {
-	/** Logger for this class. */
-	private static Log logger = LogFactory.getLog(DestroyerEntity.class);
 	/** Infrared trigger. */
 	private StaticPhysicsNode triggerSpace = null;
 	/** Reference to the physics space. */
@@ -80,22 +76,22 @@ public class DestroyerEntity extends VisualEntity implements NeedsPhysics {
 		Node mainNode = new Node();
 		setNode(mainNode);
 		mainNode.setModelBound(new BoundingBox());
-		
+
 		triggerSpace = physicsSpace.createStaticNode();
 		triggerSpace.setName("triggerSpace");
-		Box box = new Box("triggerSpace", new Vector3f(0, 3.5f, 0), 3f, 3.5f, 2.0f);
+		Box box = new Box("triggerSpace", new Vector3f(0, 3.5f, 0), 3f, 3.5f,
+				2.0f);
 		triggerSpace.attachChild(box);
 		mainNode.attachChild(triggerSpace);
 		box.setRandomColors();
 		BlendState as = DisplaySystem.getDisplaySystem().getRenderer()
-		.createBlendState();
+				.createBlendState();
 		as.setBlendEnabled(true);
 		as.setSourceFunction(SourceFunction.SourceAlpha);
 		as.setDestinationFunction(DestinationFunction.One);
 		as.setEnabled(true);
 		box.setRenderState(as);
-		
-		
+
 		Node _node = new Node("hiliter");
 		box = new Box("hiliter", new Vector3f(0, 3.5f, 0), 3f, 3.5f, 2.0f);
 		box.setModelBound(new BoundingBox());
@@ -120,8 +116,9 @@ public class DestroyerEntity extends VisualEntity implements NeedsPhysics {
 		prepare();
 	}
 
-	private Node oldCol = null;
-
+	/**
+	 * Prepare physics and materials.
+	 */
 	private void prepare() {
 		// set up collisions to trigger the pusharm
 		triggerSpace.generatePhysicsGeometry();

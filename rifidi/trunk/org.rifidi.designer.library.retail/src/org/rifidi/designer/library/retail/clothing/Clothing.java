@@ -35,26 +35,13 @@ import com.jmex.physics.PhysicsSpace;
  * 
  */
 public class Clothing extends VisualEntity implements NeedsPhysics {
-
-	/**
-	 * Reference to the collision input handler.
-	 */
-	private InputHandler inputHandler;
-	/**
-	 * Reference to the current physics space.
-	 */
+	/** Reference to the current physics space. */
 	private PhysicsSpace physicsSpace;
-	/**
-	 * Model for shared meshes
-	 */
+	/** Model for shared meshes */
 	private static Node model = null;
-	/**
-	 * Translation given on creation, ignored later on.
-	 */
+	/** Translation given on creation, ignored later on. */
 	private Vector3f startTranslation;
-	/**
-	 * Rotation given on creation, ignored later on.
-	 */
+	/** Rotation given on creation, ignored later on. */
 	private Quaternion startRotation;
 
 	/*
@@ -77,12 +64,15 @@ public class Clothing extends VisualEntity implements NeedsPhysics {
 	public void init() {
 		setCollides(false);
 		URI modelpath = null;
-		if(model==null){
+		if (model == null) {
 			try {
-				modelpath = getClass().getClassLoader().getResource(
-						"org/rifidi/designer/library/retail/clothing/cloth0.jme")
+				modelpath = getClass()
+						.getClassLoader()
+						.getResource(
+								"org/rifidi/designer/library/retail/clothing/cloth0.jme")
 						.toURI();
-				model = (Node) BinaryImporter.getInstance().load(modelpath.toURL());
+				model = (Node) BinaryImporter.getInstance().load(
+						modelpath.toURL());
 			} catch (MalformedURLException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
@@ -90,11 +80,12 @@ public class Clothing extends VisualEntity implements NeedsPhysics {
 			} catch (URISyntaxException e) {
 				e.printStackTrace();
 			}
-			Quaternion quat = new Quaternion(new float[]{(float)Math.toRadians(270f),0f,0f});
-			model.setLocalRotation(quat);	
+			Quaternion quat = new Quaternion(new float[] {
+					(float) Math.toRadians(270f), 0f, 0f });
+			model.setLocalRotation(quat);
 		}
 		DynamicPhysicsNode physix = physicsSpace.createDynamicNode();
-		physix.attachChild(new SharedNode("sharedcloth",model));
+		physix.attachChild(new SharedNode("sharedcloth", model));
 		setNode(physix);
 		physix.setLocalTranslation(startTranslation);
 		physix.setLocalRotation(startRotation);
@@ -117,17 +108,20 @@ public class Clothing extends VisualEntity implements NeedsPhysics {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.entities.interfaces.NeedsPhysics#setCollisionHandler(com.jme.input.InputHandler)
+	 * @see
+	 * org.rifidi.designer.entities.interfaces.NeedsPhysics#setCollisionHandler
+	 * (com.jme.input.InputHandler)
 	 */
 	@Override
 	public void setCollisionHandler(InputHandler collisionHandler) {
-		this.inputHandler = collisionHandler;
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.entities.interfaces.NeedsPhysics#setPhysicsSpace(com.jmex.physics.PhysicsSpace)
+	 * @see
+	 * org.rifidi.designer.entities.interfaces.NeedsPhysics#setPhysicsSpace(
+	 * com.jmex.physics.PhysicsSpace)
 	 */
 	@Override
 	public void setPhysicsSpace(PhysicsSpace physicsSpace) {
@@ -160,7 +154,6 @@ public class Clothing extends VisualEntity implements NeedsPhysics {
 	 */
 	@Override
 	public Node getBoundingNode() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 }

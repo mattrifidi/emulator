@@ -41,10 +41,6 @@ public class CablingServiceImpl implements CablingService,
 	 */
 	private static Log logger = LogFactory.getLog(CableChangeListener.class);
 	/**
-	 * Reference to the currently loaded scenedata.
-	 */
-	private SceneData sceneData;
-	/**
 	 * List of registered cables.
 	 */
 	private Set<CableEntity> cableList;
@@ -58,10 +54,6 @@ public class CablingServiceImpl implements CablingService,
 	 * List of cable change listeners.
 	 */
 	private List<CableChangeListener> cableChangeListeners;
-	/**
-	 * Reference to the scene data service.
-	 */
-	private SceneDataService sceneDataService;
 
 	/**
 	 * Constructor.
@@ -218,7 +210,6 @@ public class CablingServiceImpl implements CablingService,
 	 */
 	@Override
 	public void sceneDataChanged(SceneData sceneData) {
-		this.sceneData = sceneData;
 		for (Entity entity : sceneData.getCableGroup().getEntities()) {
 			CableEntity cable = (CableEntity) entity;
 			if (!cableList.contains(cable)) {
@@ -286,7 +277,6 @@ public class CablingServiceImpl implements CablingService,
 	@Inject
 	public void setSceneDataService(SceneDataService sceneDataService) {
 		logger.debug("CablingService got SceneDataService");
-		this.sceneDataService = sceneDataService;
 		sceneDataService.addSceneDataChangedListener(this);
 	}
 
@@ -295,7 +285,6 @@ public class CablingServiceImpl implements CablingService,
 	 *            the sceneDataService to unset
 	 */
 	public void unsetSceneDataService(SceneDataService sceneDataService) {
-		this.sceneDataService = null;
 	}
 
 }

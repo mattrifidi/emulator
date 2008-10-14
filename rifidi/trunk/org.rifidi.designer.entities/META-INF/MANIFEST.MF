@@ -18,7 +18,7 @@ Require-Bundle: org.eclipse.ui,
  org.rifidi.services.initializer,
  org.rifidi.services.tags
 Bundle-Activator: org.rifidi.designer.entities.Activator
-Eclipse-LazyStart: true
+Bundle-ActivationPolicy: lazy
 Eclipse-BuddyPolicy: dependent
 Export-Package: org.rifidi.designer.entities,
  org.rifidi.designer.entities.adapters,
