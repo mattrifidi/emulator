@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Streamer Plug-in
+Bundle-SymbolicName: org.rifidi.ui.streamer; singleton:=true
+Bundle-Version: 2.1.2
+Bundle-Activator: org.rifidi.ui.streamer.Activator
+Bundle-Vendor: Pramari, LLC
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.core.runtime.compatibility.auth,
+ org.rifidi.dependencies;bundle-version="1.0.0",
+ org.rifidi.streamer;bundle-version="2.1.1",
+ org.rifidi.ui.common;bundle-version="2.0.0",
+ org.rifidi.streamer.xml;bundle-version="2.1.1",
+ org.rifidi.services.tags;bundle-version="2.0.2",
+ org.rifidi.emulator;bundle-version="2.0.1"
+Eclipse-LazyStart: true
