@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Streamer Plug-in
 Bundle-SymbolicName: org.rifidi.streamer
-Bundle-Version: 2.0.1
+Bundle-Version: 2.1.1
 Bundle-Activator: org.rifidi.streamer.Activator
 Bundle-Vendor: Pramari, LLC
 Eclipse-LazyStart: true
