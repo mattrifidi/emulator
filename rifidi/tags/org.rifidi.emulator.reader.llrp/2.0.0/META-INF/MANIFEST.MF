@@ -1,0 +1,33 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Llrp Plug-in
+Bundle-SymbolicName: org.rifidi.emulator.reader.llrp
+Bundle-Version: 2.0.0
+Bundle-Activator: org.rifidi.emulator.reader.llrp.Activator
+Bundle-Vendor: Pramari, LLC
+Bundle-Localization: plugin
+Import-Package: org.osgi.framework;version="1.3.0"
+Require-Bundle: org.rifidi.emulator;bundle-version="2.0.2",
+ org.rifidi.dependencies,
+ org.rifidi.common.utilities,
+ org.rifidi.services.tags;bundle-version="2.0.0"
+Eclipse-LazyStart: true
+Export-Package: org.rifidi.emulator.reader.llrp,
+ org.rifidi.emulator.reader.llrp.airprotocol,
+ org.rifidi.emulator.reader.llrp.airprotocol.c1g2,
+ org.rifidi.emulator.reader.llrp.aispec,
+ org.rifidi.emulator.reader.llrp.command.exception,
+ org.rifidi.emulator.reader.llrp.commandhandler,
+ org.rifidi.emulator.reader.llrp.exception,
+ org.rifidi.emulator.reader.llrp.formatter,
+ org.rifidi.emulator.reader.llrp.io.protocol,
+ org.rifidi.emulator.reader.llrp.module,
+ org.rifidi.emulator.reader.llrp.properties,
+ org.rifidi.emulator.reader.llrp.report,
+ org.rifidi.emulator.reader.llrp.rospec,
+ org.rifidi.emulator.reader.llrp.tagbuffer,
+ org.rifidi.emulator.reader.llrp.trigger,
+ org.rifidi.emulator.reader.llrp.util,
+ org.rifidi.emulator.reader.llrp.utils
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy
