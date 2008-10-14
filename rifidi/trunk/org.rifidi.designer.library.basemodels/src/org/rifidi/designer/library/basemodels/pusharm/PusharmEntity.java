@@ -39,6 +39,7 @@ import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.renderer.Renderer;
 import com.jme.scene.Node;
+import com.jme.scene.SharedNode;
 import com.jme.scene.Spatial;
 import com.jme.scene.Spatial.CullHint;
 import com.jme.scene.shape.Box;
@@ -111,13 +112,20 @@ public class PusharmEntity extends VisualEntity implements SceneControl,
 	 * Stack for activation signals.
 	 */
 	private Stack<Boolean> activationStack;
-
+	/**
+	 * True if GPI is enabled.
+	 */
+	private boolean gpiEnabled;
+	private static Node sharedbodyNode;
+	private static Node sharedarmNode;
+	
 	/**
 	 * Constructor
 	 */
 	public PusharmEntity() {
 		setName("Pusharm");
 		activationStack = new Stack<Boolean>();
+		gpiEnabled = false;
 		this.speed = 2;
 	}
 
@@ -151,36 +159,42 @@ public class PusharmEntity extends VisualEntity implements SceneControl,
 		Node node = new Node("maingeometry");
 		node.setModelBound(new BoundingBox());
 		try {
-			URI body = null;
-			URI arm = null;
-			try {
-				arm = getClass()
-						.getClassLoader()
-						.getResource(
-								"org/rifidi/designer/library/basemodels/pusharm/pusher_arm.jme")
-						.toURI();
-				body = getClass()
-						.getClassLoader()
-						.getResource(
-								"org/rifidi/designer/library/basemodels/pusharm/pusher_body.jme")
-						.toURI();
-			} catch (URISyntaxException e) {
-				e.printStackTrace();
-			}
+			if(sharedbodyNode==null){
+				URI body = null;
+				URI arm = null;
+				try {
+					arm = getClass()
+							.getClassLoader()
+							.getResource(
+									"org/rifidi/designer/library/basemodels/pusharm/pusher_arm.jme")
+							.toURI();
+					body = getClass()
+							.getClassLoader()
+							.getResource(
+									"org/rifidi/designer/library/basemodels/pusharm/pusher_body.jme")
+							.toURI();
+				} catch (URISyntaxException e) {
+					e.printStackTrace();
+				}
 
-			Node bodyNode = (Node) BinaryImporter.getInstance().load(
-					body.toURL());
+				sharedbodyNode = (Node) BinaryImporter.getInstance().load(
+						body.toURL());
+				sharedarmNode = (Node) BinaryImporter.getInstance()
+						.load(arm.toURL());	
+			}
+			Node bodyNode=new SharedNode(sharedbodyNode);
+			Node armNode=new SharedNode(sharedarmNode);
 			bodyNode.setModelBound(new BoundingBox());
 			bodyNode.updateModelBound();
 			for (Spatial sp : bodyNode.getChildren()) {
 				sp.clearRenderState(RenderState.RS_TEXTURE);
 			}
-			bodyNode.setLocalRotation(new Quaternion(new float[]{(float)Math.toRadians(270),0,0}));
-			bodyNode.setLocalTranslation(new Vector3f(0,3.5f,0));
+			bodyNode.setLocalRotation(new Quaternion(new float[] {
+					(float) Math.toRadians(270), 0, 0 }));
+			bodyNode.setLocalTranslation(new Vector3f(0, 3.5f, 0));
 			bodyNode.updateRenderState();
-			Node armNode = (Node) BinaryImporter.getInstance()
-					.load(arm.toURL());
-			armNode.setLocalRotation(new Quaternion(new float[]{(float)Math.toRadians(90),0,0}));
+			armNode.setLocalRotation(new Quaternion(new float[] {
+					(float) Math.toRadians(90), 0, 0 }));
 			armPhysics = physicsSpace.createStaticNode();
 			armPhysics.attachChild(armNode);
 			armPhysics.setName("armPhysics");
@@ -366,8 +380,10 @@ public class PusharmEntity extends VisualEntity implements SceneControl,
 	 */
 	public void trigger(Object source) {
 
-		if (running && !paused && !activationStack.isEmpty()
-				&& activationStack.pop()) {
+		if (running
+				&& !paused
+				&& (!gpiEnabled || (!activationStack.isEmpty() && activationStack
+						.pop()))) {
 			if (st.getCurTime() == st.getMaxTime())
 				st.setCurTime(0);
 		}
@@ -507,5 +523,31 @@ public class PusharmEntity extends VisualEntity implements SceneControl,
 	@Override
 	public Node getBoundingNode() {
 		return (Node) getNode().getChild("hiliter");
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.rifidi.designer.entities.interfaces.GPI#enableGPI(boolean)
+	 */
+	@Override
+	public void enableGPI(boolean enablement) {
+		// TODO Auto-generated method stub
+
+	}
+
+	/**
+	 * @return the gpiEnabled
+	 */
+	public boolean isGpiEnabled() {
+		return this.gpiEnabled;
+	}
+
+	/**
+	 * @param gpiEnabled
+	 *            the gpiEnabled to set
+	 */
+	public void setGpiEnabled(boolean gpiEnabled) {
+		this.gpiEnabled = gpiEnabled;
 	}
 }

@@ -520,4 +520,13 @@ public class GateEntity extends VisualEntity implements RifidiEntity, Switch,
 		return (Node)getNode().getChild("hiliter");
 	}
 
+	/* (non-Javadoc)
+	 * @see org.rifidi.designer.entities.interfaces.GPI#enableGPI(boolean)
+	 */
+	@Override
+	public void enableGPI(boolean enablement) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

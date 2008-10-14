@@ -53,8 +53,10 @@ public abstract class VisualEntity extends Entity {
 	 * 90 degree rotation matrix.
 	 */
 	@XmlTransient
-	private static Matrix3f rotationMatrix90 = null;
-
+	private static Matrix3f rotLeft = null;
+	
+	@XmlTransient
+	private static Matrix3f rotRight = null;
 	/**
 	 * @return the node
 	 */
@@ -79,22 +81,33 @@ public abstract class VisualEntity extends Entity {
 	}
 
 	/**
-	 * Rotate's the entity's visual representation and its bitmap pattern for
-	 * collision checking
+	 * Rotate's the entity's visual representation to the left.
 	 * 
-	 * @author jochen
-	 * @author dan
 	 */
-	public void rotateRight() {
-		if (rotationMatrix90 == null) {
+	public void rotateLeft() {
+		if (rotLeft == null) {
 			Quaternion quat = new Quaternion();
-			quat.fromAngleAxis(FastMath.PI * 0.5f, Vector3f.UNIT_Y);
-			rotationMatrix90 = quat.toRotationMatrix();
+			quat.fromAngles(0f, (float)Math.toRadians(90), 0f);
+			rotLeft = quat.toRotationMatrix();
 		}
 
-		getNode().getLocalRotation().apply(rotationMatrix90);
+		getNode().getLocalRotation().apply(rotLeft);
 	}
 
+	/**
+	 * Rotate's the entity's visual representation to the right.
+	 * 
+	 */
+	public void rotateRight() {
+		if (rotRight == null) {
+			Quaternion quat = new Quaternion();
+			quat.fromAngles(0f, (float)Math.toRadians(-90), 0f);
+			rotRight = quat.toRotationMatrix();
+		}
+
+		getNode().getLocalRotation().apply(rotRight);
+	}	
+	
 	/**
 	 * @return true if this entity can collide with other entities
 	 */

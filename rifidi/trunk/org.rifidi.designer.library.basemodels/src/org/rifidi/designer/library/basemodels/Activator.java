@@ -100,9 +100,9 @@ public class Activator extends AbstractUIPlugin {
 				PLUGIN_ID, iconPath + "rifidi.png"));
 		reg.put(DestroyerEntity.class.getName(), imageDescriptorFromPlugin(
 				PLUGIN_ID, iconPath + "destroyer.png"));
-		reg.put("room1", imageDescriptorFromPlugin(
-				PLUGIN_ID, iconPath + "room1.png"));
-		reg.put("room2", imageDescriptorFromPlugin(
-				PLUGIN_ID, iconPath + "room2.png"));
+		reg.put("map_1", imageDescriptorFromPlugin(
+				PLUGIN_ID, iconPath + "map_1.png"));
+		reg.put("map_2", imageDescriptorFromPlugin(
+				PLUGIN_ID, iconPath + "map_2.png"));
 	}
 }

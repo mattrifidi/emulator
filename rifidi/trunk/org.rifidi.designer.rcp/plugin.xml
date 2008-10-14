@@ -91,8 +91,13 @@
       </command>
       <command
             categoryId="org.rifidi.designer.rcp.actions.viewcategory"
-            id="org.rifidi.designer.rcp.commands.entities.rotateselected"
-            name="Rotate Selected">
+            id="org.rifidi.designer.rcp.commands.entities.rotateright"
+            name="Rotate Right">
+      </command>
+      <command
+            categoryId="org.rifidi.designer.rcp.actions.viewcategory"
+            id="org.rifidi.designer.rcp.commands.entities.rotateleft"
+            name="Rotate Left">
       </command>
       <command
             categoryId="org.rifidi.designer.rcp.actions.viewcategory"
@@ -224,8 +229,20 @@
             commandId="org.rifidi.designer.rcp.commands.developers.boundsdebugging">
       </handler>
       <handler
-            class="org.rifidi.designer.rcp.handlers.entities.RotateSelectedHandler"
-            commandId="org.rifidi.designer.rcp.commands.entities.rotateselected">
+            class="org.rifidi.designer.rcp.handlers.entities.RotateRightHandler"
+            commandId="org.rifidi.designer.rcp.commands.entities.rotateright">
+         <enabledWhen>
+            <iterate
+                  ifEmpty="false">
+               <instanceof
+                     value="org.rifidi.designer.entities.VisualEntity">
+               </instanceof>
+            </iterate>
+         </enabledWhen>
+      </handler>
+      <handler
+            class="org.rifidi.designer.rcp.handlers.entities.RotateLeftHandler"
+            commandId="org.rifidi.designer.rcp.commands.entities.rotateleft">
          <enabledWhen>
             <iterate
                   ifEmpty="false">
@@ -355,10 +372,27 @@
                   label="Toggle Grid">
             </command>
             <command
-                  commandId="org.rifidi.designer.rcp.commands.entities.rotateselected"
+                  commandId="org.rifidi.designer.rcp.commands.entities.rotateright"
                   icon="icons/shape_rotate_clockwise.png"
-                  id="org.rifidi.designer.rcp.commands.entities.rotateselectedBinding"
-                  label="Rotate Selected">
+                  id="org.rifidi.designer.rcp.commands.entities.rotaterightBinding"
+                  label="Rotate Right">
+               <visibleWhen>
+                  <with
+                        variable="activeContexts">
+                     <iterate
+                           operator="or">
+                        <equals
+                              value="org.rifidi.designer.rcp.designcontext">
+                        </equals>
+                     </iterate>
+                  </with>
+               </visibleWhen>
+            </command>
+            <command
+                  commandId="org.rifidi.designer.rcp.commands.entities.rotateleft"
+                  icon="icons/shape_rotate_clockwise.png"
+                  id="org.rifidi.designer.rcp.commands.entities.rotateleftBinding"
+                  label="Rotate Left">
                <visibleWhen>
                   <with
                         variable="activeContexts">
@@ -738,10 +772,28 @@
             </visibleWhen>
          </command>
          <command
-               commandId="org.rifidi.designer.rcp.commands.entities.rotateselected"
+               commandId="org.rifidi.designer.rcp.commands.entities.rotateright"
                icon="icons/shape_rotate_clockwise.png"
-               id="org.rifidi.designer.rcp.commands.entities.rotateselectedBinding"
-               label="Rotate Selected">
+               id="org.rifidi.designer.rcp.commands.entities.rotaterightBinding"
+               label="Rotate Right">
+            <visibleWhen>
+               <and>
+                  <count
+                        value="+">
+                  </count>
+                  <iterate>
+                     <instanceof
+                           value="org.rifidi.designer.entities.VisualEntity">
+                     </instanceof>
+                  </iterate>
+               </and>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="org.rifidi.designer.rcp.commands.entities.rotateleft"
+               icon="icons/shape_rotate_clockwise.png"
+               id="org.rifidi.designer.rcp.commands.entities.rotateleftBinding"
+               label="Rotate Left">
             <visibleWhen>
                <and>
                   <count

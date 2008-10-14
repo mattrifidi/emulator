@@ -58,6 +58,7 @@ public class CableEntity extends Entity implements InternalEntity{
 		this.gpi = (Entity)gpi;
 		sourcePort = 0;
 		targetPort = 1;
+		((GPI)gpi).enableGPI(true);
 	}
 
 	/**
@@ -75,6 +76,7 @@ public class CableEntity extends Entity implements InternalEntity{
 	 */
 	@Override
 	public void destroy() {
+		((GPI)gpi).enableGPI(false);
 	}
 
 	/**

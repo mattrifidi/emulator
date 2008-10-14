@@ -174,21 +174,21 @@ public class BasemodelsLibrary implements EntityLibrary {
 		library.add(prodSGTIN96Ref);
 
 		FloorElement floorElement = new FloorElement();
-		floorElement.setId("room2");
+		floorElement.setId("map_1");
 		floorElement.setImageDescriptor(Activator.getDefault()
 				.getImageRegistry().getDescriptor(
-						"room2"));
-		floorElement.setName("Room2");
-		floorElement.setPath("org/rifidi/designer/library/basemodels/test.jme");
+						"map_1"));
+		floorElement.setName("Map 1");
+		floorElement.setPath("org/rifidi/designer/library/basemodels/map_1.jme");
 		floorelements.add(floorElement);
 		
-//		floorElement = new FloorElement();
-//		floorElement.setId("room1");
-//		floorElement.setImageDescriptor(Activator.getDefault()
-//				.getImageRegistry().getDescriptor(
-//				"room1"));
-//		floorElement.setName("Room1");
-//		floorElement.setPath("org/rifidi/designer/library/basemodels/room2.jme");
+		floorElement = new FloorElement();
+		floorElement.setId("map_2");
+		floorElement.setImageDescriptor(Activator.getDefault()
+				.getImageRegistry().getDescriptor(
+						"map_2"));
+		floorElement.setName("Map 2");
+		floorElement.setPath("org/rifidi/designer/library/basemodels/map_2.jme");
 		floorelements.add(floorElement);
 		
 	}

@@ -132,8 +132,6 @@ public class DestroyerEntity extends VisualEntity implements NeedsPhysics {
 						.equals(triggerSpace) ? ((ContactInfo) evt
 						.getTriggerData()).getNode2() : ((ContactInfo) evt
 						.getTriggerData()).getNode1();
-
-				System.out.println("node: " + collider);
 				VisualEntity ent = finderService
 						.getVisualEntityByNode(collider);
 				if (ent != null) {

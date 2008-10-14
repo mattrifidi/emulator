@@ -32,4 +32,10 @@ public interface GPI {
 	 * @param portNum
 	 */
 	void setHigh(int portNum);
+	
+	/**
+	 * Enable/Disable GPI for the entity.
+	 * @param enablement
+	 */
+	void enableGPI(boolean enablement);
 }

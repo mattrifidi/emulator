@@ -30,7 +30,7 @@ import org.rifidi.services.registry.ServiceRegistry;
  * @author Jochen Mader - jochen@pramari.com - Feb 17, 2008
  * 
  */
-public class RotateSelectedHandler extends AbstractHandler {
+public class RotateRightHandler extends AbstractHandler {
 	/**
 	 * Reference to the selection service.
 	 */
@@ -43,7 +43,7 @@ public class RotateSelectedHandler extends AbstractHandler {
 	/**
 	 * Constructor.
 	 */
-	public RotateSelectedHandler() {
+	public RotateRightHandler() {
 		super();
 		ServiceRegistry.getInstance().service(this);
 	}
