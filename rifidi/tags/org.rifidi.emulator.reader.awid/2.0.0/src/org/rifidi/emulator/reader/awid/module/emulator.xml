@@ -1,0 +1,13 @@
+<reader>
+	<readerclassname>org.rifidi.emulator.reader.awid.module.AwidReaderModule</readerclassname>
+	<description>Emulator for the Awid MPR</description>
+	<maxantennas>2</maxantennas>
+	<property>
+		<required>1</required>
+		<name>serial_port</name>
+		<display>com port</display>
+		<tooltip>The com port the reader should be reachable through</tooltip>
+		<defaultvalue>COM1</defaultvalue>		
+		<validatorclassname>ComPortValidator</validatorclassname>
+	</property>
+</reader>
