@@ -196,7 +196,7 @@ public class ConveyorEntity extends VisualEntity implements Switch,
 				.setDestinationFunction(BlendState.DestinationFunction.OneMinusSourceAlpha);
 		blend.setEnabled(true);
 		quad.setRenderState(blend);
-		getNode().attachChild(quad);
+		_node.attachChild(quad);
 		_node.attachChild(box);
 		_node.setModelBound(new BoundingBox());
 		_node.updateModelBound();

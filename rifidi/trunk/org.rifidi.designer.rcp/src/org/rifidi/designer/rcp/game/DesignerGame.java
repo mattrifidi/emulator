@@ -881,10 +881,18 @@ public class DesignerGame extends SWTDefaultImplementor implements
 			// for those who forget to add the bounding volume
 			if (hilit != null) {
 				hilit.setCullHint(Spatial.CullHint.Dynamic);
-				hilit.setRenderState(fragmentPrograms.get(color));
-				hilit.setRenderState(alphaState);
-				hilit.setRenderQueueMode(Renderer.QUEUE_OPAQUE);
-				entity.getNode().updateRenderState();
+				if(hilit.getChild("hiliter")!=null){
+					Spatial hilite=(Spatial)hilit.getChild("hiliter");
+					hilite.setRenderState(fragmentPrograms.get(color));
+					hilite.setRenderState(alphaState);
+					hilite.setRenderQueueMode(Renderer.QUEUE_OPAQUE);
+				}
+				else{
+					hilit.setRenderState(fragmentPrograms.get(color));
+					hilit.setRenderState(alphaState);
+					hilit.setRenderQueueMode(Renderer.QUEUE_OPAQUE);	
+				}
+				hilit.updateRenderState();
 			}
 		}
 		for (VisualEntity entity : unlit) {
@@ -892,7 +900,13 @@ public class DesignerGame extends SWTDefaultImplementor implements
 			// for those who forget to add the bounding volume
 			if (hilit != null) {
 				hilit.setCullHint(Spatial.CullHint.Always);
-				hilit.clearRenderState(RenderState.RS_FRAGMENT_PROGRAM);
+				if(hilit.getChild("hiliter")!=null){
+					Spatial hilite=(Spatial)hilit.getChild("hiliter");
+					hilite.clearRenderState(RenderState.RS_FRAGMENT_PROGRAM);
+				}
+				else{
+					hilit.clearRenderState(RenderState.RS_FRAGMENT_PROGRAM);
+				}
 				hilit.updateRenderState();
 			}
 		}
