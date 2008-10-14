@@ -65,9 +65,7 @@ public class RifidiTagMap {
 	 */
 	public boolean addTag(RifidiTag tagToAdd) {
 		RifidiTag t = tags.put(tagToAdd.getTagEntitiyID(), tagToAdd);
-		if(t==null){
-			return false;
-		}else return true;
+		return true;
 	}
 
 
