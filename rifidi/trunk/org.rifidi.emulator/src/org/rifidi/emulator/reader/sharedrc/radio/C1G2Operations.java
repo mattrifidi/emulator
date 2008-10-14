@@ -131,7 +131,7 @@ public class C1G2Operations {
 
 		c1g2tag.kill(killPassword);
 		eventLogger.info("[TAG EVENT]: Tag with ID "
-				+ ByteAndHexConvertingUtility.toHexString(c1g2tag.readId())
+				+ ByteAndHexConvertingUtility.toHexString(c1g2tag.getId())
 				+ " killed");
 
 	}
