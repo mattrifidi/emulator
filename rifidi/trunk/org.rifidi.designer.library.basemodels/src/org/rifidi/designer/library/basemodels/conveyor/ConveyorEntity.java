@@ -62,41 +62,23 @@ import com.jmex.physics.material.Material;
 @MonitoredProperties(names = { "name" })
 public class ConveyorEntity extends VisualEntity implements Switch,
 		NeedsPhysics, SceneControl {
-	/**
-	 * Logger for this class.
-	 */
+	/** Logger for this class. */
 	private static Log logger = LogFactory.getLog(ConveyorEntity.class);
-	/**
-	 * Alphastate for the directional pointer.
-	 */
+	/** Alphastate for the directional pointer. */
 	private BlendState basicTrans = null;
-	/**
-	 * Switch status on/off.
-	 */
+	/** Switch status on/off. */
 	private boolean active = false;
-	/**
-	 * Speed in feet per second.
-	 */
+	/** Speed in feet per second. */
 	private float speed = 0;
-	/**
-	 * Model for shared meshes
-	 */
+	/** Model for shared meshes */
 	private static Node[] lod = null;
-	/**
-	 * Material for the rollers
-	 */
+	/** Material for the rollers */
 	private Material rollerMaterial = null;
-	/**
-	 * Reference to the physics space.
-	 */
+	/** Reference to the physics space. */
 	private PhysicsSpace physicsSpace;
-	/**
-	 * Node that contains the different lods.
-	 */
+	/** Node that contains the different lods. */
 	private SwitchNode switchNode;
-	/**
-	 * Quad that indicates the movement direction of the conveyor.
-	 */
+	/** Quad that indicates the movement direction of the conveyor. */
 	private Quad quad;
 
 	/**
@@ -179,10 +161,10 @@ public class ConveyorEntity extends VisualEntity implements Switch,
 		quad = new Quad("arrows",
 				((BoundingBox) box.getModelBound()).xExtent * 2 - .2f,
 				((BoundingBox) box.getModelBound()).zExtent * 2);
-		quad.setLocalTranslation(new Vector3f(0f, ((BoundingBox) box
-				.getModelBound()).yExtent * 2 - .08f, 0f));
+		quad.setLocalTranslation(new Vector3f(0f, 4.44f, 0f));
 		quad.setLocalRotation(new Quaternion(new float[] {
 				(float) Math.toRadians(-90), (float) Math.toRadians(180), 0 }));
+		
 		TextureState text = DisplaySystem.getDisplaySystem().getRenderer()
 				.createTextureState();
 		text.setTexture(TextureManager.loadTexture("arrow",
@@ -196,7 +178,9 @@ public class ConveyorEntity extends VisualEntity implements Switch,
 				.setDestinationFunction(BlendState.DestinationFunction.OneMinusSourceAlpha);
 		blend.setEnabled(true);
 		quad.setRenderState(blend);
+		quad.updateRenderState();
 		_node.attachChild(quad);
+		
 		_node.attachChild(box);
 		_node.setModelBound(new BoundingBox());
 		_node.updateModelBound();

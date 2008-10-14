@@ -874,11 +874,22 @@ public class DesignerGame extends SWTDefaultImplementor implements
 		}
 		hilited.get(newcolor).addAll(hilight);
 		for (VisualEntity target : hilight) {
-			target.getBoundingNode().clearRenderState(
-					RenderState.RS_FRAGMENT_PROGRAM);
-			target.getBoundingNode().setRenderState(
-					fragmentPrograms.get(newcolor));
-			target.getNode().updateRenderState();
+			Node hilit = target.getBoundingNode();
+			if (hilit.getChild("hiliter") != null) {
+				Spatial hilite = (Spatial) hilit.getChild("hiliter");
+				hilite.clearRenderState(RenderState.RS_FRAGMENT_PROGRAM);
+				hilite.clearRenderState(
+						RenderState.RS_FRAGMENT_PROGRAM);
+				hilite.setRenderState(
+						fragmentPrograms.get(newcolor));
+			} else {
+				hilit.clearRenderState(RenderState.RS_FRAGMENT_PROGRAM);
+				hilit.clearRenderState(
+						RenderState.RS_FRAGMENT_PROGRAM);
+				hilit.setRenderState(
+						fragmentPrograms.get(newcolor));
+			}
+			hilit.updateRenderState();
 		}
 
 	}
@@ -903,16 +914,23 @@ public class DesignerGame extends SWTDefaultImplementor implements
 	 */
 	@Override
 	public void clearHighlights(Set<VisualEntity> hilight) {
-		for (ColorRGBA color : hilited.keySet()) {
-			for (VisualEntity entity : hilited.get(color)) {
-				if (hilight.contains(entity)) {
-					entity.getBoundingNode().setCullHint(
-							Spatial.CullHint.Always);
-					entity.getBoundingNode().clearRenderState(
+		for (ColorRGBA color : hilited.keySet()) {			
+			for (VisualEntity target : hilight) {
+				Node hilit = target.getBoundingNode();
+				hilit.setCullHint(
+						Spatial.CullHint.Always);
+				if (hilit.getChild("hiliter") != null) {
+					Spatial hilite = (Spatial) hilit.getChild("hiliter");
+					hilite.clearRenderState(RenderState.RS_FRAGMENT_PROGRAM);
+					hilite.clearRenderState(
 							RenderState.RS_FRAGMENT_PROGRAM);
-					entity.getNode().updateRenderState();
+				} else {
+					hilit.clearRenderState(
+							RenderState.RS_FRAGMENT_PROGRAM);
 				}
+				hilit.updateRenderState();
 			}
+			
 			hilited.get(color).removeAll(hilight);
 		}
 	}
