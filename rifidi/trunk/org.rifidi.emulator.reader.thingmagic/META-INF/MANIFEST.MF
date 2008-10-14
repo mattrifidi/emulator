@@ -6,7 +6,7 @@ Bundle-Version: 0.0.1
 Bundle-Activator: org.rifidi.emulator.reader.thingmagic.Activator
 Bundle-Vendor: Pramari, LLC
 Require-Bundle: org.rifidi.dependencies,
- org.rifidi.emulator,
+ org.rifidi.emulator;bundle-version="2.0.2",
  org.rifidi.common.utilities,
  org.rifidi.services.tags;bundle-version="2.0.0"
 Eclipse-LazyStart: true
