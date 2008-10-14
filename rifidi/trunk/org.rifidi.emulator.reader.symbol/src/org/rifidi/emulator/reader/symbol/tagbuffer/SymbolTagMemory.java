@@ -119,7 +119,7 @@ public class SymbolTagMemory implements TagMemory {
 			//move old tags to invisible tags
 			Collection<RifidiTag>diff = tagBufferVisible.generateSetDiff(tagsSeen);
 			tagBufferInvisible.addTags(diff);
-			for(RifidiTag t : tagsSeen){
+			for(RifidiTag t : diff){
 				tagBufferVisible.removeTag(t.getTagEntitiyID());
 			}
 			
