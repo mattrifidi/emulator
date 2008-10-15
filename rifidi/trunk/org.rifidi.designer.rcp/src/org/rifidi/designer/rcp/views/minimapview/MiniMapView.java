@@ -177,24 +177,14 @@ public class MiniMapView extends ViewPart {
 	private void drawFrame() {
 		Vector2f wLeftTop = calcPos(new Vector2f(0, implementor.getCanvas()
 				.getSize().y));
-		Vector2f wRightTop = calcPos(new Vector2f(implementor.getCanvas()
-				.getSize().x, implementor.getCanvas().getSize().y));
-		Vector2f wRightBottom = calcPos(new Vector2f(implementor.getCanvas()
-				.getSize().x, 0));
-
-		int[] corners = { (int) wLeftTop.x,
-				(int) wLeftTop.y, (int) wRightTop.x,
-				(int) wLeftTop.y, (int) wRightTop.x,
-				(int) wRightBottom.y, (int) wLeftTop.x,
-				(int) wRightBottom.y, (int) wLeftTop.x,
-				(int) wLeftTop.y };
-
+		Vector2f center = calcPos(new Vector2f(implementor.getCanvas()
+				.getSize().x / 2, implementor.getCanvas().getSize().y / 2));
 		if (GlobalProperties.windows) {
 			graphicsContext.setLineWidth(2);
 			graphicsContext.setForeground(new Color(null, 255, 0, 0));
 			graphicsContext.setLineStyle(SWT.LINE_SOLID);
 			graphicsContext.drawImage(image, 0, 0);
-			graphicsContext.drawPolyline(corners);
+			graphicsContext.drawRectangle((int) wLeftTop.x, (int) wLeftTop.y, (int) (center.x-wLeftTop.x)*2, (int) (center.y-wLeftTop.y)*2);
 			label.redraw();
 		} else {
 			graphicsContext.dispose();
@@ -205,7 +195,7 @@ public class MiniMapView extends ViewPart {
 			graphicsContext.setLineWidth(2);
 			graphicsContext.setForeground(new Color(null, 255, 0, 0));
 			graphicsContext.setLineStyle(SWT.LINE_SOLID);
-			graphicsContext.drawPolyline(corners);
+			graphicsContext.drawRectangle((int) wLeftTop.x, (int) wLeftTop.y, (int) (center.x-wLeftTop.x)*2, (int) (center.y-wLeftTop.y)*2);
 			label.setImage(image);
 			label.redraw();
 		}
@@ -213,25 +203,27 @@ public class MiniMapView extends ViewPart {
 
 	public Vector2f calcPos(Vector2f screenPos) {
 		Vector3f coords = implementor.getCamera().getWorldCoordinates(
-				new Vector2f(screenPos.x, screenPos.y), 0).clone();
+				new Vector2f(screenPos.x, screenPos.y), 0);
 		Vector3f coords2 = implementor.getCamera().getWorldCoordinates(
-				new Vector2f(screenPos.x, screenPos.y), 1).clone();
+				new Vector2f(screenPos.x, screenPos.y), 1);
 		Vector3f direction = coords.subtract(coords2).normalizeLocal();
 		coords.subtractLocal(direction.mult(coords.y / direction.y));
 		coords.setY(0);
+
 		Vector3f screencoords = mapCamera.getScreenCoordinates(coords);
-		Vector2f ret=new Vector2f(screencoords.x, label.getSize().y - screencoords.y);
-		if(ret.x>imageData.width-1){
-			ret.x=imageData.width-1;
+		Vector2f ret = new Vector2f(screencoords.x, imageData.height
+				- screencoords.y);
+		if (ret.x > imageData.width - 1) {
+			ret.x = imageData.width - 1;
 		}
-		if(ret.x<0){
-			ret.x=0;
+		if (ret.x < 0) {
+			ret.x = 0;
 		}
-		if(ret.y>imageData.height-1){
-			ret.y=imageData.height-1;
+		if (ret.y > imageData.height - 1) {
+			ret.y = imageData.height - 1;
 		}
-		if(ret.y<0){
-			ret.y=0;
+		if (ret.y < 0) {
+			ret.y = 0;
 		}
 		return ret;
 	}
