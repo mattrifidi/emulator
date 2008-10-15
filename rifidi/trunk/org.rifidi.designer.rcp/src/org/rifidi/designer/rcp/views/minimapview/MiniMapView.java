@@ -76,13 +76,13 @@ public class MiniMapView extends ViewPart {
 	private DesignerGame implementor;
 
 	private WaitingCallable waitingCallable;
-	
+
 	/**
 	 * Constructor.
 	 */
 	public MiniMapView() {
 		ServiceRegistry.getInstance().service(this);
-		waitingCallable=new WaitingCallable();
+		waitingCallable = new WaitingCallable();
 	}
 
 	/*
@@ -140,7 +140,8 @@ public class MiniMapView extends ViewPart {
 	 *            minimap y coordinate to center on
 	 */
 	private void centerOn(int x, int y) {
-		if (label.getImage() != null && waitingCallable.running.compareAndSet(false, true)) {
+		if (label.getImage() != null
+				&& waitingCallable.running.compareAndSet(false, true)) {
 			// determine where the user clicked on the map
 			int width = label.getImage().getBounds().width;
 			int height = label.getImage().getBounds().height;
@@ -156,7 +157,7 @@ public class MiniMapView extends ViewPart {
 			// scale the direction out to the ground plane
 			float scale = Math.abs(one.y / dir.y);
 			dir.multLocal(scale);
-			waitingCallable.pos=one.add(dir);
+			waitingCallable.pos = one.add(dir);
 			implementor.render(waitingCallable);
 		}
 	}
@@ -174,24 +175,20 @@ public class MiniMapView extends ViewPart {
 	 *            the coordinate of the bottom-right corner of the frame
 	 */
 	private void drawFrame() {
-		Vector3f location = implementor.getRenderer().getCamera().getLocation()
-				.clone();
-		location = mapCamera.getScreenCoordinates(location);
-		location.y = 200 - location.y;
-		int delta = 20;
-		Vector3f topleft = location.add(-3 + delta, -3 + delta, 0);
-		Vector3f topright = location.add(3 + delta, -3 + delta, 0);
-		Vector3f bottomright = location.add(3 + delta, 3 + delta, 0);
-		Vector3f bottomleft = location.add(-3 + delta, 3 + delta, 0);
+		Vector2f wLeftTop = calcPos(new Vector2f(0, implementor.getCanvas()
+				.getSize().y));
+		Vector2f wRightTop = calcPos(new Vector2f(implementor.getCanvas()
+				.getSize().x, implementor.getCanvas().getSize().y));
+		Vector2f wRightBottom = calcPos(new Vector2f(implementor.getCanvas()
+				.getSize().x, 0));
 
-		int[] corners = new int[] { (int) topleft.x - 20, (int) topleft.y - 20,
-				(int) topright.x + 20, (int) topright.y - 20,
-				(int) topright.x + 20, (int) topright.y - 20,
-				(int) bottomright.x + 20, (int) bottomright.y + 20,
-				(int) bottomright.x + 20, (int) bottomright.y + 20,
-				(int) bottomleft.x - 20, (int) bottomleft.y + 20,
-				(int) bottomleft.x - 20, (int) bottomleft.y + 20,
-				(int) topleft.x - 20, (int) topleft.y - 20 };
+		int[] corners = { (int) wLeftTop.x,
+				(int) wLeftTop.y, (int) wRightTop.x,
+				(int) wLeftTop.y, (int) wRightTop.x,
+				(int) wRightBottom.y, (int) wLeftTop.x,
+				(int) wRightBottom.y, (int) wLeftTop.x,
+				(int) wLeftTop.y };
+
 		if (GlobalProperties.windows) {
 			graphicsContext.setLineWidth(2);
 			graphicsContext.setForeground(new Color(null, 255, 0, 0));
@@ -212,6 +209,31 @@ public class MiniMapView extends ViewPart {
 			label.setImage(image);
 			label.redraw();
 		}
+	}
+
+	public Vector2f calcPos(Vector2f screenPos) {
+		Vector3f coords = implementor.getCamera().getWorldCoordinates(
+				new Vector2f(screenPos.x, screenPos.y), 0).clone();
+		Vector3f coords2 = implementor.getCamera().getWorldCoordinates(
+				new Vector2f(screenPos.x, screenPos.y), 1).clone();
+		Vector3f direction = coords.subtract(coords2).normalizeLocal();
+		coords.subtractLocal(direction.mult(coords.y / direction.y));
+		coords.setY(0);
+		Vector3f screencoords = mapCamera.getScreenCoordinates(coords);
+		Vector2f ret=new Vector2f(screencoords.x, label.getSize().y - screencoords.y);
+		if(ret.x>imageData.width-1){
+			ret.x=imageData.width-1;
+		}
+		if(ret.x<0){
+			ret.x=0;
+		}
+		if(ret.y>imageData.height-1){
+			ret.y=imageData.height-1;
+		}
+		if(ret.y<0){
+			ret.y=0;
+		}
+		return ret;
 	}
 
 	/**
@@ -239,19 +261,6 @@ public class MiniMapView extends ViewPart {
 			updater = new Updater();
 			updater.start();
 		}
-	}
-
-	/**
-	 * Converts the given world coordinates to map relative coordinates.
-	 * 
-	 * @param worldCoord
-	 *            a coordinate in the map's world
-	 * @return coordinates of the given point, relative to the map's coordinate
-	 *         system
-	 */
-	public Vector2f convertToMap(Vector3f worldCoord) {
-		Vector3f result = mapCamera.getScreenCoordinates(worldCoord);
-		return new Vector2f(result.x, image.getBounds().height - result.y);
 	}
 
 	/*
@@ -358,12 +367,15 @@ public class MiniMapView extends ViewPart {
 		}
 
 	}
-	
-	private class WaitingCallable implements Callable<Object>{
 
-		public AtomicBoolean running=new AtomicBoolean(false);
+	private class WaitingCallable implements Callable<Object> {
+
+		public AtomicBoolean running = new AtomicBoolean(false);
 		public Vector3f pos;
-		/* (non-Javadoc)
+
+		/*
+		 * (non-Javadoc)
+		 * 
 		 * @see java.util.concurrent.Callable#call()
 		 */
 		@Override
@@ -372,7 +384,7 @@ public class MiniMapView extends ViewPart {
 			running.compareAndSet(true, false);
 			return null;
 		}
-		
+
 	}
 
 }
