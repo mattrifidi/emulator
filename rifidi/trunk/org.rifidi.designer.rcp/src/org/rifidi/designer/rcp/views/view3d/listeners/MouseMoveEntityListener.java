@@ -107,7 +107,8 @@ public class MouseMoveEntityListener implements MouseMoveListener,
 	 * tracking.
 	 */
 	public void initPlacementMode() {
-
+		collidesWithFloor.clear();
+		colliders.clear();
 		// calculate center and move mouse there
 		Rectangle bounds = Display.getCurrent().getActiveShell().getBounds();
 		center = new Point(bounds.x + bounds.width / 2, bounds.y
@@ -272,6 +273,7 @@ public class MouseMoveEntityListener implements MouseMoveListener,
 	public void mouseDown(MouseEvent e) {
 		if (colliders.size() == 0 && collidesWithFloor.size() == 0
 				&& e.button == 1) {
+			System.out.println("dropping");
 			drop();
 			view3D.switchMode(View3D.Mode.PickMode);
 			inPlacement = false;
