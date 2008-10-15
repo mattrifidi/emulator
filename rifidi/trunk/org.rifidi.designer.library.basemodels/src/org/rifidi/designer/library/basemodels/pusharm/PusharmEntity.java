@@ -419,8 +419,8 @@ public class PusharmEntity extends VisualEntity implements SceneControl,
 	 */
 	public void turnOff() {
 		deactivate();
-		activationStack.clear();
 		running = false;
+		activationStack.clear();
 	}
 
 	/**
@@ -491,7 +491,9 @@ public class PusharmEntity extends VisualEntity implements SceneControl,
 	 */
 	@Override
 	public void setHigh(int portNum) {
-		activationStack.push(true);
+		if(running){
+			activationStack.push(true);	
+		}
 	}
 
 	/*
@@ -532,8 +534,7 @@ public class PusharmEntity extends VisualEntity implements SceneControl,
 	 */
 	@Override
 	public void enableGPI(boolean enablement) {
-		// TODO Auto-generated method stub
-
+		this.gpiEnabled = enablement;
 	}
 
 	/**

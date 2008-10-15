@@ -390,7 +390,7 @@
             </command>
             <command
                   commandId="org.rifidi.designer.rcp.commands.entities.rotateleft"
-                  icon="icons/shape_rotate_clockwise.png"
+                  icon="icons/shape_rotate_anticlockwise.png"
                   id="org.rifidi.designer.rcp.commands.entities.rotateleftBinding"
                   label="Rotate Left">
                <visibleWhen>
@@ -791,7 +791,7 @@
          </command>
          <command
                commandId="org.rifidi.designer.rcp.commands.entities.rotateleft"
-               icon="icons/shape_rotate_clockwise.png"
+               icon="icons/shape_rotate_anticlockwise.png"
                id="org.rifidi.designer.rcp.commands.entities.rotateleftBinding"
                label="Rotate Left">
             <visibleWhen>
