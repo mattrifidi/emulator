@@ -764,7 +764,6 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	 */
 	@Override
 	public void saveScene() {
-
 		implementor.update(new Callable<Object>() {
 
 			/*
