@@ -69,7 +69,6 @@ Please look at the docs at http://wiki.rifidi.org for a complete User&apos;s Man
       <plugin id="org.rifidi.emulator.reader.symbol"/>
       <plugin id="org.rifidi.emulator.reader.thingmagic"/>
       <plugin id="org.rifidi.log4j" fragment="true"/>
-      <plugin id="org.rifidi.log4j.developer" fragment="true"/>
       <plugin id="org.rifidi.services"/>
       <plugin id="org.rifidi.services.tags"/>
       <plugin id="org.rifidi.ui.common"/>
