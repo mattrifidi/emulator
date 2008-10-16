@@ -51,5 +51,13 @@
             name="View for 3d models">
       </view>
    </extension>
+   <extension
+         id="product"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="de.pflanzenmoerder.draw2d.application"
+            name="Rifidi Convetrer">
+      </product>
+   </extension>
 
 </plugin>
