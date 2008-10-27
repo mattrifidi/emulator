@@ -42,6 +42,7 @@ import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 import org.lwjgl.opengl.EXTFramebufferObject;
+import org.lwjgl.opengl.GLContext;
 import org.monklypse.core.SWTDefaultImplementor;
 import org.monklypse.core.renderer.LWJGLOffscreenRenderer;
 import org.monklypse.core.renderer.OffscreenRenderer;
@@ -245,7 +246,7 @@ public class DesignerGame extends SWTDefaultImplementor implements
 				Debugger.drawBounds(sceneData.getRootNode(), getRenderer());
 			}
 			getRenderer().displayBackBuffer();
-			getCanvas().swapBuffers();
+//			getCanvas().swapBuffers();
 			if (miniMapView == null) {
 				miniMapView = (MiniMapView) PlatformUI.getWorkbench()
 						.getActiveWorkbenchWindow().getActivePage().findView(
