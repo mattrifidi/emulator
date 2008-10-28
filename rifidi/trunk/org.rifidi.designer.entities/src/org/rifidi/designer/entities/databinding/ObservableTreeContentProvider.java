@@ -19,7 +19,6 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.core.databinding.observable.list.IListChangeListener;
-import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.databinding.observable.list.ListChangeEvent;
 import org.eclipse.core.databinding.observable.list.ListDiffEntry;
 import org.eclipse.core.runtime.IAdaptable;
@@ -30,8 +29,8 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.ui.model.IWorkbenchAdapter;
 import org.rifidi.designer.entities.Entity;
 import org.rifidi.designer.entities.SceneData;
-import org.rifidi.designer.entities.databinding.annotations.MonitorThisList;
 import org.rifidi.designer.entities.databinding.annotations.MonitoredProperties;
+import org.rifidi.designer.entities.interfaces.IEntityObservable;
 
 /**
  * This TreeContentProvider takes advantage of eclipse databinding. An object
@@ -81,7 +80,9 @@ public class ObservableTreeContentProvider implements ITreeContentProvider,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.jface.viewers.ITreeContentProvider#getChildren(java.lang.Object)
+	 * @see
+	 * org.eclipse.jface.viewers.ITreeContentProvider#getChildren(java.lang.
+	 * Object)
 	 */
 	public Object[] getChildren(final Object parentElement) {
 		monitorElement(parentElement);
@@ -91,7 +92,9 @@ public class ObservableTreeContentProvider implements ITreeContentProvider,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.jface.viewers.ITreeContentProvider#getParent(java.lang.Object)
+	 * @see
+	 * org.eclipse.jface.viewers.ITreeContentProvider#getParent(java.lang.Object
+	 * )
 	 */
 	public Object getParent(final Object element) {
 		return null;
@@ -100,7 +103,9 @@ public class ObservableTreeContentProvider implements ITreeContentProvider,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.jface.viewers.ITreeContentProvider#hasChildren(java.lang.Object)
+	 * @see
+	 * org.eclipse.jface.viewers.ITreeContentProvider#hasChildren(java.lang.
+	 * Object)
 	 */
 	public boolean hasChildren(final Object element) {
 		if (getAdapter(element) != null) {
@@ -115,7 +120,9 @@ public class ObservableTreeContentProvider implements ITreeContentProvider,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.jface.viewers.IStructuredContentProvider#getElements(java.lang.Object)
+	 * @see
+	 * org.eclipse.jface.viewers.IStructuredContentProvider#getElements(java
+	 * .lang.Object)
 	 */
 	public Object[] getElements(final Object inputElement) {
 		monitorElement(inputElement);
@@ -133,8 +140,9 @@ public class ObservableTreeContentProvider implements ITreeContentProvider,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.jface.viewers.IContentProvider#inputChanged(org.eclipse.jface.viewers.Viewer,
-	 *      java.lang.Object, java.lang.Object)
+	 * @see
+	 * org.eclipse.jface.viewers.IContentProvider#inputChanged(org.eclipse.jface
+	 * .viewers.Viewer, java.lang.Object, java.lang.Object)
 	 */
 	public void inputChanged(final Viewer viewer, final Object oldInput,
 			final Object newInput) {
@@ -162,14 +170,10 @@ public class ObservableTreeContentProvider implements ITreeContentProvider,
 	 */
 	private void monitorElement(final Object element) {
 		if (!observedElements.containsKey(element)) {
-			if (element.getClass().isAnnotationPresent(MonitorThisList.class)) {
-				String name = ((MonitorThisList) (element.getClass()
-						.getAnnotation(MonitorThisList.class))).name();
-				name = name.substring(0, 1).toUpperCase() + name.substring(1);
+			if (element instanceof IEntityObservable) {
 				try {
 					observedElements.put(element, new ObserverHelper(element));
-					((IObservableList) element.getClass().getMethod(
-							"get" + name, (Class<?>[])null).invoke(element))
+					((IEntityObservable) element)
 							.addListChangeListener(observedElements
 									.get(element));
 				} catch (Exception e) {
@@ -239,7 +243,10 @@ public class ObservableTreeContentProvider implements ITreeContentProvider,
 		/*
 		 * (non-Javadoc)
 		 * 
-		 * @see org.eclipse.core.databinding.observable.list.IListChangeListener#handleListChange(org.eclipse.core.databinding.observable.list.ListChangeEvent)
+		 * @see
+		 * org.eclipse.core.databinding.observable.list.IListChangeListener#
+		 * handleListChange
+		 * (org.eclipse.core.databinding.observable.list.ListChangeEvent)
 		 */
 		public void handleListChange(final ListChangeEvent event) {
 			if (element instanceof SceneData) {
@@ -270,7 +277,8 @@ public class ObservableTreeContentProvider implements ITreeContentProvider,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
+	 * @seejava.beans.PropertyChangeListener#propertyChange(java.beans.
+	 * PropertyChangeEvent)
 	 */
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {

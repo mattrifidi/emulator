@@ -276,9 +276,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	 */
 	@Override
 	public void addEntityGroup(final EntityGroup entityGroup) {
-		for (Entity entity : entityGroup.getEntities()) {
-			sceneData.getDefaultGroup().removeEntity(entity);
-		}
+		sceneData.getDefaultGroup().removeEntities(entityGroup.getEntities());
 		entityGroup.setSceneData(sceneData);
 		sceneData.getEntityGroups().add(entityGroup);
 	}
@@ -304,9 +302,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	 */
 	@Override
 	public void removeEntityGroup(final EntityGroup entityGroup) {
-		for (Entity entity : entityGroup.getEntities()) {
-			sceneData.getDefaultGroup().addEntity(entity);
-		}
+		sceneData.getDefaultGroup().addEntities(entityGroup.getEntities());
 		sceneData.getEntityGroups().remove(entityGroup);
 	}
 
@@ -448,7 +444,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	@Override
 	public void ungroupEntity(final Entity entity) {
 		for (EntityGroup group : sceneData.getEntityGroups()) {
-			if (group.getEntities().contains(entity)) {
+			if (group.contains(entity)) {
 				group.removeEntity(entity);
 				sceneData.getDefaultGroup().addEntity(entity);
 			}
@@ -604,20 +600,24 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 					}
 					monitor.worked(10);
 					monitor.subTask("Registering products");
-					display.syncExec(new Runnable(){
+					display.syncExec(new Runnable() {
 
-						/* (non-Javadoc)
+						/*
+						 * (non-Javadoc)
+						 * 
 						 * @see java.lang.Runnable#run()
 						 */
 						@Override
 						public void run() {
-							for (Entity entity : sceneData.getProducedEntities()
-									.getEntities()) {
+							for (Entity entity : sceneData
+									.getProducedEntities().getEntities()) {
 								ServiceRegistry.getInstance().service(entity);
-								sceneData.getEntityNames().add(entity.getName());
+								sceneData.getEntityNames()
+										.add(entity.getName());
 								initEntity(entity, sceneData, false);
 							}
-							for (EntityGroup entityGroup : sceneData.getEntityGroups()) {
+							for (EntityGroup entityGroup : sceneData
+									.getEntityGroups()) {
 								entityGroup.setSceneData(sceneData);
 							}
 							monitor.worked(10);
@@ -629,7 +629,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 								}
 							}
 						}
-						
+
 					});
 				}
 				logger.debug("loading: done");
@@ -679,9 +679,11 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 						collisionOctree.insertEntity((VisualEntity) entity);
 					}
 				}
-				display.syncExec(new Runnable(){
+				display.syncExec(new Runnable() {
 
-					/* (non-Javadoc)
+					/*
+					 * (non-Javadoc)
+					 * 
 					 * @see java.lang.Runnable#run()
 					 */
 					@Override
@@ -690,7 +692,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 							listener.sceneDataChanged(sceneData);
 						}
 					}
-					
+
 				});
 				monitor.worked(60);
 				monitor.worked(100);

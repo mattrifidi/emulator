@@ -10,15 +10,20 @@
  */
 package org.rifidi.designer.entities.grouping;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlTransient;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.eclipse.core.databinding.observable.IChangeListener;
 import org.eclipse.core.databinding.observable.Realm;
+import org.eclipse.core.databinding.observable.list.IListChangeListener;
 import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.ui.IActionFilter;
@@ -27,7 +32,7 @@ import org.rifidi.designer.entities.Entity;
 import org.rifidi.designer.entities.SceneData;
 import org.rifidi.designer.entities.adapters.EntityGroupActionFilterAdapter;
 import org.rifidi.designer.entities.adapters.EntityGroupWorkbenchAdapter;
-import org.rifidi.designer.entities.databinding.annotations.MonitorThisList;
+import org.rifidi.designer.entities.interfaces.IEntityObservable;
 import org.rifidi.designer.entities.interfaces.Switch;
 
 /**
@@ -39,23 +44,27 @@ import org.rifidi.designer.entities.interfaces.Switch;
  */
 
 @SuppressWarnings("unchecked")
-@MonitorThisList(name = "entities")
-public class EntityGroup implements IAdaptable {
+@XmlAccessorType(XmlAccessType.FIELD)
+public class EntityGroup implements IAdaptable, IEntityObservable {
 	/**
 	 * Logger for this class.
 	 */
+	@XmlTransient
 	private static Log logger = LogFactory.getLog(EntityGroup.class);
 	/**
 	 * Name of this group.
 	 */
+	@XmlID
 	private String name;
 	/**
 	 * The scene this group is a part of.
 	 */
+	@XmlTransient
 	private SceneData sceneData;
 	/**
 	 * The entities in this group.
 	 */
+	@XmlIDREF
 	private List<Entity> entities = new WritableList();
 	/**
 	 * A flag that indicates if this group is locked or not.
@@ -65,7 +74,6 @@ public class EntityGroup implements IAdaptable {
 	/**
 	 * @return the name
 	 */
-	@XmlID
 	public String getName() {
 		return name;
 	}
@@ -78,15 +86,22 @@ public class EntityGroup implements IAdaptable {
 		this.name = name;
 	}
 
+	// /**
+	// * Returns a list that can be monitored for changes. Do not write in it!!
+	// *
+	// * @return
+	// */
+	// public IObservableList getObservableEntities() {
+	// return (IObservableList) entities;
+	// }
+
 	/**
-	 * Returns a write protected list of entities. This should only be used by
-	 * JAXB.
+	 * Returns the list of entities contained in this group.
 	 * 
 	 * @return the entities
 	 */
-	@XmlIDREF
 	public List<Entity> getEntities() {
-		return entities;
+		return new ArrayList<Entity>(entities);
 	}
 
 	/**
@@ -94,9 +109,8 @@ public class EntityGroup implements IAdaptable {
 	 *            the entities to set
 	 */
 	public void setEntities(final List<Entity> entities) {
-		WritableList writableEntities = new WritableList(entities, Entity.class);
-		writableEntities.getRealm();
-		this.entities = writableEntities;
+		this.entities.clear();
+		this.entities.addAll(entities);
 	}
 
 	/*
@@ -164,7 +178,33 @@ public class EntityGroup implements IAdaptable {
 	}
 
 	/**
-	 * Remove an entity to the group.
+	 * Add entities to the group.
+	 * 
+	 * @param entity
+	 *            the entity to be added.
+	 */
+	public void addEntities(final List<Entity> addentities) {
+		if (!((WritableList) entities).getRealm().equals(Realm.getDefault())) {
+			((WritableList) entities).getRealm().asyncExec(new Runnable() {
+
+				/*
+				 * (non-Javadoc)
+				 * 
+				 * @see java.lang.Runnable#run()
+				 */
+				@Override
+				public void run() {
+					entities.addAll(addentities);
+				}
+
+			});
+			return;
+		}
+		entities.addAll(addentities);
+	}
+
+	/**
+	 * Remove an entity from the group.
 	 * 
 	 * @param entity
 	 *            the entity to be removed.
@@ -190,9 +230,34 @@ public class EntityGroup implements IAdaptable {
 	}
 
 	/**
+	 * Remove entities from the group.
+	 * 
+	 * @param entity
+	 *            the entity to be removed.
+	 */
+	public void removeEntities(final List<Entity> rementities) {
+		if (!((WritableList) entities).getRealm().equals(Realm.getDefault())) {
+			((WritableList) entities).getRealm().asyncExec(new Runnable() {
+
+				/*
+				 * (non-Javadoc)
+				 * 
+				 * @see java.lang.Runnable#run()
+				 */
+				@Override
+				public void run() {
+					entities.removeAll(rementities);
+				}
+
+			});
+			return;
+		}
+		entities.removeAll(rementities);
+	}
+
+	/**
 	 * @return the sceneData
 	 */
-	@XmlTransient
 	public SceneData getSceneData() {
 		return sceneData;
 	}
@@ -255,4 +320,31 @@ public class EntityGroup implements IAdaptable {
 		return false;
 	}
 
+	/**
+	 * Check if the given entity is part of this group.
+	 * 
+	 * @param entity
+	 * @return
+	 */
+	public boolean contains(Entity entity) {
+		return entities.contains(entity);
+	}
+
+	/* (non-Javadoc)
+	 * @see org.rifidi.designer.entities.interfaces.IEntityObservable#addListChangeListener(org.eclipse.core.databinding.observable.list.IListChangeListener)
+	 */
+	@Override
+	public void addListChangeListener(IListChangeListener changeListener) {
+		((WritableList) entities).addListChangeListener(changeListener);
+	}
+
+	/* (non-Javadoc)
+	 * @see org.rifidi.designer.entities.interfaces.IEntityObservable#removeListChangeListener(org.eclipse.core.databinding.observable.list.IListChangeListener)
+	 */
+	@Override
+	public void removeListChangeListener(IListChangeListener changeListener) {
+		((WritableList) entities).removeListChangeListener(changeListener);
+	}
+	
+	
 }

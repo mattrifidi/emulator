@@ -29,7 +29,7 @@ public class EntityGroupWorkbenchAdapter implements IWorkbenchAdapter {
 	 * 
 	 * @see org.eclipse.ui.model.IWorkbenchAdapter#getChildren(java.lang.Object)
 	 */
-	public Object[] getChildren(final Object o) {		
+	public Object[] getChildren(final Object o) {
 		return ((EntityGroup) o).getEntities().toArray();
 	}
 

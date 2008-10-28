@@ -12,7 +12,6 @@ package org.rifidi.designer.rcp.gpioeditor;
 
 import java.util.EventObject;
 
-import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.gef.ContextMenuProvider;
 import org.eclipse.gef.DefaultEditDomain;
@@ -77,7 +76,9 @@ public class GPIOEditor extends GraphicalEditorWithFlyoutPalette implements
 					/*
 					 * (non-Javadoc)
 					 * 
-					 * @see org.eclipse.ui.IWorkbenchListener#postShutdown(org.eclipse.ui.IWorkbench)
+					 * @see
+					 * org.eclipse.ui.IWorkbenchListener#postShutdown(org.eclipse
+					 * .ui.IWorkbench)
 					 */
 					@Override
 					public void postShutdown(IWorkbench workbench) {
@@ -86,8 +87,9 @@ public class GPIOEditor extends GraphicalEditorWithFlyoutPalette implements
 					/*
 					 * (non-Javadoc)
 					 * 
-					 * @see org.eclipse.ui.IWorkbenchListener#preShutdown(org.eclipse.ui.IWorkbench,
-					 *      boolean)
+					 * @see
+					 * org.eclipse.ui.IWorkbenchListener#preShutdown(org.eclipse
+					 * .ui.IWorkbench, boolean)
 					 */
 					@Override
 					public boolean preShutdown(IWorkbench workbench,
@@ -122,15 +124,16 @@ public class GPIOEditor extends GraphicalEditorWithFlyoutPalette implements
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.gef.ui.parts.GraphicalEditorWithFlyoutPalette#initializeGraphicalViewer()
+	 * @seeorg.eclipse.gef.ui.parts.GraphicalEditorWithFlyoutPalette#
+	 * initializeGraphicalViewer()
 	 */
 	@Override
 	protected void initializeGraphicalViewer() {
 		super.initializeGraphicalViewer();
-		WritableList writty = (WritableList) sceneDataService
-				.getCurrentSceneData().getDefaultGroup().getEntities();
+
 		GPIORootEditPart gpioRoot = new GPIORootEditPart(finderService);
-		writty.addChangeListener(gpioRoot);
+		sceneDataService.getCurrentSceneData().getDefaultGroup()
+				.addListChangeListener(gpioRoot);
 		getGraphicalViewer().setContents(gpioRoot);
 		getEditDomain()
 				.getPaletteViewer()
@@ -141,7 +144,9 @@ public class GPIOEditor extends GraphicalEditorWithFlyoutPalette implements
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.gef.ui.parts.GraphicalEditorWithFlyoutPalette#getPaletteRoot()
+	 * @see
+	 * org.eclipse.gef.ui.parts.GraphicalEditorWithFlyoutPalette#getPaletteRoot
+	 * ()
 	 */
 	@Override
 	protected PaletteRoot getPaletteRoot() {
@@ -185,7 +190,8 @@ public class GPIOEditor extends GraphicalEditorWithFlyoutPalette implements
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.ui.part.EditorPart#doSave(org.eclipse.core.runtime.IProgressMonitor)
+	 * @seeorg.eclipse.ui.part.EditorPart#doSave(org.eclipse.core.runtime.
+	 * IProgressMonitor)
 	 */
 	@Override
 	public void doSave(IProgressMonitor monitor) {
@@ -194,7 +200,9 @@ public class GPIOEditor extends GraphicalEditorWithFlyoutPalette implements
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.gef.ui.parts.GraphicalEditor#commandStackChanged(java.util.EventObject)
+	 * @see
+	 * org.eclipse.gef.ui.parts.GraphicalEditor#commandStackChanged(java.util
+	 * .EventObject)
 	 */
 	public void commandStackChanged(EventObject event) {
 		firePropertyChange(IEditorPart.PROP_DIRTY);

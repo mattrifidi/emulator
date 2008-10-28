@@ -18,14 +18,15 @@ import java.util.Map;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import org.eclipse.core.databinding.observable.list.IListChangeListener;
 import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.model.IWorkbenchAdapter;
-import org.rifidi.designer.entities.databinding.annotations.MonitorThisList;
 import org.rifidi.designer.entities.grouping.EntityGroup;
 import org.rifidi.designer.entities.grouping.GroupContainer;
+import org.rifidi.designer.entities.interfaces.IEntityObservable;
 
 import com.jme.input.InputHandler;
 import com.jme.scene.Node;
@@ -40,10 +41,9 @@ import com.jmex.physics.PhysicsSpace;
  * 
  */
 
-@MonitorThisList(name = "entityGroups")
 @XmlRootElement
-public class SceneData implements IAdaptable, IWorkbenchAdapter {
-
+public class SceneData implements IAdaptable, IWorkbenchAdapter,
+		IEntityObservable {
 
 	/**
 	 * Positions for the walls.
@@ -53,6 +53,7 @@ public class SceneData implements IAdaptable, IWorkbenchAdapter {
 	public enum Direction {
 		NORTH, SOUTH, EAST, WEST, DOWN
 	}
+
 	/**
 	 * All the entities in the scene.
 	 */
@@ -129,6 +130,7 @@ public class SceneData implements IAdaptable, IWorkbenchAdapter {
 	 * Id of the floorplan to use.
 	 */
 	private String floorId;
+
 	/**
 	 * @return the nodeBytes
 	 */
@@ -189,7 +191,9 @@ public class SceneData implements IAdaptable, IWorkbenchAdapter {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.ui.model.IWorkbenchAdapter#getImageDescriptor(java.lang.Object)
+	 * @see
+	 * org.eclipse.ui.model.IWorkbenchAdapter#getImageDescriptor(java.lang.Object
+	 * )
 	 */
 	public ImageDescriptor getImageDescriptor(final Object object) {
 		return null;
@@ -229,16 +233,19 @@ public class SceneData implements IAdaptable, IWorkbenchAdapter {
 	public List<Entity> getEntities() {
 		return entities;
 	}
+
 	private List<Entity> searchableEntities;
-	private int oldHash=0;
-	public List<Entity> getSearchableEntities(){
-		if(searchableEntities==null || oldHash!=entities.hashCode()){
-			searchableEntities=Collections.unmodifiableList(new ArrayList<Entity>(entities));
-			oldHash=entities.hashCode();
+	private int oldHash = 0;
+
+	public List<Entity> getSearchableEntities() {
+		if (searchableEntities == null || oldHash != entities.hashCode()) {
+			searchableEntities = Collections
+					.unmodifiableList(new ArrayList<Entity>(entities));
+			oldHash = entities.hashCode();
 		}
 		return searchableEntities;
 	}
-	
+
 	public List<Entity> getSyncedEntities() {
 		return syncedEntities;
 	}
@@ -420,7 +427,8 @@ public class SceneData implements IAdaptable, IWorkbenchAdapter {
 	}
 
 	/**
-	 * @param cableGroup the cableGroup to set
+	 * @param cableGroup
+	 *            the cableGroup to set
 	 */
 	public void setCableGroup(EntityGroup cableGroup) {
 		this.cableGroup = cableGroup;
@@ -434,7 +442,8 @@ public class SceneData implements IAdaptable, IWorkbenchAdapter {
 	}
 
 	/**
-	 * @param display the display to set
+	 * @param display
+	 *            the display to set
 	 */
 	@XmlTransient
 	public void setDisplay(Display display) {
@@ -449,9 +458,34 @@ public class SceneData implements IAdaptable, IWorkbenchAdapter {
 	}
 
 	/**
-	 * @param floorId the floorId to set
+	 * @param floorId
+	 *            the floorId to set
 	 */
 	public void setFloorId(String floorId) {
 		this.floorId = floorId;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @seeorg.rifidi.designer.entities.interfaces.IEntityObservable#
+	 * addListChangeListener
+	 * (org.eclipse.core.databinding.observable.list.IListChangeListener)
+	 */
+	@Override
+	public void addListChangeListener(IListChangeListener changeListener) {
+		((WritableList) entityGroups).addListChangeListener(changeListener);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @seeorg.rifidi.designer.entities.interfaces.IEntityObservable#
+	 * removeListChangeListener
+	 * (org.eclipse.core.databinding.observable.list.IListChangeListener)
+	 */
+	@Override
+	public void removeListChangeListener(IListChangeListener changeListener) {
+		((WritableList) entityGroups).removeListChangeListener(changeListener);
 	}
 }

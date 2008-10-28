@@ -16,6 +16,8 @@ import java.util.List;
 
 import org.eclipse.core.databinding.observable.ChangeEvent;
 import org.eclipse.core.databinding.observable.IChangeListener;
+import org.eclipse.core.databinding.observable.list.IListChangeListener;
+import org.eclipse.core.databinding.observable.list.ListChangeEvent;
 import org.eclipse.draw2d.ConnectionLayer;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.FreeformLayer;
@@ -38,7 +40,7 @@ import org.rifidi.designer.services.core.entities.FinderService;
  * 
  */
 public class GPIORootEditPart extends AbstractGraphicalEditPart implements
-		IChangeListener {
+		IListChangeListener {
 
 	private FinderService finderService;
 
@@ -91,8 +93,13 @@ public class GPIORootEditPart extends AbstractGraphicalEditPart implements
 		return ret;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.eclipse.core.databinding.observable.list.IListChangeListener#handleListChange(org.eclipse.core.databinding.observable.list.ListChangeEvent)
+	 */
 	@Override
-	public void handleChange(ChangeEvent event) {
+	public void handleListChange(ListChangeEvent event) {
 		refresh();
 	}
+	
+	
 }
