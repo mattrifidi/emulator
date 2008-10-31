@@ -22,7 +22,7 @@ import org.rifidi.emulator.reader.thingmagic.database.impl.row.DBSavedSettingRow
  * @author Jerry Maine - jerry@pramari.com
  *
  */
-public class DBSavedSettings extends AbstractList<IDBRow> implements IDBTable {
+public class DBSavedSettings implements IDBTable {
 
 	private DBSavedSettingRow savedSettings = new DBSavedSettingRow();
 

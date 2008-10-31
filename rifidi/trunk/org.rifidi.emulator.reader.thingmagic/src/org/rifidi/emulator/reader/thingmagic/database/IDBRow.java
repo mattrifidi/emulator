@@ -24,7 +24,7 @@ public interface IDBRow {
 	//TODO: Research the behavior of this command further.
 	public String put(String key, String value);
 	
-	public String get(String key);
+	public String get(String column);
 	
-	public int compareToValue(String key, String testValue);
+	public int compareToValue(String column, String testValue);
 }

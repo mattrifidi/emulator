@@ -115,6 +115,12 @@ public class ThingMagicRQLCommandFormatter implements CommandFormatter {
 		logger.debug("encode() has been called: " + arg);
 		ArrayList<Object> retVal = new ArrayList<Object>();
 
+		
+		/*
+		 * Each object is considered as one and only one line of text.
+		 * So we just append a new line character to the end of it.
+		 * Note: Objects here are really Strings.
+		 */
 		for (Object o : arg) {
 			retVal.add(o + "\n");
 		}

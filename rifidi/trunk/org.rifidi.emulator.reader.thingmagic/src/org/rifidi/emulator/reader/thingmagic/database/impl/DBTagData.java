@@ -11,7 +11,6 @@
  */
 package org.rifidi.emulator.reader.thingmagic.database.impl;
 
-import java.util.AbstractList;
 import java.util.Map;
 
 import org.rifidi.emulator.reader.thingmagic.database.IDBRow;
@@ -23,7 +22,7 @@ import org.rifidi.emulator.reader.thingmagic.database.impl.row.DBTagIDRow;
  * @author Jerry Maine - jerry@pramari.com
  *
  */
-public class DBTagData extends AbstractList<IDBRow> implements IDBTable {
+public class DBTagData implements IDBTable {
 
 	private DBTagID tagMemory;
 
