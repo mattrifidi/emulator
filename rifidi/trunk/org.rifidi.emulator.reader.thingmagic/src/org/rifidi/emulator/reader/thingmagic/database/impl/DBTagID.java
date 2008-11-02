@@ -27,7 +27,10 @@ import org.rifidi.services.tags.impl.RifidiTag;
 
 /**
  * @author Jerry Maine - jerry@pramari.com
- *
+ * 
+ * This is the tag memory of the ThingMagic Reader emulator.
+ * It looks like a 'table' to mirror how it logically looks when 
+ * a command to get or update tag information is sent to the emulator.
  */
 public class DBTagID implements IDBTable, TagMemory {
 	private static Log logger = LogFactory.getLog(DBTagID.class);
@@ -107,12 +110,14 @@ public class DBTagID implements IDBTable, TagMemory {
 
 	@Override
 	public void preTableAccess(Map<String, String> params) {
+		//TODO: Add support for user supplied timeout values here.
 		/*
 		 * default timeout for getting tags.
 		 */
 		long timeout = 250;
 
 		/* clear all previously accumulated tags. */
+		//TODO: There may be a subtle minor bug here.
 		clear();
 		try {
 

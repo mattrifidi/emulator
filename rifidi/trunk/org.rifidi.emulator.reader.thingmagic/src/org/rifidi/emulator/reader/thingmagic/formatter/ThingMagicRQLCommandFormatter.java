@@ -24,7 +24,7 @@ import org.rifidi.emulator.reader.thingmagic.commandobjects.ResetCommand;
 import org.rifidi.emulator.reader.thingmagic.commandobjects.SelectCommand;
 import org.rifidi.emulator.reader.thingmagic.commandobjects.SetCommand;
 import org.rifidi.emulator.reader.thingmagic.commandobjects.UpdateCommand;
-import org.rifidi.emulator.reader.thingmagic.commandobjects.exceptions.CommandCreationExeption;
+import org.rifidi.emulator.reader.thingmagic.commandobjects.exceptions.CommandCreationException;
 import org.rifidi.emulator.reader.thingmagic.module.ThingMagicReaderSharedResources;
 
 /**
@@ -55,7 +55,17 @@ public class ThingMagicRQLCommandFormatter implements CommandFormatter {
 
 		String commandTrimmed = command.trim();
 
-		/* the command handler name */
+		/* the command handler name
+		 * All command objects inherit from the abstract class Command
+		 * which as one primary method "execute". All this command handler
+		 * does is run that method and take the return value and pass it to
+		 * "CommandObject.setReturnValue" without modification.
+		 * See: RQLEncodedCommands
+		 * 
+		 * The RIFIDI Core takes this command name and looks up the corresponding
+		 * class.method() that it represents from the "reader.xml" file that each
+		 * reader emulator contains and uses reflection to call it.
+		 */
 		retVal.add("execute");
 		
 		/* split around the white spaces */
@@ -63,6 +73,17 @@ public class ThingMagicRQLCommandFormatter implements CommandFormatter {
 		/* grab the command name */
 		String commandName = temp[0];
 
+		/*
+		 * Here we look up the command name and test it against known commands.
+		 * Then we create a command object that corresponds to that command
+		 * (i.e. implements it.) Second we add it to the return value list so
+		 * that the RIFIDI Core and pass it along to the ThingMagic executor.
+		 * 
+		 * Each Command constructor throws a "CommandCreationException"
+		 * if the command had any syntax errors. If we get that exception,
+		 * we create a ErrorCommand and pass the message we got from the exception
+		 * into its constructor.
+		 */
 		try {
 			if (commandName.toLowerCase().equals("select")) {
 				retVal.add(new SelectCommand(command, tmsr));
@@ -98,12 +119,21 @@ public class ThingMagicRQLCommandFormatter implements CommandFormatter {
 				retVal.add(new ResetCommand(command, tmsr));
 				return retVal;
 			}
-		} catch (CommandCreationExeption e) {
+		} catch (CommandCreationException e) {
 			logger.debug(e.getMessage());
+			
+			/*
+			 * We got an error message. Create an ErrorCommand and send it
+			 * the message we got as is.
+			 */
 			retVal.add(new ErrorCommand(e.getMessage()));
 			return retVal;
 		}
 
+		/*
+		 * No matching command. Create ErrorCommand and pass the error message
+		 * to the user or the remote system sent the command.
+		 */
 		retVal.add(new ErrorCommand("Error 0100:     syntax error at '"
 				+ commandName + "'"));
 
@@ -117,14 +147,24 @@ public class ThingMagicRQLCommandFormatter implements CommandFormatter {
 
 		
 		/*
-		 * Each object is considered as one and only one line of text.
+		 * Each object is considered as one and only one line of text,
+		 * including but not limited to empty strings.
 		 * So we just append a new line character to the end of it.
 		 * Note: Objects here are really Strings.
+		 * 
 		 */
 		for (Object o : arg) {
 			retVal.add(o + "\n");
 		}
 
+		/*
+		 * These objects eventually get converted to an array of bytes
+		 * and sent to Protocol.addProtocol() to add an optional 
+		 * protocol layer that may be needed on a case by case basis
+		 * for each reader. 
+		 * Note: The version for the ThingMagic reader (ThingMagicProtocol) does
+		 * nothing but send the bytes along as is.
+		 */
 		return retVal;
 	}
 

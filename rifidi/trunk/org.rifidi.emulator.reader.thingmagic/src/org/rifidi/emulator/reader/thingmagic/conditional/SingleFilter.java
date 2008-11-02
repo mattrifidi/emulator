@@ -18,7 +18,7 @@ import java.util.ListIterator;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.rifidi.emulator.reader.thingmagic.commandobjects.Command;
-import org.rifidi.emulator.reader.thingmagic.commandobjects.exceptions.CommandCreationExeption;
+import org.rifidi.emulator.reader.thingmagic.commandobjects.exceptions.CommandCreationException;
 import org.rifidi.emulator.reader.thingmagic.database.DataBase;
 import org.rifidi.emulator.reader.thingmagic.database.IDBRow;
 import org.rifidi.emulator.reader.thingmagic.module.ThingMagicReaderSharedResources;
@@ -39,7 +39,7 @@ public class SingleFilter implements IFilter {
 
 	public SingleFilter(ListIterator<String> tokenIterator, String table,
 			ThingMagicReaderSharedResources tmsr)
-			throws CommandCreationExeption {
+			throws CommandCreationException {
 		logger.debug("Creating Single filter...");
 
 		DataBase db = tmsr.getDataBase();
@@ -51,7 +51,7 @@ public class SingleFilter implements IFilter {
 		}
 
 		if (!token.matches(Command.A_WORD)) {
-			throw new CommandCreationExeption("Error 0100:	syntax error at '"
+			throw new CommandCreationException("Error 0100:	syntax error at '"
 					+ token + "'");
 		}
 
@@ -80,7 +80,7 @@ public class SingleFilter implements IFilter {
 			compareOperator = ECompareOperator.NOT_EQUAL;
 		} else {
 			logger.debug("No valid compare operator found: " + token);
-			throw new CommandCreationExeption("Error 0100:	syntax error at '"
+			throw new CommandCreationException("Error 0100:	syntax error at '"
 					+ token + "'");
 		}
 
@@ -89,7 +89,7 @@ public class SingleFilter implements IFilter {
 		if (token.equals("'")) {
 			// TODO is this true with other tables??
 			if (!attribute.equalsIgnoreCase("protocol_id")) {
-				throw new CommandCreationExeption(
+				throw new CommandCreationException(
 						"Error 0100:	Only protocol_id can be used with a string in a WHERE clause");
 			}
 			/*
@@ -114,7 +114,7 @@ public class SingleFilter implements IFilter {
 			try {
 				Integer.valueOf(token);
 			} catch (NumberFormatException e) {
-				throw new CommandCreationExeption(
+				throw new CommandCreationException(
 						"Error 0100:	syntax error at '" + token + "'");
 			}
 

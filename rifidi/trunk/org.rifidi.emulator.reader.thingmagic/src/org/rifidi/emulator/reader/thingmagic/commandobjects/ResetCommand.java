@@ -17,7 +17,7 @@ import java.util.ListIterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.rifidi.emulator.reader.thingmagic.commandobjects.exceptions.CommandCreationExeption;
+import org.rifidi.emulator.reader.thingmagic.commandobjects.exceptions.CommandCreationException;
 import org.rifidi.emulator.reader.thingmagic.module.ThingMagicReaderSharedResources;
 
 /**
@@ -30,7 +30,7 @@ public class ResetCommand extends Command {
 	private ThingMagicReaderSharedResources tmsr;
 
 	public ResetCommand(String command, ThingMagicReaderSharedResources tmsr)
-	throws CommandCreationExeption {
+	throws CommandCreationException {
 		this.tmsr = tmsr;
 		this.command = command;
 
@@ -69,7 +69,7 @@ public class ResetCommand extends Command {
 		String token = tokenIterator.next();
 
 		if (!token.equals("reset"))
-			throw new CommandCreationExeption(
+			throw new CommandCreationException(
 					"Error 0100:     syntax error at '" + token + "'");
 		
 		// check if the command correctly ends in a semicolon
@@ -81,11 +81,11 @@ public class ResetCommand extends Command {
 			}
 			
 			if (!token.equals(";")){
-				throw new CommandCreationExeption(
+				throw new CommandCreationException(
 						"Error 0100:     syntax error at '" + token + "'");
 			}
 		} else {
-			throw new CommandCreationExeption(
+			throw new CommandCreationException(
 					"Error 0100:     syntax error at '\n'");
 		}
 	}

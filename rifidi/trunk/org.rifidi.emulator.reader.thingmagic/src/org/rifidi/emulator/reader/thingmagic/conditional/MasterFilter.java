@@ -16,7 +16,7 @@ import java.util.ListIterator;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.rifidi.emulator.reader.thingmagic.commandobjects.exceptions.CommandCreationExeption;
+import org.rifidi.emulator.reader.thingmagic.commandobjects.exceptions.CommandCreationException;
 import org.rifidi.emulator.reader.thingmagic.database.IDBRow;
 import org.rifidi.emulator.reader.thingmagic.module.ThingMagicReaderSharedResources;
 
@@ -31,7 +31,7 @@ public class MasterFilter implements IFilter {
 
 	private boolean ignore;
 	
-	public MasterFilter(ListIterator<String> tokenIterator, String table, ThingMagicReaderSharedResources tmsr ) throws CommandCreationExeption{
+	public MasterFilter(ListIterator<String> tokenIterator, String table, ThingMagicReaderSharedResources tmsr ) throws CommandCreationException{
 		logger.debug("Creating Master Filter...");
 		if (tmsr.getDataBase().getTable(table).size() == 0) {
 			logger.debug("Filter disabled... no tags to filter");

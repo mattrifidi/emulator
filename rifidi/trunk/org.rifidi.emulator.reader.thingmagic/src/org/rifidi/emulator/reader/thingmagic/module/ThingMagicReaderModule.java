@@ -52,6 +52,9 @@ import org.rifidi.emulator.reader.thingmagic.io.protocol.ThingMagicProtocol;
  * @author Jerry Maine - jerry@pramari.com
  *
  */
+/*
+ * This class contains the startup code for the ThingMagic emulator.
+ */
 public class ThingMagicReaderModule extends AbstractPowerModule implements
 		ReaderModule {
 	
@@ -146,6 +149,7 @@ public class ThingMagicReaderModule extends AbstractPowerModule implements
 
 		DBTagID tagMemory = new DBTagID();
 
+		//TODO: Start naming antennas from 1 instead of 0 as with the real ThingMagic Reader.
 		HashMap<Integer, Antenna> antennaList = new HashMap<Integer, Antenna>();
 		for (int i = 0; i < properties.getNumAntennas(); i++) {
 			logger.debug("creating an antenna: " + i);

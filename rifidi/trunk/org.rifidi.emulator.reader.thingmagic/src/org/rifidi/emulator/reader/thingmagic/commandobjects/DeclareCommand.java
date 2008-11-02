@@ -18,7 +18,7 @@ import java.util.NoSuchElementException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.rifidi.emulator.reader.thingmagic.commandobjects.exceptions.CommandCreationExeption;
+import org.rifidi.emulator.reader.thingmagic.commandobjects.exceptions.CommandCreationException;
 import org.rifidi.emulator.reader.thingmagic.module.ThingMagicReaderSharedResources;
 
 /**
@@ -37,7 +37,7 @@ public class DeclareCommand extends Command {
 	String command;
 
 	public DeclareCommand(String command, ThingMagicReaderSharedResources tmsr)
-			throws CommandCreationExeption {
+			throws CommandCreationException {
 
 		this.tmsr = tmsr;
 		this.command = command;
@@ -49,14 +49,14 @@ public class DeclareCommand extends Command {
 		String token = tokenIterator.next();
 
 		if (!token.equals("declare"))
-			throw new CommandCreationExeption(
+			throw new CommandCreationException(
 					"Error 0100:     syntax error at '" + token + "'");
 
 		try {
 			token = tokenIterator.next();
 
 			if (!token.matches(WHITE_SPACE))
-				throw new CommandCreationExeption(
+				throw new CommandCreationException(
 						"Error 0100:     syntax error at '" + token + "'");
 
 			token = tokenIterator.next();
@@ -64,37 +64,37 @@ public class DeclareCommand extends Command {
 				cursorName = token;
 				logger.debug("Cursor name is " + cursorName);
 			} else {
-				throw new CommandCreationExeption(
+				throw new CommandCreationException(
 						"Error 0100:     syntax error at '" + token + "'");
 			}
 			token = tokenIterator.next();
 
 			if (!token.matches(WHITE_SPACE))
-				throw new CommandCreationExeption(
+				throw new CommandCreationException(
 						"Error 0100:     syntax error at '" + token + "'");
 
 			token = tokenIterator.next();
 
 			if (!token.equals("cursor"))
-				throw new CommandCreationExeption(
+				throw new CommandCreationException(
 						"Error 0100:     syntax error at '" + token + "'");
 
 			token = tokenIterator.next();
 
 			if (!token.matches(WHITE_SPACE))
-				throw new CommandCreationExeption(
+				throw new CommandCreationException(
 						"Error 0100:     syntax error at '" + token + "'");
 
 			token = tokenIterator.next();
 
 			if (!token.equals("for"))
-				throw new CommandCreationExeption(
+				throw new CommandCreationException(
 						"Error 0100:     syntax error at '" + token + "'");
 
 			token = tokenIterator.next();
 
 			if (!token.matches(WHITE_SPACE))
-				throw new CommandCreationExeption(
+				throw new CommandCreationException(
 						"Error 0100:     syntax error at '" + token + "'");
 
 			StringBuffer cursorCommandBuf = new StringBuffer();
@@ -115,7 +115,7 @@ public class DeclareCommand extends Command {
 				cursorCommand = new UpdateCommand(cursorCommandBuf.toString(),
 						tmsr);
 			} else {
-				throw new CommandCreationExeption(
+				throw new CommandCreationException(
 						"Error 0100:     syntax error at '" + token + "'");
 			}
 
@@ -140,7 +140,7 @@ public class DeclareCommand extends Command {
 				token = tokenIterator.previous();
 			}
 			logger.debug("Premature end of token list detected.");
-			throw new CommandCreationExeption(
+			throw new CommandCreationException(
 					"Error 0100:     syntax error at '" + token + "'");
 
 		}
@@ -157,7 +157,7 @@ public class DeclareCommand extends Command {
 
 		if (tmsr.getCursorCommandRegistry().containsKey(cursorName)) {
 			// TODO Correct the message.
-			throw new CommandCreationExeption(
+			throw new CommandCreationException(
 					"Error 0100:	Cursor already exists");
 		}
 

@@ -16,6 +16,12 @@ import java.util.ArrayList;
 /**
  * @author Jerry Maine - jerry@pramari.com
  *
+ * The sole purpose of this command is to echo the error message given to it
+ * at the time it was created as a way of passing it to the user or calling system.
+ *
+ */
+/*
+ * This class was meant to be extremely simple.
  */
 public class ErrorCommand extends Command {
 
@@ -32,6 +38,13 @@ public class ErrorCommand extends Command {
 	@Override
 	public ArrayList<Object> execute() {
 		ArrayList<Object> retVal = new ArrayList<Object>();
+		
+		/*
+		 * First we add the error message then a empty string.
+		 * 
+		 * See: ThingMagicRQLCommandFormatter.encode() for the
+		 * reason for the empty string.
+		 */
 		retVal.add(errorMessage);
 		retVal.add("");
 		return retVal;

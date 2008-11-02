@@ -20,7 +20,7 @@ import java.util.NoSuchElementException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.rifidi.emulator.reader.thingmagic.commandobjects.exceptions.CommandCreationExeption;
+import org.rifidi.emulator.reader.thingmagic.commandobjects.exceptions.CommandCreationException;
 import org.rifidi.emulator.reader.thingmagic.database.IDBRow;
 import org.rifidi.emulator.reader.thingmagic.database.IDBTable;
 import org.rifidi.emulator.reader.thingmagic.module.ThingMagicReaderSharedResources;
@@ -40,7 +40,7 @@ public class UpdateCommand extends Command {
 	private ThingMagicReaderSharedResources tmsr;
 
 	public UpdateCommand(String command, ThingMagicReaderSharedResources tmsr)
-			throws CommandCreationExeption {
+			throws CommandCreationException {
 		// TODO Auto-generated constructor stub
 		this.command = command;
 		this.tmsr = tmsr;
@@ -53,33 +53,33 @@ public class UpdateCommand extends Command {
 		String token = tokenIterator.next();
 
 		if (!token.equals("update"))
-			throw new CommandCreationExeption(
+			throw new CommandCreationException(
 					"Error 0100:     syntax error at '" + token + "'");
 
 		try {
 			token = tokenIterator.next();
 
 			if (!token.matches(WHITE_SPACE))
-				throw new CommandCreationExeption(
+				throw new CommandCreationException(
 						"Error 0100:     syntax error at '" + token + "'");
 
 			token = tokenIterator.next();
 
 			table = token;
 			if (!table.matches(A_WORD))
-				throw new CommandCreationExeption(
+				throw new CommandCreationException(
 						"Error 0100:     syntax error at '" + table + "'");
 
 			token = tokenIterator.next();
 
 			if (!token.matches(WHITE_SPACE))
-				throw new CommandCreationExeption(
+				throw new CommandCreationException(
 						"Error 0100:     syntax error at '" + token + "'");
 
 			token = tokenIterator.next();
 
 			if (!token.equals("set"))
-				throw new CommandCreationExeption(
+				throw new CommandCreationException(
 						"Error 0100:     syntax error at '" + token + "'");
 
 			token = tokenIterator.next();
@@ -95,11 +95,11 @@ public class UpdateCommand extends Command {
 				}
 
 				if (!token.equals(";")) {
-					throw new CommandCreationExeption(
+					throw new CommandCreationException(
 							"Error 0100:     syntax error at '" + token + "'");
 				}
 			} else {
-				throw new CommandCreationExeption(
+				throw new CommandCreationException(
 						"Error 0100:     syntax error at '\n'");
 			}
 		} catch (NoSuchElementException e) {
@@ -119,14 +119,14 @@ public class UpdateCommand extends Command {
 				token = tokenIterator.previous();
 			}
 			logger.debug("Premature end of token list detected.");
-			throw new CommandCreationExeption(
+			throw new CommandCreationException(
 					"Error 0100:     syntax error at '" + token + "'");
 
 		}
 
 		IDBTable tableImpl = tmsr.getDataBase().getTable(table);
 		if (tableImpl == null) {
-			throw new CommandCreationExeption(
+			throw new CommandCreationException(
 					"Error 0100:     syntax error at '" + table + "'");
 		}
 
@@ -134,7 +134,7 @@ public class UpdateCommand extends Command {
 			IDBRow row = tableImpl.get(x);
 			for (String column : keyValuePairs.keySet()) {
 				if (!row.containsColumn(column)) {
-					throw new CommandCreationExeption(
+					throw new CommandCreationException(
 							"Error 0100:     Unknown " + column);
 				}
 
@@ -151,14 +151,14 @@ public class UpdateCommand extends Command {
 	 * private helper method to help break up the logical layout of the parser.
 	 */
 	private void parseKeyValuePairs(ListIterator<String> tokenIterator)
-			throws CommandCreationExeption, NoSuchElementException {
+			throws CommandCreationException, NoSuchElementException {
 		// TODO Auto-generated method stub
 		String token;
 		do {
 			token = tokenIterator.next();
 
 			if (!token.matches(A_WORD))
-				throw new CommandCreationExeption(
+				throw new CommandCreationException(
 						"Error 0100:     syntax error at '" + token + "'");
 
 			String key = token;
@@ -166,7 +166,7 @@ public class UpdateCommand extends Command {
 			token = tokenIterator.next();
 
 			if (!token.matches(EQUALS_WITH_WS))
-				throw new CommandCreationExeption(
+				throw new CommandCreationException(
 						"Error 0100:     syntax error at '" + token + "'");
 
 			StringBuffer valueBuffer = new StringBuffer();
@@ -174,7 +174,7 @@ public class UpdateCommand extends Command {
 
 			if (!token.equals("'")) {
 				token = tokenIterator.previous().trim();
-				throw new CommandCreationExeption(
+				throw new CommandCreationException(
 						"Error 0100:     syntax error at '" + token + "'");
 
 			}

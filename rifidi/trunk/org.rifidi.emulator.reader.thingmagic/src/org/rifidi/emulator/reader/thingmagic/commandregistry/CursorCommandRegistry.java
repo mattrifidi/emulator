@@ -19,6 +19,9 @@ import org.rifidi.emulator.reader.thingmagic.commandobjects.UpdateCommand;
 
 /**
  * @author Jerry Maine - jerry@pramari.com
+ * 
+ * This class serves as a registery of commands that can be used by the
+ * AutoMode controller or the fetch command.
  *
  */
 public class CursorCommandRegistry {

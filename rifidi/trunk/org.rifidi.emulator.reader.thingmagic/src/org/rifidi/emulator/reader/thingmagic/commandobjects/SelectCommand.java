@@ -18,7 +18,7 @@ import java.util.NoSuchElementException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.rifidi.emulator.reader.thingmagic.commandobjects.exceptions.CommandCreationExeption;
+import org.rifidi.emulator.reader.thingmagic.commandobjects.exceptions.CommandCreationException;
 import org.rifidi.emulator.reader.thingmagic.conditional.MasterFilter;
 import org.rifidi.emulator.reader.thingmagic.database.IDBRow;
 import org.rifidi.emulator.reader.thingmagic.database.IDBTable;
@@ -42,7 +42,7 @@ public class SelectCommand extends Command {
 	private MasterFilter filter;
 
 	public SelectCommand(String command, ThingMagicReaderSharedResources tmsr)
-			throws CommandCreationExeption {
+			throws CommandCreationException {
 		this.tmsr = tmsr;
 		this.command = command;
 
@@ -57,7 +57,7 @@ public class SelectCommand extends Command {
 		String token = tokenIterator.next();
 
 		if (!token.equals("select")) {
-			throw new CommandCreationExeption(
+			throw new CommandCreationException(
 					"Error 0100:     syntax error at '" + token + "'");
 
 		}
@@ -72,7 +72,7 @@ public class SelectCommand extends Command {
 			 * Look for white spaces
 			 */
 			if (!token.matches(WHITE_SPACE)) {
-				throw new CommandCreationExeption(
+				throw new CommandCreationException(
 						"Error 0100:     syntax error at '" + token + "'");
 			}
 
@@ -86,7 +86,7 @@ public class SelectCommand extends Command {
 				if (token.matches(A_WORD)) {
 					columns.add(token);
 				} else {
-					throw new CommandCreationExeption(
+					throw new CommandCreationException(
 							"Error 0100:     syntax error at '" + token + "'");
 				}
 				token = tokenIterator.next();
@@ -99,11 +99,11 @@ public class SelectCommand extends Command {
 			if (tokenIterator.next().equals("from")) {
 
 				if (!token.matches(WHITE_SPACE))
-					throw new CommandCreationExeption(
+					throw new CommandCreationException(
 							"Error 0100:     syntax error at 'from'");
 
 			} else {
-				throw new CommandCreationExeption(
+				throw new CommandCreationException(
 						"Error 0100:     syntax error at ','");
 			}
 
@@ -112,7 +112,7 @@ public class SelectCommand extends Command {
 			 * Look for white spaces
 			 */
 			if (!token.matches(WHITE_SPACE)) {
-				throw new CommandCreationExeption(
+				throw new CommandCreationException(
 						"Error 0100:     syntax error at '" + token + "'");
 			}
 
@@ -124,7 +124,7 @@ public class SelectCommand extends Command {
 			if (token.matches(A_WORD)) {
 				table = token;
 			} else {
-				throw new CommandCreationExeption(
+				throw new CommandCreationException(
 						"Error 0100:     syntax error at '" + token + "'");
 			}
 
@@ -141,7 +141,7 @@ public class SelectCommand extends Command {
 							token = tokenIterator.next();
 
 							if (!token.matches(WHITE_SPACE)) {
-								throw new CommandCreationExeption(
+								throw new CommandCreationException(
 										"Error 0100:     syntax error at '"
 												+ token + "'");
 							}
@@ -161,6 +161,8 @@ public class SelectCommand extends Command {
 				}
 			}
 
+            //TODO: Add the parsing for the "SET key=value ..." clause here.
+			
 			// check if the command correctly ends in a semicolon
 			logger.debug("Checking for correct terminating sequence...");
 			if (tokenIterator.hasNext()) {
@@ -171,11 +173,11 @@ public class SelectCommand extends Command {
 				}
 
 				if (!token.equals(";")) {
-					throw new CommandCreationExeption(
+					throw new CommandCreationException(
 							"Error 0100:     syntax error at '" + token + "'");
 				}
 			} else {
-				throw new CommandCreationExeption(
+				throw new CommandCreationException(
 						"Error 0100:     syntax error at '\n'");
 			}
 
@@ -196,13 +198,13 @@ public class SelectCommand extends Command {
 				token = tokenIterator.previous();
 			}
 			logger.debug("Premature end of token list detected.");
-			throw new CommandCreationExeption(
+			throw new CommandCreationException(
 					"Error 0100:     syntax error at '" + token + "'");
 		}
 
 		IDBTable tableImpl = tmsr.getDataBase().getTable(table);
 		if (tableImpl == null) {
-			throw new CommandCreationExeption(
+			throw new CommandCreationException(
 					"Error 0100:     syntax error at '" + table + "'");
 		}
 
@@ -219,12 +221,12 @@ public class SelectCommand extends Command {
 			IDBRow row = tableImpl.get(x);
 			for (String column : columns) {
 				if (!row.containsColumn(column)) {
-					throw new CommandCreationExeption(
+					throw new CommandCreationException(
 							"Error 0100:     Unknown " + column);
 				}
 
 				if (!row.isReadable(column)) {
-					throw new CommandCreationExeption(
+					throw new CommandCreationException(
 							"Error 0100:     Could not read from '" + column
 									+ "' in '" + table + "'");
 				}
@@ -240,6 +242,11 @@ public class SelectCommand extends Command {
 		logger.debug("Getting table: " + table);
 		logger.debug("Getting column data: " + columns);
 
+		/*
+		 * here is the method we need to send the "Set key=value ..." clause
+		 * to in the form of a map.
+		 */
+		//TODO: Implement this.
 		tmsr.getDataBase().getTable(table).preTableAccess(null);
 
 		// TODO implement this better.

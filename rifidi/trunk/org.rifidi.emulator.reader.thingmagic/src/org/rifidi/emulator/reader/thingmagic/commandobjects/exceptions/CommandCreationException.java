@@ -15,28 +15,28 @@ package org.rifidi.emulator.reader.thingmagic.commandobjects.exceptions;
  * @author Jerry Maine - jerry@pramari.com
  *
  */
-public class CommandCreationExeption extends Exception {
+public class CommandCreationException extends Exception {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 4075195828731702092L;
 
-	public CommandCreationExeption() {
+	public CommandCreationException() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public CommandCreationExeption(String message) {
+	public CommandCreationException(String message) {
 		super(message);
 		// TODO Auto-generated constructor stub
 	}
 
-	public CommandCreationExeption(Throwable cause) {
+	public CommandCreationException(Throwable cause) {
 		super(cause);
 		// TODO Auto-generated constructor stub
 	}
 
-	public CommandCreationExeption(String message, Throwable cause) {
+	public CommandCreationException(String message, Throwable cause) {
 		super(message, cause);
 		// TODO Auto-generated constructor stub
 	}

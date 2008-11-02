@@ -27,6 +27,17 @@ import org.rifidi.emulator.reader.thingmagic.database.DataBase;
  * @author Jerry Maine - jerry@pramari.com
  *
  */
+/*
+ * A child class of AbstractReaderSharedResources contains information
+ * general to all readers and in addition to information specific to one
+ * reader.
+ * 
+ * It contains objects and other information that needs to persist between
+ * command calls to any reader. It also contains state information for the reader
+ * well.
+ * 
+ * This one is specific to the ThingMagic reader emulator.
+ */
 public class ThingMagicReaderSharedResources extends
 		AbstractReaderSharedResources {
 	private static Log logger = LogFactory.getLog(ThingMagicReaderSharedResources.class);

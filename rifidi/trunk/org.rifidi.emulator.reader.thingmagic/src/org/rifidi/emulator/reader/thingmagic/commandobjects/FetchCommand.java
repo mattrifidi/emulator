@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.rifidi.emulator.reader.thingmagic.commandobjects.exceptions.CommandCreationExeption;
+import org.rifidi.emulator.reader.thingmagic.commandobjects.exceptions.CommandCreationException;
 import org.rifidi.emulator.reader.thingmagic.commandregistry.CursorCommandRegistry;
 import org.rifidi.emulator.reader.thingmagic.module.ThingMagicReaderSharedResources;
 
@@ -37,7 +37,7 @@ public class FetchCommand extends Command {
 	
 	List<String> fetchList = new ArrayList<String>();
 
-	public FetchCommand(String command, ThingMagicReaderSharedResources tmsr) throws CommandCreationExeption {
+	public FetchCommand(String command, ThingMagicReaderSharedResources tmsr) throws CommandCreationException {
 		// TODO Auto-generated constructor stub
 		this.command = command;
 		this.tmsr = tmsr;
@@ -84,26 +84,26 @@ public class FetchCommand extends Command {
 		String token = tokenIterator.next();
 
 		if (!token.equals("fetch"))
-			throw new CommandCreationExeption(
+			throw new CommandCreationException(
 					"Error 0100:     syntax error at '" + token + "'");
 
 		try {
 			token = tokenIterator.next();
 			
 			if (!token.matches(WHITE_SPACE))
-				throw new CommandCreationExeption(
+				throw new CommandCreationException(
 						"Error 0100:     syntax error at '" + token + "'");
 			
 			do {
 				token = tokenIterator.next();
 				if (!token.matches(A_WORD)){
-					throw new CommandCreationExeption(
+					throw new CommandCreationException(
 							"Error 0100:     syntax error at '" + token + "'");
 				}
 				
 				
 				if (!tmsr.getCursorCommandRegistry().containsKey(token)){
-					throw new CommandCreationExeption(
+					throw new CommandCreationException(
 							"Error 0100:	Cursor does not exist");
 				}
 				
@@ -115,7 +115,7 @@ public class FetchCommand extends Command {
 				
 				token = tokenIterator.next();
 				if (!token.matches(COMMA_WITH_WS)){
-					throw new CommandCreationExeption(
+					throw new CommandCreationException(
 							"Error 0100:     syntax error at '" + token + "'");
 				}
 				
@@ -131,11 +131,11 @@ public class FetchCommand extends Command {
 				}
 				
 				if (!token.equals(";")){
-					throw new CommandCreationExeption(
+					throw new CommandCreationException(
 							"Error 0100:     syntax error at '" + token + "'");
 				}
 			} else {
-				throw new CommandCreationExeption(
+				throw new CommandCreationException(
 						"Error 0100:     syntax error at '\n'");
 			}
 			
@@ -156,7 +156,7 @@ public class FetchCommand extends Command {
 				token = tokenIterator.previous();
 			}
 			logger.debug("Premature end of token list detected.");
-			throw new CommandCreationExeption(
+			throw new CommandCreationException(
 					"Error 0100:     syntax error at '" + token + "'");
 
 		}

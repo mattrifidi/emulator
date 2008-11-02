@@ -33,6 +33,15 @@ public class RQLEncodedCommands {
 
 	public CommandObject execute(CommandObject arg,
 			AbstractReaderSharedResources asr){
+		
+		/*
+		 * All command objects inherit from the abstract class Command
+		 * which as one primary method "execute". All this command handler
+		 * does is run that method and take the return value and pass it to
+		 * "CommandObject.setReturnValue" without modification.
+		 * 
+		 * These return values eventually go to ThingMagicRQLCommandFormatter.encode()
+		 */
 		Command command = (Command) arg.getArguments().get(0);
 		logger.debug("Command type: " + command.getClass().getSimpleName());
 		logger.debug("Executing: " + command.toCommandString());

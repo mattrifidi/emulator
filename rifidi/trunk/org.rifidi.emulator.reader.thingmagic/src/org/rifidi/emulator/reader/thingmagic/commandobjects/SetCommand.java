@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.rifidi.emulator.reader.thingmagic.commandobjects.exceptions.CommandCreationExeption;
+import org.rifidi.emulator.reader.thingmagic.commandobjects.exceptions.CommandCreationException;
 import org.rifidi.emulator.reader.thingmagic.module.ThingMagicReaderSharedResources;
 
 /**
@@ -60,7 +60,7 @@ public class SetCommand extends Command {
 	 * one wants to do... This makes it slightly hard to code and understand.
 	 */
 	public SetCommand(String command, ThingMagicReaderSharedResources tmsr)
-			throws CommandCreationExeption {
+			throws CommandCreationException {
 		// TODO Auto-generated constructor stub
 		this.command = command;
 		this.tmsr = tmsr;
@@ -96,7 +96,7 @@ public class SetCommand extends Command {
 		String token = tokenIterator.next();
 
 		if (!token.equals("set"))
-			throw new CommandCreationExeption(
+			throw new CommandCreationException(
 					"Error 0100:     syntax error at '" + token + "'");
 
 		try {
@@ -104,7 +104,7 @@ public class SetCommand extends Command {
 			token = tokenIterator.next();
 
 			if (!token.matches(WHITE_SPACE)) {
-				throw new CommandCreationExeption(
+				throw new CommandCreationException(
 						"Error 0100:     syntax error at '" + token + "'");
 			}
 
@@ -126,7 +126,7 @@ public class SetCommand extends Command {
 					logger.debug("Expecting to turn of AutoMode");
 					setUpStart(tokenIterator);
 				} else {
-					throw new CommandCreationExeption(
+					throw new CommandCreationException(
 							"Error 0100:     syntax error at '" + token
 									+ "'");
 				}
@@ -135,7 +135,7 @@ public class SetCommand extends Command {
 				logger.debug("Expecting to set cursorListRepeatDelay");
 				setUpCursorListDelay(tokenIterator);
 			} else {
-				throw new CommandCreationExeption(
+				throw new CommandCreationException(
 						"Error 0100:     syntax error at '" + token + "'");
 			}
 
@@ -148,11 +148,11 @@ public class SetCommand extends Command {
 				}
 
 				if (!token.equals(";")) {
-					throw new CommandCreationExeption(
+					throw new CommandCreationException(
 							"Error 0100:     syntax error at '" + token + "'");
 				}
 			} else {
-				throw new CommandCreationExeption(
+				throw new CommandCreationException(
 						"Error 0100:     syntax error at '\n'");
 			}
 
@@ -173,7 +173,7 @@ public class SetCommand extends Command {
 				token = tokenIterator.previous();
 			}
 			logger.debug("Premature end of token list detected.");
-			throw new CommandCreationExeption(
+			throw new CommandCreationException(
 					"Error 0100:     syntax error at '" + token + "'");
 
 		}
@@ -184,7 +184,7 @@ public class SetCommand extends Command {
 	 * Helper methods to make reading code easer.
 	 */
 	
-	private void setUpStart(ListIterator<String> tokenIterator) throws CommandCreationExeption{
+	private void setUpStart(ListIterator<String> tokenIterator) throws CommandCreationException{
 		/*
 		 * we are expecting a "turn on" command
 		 */
@@ -193,13 +193,13 @@ public class SetCommand extends Command {
 
 			token = tokenIterator.next();
 			if (!token.matches(WHITE_SPACE)) {
-				throw new CommandCreationExeption(
+				throw new CommandCreationException(
 						"Error 0100:     syntax error at '" + token
 								+ "'");
 			}
 
 			if (!tmsr.getCursorCommandRegistry().containsKey(token)) {
-				throw new CommandCreationExeption(
+				throw new CommandCreationException(
 						"Error 0100:	Cursor does not exist");
 			}
 			
@@ -210,7 +210,7 @@ public class SetCommand extends Command {
 		} while (token.matches(COMMA_WITH_WS));
 		
 		if (!token.matches(EQUALS_WITH_WS)){
-			throw new CommandCreationExeption(
+			throw new CommandCreationException(
 					"Error 0100:     syntax error at '" + token
 							+ "'");
 		}
@@ -218,7 +218,7 @@ public class SetCommand extends Command {
 		token = tokenIterator.next();
 		
 		if (!token.equalsIgnoreCase("ON")){
-			throw new CommandCreationExeption(
+			throw new CommandCreationException(
 					"Error 0100:     syntax error at '" + token
 							+ "'");
 		}
@@ -228,7 +228,7 @@ public class SetCommand extends Command {
 			
 			token = tokenIterator.next();
 			if (!token.equals("repeat")){
-				throw new CommandCreationExeption(
+				throw new CommandCreationException(
 						"Error 0100:     syntax error at '" + token
 								+ "'");
 			}
@@ -236,7 +236,7 @@ public class SetCommand extends Command {
 			token = tokenIterator.next();
 			
 			if (token.matches(EQUALS_WITH_WS)){
-				throw new CommandCreationExeption(
+				throw new CommandCreationException(
 						"Error 0100:     syntax error at '" + token
 								+ "'");
 			}
@@ -245,7 +245,7 @@ public class SetCommand extends Command {
 			try {
 				repeat = Long.parseLong(token);
 			} catch (NumberFormatException e) {
-				throw new CommandCreationExeption(
+				throw new CommandCreationException(
 						"Error 0100:     syntax error at '" + token + "'");
 			}
 		} else {
@@ -258,14 +258,14 @@ public class SetCommand extends Command {
 		commandSwitch = ESetSubCommand.START;
 	}
 	
-	private void setUpStop(ListIterator<String> tokenIterator) throws CommandCreationExeption{
+	private void setUpStop(ListIterator<String> tokenIterator) throws CommandCreationException{
 		/*
 		 * we are expecting a "turn off" command
 		 */
 		String token = tokenIterator.next();
 
 		if (!token.equalsIgnoreCase("OFF")) {
-			throw new CommandCreationExeption(
+			throw new CommandCreationException(
 					"Error 0100:     syntax error at '" + token
 							+ "'");
 		}
@@ -276,11 +276,11 @@ public class SetCommand extends Command {
 		commandSwitch = ESetSubCommand.STOP;
 	}
 
-	private void setUpCursorListDelay(ListIterator<String> tokenIterator) throws CommandCreationExeption{
+	private void setUpCursorListDelay(ListIterator<String> tokenIterator) throws CommandCreationException{
 		
 		String token = tokenIterator.next();
 		if (!token.matches(EQUALS_WITH_WS)) {
-			throw new CommandCreationExeption(
+			throw new CommandCreationException(
 					"Error 0100:     syntax error at '" + token + "'");
 		}
 
@@ -298,7 +298,7 @@ public class SetCommand extends Command {
 			 */
 			commandSwitch = ESetSubCommand.SET_CURSOR_LIST_REPEAT;
 		} catch (NumberFormatException e) {
-			throw new CommandCreationExeption(
+			throw new CommandCreationException(
 					"Error 0100:     syntax error at '" + token + "'");
 		}
 	}

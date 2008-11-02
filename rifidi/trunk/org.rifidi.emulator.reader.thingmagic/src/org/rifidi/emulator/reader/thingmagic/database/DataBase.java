@@ -16,7 +16,9 @@ import java.util.Map;
 
 /**
  * @author Jerry Maine - jerry@pramari.com
- *
+ * The thing magic command loosely resemble SQL command that one
+ * gives to a database. So, to mirror that here, we structure the code and data
+ * in a way that 'looks' like a database.
  */
 public class DataBase {
 	public Map<String, IDBTable> tables = new HashMap<String, IDBTable>();

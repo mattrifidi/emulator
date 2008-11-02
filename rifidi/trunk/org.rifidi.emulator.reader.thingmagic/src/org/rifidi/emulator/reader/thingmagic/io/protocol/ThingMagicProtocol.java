@@ -28,6 +28,19 @@ import org.rifidi.emulator.io.protocol.ProtocolValidationException;
 public class ThingMagicProtocol implements Protocol {
 	
 	private static Log logger = LogFactory.getLog(ThingMagicProtocol.class);
+	
+	/*
+	 * This regex breaks up the command into a series of strings that end in a semicolon--
+	 * counting for the case that there might not be a semicolon at the very end of the string.
+	 * 
+	 * This is made "private final" because the pattern does not change, and thus
+	 * does not need to be recreated each time "removeProtocol" is called.
+	 * 
+	 * There might be a case where a semicolon is surrounded by quotes.
+	 */
+	private final Pattern tokenizer = Pattern.compile(
+			"[^;]+;|[^;]+", Pattern.CASE_INSENSITIVE
+			| Pattern.DOTALL);
 
 	/* (non-Javadoc)
 	 * @see org.rifidi.emulator.io.protocol.Protocol#addProtocol(byte[])
@@ -36,12 +49,20 @@ public class ThingMagicProtocol implements Protocol {
 	public final byte[] addProtocol(final byte[] data) {
 		// TODO Auto-generated method stub
 		logger.debug("ThingMagicProtocol.addProtocol() called: " + new String(data));
+		/*
+		 * we do nothing here but return the data as is.
+		 */
 		return data;
 	}
 
-	//TODO Send the semicolon onward. It will help with handling errors in syntax.
 	/* (non-Javadoc)
 	 * @see org.rifidi.emulator.io.protocol.Protocol#removeProtocol(byte[])
+	 */
+	/*
+	 * Here we get the command as a raw string of bytes that we must chop up
+	 * and transform into more meaningful commands.
+	 * One example of this may be to strip HTTP out and send it on,
+	 * but here we split it up using semicolons as delimiters.
 	 */
 	@Override
 	public final List<byte[]> removeProtocol(final byte[] data)
@@ -51,15 +72,13 @@ public class ThingMagicProtocol implements Protocol {
 		String stringData = new String(data);
 		
 		List<String> removedString = new ArrayList<String>();
-		Pattern tokenizer = Pattern.compile(
-				"[^;]+;|[^;]+", Pattern.CASE_INSENSITIVE
-								| Pattern.DOTALL);
+		
 				Matcher tokenFinder = tokenizer.matcher(stringData);
 
 				while (tokenFinder.find()) {
 					String temp = tokenFinder.group();
 					/*
-					 * no need to add empty strings at tokens or
+					 * no need to add empty strings as tokens or
 					 * strings with just white space.
 					 */
 					if (temp.equals("") || temp.matches("\\s+"))
@@ -75,6 +94,13 @@ public class ThingMagicProtocol implements Protocol {
 			removed.add(s.getBytes());
 		}
 		
+		
+		/*
+		 * What is returned here eventually goes to reader's CommandFormatter.decode()
+		 * to be turned into more meaningful data that can be acted upon.
+		 * In this case it is sent to ThingMagicRQLCommandFormatter object to be
+		 * dealt with.
+		 */
 		return removed;
 	}
 
