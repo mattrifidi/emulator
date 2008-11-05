@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.eclipse.swt.widgets.Composite;
 import org.jdom.Element;
@@ -209,6 +210,20 @@ public abstract class AbstractDynamicSWTForm implements
 	 */
 	public void removeListner(DynamicSWTWidgetListener listener) {
 		this.listeners.remove(listener);
+	}
+
+	/**
+	 * This method returns a map where the key is the widget names, and the
+	 * values are the values of the widgets
+	 * 
+	 * @return
+	 */
+	public HashMap<String, String> getWidgetNameValueMap() {
+		HashMap<String, String> retVal = new HashMap<String, String>();
+		for (DynamicSWTFormWidget widget : widgets) {
+			retVal.put(widget.getElementName(), widget.getValue());
+		}
+		return retVal;
 	}
 
 	/**
