@@ -50,14 +50,14 @@ public interface ReaderModuleManagerInterface {
 	 *             will be thrown if errors in the RMI communication occur
 	 */
 	public void resumeReader() throws Exception;
-	
+
 	/**
 	 * 
 	 * @param numberOfPorts
 	 * @return
 	 */
 	public List<String> getGPIList(int numberOfPorts);
-	
+
 	/**
 	 * 
 	 * @param numberOfPorts
@@ -127,6 +127,15 @@ public interface ReaderModuleManagerInterface {
 	public void setGPILow(int GPIPort) throws Exception;
 
 	/**
+	 * Returns a boolean as to the status of the given GPO port. True if the
+	 * port is currently high, false if the port is currently low.
+	 * 
+	 * @param gpo
+	 * @throws Exception
+	 */
+	public boolean getGPOStatus(int GPOPort) throws Exception;
+
+	/**
 	 * Get the GeneralReaderPropertyHolder describing the Reader startup
 	 * settings
 	 * 
@@ -174,7 +183,4 @@ public interface ReaderModuleManagerInterface {
 	public Boolean setReaderProperty(String propertyName, String propertyValue)
 			throws Exception;
 
-
-
-	
 }

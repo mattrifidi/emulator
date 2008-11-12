@@ -131,6 +131,15 @@ public class ReaderModuleManager implements ReaderModuleManagerInterface {
 	public void setGPILow(int GPIPort) {
 		reader.getSharedResources().getGpioController().setGPILow(GPIPort);
 	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.rifidi.emulator.rmi.server.ReaderModuleManagerInterface#getGPOStatus(int)
+	 */
+	@Override
+	public boolean getGPOStatus(int GPOPort) throws Exception {
+		return reader.getSharedResources().getGpioController().getGPOState(GPOPort);
+	}
 
 	/*
 	 * (non-Javadoc)
