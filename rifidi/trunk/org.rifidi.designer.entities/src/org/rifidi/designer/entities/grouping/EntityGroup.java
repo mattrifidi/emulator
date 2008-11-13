@@ -21,7 +21,6 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.eclipse.core.databinding.observable.IChangeListener;
 import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.core.databinding.observable.list.IListChangeListener;
 import org.eclipse.core.databinding.observable.list.WritableList;
@@ -330,21 +329,28 @@ public class EntityGroup implements IAdaptable, IEntityObservable {
 		return entities.contains(entity);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.rifidi.designer.entities.interfaces.IEntityObservable#addListChangeListener(org.eclipse.core.databinding.observable.list.IListChangeListener)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @seeorg.rifidi.designer.entities.interfaces.IEntityObservable#
+	 * addListChangeListener
+	 * (org.eclipse.core.databinding.observable.list.IListChangeListener)
 	 */
 	@Override
 	public void addListChangeListener(IListChangeListener changeListener) {
 		((WritableList) entities).addListChangeListener(changeListener);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.rifidi.designer.entities.interfaces.IEntityObservable#removeListChangeListener(org.eclipse.core.databinding.observable.list.IListChangeListener)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @seeorg.rifidi.designer.entities.interfaces.IEntityObservable#
+	 * removeListChangeListener
+	 * (org.eclipse.core.databinding.observable.list.IListChangeListener)
 	 */
 	@Override
 	public void removeListChangeListener(IListChangeListener changeListener) {
 		((WritableList) entities).removeListChangeListener(changeListener);
 	}
-	
-	
+
 }
