@@ -58,10 +58,10 @@ public class TagPatternComposite extends Composite {
 		Label prefixLabel = new Label(group, SWT.NONE);
 		prefixLabel.setText("Tag prefix:");
 		prefixText = new Text(group, SWT.BORDER);
-		prefixText.setTextLimit(5);
+		prefixText.setTextLimit(Text.LIMIT);
 		prefixText.setEnabled(false);
 		// Set the size of the Text Widget
-		int characters = 6; // should be 5 but 6 because of average size
+		int characters = 20; // should be 5 but 6 because of average size
 		GC gc = new GC(prefixText);
 		FontMetrics fm = gc.getFontMetrics();
 		int width = characters * fm.getAverageCharWidth();
