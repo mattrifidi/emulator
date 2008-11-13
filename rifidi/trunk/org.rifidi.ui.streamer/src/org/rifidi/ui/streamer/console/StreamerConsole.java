@@ -70,7 +70,7 @@ public class StreamerConsole implements TestUnitStateListener {
 	/**
 	 * Initialize the SystemTrayIcon and make menus with actions for it
 	 */
-	private static void startUPTrayIcon() {
+	protected static void startUPTrayIcon() {
 		Thread thread = new Thread(new Runnable() {
 
 			private String imageDescription = "/icons/title_rifidi_16x16.gif";
@@ -95,22 +95,22 @@ public class StreamerConsole implements TestUnitStateListener {
 				// splashShell.dispose();
 				//
 				// } catch (SecurityException e) {
-				// // TODO Auto-generated catch block
+				// 
 				// e.printStackTrace();
 				// } catch (NoSuchMethodException e) {
-				// // TODO Auto-generated catch block
+				// 
 				// e.printStackTrace();
 				// } catch (NumberFormatException e) {
-				// // TODO Auto-generated catch block
+				// 
 				// e.printStackTrace();
 				// } catch (IllegalArgumentException e) {
-				// // TODO Auto-generated catch block
+				// 
 				// e.printStackTrace();
 				// } catch (IllegalAccessException e) {
-				// // TODO Auto-generated catch block
+				// 
 				// e.printStackTrace();
 				// } catch (InvocationTargetException e) {
-				// // TODO Auto-generated catch block
+				// 
 				// e.printStackTrace();
 				// }
 

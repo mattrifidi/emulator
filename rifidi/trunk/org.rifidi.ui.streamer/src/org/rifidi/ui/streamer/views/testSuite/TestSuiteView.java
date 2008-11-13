@@ -46,6 +46,7 @@ import org.rifidi.ui.streamer.views.testUnit.TestUnitView;
  * @author Andreas Huebner - andreas@pramari.com
  * 
  */
+@SuppressWarnings("deprecation")
 public class TestSuiteView extends ViewPart {
 
 	public static final String ID = "org.rifidi.ui.streamer.views.TestSuiteView";

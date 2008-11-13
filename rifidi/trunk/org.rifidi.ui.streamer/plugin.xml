@@ -201,7 +201,7 @@
          </property>
          <property
                name="aboutText"
-               value="Rifidi Tag Streamer 2.0.&#x0A;For help, the newest releases and additional information visit&#x0A;http://wiki.rifidi.org&#x0A;http://sourceforge.net/projects/rifidi/&#x0A;http://www.rifidi.org&#x0A;IRC-Channel : irc.freenode.net #rifidi">
+               value="Rifidi Tag Streamer 1.1.1.&#x0A;For help, the newest releases and additional information visit&#x0A;http://wiki.rifidi.org&#x0A;http://sourceforge.net/projects/rifidi/&#x0A;http://www.rifidi.org&#x0A;IRC-Channel : irc.freenode.net #rifidi">
          </property>
          <property
                name="aboutImage"
