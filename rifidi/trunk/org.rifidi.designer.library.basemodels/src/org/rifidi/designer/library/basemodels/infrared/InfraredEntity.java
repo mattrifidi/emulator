@@ -10,18 +10,22 @@
  */
 package org.rifidi.designer.library.basemodels.infrared;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.rifidi.designer.entities.Entity;
 import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.databinding.annotations.MonitoredProperties;
+import org.rifidi.designer.entities.gpio.GPIO;
+import org.rifidi.designer.entities.gpio.GPIPort;
+import org.rifidi.designer.entities.gpio.GPOPort;
 import org.rifidi.designer.entities.interfaces.Field;
-import org.rifidi.designer.entities.interfaces.GPO;
 import org.rifidi.designer.entities.interfaces.NeedsPhysics;
 import org.rifidi.designer.entities.interfaces.SceneControl;
 import org.rifidi.designer.entities.interfaces.Switch;
-import org.rifidi.designer.services.core.cabling.CablingService;
-import org.rifidi.services.annotations.Inject;
 
 import com.jme.bounding.BoundingBox;
 import com.jme.input.InputHandler;
@@ -51,23 +55,25 @@ import com.jmex.physics.material.Material;
 @MonitoredProperties(names = { "name" })
 @XmlRootElement
 public class InfraredEntity extends VisualEntity implements SceneControl,
-		Switch, NeedsPhysics, GPO, Field {
+		Switch, NeedsPhysics, GPIO, Field {
 	/** Reference to the current physicsspace */
 	private PhysicsSpace physicsSpace;
 	/** Reference to the collision handler. */
 	private InputHandler collisionHandler;
 	/** Running state of the entity. */
 	private boolean running;
-	/** Reference to the cabling service. */
-	private CablingService cablingService;
 	/** Empty bounding node. */
 	private Node bounding;
+	/** Output port of the entity */
+	private GPOPort port;
 
 	/**
 	 * Constructor
 	 */
 	public InfraredEntity() {
 		setName("Infrared");
+		port = new GPOPort();
+		port.setId(0);
 	}
 
 	/*
@@ -216,11 +222,6 @@ public class InfraredEntity extends VisualEntity implements SceneControl,
 		this.physicsSpace = physicsSpace;
 	}
 
-	@Inject
-	public void setCablingService(CablingService cablingService) {
-		this.cablingService = cablingService;
-	}
-
 	@Override
 	public boolean isRunning() {
 		return running;
@@ -230,10 +231,6 @@ public class InfraredEntity extends VisualEntity implements SceneControl,
 	public void fieldEntered(Entity entity) {
 		if (isRunning()) {
 			System.out.println("field entered " + entity + " at " + this);
-			cablingService.setHigh(this, 1);
-			cablingService.setLow(this, 1);
-			cablingService.setHigh(this, 3);
-			cablingService.setLow(this, 3);
 		}
 	}
 
@@ -261,6 +258,28 @@ public class InfraredEntity extends VisualEntity implements SceneControl,
 	@Override
 	public Node getBoundingNode() {
 		return bounding;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.rifidi.designer.entities.gpio.GPIO#getGPIPorts()
+	 */
+	@Override
+	public List<GPIPort> getGPIPorts() {
+		return Collections.emptyList();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.rifidi.designer.entities.gpio.GPIO#getGPOPorts()
+	 */
+	@Override
+	public List<GPOPort> getGPOPorts() {
+		List<GPOPort> portList=new ArrayList<GPOPort>();
+		portList.add(port);
+		return portList;
 	}
 
 }

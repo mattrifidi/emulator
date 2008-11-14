@@ -12,8 +12,6 @@ import org.monklypse.core.SWTDefaultImplementor;
 import org.osgi.framework.BundleContext;
 import org.rifidi.designer.entities.RMIManager;
 import org.rifidi.designer.rcp.game.DesignerGame;
-import org.rifidi.designer.services.core.cabling.CablingService;
-import org.rifidi.designer.services.core.cabling.CablingServiceImpl;
 import org.rifidi.designer.services.core.collision.FieldService;
 import org.rifidi.designer.services.core.collision.FieldServiceImpl;
 import org.rifidi.designer.services.core.entities.EntitiesService;
@@ -87,8 +85,6 @@ public class Activator extends AbstractUIPlugin {
 		if (!folder.exists()) {
 			folder.create(true, true, null);
 		}
-		context.registerService(CablingService.class.getName(),
-				new CablingServiceImpl(), null);
 		context.registerService(FieldService.class.getName(),
 				new FieldServiceImpl(), null);
 		context.registerService(new String[] { EntitiesService.class.getName(),

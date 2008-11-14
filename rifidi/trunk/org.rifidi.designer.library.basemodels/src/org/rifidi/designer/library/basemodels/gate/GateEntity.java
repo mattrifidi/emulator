@@ -29,15 +29,14 @@ import org.rifidi.designer.entities.RMIManager;
 import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.annotations.Property;
 import org.rifidi.designer.entities.databinding.annotations.MonitoredProperties;
-import org.rifidi.designer.entities.interfaces.GPI;
-import org.rifidi.designer.entities.interfaces.GPO;
+import org.rifidi.designer.entities.gpio.GPIO;
+import org.rifidi.designer.entities.gpio.GPIPort;
+import org.rifidi.designer.entities.gpio.GPOPort;
 import org.rifidi.designer.entities.interfaces.ParentEntity;
 import org.rifidi.designer.entities.interfaces.RifidiEntity;
 import org.rifidi.designer.entities.interfaces.Switch;
 import org.rifidi.designer.library.basemodels.antennafield.AntennaFieldEntity;
-import org.rifidi.designer.services.core.cabling.CablingService;
 import org.rifidi.emulator.rmi.server.ReaderModuleManagerInterface;
-import org.rifidi.services.annotations.Inject;
 import org.rifidi.ui.common.reader.UIReader;
 
 import com.jme.bounding.BoundingBox;
@@ -62,61 +61,47 @@ import com.jme.util.export.binary.BinaryImporter;
 @MonitoredProperties(names = { "name" })
 @XmlRootElement
 public class GateEntity extends VisualEntity implements RifidiEntity, Switch,
-		ParentEntity, GPO, GPI {
+		ParentEntity, GPIO {
 
-	/**
-	 * logger for this class.
-	 */
+	/** logger for this class. */
 	private static Log logger = LogFactory.getLog(GateEntity.class);
-	/**
-	 * Model for shared meshes
-	 */
+	/** Model for shared meshes */
 	private static Node[] lod = null;
-	/**
-	 * Left antenna entity.
-	 */
+	/** Left antenna entity. */
 	private AntennaFieldEntity antennaL;
-	/**
-	 * Right antenna entity.
-	 */
+	/** Right antenna entity. */
 	private AntennaFieldEntity antennaR;
-	/**
-	 * Reader associated with this gate.
-	 */
+	/** Reader associated with this gate. */
 	private UIReader reader;
-	/**
-	 * List of ChildEntites connected to this gate.
-	 */
+	/** List of ChildEntites connected to this gate. */
 	private List<VisualEntity> children;
-	/**
-	 * The multiplication factor for the field size
-	 */
+	/** The multiplication factor for the field size */
 	private float factor = 1.0f;
-	/**
-	 * Connection manager for rifidi.
-	 */
+	/** Connection manager for rifidi. */
 	private RMIManager rmimanager;
-	/**
-	 * Reference to the reader management interface.
-	 */
+	/** Reference to the reader management interface. */
 	private ReaderModuleManagerInterface readerModuleManagerInterface;
-	/**
-	 * State of the switch.
-	 */
+	/** State of the switch. */
 	private boolean running = false;
-	/**
-	 * Reference to the cablingservice.
-	 */
-	private CablingService cablingService;
-	/**
-	 * Node that contains the different lods.
-	 */
+	/** Node that contains the different lods. */
 	private SwitchNode switchNode;
+	/** Available GPI ports. */
+	private List<GPIPort> gpiPorts;
+	/** Available GPO ports. */
+	private List<GPOPort> gpoPorts;
 
 	/**
 	 * Constructor.
 	 */
 	public GateEntity() {
+		for (int count = 0; count < 7; count++) {
+			GPIPort gpiPort = new GPIPort();
+			gpiPort.setId(count);
+		}
+		for (int count = 0; count < 4; count++) {
+			GPOPort gpoPort = new GPOPort();
+			gpoPort.setId(count);
+		}
 	}
 
 	/*
@@ -127,19 +112,19 @@ public class GateEntity extends VisualEntity implements RifidiEntity, Switch,
 	@Override
 	public void init() {
 		prepare();
-		Node mainNode=new Node();
+		Node mainNode = new Node();
 		mainNode.setModelBound(new BoundingBox());
 		switchNode = new SwitchNode("maingeometry");
-		switchNode.setLocalScale(new Vector3f(0.9f,1.1f,1f));
+		switchNode.setLocalScale(new Vector3f(0.9f, 1.1f, 1f));
 		switchNode.attachChildAt(new SharedNode("shared_gate", lod[0]), 0);
 		switchNode.attachChildAt(new SharedNode("shared_gate", lod[1]), 1);
 		switchNode.attachChildAt(new SharedNode("shared_gate", lod[2]), 2);
 		switchNode.attachChildAt(new SharedNode("shared_gate", lod[2]), 3);
 		switchNode.setActiveChild(0);
-		
+
 		mainNode.attachChild(switchNode);
 		setNode(mainNode);
-		
+
 		// find the snappoints
 		children = new ArrayList<VisualEntity>();
 		if (reader.getNumAntennas() > 0) {
@@ -165,41 +150,44 @@ public class GateEntity extends VisualEntity implements RifidiEntity, Switch,
 		}
 		getNode().updateGeometricState(0, true);
 		getNode().updateWorldBound();
-		
-		Node _node=new Node("hiliter");
-		Box box = new Box("top", ((BoundingBox) getNode()
-				.getWorldBound()).getCenter().clone().subtractLocal(
-				getNode().getLocalTranslation()).add(new Vector3f(0,5,0)), 3f, 1f, .5f);
+
+		Node _node = new Node("hiliter");
+		Box box = new Box("top", ((BoundingBox) getNode().getWorldBound())
+				.getCenter().clone().subtractLocal(
+						getNode().getLocalTranslation()).add(
+						new Vector3f(0, 5, 0)), 3f, 1f, .5f);
 		box.setModelBound(new BoundingBox());
 		box.updateModelBound();
 		_node.attachChild(box);
-		box = new Box("left", ((BoundingBox) getNode()
-				.getWorldBound()).getCenter().clone().subtractLocal(
-				getNode().getLocalTranslation()).add(new Vector3f(-2.5f,-.5f,0)), .5f, 4.5f, .5f);
+		box = new Box("left", ((BoundingBox) getNode().getWorldBound())
+				.getCenter().clone().subtractLocal(
+						getNode().getLocalTranslation()).add(
+						new Vector3f(-2.5f, -.5f, 0)), .5f, 4.5f, .5f);
 		box.setModelBound(new BoundingBox());
 		box.updateModelBound();
 		_node.attachChild(box);
-		box = new Box("leftFoot", ((BoundingBox) getNode()
-				.getWorldBound()).getCenter().clone().subtractLocal(
-				getNode().getLocalTranslation()).add(new Vector3f(-2.5f,-5.5f,0)), .5f, .5f, 2f);
+		box = new Box("leftFoot", ((BoundingBox) getNode().getWorldBound())
+				.getCenter().clone().subtractLocal(
+						getNode().getLocalTranslation()).add(
+						new Vector3f(-2.5f, -5.5f, 0)), .5f, .5f, 2f);
 		box.setModelBound(new BoundingBox());
 		box.updateModelBound();
 		_node.attachChild(box);
-		box = new Box("right", ((BoundingBox) getNode()
-				.getWorldBound()).getCenter().clone().subtractLocal(
-				getNode().getLocalTranslation()).add(new Vector3f(2.5f,-.5f,0)), .5f, 4.5f, .5f);
+		box = new Box("right", ((BoundingBox) getNode().getWorldBound())
+				.getCenter().clone().subtractLocal(
+						getNode().getLocalTranslation()).add(
+						new Vector3f(2.5f, -.5f, 0)), .5f, 4.5f, .5f);
 		box.setModelBound(new BoundingBox());
 		box.updateModelBound();
 		_node.attachChild(box);
-		box = new Box("rightFoot", ((BoundingBox) getNode()
-				.getWorldBound()).getCenter().clone().subtractLocal(
-				getNode().getLocalTranslation()).add(new Vector3f(2.5f,-5.5f,0)), .5f, .5f, 2f);
+		box = new Box("rightFoot", ((BoundingBox) getNode().getWorldBound())
+				.getCenter().clone().subtractLocal(
+						getNode().getLocalTranslation()).add(
+						new Vector3f(2.5f, -5.5f, 0)), .5f, .5f, 2f);
 		box.setModelBound(new BoundingBox());
 		box.updateModelBound();
 		_node.attachChild(box);
-		
-		
-		
+
 		_node.setModelBound(new BoundingBox());
 		_node.updateModelBound();
 		_node.setCullHint(CullHint.Always);
@@ -214,7 +202,7 @@ public class GateEntity extends VisualEntity implements RifidiEntity, Switch,
 	@Override
 	public void loaded() {
 		prepare();
-		switchNode=(SwitchNode)getNode().getChild("maingeometry");
+		switchNode = (SwitchNode) getNode().getChild("maingeometry");
 		for (VisualEntity antennaFieldEntity : children) {
 			((AntennaFieldEntity) antennaFieldEntity)
 					.setReaderInterface(readerModuleManagerInterface);
@@ -244,7 +232,7 @@ public class GateEntity extends VisualEntity implements RifidiEntity, Switch,
 					lod[count].updateGeometricState(0f, true);
 					lod[count].updateModelBound();
 					lod[count].updateWorldBound();
-					lod[count].setLocalScale(new Vector3f(0.87f,1f,1f));
+					lod[count].setLocalScale(new Vector3f(0.87f, 1f, 1f));
 				} catch (MalformedURLException e) {
 					logger.debug(e);
 				} catch (IOException e) {
@@ -256,19 +244,19 @@ public class GateEntity extends VisualEntity implements RifidiEntity, Switch,
 			readerModuleManagerInterface = rmimanager.createReader(reader
 					.getGeneralReaderPropertyHolder());
 		} catch (ClassNotFoundException e) {
-			logger.fatal("Unable to create reader: "+e);
+			logger.fatal("Unable to create reader: " + e);
 		} catch (InstantiationException e) {
-			logger.fatal("Unable to create reader: "+e);
+			logger.fatal("Unable to create reader: " + e);
 		} catch (IllegalAccessException e) {
-			logger.fatal("Unable to create reader: "+e);
+			logger.fatal("Unable to create reader: " + e);
 		} catch (MalformedURLException e) {
-			logger.fatal("Unable to create reader: "+e);
+			logger.fatal("Unable to create reader: " + e);
 		} catch (NotBoundException e) {
-			logger.fatal("Unable to create reader: "+e);
+			logger.fatal("Unable to create reader: " + e);
 		} catch (RemoteException e) {
-			logger.fatal("Unable to create reader: "+e);
+			logger.fatal("Unable to create reader: " + e);
 		} catch (IOException e) {
-			logger.fatal("Unable to create reader: "+e);
+			logger.fatal("Unable to create reader: " + e);
 		}
 	}
 
@@ -394,7 +382,8 @@ public class GateEntity extends VisualEntity implements RifidiEntity, Switch,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.entities.interfaces.ParentEntity#getChildEntites()
+	 * @see
+	 * org.rifidi.designer.entities.interfaces.ParentEntity#getChildEntites()
 	 */
 	@Override
 	public List<VisualEntity> getChildEntites() {
@@ -404,7 +393,9 @@ public class GateEntity extends VisualEntity implements RifidiEntity, Switch,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.entities.interfaces.ParentEntity#setChildEntites(java.util.List)
+	 * @see
+	 * org.rifidi.designer.entities.interfaces.ParentEntity#setChildEntites(
+	 * java.util.List)
 	 */
 	@XmlIDREF
 	@Override
@@ -442,62 +433,35 @@ public class GateEntity extends VisualEntity implements RifidiEntity, Switch,
 	public String getReaderType() {
 		return reader.getReaderType();
 	}
-	
+
 	@XmlTransient
 	@Property(displayName = "Reader Connection", description = "connection details for the reader", readonly = true, unit = "")
-	public void setConnectionDetails(String readerDetails){
-		
+	public void setConnectionDetails(String readerDetails) {
+
 	}
-	
-	public String getConnectionDetails(){
-		if(reader.getProperty("inet_address")!=null){
+
+	public String getConnectionDetails() {
+		if (reader.getProperty("inet_address") != null) {
 			return reader.getProperty("inet_address");
 		}
 		return "no connection info available";
-	}
-	
-	@Inject
-	public void setCablingService(CablingService cablingService) {
-		this.cablingService = cablingService;
 	}
 
 	/**
 	 * Used to tell the gate that a tag just passed through it.
 	 */
 	public void tagSeen() {
-		cablingService.setHigh(this, 0);
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.entities.interfaces.RifidiEntity#getReaderInterface()
+	 * @see
+	 * org.rifidi.designer.entities.interfaces.RifidiEntity#getReaderInterface()
 	 */
 	@Override
 	public ReaderModuleManagerInterface getReaderInterface() {
 		return this.readerModuleManagerInterface;
-	}
-
-	@Override
-	public void setHigh(int portNum) {
-		try {
-			readerModuleManagerInterface.setGPIHigh(portNum);
-		} catch (Exception e) {
-			logger
-					.error("Unable to set GPI port " + portNum + " to high: "
-							+ e);
-		}
-	}
-
-	@Override
-	public void setLow(int portNum) {
-		try {
-			readerModuleManagerInterface.setGPILow(portNum);
-		} catch (Exception e) {
-			logger
-					.error("Unable to set GPI port " + portNum + " to high: "
-							+ e);
-		}
 	}
 
 	/*
@@ -507,26 +471,39 @@ public class GateEntity extends VisualEntity implements RifidiEntity, Switch,
 	 */
 	@Override
 	public void setLOD(int lod) {
-		if(switchNode!=null){
-			switchNode.setActiveChild(lod);	
+		if (switchNode != null) {
+			switchNode.setActiveChild(lod);
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.rifidi.designer.entities.VisualEntity#getBoundingNode()
 	 */
 	@Override
 	public Node getBoundingNode() {
-		return (Node)getNode().getChild("hiliter");
+		return (Node) getNode().getChild("hiliter");
 	}
 
-	/* (non-Javadoc)
-	 * @see org.rifidi.designer.entities.interfaces.GPI#enableGPI(boolean)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.rifidi.designer.entities.gpio.GPIO#getGPIPorts()
 	 */
 	@Override
-	public void enableGPI(boolean enablement) {
-		// TODO Auto-generated method stub
-		
+	public List<GPIPort> getGPIPorts() {
+		return new ArrayList<GPIPort>(gpiPorts);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.rifidi.designer.entities.gpio.GPIO#getGPOPorts()
+	 */
+	@Override
+	public List<GPOPort> getGPOPorts() {
+		return new ArrayList<GPOPort>(gpoPorts);
 	}
 
 }

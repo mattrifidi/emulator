@@ -13,6 +13,9 @@ package org.rifidi.designer.library.basemodels.pusharm;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Stack;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -22,7 +25,9 @@ import org.apache.commons.logging.LogFactory;
 import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.annotations.Property;
 import org.rifidi.designer.entities.databinding.annotations.MonitoredProperties;
-import org.rifidi.designer.entities.interfaces.GPI;
+import org.rifidi.designer.entities.gpio.GPIO;
+import org.rifidi.designer.entities.gpio.GPIPort;
+import org.rifidi.designer.entities.gpio.GPOPort;
 import org.rifidi.designer.entities.interfaces.NeedsPhysics;
 import org.rifidi.designer.entities.interfaces.SceneControl;
 import org.rifidi.designer.entities.interfaces.Switch;
@@ -63,62 +68,40 @@ import com.jmex.physics.material.Material;
 @MonitoredProperties(names = { "name" })
 @XmlRootElement
 public class PusharmEntity extends VisualEntity implements SceneControl,
-		Switch, Trigger, NeedsPhysics, GPI {
-	/**
-	 * Logger for this class.
-	 */
+		Switch, Trigger, NeedsPhysics, GPIO {
+	/** Logger for this class. */
 	private static Log logger = LogFactory.getLog(PusharmEntity.class);
-	/**
-	 * Speed of the pusharm.
-	 */
+	/** Speed of the pusharm. */
 	private float speed;
-	/**
-	 * Transformer for the arm movement.
-	 */
+	/** Transformer for the arm movement. */
 	private SpatialTransformer st;
-	/**
-	 * Not extended position.
-	 */
+	/** Not extended position. */
 	private Vector3f minpos = new Vector3f(-1.75f, 6, 0);
-	/**
-	 * Extended position.
-	 */
+	/** Extended position. */
 	private Vector3f maxpos = minpos.add(new Vector3f(-4, 0, 0));
-	/**
-	 * Switch state.
-	 */
+	/** Switch state. */
 	private boolean running = false;
-	/**
-	 * Paused state.
-	 */
+	/** Paused state. */
 	private boolean paused = true;
-	/**
-	 * Infrared trigger.
-	 */
+	/** Infrared trigger. */
 	private StaticPhysicsNode triggerSpace = null;
-	/**
-	 * Physics of the push arm.
-	 */
+	/** Physics of the push arm. */
 	private StaticPhysicsNode armPhysics = null;
-	/**
-	 * Reference to the physics space.
-	 */
+	/** Reference to the physics space. */
 	private PhysicsSpace physicsSpace;
-	/**
-	 * Reference to the sollision handler.
-	 */
+	/** Reference to the sollision handler. */
 	private InputHandler collisionHandler;
-	/**
-	 * Stack for activation signals.
-	 */
+	/** Stack for activation signals. */
 	private Stack<Boolean> activationStack;
-	/**
-	 * True if GPI is enabled.
-	 */
+	/** True if GPI is enabled. */
 	private boolean gpiEnabled;
+	/** Shared node for the body geometry. */
 	private static Node sharedbodyNode;
+	/** Shared node for the arm geometry. */
 	private static Node sharedarmNode;
-	
+	/** GPI for the pusher. */
+	private GPIPort port;
+
 	/**
 	 * Constructor
 	 */
@@ -127,6 +110,8 @@ public class PusharmEntity extends VisualEntity implements SceneControl,
 		activationStack = new Stack<Boolean>();
 		gpiEnabled = false;
 		this.speed = 2;
+		port = new GPIPort();
+		port.setId(0);
 	}
 
 	/**
@@ -159,7 +144,7 @@ public class PusharmEntity extends VisualEntity implements SceneControl,
 		Node node = new Node("maingeometry");
 		node.setModelBound(new BoundingBox());
 		try {
-			if(sharedbodyNode==null){
+			if (sharedbodyNode == null) {
 				URI body = null;
 				URI arm = null;
 				try {
@@ -179,11 +164,11 @@ public class PusharmEntity extends VisualEntity implements SceneControl,
 
 				sharedbodyNode = (Node) BinaryImporter.getInstance().load(
 						body.toURL());
-				sharedarmNode = (Node) BinaryImporter.getInstance()
-						.load(arm.toURL());	
+				sharedarmNode = (Node) BinaryImporter.getInstance().load(
+						arm.toURL());
 			}
-			Node bodyNode=new SharedNode(sharedbodyNode);
-			Node armNode=new SharedNode(sharedarmNode);
+			Node bodyNode = new SharedNode(sharedbodyNode);
+			Node armNode = new SharedNode(sharedarmNode);
 			bodyNode.setModelBound(new BoundingBox());
 			bodyNode.updateModelBound();
 			for (Spatial sp : bodyNode.getChildren()) {
@@ -487,28 +472,6 @@ public class PusharmEntity extends VisualEntity implements SceneControl,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.entities.interfaces.GPI#setHigh(int)
-	 */
-	@Override
-	public void setHigh(int portNum) {
-		if(running){
-			activationStack.push(true);	
-		}
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.rifidi.designer.entities.interfaces.GPI#setLow(int)
-	 */
-	@Override
-	public void setLow(int portNum) {
-
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see org.rifidi.designer.entities.VisualEntity#setLOD(int)
 	 */
 	@Override
@@ -527,16 +490,6 @@ public class PusharmEntity extends VisualEntity implements SceneControl,
 		return (Node) getNode().getChild("hiliter");
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.rifidi.designer.entities.interfaces.GPI#enableGPI(boolean)
-	 */
-	@Override
-	public void enableGPI(boolean enablement) {
-		this.gpiEnabled = enablement;
-	}
-
 	/**
 	 * @return the gpiEnabled
 	 */
@@ -551,4 +504,28 @@ public class PusharmEntity extends VisualEntity implements SceneControl,
 	public void setGpiEnabled(boolean gpiEnabled) {
 		this.gpiEnabled = gpiEnabled;
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.rifidi.designer.entities.gpio.GPIO#getGPIPorts()
+	 */
+	@Override
+	public List<GPIPort> getGPIPorts() {
+		List<GPIPort> ret=new ArrayList<GPIPort>();
+		ret.add(port);
+		return ret;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.rifidi.designer.entities.gpio.GPIO#getGPOPorts()
+	 */
+	@Override
+	public List<GPOPort> getGPOPorts() {
+		// TODO Auto-generated method stub
+		return Collections.emptyList();
+	}
+
 }
