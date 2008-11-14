@@ -94,13 +94,17 @@ public class GateEntity extends VisualEntity implements RifidiEntity, Switch,
 	 * Constructor.
 	 */
 	public GateEntity() {
+		gpiPorts = new ArrayList<GPIPort>();
+		gpoPorts = new ArrayList<GPOPort>();
 		for (int count = 0; count < 7; count++) {
 			GPIPort gpiPort = new GPIPort();
 			gpiPort.setId(count);
+			gpiPorts.add(gpiPort);
 		}
 		for (int count = 0; count < 4; count++) {
 			GPOPort gpoPort = new GPOPort();
 			gpoPort.setId(count);
+			gpoPorts.add(gpoPort);
 		}
 	}
 
