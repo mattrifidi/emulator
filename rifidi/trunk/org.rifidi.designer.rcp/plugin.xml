@@ -665,7 +665,7 @@
                   label="GPIO">
                <parameter
                      name="org.rifidi.designer.rcp.commands.global.perspectiveid"
-                     value="org.rifidi.designer.rcp.perspectives.gpio">
+                     value="org.rifidi.designer.gpio.editor.mainperspective">
                </parameter>
             </command>
          </menu>
@@ -1057,19 +1057,7 @@
       </Initializer>
    </extension>
    <extension
-         id="product1"
-         point="org.eclipse.core.runtime.products">
-      <product
-            application="org.rifidi.designer.rcp.application"
-            name="fdg">
-         <property
-               name="appName"
-               value="fdg">
-         </property>
-      </product>
-   </extension>
-   <extension
-         id="product"
+         id="rifididesignerproduct"
          point="org.eclipse.core.runtime.products">
       <product
             application="org.rifidi.designer.rcp.application"
