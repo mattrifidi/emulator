@@ -13,6 +13,8 @@ package org.rifidi.designer.entities.gpio;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 import org.rifidi.designer.entities.gpio.GPOPort.State;
 
 /**
@@ -21,6 +23,7 @@ import org.rifidi.designer.entities.gpio.GPOPort.State;
  * @author Jochen Mader - jochen@pramari.com - Nov 4, 2008
  * 
  */
+@XmlRootElement
 public class GPIPort {
 	/** Support for monitoring properties. */
 	private PropertyChangeSupport changeSupport = new PropertyChangeSupport(

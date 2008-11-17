@@ -10,6 +10,8 @@
  */
 package org.rifidi.designer.entities.gpio;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 import org.rifidi.designer.entities.gpio.GPOPort.State;
 
 /**
@@ -18,6 +20,7 @@ import org.rifidi.designer.entities.gpio.GPOPort.State;
  * @author Jochen Mader - jochen@pramari.com - Nov 12, 2008
  * 
  */
+@XmlRootElement
 public class Cable {
 	/** Source port for the cable. */
 	private GPOPort source;

@@ -45,6 +45,9 @@ import org.rifidi.designer.entities.Entity;
 import org.rifidi.designer.entities.SceneData;
 import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.SceneData.Direction;
+import org.rifidi.designer.entities.gpio.GPIO;
+import org.rifidi.designer.entities.gpio.GPIPort;
+import org.rifidi.designer.entities.gpio.GPOPort;
 import org.rifidi.designer.entities.grouping.EntityGroup;
 import org.rifidi.designer.entities.interfaces.ChildEntity;
 import org.rifidi.designer.entities.interfaces.InternalEntity;
@@ -554,6 +557,8 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 							classes.add(C1G1Tag.class);
 							classes.add(C1G2Tag.class);
 							classes.add(RifidiTag.class);
+							classes.add(GPIPort.class);
+							classes.add(GPOPort.class);
 							JAXBContext context = JAXBContext
 									.newInstance(classes.toArray(new Class[0]));
 							Unmarshaller unmarshaller = context

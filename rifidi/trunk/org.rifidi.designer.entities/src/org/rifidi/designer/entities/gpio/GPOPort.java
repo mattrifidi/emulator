@@ -13,12 +13,15 @@ package org.rifidi.designer.entities.gpio;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * Represents a GP Output port.
  * 
  * @author Jochen Mader - jochen@pramari.com - Nov 4, 2008
  * 
  */
+@XmlRootElement
 public class GPOPort {
 	/** Enum that defines the states a port can have. */
 	public enum State {

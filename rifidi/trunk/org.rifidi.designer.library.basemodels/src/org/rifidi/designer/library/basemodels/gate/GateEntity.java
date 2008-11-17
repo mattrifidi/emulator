@@ -19,6 +19,8 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -60,16 +62,21 @@ import com.jme.util.export.binary.BinaryImporter;
  */
 @MonitoredProperties(names = { "name" })
 @XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class GateEntity extends VisualEntity implements RifidiEntity, Switch,
 		ParentEntity, GPIO {
 
 	/** logger for this class. */
+	@XmlTransient
 	private static Log logger = LogFactory.getLog(GateEntity.class);
 	/** Model for shared meshes */
+	@XmlTransient
 	private static Node[] lod = null;
 	/** Left antenna entity. */
+	@XmlTransient
 	private AntennaFieldEntity antennaL;
 	/** Right antenna entity. */
+	@XmlTransient
 	private AntennaFieldEntity antennaR;
 	/** Reader associated with this gate. */
 	private UIReader reader;
@@ -78,12 +85,15 @@ public class GateEntity extends VisualEntity implements RifidiEntity, Switch,
 	/** The multiplication factor for the field size */
 	private float factor = 1.0f;
 	/** Connection manager for rifidi. */
+	@XmlTransient
 	private RMIManager rmimanager;
 	/** Reference to the reader management interface. */
+	@XmlTransient
 	private ReaderModuleManagerInterface readerModuleManagerInterface;
 	/** State of the switch. */
 	private boolean running = false;
 	/** Node that contains the different lods. */
+	@XmlTransient
 	private SwitchNode switchNode;
 	/** Available GPI ports. */
 	private List<GPIPort> gpiPorts;
@@ -96,16 +106,6 @@ public class GateEntity extends VisualEntity implements RifidiEntity, Switch,
 	public GateEntity() {
 		gpiPorts = new ArrayList<GPIPort>();
 		gpoPorts = new ArrayList<GPOPort>();
-		for (int count = 0; count < 7; count++) {
-			GPIPort gpiPort = new GPIPort();
-			gpiPort.setId(count);
-			gpiPorts.add(gpiPort);
-		}
-		for (int count = 0; count < 4; count++) {
-			GPOPort gpoPort = new GPOPort();
-			gpoPort.setId(count);
-			gpoPorts.add(gpoPort);
-		}
 	}
 
 	/*
@@ -196,6 +196,21 @@ public class GateEntity extends VisualEntity implements RifidiEntity, Switch,
 		_node.updateModelBound();
 		_node.setCullHint(CullHint.Always);
 		getNode().attachChild(_node);
+		try {
+			for (int count = 0; count < reader.getNumGPIs(); count++) {
+				GPIPort gpiPort = new GPIPort();
+				gpiPort.setId(count);
+				gpiPorts.add(gpiPort);
+			}
+			for (int count = 0; count < reader.getNumGPOs(); count++) {
+				GPOPort gpoPort = new GPOPort();
+				gpoPort.setId(count);
+				gpoPorts.add(gpoPort);
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/*
@@ -428,7 +443,6 @@ public class GateEntity extends VisualEntity implements RifidiEntity, Switch,
 		}
 	}
 
-	@XmlTransient
 	@Property(displayName = "Reader", description = "type of emulated reader", readonly = true, unit = "")
 	public void setReaderType(String name) {
 
@@ -437,8 +451,6 @@ public class GateEntity extends VisualEntity implements RifidiEntity, Switch,
 	public String getReaderType() {
 		return reader.getReaderType();
 	}
-
-	@XmlTransient
 	@Property(displayName = "Reader Connection", description = "connection details for the reader", readonly = true, unit = "")
 	public void setConnectionDetails(String readerDetails) {
 

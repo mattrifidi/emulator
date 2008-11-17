@@ -1041,20 +1041,8 @@
    <extension
          point="org.rifidi.designer.entities.internal">
       <internalentity
-            class="org.rifidi.designer.entities.internal.CableEntity">
-      </internalentity>
-      <internalentity
             class="org.rifidi.designer.entities.internal.WatchAreaEntity">
       </internalentity>
-   </extension>
-   <extension
-         point="org.rifidi.services.initializer">
-      <Initializer
-            class="org.rifidi.designer.rcp.cable.Initializer">
-         <Initializee
-               class="org.rifidi.designer.entities.internal.CableEntity">
-         </Initializee>
-      </Initializer>
    </extension>
    <extension
          id="rifididesignerproduct"
