@@ -10,6 +10,8 @@
  */
 package org.rifidi.designer.library.basemodels.gate;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -34,6 +36,7 @@ import org.rifidi.designer.entities.databinding.annotations.MonitoredProperties;
 import org.rifidi.designer.entities.gpio.GPIO;
 import org.rifidi.designer.entities.gpio.GPIPort;
 import org.rifidi.designer.entities.gpio.GPOPort;
+import org.rifidi.designer.entities.gpio.GPOPort.State;
 import org.rifidi.designer.entities.interfaces.ParentEntity;
 import org.rifidi.designer.entities.interfaces.RifidiEntity;
 import org.rifidi.designer.entities.interfaces.Switch;
@@ -64,7 +67,7 @@ import com.jme.util.export.binary.BinaryImporter;
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class GateEntity extends VisualEntity implements RifidiEntity, Switch,
-		ParentEntity, GPIO {
+		ParentEntity, GPIO, PropertyChangeListener {
 
 	/** logger for this class. */
 	@XmlTransient
@@ -277,6 +280,9 @@ public class GateEntity extends VisualEntity implements RifidiEntity, Switch,
 			logger.fatal("Unable to create reader: " + e);
 		} catch (IOException e) {
 			logger.fatal("Unable to create reader: " + e);
+		}
+		for(GPIPort gpiPort:gpiPorts){
+			gpiPort.addPropertyChangeListener("state", this);
 		}
 	}
 
@@ -521,6 +527,28 @@ public class GateEntity extends VisualEntity implements RifidiEntity, Switch,
 	@Override
 	public List<GPOPort> getGPOPorts() {
 		return new ArrayList<GPOPort>(gpoPorts);
+	}
+
+	/* (non-Javadoc)
+	 * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
+	 */
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		GPIPort port=(GPIPort)evt.getSource();
+		if(State.HIGH.equals(port.getState())){
+			try {
+				readerModuleManagerInterface.setGPIHigh(port.getNr());
+			} catch (Exception e) {
+				logger.error("Unable to set port to high: "+e);
+			}
+		}
+		else{
+			try {
+				readerModuleManagerInterface.setGPILow(port.getNr());
+			} catch (Exception e) {
+				logger.error("Unable to set port to low: "+e);
+			}
+		}
 	}
 
 }
