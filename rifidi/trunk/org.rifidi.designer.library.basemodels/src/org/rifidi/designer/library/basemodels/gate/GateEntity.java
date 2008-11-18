@@ -43,6 +43,8 @@ import org.rifidi.designer.entities.interfaces.Switch;
 import org.rifidi.designer.library.basemodels.antennafield.AntennaFieldEntity;
 import org.rifidi.emulator.rmi.server.ReaderModuleManagerInterface;
 import org.rifidi.ui.common.reader.UIReader;
+import org.rifidi.ui.common.reader.callback.GPOEventCallbackInterface;
+import org.rifidi.ui.common.reader.callback.UIReaderCallbackManager;
 
 import com.jme.bounding.BoundingBox;
 import com.jme.math.FastMath;
@@ -67,7 +69,7 @@ import com.jme.util.export.binary.BinaryImporter;
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class GateEntity extends VisualEntity implements RifidiEntity, Switch,
-		ParentEntity, GPIO, PropertyChangeListener {
+		ParentEntity, GPIO, PropertyChangeListener, GPOEventCallbackInterface {
 
 	/** logger for this class. */
 	@XmlTransient
@@ -266,6 +268,7 @@ public class GateEntity extends VisualEntity implements RifidiEntity, Switch,
 		try {
 			readerModuleManagerInterface = rmimanager.createReader(reader
 					.getGeneralReaderPropertyHolder());
+			reader.getReaderCallbackManager().addGPOPortListener(this);
 		} catch (ClassNotFoundException e) {
 			logger.fatal("Unable to create reader: " + e);
 		} catch (InstantiationException e) {
@@ -549,6 +552,22 @@ public class GateEntity extends VisualEntity implements RifidiEntity, Switch,
 				logger.error("Unable to set port to low: "+e);
 			}
 		}
+	}
+
+	/* (non-Javadoc)
+	 * @see org.rifidi.ui.common.reader.callback.GPOEventCallbackInterface#GPOPortSetHigh(int)
+	 */
+	@Override
+	public void GPOPortSetHigh(int gpoPortNum) {
+		gpoPorts.get(gpoPortNum).setState(State.HIGH);
+	}
+
+	/* (non-Javadoc)
+	 * @see org.rifidi.ui.common.reader.callback.GPOEventCallbackInterface#GPOPortSetLow(int)
+	 */
+	@Override
+	public void GPOPortSetLow(int gpoPortNum) {
+		gpoPorts.get(gpoPortNum).setState(State.LOW);
 	}
 
 }
