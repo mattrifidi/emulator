@@ -10,6 +10,8 @@
  */
 package org.rifidi.designer.library.basemodels.pusharm;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -28,6 +30,7 @@ import org.rifidi.designer.entities.databinding.annotations.MonitoredProperties;
 import org.rifidi.designer.entities.gpio.GPIO;
 import org.rifidi.designer.entities.gpio.GPIPort;
 import org.rifidi.designer.entities.gpio.GPOPort;
+import org.rifidi.designer.entities.gpio.GPOPort.State;
 import org.rifidi.designer.entities.interfaces.NeedsPhysics;
 import org.rifidi.designer.entities.interfaces.SceneControl;
 import org.rifidi.designer.entities.interfaces.Switch;
@@ -68,7 +71,7 @@ import com.jmex.physics.material.Material;
 @MonitoredProperties(names = { "name" })
 @XmlRootElement
 public class PusharmEntity extends VisualEntity implements SceneControl,
-		Switch, Trigger, NeedsPhysics, GPIO {
+		Switch, Trigger, NeedsPhysics, GPIO, PropertyChangeListener {
 	/** Logger for this class. */
 	private static Log logger = LogFactory.getLog(PusharmEntity.class);
 	/** Speed of the pusharm. */
@@ -93,8 +96,6 @@ public class PusharmEntity extends VisualEntity implements SceneControl,
 	private InputHandler collisionHandler;
 	/** Stack for activation signals. */
 	private Stack<Boolean> activationStack;
-	/** True if GPI is enabled. */
-	private boolean gpiEnabled;
 	/** Shared node for the body geometry. */
 	private static Node sharedbodyNode;
 	/** Shared node for the arm geometry. */
@@ -108,7 +109,6 @@ public class PusharmEntity extends VisualEntity implements SceneControl,
 	public PusharmEntity() {
 		setName("Pusharm");
 		activationStack = new Stack<Boolean>();
-		gpiEnabled = false;
 		this.speed = 2;
 	}
 
@@ -139,7 +139,7 @@ public class PusharmEntity extends VisualEntity implements SceneControl,
 	public void init() {
 		port = new GPIPort();
 		port.setNr(0);
-		port.setId(getEntityId()+"-gpi-0");
+		port.setId(getEntityId() + "-gpi-0");
 		Node mainNode = new Node();
 		mainNode.setModelBound(new BoundingBox());
 		Node node = new Node("maingeometry");
@@ -259,6 +259,7 @@ public class PusharmEntity extends VisualEntity implements SceneControl,
 	 */
 	@Override
 	public void loaded() {
+		port.addPropertyChangeListener("state", this);
 		triggerSpace = (StaticPhysicsNode) getNode().getChild("triggerSpace");
 		armPhysics = (StaticPhysicsNode) getNode().getChild("armPhysics");
 		prepare();
@@ -292,6 +293,7 @@ public class PusharmEntity extends VisualEntity implements SceneControl,
 
 		// initialize controller for moving the pusharm
 		initController();
+		port.addPropertyChangeListener("state", this);
 	}
 
 	/**
@@ -366,10 +368,8 @@ public class PusharmEntity extends VisualEntity implements SceneControl,
 	 */
 	public void trigger(Object source) {
 
-		if (running
-				&& !paused
-				&& (!gpiEnabled || (!activationStack.isEmpty() && activationStack
-						.pop()))) {
+		if (running && !paused
+				&& (!activationStack.isEmpty() && activationStack.pop())) {
 			if (st.getCurTime() == st.getMaxTime())
 				st.setCurTime(0);
 		}
@@ -491,21 +491,6 @@ public class PusharmEntity extends VisualEntity implements SceneControl,
 		return (Node) getNode().getChild("hiliter");
 	}
 
-	/**
-	 * @return the gpiEnabled
-	 */
-	public boolean isGpiEnabled() {
-		return this.gpiEnabled;
-	}
-
-	/**
-	 * @param gpiEnabled
-	 *            the gpiEnabled to set
-	 */
-	public void setGpiEnabled(boolean gpiEnabled) {
-		this.gpiEnabled = gpiEnabled;
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -513,7 +498,7 @@ public class PusharmEntity extends VisualEntity implements SceneControl,
 	 */
 	@Override
 	public List<GPIPort> getGPIPorts() {
-		List<GPIPort> ret=new ArrayList<GPIPort>();
+		List<GPIPort> ret = new ArrayList<GPIPort>();
 		ret.add(port);
 		return ret;
 	}
@@ -525,8 +510,34 @@ public class PusharmEntity extends VisualEntity implements SceneControl,
 	 */
 	@Override
 	public List<GPOPort> getGPOPorts() {
-		// TODO Auto-generated method stub
 		return Collections.emptyList();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @seejava.beans.PropertyChangeListener#propertyChange(java.beans.
+	 * PropertyChangeEvent)
+	 */
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		if (State.HIGH.equals(port.getState())) {
+			activationStack.push(true);
+		}
+	}
+
+	/**
+	 * @return the port
+	 */
+	public GPIPort getPort() {
+		return this.port;
+	}
+
+	/**
+	 * @param port the port to set
+	 */
+	public void setPort(GPIPort port) {
+		this.port = port;
 	}
 
 }

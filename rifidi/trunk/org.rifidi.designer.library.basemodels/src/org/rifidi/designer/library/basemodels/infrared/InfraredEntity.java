@@ -22,16 +22,16 @@ import org.rifidi.designer.entities.databinding.annotations.MonitoredProperties;
 import org.rifidi.designer.entities.gpio.GPIO;
 import org.rifidi.designer.entities.gpio.GPIPort;
 import org.rifidi.designer.entities.gpio.GPOPort;
+import org.rifidi.designer.entities.gpio.GPOPort.State;
 import org.rifidi.designer.entities.interfaces.Field;
 import org.rifidi.designer.entities.interfaces.NeedsPhysics;
 import org.rifidi.designer.entities.interfaces.SceneControl;
 import org.rifidi.designer.entities.interfaces.Switch;
+import org.rifidi.designer.services.core.collision.FieldService;
+import org.rifidi.services.annotations.Inject;
 
 import com.jme.bounding.BoundingBox;
 import com.jme.input.InputHandler;
-import com.jme.input.action.InputAction;
-import com.jme.input.action.InputActionEvent;
-import com.jme.input.util.SyntheticButton;
 import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.renderer.Renderer;
@@ -45,7 +45,6 @@ import com.jme.system.DisplaySystem;
 import com.jmex.physics.PhysicsNode;
 import com.jmex.physics.PhysicsSpace;
 import com.jmex.physics.StaticPhysicsNode;
-import com.jmex.physics.contact.ContactInfo;
 import com.jmex.physics.material.Material;
 
 /**
@@ -66,6 +65,10 @@ public class InfraredEntity extends VisualEntity implements SceneControl,
 	private Node bounding;
 	/** Output port of the entity */
 	private GPOPort port;
+	/** Last collider. */
+	private Node lastCollider;
+	/** Reference to the field service. */
+	private FieldService fieldService;
 
 	/**
 	 * Constructor
@@ -83,7 +86,7 @@ public class InfraredEntity extends VisualEntity implements SceneControl,
 	public void init() {
 		port = new GPOPort();
 		port.setNr(0);
-		port.setId(getEntityId()+"-gpo-0");
+		port.setId(getEntityId() + "-gpo-0");
 		float len = 2.5f; // length of the trigger area
 
 		// Create the material and alpha states for the trigger area
@@ -112,10 +115,13 @@ public class InfraredEntity extends VisualEntity implements SceneControl,
 		setNode(triggerSpace);
 
 		prepare();
-
-		bounding = new Node();
-		bounding.setModelBound(new BoundingBox());
-
+		Node _node = new Node("hiliter");
+		Box hilit = new Box("hiliter", new Vector3f(-3 - len + 3, 6f, 0f), len,
+				1.5f, .15f);
+		hilit.setModelBound(new BoundingBox());
+		hilit.updateModelBound();
+		_node.attachChild(hilit);
+		getNode().attachChild(_node);
 	}
 
 	/*
@@ -132,20 +138,7 @@ public class InfraredEntity extends VisualEntity implements SceneControl,
 		// set up collisions to trigger the pusharm
 		((StaticPhysicsNode) getNode()).generatePhysicsGeometry();
 		((StaticPhysicsNode) getNode()).setMaterial(Material.GHOST);
-		InputAction triggerAction = new InputAction() {
-			public void performAction(InputActionEvent evt) {
-				Node collider = ((ContactInfo) evt.getTriggerData()).getNode1()
-						.equals(((StaticPhysicsNode) getNode())) ? ((ContactInfo) evt
-						.getTriggerData()).getNode2()
-						: ((ContactInfo) evt.getTriggerData()).getNode1();
-
-			}
-		};
-		SyntheticButton intersect = ((StaticPhysicsNode) getNode())
-				.getCollisionEventHandler();
-		collisionHandler.addAction(triggerAction, intersect, false);
-		collisionHandler.setEnabled(true);
-
+		fieldService.registerField(this);
 	}
 
 	/*
@@ -231,13 +224,13 @@ public class InfraredEntity extends VisualEntity implements SceneControl,
 	@Override
 	public void fieldEntered(Entity entity) {
 		if (isRunning()) {
-			System.out.println("field entered " + entity + " at " + this);
+			port.setState(State.HIGH);
 		}
 	}
 
 	@Override
 	public void fieldLeft(Entity entity) {
-
+		port.setState(State.LOW);
 	}
 
 	/*
@@ -258,7 +251,7 @@ public class InfraredEntity extends VisualEntity implements SceneControl,
 	 */
 	@Override
 	public Node getBoundingNode() {
-		return bounding;
+		return (Node) getNode().getChild("hiliter");
 	}
 
 	/*
@@ -278,9 +271,33 @@ public class InfraredEntity extends VisualEntity implements SceneControl,
 	 */
 	@Override
 	public List<GPOPort> getGPOPorts() {
-		List<GPOPort> portList=new ArrayList<GPOPort>();
+		List<GPOPort> portList = new ArrayList<GPOPort>();
 		portList.add(port);
 		return portList;
+	}
+
+	/**
+	 * @param fieldService
+	 *            the fieldService to set
+	 */
+	@Inject
+	public void setFieldService(FieldService fieldService) {
+		this.fieldService = fieldService;
+	}
+
+	/**
+	 * @return the port
+	 */
+	public GPOPort getPort() {
+		return this.port;
+	}
+
+	/**
+	 * @param port
+	 *            the port to set
+	 */
+	public void setPort(GPOPort port) {
+		this.port = port;
 	}
 
 }
