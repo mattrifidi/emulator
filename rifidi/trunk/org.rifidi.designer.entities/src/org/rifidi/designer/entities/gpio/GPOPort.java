@@ -13,6 +13,8 @@ package org.rifidi.designer.entities.gpio;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
+import javax.xml.bind.annotation.XmlID;
+import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -34,9 +36,10 @@ public class GPOPort {
 	private Cable cable;
 	/** State this port is in. */
 	private State state = State.LOW;
-	/** ID of this port */
-	private int id = 0;
-
+	/** Nr of this port */
+	private int nr = 0;
+	/** Global unique ID. */
+	private String id = "";
 	/**
 	 * Default constructor used by JAXB.
 	 */
@@ -75,18 +78,18 @@ public class GPOPort {
 	}
 
 	/**
-	 * @return the id
+	 * @return the nr
 	 */
-	public int getId() {
-		return this.id;
+	public int getNr() {
+		return this.nr;
 	}
 
 	/**
-	 * @param id
-	 *            the id to set
+	 * @param nr
+	 *            the nr to set
 	 */
-	public void setId(int id) {
-		this.id = id;
+	public void setNr(int nr) {
+		this.nr = nr;
 	}
 
 	/**
@@ -106,6 +109,21 @@ public class GPOPort {
 		if (cable != null) {
 			cable.setState(state);
 		}
+	}
+
+	/**
+	 * @return the id
+	 */
+	@XmlID
+	public String getId() {
+		return this.id;
+	}
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	/**

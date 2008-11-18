@@ -10,6 +10,8 @@
  */
 package org.rifidi.designer.entities.gpio;
 
+import javax.xml.bind.annotation.XmlID;
+import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.rifidi.designer.entities.gpio.GPOPort.State;
@@ -28,9 +30,12 @@ public class Cable {
 	private GPIPort target;
 	/** GPIO state currently set to the cable. */
 	private State state;
+	/** Unique ID of this cable. */
+	private String id="";
 	/**
 	 * @return the source
 	 */
+	@XmlIDREF
 	public GPOPort getSource() {
 		return this.source;
 	}
@@ -43,6 +48,7 @@ public class Cable {
 	/**
 	 * @return the target
 	 */
+	@XmlIDREF
 	public GPIPort getTarget() {
 		return this.target;
 	}
@@ -63,7 +69,22 @@ public class Cable {
 	 */
 	public void setState(State state) {
 		this.state = state;
-		target.setState(state);
+		if(target!=null){
+			target.setState(state);
+		}
+	}
+	/**
+	 * @return the id
+	 */
+	@XmlID
+	public String getId() {
+		return this.id;
+	}
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(String id) {
+		this.id = id;
 	}
 	
 }

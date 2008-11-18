@@ -110,8 +110,6 @@ public class PusharmEntity extends VisualEntity implements SceneControl,
 		activationStack = new Stack<Boolean>();
 		gpiEnabled = false;
 		this.speed = 2;
-		port = new GPIPort();
-		port.setId(0);
 	}
 
 	/**
@@ -139,6 +137,9 @@ public class PusharmEntity extends VisualEntity implements SceneControl,
 	 */
 	@Override
 	public void init() {
+		port = new GPIPort();
+		port.setNr(0);
+		port.setId(getEntityId()+"-gpi-0");
 		Node mainNode = new Node();
 		mainNode.setModelBound(new BoundingBox());
 		Node node = new Node("maingeometry");

@@ -13,6 +13,8 @@ package org.rifidi.designer.entities.gpio;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
+import javax.xml.bind.annotation.XmlID;
+import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.rifidi.designer.entities.gpio.GPOPort.State;
@@ -34,9 +36,11 @@ public class GPIPort {
 	private State state = State.LOW;
 	/** The default state if nothing is connected. */
 	private State defaultState = State.LOW;
-	/** ID of this port */
-	private int id = 0;
-
+	/** Nr of this port */
+	private int nr = 0;
+	/** Global unique ID.*/
+	private String id = "";
+	
 	/**
 	 * @return the defaultState
 	 */
@@ -58,6 +62,7 @@ public class GPIPort {
 	/**
 	 * @return the cable
 	 */
+	@XmlIDREF
 	public Cable getCable() {
 		return this.cable;
 	}
@@ -95,17 +100,32 @@ public class GPIPort {
 	}
 
 	/**
+	 * @return the nr
+	 */
+	public int getNr() {
+		return this.nr;
+	}
+
+	/**
+	 * @param nr
+	 *            the nr to set
+	 */
+	public void setNr(int id) {
+		this.nr = id;
+	}
+
+	/**
 	 * @return the id
 	 */
-	public int getId() {
+	@XmlID
+	public String getId() {
 		return this.id;
 	}
 
 	/**
-	 * @param id
-	 *            the id to set
+	 * @param id the id to set
 	 */
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 

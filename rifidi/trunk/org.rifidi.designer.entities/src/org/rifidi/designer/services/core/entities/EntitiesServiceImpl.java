@@ -1091,6 +1091,8 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 		}
 
 		private void prepareEntity(VisualEntity entity, Node target) {
+			String id = sceneData.getNextID().toString();
+			entity.setEntityId(id);
 			entity.init();
 			if (entity instanceof VisualEntityHolder) {
 				for (VisualEntity vent : ((VisualEntityHolder) entity)
@@ -1108,9 +1110,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 			entity.getNode().updateWorldData(0);
 			target.attachChild(entity.getNode());
 			entity.getNode().updateWorldBound();
-			String id = sceneData.getNextID().toString();
 			entity.getNode().setName(id);
-			entity.setEntityId(id);
 			if (entity.getNode() instanceof PhysicsNode) {
 				((PhysicsNode) entity.getNode()).generatePhysicsGeometry();
 			}

@@ -199,17 +199,18 @@ public class GateEntity extends VisualEntity implements RifidiEntity, Switch,
 		try {
 			for (int count = 0; count < reader.getNumGPIs(); count++) {
 				GPIPort gpiPort = new GPIPort();
-				gpiPort.setId(count);
+				gpiPort.setNr(count);
+				gpiPort.setId(getEntityId()+"-gpi-"+count);
 				gpiPorts.add(gpiPort);
 			}
 			for (int count = 0; count < reader.getNumGPOs(); count++) {
 				GPOPort gpoPort = new GPOPort();
-				gpoPort.setId(count);
+				gpoPort.setNr(count);
+				gpoPort.setId(getEntityId()+"-gpo-"+count);
 				gpoPorts.add(gpoPort);
 			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("Problem while connecting to RMI: "+e);
 		}
 	}
 

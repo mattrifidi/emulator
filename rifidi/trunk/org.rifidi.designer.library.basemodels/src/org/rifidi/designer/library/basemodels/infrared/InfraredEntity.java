@@ -72,8 +72,6 @@ public class InfraredEntity extends VisualEntity implements SceneControl,
 	 */
 	public InfraredEntity() {
 		setName("Infrared");
-		port = new GPOPort();
-		port.setId(0);
 	}
 
 	/*
@@ -83,6 +81,9 @@ public class InfraredEntity extends VisualEntity implements SceneControl,
 	 */
 	@Override
 	public void init() {
+		port = new GPOPort();
+		port.setNr(0);
+		port.setId(getEntityId()+"-gpo-0");
 		float len = 2.5f; // length of the trigger area
 
 		// Create the material and alpha states for the trigger area
