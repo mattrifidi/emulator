@@ -88,7 +88,6 @@
       <plugin id="org.rifidi.designer.library.basemodels"/>
       <plugin id="org.rifidi.designer.library.retail"/>
       <plugin id="org.rifidi.designer.rcp"/>
-      <plugin id="org.rifidi.designer.rcp.gpioeditor"/>
       <plugin id="org.rifidi.designer.rcp.help"/>
       <plugin id="org.rifidi.emulator"/>
       <plugin id="org.rifidi.emulator.reader.alien"/>
