@@ -158,13 +158,6 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 		while (sceneData.getEntityNames().contains(ent.getName())) {
 			ent.setName(orgName + namecount++);
 		}
-		sceneData.getEntityNames().add(ent.getName());
-		sceneData.getSyncedEntities().add(ent);
-		if (!(ent instanceof InternalEntity)
-				|| (ent instanceof InternalEntity && ((InternalEntity) ent)
-						.isVisible())) {
-			sceneData.getDefaultGroup().addEntity(ent);
-		}
 		initEntity(ent, sceneData, true);
 
 		if (ent instanceof VisualEntity) {
@@ -172,6 +165,13 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 					(VisualEntity) ent, screenPos, newEntityListener));
 		} else {
 			ent.setEntityId(sceneData.getNextID().toString());
+			sceneData.getEntityNames().add(ent.getName());
+			sceneData.getSyncedEntities().add(ent);
+			if (!(ent instanceof InternalEntity)
+					|| (ent instanceof InternalEntity && ((InternalEntity) ent)
+							.isVisible())) {
+				sceneData.getDefaultGroup().addEntity(ent);
+			}
 		}
 	}
 
@@ -1086,6 +1086,13 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 					}
 
 				});
+			}
+			sceneData.getEntityNames().add(newentity.getName());
+			sceneData.getSyncedEntities().add(newentity);
+			if (!(newentity instanceof InternalEntity)
+					|| (newentity instanceof InternalEntity && ((InternalEntity) newentity)
+							.isVisible())) {
+				sceneData.getDefaultGroup().addEntity(newentity);
 			}
 			return new Object();
 		}
