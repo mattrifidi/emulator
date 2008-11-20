@@ -10,6 +10,8 @@
  */
 package org.rifidi.designer.library.basemodels.gate;
 
+import gnu.cajo.utils.extra.TransparentItemProxy;
+
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
@@ -267,8 +269,15 @@ public class GateEntity extends VisualEntity implements RifidiEntity, Switch,
 		}
 		try {
 			readerModuleManagerInterface = rmimanager.createReader(reader
-					.getGeneralReaderPropertyHolder());
-			reader.getReaderCallbackManager().addGPOPortListener(this);
+					.getGeneralReaderPropertyHolder());		
+			try {		
+				UIReaderCallbackManager readerCallbackManager;
+				readerCallbackManager = new UIReaderCallbackManager(
+						readerModuleManagerInterface.getClientProxy());
+				reader.getReaderCallbackManager().addGPOPortListener(this);
+			} catch (Exception e) {
+				logger.error("Problem connecting to RMI: "+e);
+			}
 		} catch (ClassNotFoundException e) {
 			logger.fatal("Unable to create reader: " + e);
 		} catch (InstantiationException e) {
