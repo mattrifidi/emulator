@@ -45,7 +45,6 @@ import org.rifidi.designer.entities.Entity;
 import org.rifidi.designer.entities.SceneData;
 import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.SceneData.Direction;
-import org.rifidi.designer.entities.gpio.GPIO;
 import org.rifidi.designer.entities.gpio.GPIPort;
 import org.rifidi.designer.entities.gpio.GPOPort;
 import org.rifidi.designer.entities.grouping.EntityGroup;
@@ -464,15 +463,17 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	@Override
 	public List<Entity> getEntitiesByType(Class<?> type) {
 		List<Entity> entities = new ArrayList<Entity>();
-		synchronized (sceneData.getEntities()) {
-			for (Entity ent : sceneData.getEntities()) {
-				if (ent.getClass().equals(type)) {
-					entities.add(ent);
-				} else {
-					for (Class<?> iface : ent.getClass().getInterfaces()) {
-						if (iface.equals(type)) {
-							entities.add(ent);
-							break;
+		if (sceneData != null) {
+			synchronized (sceneData.getEntities()) {
+				for (Entity ent : sceneData.getEntities()) {
+					if (ent.getClass().equals(type)) {
+						entities.add(ent);
+					} else {
+						for (Class<?> iface : ent.getClass().getInterfaces()) {
+							if (iface.equals(type)) {
+								entities.add(ent);
+								break;
+							}
 						}
 					}
 				}
