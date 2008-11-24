@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Xml Plug-in
 Bundle-SymbolicName: org.rifidi.streamer.xml
-Bundle-Version: 2.1.1
+Bundle-Version: 2.1.0
 Bundle-Activator: org.rifidi.streamer.xml.Activator
 Bundle-Vendor: Pramari, LLC
 Eclipse-LazyStart: true
@@ -13,6 +13,6 @@ Export-Package: org.rifidi.streamer.xml,
  org.rifidi.streamer.xml.components,
  org.rifidi.streamer.xml.scenario,
  org.rifidi.streamer.xml.testSuite
-Require-Bundle: org.rifidi.emulator;bundle-version="2.0.2",
- org.rifidi.ui.common,
- org.rifidi.services.tags;bundle-version="2.0.2"
+Require-Bundle: org.rifidi.emulator;bundle-version="2.1.0",
+ org.rifidi.ui.common;bundle-version="2.1.0",
+ org.rifidi.services.tags;bundle-version="2.1.0"
