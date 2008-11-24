@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Streamer Plug-in
+Bundle-Name: Rifidi Streamer Plug-in
 Bundle-SymbolicName: org.rifidi.streamer
 Bundle-Version: 2.1.0
 Bundle-Activator: org.rifidi.streamer.Activator
