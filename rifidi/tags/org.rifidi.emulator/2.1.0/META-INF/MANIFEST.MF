@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-RequiredExecutionEnvironment:  JavaSE-1.6
 Bundle-ManifestVersion: 2
-Bundle-Name: Emulator Plug-in
+Bundle-Name: Rifidi Emulator Plug-in
 Bundle-SymbolicName: org.rifidi.emulator
 Bundle-Version: 2.1.0
 Bundle-Activator: org.rifidi.emulator.Activator
