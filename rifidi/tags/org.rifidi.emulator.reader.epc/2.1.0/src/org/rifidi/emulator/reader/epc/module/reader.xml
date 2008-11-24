@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ReaderCommand version="1.0">
+
+	<ReaderCompany>EPC</ReaderCompany>
+	<Reader>rp v1.1</Reader>
+
+	<Command>
+		<queryName>ReaderDevice.getName</queryName>
+		<queryName>ReaderDevice.setName</queryName>
+		<displayName>name</displayName>
+		<commandState>Interactive</commandState>
+		<commandHandlerDetails>
+			<handlerClass>org.rifidi.emulator.reader.epc.commandhandler.EPCGeneral</handlerClass>
+			<handlerMethod>name</handlerMethod>
+			<argumentType>String</argumentType>
+		</commandHandlerDetails>
+		<actionTag>EDITABLE</actionTag>
+		<category>GENERAL</category>
+		<defaultValue></defaultValue>
+	</Command>
+	
+	<Command>
+		<queryName>ReaderDevice.getUsername</queryName>
+		<queryName>ReaderDevice.setUsername</queryName>
+		<displayName>Username</displayName>
+		<commandState>Interactive</commandState>
+		<commandHandlerDetails>
+			<handlerClass>org.rifidi.emulator.reader.epc.commandhandler.EPCGeneral</handlerClass>
+			<handlerMethod>username</handlerMethod>
+			<argumentType>String</argumentType>
+		</commandHandlerDetails>
+		<actionTag>EDITABLE</actionTag>
+		<category>GENERAL</category>
+		<defaultValue>epc</defaultValue>
+	</Command>
+	
+	<Command>
+		<queryName>ReaderDevice.getPassword</queryName>
+		<queryName>ReaderDevice.setPassword</queryName>
+		<displayName>Password</displayName>
+		<commandState>Interactive</commandState>
+		<commandHandlerDetails>
+			<handlerClass>org.rifidi.emulator.reader.epc.commandhandler.EPCGeneral</handlerClass>
+			<handlerMethod>password</handlerMethod>
+			<argumentType>String</argumentType>
+		</commandHandlerDetails>
+		<actionTag>EDITABLE</actionTag>
+		<category>GENERAL</category>
+		<defaultValue>password</defaultValue>
+	</Command>
+	
+	<Command>
+		<queryName>ReaderDevice.getRole</queryName>
+		<queryName>ReaderDevice.setRole</queryName>
+		<displayName>role</displayName>
+		<commandState>Interactive</commandState>
+		<commandHandlerDetails>
+			<handlerClass>org.rifidi.emulator.reader.epc.commandhandler.EPCGeneral</handlerClass>
+			<handlerMethod>role</handlerMethod>
+			<argumentType>String</argumentType>
+		</commandHandlerDetails>
+		<actionTag>EDITABLE</actionTag>
+		<category>GENERAL</category>
+		<defaultValue>n/a</defaultValue>
+	</Command>
+	
+	<Command>
+		<queryName>ReaderDevice.getEPC</queryName>
+		<displayName>epc</displayName>
+		<commandState>Interactive</commandState>
+		<commandHandlerDetails>
+			<handlerClass>org.rifidi.emulator.reader.epc.commandhandler.EPCGeneral</handlerClass>
+			<handlerMethod>epc</handlerMethod>
+			<argumentType>String</argumentType>
+		</commandHandlerDetails>
+		<actionTag>IGNORE</actionTag>
+		<category>NONE</category>
+		<defaultValue></defaultValue>
+	</Command>
+	
+	<Command>
+		<queryName>TagFieldValue.TagFieldName</queryName>
+		<displayName>tagFieldName</displayName>
+		<commandState>Interactive</commandState>
+		<commandHandlerDetails>
+			<handlerClass>org.rifidi.emulator.reader.epc.commandhandler.EPCGeneral</handlerClass>
+			<handlerMethod>tagFieldName</handlerMethod>
+			<argumentType>String</argumentType>
+		</commandHandlerDetails>
+		<actionTag>IGNORE</actionTag>
+		<category>NONE</category>
+		<defaultValue></defaultValue>
+	</Command>
+	
+	<Command>
+		<queryName>Trigger.getMaxNumberSupported</queryName>
+		<displayName>triggerMaxNumberSupported</displayName>
+		<commandState>Interactive</commandState>
+		<commandHandlerDetails>
+			<handlerClass>org.rifidi.emulator.reader.epc.commandhandler.EPCGeneral</handlerClass>
+			<handlerMethod>triggerMaxNumberSupported</handlerMethod>
+			<argumentType>String</argumentType>
+		</commandHandlerDetails>
+		<actionTag>IGNORE</actionTag>
+		<category>NONE</category>
+		<defaultValue>-1</defaultValue>
+	</Command>
+	
+	<Command>
+		<queryName>TagSelector.getMaxNumberSupported</queryName>
+		<displayName>selectorMaxNumberSupported</displayName>
+		<commandState>Interactive</commandState>
+		<commandHandlerDetails>
+			<handlerClass>org.rifidi.emulator.reader.epc.commandhandler.EPCGeneral</handlerClass>
+			<handlerMethod>selectorMaxNumberSupported</handlerMethod>
+			<argumentType>String</argumentType>
+		</commandHandlerDetails>
+		<actionTag>IGNORE</actionTag>
+		<category>NONE</category>
+		<defaultValue>-1</defaultValue>
+	</Command>
+	
+	<Command>
+		<queryName>commandPrompt</queryName>
+		<displayName>commandPrompt</displayName>
+		<commandState>Login</commandState>
+		<commandHandlerDetails>
+			<handlerClass>org.rifidi.emulator.reader.epc.commandhandler.EPCLogin</handlerClass>
+			<handlerMethod>commandPrompt</handlerMethod>
+			<argumentType>String</argumentType>
+		</commandHandlerDetails>
+		<actionTag>IGNORE</actionTag>
+		<category>NONE</category>
+		<defaultValue></defaultValue>
+	</Command>
+	
+	<Command>
+		<queryName>welcome</queryName>
+		<displayName>Welcome</displayName>
+		<commandState>Login</commandState>
+		<commandHandlerDetails>
+			<handlerClass>org.rifidi.emulator.reader.epc.commandhandler.EPCLogin</handlerClass>
+			<handlerMethod>welcome</handlerMethod>
+			<argumentType>String</argumentType>
+		</commandHandlerDetails>
+		<actionTag>IGNORE</actionTag>
+		<category>NONE</category>
+		<defaultValue>***********************************************[EPCNEWLINE]*[EPCNEWLINE]* EPC Reader Protocol Version 1.1[EPCNEWLINE]*[EPCNEWLINE]***********************************************</defaultValue>
+	</Command>
+	
+	<Command>
+		<queryName>authenticate</queryName>
+		<displayName>Credential</displayName>
+		<commandState>Login</commandState>
+		<commandHandlerDetails>
+			<handlerClass>org.rifidi.emulator.reader.epc.commandhandler.EPCLogin</handlerClass>
+			<handlerMethod>authenticate</handlerMethod>
+			<argumentType>String</argumentType>
+		</commandHandlerDetails>
+		<actionTag>IGNORE</actionTag>
+		<category>NONE</category>
+		<defaultValue>epc|password</defaultValue>
+	</Command>
+	
+	<Command>
+		<queryName>authenticationError</queryName>
+		<displayName>AuthenticationError</displayName>
+		<commandState>Login</commandState>
+		<commandHandlerDetails>
+			<handlerClass>org.rifidi.emulator.reader.epc.commandhandler.EPCLogin</handlerClass>
+			<handlerMethod>authenticationError</handlerMethod>
+			<argumentType>String</argumentType>
+		</commandHandlerDetails>
+		<actionTag>IGNORE</actionTag>
+		<category>NONE</category>
+		<defaultValue>Error: Invalid Username and/or Password[EPCNEWLINE]</defaultValue>
+	</Command>
+	
+	<Command>
+		<queryName>authenticationSuccess</queryName>
+		<displayName>AuthenticationSuccess</displayName>
+		<commandState>Login</commandState>
+		<commandHandlerDetails>
+			<handlerClass>org.rifidi.emulator.reader.epc.commandhandler.EPCLogin</handlerClass>
+			<handlerMethod>authenticationSuccess</handlerMethod>
+			<argumentType>String</argumentType>
+		</commandHandlerDetails>
+		<actionTag>IGNORE</actionTag>
+		<category>NONE</category>
+		<defaultValue></defaultValue>
+	</Command>
+	
+	<Command>
+		<queryName>usernamePrompt</queryName>
+		<displayName>UsernamePrompt</displayName>
+		<commandState>Login</commandState>
+		<commandHandlerDetails>
+			<handlerClass>org.rifidi.emulator.reader.epc.commandhandler.EPCLogin</handlerClass>
+			<handlerMethod>usernamePrompt</handlerMethod>
+			<argumentType>String</argumentType>
+		</commandHandlerDetails>
+		<actionTag>IGNORE</actionTag>
+		<category>NONE</category>
+		<defaultValue>Username></defaultValue>
+	</Command>
+
+	<Command>
+		<queryName>showUsername</queryName>
+		<displayName>showUsername</displayName>
+		<commandState>Login</commandState>
+		<commandHandlerDetails>
+			<handlerClass>org.rifidi.emulator.reader.epc.commandhandler.EPCLogin</handlerClass>
+			<handlerMethod>showUsername</handlerMethod>
+			<argumentType>String</argumentType>
+		</commandHandlerDetails>
+		<actionTag>IGNORE</actionTag>
+		<category>NONE</category>
+		<defaultValue></defaultValue>
+	</Command>
+	
+	<Command>
+		<queryName>showPassword</queryName>
+		<displayName>showPassword</displayName>
+		<commandState>Login</commandState>
+		<commandHandlerDetails>
+			<handlerClass>org.rifidi.emulator.reader.epc.commandhandler.EPCLogin</handlerClass>
+			<handlerMethod>showPassword</handlerMethod>
+			<argumentType>String</argumentType>
+		</commandHandlerDetails>
+		<actionTag>IGNORE</actionTag>
+		<category>NONE</category>
+		<defaultValue></defaultValue>
+	</Command>
+
+	<Command>
+		<queryName>passwordPrompt</queryName>
+		<displayName>PasswordPrompt</displayName>
+		<commandState>Login</commandState>
+		<commandHandlerDetails>
+			<handlerClass>org.rifidi.emulator.reader.epc.commandhandler.EPCLogin</handlerClass>
+			<handlerMethod>passwordPrompt</handlerMethod>
+			<argumentType>String</argumentType>
+		</commandHandlerDetails>
+		<actionTag>IGNORE</actionTag>
+		<category>NONE</category>
+		<defaultValue>Password></defaultValue>
+	</Command>
+	
+	<Command>
+		<queryName></queryName>
+		<displayName>EmptyMethod</displayName>
+		<commandState>Interactive</commandState>
+		<commandHandlerDetails>
+			<handlerClass>org.rifidi.emulator.reader.epc.commandhandler.EPCGeneral</handlerClass>
+			<handlerMethod>emptyMethod</handlerMethod>
+			<argumentType>String</argumentType>
+		</commandHandlerDetails>
+		<actionTag>IGNORE</actionTag>
+		<category>NONE</category>
+		<defaultValue></defaultValue>
+	</Command>
+	
+	<Command>
+		<queryName>Source.create</queryName>
+		<displayName>createSource</displayName>
+		<commandState>Interactive</commandState>
+		<commandHandlerDetails>
+			<handlerClass>org.rifidi.emulator.reader.epc.commandhandler.EPCSource</handlerClass>
+			<handlerMethod>sourceCreate</handlerMethod>
+			<argumentType>String</argumentType>
+		</commandHandlerDetails>
+		<actionTag>IGNORE</actionTag>
+		<category>NONE</category>
+		<defaultValue></defaultValue>
+	</Command>
+	
+	<Command>
+		<queryName>TagSelector.create</queryName>
+		<displayName>createTagSelector</displayName>
+		<commandState>Interactive</commandState>
+		<commandHandlerDetails>
+			<handlerClass>org.rifidi.emulator.reader.epc.commandhandler.EPCTagSelector</handlerClass>
+			<handlerMethod>tagSelectorCreate</handlerMethod>
+			<argumentType>String</argumentType>
+		</commandHandlerDetails>
+		<actionTag>IGNORE</actionTag>
+		<category>NONE</category>
+		<defaultValue></defaultValue>
+	</Command>
+	
+	<Command>
+		<queryName>Source.handler</queryName>
+		<displayName>handleSource</displayName>
+		<commandState>Interactive</commandState>
+		<commandHandlerDetails>
+			<handlerClass>org.rifidi.emulator.reader.epc.commandhandler.EPCSource</handlerClass>
+			<handlerMethod>sourceHandler</handlerMethod>
+			<argumentType>String</argumentType>
+		</commandHandlerDetails>
+		<actionTag>IGNORE</actionTag>
+		<category>NONE</category>
+		<defaultValue></defaultValue>
+	</Command>
+	
+	<Command>
+		<queryName>tagselector.handler</queryName>
+		<displayName>handleTagSelector</displayName>
+		<commandState>Interactive</commandState>
+		<commandHandlerDetails>
+			<handlerClass>org.rifidi.emulator.reader.epc.commandhandler.EPCTagSelector</handlerClass>
+			<handlerMethod>tagSelectorHandler</handlerMethod>
+			<argumentType>String</argumentType>
+		</commandHandlerDetails>
+		<actionTag>IGNORE</actionTag>
+		<category>NONE</category>
+		<defaultValue></defaultValue>
+	</Command>
+	
+	<Command>
+		<queryName>quit</queryName>
+		<queryName>q</queryName>
+		<queryName>ReaderDevice.quit</queryName>
+		<queryName>ReaderDevice.q</queryName>
+		<displayName>quit</displayName>
+		<commandState>Interactive</commandState>
+		<commandHandlerDetails>
+			<handlerClass>org.rifidi.emulator.reader.epc.commandhandler.EPCGeneral</handlerClass>
+			<handlerMethod>quit</handlerMethod>
+			<argumentType>String</argumentType>
+		</commandHandlerDetails>
+		<actionTag>IGNORE</actionTag>
+		<category>NONE</category>
+		<defaultValue>Thank you for using the EPC rp v1.1</defaultValue>
+	</Command>
+	
+	
+	<Command>
+		<queryName>read</queryName>
+		<queryName>ReaderDevice.read</queryName>
+		<queryName>rd.read</queryName>
+		<displayName>read</displayName>
+		<commandState>Interactive</commandState>
+		<commandHandlerDetails>
+			<handlerClass>org.rifidi.emulator.reader.epc.commandhandler.EPCGeneral</handlerClass>
+			<handlerMethod>read</handlerMethod>
+			<argumentType>String</argumentType>
+		</commandHandlerDetails>
+		<actionTag>IGNORE</actionTag>
+		<category>NONE</category>
+		<defaultValue>Thank you for using the EPC rp v1.1</defaultValue>
+	</Command>
+</ReaderCommand>
