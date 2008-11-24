@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Services Plug-in
+Bundle-SymbolicName: org.rifidi.services;singleton:=true
+Bundle-Version: 2.1.0
+Bundle-Activator: org.rifidi.services.Activator
+Bundle-Vendor: Pramari, LLC
+Require-Bundle: org.eclipse.core.runtime
+Bundle-ActivationPolicy: lazy
+Eclipse-BuddyPolicy: dependent
+Export-Package: org.rifidi.services.annotations,
+ org.rifidi.services.registry
+Bundle-ClassPath: .
