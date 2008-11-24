@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Initializer Plug-in
+Bundle-Name: Rifidi Initializer Plug-in
 Bundle-SymbolicName: org.rifidi.services.initializer;singleton:=true
 Bundle-Version: 2.1.0
 Bundle-Activator: org.rifidi.services.initializer.Activator
