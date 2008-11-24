@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Thingmagic Plug-in
+Bundle-Name: Rifidi Thingmagic Reader Plug-in
 Bundle-SymbolicName: org.rifidi.emulator.reader.thingmagic
 Bundle-Version: 2.1.0
 Bundle-Activator: org.rifidi.emulator.reader.thingmagic.Activator
