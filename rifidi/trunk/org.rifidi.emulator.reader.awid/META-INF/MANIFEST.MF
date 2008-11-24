@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-RequiredExecutionEnvironment:  JavaSE-1.6
 Bundle-ManifestVersion: 2
-Bundle-Name: Awid Plug-in
+Bundle-Name: Rifidi Awid Reader Plug-in
 Bundle-SymbolicName: org.rifidi.emulator.reader.awid
 Bundle-Version: 2.1.0
 Bundle-Activator: org.rifidi.emulator.reader.awid.Activator
