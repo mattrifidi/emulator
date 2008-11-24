@@ -1,11 +1,11 @@
 Manifest-Version: 1.0
-Eclipse-BuddyPolicy: global
 Bundle-ManifestVersion: 2
 Bundle-Name: Dependencies Plug-in
 Bundle-SymbolicName: org.rifidi.dependencies
-Bundle-Version: 1.0.0
+Bundle-Version: 2.1.0
 Bundle-Vendor: Pramari, LLC
 Bundle-Localization: plugin
+Eclipse-BuddyPolicy: global
 Bundle-ClassPath: commons-beanutils.jar,
  commons-beanutils-bean-collections.jar,
  commons-beanutils-core.jar,
