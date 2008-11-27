@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Rifidi Tags Plug-in
+Bundle-SymbolicName: org.rifidi.views.tags;singleton:=true
+Bundle-Version: 1.0.0
+Bundle-Activator: org.rifidi.views.tags.Activator
+Bundle-Vendor: Pramari, LLC
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.rifidi.dependencies;bundle-version="2.1.0",
+ org.rifidi.services;bundle-version="2.1.0",
+ org.rifidi.services.tags;bundle-version="2.1.0",
+ org.rifidi.ui.common;bundle-version="2.1.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy
