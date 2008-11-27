@@ -143,7 +143,6 @@ public class RifidiTag implements Serializable {
 	 */
 	public void setTag(IGen1Tag tag) {
 		this.tag = tag;
-		this.xmlID = "RIFIDITAG-" + tagEntitiyID;
 	}
 
 	public Integer getReadCount() {
@@ -217,6 +216,7 @@ public class RifidiTag implements Serializable {
 
 	public void setTagEntitiyID(long tagEntitiyID) {
 		this.tagEntitiyID = tagEntitiyID;
+		this.xmlID = "RIFIDITAG-" + tagEntitiyID;
 	}
 
 }
