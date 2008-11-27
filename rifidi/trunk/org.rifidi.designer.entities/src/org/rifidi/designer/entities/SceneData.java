@@ -27,6 +27,7 @@ import org.eclipse.ui.model.IWorkbenchAdapter;
 import org.rifidi.designer.entities.grouping.EntityGroup;
 import org.rifidi.designer.entities.grouping.GroupContainer;
 import org.rifidi.designer.entities.interfaces.IEntityObservable;
+import org.rifidi.services.tags.impl.RifidiTag;
 
 import com.jme.input.InputHandler;
 import com.jme.scene.Node;
@@ -54,82 +55,46 @@ public class SceneData implements IAdaptable, IWorkbenchAdapter,
 		NORTH, SOUTH, EAST, WEST, DOWN
 	}
 
-	/**
-	 * All the entities in the scene.
-	 */
+	/** All the entities in the scene. */
 	private List<Entity> entities;
-	/**
-	 * Byte form of the scenegraph.
-	 */
+	/** Byte form of the scenegraph. */
 	private byte[] nodeBytes;
-	/**
-	 * Root of the scene graph.
-	 */
+	/** Root of the scene graph. */
 	private Node rootNode;
-	/**
-	 * The room (stored separate for renderqueue purposes).
-	 */
+	/** The room (stored separate for renderqueue purposes). */
 	private Node roomNode;
-	/**
-	 * Counter for entity ids
-	 */
+	/** Counter for entity ids */
 	private Integer idCounter = 0;
-	/**
-	 * List of entity groups (this one is wrapped by entityGroups).
-	 */
+	/** List of entity groups (this one is wrapped by entityGroups). */
 	private List<EntityGroup> rawEntityGroups;
-	/**
-	 * List of entity groups.
-	 */
+	/** List of entity groups. */
 	private List<EntityGroup> entityGroups;
-	/**
-	 * A descriptive name for this scene.
-	 */
+	/** A descriptive name for this scene. */
 	private String name;
-	/**
-	 * Default group that contains all newly added entities.
-	 */
+	/** Default group that contains all newly added entities. */
 	private EntityGroup defaultGroup;
-	/**
-	 * Default group that contains all produced added entities.
-	 */
+	/** Default group that contains all produced added entities. */
 	private EntityGroup producedEntities;
-	/**
-	 * Group for cables.
-	 */
+	/** Group for cables. */
 	private EntityGroup cableGroup;
-	/**
-	 * All currently taken names of entites
-	 */
+	/** All currently taken names of entites */
 	private List<String> entityNames;
-	/**
-	 * The currently used physics space.
-	 */
+	/** The currently used physics space. */
 	private PhysicsSpace physicsSpace;
-	/**
-	 * The currently uised collision handler.
-	 */
+	/** The currently uised collision handler. */
 	private InputHandler collisionHandler;
-	/**
-	 * This map conatins the 4 walls that surround the scene.
-	 */
+	/** This map conatins the 4 walls that surround the scene. */
 	private Map<Direction, Node> walls;
-	/**
-	 * Container for entity groups.
-	 */
+	/** Container for entity groups. */
 	private GroupContainer groupedComponentsContainer;
-	/**
-	 * Synchronized list of entites.
-	 */
+	/** Synchronized list of entites. */
 	private List<Entity> syncedEntities;
-	/**
-	 * Current SWT display.
-	 */
+	/** Current SWT display. */
 	private Display display;
-	/**
-	 * Id of the floorplan to use.
-	 */
+	/** Id of the floorplan to use. */
 	private String floorId;
+	/** Only used to store tags from the tagregistry to an xml file. */
+	private List<RifidiTag> tags = new ArrayList<RifidiTag>();
 
 	/**
 	 * @return the nodeBytes
@@ -463,6 +428,20 @@ public class SceneData implements IAdaptable, IWorkbenchAdapter,
 	 */
 	public void setFloorId(String floorId) {
 		this.floorId = floorId;
+	}
+
+	/**
+	 * @return the tags
+	 */
+	public List<RifidiTag> getTags() {
+		return this.tags;
+	}
+
+	/**
+	 * @param tags the tags to set
+	 */
+	public void setTags(List<RifidiTag> tags) {
+		this.tags = tags;
 	}
 
 	/*

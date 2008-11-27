@@ -131,6 +131,7 @@ public class DefaultPropertySource implements IPropertySource {
 		} catch (IllegalAccessException e) {
 			logger.error(e);
 		} catch (InvocationTargetException e) {
+			e.printStackTrace();
 			logger.error(e);
 		}
 		return "unable to read value";

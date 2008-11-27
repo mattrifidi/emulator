@@ -65,6 +65,7 @@ import org.rifidi.services.tags.impl.C0G1Tag;
 import org.rifidi.services.tags.impl.C1G1Tag;
 import org.rifidi.services.tags.impl.C1G2Tag;
 import org.rifidi.services.tags.impl.RifidiTag;
+import org.rifidi.services.tags.registry.ITagRegistry;
 
 import com.jme.bounding.BoundingBox;
 import com.jme.input.InputHandler;
@@ -91,45 +92,31 @@ import com.jmex.physics.StaticPhysicsNode;
  */
 public class EntitiesServiceImpl implements EntitiesService, ProductService,
 		FinderService, SceneDataService {
-	/**
-	 * Logger for this class.
-	 */
+	/** Logger for this class. */
 	private static Log logger = LogFactory.getLog(EntitiesServiceImpl.class);
-	/**
-	 * Reference to the current scene.
-	 */
+	/** Reference to the current scene. */
 	private SceneData sceneData;
 	/**
 	 * Reference to the old scene to allow the deletion callable to work while
 	 * the new scene is loaded..
 	 */
 	private SceneData sceneDataOld;
-	/**
-	 * Quickreference list to find entities by their nodes
-	 */
+	/** Quickreference list to find entities by their nodes */
 	private Map<Node, VisualEntity> nodeToEntity;
-	/**
-	 * the file the scene was loaded from.
-	 */
+	/** the file the scene was loaded from. */
 	private IFile fileOfCurrentScene;
-	/**
-	 * objects listening for scenedata events.
-	 */
+	/** objects listening for scenedata events. */
 	private List<SceneDataChangedListener> listeners;
-	/**
-	 * Reference to the initservice.
-	 */
+	/** Reference to the initservice. */
 	private IInitService iinitService;
-	/**
-	 * The collision tree.
-	 */
+	/** The collision tree. */
 	private CollisionOctree collisionOctree = null;
-	/**
-	 * Tree for checking collisions against the room.
-	 */
+	/** Tree for checking collisions against the room. */
 	private RoomOctree roomTree = null;
 	/** Default implementor. */
 	private SWTDefaultImplementor implementor;
+	/** Reference to the tag registry. */
+	private ITagRegistry tagRegistry;
 
 	/**
 	 * Constructor.
@@ -490,6 +477,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	 * (org.eclipse.swt.widgets.Display, org.eclipse.core.resources.IFile)
 	 */
 	public void loadScene(final Display display, final IFile file) {
+		tagRegistry.initialize();
 		// invalidate the current sceneData
 		for (SceneDataChangedListener listener : listeners) {
 			listener.destroySceneData(this.sceneData);
@@ -567,6 +555,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 							Object unm = unmarshaller.unmarshal(file
 									.getContents());
 							sceneData = (SceneData) unm;
+							tagRegistry.initialize(sceneData.getTags());
 
 						} catch (JAXBException e) {
 							logger.fatal("Unable to load file (JAXB): " + e);
@@ -784,7 +773,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 				Node parent = sceneData.getRootNode().getParent();
 				sceneData.getRootNode().removeFromParent();
 				sceneData.getRoomNode().removeFromParent();
-
+				sceneData.setTags(tagRegistry.getTags());
 				sceneData.getDisplay().syncExec(new Runnable() {
 
 					/*
@@ -1137,6 +1126,14 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	@Inject
 	public void setImplementor(SWTDefaultImplementor implementor) {
 		this.implementor = implementor;
+	}
+
+	/**
+	 * @param tagRegistry the tagRegistry to set
+	 */
+	@Inject
+	public void setTagRegistry(ITagRegistry tagRegistry) {
+		this.tagRegistry = tagRegistry;
 	}
 
 }
