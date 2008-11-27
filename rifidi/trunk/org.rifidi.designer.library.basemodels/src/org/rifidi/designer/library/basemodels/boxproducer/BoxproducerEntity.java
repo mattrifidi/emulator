@@ -80,7 +80,6 @@ public class BoxproducerEntity extends VisualEntity implements SceneControl,
 	/** Stack shared with the boxproducer thread. */
 	private Stack<RifidiTag> tagStack;
 	/** Set containing all available tags. */
-	@XmlIDREF
 	private Set<RifidiTag> tags;
 
 	/**
@@ -376,7 +375,8 @@ public class BoxproducerEntity extends VisualEntity implements SceneControl,
 		this.tags.removeAll(tags);
 		tagStack.removeAll(tags);
 	}
-
+	
+	@XmlTransient
 	public String getTagList(){
 		StringBuffer buf=new StringBuffer();
 		for(RifidiTag tag:tags){
@@ -388,6 +388,21 @@ public class BoxproducerEntity extends VisualEntity implements SceneControl,
 	@Property(displayName = "Tags", description = "tags assigned to this producer", readonly = true, unit = "")
 	public void setTagList(String tagList){
 		
+	}
+
+	/**
+	 * @return the tags
+	 */
+	@XmlIDREF
+	public Set<RifidiTag> getTags() {
+		return this.tags;
+	}
+
+	/**
+	 * @param tags the tags to set
+	 */
+	public void setTags(Set<RifidiTag> tags) {
+		this.tags = tags;
 	}
 	
 }
