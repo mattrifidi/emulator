@@ -11,7 +11,10 @@
 package org.rifidi.designer.library.basemodels.boxproducer;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.Stack;
 
 import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlTransient;
@@ -23,11 +26,13 @@ import org.rifidi.designer.entities.Entity;
 import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.annotations.Property;
 import org.rifidi.designer.entities.databinding.annotations.MonitoredProperties;
+import org.rifidi.designer.entities.interfaces.ITagContainer;
 import org.rifidi.designer.entities.interfaces.SceneControl;
 import org.rifidi.designer.entities.interfaces.Switch;
 import org.rifidi.designer.library.basemodels.cardbox.CardboxEntity;
 import org.rifidi.designer.services.core.entities.ProductService;
 import org.rifidi.services.annotations.Inject;
+import org.rifidi.services.tags.impl.RifidiTag;
 import org.rifidi.services.tags.registry.ITagRegistry;
 
 import com.jme.bounding.BoundingBox;
@@ -45,56 +50,46 @@ import com.jme.scene.state.BlendState.SourceFunction;
 import com.jme.system.DisplaySystem;
 
 /**
- * BoxproducerEntityGID96: Used for generating boxes.
+ * BoxproducerEntity: Used for generating boxes.
  * 
  * @author Jochen Mader Oct 8, 2007
  * @author Dan West
  */
-@MonitoredProperties(names = { "IDGenerator", "name" })
+@MonitoredProperties(names = { "name" })
 public class BoxproducerEntity extends VisualEntity implements SceneControl,
-		Switch {
-	/**
-	 * Logger for this class.
-	 */
+		Switch, ITagContainer {
+	
+	/** Logger for this class. */
 	private static Log logger = LogFactory.getLog(BoxproducerEntity.class);
-	/**
-	 * Seconds per box.
-	 */
+	/** Seconds per box. */
 	private float speed;
-	/**
-	 * Production thread.
-	 */
+	/** Production thread. */
 	private BoxproducerEntityThread thread;
-	/**
-	 * State of the switch.
-	 */
+	/** State of the switch. */
 	private boolean running = false;
-	/**
-	 * Is the entity paused.
-	 */
+	/** Is the entity paused. */
 	private boolean paused = true;
-	/**
-	 * Source for shared meshes.
-	 */
+	/** Source for shared meshes. */
 	private Node model;
-	/**
-	 * Reference to the product service.
-	 */
+	/** Reference to the product service. */
 	private ProductService productService;
-	/**
-	 * List of products this producer created.
-	 */
+	/** List of products this producer created. */
 	private List<CardboxEntity> products = new ArrayList<CardboxEntity>();
-	/**
-	 * Reference to the tag registry
-	 */
+	/** Reference to the tag registry */
 	private ITagRegistry tagRegistry;
+	/** Stack shared with the boxproducer thread. */
+	private Stack<RifidiTag> tagStack;
+	/** Set containing all available tags. */
+	@XmlIDREF
+	private Set<RifidiTag> tags;
 
 	/**
 	 * Constructor
 	 */
 	public BoxproducerEntity() {
 		this.speed = 4;
+		this.tagStack = new Stack<RifidiTag>();
+		this.tags = new HashSet<RifidiTag>();
 		setName("Boxproducer (DoD96)");
 	}
 
@@ -169,7 +164,8 @@ public class BoxproducerEntity extends VisualEntity implements SceneControl,
 
 		logger.debug(NodeHelper.printNodeHierarchy(getNode(), 3));
 
-		thread = new BoxproducerEntityThread(this, productService, products);
+		thread = new BoxproducerEntityThread(this, productService, products,
+				tagStack);
 		thread.setInterval((int) speed * 1000);
 		thread.start();
 
@@ -187,7 +183,8 @@ public class BoxproducerEntity extends VisualEntity implements SceneControl,
 			model.attachChild(new Box("producer", new Vector3f(0, 12f, 0), 3f,
 					.5f, 3f));
 		}
-		thread = new BoxproducerEntityThread(this, productService, products);
+		thread = new BoxproducerEntityThread(this, productService, products,
+				tagStack);
 		thread.setInterval((int) speed * 1000);
 		thread.start();
 		if (running)
@@ -258,6 +255,8 @@ public class BoxproducerEntity extends VisualEntity implements SceneControl,
 		thread.setPaused(true);
 		productService.deleteProducts(new ArrayList<Entity>(thread
 				.getProducts()));
+		tagStack.clear();
+		tagStack.addAll(tags);
 	}
 
 	/*
@@ -267,7 +266,7 @@ public class BoxproducerEntity extends VisualEntity implements SceneControl,
 	 */
 	@Override
 	public void destroy() {
-		thread.setKeepRunning(false);
+		thread.interrupt();
 		getNode().removeFromParent();
 	}
 
@@ -339,4 +338,56 @@ public class BoxproducerEntity extends VisualEntity implements SceneControl,
 		return (Node) getNode().getChild("hiliter");
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.rifidi.designer.entities.interfaces.ITagContainer#addTags(java.util
+	 * .Set)
+	 */
+	@Override
+	public void addTags(Set<RifidiTag> tags) {
+		this.tags.addAll(tags);
+		tagStack.addAll(tags);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.rifidi.designer.entities.interfaces.ITagContainer#removeTag(org.rifidi
+	 * .services.tags.impl.RifidiTag)
+	 */
+	@Override
+	public void removeTag(RifidiTag tag) {
+		this.tags.remove(tag);
+		tagStack.remove(tag);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.rifidi.designer.entities.interfaces.ITagContainer#removeTags(java
+	 * .util.Set)
+	 */
+	@Override
+	public void removeTags(Set<RifidiTag> tags) {
+		this.tags.removeAll(tags);
+		tagStack.removeAll(tags);
+	}
+
+	public String getTagList(){
+		StringBuffer buf=new StringBuffer();
+		for(RifidiTag tag:tags){
+			buf.append(tag+"\n");
+		}
+		return buf.toString();
+	}
+	
+	@Property(displayName = "Tags", description = "tags assigned to this producer", readonly = true, unit = "")
+	public void setTagList(String tagList){
+		
+	}
+	
 }

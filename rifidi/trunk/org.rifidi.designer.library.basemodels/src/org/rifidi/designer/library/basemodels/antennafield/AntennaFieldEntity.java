@@ -28,6 +28,7 @@ import org.rifidi.designer.entities.Entity;
 import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.interfaces.ChildEntity;
 import org.rifidi.designer.entities.interfaces.Field;
+import org.rifidi.designer.entities.interfaces.ITagged;
 import org.rifidi.designer.entities.interfaces.NeedsPhysics;
 import org.rifidi.designer.entities.interfaces.Switch;
 import org.rifidi.designer.library.basemodels.gate.GateEntity;
@@ -305,17 +306,19 @@ public class AntennaFieldEntity extends VisualEntity implements Switch,
 	 */
 	@Override
 	public void fieldEntered(Entity entity) {
-		if (entity.getUserData() instanceof RifidiTag) {
-			// add action to the thread for processing
-			antennaFieldThread.addAction(new AntennaFieldAction(true,
-					(RifidiTag) entity.getUserData()));
-			// publish collision event
-			eventsService.publish(new TagEvent(
-					(RifidiTag) entity.getUserData(), readerInterface,
-					antennaNum, true));
+		if (entity instanceof ITagged) {
+			if (((ITagged) entity.getUserData()).getRifidiTag() != null) {
+				// add action to the thread for processing
+				antennaFieldThread.addAction(new AntennaFieldAction(true,
+						((ITagged) entity.getUserData()).getRifidiTag()));
+				// publish collision event
+				eventsService.publish(new TagEvent(((ITagged) entity
+						.getUserData()).getRifidiTag(), readerInterface,
+						antennaNum, true));
+			}
+			// inform the parent of the collision
+			((GateEntity) getParent()).tagSeen();
 		}
-		// inform the parent of the collision
-		((GateEntity) getParent()).tagSeen();
 	}
 
 	/*

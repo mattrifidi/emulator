@@ -20,9 +20,6 @@ import org.rifidi.designer.entities.adapters.SwitchActionFilterAdapter;
 import org.rifidi.designer.entities.properties.DefaultPropertySource;
 import org.rifidi.designer.library.basemodels.boxproducer.BoxproducerEntity;
 import org.rifidi.designer.library.basemodels.boxproducer.BoxproducerEntityWorkbenchAdapter;
-import org.rifidi.designer.library.basemodels.boxproducerGID96.BoxproducerEntityGID96;
-import org.rifidi.designer.library.basemodels.boxproducerSGTIN96.BoxproducerEntitySGTIN96;
-import org.rifidi.designer.library.basemodels.boxproducerSSCC96.BoxproducerEntitySSCC96;
 import org.rifidi.designer.library.basemodels.cardbox.CardboxEntity;
 import org.rifidi.designer.library.basemodels.cardbox.CardboxEntityWorkbenchAdapter;
 import org.rifidi.designer.library.basemodels.conveyor.ConveyorEntity;
@@ -64,36 +61,6 @@ public class AdapterFactory implements IAdapterFactory {
 		if (adaptableObject instanceof BoxproducerEntity) {
 			if (IWorkbenchAdapter.class.equals(adapterType)) {
 				return new BoxproducerEntityWorkbenchAdapter();
-			}
-			if (IActionFilter.class.equals(adapterType)) {
-				return new SwitchActionFilterAdapter();
-			}
-			if (IPropertySource.class.equals(adapterType)) {
-				return new DefaultPropertySource((Entity) adaptableObject);
-			}
-		} else if (adaptableObject instanceof BoxproducerEntityGID96) {
-			if (IWorkbenchAdapter.class.equals(adapterType)) {
-				return new org.rifidi.designer.library.basemodels.boxproducerGID96.BoxproducerEntityWorkbenchAdapter();
-			}
-			if (IActionFilter.class.equals(adapterType)) {
-				return new SwitchActionFilterAdapter();
-			}
-			if (IPropertySource.class.equals(adapterType)) {
-				return new DefaultPropertySource((Entity) adaptableObject);
-			}
-		} else if (adaptableObject instanceof BoxproducerEntitySGTIN96) {
-			if (IWorkbenchAdapter.class.equals(adapterType)) {
-				return new org.rifidi.designer.library.basemodels.boxproducerSGTIN96.BoxproducerEntityWorkbenchAdapter();
-			}
-			if (IActionFilter.class.equals(adapterType)) {
-				return new SwitchActionFilterAdapter();
-			}
-			if (IPropertySource.class.equals(adapterType)) {
-				return new DefaultPropertySource((Entity) adaptableObject);
-			}
-		} else if (adaptableObject instanceof BoxproducerEntitySSCC96) {
-			if (IWorkbenchAdapter.class.equals(adapterType)) {
-				return new org.rifidi.designer.library.basemodels.boxproducerSSCC96.BoxproducerEntityWorkbenchAdapter();
 			}
 			if (IActionFilter.class.equals(adapterType)) {
 				return new SwitchActionFilterAdapter();

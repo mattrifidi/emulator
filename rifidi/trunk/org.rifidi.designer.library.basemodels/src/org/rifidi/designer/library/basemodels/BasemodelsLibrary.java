@@ -92,8 +92,9 @@ public class BasemodelsLibrary implements EntityLibrary {
 		library.add(gateRef);
 		EntityLibraryReference destroyerRef = new EntityLibraryReference();
 		destroyerRef.setId(DestroyerEntity.class.getName());
-		destroyerRef.setImageDescriptor(Activator.getDefault().getImageRegistry()
-				.getDescriptor(DestroyerEntity.class.getName()));
+		destroyerRef.setImageDescriptor(Activator.getDefault()
+				.getImageRegistry().getDescriptor(
+						DestroyerEntity.class.getName()));
 		destroyerRef.setLibrary(BasemodelsLibrary.class);
 		destroyerRef.setName("Destroyer");
 		destroyerRef.setEntityClass(DestroyerEntity.class);
@@ -130,67 +131,25 @@ public class BasemodelsLibrary implements EntityLibrary {
 		prodRef.setEntityClass(BoxproducerEntity.class);
 		prodRef.setHidden(false);
 		library.add(prodRef);
-		EntityLibraryReference prodSSCC96Ref = new EntityLibraryReference();
-		prodSSCC96Ref
-				.setId(org.rifidi.designer.library.basemodels.boxproducerSSCC96.BoxproducerEntitySSCC96.class
-						.getName());
-		prodSSCC96Ref.setImageDescriptor(Activator.getDefault()
-				.getImageRegistry().getDescriptor(
-						BoxproducerEntity.class.getName()));
-		prodSSCC96Ref.setLibrary(BasemodelsLibrary.class);
-		prodSSCC96Ref.setName("Producer (SSCC96)");
-		prodSSCC96Ref.setWizard(null);
-		prodSSCC96Ref
-				.setEntityClass(org.rifidi.designer.library.basemodels.boxproducerSSCC96.BoxproducerEntitySSCC96.class);
-		prodSSCC96Ref.setHidden(false);
-		library.add(prodSSCC96Ref);
-		EntityLibraryReference prodGID96Ref = new EntityLibraryReference();
-		prodGID96Ref
-				.setId(org.rifidi.designer.library.basemodels.boxproducerGID96.BoxproducerEntityGID96.class
-						.getName());
-		prodGID96Ref.setImageDescriptor(Activator.getDefault()
-				.getImageRegistry().getDescriptor(
-						BoxproducerEntity.class.getName()));
-		prodGID96Ref.setLibrary(BasemodelsLibrary.class);
-		prodGID96Ref.setName("Producer (GID96)");
-		prodGID96Ref.setWizard(null);
-		prodGID96Ref
-				.setEntityClass(org.rifidi.designer.library.basemodels.boxproducerGID96.BoxproducerEntityGID96.class);
-		prodGID96Ref.setHidden(false);
-		library.add(prodGID96Ref);
-		EntityLibraryReference prodSGTIN96Ref = new EntityLibraryReference();
-		prodSGTIN96Ref
-				.setId(org.rifidi.designer.library.basemodels.boxproducerSGTIN96.BoxproducerEntitySGTIN96.class
-						.getName());
-		prodSGTIN96Ref.setImageDescriptor(Activator.getDefault()
-				.getImageRegistry().getDescriptor(
-						BoxproducerEntity.class.getName()));
-		prodSGTIN96Ref.setLibrary(BasemodelsLibrary.class);
-		prodSGTIN96Ref.setName("Producer (SGTIN96)");
-		prodSGTIN96Ref.setWizard(null);
-		prodSGTIN96Ref
-				.setEntityClass(org.rifidi.designer.library.basemodels.boxproducerSGTIN96.BoxproducerEntitySGTIN96.class);
-		prodSGTIN96Ref.setHidden(false);
-		library.add(prodSGTIN96Ref);
 
 		FloorElement floorElement = new FloorElement();
 		floorElement.setId("map_1");
 		floorElement.setImageDescriptor(Activator.getDefault()
-				.getImageRegistry().getDescriptor(
-						"map_1"));
+				.getImageRegistry().getDescriptor("map_1"));
 		floorElement.setName("Map 1");
-		floorElement.setPath("org/rifidi/designer/library/basemodels/map_1.jme");
+		floorElement
+				.setPath("org/rifidi/designer/library/basemodels/map_1.jme");
 		floorelements.add(floorElement);
-		
+
 		floorElement = new FloorElement();
 		floorElement.setId("map_2");
 		floorElement.setImageDescriptor(Activator.getDefault()
-				.getImageRegistry().getDescriptor(
-						"map_2"));
+				.getImageRegistry().getDescriptor("map_2"));
 		floorElement.setName("Map 2");
-		floorElement.setPath("org/rifidi/designer/library/basemodels/map_2.jme");
+		floorElement
+				.setPath("org/rifidi/designer/library/basemodels/map_2.jme");
 		floorelements.add(floorElement);
-		
+
 	}
 
 	/*

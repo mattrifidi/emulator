@@ -1,5 +1,5 @@
 /*
- *  BoxproducerEntityWorkbenchAdapter.java
+ *  BoxproducerLtdEntityWorkbenchAdapter.java
  *
  *  Project:		RiFidi Designer - A Virtualization tool for 3D RFID environments
  *  http://www.rifidi.org

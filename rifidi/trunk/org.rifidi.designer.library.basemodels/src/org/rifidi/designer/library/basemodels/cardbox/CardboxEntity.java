@@ -14,13 +14,17 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlTransient;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.rifidi.designer.entities.VisualEntity;
+import org.rifidi.designer.entities.annotations.Property;
 import org.rifidi.designer.entities.databinding.annotations.MonitoredProperties;
+import org.rifidi.designer.entities.interfaces.ITagged;
 import org.rifidi.designer.entities.interfaces.NeedsPhysics;
+import org.rifidi.services.tags.impl.RifidiTag;
 
 import com.jme.bounding.BoundingBox;
 import com.jme.input.InputHandler;
@@ -41,35 +45,28 @@ import com.jmex.physics.PhysicsSpace;
  * 
  */
 @MonitoredProperties(names = { "name" })
-public class CardboxEntity extends VisualEntity implements NeedsPhysics {
-	/**
-	 * logger for this class.
-	 */
+public class CardboxEntity extends VisualEntity implements NeedsPhysics,
+		ITagged {
+	/** logger for this class. */
 	private static Log logger = LogFactory.getLog(CardboxEntity.class);
-	/**
-	 * Startposition.
-	 */
+	/** Startposition. */
 	private Vector3f startPos = new Vector3f(0, 10, 0);
-	/**
-	 * Roatation after creation.
-	 */
+	/** Roatation after creation. */
 	private Matrix3f baseRotation;
-	/**
-	 * Model for shared meshes.
-	 */
+	/** Model for shared meshes. */
 	private static Node model;
-	/**
-	 * Reference to the physics space.
-	 */
+	/** Reference to the physics space. */
 	private PhysicsSpace physicsSpace;
-	
+	/** Tag associated with this entity. */
+	private RifidiTag rifidiTag;
+
 	/**
 	 * Constructor.
 	 */
-	public CardboxEntity(){
+	public CardboxEntity() {
 		setName("Cardbox");
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -94,19 +91,20 @@ public class CardboxEntity extends VisualEntity implements NeedsPhysics {
 		}
 		DynamicPhysicsNode node = physicsSpace.createDynamicNode();
 		node.setLocalTranslation(startPos);
-		if(baseRotation!=null){
-			node.getLocalRotation().apply(baseRotation);	
+		if (baseRotation != null) {
+			node.getLocalRotation().apply(baseRotation);
 		}
 		node.attachChild(new SharedNode("sharedCBox_", model));
-		//node.attachChild(model);
+		// node.attachChild(model);
 		node.generatePhysicsGeometry();
 		node.setIsCollidable(true);
 		node.setActive(true);
 		node.setModelBound(new BoundingBox());
 		node.updateModelBound();
 		setNode(node);
-		Node _node=new Node("hiliter");
-		Box box = new Box("hiliter", new Vector3f(0,0f,0), 1.01f, 1.01f, 1.01f);
+		Node _node = new Node("hiliter");
+		Box box = new Box("hiliter", new Vector3f(0, 0f, 0), 1.01f, 1.01f,
+				1.01f);
 		box.setModelBound(new BoundingBox());
 		box.updateModelBound();
 		_node.attachChild(box);
@@ -115,6 +113,7 @@ public class CardboxEntity extends VisualEntity implements NeedsPhysics {
 		_node.setCullHint(CullHint.Always);
 		getNode().attachChild(_node);
 		setCollides(false);
+		setName("Cardbox-"+getEntityId());
 	}
 
 	/*
@@ -171,7 +170,9 @@ public class CardboxEntity extends VisualEntity implements NeedsPhysics {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.entities.interfaces.NeedsPhysics#setCollisionHandler(com.jme.input.InputHandler)
+	 * @see
+	 * org.rifidi.designer.entities.interfaces.NeedsPhysics#setCollisionHandler
+	 * (com.jme.input.InputHandler)
 	 */
 	public void setCollisionHandler(InputHandler collisionHandler) {
 	}
@@ -179,7 +180,9 @@ public class CardboxEntity extends VisualEntity implements NeedsPhysics {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.entities.interfaces.NeedsPhysics#setPhysicsSpace(com.jmex.physics.PhysicsSpace)
+	 * @see
+	 * org.rifidi.designer.entities.interfaces.NeedsPhysics#setPhysicsSpace(
+	 * com.jmex.physics.PhysicsSpace)
 	 */
 	public void setPhysicsSpace(PhysicsSpace physicsSpace) {
 		this.physicsSpace = physicsSpace;
@@ -204,11 +207,49 @@ public class CardboxEntity extends VisualEntity implements NeedsPhysics {
 
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.rifidi.designer.entities.VisualEntity#getBoundingNode()
 	 */
 	@Override
 	public Node getBoundingNode() {
-		return (Node)getNode().getChild("hiliter");
+		return (Node) getNode().getChild("hiliter");
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.rifidi.designer.entities.interfaces.ITagged#getRifidiTag()
+	 */
+	@Override
+	@XmlIDREF
+	public RifidiTag getRifidiTag() {
+		return rifidiTag;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.rifidi.designer.entities.interfaces.ITagged#setRifidiTag(org.rifidi
+	 * .services.tags.impl.RifidiTag)
+	 */
+	@Override
+	public void setRifidiTag(RifidiTag tag) {
+		this.rifidiTag = tag;
+	}
+
+	@Property(displayName = "Tag", description = "tag assigned to this box", readonly = true, unit = "")
+	public void setTagID(String tagID){
+		
+	}
+	
+	@XmlTransient
+	public String getTagID(){
+		if(rifidiTag!=null){
+			return rifidiTag.toString();
+		}
+		return "";
 	}
 }
