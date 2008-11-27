@@ -1,17 +1,15 @@
 package org.rifidi.services.tags.impl;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlID;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import org.rifidi.common.utilities.ByteAndHexConvertingUtility;
-import org.rifidi.common.utilities.jaxb.map.MapElement;
 import org.rifidi.services.tags.IGen1Tag;
 import org.rifidi.services.tags.enums.TagGen;
 import org.rifidi.services.tags.id.TagType;
@@ -26,38 +24,29 @@ import org.rifidi.services.tags.id.TagType;
  * 
  * @author Andreas Huebner - andreas@pramari.com
  */
-@XmlAccessorType(XmlAccessType.NONE)
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class RifidiTag implements Serializable {
 
-	/**
-	 * 
-	 */
+	/** Serial version for serializable. */
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * The unique ID for identify this tag internally
-	 */
+	/** The unique ID for identify this tag internally */
 	private long tagEntitiyID;
-
-	/**
-	 * The Tag to whom this information belong
-	 */
+	/** The Tag to whom this information belongs */
+	@XmlElement(type = Object.class)
 	private IGen1Tag tag;
-
-	/**
-	 * What type is the TagId (DoD, Custom96, ...)
-	 */
+	/** What type is the TagId (DoD, Custom96, ...) */
 	private TagType tagType;
-
 	/** Antenna the tag was last seen at */
 	private int antennaLastSeen;
-
 	/** Discovery date of tag */
 	private Date discoveryDate;
-
 	/** Last seen date of tag */
 	private Date lastSeenDate;
-
+	/** ID used for XML documents. */
+	@XmlID
+	private String xmlID;
 	/**
 	 * how many times the tag has been read
 	 */
@@ -89,7 +78,6 @@ public class RifidiTag implements Serializable {
 	/**
 	 * @return the idFormat
 	 */
-	@XmlElement
 	public TagType getTagType() {
 		return tagType;
 	}
@@ -155,6 +143,7 @@ public class RifidiTag implements Serializable {
 	 */
 	public void setTag(IGen1Tag tag) {
 		this.tag = tag;
+		this.xmlID = "RIFIDITAG-" + tagEntitiyID;
 	}
 
 	public Integer getReadCount() {
@@ -192,35 +181,35 @@ public class RifidiTag implements Serializable {
 		return this.tag.readId();
 	}
 
-	@XmlElementWrapper
-	public List<MapElement> getTagProperty() {
-		List<MapElement> map = new ArrayList<MapElement>();
-		if (tag != null) {
-			map.add(new MapElement("id", ByteAndHexConvertingUtility
-					.toHexString(tag.getId())));
-			map.add(new MapElement("gen", tag.getTagGeneration().toString()));
-		}
-		return map;
-	}
-
-	public void setTagProperty(List<MapElement> values) {
-		String id, gen;
-		id = gen = null;
-		for (MapElement e : values) {
-			if (e.key.equals("id"))
-				id = e.val;
-			if (e.key.equals("gen"))
-				gen = e.val;
-		}
-
-		if (TagGen.valueOf(gen) == TagGen.GEN2) {
-			byte[] pass = { 0x00, 0x00, 0x00, 0x00 };
-			tag = new C1G2Tag(ByteAndHexConvertingUtility.fromHexString(id),
-					pass, pass.clone());
-		} else {
-			tag = new C1G1Tag(ByteAndHexConvertingUtility.fromHexString(id));
-		}
-	}
+	// @XmlElementWrapper
+	// public List<MapElement> getTagProperty() {
+	// List<MapElement> map = new ArrayList<MapElement>();
+	// if (tag != null) {
+	// map.add(new MapElement("id", ByteAndHexConvertingUtility
+	// .toHexString(tag.getId())));
+	// map.add(new MapElement("gen", tag.getTagGeneration().toString()));
+	// }
+	// return map;
+	// }
+	//
+	// public void setTagProperty(List<MapElement> values) {
+	// String id, gen;
+	// id = gen = null;
+	// for (MapElement e : values) {
+	// if (e.key.equals("id"))
+	// id = e.val;
+	// if (e.key.equals("gen"))
+	// gen = e.val;
+	// }
+	//
+	// if (TagGen.valueOf(gen) == TagGen.GEN2) {
+	// byte[] pass = { 0x00, 0x00, 0x00, 0x00 };
+	// tag = new C1G2Tag(ByteAndHexConvertingUtility.fromHexString(id),
+	// pass, pass.clone());
+	// } else {
+	// tag = new C1G1Tag(ByteAndHexConvertingUtility.fromHexString(id));
+	// }
+	// }
 
 	public long getTagEntitiyID() {
 		return tagEntitiyID;
@@ -229,4 +218,5 @@ public class RifidiTag implements Serializable {
 	public void setTagEntitiyID(long tagEntitiyID) {
 		this.tagEntitiyID = tagEntitiyID;
 	}
+
 }

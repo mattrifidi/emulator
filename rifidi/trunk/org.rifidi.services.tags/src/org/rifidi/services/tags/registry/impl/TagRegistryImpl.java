@@ -10,6 +10,8 @@
  */
 package org.rifidi.services.tags.registry.impl;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,51 +19,47 @@ import org.rifidi.services.tags.factory.TagCreationPattern;
 import org.rifidi.services.tags.factory.TagFactory;
 import org.rifidi.services.tags.impl.RifidiTag;
 import org.rifidi.services.tags.registry.ITagRegistry;
-import org.rifidi.services.tags.registry.ITagRegistryListener;
 import org.rifidi.services.tags.utils.RifidiTagMap;
 
 /**
+ * Service for handling all tags created in a Rifidi application.
+ * 
  * @author Kyle Neumeier - kyle@pramari.com
  * @author Andreas Huebner - andreas@prmari.com
- * 
+ * @author Jochen Mader - jochen@pramari.com
  */
 public class TagRegistryImpl implements ITagRegistry {
-
+	/** Tags by patterns. */
 	private RifidiTagMap tagMap;
-
+	/** Start value for tag ids. */
 	private long uniqueIDSeed;
-
+	private PropertyChangeSupport propertyChangeSupport;
 	/**
-	 * 
+	 * Constructor.
 	 */
 	public TagRegistryImpl() {
-		tagMap=new RifidiTagMap();
+		tagMap = new RifidiTagMap();
+		propertyChangeSupport =  new PropertyChangeSupport(this);
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.emulator.tags.service.TagRegistryService#addListener(org.rifidi.emulator.tags.service.TagRegistryListener)
-	 */
-	@Override
-	public void addListener(ITagRegistryListener listener) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.rifidi.emulator.tags.service.TagRegistryService#createTags(org.rifidi.emulator.tags.factory.TagCreationPattern)
+	 * @see
+	 * org.rifidi.emulator.tags.service.TagRegistryService#createTags(org.rifidi
+	 * .emulator.tags.factory.TagCreationPattern)
 	 */
 	@Override
 	public ArrayList<RifidiTag> createTags(TagCreationPattern tagCreationPattern) {
-		ArrayList<RifidiTag> newTags = TagFactory.generateTags(tagCreationPattern);
-		for(RifidiTag t : newTags){
+		List<RifidiTag> oldList=getTags();
+		ArrayList<RifidiTag> newTags = TagFactory
+				.generateTags(tagCreationPattern);
+		for (RifidiTag t : newTags) {
 			t.setTagEntitiyID(this.uniqueIDSeed);
 			uniqueIDSeed++;
 			this.tagMap.addTag(t);
 		}
+		propertyChangeSupport.firePropertyChange("tags", oldList, getTags());
 		return newTags;
 	}
 
@@ -82,50 +80,63 @@ public class TagRegistryImpl implements ITagRegistry {
 	 */
 	@Override
 	public void initialize() {
+		List<RifidiTag> oldList=getTags();
 		uniqueIDSeed = 1;
 		tagMap = new RifidiTagMap();
-
+		propertyChangeSupport.firePropertyChange("tags", oldList, getTags());
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.emulator.tags.service.TagRegistryService#initialize(java.util.List)
+	 * @see
+	 * org.rifidi.emulator.tags.service.TagRegistryService#initialize(java.util
+	 * .List)
 	 */
 	@Override
 	public void initialize(List<RifidiTag> tags) {
-		initialize();
+		uniqueIDSeed = 1;
+		tagMap = new RifidiTagMap();
+		List<RifidiTag> oldList=getTags();
 		for (RifidiTag t : tags) {
 			if (uniqueIDSeed < t.getTagEntitiyID()) {
 				uniqueIDSeed = t.getTagEntitiyID();
 			}
 			this.tagMap.addTag(t);
 		}
-
+		propertyChangeSupport.firePropertyChange("tags", oldList, getTags());
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.emulator.tags.service.TagRegistryService#remove(org.rifidi.services.tags.impl.RifidiTag)
+	 * @see
+	 * org.rifidi.emulator.tags.service.TagRegistryService#remove(org.rifidi
+	 * .services.tags.impl.RifidiTag)
 	 */
 	@Override
 	public void remove(RifidiTag tag) {
+		List<RifidiTag> oldList=getTags();
 		tagMap.removeTag(tag.getTagEntitiyID());
+		propertyChangeSupport.firePropertyChange("tags", oldList, getTags());
 
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.emulator.tags.service.TagRegistryService#remove(java.util.List)
+	 * @see
+	 * org.rifidi.emulator.tags.service.TagRegistryService#remove(java.util.
+	 * List)
 	 */
 	@Override
 	public void remove(List<RifidiTag> tags) {
+		List<RifidiTag> oldList=getTags();
 
 		for (RifidiTag t : tags) {
 			this.tagMap.removeTag(t.getTagEntitiyID());
 		}
+		propertyChangeSupport.firePropertyChange("tags", oldList, getTags());
 
 	}
 
@@ -136,19 +147,10 @@ public class TagRegistryImpl implements ITagRegistry {
 	 */
 	@Override
 	public void remove() {
+		List<RifidiTag> oldList=getTags();
 		this.tagMap.clear();
 
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.rifidi.emulator.tags.service.TagRegistryService#removeListener(org.rifidi.emulator.tags.service.TagRegistryListener)
-	 */
-	@Override
-	public void removeListener(ITagRegistryListener listener) {
-		// TODO Auto-generated method stub
-
+		propertyChangeSupport.firePropertyChange("tags", oldList, getTags());
 	}
 
 	/*
@@ -161,4 +163,21 @@ public class TagRegistryImpl implements ITagRegistry {
 		return tagMap.getTag(tagEntityID);
 	}
 
+	/* (non-Javadoc)
+	 * @see org.rifidi.services.tags.registry.ITagRegistry#addPropertyChangeListener(java.beans.PropertyChangeListener)
+	 */
+	@Override
+	public void addPropertyChangeListener(PropertyChangeListener listener) {
+		propertyChangeSupport.addPropertyChangeListener("tags", listener);
+	}
+
+	/* (non-Javadoc)
+	 * @see org.rifidi.services.tags.registry.ITagRegistry#removePropertyChangeListener(java.beans.PropertyChangeListener)
+	 */
+	@Override
+	public void removePropertyChangeListener(PropertyChangeListener listener) {
+		propertyChangeSupport.removePropertyChangeListener("tags", listener);
+	}
+	
+	
 }

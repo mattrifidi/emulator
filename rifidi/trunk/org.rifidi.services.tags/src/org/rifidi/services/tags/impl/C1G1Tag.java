@@ -11,6 +11,8 @@
  */
 package org.rifidi.services.tags.impl;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.rifidi.services.tags.IGen1Tag;
@@ -25,6 +27,7 @@ import org.rifidi.services.tags.exceptions.InvalidMemoryAccessException;
  *
  */
 @XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class C1G1Tag implements IGen1Tag{
 		
 	/**

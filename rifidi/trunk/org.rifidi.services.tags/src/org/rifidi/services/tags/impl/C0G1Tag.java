@@ -13,6 +13,8 @@ package org.rifidi.services.tags.impl;
 
 import java.math.BigInteger;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.apache.commons.logging.Log;
@@ -33,6 +35,7 @@ import org.rifidi.services.tags.exceptions.InvalidMemoryAccessException;
  *
  */
 @XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class C0G1Tag implements IGen1Tag{
 
 	/**

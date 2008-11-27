@@ -15,6 +15,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.naming.AuthenticationException;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.apache.commons.lang.NotImplementedException;
@@ -32,6 +34,7 @@ import org.rifidi.services.tags.exceptions.InvalidMemoryAccessException;
  * 
  */
 @XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class C1G2Tag implements IGen2Tag {
 
 

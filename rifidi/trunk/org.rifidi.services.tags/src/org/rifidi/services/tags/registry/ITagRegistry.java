@@ -10,6 +10,7 @@
  */
 package org.rifidi.services.tags.registry;
 
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,27 +74,27 @@ public interface ITagRegistry {
 	 * @return
 	 */
 	public List<RifidiTag> getTags();
-	
+
 	/**
 	 * Get a single tag using the tagEntityID
+	 * 
 	 * @param tagEntityID
 	 * @return
 	 */
 	public RifidiTag getTag(Long tagEntityID);
 
 	/**
-	 * This method adds a listener to the registry. the listener will be
-	 * notified of tag add, tag remove and tag change events.
+	 * Add a listener to listen for changes to the set of tags controlled by the
+	 * registry.
 	 * 
 	 * @param listener
 	 */
-	public void addListener(ITagRegistryListener listener);
+	public void addPropertyChangeListener(PropertyChangeListener listener);
 
 	/**
-	 * This method removes a listener.
+	 * Remove a listener form the registry.
 	 * 
 	 * @param listener
 	 */
-	public void removeListener(ITagRegistryListener listener);
-
+	public void removePropertyChangeListener(PropertyChangeListener listener);
 }
