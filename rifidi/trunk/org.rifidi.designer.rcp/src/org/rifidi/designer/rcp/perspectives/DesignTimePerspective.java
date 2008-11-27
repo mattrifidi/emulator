@@ -24,5 +24,6 @@ public class DesignTimePerspective implements IPerspectiveFactory {
 				IPageLayout.BOTTOM, 0.75f, View3D.ID);
 		bottomFolder.addView(IPageLayout.ID_PROP_SHEET);
 		bottomFolder.addView("org.eclipse.ui.console.ConsoleView");
+		bottomFolder.addView("org.rifidi.ui.ide.views.tagsview");
 	}
 }

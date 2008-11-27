@@ -11,7 +11,9 @@
 package org.rifidi.designer.rcp.views.entityview;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -43,12 +45,15 @@ import org.rifidi.designer.entities.SceneData;
 import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.databinding.ObservableTreeContentProvider;
 import org.rifidi.designer.entities.grouping.EntityGroup;
+import org.rifidi.designer.entities.interfaces.ITagContainer;
 import org.rifidi.designer.services.core.entities.EntitiesService;
 import org.rifidi.designer.services.core.entities.SceneDataChangedListener;
 import org.rifidi.designer.services.core.entities.SceneDataService;
 import org.rifidi.designer.services.core.selection.SelectionService;
 import org.rifidi.services.annotations.Inject;
 import org.rifidi.services.registry.ServiceRegistry;
+import org.rifidi.services.tags.impl.RifidiTag;
+import org.rifidi.services.tags.registry.ITagRegistry;
 
 /**
  * View that holds a tree viewer for the entities.
@@ -72,6 +77,8 @@ public class EntityView extends ViewPart implements ISelectionChangedListener,
 	private SelectionService selectionService;
 	/** Reference to the scene data service. */
 	private SceneDataService sceneDataService;
+	/** Reference to the tagss service. */
+	private ITagRegistry tagRegistry;
 
 	/**
 	 * Constructor.
@@ -157,6 +164,18 @@ public class EntityView extends ViewPart implements ISelectionChangedListener,
 					entitiesService.addEntitiesToGroup(
 							(EntityGroup) ((TreeItem) event.item).getData(),
 							(String) event.data);
+				} else if ((((TreeItem) event.item).getData() instanceof ITagContainer)
+						&& ((String) event.data).contains("RIFIDITAGS")) {
+					Set<RifidiTag> tags = new HashSet<RifidiTag>();
+					for (String token : ((String) event.data).split("\n")) {
+						try {
+							tags.add(tagRegistry.getTag(Long.parseLong(token)));
+						} catch (NumberFormatException nfe) {
+							logger.debug(nfe.toString());
+						}
+					}
+					((ITagContainer) ((TreeItem) event.item).getData())
+							.addTags(tags);
 				}
 			}
 
@@ -168,7 +187,8 @@ public class EntityView extends ViewPart implements ISelectionChangedListener,
 			 * .swt.dnd.DropTargetEvent)
 			 */
 			public void dropAccept(DropTargetEvent event) {
-				if (!(((TreeItem) event.item).getData() instanceof EntityGroup)) {
+				if ((((TreeItem) event.item).getData() instanceof ITagContainer)) {
+				} else if (!(((TreeItem) event.item).getData() instanceof EntityGroup)) {
 					event.detail = DND.ERROR_CANNOT_INIT_DROP;
 				}
 			}
@@ -321,4 +341,12 @@ public class EntityView extends ViewPart implements ISelectionChangedListener,
 		}
 	}
 
+	/**
+	 * @param tagRegistry
+	 *            the tagRegistry to set
+	 */
+	@Inject
+	public void setTagRegistry(ITagRegistry tagRegistry) {
+		this.tagRegistry = tagRegistry;
+	}
 }
