@@ -49,6 +49,7 @@ import org.rifidi.designer.entities.gpio.GPIPort;
 import org.rifidi.designer.entities.gpio.GPOPort;
 import org.rifidi.designer.entities.grouping.EntityGroup;
 import org.rifidi.designer.entities.interfaces.ChildEntity;
+import org.rifidi.designer.entities.interfaces.IProducer;
 import org.rifidi.designer.entities.interfaces.InternalEntity;
 import org.rifidi.designer.entities.interfaces.NeedsPhysics;
 import org.rifidi.designer.entities.interfaces.ParentEntity;
@@ -730,8 +731,12 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 			((NeedsPhysics) entity).setCollisionHandler(sceneData
 					.getCollisionHandler());
 		}
-
 		ServiceRegistry.getInstance().service(entity);
+		if (entity instanceof IProducer) {
+			List<Entity> prods = new ArrayList<Entity>();
+			prods.addAll(((IProducer) entity).getProducts());
+			sceneData.getProducedEntities().addEntities(prods);
+		}
 		// do custom initialization
 		try {
 			iinitService.init(entity);
@@ -1129,7 +1134,8 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	}
 
 	/**
-	 * @param tagRegistry the tagRegistry to set
+	 * @param tagRegistry
+	 *            the tagRegistry to set
 	 */
 	@Inject
 	public void setTagRegistry(ITagRegistry tagRegistry) {

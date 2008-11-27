@@ -13,6 +13,7 @@ package org.rifidi.designer.library.basemodels.boxproducer;
 import java.util.List;
 import java.util.Stack;
 
+import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.library.basemodels.cardbox.CardboxEntity;
 import org.rifidi.designer.services.core.entities.ProductService;
 import org.rifidi.services.tags.impl.RifidiTag;
@@ -37,7 +38,7 @@ public class BoxproducerEntityThread extends Thread {
 	/** Production intervall length. */
 	private Integer interval;
 	/** Produced entities. */
-	private List<CardboxEntity> products;
+	private List<VisualEntity> products;
 	/** Reference to the product service. */
 	private ProductService productService;
 	/** Stack for RifidiTags, shared with the entity. */
@@ -56,7 +57,7 @@ public class BoxproducerEntityThread extends Thread {
 	 * 
 	 */
 	public BoxproducerEntityThread(BoxproducerEntity entity,
-			ProductService productService, List<CardboxEntity> products,
+			ProductService productService, List<VisualEntity> products,
 			Stack<RifidiTag> tagStack) {
 		super();
 		this.entity = entity;
@@ -134,7 +135,7 @@ public class BoxproducerEntityThread extends Thread {
 	/**
 	 * @return the products
 	 */
-	public List<CardboxEntity> getProducts() {
+	public List<VisualEntity> getProducts() {
 		return products;
 	}
 

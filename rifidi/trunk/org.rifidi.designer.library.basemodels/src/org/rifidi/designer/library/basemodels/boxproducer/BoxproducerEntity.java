@@ -26,6 +26,7 @@ import org.rifidi.designer.entities.Entity;
 import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.annotations.Property;
 import org.rifidi.designer.entities.databinding.annotations.MonitoredProperties;
+import org.rifidi.designer.entities.interfaces.IProducer;
 import org.rifidi.designer.entities.interfaces.ITagContainer;
 import org.rifidi.designer.entities.interfaces.SceneControl;
 import org.rifidi.designer.entities.interfaces.Switch;
@@ -57,8 +58,8 @@ import com.jme.system.DisplaySystem;
  */
 @MonitoredProperties(names = { "name" })
 public class BoxproducerEntity extends VisualEntity implements SceneControl,
-		Switch, ITagContainer {
-	
+		Switch, ITagContainer, IProducer {
+
 	/** Logger for this class. */
 	private static Log logger = LogFactory.getLog(BoxproducerEntity.class);
 	/** Seconds per box. */
@@ -74,7 +75,7 @@ public class BoxproducerEntity extends VisualEntity implements SceneControl,
 	/** Reference to the product service. */
 	private ProductService productService;
 	/** List of products this producer created. */
-	private List<CardboxEntity> products = new ArrayList<CardboxEntity>();
+	private List<VisualEntity> products = new ArrayList<VisualEntity>();
 	/** Reference to the tag registry */
 	private ITagRegistry tagRegistry;
 	/** Stack shared with the boxproducer thread. */
@@ -182,6 +183,12 @@ public class BoxproducerEntity extends VisualEntity implements SceneControl,
 			model.attachChild(new Box("producer", new Vector3f(0, 12f, 0), 3f,
 					.5f, 3f));
 		}
+
+		Set<RifidiTag> temptags = new HashSet<RifidiTag>(tags);
+		for (VisualEntity vis : products) {
+			temptags.remove(((CardboxEntity) vis).getRifidiTag());
+		}
+		tagStack.addAll(temptags);
 		thread = new BoxproducerEntityThread(this, productService, products,
 				tagStack);
 		thread.setInterval((int) speed * 1000);
@@ -284,22 +291,6 @@ public class BoxproducerEntity extends VisualEntity implements SceneControl,
 	}
 
 	/**
-	 * @return the products
-	 */
-	public List<CardboxEntity> getProducts() {
-		return this.products;
-	}
-
-	/**
-	 * @param products
-	 *            the products to set
-	 */
-	@XmlIDREF
-	public void setProducts(List<CardboxEntity> products) {
-		this.products = products;
-	}
-
-	/**
 	 * @return the tagRegistry
 	 */
 	@XmlTransient
@@ -375,19 +366,19 @@ public class BoxproducerEntity extends VisualEntity implements SceneControl,
 		this.tags.removeAll(tags);
 		tagStack.removeAll(tags);
 	}
-	
+
 	@XmlTransient
-	public String getTagList(){
-		StringBuffer buf=new StringBuffer();
-		for(RifidiTag tag:tags){
-			buf.append(tag+"\n");
+	public String getTagList() {
+		StringBuffer buf = new StringBuffer();
+		for (RifidiTag tag : tags) {
+			buf.append(tag + "\n");
 		}
 		return buf.toString();
 	}
-	
+
 	@Property(displayName = "Tags", description = "tags assigned to this producer", readonly = true, unit = "")
-	public void setTagList(String tagList){
-		
+	public void setTagList(String tagList) {
+
 	}
 
 	/**
@@ -399,10 +390,33 @@ public class BoxproducerEntity extends VisualEntity implements SceneControl,
 	}
 
 	/**
-	 * @param tags the tags to set
+	 * @param tags
+	 *            the tags to set
 	 */
 	public void setTags(Set<RifidiTag> tags) {
 		this.tags = tags;
 	}
-	
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.rifidi.designer.entities.interfaces.IProducer#getProducts()
+	 */
+	@Override
+	@XmlIDREF
+	public List<VisualEntity> getProducts() {
+		return this.products;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.rifidi.designer.entities.interfaces.IProducer#setProducts(java.util
+	 * .List)
+	 */
+	@Override
+	public void setProducts(List<VisualEntity> entities) {
+		this.products = entities;
+	}
 }

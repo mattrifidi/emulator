@@ -15,6 +15,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -315,7 +316,7 @@ public class SceneData implements IAdaptable, IWorkbenchAdapter,
 	public List<String> getEntityNames() {
 		return entityNames;
 	}
-
+	
 	/**
 	 * @return the producedEntities
 	 */
