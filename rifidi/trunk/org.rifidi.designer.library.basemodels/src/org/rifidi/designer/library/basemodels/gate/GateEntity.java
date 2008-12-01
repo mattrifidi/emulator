@@ -272,6 +272,7 @@ public class GateEntity extends VisualEntity implements RifidiEntity, Switch,
 				UIReaderCallbackManager readerCallbackManager;
 				readerCallbackManager = new UIReaderCallbackManager(
 						readerModuleManagerInterface.getClientProxy());
+				reader.setReaderCallbackManager(readerCallbackManager);
 				reader.getReaderCallbackManager().addGPOPortListener(this);
 			} catch (Exception e) {
 				logger.error("Problem connecting to RMI: " + e);
