@@ -96,12 +96,12 @@
       <plugin id="org.rifidi.emulator.reader.llrp"/>
       <plugin id="org.rifidi.emulator.reader.symbol"/>
       <plugin id="org.rifidi.emulator.reader.thingmagic"/>
-      <plugin id="org.rifidi.jmeswt"/>
       <plugin id="org.rifidi.log4j.designer" fragment="true"/>
       <plugin id="org.rifidi.services"/>
       <plugin id="org.rifidi.services.initializer"/>
       <plugin id="org.rifidi.services.tags"/>
       <plugin id="org.rifidi.ui.common"/>
+      <plugin id="org.rifidi.views.tags"/>
    </plugins>
 
 </product>
