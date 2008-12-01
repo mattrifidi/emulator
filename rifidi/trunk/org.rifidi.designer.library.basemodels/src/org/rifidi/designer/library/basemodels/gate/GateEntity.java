@@ -10,8 +10,6 @@
  */
 package org.rifidi.designer.library.basemodels.gate;
 
-import gnu.cajo.utils.extra.TransparentItemProxy;
-
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
@@ -207,17 +205,17 @@ public class GateEntity extends VisualEntity implements RifidiEntity, Switch,
 			for (int count = 0; count < reader.getNumGPIs(); count++) {
 				GPIPort gpiPort = new GPIPort();
 				gpiPort.setNr(count);
-				gpiPort.setId(getEntityId()+"-gpi-"+count);
+				gpiPort.setId(getEntityId() + "-gpi-" + count);
 				gpiPorts.add(gpiPort);
 			}
 			for (int count = 0; count < reader.getNumGPOs(); count++) {
 				GPOPort gpoPort = new GPOPort();
 				gpoPort.setNr(count);
-				gpoPort.setId(getEntityId()+"-gpo-"+count);
+				gpoPort.setId(getEntityId() + "-gpo-" + count);
 				gpoPorts.add(gpoPort);
 			}
 		} catch (Exception e) {
-			logger.error("Problem while connecting to RMI: "+e);
+			logger.error("Problem while connecting to RMI: " + e);
 		}
 	}
 
@@ -269,14 +267,14 @@ public class GateEntity extends VisualEntity implements RifidiEntity, Switch,
 		}
 		try {
 			readerModuleManagerInterface = rmimanager.createReader(reader
-					.getGeneralReaderPropertyHolder());		
-			try {		
+					.getGeneralReaderPropertyHolder());
+			try {
 				UIReaderCallbackManager readerCallbackManager;
 				readerCallbackManager = new UIReaderCallbackManager(
 						readerModuleManagerInterface.getClientProxy());
 				reader.getReaderCallbackManager().addGPOPortListener(this);
 			} catch (Exception e) {
-				logger.error("Problem connecting to RMI: "+e);
+				logger.error("Problem connecting to RMI: " + e);
 			}
 		} catch (ClassNotFoundException e) {
 			logger.fatal("Unable to create reader: " + e);
@@ -293,7 +291,7 @@ public class GateEntity extends VisualEntity implements RifidiEntity, Switch,
 		} catch (IOException e) {
 			logger.fatal("Unable to create reader: " + e);
 		}
-		for(GPIPort gpiPort:gpiPorts){
+		for (GPIPort gpiPort : gpiPorts) {
 			gpiPort.addPropertyChangeListener("state", this);
 		}
 	}
@@ -470,6 +468,7 @@ public class GateEntity extends VisualEntity implements RifidiEntity, Switch,
 	public String getReaderType() {
 		return reader.getReaderType();
 	}
+
 	@Property(displayName = "Reader Connection", description = "connection details for the reader", readonly = true, unit = "")
 	public void setConnectionDetails(String readerDetails) {
 
@@ -541,38 +540,48 @@ public class GateEntity extends VisualEntity implements RifidiEntity, Switch,
 		return new ArrayList<GPOPort>(gpoPorts);
 	}
 
-	/* (non-Javadoc)
-	 * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @seejava.beans.PropertyChangeListener#propertyChange(java.beans.
+	 * PropertyChangeEvent)
 	 */
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-		GPIPort port=(GPIPort)evt.getSource();
-		if(State.HIGH.equals(port.getState())){
+		GPIPort port = (GPIPort) evt.getSource();
+		if (State.HIGH.equals(port.getState())) {
 			try {
 				readerModuleManagerInterface.setGPIHigh(port.getNr());
 			} catch (Exception e) {
-				logger.error("Unable to set port to high: "+e);
+				logger.error("Unable to set port to high: " + e);
 			}
-		}
-		else{
+		} else {
 			try {
 				readerModuleManagerInterface.setGPILow(port.getNr());
 			} catch (Exception e) {
-				logger.error("Unable to set port to low: "+e);
+				logger.error("Unable to set port to low: " + e);
 			}
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see org.rifidi.ui.common.reader.callback.GPOEventCallbackInterface#GPOPortSetHigh(int)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.rifidi.ui.common.reader.callback.GPOEventCallbackInterface#GPOPortSetHigh
+	 * (int)
 	 */
 	@Override
 	public void GPOPortSetHigh(int gpoPortNum) {
 		gpoPorts.get(gpoPortNum).setState(State.HIGH);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.rifidi.ui.common.reader.callback.GPOEventCallbackInterface#GPOPortSetLow(int)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.rifidi.ui.common.reader.callback.GPOEventCallbackInterface#GPOPortSetLow
+	 * (int)
 	 */
 	@Override
 	public void GPOPortSetLow(int gpoPortNum) {
