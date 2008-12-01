@@ -307,7 +307,7 @@ public class AntennaFieldEntity extends VisualEntity implements Switch,
 	@Override
 	public void fieldEntered(Entity entity) {
 		if (entity instanceof ITagged) {
-			if (((ITagged) entity.getUserData()).getRifidiTag() != null) {
+			if (((ITagged) entity).getRifidiTag() != null) {
 				// add action to the thread for processing
 				antennaFieldThread.addAction(new AntennaFieldAction(true,
 						((ITagged) entity.getUserData()).getRifidiTag()));
