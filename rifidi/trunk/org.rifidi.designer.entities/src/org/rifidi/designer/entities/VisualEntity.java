@@ -124,10 +124,6 @@ public abstract class VisualEntity extends Entity {
 	}
 
 	@Override
-	public void destroy() {
-	}
-
-	@Override
 	public void setEntityId(String entityId) {
 		super.setEntityId(entityId);
 		if(getNode()!=null){

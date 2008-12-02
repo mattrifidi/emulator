@@ -69,4 +69,13 @@ public class FloorPartEntity extends VisualEntity {
 
 	}
 
+	/* (non-Javadoc)
+	 * @see org.rifidi.designer.entities.Entity#destroy()
+	 */
+	@Override
+	public void destroy() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
