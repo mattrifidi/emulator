@@ -18,7 +18,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.rifidi.designer.entities.Entity;
 import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.databinding.annotations.MonitoredProperties;
-import org.rifidi.designer.entities.interfaces.NeedsPhysics;
+import org.rifidi.designer.entities.interfaces.INeedsPhysics;
 import org.rifidi.designer.services.core.entities.EntitiesService;
 import org.rifidi.designer.services.core.entities.FinderService;
 import org.rifidi.services.annotations.Inject;
@@ -47,7 +47,7 @@ import com.jmex.physics.material.Material;
  */
 @MonitoredProperties(names = { "name" })
 @XmlRootElement
-public class DestroyerEntity extends VisualEntity implements NeedsPhysics {
+public class DestroyerEntity extends VisualEntity implements INeedsPhysics {
 	/** Infrared trigger. */
 	private StaticPhysicsNode triggerSpace = null;
 	/** Reference to the physics space. */
@@ -157,7 +157,7 @@ public class DestroyerEntity extends VisualEntity implements NeedsPhysics {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * org.rifidi.designer.entities.interfaces.NeedsPhysics#setCollisionHandler
+	 * org.rifidi.designer.entities.interfaces.INeedsPhysics#setCollisionHandler
 	 * (com.jme.input.InputHandler)
 	 */
 	public void setCollisionHandler(InputHandler collisionHandler) {
@@ -168,7 +168,7 @@ public class DestroyerEntity extends VisualEntity implements NeedsPhysics {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * org.rifidi.designer.entities.interfaces.NeedsPhysics#setPhysicsSpace(
+	 * org.rifidi.designer.entities.interfaces.INeedsPhysics#setPhysicsSpace(
 	 * com.jmex.physics.PhysicsSpace)
 	 */
 	public void setPhysicsSpace(PhysicsSpace physicsSpace) {

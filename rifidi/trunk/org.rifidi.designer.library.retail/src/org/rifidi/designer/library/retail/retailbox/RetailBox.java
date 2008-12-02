@@ -16,7 +16,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import org.rifidi.designer.entities.VisualEntity;
-import org.rifidi.designer.entities.interfaces.NeedsPhysics;
+import org.rifidi.designer.entities.interfaces.INeedsPhysics;
 
 import com.jme.input.InputHandler;
 import com.jme.math.Vector3f;
@@ -31,7 +31,7 @@ import com.jmex.physics.PhysicsSpace;
  * @author Jochen Mader - jochen@pramari.com - Apr 3, 2008
  * 
  */
-public class RetailBox extends VisualEntity implements NeedsPhysics {
+public class RetailBox extends VisualEntity implements INeedsPhysics {
 	/** Reference to the current physics space. */
 	private PhysicsSpace physicsSpace;
 	/** Model for shared meshes */
@@ -94,7 +94,7 @@ public class RetailBox extends VisualEntity implements NeedsPhysics {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * org.rifidi.designer.entities.interfaces.NeedsPhysics#setCollisionHandler
+	 * org.rifidi.designer.entities.interfaces.INeedsPhysics#setCollisionHandler
 	 * (com.jme.input.InputHandler)
 	 */
 	@Override
@@ -105,7 +105,7 @@ public class RetailBox extends VisualEntity implements NeedsPhysics {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * org.rifidi.designer.entities.interfaces.NeedsPhysics#setPhysicsSpace(
+	 * org.rifidi.designer.entities.interfaces.INeedsPhysics#setPhysicsSpace(
 	 * com.jmex.physics.PhysicsSpace)
 	 */
 	@Override

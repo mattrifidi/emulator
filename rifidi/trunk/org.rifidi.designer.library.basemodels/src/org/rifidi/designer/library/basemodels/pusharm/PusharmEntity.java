@@ -27,14 +27,13 @@ import org.apache.commons.logging.LogFactory;
 import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.annotations.Property;
 import org.rifidi.designer.entities.databinding.annotations.MonitoredProperties;
-import org.rifidi.designer.entities.gpio.GPIO;
+import org.rifidi.designer.entities.gpio.IGPIO;
 import org.rifidi.designer.entities.gpio.GPIPort;
 import org.rifidi.designer.entities.gpio.GPOPort;
 import org.rifidi.designer.entities.gpio.GPOPort.State;
-import org.rifidi.designer.entities.interfaces.NeedsPhysics;
-import org.rifidi.designer.entities.interfaces.SceneControl;
-import org.rifidi.designer.entities.interfaces.Switch;
-import org.rifidi.designer.entities.interfaces.Trigger;
+import org.rifidi.designer.entities.interfaces.INeedsPhysics;
+import org.rifidi.designer.entities.interfaces.IHasSwitch;
+import org.rifidi.designer.entities.interfaces.ITrigger;
 
 import com.jme.animation.SpatialTransformer;
 import com.jme.bounding.BoundingBox;
@@ -70,8 +69,8 @@ import com.jmex.physics.material.Material;
  */
 @MonitoredProperties(names = { "name" })
 @XmlRootElement
-public class PusharmEntity extends VisualEntity implements SceneControl,
-		Switch, Trigger, NeedsPhysics, GPIO, PropertyChangeListener {
+public class PusharmEntity extends VisualEntity implements IHasSwitch, ITrigger,
+		INeedsPhysics, IGPIO, PropertyChangeListener {
 	/** Logger for this class. */
 	private static Log logger = LogFactory.getLog(PusharmEntity.class);
 	/** Speed of the pusharm. */
@@ -82,7 +81,7 @@ public class PusharmEntity extends VisualEntity implements SceneControl,
 	private Vector3f minpos = new Vector3f(-1.75f, 6, 0);
 	/** Extended position. */
 	private Vector3f maxpos = minpos.add(new Vector3f(-4, 0, 0));
-	/** Switch state. */
+	/** IHasSwitch state. */
 	private boolean running = false;
 	/** Paused state. */
 	private boolean paused = true;
@@ -334,7 +333,7 @@ public class PusharmEntity extends VisualEntity implements SceneControl,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.entities.interfaces.Switch#turnOn()
+	 * @see org.rifidi.designer.entities.interfaces.IHasSwitch#turnOn()
 	 */
 	public void turnOn() {
 		running = true;
@@ -344,11 +343,34 @@ public class PusharmEntity extends VisualEntity implements SceneControl,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.entities.interfaces.SceneControl#start()
+	 * @see org.rifidi.designer.entities.Entity#start()
 	 */
 	public void start() {
 		paused = false;
 		activate();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.rifidi.designer.entities.Entity#pause()
+	 */
+	public void pause() {
+		deactivate();
+		st.setActive(false);
+		paused = true;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.rifidi.designer.entities.Entity#reset()
+	 */
+	public void reset() {
+		// initController();
+		st.setCurTime(st.getMaxTime());
+		// armPhysics.setLocalTranslation(minpos);
+		paused = true;
 	}
 
 	/**
@@ -364,7 +386,8 @@ public class PusharmEntity extends VisualEntity implements SceneControl,
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * org.rifidi.designer.entities.interfaces.Trigger#trigger(java.lang.Object)
+	 * org.rifidi.designer.entities.interfaces.ITrigger#trigger(java.lang.Object
+	 * )
 	 */
 	public void trigger(Object source) {
 
@@ -378,30 +401,7 @@ public class PusharmEntity extends VisualEntity implements SceneControl,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.entities.interfaces.SceneControl#pause()
-	 */
-	public void pause() {
-		deactivate();
-		st.setActive(false);
-		paused = true;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.rifidi.designer.entities.interfaces.SceneControl#reset()
-	 */
-	public void reset() {
-		// initController();
-		st.setCurTime(st.getMaxTime());
-		// armPhysics.setLocalTranslation(minpos);
-		paused = true;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.rifidi.designer.entities.interfaces.Switch#turnOff()
+	 * @see org.rifidi.designer.entities.interfaces.IHasSwitch#turnOff()
 	 */
 	public void turnOff() {
 		deactivate();
@@ -421,7 +421,7 @@ public class PusharmEntity extends VisualEntity implements SceneControl,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.entities.interfaces.Switch#isRunning()
+	 * @see org.rifidi.designer.entities.interfaces.IHasSwitch#isRunning()
 	 */
 	public boolean isRunning() {
 		return running;
@@ -452,7 +452,7 @@ public class PusharmEntity extends VisualEntity implements SceneControl,
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * org.rifidi.designer.entities.interfaces.NeedsPhysics#setCollisionHandler
+	 * org.rifidi.designer.entities.interfaces.INeedsPhysics#setCollisionHandler
 	 * (com.jme.input.InputHandler)
 	 */
 	public void setCollisionHandler(InputHandler collisionHandler) {
@@ -463,7 +463,7 @@ public class PusharmEntity extends VisualEntity implements SceneControl,
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * org.rifidi.designer.entities.interfaces.NeedsPhysics#setPhysicsSpace(
+	 * org.rifidi.designer.entities.interfaces.INeedsPhysics#setPhysicsSpace(
 	 * com.jmex.physics.PhysicsSpace)
 	 */
 	public void setPhysicsSpace(PhysicsSpace physicsSpace) {
@@ -494,7 +494,7 @@ public class PusharmEntity extends VisualEntity implements SceneControl,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.entities.gpio.GPIO#getGPIPorts()
+	 * @see org.rifidi.designer.entities.gpio.IGPIO#getGPIPorts()
 	 */
 	@Override
 	public List<GPIPort> getGPIPorts() {
@@ -506,7 +506,7 @@ public class PusharmEntity extends VisualEntity implements SceneControl,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.entities.gpio.GPIO#getGPOPorts()
+	 * @see org.rifidi.designer.entities.gpio.IGPIO#getGPOPorts()
 	 */
 	@Override
 	public List<GPOPort> getGPOPorts() {
@@ -534,7 +534,8 @@ public class PusharmEntity extends VisualEntity implements SceneControl,
 	}
 
 	/**
-	 * @param port the port to set
+	 * @param port
+	 *            the port to set
 	 */
 	public void setPort(GPIPort port) {
 		this.port = port;

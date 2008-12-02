@@ -22,7 +22,7 @@ import java.util.concurrent.Callable;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.rifidi.designer.entities.VisualEntity;
-import org.rifidi.designer.entities.interfaces.VisualEntityHolder;
+import org.rifidi.designer.entities.interfaces.IContainer;
 import org.rifidi.designer.library.retail.Position;
 import org.rifidi.designer.library.retail.clothing.Clothing;
 import org.rifidi.services.annotations.Inject;
@@ -50,7 +50,7 @@ import com.jmex.physics.DynamicPhysicsNode;
  * @author Jochen Mader - jochen@pramari.com - Apr 3, 2008
  * 
  */
-public class ClothingRack extends VisualEntity implements VisualEntityHolder {
+public class ClothingRack extends VisualEntity implements IContainer {
 	/** Logger for this class. */
 	private static final Log logger = LogFactory.getLog(ClothingRack.class);
 	/** Container for entities inside the holder. */
@@ -217,7 +217,7 @@ public class ClothingRack extends VisualEntity implements VisualEntityHolder {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * org.rifidi.designer.entities.interfaces.VisualEntityHolder#addVisualEntity
+	 * org.rifidi.designer.entities.interfaces.IContainer#addVisualEntity
 	 * (org.rifidi.designer.entities.VisualEntity)
 	 */
 	@Override
@@ -267,7 +267,7 @@ public class ClothingRack extends VisualEntity implements VisualEntityHolder {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * org.rifidi.designer.entities.interfaces.VisualEntityHolder#getVisualEntity
+	 * org.rifidi.designer.entities.interfaces.IContainer#getVisualEntity
 	 * ()
 	 */
 	@Override
@@ -292,7 +292,7 @@ public class ClothingRack extends VisualEntity implements VisualEntityHolder {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * org.rifidi.designer.entities.interfaces.VisualEntityHolder#getVisualEntity
+	 * org.rifidi.designer.entities.interfaces.IContainer#getVisualEntity
 	 * (org.rifidi.designer.entities.VisualEntity)
 	 */
 	@Override
@@ -310,7 +310,7 @@ public class ClothingRack extends VisualEntity implements VisualEntityHolder {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * org.rifidi.designer.entities.interfaces.VisualEntityHolder#getVisualEntitySet
+	 * org.rifidi.designer.entities.interfaces.IContainer#getVisualEntitySet
 	 * ()
 	 */
 	@Override
@@ -321,7 +321,7 @@ public class ClothingRack extends VisualEntity implements VisualEntityHolder {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.entities.interfaces.VisualEntityHolder#isFull()
+	 * @see org.rifidi.designer.entities.interfaces.IContainer#isFull()
 	 */
 	@Override
 	public boolean isFull() {
@@ -332,7 +332,7 @@ public class ClothingRack extends VisualEntity implements VisualEntityHolder {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * org.rifidi.designer.entities.interfaces.VisualEntityHolder#accepts(org
+	 * org.rifidi.designer.entities.interfaces.IContainer#accepts(org
 	 * .rifidi.designer.entities.VisualEntity)
 	 */
 	@Override

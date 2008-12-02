@@ -12,7 +12,7 @@ package org.rifidi.designer.services.core.collision;
 
 import java.util.List;
 
-import org.rifidi.designer.entities.interfaces.Field;
+import org.rifidi.designer.entities.interfaces.IField;
 import org.rifidi.designer.services.core.entities.SceneDataChangedListener;
 
 /**
@@ -27,23 +27,23 @@ public interface FieldService extends SceneDataChangedListener {
 	/**
 	 * Register a field for monitoring it for collision.
 	 * 
-	 * @param field
+	 * @param iField
 	 */
-	public void registerField(Field field);
+	public void registerField(IField iField);
 
 	/**
 	 * Unregister a field.
 	 * 
-	 * @param field
+	 * @param iField
 	 */
-	public void unregisterField(Field field);
+	public void unregisterField(IField iField);
 
 	/**
 	 * Returns a list containing all currently registered fields.
 	 * 
 	 * @return
 	 */
-	public List<Field> getCurrentFieldsList();
+	public List<IField> getCurrentFieldsList();
 
 	/**
 	 * Blocking method that is called by the {@link UpdateThread} to check if an

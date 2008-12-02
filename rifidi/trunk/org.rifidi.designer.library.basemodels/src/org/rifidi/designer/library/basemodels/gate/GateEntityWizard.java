@@ -62,7 +62,7 @@ public class GateEntityWizard extends RifidiEntityWizard implements
 	 */
 	private NewReaderDynamicWizardPage newReaderDynamicWizardPage;
 	/**
-	 * GPIO wizard page.
+	 * IGPIO wizard page.
 	 */
 	public NewReaderGPIOWizardPage newReaderGPIOpage;
 
@@ -126,7 +126,7 @@ public class GateEntityWizard extends RifidiEntityWizard implements
 				reader, readerBlueprints);
 		addPage(newReaderDynamicWizardPage);
 
-		newReaderGPIOpage = new NewReaderGPIOWizardPage("GPIO info page",
+		newReaderGPIOpage = new NewReaderGPIOWizardPage("IGPIO info page",
 				reader, readerBlueprints);
 		addPage(newReaderGPIOpage);
 

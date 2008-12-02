@@ -45,7 +45,7 @@ import org.rifidi.designer.entities.SceneData;
 import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.databinding.ObservableTreeContentProvider;
 import org.rifidi.designer.entities.grouping.EntityGroup;
-import org.rifidi.designer.entities.interfaces.ITagContainer;
+import org.rifidi.designer.entities.rifidi.ITagContainer;
 import org.rifidi.designer.services.core.entities.EntitiesService;
 import org.rifidi.designer.services.core.entities.SceneDataChangedListener;
 import org.rifidi.designer.services.core.entities.SceneDataService;

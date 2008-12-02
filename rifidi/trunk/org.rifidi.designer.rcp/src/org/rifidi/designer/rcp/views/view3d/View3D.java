@@ -253,7 +253,7 @@ public class View3D extends ViewPart implements IPerspectiveListener,
 	}
 
 	/**
-	 * Switch the mode for the 3d view.
+	 * IHasSwitch the mode for the 3d view.
 	 * 
 	 * @param newMode
 	 */

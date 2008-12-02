@@ -42,7 +42,6 @@ import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 import org.lwjgl.opengl.EXTFramebufferObject;
-import org.lwjgl.opengl.GLContext;
 import org.monklypse.core.SWTDefaultImplementor;
 import org.monklypse.core.renderer.LWJGLOffscreenRenderer;
 import org.monklypse.core.renderer.OffscreenRenderer;
@@ -50,7 +49,6 @@ import org.rifidi.designer.entities.Entity;
 import org.rifidi.designer.entities.SceneData;
 import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.SceneData.Direction;
-import org.rifidi.designer.entities.interfaces.SceneControl;
 import org.rifidi.designer.rcp.GlobalProperties;
 import org.rifidi.designer.rcp.views.minimapview.MiniMapView;
 import org.rifidi.designer.services.core.camera.ZoomableLWJGLCamera;
@@ -246,7 +244,7 @@ public class DesignerGame extends SWTDefaultImplementor implements
 				Debugger.drawBounds(sceneData.getRootNode(), getRenderer());
 			}
 			getRenderer().displayBackBuffer();
-//			getCanvas().swapBuffers();
+			// getCanvas().swapBuffers();
 			if (miniMapView == null) {
 				miniMapView = (MiniMapView) PlatformUI.getWorkbench()
 						.getActiveWorkbenchWindow().getActivePage().findView(
@@ -654,9 +652,7 @@ public class DesignerGame extends SWTDefaultImplementor implements
 	public void pause() {
 		if (sceneData != null) {
 			for (Entity entity : sceneData.getSearchableEntities()) {
-				if (entity instanceof SceneControl) {
-					((SceneControl) entity).pause();
-				}
+				entity.pause();
 			}
 			worldState = WorldStates.Paused;
 		}
@@ -670,9 +666,7 @@ public class DesignerGame extends SWTDefaultImplementor implements
 	@Override
 	public void run() {
 		for (Entity entity : sceneData.getSearchableEntities()) {
-			if (entity instanceof SceneControl) {
-				((SceneControl) entity).start();
-			}
+			entity.start();
 		}
 		worldState = WorldStates.Running;
 	}
@@ -695,9 +689,7 @@ public class DesignerGame extends SWTDefaultImplementor implements
 				synchronized (sceneData.getSyncedEntities()) {
 					for (Entity entity : new ArrayList<Entity>(sceneData
 							.getSyncedEntities())) {
-						if (entity instanceof SceneControl) {
-							((SceneControl) entity).reset();
-						}
+						entity.reset();
 					}
 				}
 				return new Object();
@@ -879,16 +871,12 @@ public class DesignerGame extends SWTDefaultImplementor implements
 			if (hilit.getChild("hiliter") != null) {
 				Spatial hilite = (Spatial) hilit.getChild("hiliter");
 				hilite.clearRenderState(RenderState.RS_FRAGMENT_PROGRAM);
-				hilite.clearRenderState(
-						RenderState.RS_FRAGMENT_PROGRAM);
-				hilite.setRenderState(
-						fragmentPrograms.get(newcolor));
+				hilite.clearRenderState(RenderState.RS_FRAGMENT_PROGRAM);
+				hilite.setRenderState(fragmentPrograms.get(newcolor));
 			} else {
 				hilit.clearRenderState(RenderState.RS_FRAGMENT_PROGRAM);
-				hilit.clearRenderState(
-						RenderState.RS_FRAGMENT_PROGRAM);
-				hilit.setRenderState(
-						fragmentPrograms.get(newcolor));
+				hilit.clearRenderState(RenderState.RS_FRAGMENT_PROGRAM);
+				hilit.setRenderState(fragmentPrograms.get(newcolor));
 			}
 			hilit.updateRenderState();
 		}
@@ -915,23 +903,20 @@ public class DesignerGame extends SWTDefaultImplementor implements
 	 */
 	@Override
 	public void clearHighlights(Set<VisualEntity> hilight) {
-		for (ColorRGBA color : hilited.keySet()) {			
+		for (ColorRGBA color : hilited.keySet()) {
 			for (VisualEntity target : hilight) {
 				Node hilit = target.getBoundingNode();
-				hilit.setCullHint(
-						Spatial.CullHint.Always);
+				hilit.setCullHint(Spatial.CullHint.Always);
 				if (hilit.getChild("hiliter") != null) {
 					Spatial hilite = (Spatial) hilit.getChild("hiliter");
 					hilite.clearRenderState(RenderState.RS_FRAGMENT_PROGRAM);
-					hilite.clearRenderState(
-							RenderState.RS_FRAGMENT_PROGRAM);
+					hilite.clearRenderState(RenderState.RS_FRAGMENT_PROGRAM);
 				} else {
-					hilit.clearRenderState(
-							RenderState.RS_FRAGMENT_PROGRAM);
+					hilit.clearRenderState(RenderState.RS_FRAGMENT_PROGRAM);
 				}
 				hilit.updateRenderState();
 			}
-			
+
 			hilited.get(color).removeAll(hilight);
 		}
 	}

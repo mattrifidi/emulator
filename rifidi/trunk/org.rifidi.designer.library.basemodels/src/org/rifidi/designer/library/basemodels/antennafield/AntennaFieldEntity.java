@@ -26,11 +26,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.rifidi.designer.entities.Entity;
 import org.rifidi.designer.entities.VisualEntity;
-import org.rifidi.designer.entities.interfaces.ChildEntity;
-import org.rifidi.designer.entities.interfaces.Field;
-import org.rifidi.designer.entities.interfaces.ITagged;
-import org.rifidi.designer.entities.interfaces.NeedsPhysics;
-import org.rifidi.designer.entities.interfaces.Switch;
+import org.rifidi.designer.entities.grouping.IChildEntity;
+import org.rifidi.designer.entities.interfaces.IField;
+import org.rifidi.designer.entities.interfaces.INeedsPhysics;
+import org.rifidi.designer.entities.interfaces.IHasSwitch;
+import org.rifidi.designer.entities.rifidi.ITagged;
 import org.rifidi.designer.library.basemodels.gate.GateEntity;
 import org.rifidi.designer.services.core.collision.FieldService;
 import org.rifidi.designer.services.core.events.EventsService;
@@ -67,8 +67,8 @@ import com.jmex.physics.material.Material;
  * @author Dan West - 'Phoenix' - dan@pramari.com
  * @author Jochen Mader
  */
-public class AntennaFieldEntity extends VisualEntity implements Switch,
-		NeedsPhysics, Field, ChildEntity {
+public class AntennaFieldEntity extends VisualEntity implements IHasSwitch,
+		INeedsPhysics, IField, IChildEntity {
 	/** Logger for this class. */
 	private static Log logger = LogFactory.getLog(AntennaFieldEntity.class);
 	/**
@@ -230,7 +230,7 @@ public class AntennaFieldEntity extends VisualEntity implements Switch,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.entities.interfaces.Switch#isRunning()
+	 * @see org.rifidi.designer.entities.interfaces.IHasSwitch#isRunning()
 	 */
 	public boolean isRunning() {
 		return running;
@@ -239,7 +239,7 @@ public class AntennaFieldEntity extends VisualEntity implements Switch,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.entities.interfaces.Switch#turnOn()
+	 * @see org.rifidi.designer.entities.interfaces.IHasSwitch#turnOn()
 	 */
 	public void turnOn() {
 		if (!running == true) {
@@ -271,7 +271,7 @@ public class AntennaFieldEntity extends VisualEntity implements Switch,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.entities.interfaces.Switch#turnOff()
+	 * @see org.rifidi.designer.entities.interfaces.IHasSwitch#turnOff()
 	 */
 	public void turnOff() {
 		if (!running == false) {
@@ -301,7 +301,7 @@ public class AntennaFieldEntity extends VisualEntity implements Switch,
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * org.rifidi.designer.entities.interfaces.Field#fieldEntered(org.rifidi
+	 * org.rifidi.designer.entities.interfaces.IField#fieldEntered(org.rifidi
 	 * .designer.entities.Entity)
 	 */
 	@Override
@@ -324,7 +324,7 @@ public class AntennaFieldEntity extends VisualEntity implements Switch,
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * org.rifidi.designer.entities.interfaces.Field#fieldLeft(org.rifidi.designer
+	 * org.rifidi.designer.entities.interfaces.IField#fieldLeft(org.rifidi.designer
 	 * .entities.Entity)
 	 */
 	@Override
@@ -375,7 +375,7 @@ public class AntennaFieldEntity extends VisualEntity implements Switch,
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * org.rifidi.designer.entities.interfaces.NeedsPhysics#setCollisionHandler
+	 * org.rifidi.designer.entities.interfaces.INeedsPhysics#setCollisionHandler
 	 * (com.jme.input.InputHandler)
 	 */
 	public void setCollisionHandler(InputHandler collisionHandler) {
@@ -385,7 +385,7 @@ public class AntennaFieldEntity extends VisualEntity implements Switch,
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * org.rifidi.designer.entities.interfaces.NeedsPhysics#setPhysicsSpace(
+	 * org.rifidi.designer.entities.interfaces.INeedsPhysics#setPhysicsSpace(
 	 * com.jmex.physics.PhysicsSpace)
 	 */
 	public void setPhysicsSpace(PhysicsSpace physicsSpace) {

@@ -22,7 +22,7 @@ import org.apache.commons.logging.LogFactory;
 import org.rifidi.designer.entities.Entity;
 import org.rifidi.designer.entities.SceneData;
 import org.rifidi.designer.entities.VisualEntity;
-import org.rifidi.designer.entities.interfaces.Field;
+import org.rifidi.designer.entities.interfaces.IField;
 import org.rifidi.designer.services.core.entities.FinderService;
 import org.rifidi.designer.services.core.entities.SceneDataService;
 import org.rifidi.services.annotations.Inject;
@@ -36,7 +36,7 @@ import com.jmex.physics.PhysicsNode;
 import com.jmex.physics.contact.ContactInfo;
 
 /**
- * Standard implementation of the field service.
+ * Standard implementation of the iField service.
  * 
  * @author Jochen Mader - jochen@pramari.com - Feb 4, 2008
  * 
@@ -47,13 +47,13 @@ public class FieldServiceImpl implements FieldService {
 	 */
 	private static Log logger = LogFactory.getLog(FieldServiceImpl.class);
 	/**
-	 * Map of currently registered fields and their associated handlers..
+	 * Map of currently registered iFields and their associated handlers..
 	 */
-	private Map<Field, InputAction> fields;
+	private Map<IField, InputAction> iFields;
 	/**
-	 * This map maps entities to the fields they are colliding with.
+	 * This map maps entities to the iFields they are colliding with.
 	 */
-	private Map<Field, Set<VisualEntity>> collisions;
+	private Map<IField, Set<VisualEntity>> collisions;
 	/**
 	 * Currently loaded scene.
 	 */
@@ -68,25 +68,25 @@ public class FieldServiceImpl implements FieldService {
 	 */
 	public FieldServiceImpl() {
 		logger.debug("FieldService created");
-		fields = new HashMap<Field, InputAction>();
-		collisions = new HashMap<Field, Set<VisualEntity>>();
+		iFields = new HashMap<IField, InputAction>();
+		collisions = new HashMap<IField, Set<VisualEntity>>();
 		ServiceRegistry.getInstance().service(this);
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.services.registry.core.collision.FieldService#registerField(org.rifidi.designer.entities.interfaces.Field)
+	 * @see org.rifidi.services.registry.core.collision.FieldService#registerField(org.rifidi.designer.entities.interfaces.IField)
 	 */
 	@Override
-	public void registerField(Field field) {
-		fields.put(field, new ColliderInputAction(field));
+	public void registerField(IField iField) {
+		iFields.put(iField, new ColliderInputAction(iField));
 		// Might be that we are loading a new scene data and entities are
 		// registering themselves, defer init until the scenedata is set.
 		if (sceneData != null) {
-			SyntheticButton intersect = ((PhysicsNode) ((VisualEntity) field)
+			SyntheticButton intersect = ((PhysicsNode) ((VisualEntity) iField)
 					.getNode()).getCollisionEventHandler();
-			sceneData.getCollisionHandler().addAction(fields.get(field),
+			sceneData.getCollisionHandler().addAction(iFields.get(iField),
 					intersect, false);
 		}
 	}
@@ -94,12 +94,12 @@ public class FieldServiceImpl implements FieldService {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.services.registry.core.collision.FieldService#unregisterField(org.rifidi.designer.entities.interfaces.Field)
+	 * @see org.rifidi.services.registry.core.collision.FieldService#unregisterField(org.rifidi.designer.entities.interfaces.IField)
 	 */
 	@Override
-	public void unregisterField(Field field) {
-		sceneData.getCollisionHandler().removeAction(fields.get(field));
-		fields.remove(field);
+	public void unregisterField(IField iField) {
+		sceneData.getCollisionHandler().removeAction(iFields.get(iField));
+		iFields.remove(iField);
 	}
 
 	/*
@@ -108,8 +108,8 @@ public class FieldServiceImpl implements FieldService {
 	 * @see org.rifidi.services.registry.core.collision.FieldService#getCurrentFieldsList()
 	 */
 	@Override
-	public List<Field> getCurrentFieldsList() {
-		return new ArrayList<Field>(fields.keySet());
+	public List<IField> getCurrentFieldsList() {
+		return new ArrayList<IField>(iFields.keySet());
 	}
 
 	/*
@@ -119,18 +119,18 @@ public class FieldServiceImpl implements FieldService {
 	 */
 	@Override
 	public void checkFields() {
-		for (Field field : collisions.keySet()) {
-			Set<VisualEntity> entities = collisions.get(field);
+		for (IField iField : collisions.keySet()) {
+			Set<VisualEntity> entities = collisions.get(iField);
 			entities.remove(null);
 			List<VisualEntity> entitiesFixed = new ArrayList<VisualEntity>(
 					entities);
 			for (VisualEntity ent : entitiesFixed) {
 				if (ent != null
 						&& !sceneData.getPhysicsSpace().collide(
-								(PhysicsNode) ((VisualEntity) field).getNode(),
+								(PhysicsNode) ((VisualEntity) iField).getNode(),
 								(PhysicsNode) ent.getNode())) {
 					entities.remove(ent);
-					field.fieldLeft(ent);
+					iField.fieldLeft(ent);
 				}
 			}
 		}
@@ -143,7 +143,7 @@ public class FieldServiceImpl implements FieldService {
 	 */
 	@Override
 	public void destroySceneData(SceneData sceneData) {
-		fields.clear();
+		iFields.clear();
 		collisions.clear();
 	}
 
@@ -155,10 +155,10 @@ public class FieldServiceImpl implements FieldService {
 	@Override
 	public void sceneDataChanged(SceneData sceneData) {
 		this.sceneData = sceneData;
-		for (Field field : fields.keySet()) {
-			SyntheticButton intersect = ((PhysicsNode) ((VisualEntity) field)
+		for (IField iField : iFields.keySet()) {
+			SyntheticButton intersect = ((PhysicsNode) ((VisualEntity) iField)
 					.getNode()).getCollisionEventHandler();
-			sceneData.getCollisionHandler().addAction(fields.get(field),
+			sceneData.getCollisionHandler().addAction(iFields.get(iField),
 					intersect, false);
 		}
 	}
@@ -166,20 +166,20 @@ public class FieldServiceImpl implements FieldService {
 	/**
 	 * If a collision occured this method gets executed.
 	 * 
-	 * @param field
-	 *            the field the collision occured in
+	 * @param iField
+	 *            the iField the collision occured in
 	 * @param collider
 	 *            the colliding entity
 	 */
-	private void collisionDetected(Field field, Node collider) {
-		if (!collisions.containsKey(field)) {
-			collisions.put(field, new HashSet<VisualEntity>());
+	private void collisionDetected(IField iField, Node collider) {
+		if (!collisions.containsKey(iField)) {
+			collisions.put(iField, new HashSet<VisualEntity>());
 		}
 		Entity coll = finderService.getVisualEntityByNode(collider);
 		if (coll != null
-				&& !collisions.get(field).contains((VisualEntity) coll)) {
-			collisions.get(field).add((VisualEntity) coll);
-			field.fieldEntered(coll);
+				&& !collisions.get(iField).contains((VisualEntity) coll)) {
+			collisions.get(iField).add((VisualEntity) coll);
+			iField.fieldEntered(coll);
 		}
 	}
 
@@ -227,19 +227,19 @@ public class FieldServiceImpl implements FieldService {
 	 */
 	private class ColliderInputAction extends InputAction {
 		/**
-		 * The field this action is bound to.
+		 * The iField this action is bound to.
 		 */
-		private Field field;
+		private IField iField;
 
 		/**
 		 * Constructor
 		 * 
-		 * @param field
-		 *            the Field this action is bound to
+		 * @param iField
+		 *            the IField this action is bound to
 		 */
-		public ColliderInputAction(Field field) {
+		public ColliderInputAction(IField iField) {
 			super();
-			this.field = field;
+			this.iField = iField;
 		}
 
 		/*
@@ -250,10 +250,10 @@ public class FieldServiceImpl implements FieldService {
 		@Override
 		public void performAction(InputActionEvent evt) {
 			Node collider = ((ContactInfo) evt.getTriggerData()).getNode1()
-					.equals(((VisualEntity) field).getNode()) ? ((ContactInfo) evt
+					.equals(((VisualEntity) iField).getNode()) ? ((ContactInfo) evt
 					.getTriggerData()).getNode2()
 					: ((ContactInfo) evt.getTriggerData()).getNode1();
-			collisionDetected(field, collider);
+			collisionDetected(iField, collider);
 		}
 
 	}

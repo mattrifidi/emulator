@@ -16,7 +16,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import org.rifidi.designer.entities.VisualEntity;
-import org.rifidi.designer.entities.interfaces.NeedsPhysics;
+import org.rifidi.designer.entities.interfaces.INeedsPhysics;
 
 import com.jme.input.InputHandler;
 import com.jme.math.Quaternion;
@@ -34,7 +34,7 @@ import com.jmex.physics.PhysicsSpace;
  * @author Jochen Mader - jochen@pramari.com - Apr 3, 2008
  * 
  */
-public class Clothing extends VisualEntity implements NeedsPhysics {
+public class Clothing extends VisualEntity implements INeedsPhysics {
 	/** Reference to the current physics space. */
 	private PhysicsSpace physicsSpace;
 	/** Model for shared meshes */
@@ -109,7 +109,7 @@ public class Clothing extends VisualEntity implements NeedsPhysics {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * org.rifidi.designer.entities.interfaces.NeedsPhysics#setCollisionHandler
+	 * org.rifidi.designer.entities.interfaces.INeedsPhysics#setCollisionHandler
 	 * (com.jme.input.InputHandler)
 	 */
 	@Override
@@ -120,7 +120,7 @@ public class Clothing extends VisualEntity implements NeedsPhysics {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * org.rifidi.designer.entities.interfaces.NeedsPhysics#setPhysicsSpace(
+	 * org.rifidi.designer.entities.interfaces.INeedsPhysics#setPhysicsSpace(
 	 * com.jmex.physics.PhysicsSpace)
 	 */
 	@Override

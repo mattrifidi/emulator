@@ -15,7 +15,7 @@ import java.util.Collection;
 import org.eclipse.core.expressions.PropertyTester;
 import org.rifidi.designer.entities.Entity;
 import org.rifidi.designer.entities.grouping.EntityGroup;
-import org.rifidi.designer.entities.interfaces.Switch;
+import org.rifidi.designer.entities.interfaces.IHasSwitch;
 import org.rifidi.designer.services.core.entities.FinderService;
 import org.rifidi.services.annotations.Inject;
 import org.rifidi.services.registry.ServiceRegistry;
@@ -52,8 +52,8 @@ public class EntityPropertyTester extends PropertyTester {
 			Object expectedValue) {
 		if ("running".equals(property)) {
 			for (Object test : (Collection) receiver) {
-				if (test instanceof Switch) {
-					return ((Switch) test).isRunning();
+				if (test instanceof IHasSwitch) {
+					return ((IHasSwitch) test).isRunning();
 				} else if (test instanceof EntityGroup) {
 					return true;
 				}

@@ -22,9 +22,8 @@ import org.apache.commons.logging.LogFactory;
 import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.annotations.Property;
 import org.rifidi.designer.entities.databinding.annotations.MonitoredProperties;
-import org.rifidi.designer.entities.interfaces.NeedsPhysics;
-import org.rifidi.designer.entities.interfaces.SceneControl;
-import org.rifidi.designer.entities.interfaces.Switch;
+import org.rifidi.designer.entities.interfaces.INeedsPhysics;
+import org.rifidi.designer.entities.interfaces.IHasSwitch;
 
 import com.jme.bounding.BoundingBox;
 import com.jme.image.Texture.MagnificationFilter;
@@ -60,13 +59,13 @@ import com.jmex.physics.material.Material;
  */
 @XmlRootElement
 @MonitoredProperties(names = { "name" })
-public class ConveyorEntity extends VisualEntity implements Switch,
-		NeedsPhysics, SceneControl {
+public class ConveyorEntity extends VisualEntity implements IHasSwitch,
+		INeedsPhysics {
 	/** Logger for this class. */
 	private static Log logger = LogFactory.getLog(ConveyorEntity.class);
 	/** Alphastate for the directional pointer. */
 	private BlendState basicTrans = null;
-	/** Switch status on/off. */
+	/** IHasSwitch status on/off. */
 	private boolean active = false;
 	/** Speed in feet per second. */
 	private float speed = 0;
@@ -263,7 +262,7 @@ public class ConveyorEntity extends VisualEntity implements Switch,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.entities.interfaces.Switch#turnOff()
+	 * @see org.rifidi.designer.entities.interfaces.IHasSwitch#turnOff()
 	 */
 	@Override
 	public void turnOff() {
@@ -277,7 +276,7 @@ public class ConveyorEntity extends VisualEntity implements Switch,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.entities.interfaces.Switch#turnOn()
+	 * @see org.rifidi.designer.entities.interfaces.IHasSwitch#turnOn()
 	 */
 	@Override
 	public void turnOn() {
@@ -291,7 +290,7 @@ public class ConveyorEntity extends VisualEntity implements Switch,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.entities.interfaces.Switch#isRunning()
+	 * @see org.rifidi.designer.entities.interfaces.IHasSwitch#isRunning()
 	 */
 	public boolean isRunning() {
 		return active;
@@ -312,7 +311,7 @@ public class ConveyorEntity extends VisualEntity implements Switch,
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * org.rifidi.designer.entities.interfaces.NeedsPhysics#setCollisionHandler
+	 * org.rifidi.designer.entities.interfaces.INeedsPhysics#setCollisionHandler
 	 * (com.jme.input.InputHandler)
 	 */
 	public void setCollisionHandler(InputHandler collisionHandler) {
@@ -322,7 +321,7 @@ public class ConveyorEntity extends VisualEntity implements Switch,
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * org.rifidi.designer.entities.interfaces.NeedsPhysics#setPhysicsSpace(
+	 * org.rifidi.designer.entities.interfaces.INeedsPhysics#setPhysicsSpace(
 	 * com.jmex.physics.PhysicsSpace)
 	 */
 	public void setPhysicsSpace(PhysicsSpace physicsSpace) {
@@ -354,7 +353,7 @@ public class ConveyorEntity extends VisualEntity implements Switch,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.entities.interfaces.SceneControl#pause()
+	 * @see org.rifidi.designer.entities.Entity#pause()
 	 */
 	@Override
 	public void pause() {
@@ -364,7 +363,7 @@ public class ConveyorEntity extends VisualEntity implements Switch,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.entities.interfaces.SceneControl#reset()
+	 * @see org.rifidi.designer.entities.Entity#reset()
 	 */
 	@Override
 	public void reset() {
@@ -375,7 +374,7 @@ public class ConveyorEntity extends VisualEntity implements Switch,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.entities.interfaces.SceneControl#start()
+	 * @see org.rifidi.designer.entities.Entity#start()
 	 */
 	@Override
 	public void start() {

@@ -22,8 +22,8 @@ import org.apache.commons.logging.LogFactory;
 import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.annotations.Property;
 import org.rifidi.designer.entities.databinding.annotations.MonitoredProperties;
-import org.rifidi.designer.entities.interfaces.ITagged;
-import org.rifidi.designer.entities.interfaces.NeedsPhysics;
+import org.rifidi.designer.entities.interfaces.INeedsPhysics;
+import org.rifidi.designer.entities.rifidi.ITagged;
 import org.rifidi.services.tags.impl.RifidiTag;
 
 import com.jme.bounding.BoundingBox;
@@ -45,7 +45,7 @@ import com.jmex.physics.PhysicsSpace;
  * 
  */
 @MonitoredProperties(names = { "name" })
-public class CardboxEntity extends VisualEntity implements NeedsPhysics,
+public class CardboxEntity extends VisualEntity implements INeedsPhysics,
 		ITagged {
 	/** logger for this class. */
 	private static Log logger = LogFactory.getLog(CardboxEntity.class);
@@ -171,7 +171,7 @@ public class CardboxEntity extends VisualEntity implements NeedsPhysics,
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * org.rifidi.designer.entities.interfaces.NeedsPhysics#setCollisionHandler
+	 * org.rifidi.designer.entities.interfaces.INeedsPhysics#setCollisionHandler
 	 * (com.jme.input.InputHandler)
 	 */
 	public void setCollisionHandler(InputHandler collisionHandler) {
@@ -181,7 +181,7 @@ public class CardboxEntity extends VisualEntity implements NeedsPhysics,
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * org.rifidi.designer.entities.interfaces.NeedsPhysics#setPhysicsSpace(
+	 * org.rifidi.designer.entities.interfaces.INeedsPhysics#setPhysicsSpace(
 	 * com.jmex.physics.PhysicsSpace)
 	 */
 	public void setPhysicsSpace(PhysicsSpace physicsSpace) {

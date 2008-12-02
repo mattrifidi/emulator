@@ -19,14 +19,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.rifidi.designer.entities.Entity;
 import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.databinding.annotations.MonitoredProperties;
-import org.rifidi.designer.entities.gpio.GPIO;
 import org.rifidi.designer.entities.gpio.GPIPort;
 import org.rifidi.designer.entities.gpio.GPOPort;
+import org.rifidi.designer.entities.gpio.IGPIO;
 import org.rifidi.designer.entities.gpio.GPOPort.State;
-import org.rifidi.designer.entities.interfaces.Field;
-import org.rifidi.designer.entities.interfaces.NeedsPhysics;
-import org.rifidi.designer.entities.interfaces.SceneControl;
-import org.rifidi.designer.entities.interfaces.Switch;
+import org.rifidi.designer.entities.interfaces.IField;
+import org.rifidi.designer.entities.interfaces.INeedsPhysics;
+import org.rifidi.designer.entities.interfaces.IHasSwitch;
 import org.rifidi.designer.services.core.collision.FieldService;
 import org.rifidi.services.annotations.Inject;
 
@@ -48,25 +47,22 @@ import com.jmex.physics.StaticPhysicsNode;
 import com.jmex.physics.material.Material;
 
 /**
+ * This is a simple infrared field. It has one GPO to trigger other entites if
+ * something is passing through.
+ * 
  * @author Jochen Mader Oct 8, 2007
  * @author Dan West
  */
 @MonitoredProperties(names = { "name" })
 @XmlRootElement
-public class InfraredEntity extends VisualEntity implements SceneControl,
-		Switch, NeedsPhysics, GPIO, Field {
+public class InfraredEntity extends VisualEntity implements IHasSwitch,
+		INeedsPhysics, IGPIO, IField {
 	/** Reference to the current physicsspace */
 	private PhysicsSpace physicsSpace;
-	/** Reference to the collision handler. */
-	private InputHandler collisionHandler;
 	/** Running state of the entity. */
 	private boolean running;
-	/** Empty bounding node. */
-	private Node bounding;
 	/** Output port of the entity */
 	private GPOPort port;
-	/** Last collider. */
-	private Node lastCollider;
 	/** Reference to the field service. */
 	private FieldService fieldService;
 
@@ -144,7 +140,7 @@ public class InfraredEntity extends VisualEntity implements SceneControl,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.entities.interfaces.Switch#turnOn()
+	 * @see org.rifidi.designer.entities.interfaces.IHasSwitch#turnOn()
 	 */
 	public void turnOn() {
 		running = true;
@@ -153,31 +149,7 @@ public class InfraredEntity extends VisualEntity implements SceneControl,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.entities.interfaces.SceneControl#start()
-	 */
-	public void start() {
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.rifidi.designer.entities.interfaces.SceneControl#pause()
-	 */
-	public void pause() {
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.rifidi.designer.entities.interfaces.SceneControl#reset()
-	 */
-	public void reset() {
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.rifidi.designer.entities.interfaces.Switch#turnOff()
+	 * @see org.rifidi.designer.entities.interfaces.IHasSwitch#turnOff()
 	 */
 	public void turnOff() {
 		running = false;
@@ -198,18 +170,17 @@ public class InfraredEntity extends VisualEntity implements SceneControl,
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * org.rifidi.designer.entities.interfaces.NeedsPhysics#setCollisionHandler
+	 * org.rifidi.designer.entities.interfaces.INeedsPhysics#setCollisionHandler
 	 * (com.jme.input.InputHandler)
 	 */
 	public void setCollisionHandler(InputHandler collisionHandler) {
-		this.collisionHandler = collisionHandler;
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * org.rifidi.designer.entities.interfaces.NeedsPhysics#setPhysicsSpace(
+	 * org.rifidi.designer.entities.interfaces.INeedsPhysics#setPhysicsSpace(
 	 * com.jmex.physics.PhysicsSpace)
 	 */
 	public void setPhysicsSpace(PhysicsSpace physicsSpace) {
@@ -257,7 +228,7 @@ public class InfraredEntity extends VisualEntity implements SceneControl,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.entities.gpio.GPIO#getGPIPorts()
+	 * @see org.rifidi.designer.entities.gpio.IGPIO#getGPIPorts()
 	 */
 	@Override
 	public List<GPIPort> getGPIPorts() {
@@ -267,7 +238,7 @@ public class InfraredEntity extends VisualEntity implements SceneControl,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.entities.gpio.GPIO#getGPOPorts()
+	 * @see org.rifidi.designer.entities.gpio.IGPIO#getGPOPorts()
 	 */
 	@Override
 	public List<GPOPort> getGPOPorts() {

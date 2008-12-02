@@ -23,7 +23,7 @@ import org.eclipse.swt.opengl.GLCanvas;
 import org.eclipse.swt.widgets.Display;
 import org.monklypse.core.JMECanvasImplementor2;
 import org.rifidi.designer.entities.VisualEntity;
-import org.rifidi.designer.entities.interfaces.VisualEntityHolder;
+import org.rifidi.designer.entities.interfaces.IContainer;
 import org.rifidi.designer.rcp.game.DesignerGame;
 import org.rifidi.designer.rcp.views.view3d.View3D;
 import org.rifidi.designer.services.core.camera.ZoomableLWJGLCamera;
@@ -156,10 +156,10 @@ public class AllAxisMouseMoveEntityListener implements MouseListener,
 				pickedEntity = finderService.getVisualEntityByNode(node);
 			}
 		}
-		if (pickedEntity != null && pickedEntity instanceof VisualEntityHolder) {
+		if (pickedEntity != null && pickedEntity instanceof IContainer) {
 			lastHit = (Vector3f) pickedEntity.getNode().getWorldTranslation()
 					.clone();
-			pickedEntity = ((VisualEntityHolder) pickedEntity)
+			pickedEntity = ((IContainer) pickedEntity)
 					.getVisualEntity();
 			if (pickedEntity != null) {
 				implementor.update(new Callable<Object>() {
@@ -232,11 +232,11 @@ public class AllAxisMouseMoveEntityListener implements MouseListener,
 			// check if the picked entity collides with anything
 			if (pickedEntity != null && colls.size() != 0) {
 				for (VisualEntity ent : colls) {
-					if (ent instanceof VisualEntityHolder) {
+					if (ent instanceof IContainer) {
 						// if it vollides with an EntityHolder then try dropping
 						// it into it
-						if (((VisualEntityHolder) ent).accepts(pickedEntity)) {
-							((VisualEntityHolder) ent)
+						if (((IContainer) ent).accepts(pickedEntity)) {
+							((IContainer) ent)
 									.addVisualEntity(pickedEntity);
 							pickedEntity = null;
 						}

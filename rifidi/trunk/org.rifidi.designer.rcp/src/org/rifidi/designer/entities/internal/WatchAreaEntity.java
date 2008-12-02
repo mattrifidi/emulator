@@ -18,11 +18,10 @@ import org.eclipse.ui.model.IWorkbenchAdapter;
 import org.rifidi.designer.entities.Entity;
 import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.databinding.annotations.MonitoredProperties;
-import org.rifidi.designer.entities.interfaces.Field;
-import org.rifidi.designer.entities.interfaces.InternalEntity;
-import org.rifidi.designer.entities.interfaces.NeedsPhysics;
-import org.rifidi.designer.entities.interfaces.SceneControl;
-import org.rifidi.designer.entities.interfaces.Switch;
+import org.rifidi.designer.entities.interfaces.IField;
+import org.rifidi.designer.entities.interfaces.IHasSwitch;
+import org.rifidi.designer.entities.interfaces.IInternalEntity;
+import org.rifidi.designer.entities.interfaces.INeedsPhysics;
 import org.rifidi.designer.services.core.collision.FieldService;
 import org.rifidi.designer.services.core.events.EventsService;
 import org.rifidi.services.annotations.Inject;
@@ -47,8 +46,8 @@ import com.jmex.physics.material.Material;
  * 
  */
 @MonitoredProperties(names = { "name" })
-public class WatchAreaEntity extends VisualEntity implements NeedsPhysics,
-		SceneControl, Field, Switch, InternalEntity, IAdaptable {
+public class WatchAreaEntity extends VisualEntity implements INeedsPhysics,
+		IField, IHasSwitch, IInternalEntity, IAdaptable {
 	/** Reference to the physicsspace. */
 	private PhysicsSpace physicsSpace;
 	/** Stopped material state. */
@@ -154,7 +153,7 @@ public class WatchAreaEntity extends VisualEntity implements NeedsPhysics,
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * org.rifidi.designer.entities.interfaces.NeedsPhysics#setCollisionHandler
+	 * org.rifidi.designer.entities.interfaces.INeedsPhysics#setCollisionHandler
 	 * (com.jme.input.InputHandler)
 	 */
 	public void setCollisionHandler(InputHandler collisionHandler) {
@@ -164,7 +163,7 @@ public class WatchAreaEntity extends VisualEntity implements NeedsPhysics,
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * org.rifidi.designer.entities.interfaces.NeedsPhysics#setPhysicsSpace(
+	 * org.rifidi.designer.entities.interfaces.INeedsPhysics#setPhysicsSpace(
 	 * com.jmex.physics.PhysicsSpace)
 	 */
 	@Override
@@ -175,7 +174,7 @@ public class WatchAreaEntity extends VisualEntity implements NeedsPhysics,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.entities.interfaces.Switch#isRunning()
+	 * @see org.rifidi.designer.entities.interfaces.IHasSwitch#isRunning()
 	 */
 	@Override
 	public boolean isRunning() {
@@ -185,7 +184,7 @@ public class WatchAreaEntity extends VisualEntity implements NeedsPhysics,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.entities.interfaces.Switch#turnOff()
+	 * @see org.rifidi.designer.entities.interfaces.IHasSwitch#turnOff()
 	 */
 	@Override
 	public void turnOff() {
@@ -211,7 +210,7 @@ public class WatchAreaEntity extends VisualEntity implements NeedsPhysics,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.entities.interfaces.Switch#turnOn()
+	 * @see org.rifidi.designer.entities.interfaces.IHasSwitch#turnOn()
 	 */
 	@Override
 	public void turnOn() {
@@ -238,7 +237,7 @@ public class WatchAreaEntity extends VisualEntity implements NeedsPhysics,
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * org.rifidi.designer.entities.interfaces.Field#fieldEntered(org.rifidi
+	 * org.rifidi.designer.entities.interfaces.IField#fieldEntered(org.rifidi
 	 * .designer.entities.Entity)
 	 */
 	@Override
@@ -250,7 +249,7 @@ public class WatchAreaEntity extends VisualEntity implements NeedsPhysics,
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * org.rifidi.designer.entities.interfaces.Field#fieldLeft(org.rifidi.designer
+	 * org.rifidi.designer.entities.interfaces.IField#fieldLeft(org.rifidi.designer
 	 * .entities.Entity)
 	 */
 	@Override
@@ -279,7 +278,7 @@ public class WatchAreaEntity extends VisualEntity implements NeedsPhysics,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.entities.interfaces.InternalEntity#isVisible()
+	 * @see org.rifidi.designer.entities.interfaces.IInternalEntity#isVisible()
 	 */
 	@Override
 	public boolean isVisible() {
@@ -325,7 +324,7 @@ public class WatchAreaEntity extends VisualEntity implements NeedsPhysics,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.entities.interfaces.SceneControl#pause()
+	 * @see org.rifidi.designer.entities.Entity#pause()
 	 */
 	@Override
 	public void pause() {
@@ -335,7 +334,7 @@ public class WatchAreaEntity extends VisualEntity implements NeedsPhysics,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.entities.interfaces.SceneControl#reset()
+	 * @see org.rifidi.designer.entities.Entity#reset()
 	 */
 	@Override
 	public void reset() {
@@ -346,7 +345,7 @@ public class WatchAreaEntity extends VisualEntity implements NeedsPhysics,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.entities.interfaces.SceneControl#start()
+	 * @see org.rifidi.designer.entities.Entity#start()
 	 */
 	@Override
 	public void start() {

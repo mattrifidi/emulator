@@ -27,9 +27,8 @@ import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.annotations.Property;
 import org.rifidi.designer.entities.databinding.annotations.MonitoredProperties;
 import org.rifidi.designer.entities.interfaces.IProducer;
-import org.rifidi.designer.entities.interfaces.ITagContainer;
-import org.rifidi.designer.entities.interfaces.SceneControl;
-import org.rifidi.designer.entities.interfaces.Switch;
+import org.rifidi.designer.entities.interfaces.IHasSwitch;
+import org.rifidi.designer.entities.rifidi.ITagContainer;
 import org.rifidi.designer.library.basemodels.cardbox.CardboxEntity;
 import org.rifidi.designer.services.core.entities.ProductService;
 import org.rifidi.services.annotations.Inject;
@@ -57,8 +56,7 @@ import com.jme.system.DisplaySystem;
  * @author Dan West
  */
 @MonitoredProperties(names = { "name" })
-public class BoxproducerEntity extends VisualEntity implements SceneControl,
-		Switch, ITagContainer, IProducer {
+public class BoxproducerEntity extends VisualEntity implements IHasSwitch, ITagContainer, IProducer {
 
 	/** Logger for this class. */
 	private static Log logger = LogFactory.getLog(BoxproducerEntity.class);
@@ -222,18 +220,7 @@ public class BoxproducerEntity extends VisualEntity implements SceneControl,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.entities.SceneControl#pause()
-	 */
-	public void pause() {
-		if (thread != null) {
-			thread.setPaused(true);
-		}
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.rifidi.designer.entities.interfaces.Switch#isRunning()
+	 * @see org.rifidi.designer.entities.interfaces.IHasSwitch#isRunning()
 	 */
 	public boolean isRunning() {
 		return running;
@@ -242,7 +229,7 @@ public class BoxproducerEntity extends VisualEntity implements SceneControl,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.entities.SceneControl#start()
+	 * @see org.rifidi.designer.entities.Entity#start()
 	 */
 	public void start() {
 		paused = false;
@@ -254,7 +241,7 @@ public class BoxproducerEntity extends VisualEntity implements SceneControl,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.entities.SceneControl#stop()
+	 * @see org.rifidi.designer.entities.Entity#stop()
 	 */
 	public void reset() {
 		paused = true;
@@ -263,6 +250,17 @@ public class BoxproducerEntity extends VisualEntity implements SceneControl,
 				.getProducts()));
 		tagStack.clear();
 		tagStack.addAll(tags);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.rifidi.designer.entities.Entity#pause()
+	 */
+	public void pause() {
+		if (thread != null) {
+			thread.setPaused(true);
+		}
 	}
 
 	/*

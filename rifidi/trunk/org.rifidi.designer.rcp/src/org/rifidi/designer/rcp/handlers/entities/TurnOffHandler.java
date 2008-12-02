@@ -21,7 +21,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.ui.services.IEvaluationService;
 import org.rifidi.designer.entities.Entity;
 import org.rifidi.designer.entities.grouping.EntityGroup;
-import org.rifidi.designer.entities.interfaces.Switch;
+import org.rifidi.designer.entities.interfaces.IHasSwitch;
 import org.rifidi.services.registry.ServiceRegistry;
 
 /**
@@ -57,12 +57,12 @@ public class TurnOffHandler extends AbstractHandler {
 			Object sw = iterator.next();
 			if (sw instanceof EntityGroup) {
 				for (Entity entity : ((EntityGroup) sw).getEntities()) {
-					if (entity instanceof Switch) {
-						((Switch) entity).turnOff();
+					if (entity instanceof IHasSwitch) {
+						((IHasSwitch) entity).turnOff();
 					}
 				}
-			} else if (sw instanceof Switch) {
-				((Switch) sw).turnOff();
+			} else if (sw instanceof IHasSwitch) {
+				((IHasSwitch) sw).turnOff();
 			}
 		}
 		IEvaluationService service = (IEvaluationService) PlatformUI
