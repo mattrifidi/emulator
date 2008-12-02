@@ -488,27 +488,6 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 		// destroy old entities
 		if (sceneData != null) {
 			sceneDataOld = sceneData;
-			implementor.update(new Callable<Object>() {
-
-				/*
-				 * (non-Javadoc)
-				 * 
-				 * @see java.util.concurrent.Callable#call()
-				 */
-				@Override
-				public Object call() throws Exception {
-					for (Entity entity : sceneDataOld.getEntities()) {
-						try {
-							entity.destroy();
-						} catch (Exception e) {
-							// THIS MUST RUN THROUGH
-							logger.fatal(e);
-						}
-					}
-					return null;
-				}
-
-			});
 		}
 		Job loadJob = new Job("Load scene") {
 
@@ -532,6 +511,17 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 					@Override
 					public void run() {
 						try {
+							// destroy the old scene
+							if (sceneDataOld != null) {
+								for (Entity entity : sceneDataOld.getEntities()) {
+									try {
+										entity.destroy();
+									} catch (Exception e) {
+										// THIS MUST RUN THROUGH
+										logger.fatal(e);
+									}
+								}
+							}
 							// initialize jaxb to know about the classes
 							// provided by
 							// the
@@ -692,6 +682,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 				});
 				monitor.worked(60);
 				monitor.worked(100);
+				sceneDataOld = null;
 				return Status.OK_STATUS;
 			}
 		};

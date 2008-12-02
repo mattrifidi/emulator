@@ -90,7 +90,7 @@ public class BoxproducerEntity extends VisualEntity implements SceneControl,
 		this.speed = 4;
 		this.tagStack = new Stack<RifidiTag>();
 		this.tags = new HashSet<RifidiTag>();
-		setName("Boxproducer (DoD96)");
+		setName("Boxproducer");
 	}
 
 	/**
@@ -337,6 +337,8 @@ public class BoxproducerEntity extends VisualEntity implements SceneControl,
 	 */
 	@Override
 	public void addTags(Set<RifidiTag> tags) {
+		//remove dups
+		tags.removeAll(this.tags);
 		this.tags.addAll(tags);
 		tagStack.addAll(tags);
 	}

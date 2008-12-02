@@ -86,6 +86,7 @@ public class GateEntity extends VisualEntity implements RifidiEntity, Switch,
 	/** Reader associated with this gate. */
 	private UIReader reader;
 	/** List of ChildEntites connected to this gate. */
+	@XmlIDREF
 	private List<VisualEntity> children;
 	/** The multiplication factor for the field size */
 	private float factor = 1.0f;
@@ -275,6 +276,7 @@ public class GateEntity extends VisualEntity implements RifidiEntity, Switch,
 				reader.setReaderCallbackManager(readerCallbackManager);
 				reader.getReaderCallbackManager().addGPOPortListener(this);
 			} catch (Exception e) {
+				e.printStackTrace();
 				logger.error("Problem connecting to RMI: " + e);
 			}
 		} catch (ClassNotFoundException e) {
@@ -377,7 +379,7 @@ public class GateEntity extends VisualEntity implements RifidiEntity, Switch,
 		}
 		rmimanager.removeReader(reader.getReaderName());
 	}
-
+	
 	public void setRMIManager(RMIManager rmimanager) {
 		this.rmimanager = rmimanager;
 	}
@@ -434,7 +436,6 @@ public class GateEntity extends VisualEntity implements RifidiEntity, Switch,
 	 * org.rifidi.designer.entities.interfaces.ParentEntity#setChildEntites(
 	 * java.util.List)
 	 */
-	@XmlIDREF
 	@Override
 	public void setChildEntites(List<VisualEntity> children) {
 		this.children = children;

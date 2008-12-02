@@ -310,10 +310,9 @@ public class AntennaFieldEntity extends VisualEntity implements Switch,
 			if (((ITagged) entity).getRifidiTag() != null) {
 				// add action to the thread for processing
 				antennaFieldThread.addAction(new AntennaFieldAction(true,
-						((ITagged) entity.getUserData()).getRifidiTag()));
+						((ITagged) entity).getRifidiTag()));
 				// publish collision event
-				eventsService.publish(new TagEvent(((ITagged) entity
-						.getUserData()).getRifidiTag(), readerInterface,
+				eventsService.publish(new TagEvent(((ITagged) entity).getRifidiTag(), readerInterface,
 						antennaNum, true));
 			}
 			// inform the parent of the collision

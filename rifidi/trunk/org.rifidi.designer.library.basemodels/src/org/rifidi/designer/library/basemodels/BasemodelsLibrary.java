@@ -126,7 +126,7 @@ public class BasemodelsLibrary implements EntityLibrary {
 		prodRef.setImageDescriptor(Activator.getDefault().getImageRegistry()
 				.getDescriptor(BoxproducerEntity.class.getName()));
 		prodRef.setLibrary(BasemodelsLibrary.class);
-		prodRef.setName("Producer (DoD96)");
+		prodRef.setName("Producer");
 		prodRef.setWizard(null);
 		prodRef.setEntityClass(BoxproducerEntity.class);
 		prodRef.setHidden(false);
