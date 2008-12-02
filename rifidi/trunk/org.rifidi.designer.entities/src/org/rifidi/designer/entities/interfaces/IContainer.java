@@ -1,5 +1,5 @@
 /*
- *  VisualEntityHolder.java
+ *  IContainer.java
  *
  *  Project:		RiFidi Designer - A Virtualization tool for 3D RFID environments
  *  http://www.rifidi.org
@@ -16,12 +16,12 @@ import org.rifidi.designer.entities.VisualEntity;
 
 /**
  * This interface defines an entity as a container for other entites. Example: A
- * clothing rack conatining clothin which can be dragged out or placed on it
+ * clothing rack conatining clothing which can be dragged out or placed on it.
  * 
  * @author Jochen Mader - jochen@pramari.com - Mar 26, 2008
  * 
  */
-public interface VisualEntityHolder {
+public interface IContainer {
 	/**
 	 * Add a VisualEntity to the entity holder.
 	 * 

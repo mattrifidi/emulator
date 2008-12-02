@@ -8,7 +8,7 @@
  *  License:		Lesser GNU Public License (LGPL)
  *  http://www.opensource.org/licenses/lgpl-license.html
  */
-package org.rifidi.designer.entities.interfaces;
+package org.rifidi.designer.entities.rifidi;
 
 import org.rifidi.designer.entities.RMIManager;
 import org.rifidi.emulator.rmi.server.ReaderModuleManagerInterface;

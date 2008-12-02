@@ -28,7 +28,7 @@ public class Cable {
 	private GPOPort source;
 	/** Target port for the cable. */
 	private GPIPort target;
-	/** GPIO state currently set to the cable. */
+	/** IGPIO state currently set to the cable. */
 	private State state;
 	/** Unique ID of this cable. */
 	private String id="";

@@ -1,5 +1,5 @@
 /*
- *  Field.java
+ *  IField.java
  *
  *  Project:		RiFidi Designer - A Virtualization tool for 3D RFID environments
  *  http://www.rifidi.org
@@ -13,13 +13,13 @@ package org.rifidi.designer.entities.interfaces;
 import org.rifidi.designer.entities.Entity;
 
 /**
- * A filed is a designated area in the scene that is monitored for entites
+ * A filed is a designated area in the scene that is monitored for entities
  * appearing in it.
  * 
  * @author Jochen Mader - jochen@pramari.com - Feb 4, 2008
  * 
  */
-public interface Field {
+public interface IField {
 	/**
 	 * Called by the FieldService if an entity has entered the field.
 	 * 

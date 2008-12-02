@@ -30,7 +30,6 @@ import org.eclipse.ui.model.IWorkbenchAdapter;
 import org.rifidi.designer.entities.Entity;
 import org.rifidi.designer.entities.SceneData;
 import org.rifidi.designer.entities.databinding.annotations.MonitoredProperties;
-import org.rifidi.designer.entities.interfaces.IEntityObservable;
 
 /**
  * This TreeContentProvider takes advantage of eclipse databinding. An object

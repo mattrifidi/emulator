@@ -1,5 +1,5 @@
 /*
- *  ITagged.java
+ *  ITrigger.java
  *
  *  Project:		RiFidi Designer - A Virtualization tool for 3D RFID environments
  *  http://www.rifidi.org
@@ -10,15 +10,18 @@
  */
 package org.rifidi.designer.entities.interfaces;
 
-import org.rifidi.services.tags.impl.RifidiTag;
-
 /**
+ * A trigger can be triggered by another object to performe an action.
  * 
- * 
- * @author Jochen Mader - jochen@pramari.com - Nov 26, 2008
+ * @author Jochen Mader Oct 19, 2007
  * 
  */
-public interface ITagged {
-	public void setRifidiTag(RifidiTag tag);
-	public RifidiTag getRifidiTag();
+public interface ITrigger {
+	/**
+	 * Called to execute the trigger function.
+	 * 
+	 * @param source the source of the trigger event
+	 */
+	void trigger(Object source);
+
 }

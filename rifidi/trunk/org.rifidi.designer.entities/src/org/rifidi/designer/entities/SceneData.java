@@ -25,9 +25,9 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.model.IWorkbenchAdapter;
+import org.rifidi.designer.entities.databinding.IEntityObservable;
 import org.rifidi.designer.entities.grouping.EntityGroup;
 import org.rifidi.designer.entities.grouping.GroupContainer;
-import org.rifidi.designer.entities.interfaces.IEntityObservable;
 import org.rifidi.services.tags.impl.RifidiTag;
 
 import com.jme.input.InputHandler;

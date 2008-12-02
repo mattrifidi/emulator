@@ -1,5 +1,5 @@
 /*
- *  NeedsPhysics.java
+ *  INeedsPhysics.java
  *
  *  Project:		RiFidi Designer - A Virtualization tool for 3D RFID environments
  *  http://www.rifidi.org
@@ -19,7 +19,7 @@ import com.jmex.physics.PhysicsSpace;
  * @author Jochen Mader Jan 20, 2008
  * 
  */
-public interface NeedsPhysics {
+public interface INeedsPhysics {
 	/**
 	 * @param physicsSpace The currently used physicsspace.
 	 */

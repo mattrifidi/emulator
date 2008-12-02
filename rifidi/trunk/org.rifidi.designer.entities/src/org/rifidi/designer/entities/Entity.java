@@ -154,4 +154,26 @@ public abstract class Entity {
 	public void setDeleted(boolean deleted) {
 		this.deleted = deleted;
 	}
+	
+	/**
+	 * Start the entity.
+	 * Intended to be overwritten.
+	 */
+	public void start(){
+	}
+
+	/**
+	 * Pause an entity. On a subsequent start the entity should resume on the
+	 * point where it was paused.
+	 * Intended to be overwritten.
+	 */
+	public void pause(){
+	}
+
+	/**
+	 * Stop the entity, should also reset internal state.
+	 * Intended to be overwritten.
+	 */
+	public void reset(){
+	}
 }

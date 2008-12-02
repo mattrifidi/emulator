@@ -8,12 +8,12 @@
  *  License:		Lesser GNU Public License (LGPL)
  *  http://www.opensource.org/licenses/lgpl-license.html
  */
-package org.rifidi.designer.entities.interfaces;
+package org.rifidi.designer.entities.databinding;
 
 import org.eclipse.core.databinding.observable.list.IListChangeListener;
 
 /**
- * 
+ * Used for entities that contain a list that should be monitored.
  * 
  * @author Jochen Mader - jochen@pramari.com - Oct 28, 2008
  * 

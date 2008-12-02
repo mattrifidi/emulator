@@ -31,8 +31,8 @@ import org.rifidi.designer.entities.Entity;
 import org.rifidi.designer.entities.SceneData;
 import org.rifidi.designer.entities.adapters.EntityGroupActionFilterAdapter;
 import org.rifidi.designer.entities.adapters.EntityGroupWorkbenchAdapter;
-import org.rifidi.designer.entities.interfaces.IEntityObservable;
-import org.rifidi.designer.entities.interfaces.Switch;
+import org.rifidi.designer.entities.databinding.IEntityObservable;
+import org.rifidi.designer.entities.interfaces.IHasSwitch;
 
 /**
  * This is a container for entities. It is used to organize entities into
@@ -274,8 +274,8 @@ public class EntityGroup implements IAdaptable, IEntityObservable {
 	 */
 	public void start() {
 		for (Entity entity : entities) {
-			if (entity instanceof Switch) {
-				((Switch) entity).turnOn();
+			if (entity instanceof IHasSwitch) {
+				((IHasSwitch) entity).turnOn();
 			}
 		}
 	}
@@ -285,8 +285,8 @@ public class EntityGroup implements IAdaptable, IEntityObservable {
 	 */
 	public void stop() {
 		for (Entity entity : entities) {
-			if (entity instanceof Switch) {
-				((Switch) entity).turnOff();
+			if (entity instanceof IHasSwitch) {
+				((IHasSwitch) entity).turnOff();
 			}
 		}
 	}
@@ -312,10 +312,10 @@ public class EntityGroup implements IAdaptable, IEntityObservable {
 	 */
 	public boolean hasSwitchables() {
 		for (Entity e : entities)
-			if (e instanceof Switch)
+			if (e instanceof IHasSwitch)
 				return true;
 			else
-				logger.warn(e.getName() + " not instanceof Switch");
+				logger.warn(e.getName() + " not instanceof IHasSwitch");
 		return false;
 	}
 

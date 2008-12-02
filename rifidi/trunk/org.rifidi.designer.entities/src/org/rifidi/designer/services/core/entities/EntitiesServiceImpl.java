@@ -47,14 +47,14 @@ import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.SceneData.Direction;
 import org.rifidi.designer.entities.gpio.GPIPort;
 import org.rifidi.designer.entities.gpio.GPOPort;
+import org.rifidi.designer.entities.grouping.IChildEntity;
 import org.rifidi.designer.entities.grouping.EntityGroup;
-import org.rifidi.designer.entities.interfaces.ChildEntity;
+import org.rifidi.designer.entities.grouping.IParentEntity;
 import org.rifidi.designer.entities.interfaces.IProducer;
-import org.rifidi.designer.entities.interfaces.InternalEntity;
-import org.rifidi.designer.entities.interfaces.NeedsPhysics;
-import org.rifidi.designer.entities.interfaces.ParentEntity;
-import org.rifidi.designer.entities.interfaces.RifidiEntity;
-import org.rifidi.designer.entities.interfaces.VisualEntityHolder;
+import org.rifidi.designer.entities.interfaces.IInternalEntity;
+import org.rifidi.designer.entities.interfaces.INeedsPhysics;
+import org.rifidi.designer.entities.interfaces.IContainer;
+import org.rifidi.designer.entities.rifidi.RifidiEntity;
 import org.rifidi.designer.library.EntityLibraryRegistry;
 import org.rifidi.designer.octree.CollisionOctree;
 import org.rifidi.designer.octree.RoomOctree;
@@ -154,8 +154,8 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 			ent.setEntityId(sceneData.getNextID().toString());
 			sceneData.getEntityNames().add(ent.getName());
 			sceneData.getSyncedEntities().add(ent);
-			if (!(ent instanceof InternalEntity)
-					|| (ent instanceof InternalEntity && ((InternalEntity) ent)
+			if (!(ent instanceof IInternalEntity)
+					|| (ent instanceof IInternalEntity && ((IInternalEntity) ent)
 							.isVisible())) {
 				sceneData.getDefaultGroup().addEntity(ent);
 			}
@@ -177,8 +177,8 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 			if (entity instanceof VisualEntity) {
 				visuals.add((VisualEntity) entity);
 				nodeToEntity.remove(((VisualEntity) entity).getNode());
-				if (entity instanceof VisualEntityHolder) {
-					for (VisualEntity ve : ((VisualEntityHolder) entity)
+				if (entity instanceof IContainer) {
+					for (VisualEntity ve : ((IContainer) entity)
 							.getVisualEntityList()) {
 						// not all available spots are taken
 						if (ve != null) {
@@ -325,8 +325,8 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 				break;
 			}
 		}
-		if (ret instanceof ChildEntity) {
-			return (VisualEntity) ((ChildEntity) ret).getParent();
+		if (ret instanceof IChildEntity) {
+			return (VisualEntity) ((IChildEntity) ret).getParent();
 		}
 		return (VisualEntity) ret;
 	}
@@ -716,10 +716,10 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 			((RifidiEntity) entity)
 					.setRMIManager(Activator.getDefault().rifidiManager);
 		}
-		if (entity instanceof NeedsPhysics) {
-			((NeedsPhysics) entity)
+		if (entity instanceof INeedsPhysics) {
+			((INeedsPhysics) entity)
 					.setPhysicsSpace(sceneData.getPhysicsSpace());
-			((NeedsPhysics) entity).setCollisionHandler(sceneData
+			((INeedsPhysics) entity).setCollisionHandler(sceneData
 					.getCollisionHandler());
 		}
 		ServiceRegistry.getInstance().service(entity);
@@ -1028,13 +1028,13 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 
 		public Object call() throws Exception {
 			prepareEntity((VisualEntity) newentity, rootNode);
-			if (newentity instanceof ParentEntity) {
-				for (VisualEntity child : ((ParentEntity) newentity)
+			if (newentity instanceof IParentEntity) {
+				for (VisualEntity child : ((IParentEntity) newentity)
 						.getChildEntites()) {
 					sceneData.getEntityNames().add(child.getName());
 					initEntity(child, sceneData, true);
 					sceneData.getSyncedEntities().add(child);
-					((ChildEntity) child).setParent((VisualEntity) newentity);
+					((IChildEntity) child).setParent((VisualEntity) newentity);
 
 					prepareEntity((VisualEntity) child,
 							((VisualEntity) newentity).getNode());
@@ -1075,8 +1075,8 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 			}
 			sceneData.getEntityNames().add(newentity.getName());
 			sceneData.getSyncedEntities().add(newentity);
-			if (!(newentity instanceof InternalEntity)
-					|| (newentity instanceof InternalEntity && ((InternalEntity) newentity)
+			if (!(newentity instanceof IInternalEntity)
+					|| (newentity instanceof IInternalEntity && ((IInternalEntity) newentity)
 							.isVisible())) {
 				sceneData.getDefaultGroup().addEntity(newentity);
 			}
@@ -1087,8 +1087,8 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 			String id = sceneData.getNextID().toString();
 			entity.setEntityId(id);
 			entity.init();
-			if (entity instanceof VisualEntityHolder) {
-				for (VisualEntity vent : ((VisualEntityHolder) entity)
+			if (entity instanceof IContainer) {
+				for (VisualEntity vent : ((IContainer) entity)
 						.getVisualEntityList()) {
 					initEntity(vent, sceneData, true);
 					vent.init();

@@ -12,7 +12,7 @@ package org.rifidi.designer.entities.adapters;
 
 import org.eclipse.ui.IActionFilter;
 import org.rifidi.designer.entities.Entity;
-import org.rifidi.designer.entities.interfaces.Switch;
+import org.rifidi.designer.entities.interfaces.IHasSwitch;
 import org.rifidi.designer.services.core.entities.FinderService;
 import org.rifidi.services.annotations.Inject;
 import org.rifidi.services.registry.ServiceRegistry;
@@ -43,9 +43,9 @@ public class SwitchActionFilterAdapter implements IActionFilter {
 	 *      java.lang.String, java.lang.String)
 	 */
 	public boolean testAttribute(Object target, String name, String value) {
-		if (target instanceof Switch && "running".equals(name)) {
+		if (target instanceof IHasSwitch && "running".equals(name)) {
 			return value
-					.equals(Boolean.toString(((Switch) target).isRunning()));
+					.equals(Boolean.toString(((IHasSwitch) target).isRunning()));
 		}
 		if (target instanceof Entity && "grouped".equals(name)) {
 			return finderService.isEntityGrouped((Entity) target);

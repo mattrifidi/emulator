@@ -13,12 +13,12 @@ package org.rifidi.designer.entities.gpio;
 import java.util.List;
 
 /**
- * Defines the methoids required for a General Purpose Input Entity.
+ * Defines the methods required for a General Purpose Input/Output Entity.
  * 
  * @author Jochen Mader - jochen@pramari.com - Nov 4, 2008
  * 
  */
-public interface GPIO {
+public interface IGPIO {
 	/**
 	 * Get all available GPOPorts.
 	 * @return

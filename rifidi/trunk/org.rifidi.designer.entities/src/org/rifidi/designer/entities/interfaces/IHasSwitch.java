@@ -1,5 +1,5 @@
 /*
- *  SceneControl.java
+ *  IHasSwitch.java
  *
  *  Project:		RiFidi Designer - A Virtualization tool for 3D RFID environments
  *  http://www.rifidi.org
@@ -10,27 +10,32 @@
  */
 package org.rifidi.designer.entities.interfaces;
 
-
 /**
- * This interface is for entites to be controlled by the overall scene state
- * (start/stop/pause).
+ * Entities that have an internal state need to implement this interface to be
+ * controlled.
  * 
- * @author Jochen Mader Oct 14, 2007
+ * @author Jochen Mader Oct 8, 2007
+ * 
  */
-public interface SceneControl {
+public interface IHasSwitch {
+
 	/**
 	 * Start the entity.
+	 * 
 	 */
-	void start();
+	void turnOn();
 
 	/**
-	 * Pause an entity. On a subsequent start the entity should resume on the
-	 * point where it was paused.
+	 * Returns true if the IHasSwitch is on the on state.
+	 * 
+	 * @return running state
 	 */
-	void pause();
+	boolean isRunning();
 
 	/**
-	 * Stop the entity, should also reset internal state.
+	 * Stop the entity. Stops the execution and resets the entity to start
+	 * state.
+	 * 
 	 */
-	void reset();
+	void turnOff();
 }

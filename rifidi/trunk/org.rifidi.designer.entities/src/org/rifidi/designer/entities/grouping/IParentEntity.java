@@ -1,5 +1,5 @@
 /*
- *  ParentEntity.java
+ *  IParentEntity.java
  *
  *  Project:		RiFidi Designer - A Virtualization tool for 3D RFID environments
  *  http://www.rifidi.org
@@ -8,19 +8,19 @@
  *  License:		Lesser GNU Public License (LGPL)
  *  http://www.opensource.org/licenses/lgpl-license.html
  */
-package org.rifidi.designer.entities.interfaces;
+package org.rifidi.designer.entities.grouping;
 
 import java.util.List;
 
 import org.rifidi.designer.entities.VisualEntity;
 
 /**
- * This interface describes the parent of a {@link ChildEntity}.
+ * This interface describes the parent of a {@link IChildEntity}.
  * 
  * @author Jochen Mader - jochen@pramari.com - Feb 5, 2008
  * 
  */
-public interface ParentEntity {
+public interface IParentEntity {
 	/**
 	 * Get the list of child entities.
 	 * 
