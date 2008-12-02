@@ -47,13 +47,13 @@ import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.SceneData.Direction;
 import org.rifidi.designer.entities.gpio.GPIPort;
 import org.rifidi.designer.entities.gpio.GPOPort;
-import org.rifidi.designer.entities.grouping.IChildEntity;
 import org.rifidi.designer.entities.grouping.EntityGroup;
+import org.rifidi.designer.entities.grouping.IChildEntity;
 import org.rifidi.designer.entities.grouping.IParentEntity;
-import org.rifidi.designer.entities.interfaces.IProducer;
+import org.rifidi.designer.entities.interfaces.IContainer;
 import org.rifidi.designer.entities.interfaces.IInternalEntity;
 import org.rifidi.designer.entities.interfaces.INeedsPhysics;
-import org.rifidi.designer.entities.interfaces.IContainer;
+import org.rifidi.designer.entities.interfaces.IProducer;
 import org.rifidi.designer.entities.rifidi.RifidiEntity;
 import org.rifidi.designer.library.EntityLibraryRegistry;
 import org.rifidi.designer.octree.CollisionOctree;
@@ -172,11 +172,15 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	@Override
 	public void deleteEntities(final List<Entity> entities) {
 		List<VisualEntity> visuals = new ArrayList<VisualEntity>();
+		// loop through all entities
 		for (Entity entity : entities) {
 			entity.setDeleted(true);
+			// get the visual ones
 			if (entity instanceof VisualEntity) {
 				visuals.add((VisualEntity) entity);
+				// remove from the index list
 				nodeToEntity.remove(((VisualEntity) entity).getNode());
+				// remove also entites that are contained in another entity
 				if (entity instanceof IContainer) {
 					for (VisualEntity ve : ((IContainer) entity)
 							.getVisualEntityList()) {
@@ -188,8 +192,12 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 						}
 					}
 				}
+				// clear octree
 				collisionOctree.removeEntity((VisualEntity) entity);
+			} else {
+				entity.destroy();
 			}
+			// remove from all groups
 			sceneData.getSyncedEntities().remove(entity);
 			sceneData.getDefaultGroup().removeEntity(entity);
 			sceneData.getProducedEntities().removeEntity(entity);
@@ -198,6 +206,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 			}
 			sceneData.getEntityNames().remove(entity.getName());
 		}
+		// VisualEntities need a special
 		if (visuals.size() > 0) {
 			implementor.update(new Callable<Object>() {
 
@@ -579,13 +588,17 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 					}
 					monitor.worked(10);
 					monitor.subTask("Registering entities");
+					// add entity names to the list in scnedata
 					for (Entity entity : sceneData.getEntities()) {
+						// take care that entites get there dependencies
+						// injected
 						ServiceRegistry.getInstance().service(entity);
 						sceneData.getEntityNames().add(entity.getName());
 						initEntity(entity, sceneData, false);
 					}
 					monitor.worked(10);
 					monitor.subTask("Registering products");
+					// we need to wai for this to finish
 					display.syncExec(new Runnable() {
 
 						/*
@@ -619,45 +632,16 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 					});
 				}
 				logger.debug("loading: done");
+
 				monitor.worked(10);
 				monitor.setTaskName("Load room");
-				Node roomnode = EntityLibraryRegistry.getInstance()
-						.getFloorReferences().get(sceneData.getFloorId())
-						.getNode();
-				ArrayList<Spatial> spatlist = new ArrayList<Spatial>(roomnode
-						.getChildren());
-				// turn the geometry into a set of physicsnodes
-				for (Spatial spatial : spatlist) {
-					spatial.removeFromParent();
-					StaticPhysicsNode staticNode = sceneData.getPhysicsSpace()
-							.createStaticNode();
-					staticNode.attachChild(spatial);
-					staticNode.setName(spatial.getName());
-					staticNode.generatePhysicsGeometry();
-					roomnode.attachChild(staticNode);
-				}
-				roomnode.updateWorldBound();
-				roomnode.updateModelBound();
-				roomnode.clearRenderState(RenderState.RS_LIGHT);
-				roomnode.updateRenderState();
-				collisionOctree = new CollisionOctree(1f,
-						(BoundingBox) roomnode.getWorldBound());
-				roomTree = new RoomOctree(1f, (BoundingBox) roomnode
-						.getWorldBound());
-				for (Spatial spatial : spatlist) {
-					if (!"floor".equals(spatial.getName())) {
-						for (Spatial spat : ((Node) spatial).getChildren()) {
-							roomTree.insertMesh((TriMesh) spat);
-						}
-					}
-				}
-				sceneData.setRoomNode(roomnode);
-				fileOfCurrentScene = file;
+				sceneData.setRoomNode(createNode(sceneData));
+
 				nodeToEntity = Collections
 						.synchronizedMap(new HashMap<Node, VisualEntity>());
 				sceneData.getRootNode().updateGeometricState(0f, true);
-				// Box marker=new Box("marker",Vector3f.ZERO.clone(),3,3,3);
-				// sceneData.getRootNode().attachChild(marker);
+
+				// fill the octree
 				for (Entity entity : sceneData.getSearchableEntities()) {
 					if (entity instanceof VisualEntity) {
 						nodeToEntity.put(((VisualEntity) entity).getNode(),
@@ -665,6 +649,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 						collisionOctree.insertEntity((VisualEntity) entity);
 					}
 				}
+				monitor.worked(60);
 				display.syncExec(new Runnable() {
 
 					/*
@@ -680,15 +665,49 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 					}
 
 				});
-				monitor.worked(60);
 				monitor.worked(100);
+				// old scene is destroied
 				sceneDataOld = null;
+				// store the file info
+				fileOfCurrentScene = file;
 				return Status.OK_STATUS;
 			}
 		};
 		loadJob.setUser(true);
 		loadJob.schedule();
 
+	}
+
+	private Node createNode(SceneData sceneData) {
+		Node roomnode = EntityLibraryRegistry.getInstance()
+				.getFloorReferences().get(sceneData.getFloorId()).getNode();
+		ArrayList<Spatial> spatlist = new ArrayList<Spatial>(roomnode
+				.getChildren());
+		// turn the geometry into a set of physicsnodes
+		for (Spatial spatial : spatlist) {
+			spatial.removeFromParent();
+			StaticPhysicsNode staticNode = sceneData.getPhysicsSpace()
+					.createStaticNode();
+			staticNode.attachChild(spatial);
+			staticNode.setName(spatial.getName());
+			staticNode.generatePhysicsGeometry();
+			roomnode.attachChild(staticNode);
+		}
+		roomnode.updateWorldBound();
+		roomnode.updateModelBound();
+		roomnode.clearRenderState(RenderState.RS_LIGHT);
+		roomnode.updateRenderState();
+		collisionOctree = new CollisionOctree(1f, (BoundingBox) roomnode
+				.getWorldBound());
+		roomTree = new RoomOctree(1f, (BoundingBox) roomnode.getWorldBound());
+		for (Spatial spatial : spatlist) {
+			if (!"floor".equals(spatial.getName())) {
+				for (Spatial spat : ((Node) spatial).getChildren()) {
+					roomTree.insertMesh((TriMesh) spat);
+				}
+			}
+		}
+		return roomnode;
 	}
 
 	/**
@@ -717,8 +736,8 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 					.setRMIManager(Activator.getDefault().rifidiManager);
 		}
 		if (entity instanceof INeedsPhysics) {
-			((INeedsPhysics) entity)
-					.setPhysicsSpace(sceneData.getPhysicsSpace());
+			((INeedsPhysics) entity).setPhysicsSpace(sceneData
+					.getPhysicsSpace());
 			((INeedsPhysics) entity).setCollisionHandler(sceneData
 					.getCollisionHandler());
 		}
@@ -1028,6 +1047,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 
 		public Object call() throws Exception {
 			prepareEntity((VisualEntity) newentity, rootNode);
+			// add child entities to the searchable entities
 			if (newentity instanceof IParentEntity) {
 				for (VisualEntity child : ((IParentEntity) newentity)
 						.getChildEntites()) {
@@ -1040,8 +1060,8 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 							((VisualEntity) newentity).getNode());
 				}
 			}
-			// center the object in the scene
 
+			// center the object in the scene if a screen position is given
 			if (screenPos != null) {
 				Vector3f coords = DisplaySystem.getDisplaySystem()
 						.getRenderer().getCamera().getWorldCoordinates(
@@ -1058,6 +1078,16 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 				((VisualEntity) newentity).getNode()
 						.setLocalTranslation(coords);
 			}
+
+			sceneData.getEntityNames().add(newentity.getName());
+			sceneData.getSyncedEntities().add(newentity);
+			if (!(newentity instanceof IInternalEntity)
+					|| (newentity instanceof IInternalEntity && ((IInternalEntity) newentity)
+							.isVisible())) {
+				sceneData.getDefaultGroup().addEntity(newentity);
+			}
+			
+			//inform listeners
 			if (listener != null) {
 				sceneData.getDisplay().asyncExec(new Runnable() {
 
@@ -1072,13 +1102,6 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 					}
 
 				});
-			}
-			sceneData.getEntityNames().add(newentity.getName());
-			sceneData.getSyncedEntities().add(newentity);
-			if (!(newentity instanceof IInternalEntity)
-					|| (newentity instanceof IInternalEntity && ((IInternalEntity) newentity)
-							.isVisible())) {
-				sceneData.getDefaultGroup().addEntity(newentity);
 			}
 			return new Object();
 		}
