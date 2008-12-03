@@ -34,7 +34,6 @@ import org.rifidi.designer.entities.rifidi.ITagged;
 import org.rifidi.designer.library.basemodels.gate.GateEntity;
 import org.rifidi.designer.services.core.collision.FieldService;
 import org.rifidi.designer.services.core.events.EventsService;
-import org.rifidi.designer.services.core.events.TagEvent;
 import org.rifidi.emulator.rmi.server.ReaderModuleManagerInterface;
 import org.rifidi.services.annotations.Inject;
 import org.rifidi.services.tags.impl.RifidiTag;
@@ -312,8 +311,8 @@ public class AntennaFieldEntity extends VisualEntity implements IHasSwitch,
 				antennaFieldThread.addAction(new AntennaFieldAction(true,
 						((ITagged) entity).getRifidiTag()));
 				// publish collision event
-				eventsService.publish(new TagEvent(((ITagged) entity).getRifidiTag(), readerInterface,
-						antennaNum, true));
+				eventsService.publish(new TagEvent(((ITagged) entity)
+						.getRifidiTag(), readerInterface, antennaNum, true));
 			}
 			// inform the parent of the collision
 			((GateEntity) getParent()).tagSeen();
