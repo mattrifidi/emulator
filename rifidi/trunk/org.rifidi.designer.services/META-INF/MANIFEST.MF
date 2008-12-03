@@ -1,0 +1,25 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Services Plug-in
+Bundle-SymbolicName: org.rifidi.designer.services
+Bundle-Version: 1.0.0
+Bundle-Activator: org.rifidi.designer.services.Activator
+Bundle-Vendor: Pramari, LLC
+Require-Bundle: org.eclipse.core.runtime,
+ org.monklypse.jme2;bundle-version="1.0.0",
+ org.monklypse.jme2.physics;bundle-version="1.0.0",
+ org.rifidi.designer.entities;bundle-version="1.1.0",
+ org.rifidi.services.tags;bundle-version="2.2.0",
+ org.rifidi.services;bundle-version="2.1.0",
+ org.eclipse.jface;bundle-version="3.4.1",
+ org.eclipse.ui.console;bundle-version="3.3.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy
+Export-Package: org.rifidi.designer.services,
+ org.rifidi.designer.services.core.collision,
+ org.rifidi.designer.services.core.events,
+ org.rifidi.designer.services.core.highlighting,
+ org.rifidi.designer.services.core.messaging,
+ org.rifidi.designer.services.core.selection,
+ org.rifidi.designer.services.core.world
+Import-Package: org.apache.commons.logging;version="1.0.4"
