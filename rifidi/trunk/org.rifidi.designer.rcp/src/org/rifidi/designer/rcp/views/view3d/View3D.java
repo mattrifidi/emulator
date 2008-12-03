@@ -32,12 +32,11 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IPerspectiveDescriptor;
 import org.eclipse.ui.IPerspectiveListener;
-import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 import org.monklypse.core.JMEComposite;
 import org.rifidi.designer.entities.Entity;
@@ -97,15 +96,12 @@ public class View3D extends ViewPart implements IPerspectiveListener,
 
 	/** The rendering canvas. */
 	private GLCanvas glCanvas;
-	/** The scenedata service. */
-	private SceneDataService sceneDataService;
 	/** The world service. */
 	private WorldService worldService;
 	/** The selection service. */
 	private SelectionService selectionService;
 	/** The entity service. */
 	private EntitiesService entitiesService;
-
 	// miscellany & NEW STUFF
 	private Point oldpos;
 	/** Reference to the implementor. */
@@ -321,7 +317,7 @@ public class View3D extends ViewPart implements IPerspectiveListener,
 	 */
 	@Inject
 	public void setSceneDataService(SceneDataService sceneDataService) {
-		this.sceneDataService = sceneDataService;
+		sceneDataService.addSceneDataChangedListener(this);
 	}
 
 	/**
@@ -577,9 +573,12 @@ public class View3D extends ViewPart implements IPerspectiveListener,
 	@Override
 	public void sceneDataChanged(SceneData sceneData) {
 		// change the window title
-		Display.getCurrent().getActiveShell().setText(
-				"Rifidi Designer: " + sceneData.getName());
+		for(Shell shell:Display.getDefault().getShells()){
+			if(shell.getText().startsWith("Rifidi Designer")){
+				shell.setText(
+						"Rifidi Designer: " + sceneData.getName());		
+			}
+		}
 		switchMode(Mode.PickMode);
 	}
-
 }

@@ -821,6 +821,8 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 				});
 				sceneData.getRootNode().attachChild(sceneData.getRoomNode());
 				parent.attachChild(sceneData.getRootNode());
+				parent.updateRenderState();
+				parent.updateGeometricState(0f, true);
 				return null;
 			}
 

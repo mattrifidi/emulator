@@ -590,13 +590,13 @@ public class DesignerGame extends SWTDefaultImplementor implements
 	 * KeyEvent)
 	 */
 	public void keyPressed(KeyEvent e) {
-		if (e.character == 'a' || e.character == 'A') {
+		if (e.character == 'a' || e.character == 'A' || e.keyCode == SWT.ARROW_LEFT) {
 			updownleftright[2] = true;
-		} else if (e.character == 'd' || e.character == 'D') {
+		} else if (e.character == 'd' || e.character == 'D' || e.keyCode == SWT.ARROW_RIGHT) {
 			updownleftright[3] = true;
-		} else if (e.character == 'w' || e.character == 'W') {
+		} else if (e.character == 'w' || e.character == 'W' || e.keyCode == SWT.ARROW_UP) {
 			updownleftright[0] = true;
-		} else if (e.character == 's' || e.character == 'S') {
+		} else if (e.character == 's' || e.character == 'S' || e.keyCode == SWT.ARROW_DOWN) {
 			updownleftright[1] = true;
 		}
 	}
