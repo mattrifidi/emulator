@@ -35,11 +35,15 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 import org.rifidi.designer.rcp.Activator;
 import org.rifidi.designer.rcp.views.view3d.View3D;
+import org.rifidi.designer.services.core.entities.SceneDataService;
+import org.rifidi.services.annotations.Inject;
+import org.rifidi.services.registry.ServiceRegistry;
 
 /**
  * This is the dialog used to manage layouts.
@@ -49,36 +53,24 @@ import org.rifidi.designer.rcp.views.view3d.View3D;
  * 
  */
 public class SceneDataManagementeDialog {
-	/**
-	 * Logger for this class.
-	 */
+	/** Logger for this class. */
 	private static Log logger = LogFactory
 			.getLog(SceneDataManagementeDialog.class);
-	/**
-	 * Viewer for the files.
-	 */
+	/** Viewer for the files. */
 	private TableViewer viewer;
-	/**
-	 * The target folder.
-	 */
+	/** The target folder. */
 	private IFolder folder;
-	/**
-	 * The file to save to.
-	 */
+	/** The file to save to. */
 	private IFile file;
-	/**
-	 * Button for opening the selected file.
-	 */
+	/** Button for opening the selected file. */
 	private Button open;
-	/**
-	 * Button for closing the window.
-	 */
+	/** Button for closing the window. */
 	private Button cancel;
-	/**
-	 * Button for deleting the selected file.
-	 */
+	/** Button for deleting the selected file. */
 	private Button delete;
-
+	/** Reference to the scene data service*/
+	private SceneDataService sceneDataService;
+	
 	/**
 	 * Constructor
 	 * 
@@ -205,8 +197,7 @@ public class SceneDataManagementeDialog {
 			public void widgetSelected(SelectionEvent e) {
 				logger.info("Loading " + file.getName());
 				shell.close();
-				((View3D) PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-						.getActivePage().findView(View3D.ID)).loadScene(file);
+				sceneDataService.loadScene(Display.getCurrent(), file);
 			}
 
 		});
@@ -221,8 +212,7 @@ public class SceneDataManagementeDialog {
 			public void mouseDoubleClick(MouseEvent e) {
 				logger.info("Loading " + file.getName());
 				shell.close();
-				((View3D) PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-						.getActivePage().findView(View3D.ID)).loadScene(file);
+				sceneDataService.loadScene(Display.getCurrent(), file);
 			}
 
 		});
@@ -234,6 +224,7 @@ public class SceneDataManagementeDialog {
 				open.setEnabled(true);
 			}
 		});
+		ServiceRegistry.getInstance().service(this);
 	}
 
 	/**
@@ -267,6 +258,14 @@ public class SceneDataManagementeDialog {
 			return ((IResource) element).getName();
 		}
 
+	}
+
+	/**
+	 * @param sceneDataService the sceneDataService to set
+	 */
+	@Inject
+	public void setSceneDataService(SceneDataService sceneDataService) {
+		this.sceneDataService = sceneDataService;
 	}
 
 }

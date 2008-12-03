@@ -15,7 +15,6 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.action.GroupMarker;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
@@ -42,6 +41,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 import org.monklypse.core.JMEComposite;
 import org.rifidi.designer.entities.Entity;
+import org.rifidi.designer.entities.SceneData;
 import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.wizards.RifidiEntityWizard;
 import org.rifidi.designer.library.EntityLibraryReference;
@@ -59,6 +59,7 @@ import org.rifidi.designer.rcp.views.view3d.listeners.ZoomMouseWheelListener;
 import org.rifidi.designer.rcp.views.view3d.mode.InteractionMode;
 import org.rifidi.designer.services.core.entities.EntitiesService;
 import org.rifidi.designer.services.core.entities.NewEntityListener;
+import org.rifidi.designer.services.core.entities.SceneDataChangedListener;
 import org.rifidi.designer.services.core.entities.SceneDataService;
 import org.rifidi.designer.services.core.selection.SelectionService;
 import org.rifidi.designer.services.core.world.WorldService;
@@ -74,7 +75,7 @@ import com.jme.util.TextureManager;
  * @author Dan West
  */
 public class View3D extends ViewPart implements IPerspectiveListener,
-		NewEntityListener {
+		NewEntityListener, SceneDataChangedListener {
 
 	/** ID. */
 	public static final String ID = "org.rifidi.designer.rcp.views.View3D";
@@ -169,26 +170,6 @@ public class View3D extends ViewPart implements IPerspectiveListener,
 	 * @see org.eclipse.ui.part.WorkbenchPart#setFocus()
 	 */
 	public void setFocus() {
-	}
-
-	/**
-	 * Load a scene from the given IFile.
-	 * 
-	 * @param file
-	 *            the file to load the scene from
-	 */
-	public void loadScene(final IFile file) {
-		logger.debug("setting up world");
-		// change the window title
-		Display.getCurrent().getActiveShell().setText(
-				"Rifidi Designer: " + file.getName());
-		worldService.pause();
-
-		IWorkbench wb = PlatformUI.getWorkbench();
-		wb.getProgressService();
-		sceneDataService.loadScene(Display.getCurrent(), file);
-
-		switchMode(Mode.PickMode);
 	}
 
 	/**
@@ -573,6 +554,32 @@ public class View3D extends ViewPart implements IPerspectiveListener,
 	@Inject
 	public void setDesignerGame(DesignerGame designerGame) {
 		this.designerGame = designerGame;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @seeorg.rifidi.designer.services.core.entities.SceneDataChangedListener#
+	 * destroySceneData(org.rifidi.designer.entities.SceneData)
+	 */
+	@Override
+	public void destroySceneData(SceneData sceneData) {
+		// TODO Auto-generated method stub
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @seeorg.rifidi.designer.services.core.entities.SceneDataChangedListener#
+	 * sceneDataChanged(org.rifidi.designer.entities.SceneData)
+	 */
+	@Override
+	public void sceneDataChanged(SceneData sceneData) {
+		// change the window title
+		Display.getCurrent().getActiveShell().setText(
+				"Rifidi Designer: " + sceneData.getName());
+		switchMode(Mode.PickMode);
 	}
 
 }

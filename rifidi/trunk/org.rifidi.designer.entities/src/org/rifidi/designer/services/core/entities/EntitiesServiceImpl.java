@@ -39,6 +39,8 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.PlatformUI;
 import org.monklypse.core.SWTDefaultImplementor;
 import org.rifidi.designer.entities.Activator;
 import org.rifidi.designer.entities.Entity;
@@ -58,6 +60,7 @@ import org.rifidi.designer.entities.rifidi.RifidiEntity;
 import org.rifidi.designer.library.EntityLibraryRegistry;
 import org.rifidi.designer.octree.CollisionOctree;
 import org.rifidi.designer.octree.RoomOctree;
+import org.rifidi.designer.services.core.world.WorldService;
 import org.rifidi.services.annotations.Inject;
 import org.rifidi.services.initializer.IInitService;
 import org.rifidi.services.initializer.exceptions.InitializationException;
@@ -118,6 +121,8 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	private SWTDefaultImplementor implementor;
 	/** Reference to the tag registry. */
 	private ITagRegistry tagRegistry;
+	/** World service reference*/
+	private WorldService worldService;
 	/**
 	 * Constructor.
 	 */
@@ -486,6 +491,11 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	 * (org.eclipse.swt.widgets.Display, org.eclipse.core.resources.IFile)
 	 */
 	public void loadScene(final Display display, final IFile file) {
+		worldService.pause();
+
+		IWorkbench wb = PlatformUI.getWorkbench();
+		wb.getProgressService();
+		
 		tagRegistry.initialize();
 		// invalidate the current sceneData
 		for (SceneDataChangedListener listener : listeners) {
@@ -1153,6 +1163,14 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	@Inject
 	public void setTagRegistry(ITagRegistry tagRegistry) {
 		this.tagRegistry = tagRegistry;
+	}
+
+	/**
+	 * @param worldService the worldService to set
+	 */
+	@Inject
+	public void setWorldService(WorldService worldService) {
+		this.worldService = worldService;
 	}
 
 }

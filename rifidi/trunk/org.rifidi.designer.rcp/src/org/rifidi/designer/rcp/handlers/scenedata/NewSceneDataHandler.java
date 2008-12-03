@@ -15,8 +15,9 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.PlatformUI;
-import org.rifidi.designer.rcp.views.view3d.View3D;
+import org.rifidi.designer.services.core.entities.SceneDataService;
+import org.rifidi.services.annotations.Inject;
+import org.rifidi.services.registry.ServiceRegistry;
 
 /**
  * Handler for creating a new scene data file.
@@ -25,11 +26,22 @@ import org.rifidi.designer.rcp.views.view3d.View3D;
  * 
  */
 public class NewSceneDataHandler extends AbstractHandler {
+	/** Reference to the scene data service. */
+	private SceneDataService sceneDataService;
+
+	/**
+	 * Constructor.
+	 */
+	public NewSceneDataHandler() {
+		ServiceRegistry.getInstance().service(this);
+	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.core.commands.AbstractHandler#execute(org.eclipse.core.commands.ExecutionEvent)
+	 * @see
+	 * org.eclipse.core.commands.AbstractHandler#execute(org.eclipse.core.commands
+	 * .ExecutionEvent)
 	 */
 	@Override
 	public Object execute(ExecutionEvent arg0) throws ExecutionException {
@@ -39,11 +51,19 @@ public class NewSceneDataHandler extends AbstractHandler {
 		int result = dialog.open();
 		if (WizardDialog.CANCEL != result) {
 			wizard.getNewLayout();
-			((View3D) PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-					.getActivePage().findView(View3D.ID)).loadScene(wizard
+			sceneDataService.loadScene(Display.getCurrent(), wizard
 					.getNewLayout());
 		}
 		return null;
+	}
+
+	/**
+	 * @param sceneDataService
+	 *            the sceneDataService to set
+	 */
+	@Inject
+	public void setSceneDataService(SceneDataService sceneDataService) {
+		this.sceneDataService = sceneDataService;
 	}
 
 }
