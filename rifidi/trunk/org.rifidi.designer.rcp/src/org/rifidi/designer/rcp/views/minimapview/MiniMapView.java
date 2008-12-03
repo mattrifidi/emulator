@@ -34,8 +34,8 @@ import org.eclipse.swt.widgets.Scale;
 import org.eclipse.ui.part.ViewPart;
 import org.rifidi.designer.rcp.GlobalProperties;
 import org.rifidi.designer.rcp.game.DesignerGame;
+import org.rifidi.designer.rcp.game.ZoomableLWJGLCamera;
 import org.rifidi.designer.rcp.views.view3d.listeners.ZoomMouseWheelListener;
-import org.rifidi.designer.services.core.camera.ZoomableLWJGLCamera;
 import org.rifidi.services.annotations.Inject;
 import org.rifidi.services.registry.ServiceRegistry;
 

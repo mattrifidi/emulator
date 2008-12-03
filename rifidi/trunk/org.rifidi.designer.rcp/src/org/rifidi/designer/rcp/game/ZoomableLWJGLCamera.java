@@ -8,7 +8,7 @@
  *  License:		Lesser GNU Public License (LGPL)
  *  http://www.opensource.org/licenses/lgpl-license.html
  */
-package org.rifidi.designer.services.core.camera;
+package org.rifidi.designer.rcp.game;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicBoolean;

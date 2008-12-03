@@ -13,7 +13,7 @@ package org.rifidi.designer.rcp.views.view3d.listeners;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseWheelListener;
 import org.eclipse.swt.opengl.GLCanvas;
-import org.rifidi.designer.services.core.camera.ZoomableLWJGLCamera;
+import org.rifidi.designer.rcp.game.ZoomableLWJGLCamera;
 
 /**
  * Listener for zooming with the mouse wheel

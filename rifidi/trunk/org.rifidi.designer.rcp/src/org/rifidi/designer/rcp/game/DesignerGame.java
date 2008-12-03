@@ -51,7 +51,6 @@ import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.SceneData.Direction;
 import org.rifidi.designer.rcp.GlobalProperties;
 import org.rifidi.designer.rcp.views.minimapview.MiniMapView;
-import org.rifidi.designer.services.core.camera.ZoomableLWJGLCamera;
 import org.rifidi.designer.services.core.collision.FieldService;
 import org.rifidi.designer.services.core.entities.EntitiesServiceImpl;
 import org.rifidi.designer.services.core.entities.SceneDataChangedListener;
