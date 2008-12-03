@@ -118,7 +118,6 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	private SWTDefaultImplementor implementor;
 	/** Reference to the tag registry. */
 	private ITagRegistry tagRegistry;
-
 	/**
 	 * Constructor.
 	 */

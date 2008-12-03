@@ -17,7 +17,6 @@ Require-Bundle: org.eclipse.ui,
  org.rifidi.ui.common,
  org.monklypse.jme2;bundle-version="1.0.0",
  org.monklypse.jme2.physics;bundle-version="1.0.0",
- org.monklypse.lwjgl;bundle-version="1.0.0",
- org.rifidi.designer.services;bundle-version="1.0.0"
+ org.monklypse.lwjgl;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy
 Eclipse-BuddyPolicy: dependent
