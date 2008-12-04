@@ -224,7 +224,7 @@
          </property>
          <property
                name="aboutText"
-               value="Thank you for using Rifidi 1.5&#x0A;You can find more information on http://www.rifidi.org.&#x0A;Please look at the docs at http://wiki.rifidi.org for a complete User&apos;s Manual.&#x0A;Or download it from http://sourceforge.net/project/showfiles.php?group_id=170933&#x0A;&#x0A;- Rifidi Team">
+               value="Thank you for using Rifidi 1.5.2&#x0A;You can find more information on http://www.rifidi.org.&#x0A;Please look at the docs at http://wiki.rifidi.org for a complete User&apos;s Manual.&#x0A;&#x0A;- Rifidi Team">
          </property>
          <property
                name="windowImages"
