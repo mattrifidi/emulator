@@ -182,7 +182,6 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 		List<VisualEntity> visuals = new ArrayList<VisualEntity>();
 		// loop through all entities
 		for (Entity entity : entities) {
-			entity.setDeleted(true);
 			// disconnect all cables
 			if (entity instanceof IGPIO) {
 				for (GPOPort port : ((IGPIO) entity).getGPOPorts()) {
@@ -394,7 +393,6 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 			 */
 			public Object call() throws Exception {
 				for (AbstractVisualProduct entity : product) {
-					entity.destroy();
 					sceneData.getSyncedEntities().remove(entity);
 					sceneData.getDefaultGroup().removeEntity(entity);
 					sceneData.getProducedEntities().removeEntity(entity);
@@ -402,6 +400,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 					nodeToEntity.remove(((VisualEntity) entity).getNode());
 					entity.getNode().removeFromParent();
 					entity.destroy();
+					entity.setDeleted(true);
 				}
 				return new Object();
 			}

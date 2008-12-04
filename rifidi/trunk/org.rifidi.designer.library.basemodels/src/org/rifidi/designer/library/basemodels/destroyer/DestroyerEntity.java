@@ -138,12 +138,13 @@ public class DestroyerEntity extends VisualEntity implements INeedsPhysics {
 				VisualEntity ent = finderService
 						.getVisualEntityByNode(collider);
 				if (ent != null) {
-					if (ent instanceof AbstractVisualProduct) {
+					if (ent instanceof AbstractVisualProduct && !ent.isDeleted()) {
+						//required to prevent the deletion action from happening more than once
+						ent.setDeleted(true);
 						List<AbstractVisualProduct> entities = new ArrayList<AbstractVisualProduct>();
 						entities.add((AbstractVisualProduct) ent);
 						productService.deleteProducts(entities);
 					}
-
 				}
 			}
 		};
