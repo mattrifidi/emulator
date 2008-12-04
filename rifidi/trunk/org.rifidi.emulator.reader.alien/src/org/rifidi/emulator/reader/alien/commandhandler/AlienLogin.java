@@ -572,7 +572,7 @@ public class AlienLogin {
 			logger.debug(i.toString());
 		}
 
-		if (argumentsList != null && !argumentsList.isEmpty()) {
+		if (argumentsList != null && argumentsList.size()==2) {
 			/* get the username and passwords as arguments */
 			if (argumentsList.get(0) != null) {
 				argUsername = (String) argumentsList.get(0);

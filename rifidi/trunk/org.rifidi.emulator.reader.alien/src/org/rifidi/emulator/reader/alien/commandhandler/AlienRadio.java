@@ -13,12 +13,10 @@ package org.rifidi.emulator.reader.alien.commandhandler;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Set;
 
 import org.rifidi.emulator.reader.alien.command.exception.AlienExceptionHandler;
 import org.rifidi.emulator.reader.command.CommandObject;
 import org.rifidi.emulator.reader.module.abstract_.AbstractReaderSharedResources;
-import org.rifidi.emulator.reader.sharedrc.radio.generic.GenericRadio;
 
 /**
  * This class contains all of the Radio handler methods for the Alien ALR9800.
@@ -438,21 +436,33 @@ public class AlienRadio {
 	 */
 	public CommandObject antennaSequence(CommandObject arg,
 			AbstractReaderSharedResources asr) {
-
+		// TODO: this can use any combination of both commas and strings, might
+		// want to
+		// think of a good way to do this
 		if (!arg.getArguments().isEmpty()) {
-			String[] splitString = ((String) arg.getArguments().get(0))
-					.split(",");
+			String temp = (String) arg.getArguments().get(0);
+			temp = temp.trim();
+			String[] splitString = null;
+			if (temp.contains(",")) {
+				splitString = (temp).split(",");
+			} else {
+				splitString = (temp).split(" ");
+			}
+			ArrayList<Integer> antennaList = new ArrayList<Integer>();
+			antennaList.add(0);
+			antennaList.add(1);
+			antennaList.add(2);
+			antennaList.add(3);
 			for (String i : splitString) {
 				try {
+					System.out.println("Parsing an int: " + i);
 					int antenna = Integer.parseInt(i);
-					GenericRadio radio = asr.getRadio();
-					Set<Integer> antennaList = radio.getAntennas().keySet();
 					if (!antennaList.contains(antenna)) {
 						String cur = arg.getCurrentQueryName();
 						ArrayList<Object> tempVal = new ArrayList<Object>();
 						tempVal.add(cur);
 						ArrayList<Object> retVal = new AlienExceptionHandler()
-								.malformedMessageError(tempVal, arg);
+								.antennaOutOfRangeError(tempVal, arg);
 						arg.setReturnValue(retVal);
 						return arg;
 					}
@@ -471,13 +481,13 @@ public class AlienRadio {
 			String antennaString = ((String) arg.getArguments().get(0))
 					.replaceAll(",", " ");
 			arg.getArguments().set(0, antennaString);
-			
+
 			HashSet<Integer> antennasToScan = new HashSet<Integer>();
-			
+
 			for (String ant : splitString) {
 				antennasToScan.add(new Integer(ant));
 			}
-			
+
 			asr.getRadio().setAntennasToScan(antennasToScan);
 		}
 

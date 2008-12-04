@@ -154,7 +154,21 @@ public class AlienExceptionHandler extends GenericExceptionHandler {
 			retVal += i.toString();
 		}
 		return this.errorFormat("Error 10: Value out of range.  Legal "
-				+ "limits are between 0 and 255.  ", retVal, obj);
+				+ "limits are between 0 and 255", retVal, obj);
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public ArrayList<Object> antennaOutOfRangeError(ArrayList<Object> arg,
+			CommandObject obj) {
+		String retVal = "";
+		for (Object i : arg) {
+			retVal += i.toString();
+		}
+		return this.errorFormat("Error 10: Value out of range.  Legal "
+				+ "limits are between 0 and 3", retVal, obj);
 	}
 
 	/* Private method that takes care of any formatting involved in the process */
