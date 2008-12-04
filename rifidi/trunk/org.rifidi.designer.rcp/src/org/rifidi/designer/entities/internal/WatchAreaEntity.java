@@ -13,6 +13,8 @@ package org.rifidi.designer.entities.internal;
 import java.util.ArrayList;
 import java.util.concurrent.Callable;
 
+import javax.xml.bind.annotation.XmlTransient;
+
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.ui.model.IWorkbenchAdapter;
 import org.rifidi.designer.entities.Entity;
@@ -49,18 +51,24 @@ import com.jmex.physics.material.Material;
 public class WatchAreaEntity extends VisualEntity implements INeedsPhysics,
 		IField, IHasSwitch, IInternalEntity, IAdaptable {
 	/** Reference to the physicsspace. */
+	@XmlTransient
 	private PhysicsSpace physicsSpace;
 	/** Stopped material state. */
+	@XmlTransient
 	private static MaterialState msStopped;
 	/** Started material state. */
+	@XmlTransient
 	private static MaterialState msStarted;
 	/** Shared alphastate. */
+	@XmlTransient
 	private static BlendState as;
 	/** Running state of this entity. */
 	private boolean running = false;
 	/** Reference to the events service. */
+	@XmlTransient
 	private EventsService eventsService;
 	/** Reference to the field service */
+	@XmlTransient
 	private FieldService fieldService;
 
 	/**

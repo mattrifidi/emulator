@@ -87,4 +87,11 @@ public class Cable {
 		this.id = id;
 	}
 	
+	/**
+	 * 
+	 */
+	public void disconnect(){
+		getSource().setCable(null);
+		getTarget().setCable(null);
+	}
 }

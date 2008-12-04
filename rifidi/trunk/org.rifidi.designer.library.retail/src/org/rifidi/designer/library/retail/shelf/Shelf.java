@@ -19,6 +19,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+import javax.xml.bind.annotation.XmlTransient;
+
 import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.interfaces.IContainer;
 import org.rifidi.designer.library.retail.Position;
@@ -43,12 +45,14 @@ public class Shelf extends VisualEntity implements IContainer {
 	/** Container for entities inside the holder. */
 	private List<VisualEntity> entities;
 	/** List of available positions. */
+	@XmlTransient
 	private List<Position> positions;
 	/** Capacity of the container. */
 	private int capacity = 9;
 	/** Number of currently stored items. */
 	private int itemCount = 0;
 	/** Model for shared meshes */
+	@XmlTransient
 	private static Node model = null;
 
 	/**

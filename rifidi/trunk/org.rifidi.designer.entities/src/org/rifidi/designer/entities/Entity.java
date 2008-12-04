@@ -14,7 +14,10 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeListenerProxy;
 import java.beans.PropertyChangeSupport;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlID;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.rifidi.designer.entities.annotations.Property;
 
@@ -24,6 +27,7 @@ import org.rifidi.designer.entities.annotations.Property;
  * @author Jochen Mader Oct 3, 2007
  * 
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 public abstract class Entity {
 
 	/**
@@ -33,10 +37,12 @@ public abstract class Entity {
 	/**
 	 * This id has to be unique inside each project.
 	 */
+	@XmlID
 	private String entityId;
 	/**
 	 * Support for monitoring property changes.
 	 */
+	@XmlTransient
 	private PropertyChangeSupport changeSupport = new PropertyChangeSupport(
 			this);
 	/**
@@ -51,7 +57,6 @@ public abstract class Entity {
 	/**
 	 * @return the entityId
 	 */
-	@XmlID
 	public String getEntityId() {
 		return entityId;
 	}

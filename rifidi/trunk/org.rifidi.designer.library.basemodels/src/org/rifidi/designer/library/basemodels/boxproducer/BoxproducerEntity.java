@@ -12,7 +12,6 @@ package org.rifidi.designer.library.basemodels.boxproducer;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.Stack;
 
@@ -22,11 +21,10 @@ import javax.xml.bind.annotation.XmlTransient;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.monklypse.core.NodeHelper;
-import org.rifidi.designer.entities.Entity;
-import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.annotations.Property;
 import org.rifidi.designer.entities.databinding.annotations.MonitoredProperties;
-import org.rifidi.designer.entities.interfaces.IProducer;
+import org.rifidi.designer.entities.interfaces.AbstractVisualProducer;
+import org.rifidi.designer.entities.interfaces.AbstractVisualProduct;
 import org.rifidi.designer.entities.interfaces.IHasSwitch;
 import org.rifidi.designer.entities.rifidi.ITagContainer;
 import org.rifidi.designer.library.basemodels.cardbox.CardboxEntity;
@@ -56,29 +54,35 @@ import com.jme.system.DisplaySystem;
  * @author Dan West
  */
 @MonitoredProperties(names = { "name" })
-public class BoxproducerEntity extends VisualEntity implements IHasSwitch, ITagContainer, IProducer {
+public class BoxproducerEntity extends AbstractVisualProducer implements
+		IHasSwitch, ITagContainer {
 
 	/** Logger for this class. */
+	@XmlTransient
 	private static Log logger = LogFactory.getLog(BoxproducerEntity.class);
 	/** Seconds per box. */
 	private float speed;
 	/** Production thread. */
+	@XmlTransient
 	private BoxproducerEntityThread thread;
 	/** State of the switch. */
 	private boolean running = false;
 	/** Is the entity paused. */
 	private boolean paused = true;
 	/** Source for shared meshes. */
+	@XmlTransient
 	private Node model;
 	/** Reference to the product service. */
+	@XmlTransient
 	private ProductService productService;
-	/** List of products this producer created. */
-	private List<VisualEntity> products = new ArrayList<VisualEntity>();
 	/** Reference to the tag registry */
+	@XmlTransient
 	private ITagRegistry tagRegistry;
 	/** Stack shared with the boxproducer thread. */
+	@XmlTransient
 	private Stack<RifidiTag> tagStack;
 	/** Set containing all available tags. */
+	@XmlIDREF
 	private Set<RifidiTag> tags;
 
 	/**
@@ -183,13 +187,15 @@ public class BoxproducerEntity extends VisualEntity implements IHasSwitch, ITagC
 		}
 
 		Set<RifidiTag> temptags = new HashSet<RifidiTag>(tags);
-		for (VisualEntity vis : products) {
+		for (AbstractVisualProduct vis : products) {
 			temptags.remove(((CardboxEntity) vis).getRifidiTag());
 		}
 		tagStack.addAll(temptags);
 		thread = new BoxproducerEntityThread(this, productService, products,
 				tagStack);
 		thread.setInterval((int) speed * 1000);
+		System.out.println("Paused: "+paused);
+		thread.setPaused(paused);
 		thread.start();
 		if (running)
 			turnOn();
@@ -246,10 +252,8 @@ public class BoxproducerEntity extends VisualEntity implements IHasSwitch, ITagC
 	public void reset() {
 		paused = true;
 		thread.setPaused(true);
-		productService.deleteProducts(new ArrayList<Entity>(thread
-				.getProducts()));
-		tagStack.clear();
-		tagStack.addAll(tags);
+		productService.deleteProducts(new ArrayList<AbstractVisualProduct>(
+				products));
 	}
 
 	/*
@@ -258,6 +262,7 @@ public class BoxproducerEntity extends VisualEntity implements IHasSwitch, ITagC
 	 * @see org.rifidi.designer.entities.Entity#pause()
 	 */
 	public void pause() {
+		paused=true;
 		if (thread != null) {
 			thread.setPaused(true);
 		}
@@ -273,7 +278,11 @@ public class BoxproducerEntity extends VisualEntity implements IHasSwitch, ITagC
 		thread.interrupt();
 		getNode().removeFromParent();
 	}
-
+	
+	/**
+	 * Used to control the running state of the producer
+	 * @param newrunning
+	 */
 	public void setRunning(boolean newrunning) {
 		running = newrunning;
 	}
@@ -291,7 +300,6 @@ public class BoxproducerEntity extends VisualEntity implements IHasSwitch, ITagC
 	/**
 	 * @return the tagRegistry
 	 */
-	@XmlTransient
 	public ITagRegistry getTagRegistry() {
 		return this.tagRegistry;
 	}
@@ -335,7 +343,7 @@ public class BoxproducerEntity extends VisualEntity implements IHasSwitch, ITagC
 	 */
 	@Override
 	public void addTags(Set<RifidiTag> tags) {
-		//remove dups
+		// remove dups
 		tags.removeAll(this.tags);
 		this.tags.addAll(tags);
 		tagStack.addAll(tags);
@@ -367,7 +375,11 @@ public class BoxproducerEntity extends VisualEntity implements IHasSwitch, ITagC
 		tagStack.removeAll(tags);
 	}
 
-	@XmlTransient
+	/**
+	 * Get a string representation of the tags this producer owns.
+	 * 
+	 * @return
+	 */
 	public String getTagList() {
 		StringBuffer buf = new StringBuffer();
 		for (RifidiTag tag : tags) {
@@ -384,7 +396,6 @@ public class BoxproducerEntity extends VisualEntity implements IHasSwitch, ITagC
 	/**
 	 * @return the tags
 	 */
-	@XmlIDREF
 	public Set<RifidiTag> getTags() {
 		return this.tags;
 	}
@@ -400,23 +411,13 @@ public class BoxproducerEntity extends VisualEntity implements IHasSwitch, ITagC
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.designer.entities.interfaces.IProducer#getProducts()
-	 */
-	@Override
-	@XmlIDREF
-	public List<VisualEntity> getProducts() {
-		return this.products;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see
-	 * org.rifidi.designer.entities.interfaces.IProducer#setProducts(java.util
-	 * .List)
+	 * org.rifidi.designer.entities.interfaces.IProducer#productDestroied(org
+	 * .rifidi.designer.entities.interfaces.IProduct)
 	 */
 	@Override
-	public void setProducts(List<VisualEntity> entities) {
-		this.products = entities;
+	public void productDestroied(AbstractVisualProduct product) {
+		products.remove(product);
+		tagStack.push(((CardboxEntity) product).getRifidiTag());
 	}
 }

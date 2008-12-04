@@ -12,6 +12,8 @@ package org.rifidi.designer.entities;
 
 import java.util.concurrent.Callable;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlTransient;
 
 import com.jme.math.Matrix3f;
@@ -25,18 +27,22 @@ import com.jme.util.GameTaskQueue;
  * @author Jochen Mader Oct 3, 2007
  * 
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 public abstract class VisualEntity extends Entity {
 	/**
 	 * Queue that gets executed in the opengl context.
 	 */
+	@XmlTransient
 	private GameTaskQueue renderQueue;
 	/**
 	 * Queue that gets executed in the update context.
 	 */
+	@XmlTransient
 	private GameTaskQueue updateQueue;
 	/**
 	 * The node that belongs to the VisualEntity.
 	 */
+	@XmlTransient
 	private Node node;
 	/**
 	 * Whether or not the entity's footprint is collidable.
@@ -59,7 +65,6 @@ public abstract class VisualEntity extends Entity {
 	/**
 	 * @return the node
 	 */
-	@XmlTransient
 	public Node getNode() {
 		return node;
 	}

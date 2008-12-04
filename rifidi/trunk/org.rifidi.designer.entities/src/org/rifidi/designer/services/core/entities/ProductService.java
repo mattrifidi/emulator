@@ -12,7 +12,7 @@ package org.rifidi.designer.services.core.entities;
 
 import java.util.List;
 
-import org.rifidi.designer.entities.Entity;
+import org.rifidi.designer.entities.interfaces.AbstractVisualProduct;
 
 /**
  * This interface is used to allow producers to create new entities while the
@@ -30,11 +30,12 @@ public interface ProductService {
 	 * 
 	 * @param product
 	 */
-	void addProduct(Entity product);
-	
+	void addProduct(AbstractVisualProduct product);
+
 	/**
 	 * Delete the given entities
+	 * 
 	 * @param product
 	 */
-	void deleteProducts(List<Entity> product);
+	void deleteProducts(List<AbstractVisualProduct> product);
 }

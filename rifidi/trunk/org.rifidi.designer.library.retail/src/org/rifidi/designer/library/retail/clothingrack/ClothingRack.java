@@ -19,6 +19,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+import javax.xml.bind.annotation.XmlTransient;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.rifidi.designer.entities.VisualEntity;
@@ -52,20 +54,25 @@ import com.jmex.physics.DynamicPhysicsNode;
  */
 public class ClothingRack extends VisualEntity implements IContainer {
 	/** Logger for this class. */
+	@XmlTransient
 	private static final Log logger = LogFactory.getLog(ClothingRack.class);
 	/** Container for entities inside the holder. */
 	private List<VisualEntity> entities;
 	/** List of available positions. */
+	@XmlTransient
 	private List<Position> positions;
 	/** Capacity of the container. */
 	private int capacity = 10;
 	/** Number of items currently in the list. */
 	private int itemCount = 0;
 	/** Model for shared meshes */
+	@XmlTransient
 	private static Node[] lod = null;
 	/** Reference to the tag registry. */
+	@XmlTransient
 	private ITagRegistry tagRegistry;
 	/** Node that contains the different lods. */
+	@XmlTransient
 	private SwitchNode switchNode;
 
 	/**
@@ -216,8 +223,7 @@ public class ClothingRack extends VisualEntity implements IContainer {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.rifidi.designer.entities.interfaces.IContainer#addVisualEntity
+	 * @see org.rifidi.designer.entities.interfaces.IContainer#addVisualEntity
 	 * (org.rifidi.designer.entities.VisualEntity)
 	 */
 	@Override
@@ -266,8 +272,7 @@ public class ClothingRack extends VisualEntity implements IContainer {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.rifidi.designer.entities.interfaces.IContainer#getVisualEntity
+	 * @see org.rifidi.designer.entities.interfaces.IContainer#getVisualEntity
 	 * ()
 	 */
 	@Override
@@ -291,8 +296,7 @@ public class ClothingRack extends VisualEntity implements IContainer {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.rifidi.designer.entities.interfaces.IContainer#getVisualEntity
+	 * @see org.rifidi.designer.entities.interfaces.IContainer#getVisualEntity
 	 * (org.rifidi.designer.entities.VisualEntity)
 	 */
 	@Override
@@ -310,8 +314,7 @@ public class ClothingRack extends VisualEntity implements IContainer {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * org.rifidi.designer.entities.interfaces.IContainer#getVisualEntitySet
-	 * ()
+	 * org.rifidi.designer.entities.interfaces.IContainer#getVisualEntitySet ()
 	 */
 	@Override
 	public List<VisualEntity> getVisualEntityList() {
@@ -331,8 +334,7 @@ public class ClothingRack extends VisualEntity implements IContainer {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.rifidi.designer.entities.interfaces.IContainer#accepts(org
+	 * @see org.rifidi.designer.entities.interfaces.IContainer#accepts(org
 	 * .rifidi.designer.entities.VisualEntity)
 	 */
 	@Override

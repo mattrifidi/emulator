@@ -14,13 +14,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
-import org.rifidi.designer.entities.Entity;
 import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.databinding.annotations.MonitoredProperties;
+import org.rifidi.designer.entities.interfaces.AbstractVisualProduct;
 import org.rifidi.designer.entities.interfaces.INeedsPhysics;
-import org.rifidi.designer.services.core.entities.EntitiesService;
 import org.rifidi.designer.services.core.entities.FinderService;
+import org.rifidi.designer.services.core.entities.ProductService;
 import org.rifidi.services.annotations.Inject;
 
 import com.jme.bounding.BoundingBox;
@@ -49,14 +50,19 @@ import com.jmex.physics.material.Material;
 @XmlRootElement
 public class DestroyerEntity extends VisualEntity implements INeedsPhysics {
 	/** Infrared trigger. */
+	@XmlTransient
 	private StaticPhysicsNode triggerSpace = null;
 	/** Reference to the physics space. */
+	@XmlTransient
 	private PhysicsSpace physicsSpace;
 	/** Reference to the sollision handler. */
+	@XmlTransient
 	private InputHandler collisionHandler;
-	/** Reference to the entities service. */
-	private EntitiesService entitiesService;
+	/** Reference to the products service. */
+	@XmlTransient
+	private ProductService productService;
 	/** Reference to the finder service. */
+	@XmlTransient
 	private FinderService finderService;
 
 	/**
@@ -132,9 +138,12 @@ public class DestroyerEntity extends VisualEntity implements INeedsPhysics {
 				VisualEntity ent = finderService
 						.getVisualEntityByNode(collider);
 				if (ent != null) {
-					List<Entity> entities = new ArrayList<Entity>();
-					entities.add(ent);
-					entitiesService.deleteEntities(entities);
+					if (ent instanceof AbstractVisualProduct) {
+						List<AbstractVisualProduct> entities = new ArrayList<AbstractVisualProduct>();
+						entities.add((AbstractVisualProduct) ent);
+						productService.deleteProducts(entities);
+					}
+
 				}
 			}
 		};
@@ -196,20 +205,20 @@ public class DestroyerEntity extends VisualEntity implements INeedsPhysics {
 	}
 
 	/**
-	 * @param entitiesService
-	 *            the entitiesService to set
-	 */
-	@Inject
-	public void setEntitiesService(EntitiesService entitiesService) {
-		this.entitiesService = entitiesService;
-	}
-
-	/**
 	 * @param finderService
 	 *            the finderService to set
 	 */
 	@Inject
 	public void setFinderService(FinderService finderService) {
 		this.finderService = finderService;
+	}
+
+	/**
+	 * @param productService
+	 *            the productService to set
+	 */
+	@Inject
+	public void setProductService(ProductService productService) {
+		this.productService = productService;
 	}
 }

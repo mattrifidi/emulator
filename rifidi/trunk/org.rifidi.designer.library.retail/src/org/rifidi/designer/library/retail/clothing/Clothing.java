@@ -15,6 +15,8 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import javax.xml.bind.annotation.XmlTransient;
+
 import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.interfaces.INeedsPhysics;
 
@@ -36,12 +38,16 @@ import com.jmex.physics.PhysicsSpace;
  */
 public class Clothing extends VisualEntity implements INeedsPhysics {
 	/** Reference to the current physics space. */
+	@XmlTransient
 	private PhysicsSpace physicsSpace;
 	/** Model for shared meshes */
+	@XmlTransient
 	private static Node model = null;
 	/** Translation given on creation, ignored later on. */
+	@XmlTransient
 	private Vector3f startTranslation;
 	/** Rotation given on creation, ignored later on. */
+	@XmlTransient
 	private Quaternion startRotation;
 
 	/*

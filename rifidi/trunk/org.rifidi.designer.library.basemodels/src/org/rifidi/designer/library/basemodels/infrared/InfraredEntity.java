@@ -15,6 +15,7 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.rifidi.designer.entities.Entity;
 import org.rifidi.designer.entities.VisualEntity;
@@ -24,8 +25,8 @@ import org.rifidi.designer.entities.gpio.GPOPort;
 import org.rifidi.designer.entities.gpio.IGPIO;
 import org.rifidi.designer.entities.gpio.GPOPort.State;
 import org.rifidi.designer.entities.interfaces.IField;
-import org.rifidi.designer.entities.interfaces.INeedsPhysics;
 import org.rifidi.designer.entities.interfaces.IHasSwitch;
+import org.rifidi.designer.entities.interfaces.INeedsPhysics;
 import org.rifidi.designer.services.core.collision.FieldService;
 import org.rifidi.services.annotations.Inject;
 
@@ -58,12 +59,14 @@ import com.jmex.physics.material.Material;
 public class InfraredEntity extends VisualEntity implements IHasSwitch,
 		INeedsPhysics, IGPIO, IField {
 	/** Reference to the current physicsspace */
+	@XmlTransient
 	private PhysicsSpace physicsSpace;
 	/** Running state of the entity. */
 	private boolean running;
 	/** Output port of the entity */
 	private GPOPort port;
 	/** Reference to the field service. */
+	@XmlTransient
 	private FieldService fieldService;
 
 	/**

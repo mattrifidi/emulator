@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Stack;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -72,32 +73,43 @@ import com.jmex.physics.material.Material;
 public class PusharmEntity extends VisualEntity implements IHasSwitch, ITrigger,
 		INeedsPhysics, IGPIO, PropertyChangeListener {
 	/** Logger for this class. */
+	@XmlTransient
 	private static Log logger = LogFactory.getLog(PusharmEntity.class);
 	/** Speed of the pusharm. */
 	private float speed;
 	/** Transformer for the arm movement. */
+	@XmlTransient
 	private SpatialTransformer st;
 	/** Not extended position. */
+	@XmlTransient
 	private Vector3f minpos = new Vector3f(-1.75f, 6, 0);
 	/** Extended position. */
+	@XmlTransient
 	private Vector3f maxpos = minpos.add(new Vector3f(-4, 0, 0));
 	/** IHasSwitch state. */
 	private boolean running = false;
 	/** Paused state. */
 	private boolean paused = true;
 	/** Infrared trigger. */
+	@XmlTransient
 	private StaticPhysicsNode triggerSpace = null;
 	/** Physics of the push arm. */
+	@XmlTransient
 	private StaticPhysicsNode armPhysics = null;
 	/** Reference to the physics space. */
+	@XmlTransient
 	private PhysicsSpace physicsSpace;
 	/** Reference to the sollision handler. */
+	@XmlTransient
 	private InputHandler collisionHandler;
 	/** Stack for activation signals. */
+	@XmlTransient
 	private Stack<Boolean> activationStack;
 	/** Shared node for the body geometry. */
+	@XmlTransient
 	private static Node sharedbodyNode;
 	/** Shared node for the arm geometry. */
+	@XmlTransient
 	private static Node sharedarmNode;
 	/** GPI for the pusher. */
 	private GPIPort port;
@@ -266,6 +278,7 @@ public class PusharmEntity extends VisualEntity implements IHasSwitch, ITrigger,
 			turnOn();
 	}
 
+	@XmlTransient
 	private Node oldCol = null;
 
 	private void prepare() {

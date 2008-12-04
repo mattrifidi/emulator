@@ -16,6 +16,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -62,22 +63,29 @@ import com.jmex.physics.material.Material;
 public class ConveyorEntity extends VisualEntity implements IHasSwitch,
 		INeedsPhysics {
 	/** Logger for this class. */
+	@XmlTransient
 	private static Log logger = LogFactory.getLog(ConveyorEntity.class);
 	/** Alphastate for the directional pointer. */
+	@XmlTransient
 	private BlendState basicTrans = null;
 	/** IHasSwitch status on/off. */
 	private boolean active = false;
 	/** Speed in feet per second. */
 	private float speed = 0;
 	/** Model for shared meshes */
+	@XmlTransient
 	private static Node[] lod = null;
 	/** Material for the rollers */
+	@XmlTransient
 	private Material rollerMaterial = null;
 	/** Reference to the physics space. */
+	@XmlTransient
 	private PhysicsSpace physicsSpace;
 	/** Node that contains the different lods. */
+	@XmlTransient
 	private SwitchNode switchNode;
 	/** Quad that indicates the movement direction of the conveyor. */
+	@XmlTransient
 	private Quad quad;
 
 	/**

@@ -13,7 +13,7 @@ package org.rifidi.designer.library.basemodels.boxproducer;
 import java.util.List;
 import java.util.Stack;
 
-import org.rifidi.designer.entities.VisualEntity;
+import org.rifidi.designer.entities.interfaces.AbstractVisualProduct;
 import org.rifidi.designer.library.basemodels.cardbox.CardboxEntity;
 import org.rifidi.designer.services.core.entities.ProductService;
 import org.rifidi.services.tags.impl.RifidiTag;
@@ -38,7 +38,7 @@ public class BoxproducerEntityThread extends Thread {
 	/** Production intervall length. */
 	private Integer interval;
 	/** Produced entities. */
-	private List<VisualEntity> products;
+	private List<AbstractVisualProduct> products;
 	/** Reference to the product service. */
 	private ProductService productService;
 	/** Stack for RifidiTags, shared with the entity. */
@@ -57,8 +57,8 @@ public class BoxproducerEntityThread extends Thread {
 	 * 
 	 */
 	public BoxproducerEntityThread(BoxproducerEntity entity,
-			ProductService productService, List<VisualEntity> products,
-			Stack<RifidiTag> tagStack) {
+			ProductService productService,
+			List<AbstractVisualProduct> products, Stack<RifidiTag> tagStack) {
 		super();
 		this.entity = entity;
 		this.products = products;
@@ -79,6 +79,7 @@ public class BoxproducerEntityThread extends Thread {
 			if (!paused && !tagStack.isEmpty()) {
 				RifidiTag name = tagStack.pop();
 				CardboxEntity ca = new CardboxEntity();
+				ca.setProducer(entity);
 				ca.setBaseRotation(slightRotMtx);
 				ca.setRifidiTag(name);
 				Vector3f startPos = (Vector3f) entity.getNode()
@@ -130,13 +131,6 @@ public class BoxproducerEntityThread extends Thread {
 	 */
 	public void setPaused(boolean paused) {
 		this.paused = paused;
-	}
-
-	/**
-	 * @return the products
-	 */
-	public List<VisualEntity> getProducts() {
-		return products;
 	}
 
 }

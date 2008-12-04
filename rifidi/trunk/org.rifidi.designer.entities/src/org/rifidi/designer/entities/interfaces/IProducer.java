@@ -12,24 +12,28 @@ package org.rifidi.designer.entities.interfaces;
 
 import java.util.List;
 
-import org.rifidi.designer.entities.VisualEntity;
-
 /**
  * Interface for entites that produce other visual entities.
  * 
  * @author Jochen Mader - jochen@pramari.com - Nov 27, 2008
  * 
  */
-public interface IProducer {
+@SuppressWarnings("unchecked")
+public interface IProducer<T extends IProduct> {
 	/**
-	 * Get the list of produced entites
+	 * Get the list of produced entites.
 	 * @return
 	 */
-	public List<VisualEntity> getProducts();
+	public List<T> getProducts();
 	
 	/**
 	 * Set the list of produced entites
 	 * @param entities
 	 */
-	public void setProducts(List<VisualEntity> entities);
+	public void setProducts(List<T> entities);
+	
+	/**
+	 * Return a product to the producer.
+	 */
+	public void productDestroied(T product);
 }

@@ -69,51 +69,58 @@ import com.jmex.physics.material.Material;
 public class AntennaFieldEntity extends VisualEntity implements IHasSwitch,
 		INeedsPhysics, IField, IChildEntity {
 	/** Logger for this class. */
+	@XmlTransient
 	private static Log logger = LogFactory.getLog(AntennaFieldEntity.class);
 	/**
 	 * The entity is the key and the value is the tag associated with the
 	 * entity.
 	 */
+	@XmlTransient
 	private Map<Entity, RifidiTag> seenTags = new HashMap<Entity, RifidiTag>();
 	/** Map of entities and a timestamp when they were lakst seen. */
+	@XmlTransient
 	private Map<Entity, Long> seen = new HashMap<Entity, Long>();
 	/** interface used for communicating with the reader */
+	@XmlTransient
 	private ReaderModuleManagerInterface readerInterface;
 	/** this antenna's index */
 	private int antennaNum;
 	/** True if the scene is in running state. */
 	private boolean running;
 	/** Reference to the physics space */
+	@XmlTransient
 	private PhysicsSpace physicsSpace;
 	/** Initial translation of the antenna. */
+	@XmlTransient
 	private Vector3f baseTranslation;
 	/** Initial rotation of the antenna. */
+	@XmlTransient
 	private Vector3f baseRotation;
 	/** The entity this antenna is attached to. */
+	@XmlIDREF
 	private VisualEntity parent;
 	/** The factor by which the field gets resized. */
+	@XmlTransient
 	private float factor;
 	/** Transparency states. */
+	@XmlTransient
 	private BlendState as;
+	@XmlTransient
 	private MaterialState ms;
-
 	/** Thread for checking the field for entites in it. */
+	@XmlTransient
 	private AntennaFieldThread antennaFieldThread;
-	/**
-	 * Reference to the events service.
-	 */
+	/** Reference to the events service. */
+	@XmlTransient
 	private EventsService eventsService;
-	/**
-	 * Reference to the field service.
-	 */
+	/** Reference to the field service. */
+	@XmlTransient
 	private FieldService fieldService;
-	/**
-	 * LOD node.
-	 */
+	/** LOD node. */
+	@XmlTransient
 	private SwitchNode switchNode;
-	/**
-	 * The shared model we create the shared meshes from.
-	 */
+	/** The shared model we create the shared meshes from. */
+	@XmlTransient
 	private static Node model = null;
 
 	/**
@@ -409,7 +416,6 @@ public class AntennaFieldEntity extends VisualEntity implements IHasSwitch,
 	 * .designer.entities.VisualEntity)
 	 */
 	@Override
-	@XmlIDREF
 	public void setParent(VisualEntity entity) {
 		this.parent = entity;
 	}
@@ -499,7 +505,6 @@ public class AntennaFieldEntity extends VisualEntity implements IHasSwitch,
 	 * @param readerInterface
 	 *            the readerInterface to set
 	 */
-	@XmlTransient
 	public void setReaderInterface(ReaderModuleManagerInterface readerInterface) {
 		this.readerInterface = readerInterface;
 	}

@@ -21,8 +21,6 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -33,9 +31,9 @@ import org.rifidi.designer.entities.RMIManager;
 import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.annotations.Property;
 import org.rifidi.designer.entities.databinding.annotations.MonitoredProperties;
-import org.rifidi.designer.entities.gpio.IGPIO;
 import org.rifidi.designer.entities.gpio.GPIPort;
 import org.rifidi.designer.entities.gpio.GPOPort;
+import org.rifidi.designer.entities.gpio.IGPIO;
 import org.rifidi.designer.entities.gpio.GPOPort.State;
 import org.rifidi.designer.entities.grouping.IParentEntity;
 import org.rifidi.designer.entities.interfaces.IHasSwitch;
@@ -67,9 +65,9 @@ import com.jme.util.export.binary.BinaryImporter;
  */
 @MonitoredProperties(names = { "name" })
 @XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
-public class GateEntity extends VisualEntity implements RifidiEntity, IHasSwitch,
-		IParentEntity, IGPIO, PropertyChangeListener, GPOEventCallbackInterface {
+public class GateEntity extends VisualEntity implements RifidiEntity,
+		IHasSwitch, IParentEntity, IGPIO, PropertyChangeListener,
+		GPOEventCallbackInterface {
 
 	/** logger for this class. */
 	@XmlTransient
@@ -379,7 +377,7 @@ public class GateEntity extends VisualEntity implements RifidiEntity, IHasSwitch
 		}
 		rmimanager.removeReader(reader.getReaderName());
 	}
-	
+
 	public void setRMIManager(RMIManager rmimanager) {
 		this.rmimanager = rmimanager;
 	}

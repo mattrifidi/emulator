@@ -13,15 +13,16 @@ package org.rifidi.designer.library.basemodels.cardbox;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.concurrent.Callable;
 
 import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlTransient;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.annotations.Property;
 import org.rifidi.designer.entities.databinding.annotations.MonitoredProperties;
+import org.rifidi.designer.entities.interfaces.AbstractVisualProduct;
 import org.rifidi.designer.entities.interfaces.INeedsPhysics;
 import org.rifidi.designer.entities.rifidi.ITagged;
 import org.rifidi.services.tags.impl.RifidiTag;
@@ -45,19 +46,25 @@ import com.jmex.physics.PhysicsSpace;
  * 
  */
 @MonitoredProperties(names = { "name" })
-public class CardboxEntity extends VisualEntity implements INeedsPhysics,
-		ITagged {
+public class CardboxEntity extends AbstractVisualProduct implements
+		INeedsPhysics, ITagged {
 	/** logger for this class. */
+	@XmlTransient
 	private static Log logger = LogFactory.getLog(CardboxEntity.class);
 	/** Startposition. */
+	@XmlTransient
 	private Vector3f startPos = new Vector3f(0, 10, 0);
 	/** Roatation after creation. */
+	@XmlTransient
 	private Matrix3f baseRotation;
 	/** Model for shared meshes. */
+	@XmlTransient
 	private static Node model;
 	/** Reference to the physics space. */
+	@XmlTransient
 	private PhysicsSpace physicsSpace;
 	/** Tag associated with this entity. */
+	@XmlIDREF
 	private RifidiTag rifidiTag;
 
 	/**
@@ -113,7 +120,7 @@ public class CardboxEntity extends VisualEntity implements INeedsPhysics,
 		_node.setCullHint(CullHint.Always);
 		getNode().attachChild(_node);
 		setCollides(false);
-		setName("Cardbox-"+getEntityId());
+		setName("Cardbox-" + getEntityId());
 	}
 
 	/*
@@ -143,7 +150,6 @@ public class CardboxEntity extends VisualEntity implements INeedsPhysics,
 	/**
 	 * @return the startPos
 	 */
-	@XmlTransient
 	public Vector3f getStartPos() {
 		return startPos;
 	}
@@ -163,8 +169,20 @@ public class CardboxEntity extends VisualEntity implements INeedsPhysics,
 	 */
 	@Override
 	public void destroy() {
-		((DynamicPhysicsNode) getNode()).setActive(false);
-		getNode().removeFromParent();
+		super.destroy();
+		update(new Callable<Object>(){
+
+			/* (non-Javadoc)
+			 * @see java.util.concurrent.Callable#call()
+			 */
+			@Override
+			public Object call() throws Exception {
+				((DynamicPhysicsNode) getNode()).setActive(false);
+				getNode().removeFromParent();
+				return null;
+			}
+			
+		});
 	}
 
 	/*
@@ -223,7 +241,6 @@ public class CardboxEntity extends VisualEntity implements INeedsPhysics,
 	 * @see org.rifidi.designer.entities.interfaces.ITagged#getRifidiTag()
 	 */
 	@Override
-	@XmlIDREF
 	public RifidiTag getRifidiTag() {
 		return rifidiTag;
 	}
@@ -240,16 +257,26 @@ public class CardboxEntity extends VisualEntity implements INeedsPhysics,
 		this.rifidiTag = tag;
 	}
 
+	/**
+	 * Required to be used by the properties view.
+	 * 
+	 * @param tagID
+	 */
 	@Property(displayName = "Tag", description = "tag assigned to this box", readonly = true, unit = "")
-	public void setTagID(String tagID){
-		
+	public void setTagID(String tagID) {
+
 	}
-	
-	@XmlTransient
-	public String getTagID(){
-		if(rifidiTag!=null){
+
+	/**
+	 * String representation of the tag associated with this box. May be null.
+	 * 
+	 * @return
+	 */
+	public String getTagID() {
+		if (rifidiTag != null) {
 			return rifidiTag.toString();
 		}
 		return "";
 	}
+
 }

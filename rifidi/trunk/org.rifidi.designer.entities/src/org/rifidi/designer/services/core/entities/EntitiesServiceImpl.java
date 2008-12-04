@@ -49,9 +49,12 @@ import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.SceneData.Direction;
 import org.rifidi.designer.entities.gpio.GPIPort;
 import org.rifidi.designer.entities.gpio.GPOPort;
+import org.rifidi.designer.entities.gpio.IGPIO;
 import org.rifidi.designer.entities.grouping.EntityGroup;
 import org.rifidi.designer.entities.grouping.IChildEntity;
 import org.rifidi.designer.entities.grouping.IParentEntity;
+import org.rifidi.designer.entities.interfaces.AbstractVisualProducer;
+import org.rifidi.designer.entities.interfaces.AbstractVisualProduct;
 import org.rifidi.designer.entities.interfaces.IContainer;
 import org.rifidi.designer.entities.interfaces.IInternalEntity;
 import org.rifidi.designer.entities.interfaces.INeedsPhysics;
@@ -121,8 +124,9 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	private SWTDefaultImplementor implementor;
 	/** Reference to the tag registry. */
 	private ITagRegistry tagRegistry;
-	/** World service reference*/
+	/** World service reference */
 	private WorldService worldService;
+
 	/**
 	 * Constructor.
 	 */
@@ -179,6 +183,15 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 		// loop through all entities
 		for (Entity entity : entities) {
 			entity.setDeleted(true);
+			// disconnect all cables
+			if (entity instanceof IGPIO) {
+				for (GPOPort port : ((IGPIO) entity).getGPOPorts()) {
+					port.getCable().disconnect();
+				}
+				for (GPIPort port : ((IGPIO) entity).getGPIPorts()) {
+					port.getCable().disconnect();
+				}
+			}
 			// get the visual ones
 			if (entity instanceof VisualEntity) {
 				visuals.add((VisualEntity) entity);
@@ -348,11 +361,11 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * org.rifidi.services.registry.core.entities.ProductService#addProduct(
-	 * org.rifidi.designer.entities.Entity)
+	 * org.rifidi.designer.services.core.entities.ProductService#addProduct(
+	 * org.rifidi.designer.entities.interfaces.AbstractVisualProduct)
 	 */
 	@Override
-	public void addProduct(final Entity product) {
+	public void addProduct(final AbstractVisualProduct product) {
 		sceneData.getEntityNames().add(product.getName());
 		initEntity(product, sceneData, true);
 		sceneData.getSyncedEntities().add(product);
@@ -371,7 +384,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	 * (java.util.List)
 	 */
 	@Override
-	public void deleteProducts(final List<Entity> product) {
+	public void deleteProducts(final List<AbstractVisualProduct> product) {
 		implementor.update(new Callable<Object>() {
 
 			/*
@@ -380,16 +393,15 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 			 * @see java.util.concurrent.Callable#call()
 			 */
 			public Object call() throws Exception {
-				for (Entity entity : product) {
+				for (AbstractVisualProduct entity : product) {
 					entity.destroy();
 					sceneData.getSyncedEntities().remove(entity);
 					sceneData.getDefaultGroup().removeEntity(entity);
 					sceneData.getProducedEntities().removeEntity(entity);
 					sceneData.getEntityNames().remove(entity.getName());
-					if (entity instanceof VisualEntity) {
-						nodeToEntity.remove(((VisualEntity) entity).getNode());
-						((VisualEntity) entity).getNode().removeFromParent();
-					}
+					nodeToEntity.remove(((VisualEntity) entity).getNode());
+					entity.getNode().removeFromParent();
+					entity.destroy();
 				}
 				return new Object();
 			}
@@ -495,7 +507,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 
 		IWorkbench wb = PlatformUI.getWorkbench();
 		wb.getProgressService();
-		
+
 		tagRegistry.initialize();
 		// invalidate the current sceneData
 		for (SceneDataChangedListener listener : listeners) {
@@ -752,9 +764,12 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 		}
 		ServiceRegistry.getInstance().service(entity);
 		if (entity instanceof IProducer) {
-			List<Entity> prods = new ArrayList<Entity>();
-			prods.addAll(((IProducer) entity).getProducts());
-			sceneData.getProducedEntities().addEntities(prods);
+			for (AbstractVisualProduct prod : ((AbstractVisualProducer) entity)
+					.getProducts()) {
+				if (prod instanceof Entity) {
+					sceneData.getProducedEntities().addEntity((Entity) prod);
+				}
+			}
 		}
 		// do custom initialization
 		try {
@@ -1097,8 +1112,8 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 							.isVisible())) {
 				sceneData.getDefaultGroup().addEntity(newentity);
 			}
-			
-			//inform listeners
+
+			// inform listeners
 			if (listener != null) {
 				sceneData.getDisplay().asyncExec(new Runnable() {
 
@@ -1168,7 +1183,8 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	}
 
 	/**
-	 * @param worldService the worldService to set
+	 * @param worldService
+	 *            the worldService to set
 	 */
 	@Inject
 	public void setWorldService(WorldService worldService) {
