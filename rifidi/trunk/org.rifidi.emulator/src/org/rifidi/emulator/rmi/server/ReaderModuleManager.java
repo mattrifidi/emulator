@@ -140,6 +140,15 @@ public class ReaderModuleManager implements ReaderModuleManagerInterface {
 	public boolean getGPOStatus(int GPOPort) throws Exception {
 		return reader.getSharedResources().getGpioController().getGPOState(GPOPort);
 	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.rifidi.emulator.rmi.server.ReaderModuleManagerInterface#getGPIStatus(int)
+	 */
+	@Override
+	public boolean getGPIStatus(int GPIPort) throws Exception {
+		return reader.getSharedResources().getGpioController().getGPIState(GPIPort);
+	}
 
 	/*
 	 * (non-Javadoc)

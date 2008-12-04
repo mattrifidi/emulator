@@ -146,6 +146,15 @@ public interface ReaderModuleManagerInterface {
 	 * @throws Exception
 	 */
 	public boolean getGPOStatus(int GPOPort) throws Exception;
+	
+	/**
+	 * Returns a boolean as to the status of the given GPI port. True if the
+	 * port is currently high, false if the port is currently low.
+	 * 
+	 * @param gpi
+	 * @throws Exception
+	 */
+	public boolean getGPIStatus(int GPIPort) throws Exception;
 
 	/**
 	 * Get the GeneralReaderPropertyHolder describing the Reader startup
