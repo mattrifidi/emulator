@@ -8,13 +8,12 @@
  *  License:		Lesser GNU Public License (LGPL)
  *  http://www.opensource.org/licenses/lgpl-license.html
  */
-package org.rifidi.designer.library.basemodels.boxproducer;
+package org.rifidi.designer.library.basemodels.boxproducercont;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.Stack;
 
 import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlTransient;
@@ -58,17 +57,18 @@ import com.jme.system.DisplaySystem;
  * @author Dan West
  */
 @MonitoredProperties(names = { "name" })
-public class BoxproducerEntity extends AbstractVisualProducer implements
-		IHasSwitch, ITagContainer, IEntityObservable {
+public class BoxproducerContinuousEntity extends AbstractVisualProducer
+		implements IHasSwitch, ITagContainer, IEntityObservable {
 
 	/** Logger for this class. */
 	@XmlTransient
-	private static Log logger = LogFactory.getLog(BoxproducerEntity.class);
+	private static Log logger = LogFactory
+			.getLog(BoxproducerContinuousEntity.class);
 	/** Seconds per box. */
 	private float speed;
 	/** Production thread. */
 	@XmlTransient
-	private BoxproducerEntityThread thread;
+	private BoxproducerContinuousEntityThread thread;
 	/** State of the switch. */
 	private boolean running = false;
 	/** Is the entity paused. */
@@ -82,22 +82,20 @@ public class BoxproducerEntity extends AbstractVisualProducer implements
 	/** Reference to the tag registry */
 	@XmlTransient
 	private ITagRegistry tagRegistry;
-	/** Stack shared with the boxproducer thread. */
-	@XmlTransient
-	private Stack<RifidiTag> tagStack;
 	/** Set containing all available tags. */
 	@XmlIDREF
 	private List<RifidiTag> tags;
-
+	@XmlTransient
+	private List<RifidiTag> sharedtags;
 	/**
 	 * Constructor
 	 */
 	@SuppressWarnings("unchecked")
-	public BoxproducerEntity() {
+	public BoxproducerContinuousEntity() {
 		this.speed = 4;
-		this.tagStack = new Stack<RifidiTag>();
 		this.tags = new WritableList();
-		setName("Continuous Boxproducer");
+		sharedtags = new ArrayList<RifidiTag>();
+		setName("Batch Boxproducer");
 	}
 
 	/*
@@ -195,8 +193,8 @@ public class BoxproducerEntity extends AbstractVisualProducer implements
 
 		logger.debug(NodeHelper.printNodeHierarchy(getNode(), 3));
 
-		thread = new BoxproducerEntityThread(this, productService, products,
-				tagStack);
+		thread = new BoxproducerContinuousEntityThread(this, productService,
+				products, sharedtags);
 		thread.setInterval((int) speed * 1000);
 		thread.start();
 
@@ -219,12 +217,12 @@ public class BoxproducerEntity extends AbstractVisualProducer implements
 		for (AbstractVisualProduct vis : products) {
 			temptags.remove(((CardboxEntity) vis).getRifidiTag());
 		}
-		tagStack.addAll(temptags);
-		thread = new BoxproducerEntityThread(this, productService, products,
-				tagStack);
+		thread = new BoxproducerContinuousEntityThread(this, productService,
+				products, sharedtags);
 		thread.setInterval((int) speed * 1000);
-		System.out.println("Paused: " + paused);
 		thread.setPaused(paused);
+		sharedtags.clear();
+		sharedtags.addAll(tags);
 		thread.start();
 		if (running)
 			turnOn();
@@ -376,7 +374,8 @@ public class BoxproducerEntity extends AbstractVisualProducer implements
 		// remove dups
 		tags.removeAll(this.tags);
 		this.tags.addAll(tags);
-		tagStack.addAll(tags);
+		sharedtags.clear();
+		sharedtags.addAll(tags);
 	}
 
 	/*
@@ -389,7 +388,8 @@ public class BoxproducerEntity extends AbstractVisualProducer implements
 	@Override
 	public void removeTag(RifidiTag tag) {
 		this.tags.remove(tag);
-		tagStack.remove(tag);
+		sharedtags.clear();
+		sharedtags.addAll(tags);
 	}
 
 	/*
@@ -402,7 +402,8 @@ public class BoxproducerEntity extends AbstractVisualProducer implements
 	@Override
 	public void removeTags(Set<RifidiTag> tags) {
 		this.tags.removeAll(tags);
-		tagStack.removeAll(tags);
+		sharedtags.clear();
+		sharedtags.addAll(tags);
 	}
 
 	/**
@@ -430,14 +431,6 @@ public class BoxproducerEntity extends AbstractVisualProducer implements
 		return this.tags;
 	}
 
-	/**
-	 * @param tags
-	 *            the tags to set
-	 */
-	public void setTags(List<RifidiTag> tags) {
-		this.tags = tags;
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -448,7 +441,6 @@ public class BoxproducerEntity extends AbstractVisualProducer implements
 	@Override
 	public void productDestroied(AbstractVisualProduct product) {
 		products.remove(product);
-		tagStack.push(((CardboxEntity) product).getRifidiTag());
 	}
 
 }

@@ -59,6 +59,7 @@ import org.rifidi.designer.entities.interfaces.IContainer;
 import org.rifidi.designer.entities.interfaces.IInternalEntity;
 import org.rifidi.designer.entities.interfaces.INeedsPhysics;
 import org.rifidi.designer.entities.interfaces.IProducer;
+import org.rifidi.designer.entities.interfaces.IProduct;
 import org.rifidi.designer.entities.rifidi.RifidiEntity;
 import org.rifidi.designer.library.EntityLibraryRegistry;
 import org.rifidi.designer.octree.CollisionOctree;
@@ -666,7 +667,9 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 					if (entity instanceof VisualEntity) {
 						nodeToEntity.put(((VisualEntity) entity).getNode(),
 								(VisualEntity) entity);
-						collisionOctree.insertEntity((VisualEntity) entity);
+						if(!(entity instanceof IProduct)){
+							collisionOctree.insertEntity((VisualEntity) entity);	
+						}
 					}
 				}
 				monitor.worked(60);

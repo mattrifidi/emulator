@@ -7,6 +7,7 @@ import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 import org.rifidi.designer.library.basemodels.boxproducer.BoxproducerEntity;
+import org.rifidi.designer.library.basemodels.boxproducercont.BoxproducerContinuousEntity;
 import org.rifidi.designer.library.basemodels.cardbox.CardboxEntity;
 import org.rifidi.designer.library.basemodels.conveyor.ConveyorEntity;
 import org.rifidi.designer.library.basemodels.destroyer.DestroyerEntity;
@@ -87,6 +88,8 @@ public class Activator extends AbstractUIPlugin {
 		reg.put(ConveyorEntity.class.getName(), imageDescriptorFromPlugin(
 				PLUGIN_ID, iconPath + "conveyor.png"));
 		reg.put(BoxproducerEntity.class.getName(), imageDescriptorFromPlugin(
+				PLUGIN_ID, iconPath + "boxproducer.png"));
+		reg.put(BoxproducerContinuousEntity.class.getName(), imageDescriptorFromPlugin(
 				PLUGIN_ID, iconPath + "boxproducer.png"));
 		reg.put(PusharmEntity.class.getName(), imageDescriptorFromPlugin(
 				PLUGIN_ID, iconPath + "pusher.png"));

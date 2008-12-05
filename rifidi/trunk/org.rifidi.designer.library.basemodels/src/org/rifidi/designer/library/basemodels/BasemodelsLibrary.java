@@ -19,6 +19,7 @@ import org.rifidi.designer.library.EntityLibraryReference;
 import org.rifidi.designer.library.FloorElement;
 import org.rifidi.designer.library.basemodels.antennafield.AntennaFieldEntity;
 import org.rifidi.designer.library.basemodels.boxproducer.BoxproducerEntity;
+import org.rifidi.designer.library.basemodels.boxproducercont.BoxproducerContinuousEntity;
 import org.rifidi.designer.library.basemodels.cardbox.CardboxEntity;
 import org.rifidi.designer.library.basemodels.conveyor.ConveyorEntity;
 import org.rifidi.designer.library.basemodels.destroyer.DestroyerEntity;
@@ -121,17 +122,29 @@ public class BasemodelsLibrary implements EntityLibrary {
 		infraredRef.setEntityClass(InfraredEntity.class);
 		infraredRef.setHidden(false);
 		library.add(infraredRef);
+		
 		EntityLibraryReference prodRef = new EntityLibraryReference();
 		prodRef.setId(BoxproducerEntity.class.getName());
 		prodRef.setImageDescriptor(Activator.getDefault().getImageRegistry()
 				.getDescriptor(BoxproducerEntity.class.getName()));
 		prodRef.setLibrary(BasemodelsLibrary.class);
-		prodRef.setName("Producer");
+		prodRef.setName("Batch Producer");
 		prodRef.setWizard(null);
 		prodRef.setEntityClass(BoxproducerEntity.class);
 		prodRef.setHidden(false);
 		library.add(prodRef);
 
+		EntityLibraryReference prodCont = new EntityLibraryReference();
+		prodCont.setId(BoxproducerEntity.class.getName());
+		prodCont.setImageDescriptor(Activator.getDefault().getImageRegistry()
+				.getDescriptor(BoxproducerContinuousEntity.class.getName()));
+		prodCont.setLibrary(BasemodelsLibrary.class);
+		prodCont.setName("Continuous Producer");
+		prodCont.setWizard(null);
+		prodCont.setEntityClass(BoxproducerContinuousEntity.class);
+		prodCont.setHidden(false);
+		library.add(prodCont);
+		
 		FloorElement floorElement = new FloorElement();
 		floorElement.setId("map_1");
 		floorElement.setImageDescriptor(Activator.getDefault()
