@@ -12,6 +12,7 @@ package org.rifidi.designer.library.basemodels.boxproducer;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.Stack;
 
@@ -20,8 +21,11 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.eclipse.core.databinding.observable.list.IListChangeListener;
+import org.eclipse.core.databinding.observable.list.WritableList;
 import org.monklypse.core.NodeHelper;
 import org.rifidi.designer.entities.annotations.Property;
+import org.rifidi.designer.entities.databinding.IEntityObservable;
 import org.rifidi.designer.entities.databinding.annotations.MonitoredProperties;
 import org.rifidi.designer.entities.interfaces.AbstractVisualProducer;
 import org.rifidi.designer.entities.interfaces.AbstractVisualProduct;
@@ -55,7 +59,7 @@ import com.jme.system.DisplaySystem;
  */
 @MonitoredProperties(names = { "name" })
 public class BoxproducerEntity extends AbstractVisualProducer implements
-		IHasSwitch, ITagContainer {
+		IHasSwitch, ITagContainer, IEntityObservable {
 
 	/** Logger for this class. */
 	@XmlTransient
@@ -83,16 +87,41 @@ public class BoxproducerEntity extends AbstractVisualProducer implements
 	private Stack<RifidiTag> tagStack;
 	/** Set containing all available tags. */
 	@XmlIDREF
-	private Set<RifidiTag> tags;
+	private List<RifidiTag> tags;
 
 	/**
 	 * Constructor
 	 */
+	@SuppressWarnings("unchecked")
 	public BoxproducerEntity() {
 		this.speed = 4;
 		this.tagStack = new Stack<RifidiTag>();
-		this.tags = new HashSet<RifidiTag>();
+		this.tags = new WritableList();
 		setName("Boxproducer");
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @seeorg.rifidi.designer.entities.interfaces.IEntityObservable#
+	 * addListChangeListener
+	 * (org.eclipse.core.databinding.observable.list.IListChangeListener)
+	 */
+	@Override
+	public void addListChangeListener(IListChangeListener changeListener) {
+		((WritableList) tags).addListChangeListener(changeListener);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @seeorg.rifidi.designer.entities.interfaces.IEntityObservable#
+	 * removeListChangeListener
+	 * (org.eclipse.core.databinding.observable.list.IListChangeListener)
+	 */
+	@Override
+	public void removeListChangeListener(IListChangeListener changeListener) {
+		((WritableList) tags).removeListChangeListener(changeListener);
 	}
 
 	/**
@@ -194,7 +223,7 @@ public class BoxproducerEntity extends AbstractVisualProducer implements
 		thread = new BoxproducerEntityThread(this, productService, products,
 				tagStack);
 		thread.setInterval((int) speed * 1000);
-		System.out.println("Paused: "+paused);
+		System.out.println("Paused: " + paused);
 		thread.setPaused(paused);
 		thread.start();
 		if (running)
@@ -262,7 +291,7 @@ public class BoxproducerEntity extends AbstractVisualProducer implements
 	 * @see org.rifidi.designer.entities.Entity#pause()
 	 */
 	public void pause() {
-		paused=true;
+		paused = true;
 		if (thread != null) {
 			thread.setPaused(true);
 		}
@@ -278,9 +307,10 @@ public class BoxproducerEntity extends AbstractVisualProducer implements
 		thread.interrupt();
 		getNode().removeFromParent();
 	}
-	
+
 	/**
 	 * Used to control the running state of the producer
+	 * 
 	 * @param newrunning
 	 */
 	public void setRunning(boolean newrunning) {
@@ -396,7 +426,7 @@ public class BoxproducerEntity extends AbstractVisualProducer implements
 	/**
 	 * @return the tags
 	 */
-	public Set<RifidiTag> getTags() {
+	public List<RifidiTag> getTags() {
 		return this.tags;
 	}
 
@@ -404,7 +434,7 @@ public class BoxproducerEntity extends AbstractVisualProducer implements
 	 * @param tags
 	 *            the tags to set
 	 */
-	public void setTags(Set<RifidiTag> tags) {
+	public void setTags(List<RifidiTag> tags) {
 		this.tags = tags;
 	}
 
@@ -420,4 +450,5 @@ public class BoxproducerEntity extends AbstractVisualProducer implements
 		products.remove(product);
 		tagStack.push(((CardboxEntity) product).getRifidiTag());
 	}
+
 }

@@ -6,11 +6,13 @@ import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.monklypse.core.SWTDefaultImplementor;
 import org.osgi.framework.BundleContext;
 import org.rifidi.designer.entities.RMIManager;
+import org.rifidi.designer.entities.internal.RifidiTagWorkbenchAdapter;
 import org.rifidi.designer.rcp.game.DesignerGame;
 import org.rifidi.designer.services.core.collision.FieldService;
 import org.rifidi.designer.services.core.collision.FieldServiceImpl;
@@ -99,8 +101,9 @@ public class Activator extends AbstractUIPlugin {
 		context.registerService(new String[] { WorldService.class.getName(),
 				CommandStateService.class.getName(),
 				HighlightingService.class.getName(),
-				DesignerGame.class.getName(), SWTDefaultImplementor.class.getName() }, new DesignerGame("designer",
-				754, 584), null);
+				DesignerGame.class.getName(),
+				SWTDefaultImplementor.class.getName() }, new DesignerGame(
+				"designer", 754, 584), null);
 	}
 
 	/*
@@ -134,5 +137,20 @@ public class Activator extends AbstractUIPlugin {
 	 */
 	public static ImageDescriptor getImageDescriptor(final String path) {
 		return imageDescriptorFromPlugin(PLUGIN_ID, path);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.ui.plugin.AbstractUIPlugin#initializeImageRegistry(org.eclipse
+	 * .jface.resource.ImageRegistry)
+	 */
+	@Override
+	protected void initializeImageRegistry(ImageRegistry reg) {
+		super.initializeImageRegistry(reg);
+		String iconPath = "/icons/";
+		reg.put(RifidiTagWorkbenchAdapter.class.getName(),
+				imageDescriptorFromPlugin(PLUGIN_ID, iconPath + "tag.png"));
 	}
 }

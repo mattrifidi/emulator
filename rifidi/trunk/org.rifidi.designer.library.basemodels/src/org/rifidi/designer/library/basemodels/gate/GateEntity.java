@@ -216,6 +216,10 @@ public class GateEntity extends VisualEntity implements RifidiEntity,
 		} catch (Exception e) {
 			logger.error("Problem while connecting to RMI: " + e);
 		}
+
+		for (GPIPort gpiPort : gpiPorts) {
+			gpiPort.addPropertyChangeListener("state", this);
+		}
 	}
 
 	/*
@@ -230,6 +234,9 @@ public class GateEntity extends VisualEntity implements RifidiEntity,
 		for (VisualEntity antennaFieldEntity : children) {
 			((AntennaFieldEntity) antennaFieldEntity)
 					.setReaderInterface(readerModuleManagerInterface);
+		}
+		for (GPIPort gpiPort : gpiPorts) {
+			gpiPort.addPropertyChangeListener("state", this);
 		}
 		if (running)
 			turnOn();
@@ -291,9 +298,6 @@ public class GateEntity extends VisualEntity implements RifidiEntity,
 			logger.fatal("Unable to create reader: " + e);
 		} catch (IOException e) {
 			logger.fatal("Unable to create reader: " + e);
-		}
-		for (GPIPort gpiPort : gpiPorts) {
-			gpiPort.addPropertyChangeListener("state", this);
 		}
 	}
 

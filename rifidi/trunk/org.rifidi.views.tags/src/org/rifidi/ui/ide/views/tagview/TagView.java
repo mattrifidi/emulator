@@ -53,6 +53,7 @@ public class TagView extends ViewPart {
 	};
 
 	public TagView() {
+		System.out.println("booom");
 		logger.debug("Initializing the Tag Service");
 		ServiceRegistry.getInstance().service(this);
 	}

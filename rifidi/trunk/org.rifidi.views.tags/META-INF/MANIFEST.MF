@@ -13,3 +13,7 @@ Require-Bundle: org.eclipse.ui,
  org.rifidi.ui.common;bundle-version="2.1.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
+Export-Package: org.rifidi.ui.ide.views.tagview,
+ org.rifidi.ui.ide.views.tagview.actions,
+ org.rifidi.ui.ide.views.tagview.model,
+ org.rifidi.views.tags

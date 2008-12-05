@@ -1,5 +1,5 @@
 /*
- *  BoxproducerLtdEntityWorkbenchAdapter.java
+ *  RifidiTagWorkbenchAdapter.java
  *
  *  Project:		RiFidi Designer - A Virtualization tool for 3D RFID environments
  *  http://www.rifidi.org
@@ -8,27 +8,29 @@
  *  License:		Lesser GNU Public License (LGPL)
  *  http://www.opensource.org/licenses/lgpl-license.html
  */
-package org.rifidi.designer.library.basemodels.boxproducer;
+package org.rifidi.designer.entities.internal;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.model.IWorkbenchAdapter;
-import org.rifidi.designer.library.basemodels.Activator;
- 
+import org.rifidi.services.tags.impl.RifidiTag;
+import org.rifidi.views.tags.Activator;
+
 /**
- * IWorkbenchAdapter for the boxproducer.
  * 
- * @author Jochen Mader Oct 8, 2007
+ * 
+ * @author Jochen Mader - jochen@pramari.com - Dec 5, 2008
  * 
  */
-public class BoxproducerEntityWorkbenchAdapter implements IWorkbenchAdapter {
+public class RifidiTagWorkbenchAdapter implements IWorkbenchAdapter {
 
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see org.eclipse.ui.model.IWorkbenchAdapter#getChildren(java.lang.Object)
 	 */
-	public Object[] getChildren(Object o) {
-		return ((BoxproducerEntity) o).getTags().toArray();
+	@Override
+	public Object[] getChildren(Object arg0) {
+		return new Object[] {};
 	}
 
 	/*
@@ -38,9 +40,9 @@ public class BoxproducerEntityWorkbenchAdapter implements IWorkbenchAdapter {
 	 * org.eclipse.ui.model.IWorkbenchAdapter#getImageDescriptor(java.lang.Object
 	 * )
 	 */
-	public ImageDescriptor getImageDescriptor(Object object) {
-		return Activator.getDefault().getImageRegistry().getDescriptor(
-				BoxproducerEntity.class.getName());
+	@Override
+	public ImageDescriptor getImageDescriptor(Object arg0) {
+		return Activator.getDefault().getImageRegistry().getDescriptor(RifidiTagWorkbenchAdapter.class.getName());
 	}
 
 	/*
@@ -48,8 +50,9 @@ public class BoxproducerEntityWorkbenchAdapter implements IWorkbenchAdapter {
 	 * 
 	 * @see org.eclipse.ui.model.IWorkbenchAdapter#getLabel(java.lang.Object)
 	 */
-	public String getLabel(Object o) {
-		return ((BoxproducerEntity) o).getName();
+	@Override
+	public String getLabel(Object arg0) {
+		return ((RifidiTag) arg0).toString();
 	}
 
 	/*
@@ -57,7 +60,9 @@ public class BoxproducerEntityWorkbenchAdapter implements IWorkbenchAdapter {
 	 * 
 	 * @see org.eclipse.ui.model.IWorkbenchAdapter#getParent(java.lang.Object)
 	 */
-	public Object getParent(Object o) {
+	@Override
+	public Object getParent(Object arg0) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
