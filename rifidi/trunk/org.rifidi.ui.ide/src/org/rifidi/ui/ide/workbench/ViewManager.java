@@ -3,6 +3,8 @@
  */
 package org.rifidi.ui.ide.workbench;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.impl.Log4jFactory;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -31,6 +33,8 @@ import org.rifidi.ui.ide.views.readerview.ReaderView;
  */
 public class ViewManager implements RegistryChangeListener {
 
+	private Log logger = Log4jFactory.getLog(ViewManager.class);
+	
 	// private static Log logger =
 	// LogFactory.getLog(RegistryChangeListener.class);
 

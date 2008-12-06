@@ -10,10 +10,9 @@
  */
 package org.rifidi.ui.ide.handlers;
 
+import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.commands.IHandler;
-import org.eclipse.core.commands.IHandlerListener;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.handlers.HandlerUtil;
@@ -24,25 +23,8 @@ import org.rifidi.ui.ide.views.tagview.TagView;
  * @author Matthew Dean - matt@pramari.com
  * 
  */
-public class AddTagHandler implements IHandler {
+public class AddTagHandler extends AbstractHandler {
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.core.commands.IHandler#addHandlerListener(org.eclipse.core.commands.IHandlerListener)
-	 */
-	@Override
-	public void addHandlerListener(IHandlerListener handlerListener) {
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.core.commands.IHandler#dispose()
-	 */
-	@Override
-	public void dispose() {
-	}
 
 	/*
 	 * (non-Javadoc)
@@ -62,35 +44,6 @@ public class AddTagHandler implements IHandler {
 			((TagView) view).refresh();
 		}
 		return null;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.core.commands.IHandler#isEnabled()
-	 */
-	@Override
-	public boolean isEnabled() {
-		return true;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.core.commands.IHandler#isHandled()
-	 */
-	@Override
-	public boolean isHandled() {
-		return true;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.core.commands.IHandler#removeHandlerListener(org.eclipse.core.commands.IHandlerListener)
-	 */
-	@Override
-	public void removeHandlerListener(IHandlerListener handlerListener) {
 	}
 
 }

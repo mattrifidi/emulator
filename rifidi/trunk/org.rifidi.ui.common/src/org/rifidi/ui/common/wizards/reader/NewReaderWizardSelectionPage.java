@@ -1,4 +1,4 @@
-package org.rifidi.ui.common.wizards.reader.pages;
+package org.rifidi.ui.common.wizards.reader;
 
 import java.util.Map;
 
@@ -13,7 +13,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-import org.rifidi.ui.common.reader.UIReader;
 import org.rifidi.ui.common.reader.blueprints.ReaderBlueprint;
 
 /**
@@ -32,16 +31,16 @@ public class NewReaderWizardSelectionPage extends WizardPage {
 	/**
 	 * UI abstraction of Reader to create
 	 */
-	private UIReader reader;
+	private ReaderWizardData data;
 
-	public NewReaderWizardSelectionPage(String pageName, UIReader reader,
+	public NewReaderWizardSelectionPage(String pageName, ReaderWizardData data,
 			Map<String, ReaderBlueprint> supportedReaders) {
 		super(pageName);
 
 		setTitle("New reader wizard");
 		setDescription("Fill out all fields and hit finish to add a reader");
 
-		this.reader = reader;
+		this.data = data;
 		this.supportedReaders = supportedReaders;
 
 		setPageComplete(false);
@@ -50,7 +49,9 @@ public class NewReaderWizardSelectionPage extends WizardPage {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets.Composite)
+	 * @see
+	 * org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets
+	 * .Composite)
 	 */
 	public void createControl(Composite parent) {
 
@@ -96,11 +97,12 @@ public class NewReaderWizardSelectionPage extends WizardPage {
 		logger.debug("Reader type selected : " + selectedReader);
 		logger.debug("Reader class name : "
 				+ supportedReaders.get(selectedReader).getReaderclassname());
-		// Set the information from the dialog in the UI repesentation of the reader
-		reader.setReaderType(selectedReader);
-		reader.setReaderClassName(supportedReaders.get(selectedReader)
-				.getReaderclassname());
-		
+		// Set the information from the dialog in the UI repesentation of the
+		// reader
+		data.readerType = selectedReader;
+		data.generalReaderHolder.setReaderClassName(supportedReaders.get(
+				selectedReader).getReaderclassname());
+
 		setPageComplete(true);
 	}
 

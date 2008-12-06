@@ -11,9 +11,13 @@
  */
 package org.rifidi.ui.ide.views.antennaview;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -42,10 +46,9 @@ import org.rifidi.services.registry.ServiceRegistry;
 import org.rifidi.services.tags.IGen1Tag;
 import org.rifidi.services.tags.impl.RifidiTag;
 import org.rifidi.services.tags.registry.ITagRegistry;
-import org.rifidi.services.tags.registry.ITagRegistryListener;
 import org.rifidi.ui.common.reader.UIAntenna;
-import org.rifidi.ui.common.reader.UIReader;
 import org.rifidi.ui.common.reader.callback.TagIDChangedCallbackInterface;
+import org.rifidi.ui.common.reader.callback.UIReaderCallbackManager;
 import org.rifidi.ui.ide.views.antennaview.model.AntennViewLabelProvider;
 import org.rifidi.ui.ide.views.antennaview.model.AntennaViewContentProvider;
 
@@ -58,15 +61,10 @@ import org.rifidi.ui.ide.views.antennaview.model.AntennaViewContentProvider;
  * @author Andreas Huebner - andreas@pramari.com
  * 
  */
-public class TagViewer extends TableViewer implements ITagRegistryListener,
-		TagIDChangedCallbackInterface {
+public class TagViewer extends TableViewer implements
+		TagIDChangedCallbackInterface, Observer, PropertyChangeListener {
 
 	private static Log logger = LogFactory.getLog(TagViewer.class);
-
-	/**
-	 * The UIReader associated with this antenna
-	 */
-	private UIReader reader;
 
 	/**
 	 * Reference to the Antenna of the actual reader
@@ -112,18 +110,18 @@ public class TagViewer extends TableViewer implements ITagRegistryListener,
 		}
 	};
 
-	public TagViewer(Composite parent, int style, UIAntenna antenna) {
+	public TagViewer(Composite parent, int style, UIAntenna antenna,
+			UIReaderCallbackManager readerCallbackManager) {
 		super(parent, style);
 		ServiceRegistry.getInstance().service(this);
 		this.antenna = antenna;
-		this.reader = antenna.getReader();
 		this.display = parent.getShell().getDisplay();
 
 		// Register for Callback TagIDChanges
-		reader.getReaderCallbackManager().addTagIDChangedListener(this);
+		readerCallbackManager.addTagIDChangedListener(this);
 
 		// Register as Antenna Listener
-		antenna.addListener(this);
+		antenna.addObserver(this);
 		logger.debug("Registering Listener to antenna " + antenna.getId());
 
 		getTable().setLinesVisible(true);
@@ -161,8 +159,7 @@ public class TagViewer extends TableViewer implements ITagRegistryListener,
 						for (Object o : selection.toList()) {
 							if (o instanceof RifidiTag)
 								tagsToRemove.add((RifidiTag) o);
-							else
-							{
+							else {
 								logger.error("Selection is not a RifidiTag");
 							}
 						}
@@ -197,8 +194,9 @@ public class TagViewer extends TableViewer implements ITagRegistryListener,
 			/*
 			 * (non-Javadoc)
 			 * 
-			 * @see org.eclipse.jface.viewers.ICellModifier#canModify(java.lang.Object,
-			 *      java.lang.String)
+			 * @see
+			 * org.eclipse.jface.viewers.ICellModifier#canModify(java.lang.Object
+			 * , java.lang.String)
 			 */
 			public boolean canModify(Object element, String property) {
 				if (property.equals("visibility")) {
@@ -213,8 +211,9 @@ public class TagViewer extends TableViewer implements ITagRegistryListener,
 			/*
 			 * (non-Javadoc)
 			 * 
-			 * @see org.eclipse.jface.viewers.ICellModifier#getValue(java.lang.Object,
-			 *      java.lang.String)
+			 * @see
+			 * org.eclipse.jface.viewers.ICellModifier#getValue(java.lang.Object
+			 * , java.lang.String)
 			 */
 			public Object getValue(Object element, String property) {
 				if (property.equals("visibility")) {
@@ -229,8 +228,9 @@ public class TagViewer extends TableViewer implements ITagRegistryListener,
 			/*
 			 * (non-Javadoc)
 			 * 
-			 * @see org.eclipse.jface.viewers.ICellModifier#modify(java.lang.Object,
-			 *      java.lang.String, java.lang.Object)
+			 * @see
+			 * org.eclipse.jface.viewers.ICellModifier#modify(java.lang.Object,
+			 * java.lang.String, java.lang.Object)
 			 */
 			public void modify(Object element, String property, Object value) {
 				// change the visibility of a tag
@@ -244,7 +244,7 @@ public class TagViewer extends TableViewer implements ITagRegistryListener,
 					} else {
 						getAntenna().disableTag(tagList);
 					}
-					// refresh();
+					refresh();
 				}
 				// delete a tag
 				if (property.equals("delete")) {
@@ -255,11 +255,10 @@ public class TagViewer extends TableViewer implements ITagRegistryListener,
 						taglist.add(tag);
 						getAntenna().removeTag(taglist);
 						logger.debug("Tag Remove  " + tag.toString());
-					}else
-					{
+					} else {
 						logger.error("Selection is not a RifidiTag");
 					}
-					// refresh();
+					refresh();
 				}
 			}
 
@@ -277,7 +276,9 @@ public class TagViewer extends TableViewer implements ITagRegistryListener,
 					/*
 					 * (non-Javadoc)
 					 * 
-					 * @see org.eclipse.swt.dnd.DropTargetListener#dragEnter(org.eclipse.swt.dnd.DropTargetEvent)
+					 * @see
+					 * org.eclipse.swt.dnd.DropTargetListener#dragEnter(org.
+					 * eclipse.swt.dnd.DropTargetEvent)
 					 */
 					public void dragEnter(DropTargetEvent event) {
 					}
@@ -285,7 +286,9 @@ public class TagViewer extends TableViewer implements ITagRegistryListener,
 					/*
 					 * (non-Javadoc)
 					 * 
-					 * @see org.eclipse.swt.dnd.DropTargetListener#dragLeave(org.eclipse.swt.dnd.DropTargetEvent)
+					 * @see
+					 * org.eclipse.swt.dnd.DropTargetListener#dragLeave(org.
+					 * eclipse.swt.dnd.DropTargetEvent)
 					 */
 					public void dragLeave(DropTargetEvent event) {
 					}
@@ -293,7 +296,9 @@ public class TagViewer extends TableViewer implements ITagRegistryListener,
 					/*
 					 * (non-Javadoc)
 					 * 
-					 * @see org.eclipse.swt.dnd.DropTargetListener#dragOperationChanged(org.eclipse.swt.dnd.DropTargetEvent)
+					 * @see
+					 * org.eclipse.swt.dnd.DropTargetListener#dragOperationChanged
+					 * (org.eclipse.swt.dnd.DropTargetEvent)
 					 */
 					public void dragOperationChanged(DropTargetEvent event) {
 					}
@@ -301,7 +306,9 @@ public class TagViewer extends TableViewer implements ITagRegistryListener,
 					/*
 					 * (non-Javadoc)
 					 * 
-					 * @see org.eclipse.swt.dnd.DropTargetListener#dragOver(org.eclipse.swt.dnd.DropTargetEvent)
+					 * @see
+					 * org.eclipse.swt.dnd.DropTargetListener#dragOver(org.eclipse
+					 * .swt.dnd.DropTargetEvent)
 					 */
 					public void dragOver(DropTargetEvent event) {
 					}
@@ -309,7 +316,9 @@ public class TagViewer extends TableViewer implements ITagRegistryListener,
 					/*
 					 * (non-Javadoc)
 					 * 
-					 * @see org.eclipse.swt.dnd.DropTargetListener#drop(org.eclipse.swt.dnd.DropTargetEvent)
+					 * @see
+					 * org.eclipse.swt.dnd.DropTargetListener#drop(org.eclipse
+					 * .swt.dnd.DropTargetEvent)
 					 */
 					public void drop(DropTargetEvent event) {
 						LinkedList<RifidiTag> list = new LinkedList<RifidiTag>();
@@ -328,50 +337,26 @@ public class TagViewer extends TableViewer implements ITagRegistryListener,
 					/*
 					 * (non-Javadoc)
 					 * 
-					 * @see org.eclipse.swt.dnd.DropTargetListener#dropAccept(org.eclipse.swt.dnd.DropTargetEvent)
+					 * @see
+					 * org.eclipse.swt.dnd.DropTargetListener#dropAccept(org
+					 * .eclipse.swt.dnd.DropTargetEvent)
 					 */
 					public void dropAccept(DropTargetEvent event) {
 					}
 
 				});
-		tagRegistry.addListener(this);
+		tagRegistry.addPropertyChangeListener(this);
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.ide.registry.RegistryChangeListener#add(org.rifidi.ide.registry.RegistryEvent)
+	 * @see
+	 * org.rifidi.ide.registry.RegistryChangeListener#add(org.rifidi.ide.registry
+	 * .RegistryEvent)
 	 */
-	public void addEvent(List<RifidiTag> tags) {
-		logger.debug("recived add Event");
-		try {
-			refresh();
-		} catch (SWTException e) {
-			logger.debug(e);
-		}
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.rifidi.ide.registry.RegistryChangeListener#remove(org.rifidi.ide.registry.RegistryEvent)
-	 */
-	public void removeEvent(List<RifidiTag> tags) {
-		logger.debug("recived remove Event ");
-		try {
-			refresh();
-		} catch (SWTException e) {
-			logger.debug(e);
-		}
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.rifidi.ide.registry.RegistryChangeListener#update(org.rifidi.ide.registry.RegistryEvent)
-	 */
-	public void modifyEvent(List<RifidiTag> tags) {
-		logger.debug("recived update Event");
+	public void updatedEvent() {
+		logger.debug("recived update event");
 		try {
 			refresh();
 		} catch (SWTException e) {
@@ -391,14 +376,8 @@ public class TagViewer extends TableViewer implements ITagRegistryListener,
 	 * Unregister the Listener this Antenna is associated with
 	 */
 	public void dispose() {
-		tagRegistry.removeListener(this);
-	}
-
-	/**
-	 * @return the UIReader associated with this AntennaView
-	 */
-	public UIReader getReader() {
-		return reader;
+		antenna.deleteObserver(this);
+		tagRegistry.removePropertyChangeListener(this);
 	}
 
 	/**
@@ -415,16 +394,15 @@ public class TagViewer extends TableViewer implements ITagRegistryListener,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.ui.common.reader.callback.TagIDChangedCallbackInterface#tagIDChanged(byte[],
-	 *      org.rifidi.emulator.tags.Gen1Tag)
+	 * @seeorg.rifidi.ui.common.reader.callback.TagIDChangedCallbackInterface#
+	 * tagIDChanged(byte[], org.rifidi.emulator.tags.Gen1Tag)
 	 */
 	public void tagIDChanged(Long tagEntityID, final IGen1Tag tag) {
 		logger.debug("TagID has changed .. plz update");
 		display.syncExec(new Runnable() {
 
 			public void run() {
-				// update will refresh the view and get a new TagList
-				modifyEvent(null);
+				updatedEvent();
 			}
 
 		});
@@ -433,6 +411,31 @@ public class TagViewer extends TableViewer implements ITagRegistryListener,
 	@Inject
 	public void setTagRegistryService(ITagRegistry tagRegisrty) {
 		this.tagRegistry = tagRegisrty;
+
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent arg0) {
+		updatedEvent();
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		if (o instanceof UIAntenna) {
+			if (arg != null) {
+				if (arg instanceof String) {
+					if (((String) arg).equals(UIAntenna.ADD_TAG_EVENT)) {
+						updatedEvent();
+						return;
+					} else if (((String) arg).equals(UIAntenna.ADD_TAG_EVENT)) {
+						updatedEvent();
+						return;
+					}
+				}
+			}
+		}
+		logger.debug("update method called with unexpected arguments: " + o
+				+ " " + arg);
 
 	}
 

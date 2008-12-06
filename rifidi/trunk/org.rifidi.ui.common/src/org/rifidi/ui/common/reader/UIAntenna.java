@@ -2,9 +2,9 @@ package org.rifidi.ui.common.reader;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Observable;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -14,7 +14,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.rifidi.emulator.rmi.server.ReaderModuleManagerInterface;
 import org.rifidi.services.tags.impl.RifidiTag;
-import org.rifidi.services.tags.registry.ITagRegistryListener;
 
 /**
  * This is a UI representation of an antenna associated to a reader. It's
@@ -23,15 +22,28 @@ import org.rifidi.services.tags.registry.ITagRegistryListener;
  * Listener must implement RegsitryChangeListener. There will be a null event
  * sent.
  * 
+ * This class extends Observable so that listeners can be notified of when tags
+ * are added or removed. When tags are added, the ADD_TAG_EVENT is passed as an
+ * argument to update. When tags are removed, REMOVE_TAG_EVENT is passed in.
+ * 
  * @author Andreas Huebner - andreas@pramari.com
  * 
  */
-@XmlAccessorType(XmlAccessType.NONE)
-public class UIAntenna {
+@XmlAccessorType(XmlAccessType.FIELD)
+public class UIAntenna extends Observable {
+
+	/**
+	 * The event that happens when a tag is added
+	 */
+	public static final String ADD_TAG_EVENT = "add";
+
+	/**
+	 * The event that happens when a tag is removed
+	 */
+	public static final String REMOVE_TAG_EVENT = "remove";
 
 	private Log logger = LogFactory.getLog(UIAntenna.class);
 
-	private UIReader reader;
 	private ReaderModuleManagerInterface readerManager;
 
 	/**
@@ -51,11 +63,6 @@ public class UIAntenna {
 	 * the reader
 	 */
 	private Map<String, RifidiTag> inactiveTags = new HashMap<String, RifidiTag>();
-	/**
-	 * The list of Listeners to events occurring in the antenna (like add tag or
-	 * remove tag)
-	 */
-	private List<ITagRegistryListener> listeners = new LinkedList<ITagRegistryListener>();
 
 	/**
 	 * Default constructor (needed by jaxb)
@@ -71,29 +78,9 @@ public class UIAntenna {
 	 * @param id
 	 *            Number (or Name) of the antenna
 	 */
-	public UIAntenna(UIReader reader, Integer id) {
-		this.reader = reader;
+	public UIAntenna(ReaderModuleManagerInterface readerManager, Integer id) {
 		this.id = id;
-		reader.setAntenna(this);
-	}
-
-	/**
-	 * Get the reader to whom the antenna belongs to
-	 * 
-	 * @return the reader
-	 */
-	public UIReader getReader() {
-		return reader;
-	}
-
-	/**
-	 * Set the reader to whom the antenna belongs to
-	 * 
-	 * @param reader
-	 *            the reader to set
-	 */
-	public void setReader(UIReader reader) {
-		this.reader = reader;
+		this.readerManager = readerManager;
 	}
 
 	/**
@@ -123,9 +110,6 @@ public class UIAntenna {
 	 */
 	public List<RifidiTag> getTagList() {
 		HashMap<String, RifidiTag> tagsToReturn = new HashMap<String, RifidiTag>();
-		if (readerManager == null) {
-			getManager();
-		}
 		List<RifidiTag> tagsFromReader = null;
 		try {
 			tagsFromReader = readerManager.getTagList(id);
@@ -154,12 +138,10 @@ public class UIAntenna {
 	 */
 	public void addTag(List<RifidiTag> tagsToAdd) {
 		try {
-			if (readerManager == null)
-				getManager();
 			readerManager.addTags(id, tagsToAdd);
 			for (RifidiTag tag : tagsToAdd)
 				tagList.put(tag.toString(), tag);
-			addEvent();
+			notifyObservers(ADD_TAG_EVENT);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -171,8 +153,6 @@ public class UIAntenna {
 	 * @param tagsToRemove
 	 */
 	public void removeTag(List<RifidiTag> tagsToRemove) {
-		if (readerManager == null)
-			getManager();
 		ArrayList<Long> list = new ArrayList<Long>(tagsToRemove.size());
 		for (RifidiTag tag : tagsToRemove) {
 			list.add(tag.getTagEntitiyID());
@@ -181,12 +161,11 @@ public class UIAntenna {
 			readerManager.removeTags(id, list);
 			for (RifidiTag tag : tagsToRemove)
 				tagList.remove(tag.toString());
-			logger.debug("TagList is now : " + tagList.size()
-					+ " Event listeners : " + listeners.size());
+			logger.debug("TagList is now : " + tagList.size());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		removeEvent();
+		notifyObservers(REMOVE_TAG_EVENT);
 	}
 
 	/**
@@ -219,62 +198,5 @@ public class UIAntenna {
 			inactiveTags.remove(tag.toString());
 		}
 		addTag(tagsToEnable);
-	}
-
-	/**
-	 * Add a listener to this antenna
-	 * 
-	 * @param listener
-	 */
-	public void addListener(ITagRegistryListener listener) {
-		listeners.add(listener);
-	}
-
-	/**
-	 * Remove a listener from this antenna
-	 * 
-	 * @param listener
-	 */
-	public void removeListener(ITagRegistryListener listener) {
-		listeners.remove(listener);
-	}
-
-	/**
-	 * AddEvent occurred inform listeners
-	 */
-	private void addEvent() {
-		// TODO Event must be set
-		for (ITagRegistryListener r : listeners) {
-			r.addEvent(null);
-		}
-	}
-
-	/**
-	 * RemoveEvent occurred inform listeners
-	 */
-	private void removeEvent() {
-		// TODO Event must be set
-		for (ITagRegistryListener r : listeners) {
-			r.removeEvent(null);
-		}
-	}
-
-	/**
-	 * UpdateEvent occurred inform listeners
-	 */
-	// TODO Never used just there for compatibility issues
-	@SuppressWarnings("unused")
-	private void updateEvent() {
-		// TODO Event must be set
-		for (ITagRegistryListener r : listeners) {
-			r.modifyEvent(null);
-		}
-	}
-
-	/**
-	 * This gets the Manager out of the UIReader after the UIAntenna was created
-	 */
-	private void getManager() {
-		readerManager = reader.getReaderManager();
 	}
 }

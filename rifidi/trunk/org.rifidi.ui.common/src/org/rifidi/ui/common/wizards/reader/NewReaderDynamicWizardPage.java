@@ -9,7 +9,7 @@
  *  License:	Lesser GNU Public License (LGPL)
  *  				http://www.opensource.org/licenses/lgpl-license.html
  */
-package org.rifidi.ui.common.wizards.reader.pages;
+package org.rifidi.ui.common.wizards.reader;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,7 +34,6 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import org.rifidi.ui.common.reader.UIReader;
 import org.rifidi.ui.common.reader.blueprints.PropertyBlueprint;
 import org.rifidi.ui.common.reader.blueprints.ReaderBlueprint;
 import org.rifidi.ui.common.registry.ReaderRegistry;
@@ -68,7 +67,7 @@ public class NewReaderDynamicWizardPage extends WizardPage {
 	/**
 	 * the bean that represents the reader that should be created
 	 */
-	private UIReader reader;
+	private ReaderWizardData data;
 
 	/**
 	 * Map containing the READERTYPEs as keys and the ReaderBlueprints as values
@@ -108,14 +107,14 @@ public class NewReaderDynamicWizardPage extends WizardPage {
 	 * @param availableReaders
 	 *            a Map containing the available readers/ReaderBlueprints
 	 */
-	public NewReaderDynamicWizardPage(String name, UIReader reader,
+	public NewReaderDynamicWizardPage(String name, ReaderWizardData data,
 			Map<String, ReaderBlueprint> availableReaders) {
 		super(name);
 
 		setTitle("New reader wizard");
 		setDescription("Fill out all fields and hit finish to add a reader");
 
-		this.reader = reader;
+		this.data = data;
 		this.availableReaders = availableReaders;
 
 		setPageComplete(false);
@@ -124,11 +123,13 @@ public class NewReaderDynamicWizardPage extends WizardPage {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets.Composite)
+	 * @see
+	 * org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets
+	 * .Composite)
 	 */
 	public void createControl(Composite parent) {
 
-		readerBlueprint = availableReaders.get(reader.getReaderType());
+		readerBlueprint = availableReaders.get(data.readerType);
 		setDescription(readerBlueprint.getDescription());
 
 		Composite composite = new Composite(parent, SWT.NONE);
@@ -269,7 +270,8 @@ public class NewReaderDynamicWizardPage extends WizardPage {
 				if (ret != null) {
 					sb.append(blueprint.getDisplay() + " " + ret);
 				} else {
-					reader.setProperty(blueprint.getName(), text.getText());
+					data.generalReaderHolder.setProperty(blueprint.getName(),
+							text.getText());
 				}
 			} else {
 				break;
@@ -277,11 +279,11 @@ public class NewReaderDynamicWizardPage extends WizardPage {
 		}
 		for (Button button : boolfields) {
 			PropertyBlueprint blueprint = (PropertyBlueprint) (button.getData());
-			reader.setProperty(blueprint.getName(), Boolean.toString(button
-					.getSelection()));
+			data.generalReaderHolder.setProperty(blueprint.getName(), Boolean
+					.toString(button.getSelection()));
 		}
 		if (ReaderRegistry.getInstance().isNameAvailable(readerName.getText()))
-			reader.setReaderName(readerName.getText());
+			data.generalReaderHolder.setReaderName(readerName.getText());
 		else
 			sb.append("Name of the reader already taken");
 
@@ -290,7 +292,8 @@ public class NewReaderDynamicWizardPage extends WizardPage {
 			// Set the information of the WizardPage in the UI representation of
 			// the Reader
 
-			reader.setNumAntennas(antennaCombo.getSelectionIndex() + 1);
+			data.generalReaderHolder.setNumAntennas(antennaCombo
+					.getSelectionIndex() + 1);
 
 			// Properties are set a little bit earlier
 

@@ -15,8 +15,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * This class is a general-purpose holder class for all of the properties one
@@ -25,11 +24,8 @@ import org.apache.commons.logging.LogFactory;
  * @author Jochen Mader - jochen@pramari.com
  * @author Andreas Huebner - andreas@pramari.com
  */
+@XmlRootElement
 public class GeneralReaderPropertyHolder implements Cloneable, Serializable {
-
-	@SuppressWarnings("unused")
-	private static Log logger = LogFactory
-			.getLog(GeneralReaderPropertyHolder.class);
 
 	/**
 	 * 
@@ -171,19 +167,6 @@ public class GeneralReaderPropertyHolder implements Cloneable, Serializable {
 	 */
 	public String getProperty(String property) {
 		return this.propertiesMap.get(property);
-	}
-
-	/**
-	 * Default Constructor for GeneralReaderPropertyHolder.
-	 * 
-	 * @param readerName
-	 *            The name of the reader.
-	 * @param readerClass
-	 *            The class of the reader.
-	 * @param xmlFilePath
-	 *            The path of the XML of the reader.
-	 */
-	public GeneralReaderPropertyHolder() {
 	}
 
 	/**

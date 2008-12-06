@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.rifidi.ui.common.wizards.reader.pages;
+package org.rifidi.ui.common.wizards.reader;
 
 import java.util.Map;
 
@@ -14,7 +14,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Spinner;
-import org.rifidi.ui.common.reader.UIReader;
 import org.rifidi.ui.common.reader.blueprints.ReaderBlueprint;
 
 /**
@@ -23,7 +22,7 @@ import org.rifidi.ui.common.reader.blueprints.ReaderBlueprint;
  */
 public class NewReaderGPIOWizardPage extends WizardPage {
 
-	private UIReader reader;
+	private ReaderWizardData data;
 
 	private Spinner numGPISpinner;
 	private Spinner numGPOSpinner;
@@ -31,10 +30,10 @@ public class NewReaderGPIOWizardPage extends WizardPage {
 	int maxGPO;
 	private Map<String, ReaderBlueprint> availableReaders;
 
-	public NewReaderGPIOWizardPage(String pageName, UIReader reader,
+	public NewReaderGPIOWizardPage(String pageName, ReaderWizardData data,
 			Map<String, ReaderBlueprint> availableReaders) {
 		super(pageName);
-		this.reader = reader;
+		this.data = data;
 
 		setTitle("GPIO Settings Page");
 		setDescription("Fill out all fields and hit finish to add a reader");
@@ -47,12 +46,14 @@ public class NewReaderGPIOWizardPage extends WizardPage {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets.Composite)
+	 * @see
+	 * org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets
+	 * .Composite)
 	 */
 	public void createControl(Composite parent) {
 
-		maxGPI = availableReaders.get(reader.getReaderType()).getMaxgpis();
-		maxGPO = availableReaders.get(reader.getReaderType()).getMaxgpos();
+		maxGPI = availableReaders.get(data.readerType).getMaxgpis();
+		maxGPO = availableReaders.get(data.readerType).getMaxgpos();
 
 		// Get composite
 		Composite composite = new Composite(parent, SWT.NONE);
@@ -103,8 +104,8 @@ public class NewReaderGPIOWizardPage extends WizardPage {
 	private void dialogChanged() {
 		if (numGPOSpinner.getSelection() > 0
 				|| numGPISpinner.getSelection() > 0) {
-			reader.setNumGPIs(numGPISpinner.getSelection());
-			reader.setNumGPOs(numGPOSpinner.getSelection());
+			data.generalReaderHolder.setNumGPIs(numGPISpinner.getSelection());
+			data.generalReaderHolder.setNumGPOs(numGPOSpinner.getSelection());
 			setPageComplete(true);
 		} else
 			setPageComplete(false);

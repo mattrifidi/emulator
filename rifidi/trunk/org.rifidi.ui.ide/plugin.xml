@@ -310,7 +310,7 @@
          <toolbar
                id="org.rifidi.ui.ide.views.ReaderActions">
             <command
-                  commandId="org.rifidi.ui.ide.views.commands.NewReader"
+                  commandId="org.rifidi.ui.common.handlers.NewReaderHandler"
                   icon="icons/reader-add-16x16.png"
                   label="Add New Reader"
                   style="push">
@@ -332,6 +332,40 @@
          </toolbar>
          
       </menuContribution>
+      <menuContribution
+            locationURI="menu:org.eclipse.ui.main.menu?after=additions">
+         <menu
+               id="org.rifidi.emulator.ide.menus.file"
+               label="File">
+            <command
+                  commandId="org.rifidi.ui.ide.handlers.ConnectionSettingsHandler"
+                  label="Connection Settings"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.rifidi.ui.ide.handlers.OpenIDEConfigurationHandler"
+                  label="Open IDE Configuration">
+            </command>
+            <command
+                  commandId="org.rifidi.ui.ide.handlers.SaveIDEConfigurationHandler"
+                  label="Save IDE Configuration"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.eclipse.ui.file.exit"
+                  label="Exit"
+                  style="push">
+            </command>
+         </menu>
+         <menu
+               id="org.rifidi.emulator.ide.menus.help"
+               label="Help">
+            <command
+                  commandId="org.eclipse.ui.help.aboutAction"
+                  label="About">
+            </command>
+         </menu>
+      </menuContribution>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
@@ -344,32 +378,24 @@
             name="Add New Tags">
       </command>
       <command
-            id="org.rifidi.ui.ide.views.commands.NewReader"
-            name="Create New Reader">
-      </command>
-      <command
             id="org.rifidi.ui.ide.views.commands.StopReader"
             name="Stop Reader">
       </command>
-   </extension>
-   <extension
-         point="org.eclipse.ui.handlers">
-      <handler
-            class="org.rifidi.ui.ide.handlers.SwitchViewHandler"
-            commandId="org.rifidi.ui.ide.editors.commands.switchView">
-      </handler>
-      <handler
-            class="org.rifidi.ui.ide.handlers.AddTagHandler"
-            commandId="org.rifidi.ui.ide.views.commands.AddTags">
-      </handler>
-      <handler
-            class="org.rifidi.ui.ide.handlers.NewReaderHandler"
-            commandId="org.rifidi.ui.ide.views.commands.NewReader">
-      </handler>
-      <handler
-            class="org.rifidi.ui.ide.handlers.StopReaderHandler"
-            commandId="org.rifidi.ui.ide.views.commands.StopReader">
-      </handler>
+      <command
+            defaultHandler="org.rifidi.ui.ide.handlers.OpenIDEConfigurationHandler"
+            id="org.rifidi.ui.ide.handlers.OpenIDEConfigurationHandler"
+            name="OpenIDEConfigurationHandler">
+      </command>
+      <command
+            defaultHandler="org.rifidi.ui.ide.handlers.ConnectionSettingsHandler"
+            id="org.rifidi.ui.ide.handlers.ConnectionSettingsHandler"
+            name="ConnectionSettingsHandler">
+      </command>
+      <command
+            defaultHandler="org.rifidi.ui.ide.handlers.SaveIDEConfigurationHandler"
+            id="org.rifidi.ui.ide.handlers.SaveIDEConfigurationHandler"
+            name="SaveIDEConfigurationHandler">
+      </command>
    </extension>
 
 </plugin>

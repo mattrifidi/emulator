@@ -4,7 +4,6 @@
 package org.rifidi.ui.common.reader.callback;
 
 import gnu.cajo.invoke.RemoteInvoke;
-import gnu.cajo.utils.extra.ItemProxy;
 
 import java.util.LinkedList;
 
@@ -26,8 +25,7 @@ public class UIReaderCallbackManager implements ClientCallbackInterface {
 
 	private Log logger = LogFactory.getLog(UIReaderCallbackManager.class);
 
-	@SuppressWarnings("unused")
-	private ItemProxy itemProxy;
+	//private ItemProxy itemProxy;
 
 	/**
 	 * List of listeners for gpo port changes
@@ -48,7 +46,7 @@ public class UIReaderCallbackManager implements ClientCallbackInterface {
 	 * @param clientProxy
 	 */
 	public UIReaderCallbackManager(RemoteInvoke clientProxy) {
-		itemProxy = new ItemProxy(clientProxy, this);
+		//itemProxy = new ItemProxy(clientProxy, this);
 	}
 
 	/*

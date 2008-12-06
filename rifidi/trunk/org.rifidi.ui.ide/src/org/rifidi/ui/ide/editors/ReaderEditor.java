@@ -155,7 +155,7 @@ public class ReaderEditor extends EditorPart {
 					.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 			composite.setLayout(new FillLayout());
 			TagPGroup tagcomposite = new TagPGroup(composite, SWT.SMOOTH,
-					reader.getAntenna(i));
+					reader.getAntenna(i), reader.getReaderCallbackManager());
 			tagcomposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
 					true));
 			item.setControl(composite);

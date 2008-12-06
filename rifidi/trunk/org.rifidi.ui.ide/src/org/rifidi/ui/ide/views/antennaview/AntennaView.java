@@ -84,7 +84,7 @@ public class AntennaView extends ViewPart implements ISelectionProvider {
 		uiReader = ReaderRegistry.getInstance().getReaderByName(
 				this.getViewSite().getSecondaryId());
 
-		createAntennas(uiReader.getAntennas());
+		createAntennas(uiReader);
 		try {
 			gpioChild = new Composite(sc, SWT.NONE);
 			gpioChild
@@ -126,22 +126,21 @@ public class AntennaView extends ViewPart implements ISelectionProvider {
 	 * 
 	 * @param antennas
 	 */
-	public void createAntennas(Map<Integer, UIAntenna> antennas) {
+	public void createAntennas(UIReader reader) {
 		GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true);
 
 		// only create composites if none were created so far
 		if (empty == true) {
-			for (UIAntenna antenna : antennas.values()) {
+			for (UIAntenna antenna : reader.getAntennas().values()) {
 				TagPGroup tagcomposite = new TagPGroup(antennaChild,
-						SWT.SMOOTH, antenna);
+						SWT.SMOOTH, antenna, reader.getReaderCallbackManager());
 				tagcomposite.setLayoutData(gridData);
 				antennaComposites.add(tagcomposite);
 			}
 		}
 		empty = false;
-		sc
-				.setMinSize(600, 400 * (int) Math
-						.ceil(((float) antennas.size() / 2)));
+		sc.setMinSize(600, 400 * (int) Math.ceil(((float) reader.getAntennas()
+				.size() / 2)));
 		this.antennaChild.pack();
 
 	}

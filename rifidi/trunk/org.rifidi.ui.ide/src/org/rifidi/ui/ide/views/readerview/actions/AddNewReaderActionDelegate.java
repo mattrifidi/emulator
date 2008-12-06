@@ -8,9 +8,9 @@ import org.eclipse.ui.IViewActionDelegate;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
-import org.rifidi.ui.common.reader.UIReader;
 import org.rifidi.ui.common.registry.ReaderRegistry;
 import org.rifidi.ui.common.wizards.reader.NewReaderWizard;
+import org.rifidi.ui.common.wizards.reader.ReaderWizardData;
 import org.rifidi.ui.common.wizards.reader.exceptions.DuplicateReaderException;
 
 /**
@@ -21,7 +21,8 @@ import org.rifidi.ui.common.wizards.reader.exceptions.DuplicateReaderException;
  * @author Jochen Mader - jochen@pramari.com
  * @author Andreas Huebner - andreas@pramari.com
  */
-public class AddNewReaderActionDelegate implements IViewActionDelegate, IWorkbenchWindowActionDelegate {
+public class AddNewReaderActionDelegate implements IViewActionDelegate,
+		IWorkbenchWindowActionDelegate {
 
 	// private Log logger = LogFactory.getLog(AddNewReaderActionDelegate.class);
 
@@ -36,26 +37,30 @@ public class AddNewReaderActionDelegate implements IViewActionDelegate, IWorkben
 		AddNewReaderActionDelegate.view = view;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#init(org.eclipse.ui.IWorkbenchWindow)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @seeorg.eclipse.ui.IWorkbenchWindowActionDelegate#init(org.eclipse.ui.
+	 * IWorkbenchWindow)
 	 */
 	public void init(IWorkbenchWindow window) {
-		
+
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
 	 */
 	public void run(IAction action) {
-		UIReader reader = new UIReader();
-		NewReaderWizard wizard = new NewReaderWizard(reader);
+		NewReaderWizard wizard = new NewReaderWizard();
 		WizardDialog wizardDialog = new WizardDialog(view.getSite().getShell(),
 				wizard);
 		if (wizardDialog.open() == Window.OK) {
 			try {
-				ReaderRegistry.getInstance().create(reader);
+				ReaderWizardData data = wizard.getReaderWizardData();
+				ReaderRegistry.getInstance().create(
+						data.getGeneralReaderHolder(), data.getReaderType());
 			} catch (DuplicateReaderException e) {
 				// ignore this one.. we already care about that
 				e.printStackTrace();
@@ -67,13 +72,16 @@ public class AddNewReaderActionDelegate implements IViewActionDelegate, IWorkben
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.ui.IActionDelegate#selectionChanged(org.eclipse.jface.action.IAction,
-	 *      org.eclipse.jface.viewers.ISelection)
+	 * @see
+	 * org.eclipse.ui.IActionDelegate#selectionChanged(org.eclipse.jface.action
+	 * .IAction, org.eclipse.jface.viewers.ISelection)
 	 */
 	public void selectionChanged(IAction action, ISelection selection) {
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#dispose()
 	 */
 	public void dispose() {

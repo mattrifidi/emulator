@@ -19,6 +19,7 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.rifidi.emulator.reader.module.GeneralReaderPropertyHolder;
 import org.rifidi.emulator.rmi.server.ReaderModuleManagerInterface;
 import org.rifidi.emulator.rmi.server.RifidiManager;
 import org.rifidi.emulator.rmi.server.RifidiManagerInterface;
@@ -94,7 +95,7 @@ public class ReaderRegistry {
 	 *            of the remote RMI Service
 	 * @param port
 	 *            of the remote RMI Service
-	 * @throws ConnectException 
+	 * @throws ConnectException
 	 */
 	public void connect(String hostname, int port) throws ConnectException {
 		logger.debug("Trying to establish RMI Connection with : " + hostname
@@ -170,12 +171,13 @@ public class ReaderRegistry {
 	 *            UIReader representing the necessary data to create the reader
 	 * @throws DuplicateReaderException
 	 */
-	public void create(UIReader reader) throws DuplicateReaderException {
-		if (reader == null)
-			return;
+	public void create(GeneralReaderPropertyHolder grph, String readerType)
+			throws DuplicateReaderException {
+		if (grph == null) {
+			throw new IllegalArgumentException();
+		}
+		String readerName = grph.getReaderName();
 		ReaderModuleManagerInterface readerManager = null;
-
-		String readerName = reader.getReaderName();
 
 		if (readerRegistry.containsKey(readerName)) {
 
@@ -184,41 +186,25 @@ public class ReaderRegistry {
 		}
 		logger.debug("Creating reader " + readerName + " through RMI");
 		try {
-			if (rifidiManager.createReader(reader
-					.getGeneralReaderPropertyHolder())) {
+			if (rifidiManager.createReader(grph)) {
 				readerManager = (ReaderModuleManagerInterface) TransparentItemProxy
 						.getItem(
 								connectionURI + readerName,
 								new Class[] { ReaderModuleManagerInterface.class });
 			}
-		} catch (RemoteException e) {
-			e.printStackTrace();
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		} catch (NotBoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		reader.setReaderManager(readerManager);
-		try {
+
+			UIReader reader = new UIReader(readerManager, grph, readerType);
+
 			UIReaderCallbackManager readerCallbackManager = new UIReaderCallbackManager(
 					readerManager.getClientProxy());
 			reader.setReaderCallbackManager(readerCallbackManager);
+
+			readerRegistry.put(readerName, reader);
+			addEvent(reader);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+
 		}
-		readerRegistry.put(readerName, reader);
-		addEvent(reader);
 	}
 
 	/**

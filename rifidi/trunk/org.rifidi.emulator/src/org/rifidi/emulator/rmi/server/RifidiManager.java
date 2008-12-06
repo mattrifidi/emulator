@@ -185,6 +185,7 @@ public class RifidiManager implements RifidiManagerInterface {
 			ReaderModuleManager moduleManager = new ReaderModuleManager(rm);
 
 			try {
+				logger.info("Binding new Reader /" + properties.getReaderName() );
 				ItemServer.bind(moduleManager, properties.getReaderName());
 				readerRegistry.put(properties.getReaderName(), moduleManager);
 			} catch (RemoteException e) {

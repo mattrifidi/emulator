@@ -5,6 +5,7 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.nebula.widgets.pgroup.PGroup;
 import org.eclipse.swt.widgets.Composite;
 import org.rifidi.ui.common.reader.UIAntenna;
+import org.rifidi.ui.common.reader.callback.UIReaderCallbackManager;
 
 /**
  * Class to actually display the antenna and the tags in it.
@@ -16,14 +17,16 @@ public class TagPGroup extends PGroup {
 	// the viewer that holds the tags
 	private TagViewer viewer;
 
-	public TagPGroup(Composite parent, int style, UIAntenna antenna) {
+	public TagPGroup(Composite parent, int style, UIAntenna antenna,
+			UIReaderCallbackManager callbackManager) {
 		super(parent, style);
 		FillLayout layout = new FillLayout();
-		//layout.type = SWT.HORIZONTAL;
+		// layout.type = SWT.HORIZONTAL;
 		setLayout(layout);
 		setText("Antenna " + antenna.getId());
 		setForeground(getShell().getDisplay().getSystemColor(SWT.COLOR_WHITE));
-		viewer = new TagViewer(this, SWT.MULTI | SWT.FULL_SELECTION, antenna);
+		viewer = new TagViewer(this, SWT.MULTI | SWT.FULL_SELECTION, antenna,
+				callbackManager);
 	}
 
 	/*
