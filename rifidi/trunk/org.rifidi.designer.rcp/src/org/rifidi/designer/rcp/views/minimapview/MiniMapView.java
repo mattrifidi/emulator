@@ -32,7 +32,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Scale;
 import org.eclipse.ui.part.ViewPart;
-import org.rifidi.designer.rcp.GlobalProperties;
 import org.rifidi.designer.rcp.game.DesignerGame;
 import org.rifidi.designer.rcp.game.ZoomableLWJGLCamera;
 import org.rifidi.designer.rcp.views.view3d.listeners.ZoomMouseWheelListener;
@@ -71,7 +70,7 @@ public class MiniMapView extends ViewPart {
 	/** true if the view is disposed. */
 	private boolean disposed = false;
 
-	private Updater updater;
+	private volatile Updater updater;
 
 	private DesignerGame implementor;
 
@@ -179,26 +178,14 @@ public class MiniMapView extends ViewPart {
 				.getSize().y));
 		Vector2f center = calcPos(new Vector2f(implementor.getCanvas()
 				.getSize().x / 2, implementor.getCanvas().getSize().y / 2));
-		if (GlobalProperties.windows) {
-			graphicsContext.setLineWidth(2);
-			graphicsContext.setForeground(new Color(null, 255, 0, 0));
-			graphicsContext.setLineStyle(SWT.LINE_SOLID);
-			graphicsContext.drawImage(image, 0, 0);
-			graphicsContext.drawRectangle((int) wLeftTop.x, (int) wLeftTop.y, (int) (center.x-wLeftTop.x)*2, (int) (center.y-wLeftTop.y)*2);
-			label.redraw();
-		} else {
-			graphicsContext.dispose();
-			image.dispose();
-			image = new Image(Display.getCurrent(), imageData);
-			graphicsContext = new GC(image);
-			graphicsContext.drawImage(image, 0, 0);
-			graphicsContext.setLineWidth(2);
-			graphicsContext.setForeground(new Color(null, 255, 0, 0));
-			graphicsContext.setLineStyle(SWT.LINE_SOLID);
-			graphicsContext.drawRectangle((int) wLeftTop.x, (int) wLeftTop.y, (int) (center.x-wLeftTop.x)*2, (int) (center.y-wLeftTop.y)*2);
-			label.setImage(image);
-			label.redraw();
-		}
+		Image tmpImage = new Image(Display.getCurrent(), imageData);
+		graphicsContext.drawImage(tmpImage, 0, 0);
+		graphicsContext.drawRectangle((int) wLeftTop.x, (int) wLeftTop.y,
+				(int) (center.x - wLeftTop.x) * 2,
+				(int) (center.y - wLeftTop.y) * 2);
+		label.setImage(image);
+		label.redraw();
+		tmpImage.dispose();
 	}
 
 	public Vector2f calcPos(Vector2f screenPos) {
@@ -240,18 +227,20 @@ public class MiniMapView extends ViewPart {
 			image = new Image(Display.getCurrent(), img);
 			graphicsContext = new GC(image);
 			label.setImage(image);
+			graphicsContext.setLineWidth(2);
+			graphicsContext.setForeground(new Color(null, 255, 0, 0));
+			graphicsContext.setLineStyle(SWT.LINE_SOLID); 
 		} else if (!imageData.equals(img)) {
-			imageData = img;
-			image.dispose();
-			graphicsContext.dispose();
-			image = new Image(Display.getCurrent(), img);
-			graphicsContext = new GC(image);
-			label.setImage(image);
+//			imageData = img;
 		}
 		drawFrame();
-		if (!GlobalProperties.windows && updater == null) {
-			updater = new Updater();
-			updater.start();
+		if (updater == null) {
+			synchronized (this) {
+				if (updater == null){
+					updater = new Updater();
+					updater.start();	
+				}
+			}
 		}
 	}
 
@@ -282,20 +271,6 @@ public class MiniMapView extends ViewPart {
 		return scale.getSelection();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.ui.part.WorkbenchPart#dispose()
-	 */
-	@Override
-	public void dispose() {
-		super.dispose();
-		if (updater != null) {
-			updater.setKeepRunning(false);
-		}
-		disposed = true;
-	}
-
 	/**
 	 * @return the disposed
 	 */
@@ -313,7 +288,6 @@ public class MiniMapView extends ViewPart {
 	}
 
 	private class Updater extends Thread {
-		private boolean keepRunning = true;
 
 		/*
 		 * (non-Javadoc)
@@ -322,7 +296,7 @@ public class MiniMapView extends ViewPart {
 		 */
 		@Override
 		public void run() {
-			while (keepRunning) {
+			while (!isInterrupted()) {
 				getViewSite().getShell().getDisplay().syncExec(new Runnable() {
 
 					/*
@@ -349,15 +323,6 @@ public class MiniMapView extends ViewPart {
 				}
 			}
 		}
-
-		/**
-		 * @param keepRunning
-		 *            the keepRunning to set
-		 */
-		public void setKeepRunning(boolean keepRunning) {
-			this.keepRunning = keepRunning;
-		}
-
 	}
 
 	private class WaitingCallable implements Callable<Object> {
