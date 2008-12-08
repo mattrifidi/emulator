@@ -11,7 +11,6 @@
 package org.rifidi.designer.entities;
 
 import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeListenerProxy;
 import java.beans.PropertyChangeSupport;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -108,8 +107,7 @@ public abstract class Entity {
 	 * 
 	 * @param listener
 	 */
-	public void addPropertyChangeListener(
-			final PropertyChangeListenerProxy listener) {
+	public void addPropertyChangeListener(final PropertyChangeListener listener) {
 		changeSupport.addPropertyChangeListener(listener);
 	}
 
@@ -159,26 +157,24 @@ public abstract class Entity {
 	public void setDeleted(boolean deleted) {
 		this.deleted = deleted;
 	}
-	
+
 	/**
-	 * Start the entity.
-	 * Intended to be overwritten.
+	 * Start the entity. Intended to be overwritten.
 	 */
-	public void start(){
+	public void start() {
 	}
 
 	/**
 	 * Pause an entity. On a subsequent start the entity should resume on the
-	 * point where it was paused.
-	 * Intended to be overwritten.
+	 * point where it was paused. Intended to be overwritten.
 	 */
-	public void pause(){
+	public void pause() {
 	}
 
 	/**
-	 * Stop the entity, should also reset internal state.
-	 * Intended to be overwritten.
+	 * Stop the entity, should also reset internal state. Intended to be
+	 * overwritten.
 	 */
-	public void reset(){
+	public void reset() {
 	}
 }
