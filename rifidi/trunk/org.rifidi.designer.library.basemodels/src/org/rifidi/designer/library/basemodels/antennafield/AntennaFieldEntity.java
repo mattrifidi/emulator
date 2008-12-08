@@ -28,8 +28,8 @@ import org.rifidi.designer.entities.Entity;
 import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.grouping.IChildEntity;
 import org.rifidi.designer.entities.interfaces.IField;
-import org.rifidi.designer.entities.interfaces.INeedsPhysics;
 import org.rifidi.designer.entities.interfaces.IHasSwitch;
+import org.rifidi.designer.entities.interfaces.INeedsPhysics;
 import org.rifidi.designer.entities.rifidi.ITagged;
 import org.rifidi.designer.library.basemodels.gate.GateEntity;
 import org.rifidi.designer.services.core.collision.FieldService;
@@ -335,12 +335,11 @@ public class AntennaFieldEntity extends VisualEntity implements IHasSwitch,
 	 */
 	@Override
 	public void fieldLeft(Entity entity) {
-		if (entity.getUserData() instanceof RifidiTag) {
+		if (entity instanceof ITagged) {
 			antennaFieldThread.addAction(new AntennaFieldAction(false,
-					(RifidiTag) entity.getUserData()));
-			eventsService.publish(new TagEvent(
-					(RifidiTag) entity.getUserData(), readerInterface,
-					antennaNum, false));
+					((ITagged) entity).getRifidiTag()));
+			eventsService.publish(new TagEvent(((ITagged) entity)
+					.getRifidiTag(), readerInterface, antennaNum, false));
 		}
 	}
 
