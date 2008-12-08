@@ -1,5 +1,7 @@
 package org.rifidi.ui.ide.views.tagview;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -35,7 +37,7 @@ import org.rifidi.ui.ide.views.tagview.model.TagViewLabelProvider;
  * @author Andreas Huebner - andreas@pramari.com
  * 
  */
-public class TagView extends ViewPart {
+public class TagView extends ViewPart implements PropertyChangeListener{
 
 	private Log logger = LogFactory.getLog(TagView.class);
 
@@ -142,7 +144,13 @@ public class TagView extends ViewPart {
 	@Inject
 	public void setTagRegistryService(ITagRegistry tagRegisrty) {
 		this.tagRegistry = tagRegisrty;
+		this.tagRegistry.addPropertyChangeListener(this);
 
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		refresh();
 	}
 
 }
