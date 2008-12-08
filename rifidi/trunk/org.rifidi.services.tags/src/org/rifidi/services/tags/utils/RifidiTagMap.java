@@ -64,7 +64,7 @@ public class RifidiTagMap {
 	 *            A collection of tags to remove
 	 */
 	public boolean addTag(RifidiTag tagToAdd) {
-		RifidiTag t = tags.put(tagToAdd.getTagEntitiyID(), tagToAdd);
+		tags.put(tagToAdd.getTagEntitiyID(), tagToAdd);
 		return true;
 	}
 

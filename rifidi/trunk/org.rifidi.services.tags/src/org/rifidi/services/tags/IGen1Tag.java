@@ -2,13 +2,8 @@ package org.rifidi.services.tags;
 
 import java.io.Serializable;
 
-import javax.xml.bind.annotation.XmlSeeAlso;
-
 import org.rifidi.services.tags.enums.TagGen;
 import org.rifidi.services.tags.exceptions.InvalidMemoryAccessException;
-import org.rifidi.services.tags.impl.C0G1Tag;
-import org.rifidi.services.tags.impl.C1G1Tag;
-import org.rifidi.services.tags.impl.C1G2Tag;
 
 /*
  *  Gen1Tag.java

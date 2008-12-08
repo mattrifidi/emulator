@@ -34,12 +34,13 @@ public class TagRegistryImpl implements ITagRegistry {
 	/** Start value for tag ids. */
 	private long uniqueIDSeed;
 	private PropertyChangeSupport propertyChangeSupport;
+
 	/**
 	 * Constructor.
 	 */
 	public TagRegistryImpl() {
 		tagMap = new RifidiTagMap();
-		propertyChangeSupport =  new PropertyChangeSupport(this);
+		propertyChangeSupport = new PropertyChangeSupport(this);
 	}
 
 	/*
@@ -51,7 +52,7 @@ public class TagRegistryImpl implements ITagRegistry {
 	 */
 	@Override
 	public ArrayList<RifidiTag> createTags(TagCreationPattern tagCreationPattern) {
-		List<RifidiTag> oldList=getTags();
+		List<RifidiTag> oldList = getTags();
 		ArrayList<RifidiTag> newTags = TagFactory
 				.generateTags(tagCreationPattern);
 		for (RifidiTag t : newTags) {
@@ -80,7 +81,7 @@ public class TagRegistryImpl implements ITagRegistry {
 	 */
 	@Override
 	public void initialize() {
-		List<RifidiTag> oldList=getTags();
+		List<RifidiTag> oldList = getTags();
 		uniqueIDSeed = 1;
 		tagMap = new RifidiTagMap();
 		propertyChangeSupport.firePropertyChange("tags", oldList, getTags());
@@ -96,9 +97,11 @@ public class TagRegistryImpl implements ITagRegistry {
 	@Override
 	public void initialize(List<RifidiTag> tags) {
 		uniqueIDSeed = 1;
+		List<RifidiTag> oldList = getTags();
 		tagMap = new RifidiTagMap();
-		List<RifidiTag> oldList=getTags();
 		for (RifidiTag t : tags) {
+			// make sure uniqueIDseed is the highest IDseed seen in the list of
+			// tags
 			if (uniqueIDSeed < t.getTagEntitiyID()) {
 				uniqueIDSeed = t.getTagEntitiyID();
 			}
@@ -116,7 +119,7 @@ public class TagRegistryImpl implements ITagRegistry {
 	 */
 	@Override
 	public void remove(RifidiTag tag) {
-		List<RifidiTag> oldList=getTags();
+		List<RifidiTag> oldList = getTags();
 		tagMap.removeTag(tag.getTagEntitiyID());
 		propertyChangeSupport.firePropertyChange("tags", oldList, getTags());
 
@@ -131,7 +134,7 @@ public class TagRegistryImpl implements ITagRegistry {
 	 */
 	@Override
 	public void remove(List<RifidiTag> tags) {
-		List<RifidiTag> oldList=getTags();
+		List<RifidiTag> oldList = getTags();
 
 		for (RifidiTag t : tags) {
 			this.tagMap.removeTag(t.getTagEntitiyID());
@@ -147,7 +150,7 @@ public class TagRegistryImpl implements ITagRegistry {
 	 */
 	@Override
 	public void remove() {
-		List<RifidiTag> oldList=getTags();
+		List<RifidiTag> oldList = getTags();
 		this.tagMap.clear();
 
 		propertyChangeSupport.firePropertyChange("tags", oldList, getTags());
@@ -163,21 +166,28 @@ public class TagRegistryImpl implements ITagRegistry {
 		return tagMap.getTag(tagEntityID);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.rifidi.services.tags.registry.ITagRegistry#addPropertyChangeListener(java.beans.PropertyChangeListener)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.rifidi.services.tags.registry.ITagRegistry#addPropertyChangeListener
+	 * (java.beans.PropertyChangeListener)
 	 */
 	@Override
 	public void addPropertyChangeListener(PropertyChangeListener listener) {
 		propertyChangeSupport.addPropertyChangeListener("tags", listener);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.rifidi.services.tags.registry.ITagRegistry#removePropertyChangeListener(java.beans.PropertyChangeListener)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.rifidi.services.tags.registry.ITagRegistry#removePropertyChangeListener
+	 * (java.beans.PropertyChangeListener)
 	 */
 	@Override
 	public void removePropertyChangeListener(PropertyChangeListener listener) {
 		propertyChangeSupport.removePropertyChangeListener("tags", listener);
 	}
-	
-	
+
 }
