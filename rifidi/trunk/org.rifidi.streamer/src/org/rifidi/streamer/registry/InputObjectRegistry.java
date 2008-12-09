@@ -9,6 +9,7 @@ import java.util.HashMap;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.rifidi.emulator.reader.module.GeneralReaderPropertyHolder;
 import org.rifidi.emulator.rmi.server.ReaderModuleManagerInterface;
 import org.rifidi.streamer.exceptions.DublicateObjectException;
 import org.rifidi.streamer.xml.BatchSuite;
@@ -23,7 +24,6 @@ import org.rifidi.streamer.xml.testSuite.TestUnit;
 import org.rifidi.ui.common.reader.UIReader;
 import org.rifidi.ui.common.registry.ReaderRegistry;
 import org.rifidi.ui.common.registry.RegistryChangeListener;
-import org.rifidi.ui.common.wizards.reader.exceptions.DuplicateReaderException;
 
 /**
  * @author Andreas Huebner - andreas@pramari.com
@@ -256,23 +256,22 @@ public class InputObjectRegistry {
 		} else {
 			// Create Reader and mark it as used
 			ReaderComponent readerComponent = getComponent(ID);
-			UIReader reader = readerComponent.getUIReader();
+			GeneralReaderPropertyHolder grph = readerComponent.getReader();
 			try {
-				readerRegistry.create(reader);
-			} catch (DuplicateReaderException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			Integer usage = new Integer(1);
-			readerUsage.put(ID, usage);
-			readerComponents.put(ID, reader);
-			try {
+				readerRegistry.create(grph);
+				UIReader reader = readerRegistry.getReaderByName(grph
+						.getReaderName());
+
+				Integer usage = new Integer(1);
+				readerUsage.put(ID, usage);
+				readerComponents.put(ID, reader);
+
 				reader.getReaderManager().turnReaderOn();
+				return reader.getReaderManager();
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			return reader.getReaderManager();
+			return null;
 		}
 	}
 
