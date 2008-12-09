@@ -15,7 +15,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.rifidi.emulator.reader.module.GeneralReaderPropertyHolder;
-import org.rifidi.ui.common.reader.UIReader;
 
 /**
  * This is the container for holding the Information about a reader component.
@@ -36,7 +35,7 @@ public class ReaderComponent {
 	/**
 	 * the virtual reader of this readerComponent
 	 */
-	private UIReader reader;
+	private GeneralReaderPropertyHolder reader;
 
 	/**
 	 * @return the iD
@@ -58,7 +57,7 @@ public class ReaderComponent {
 	 * @return the reader
 	 */
 	public GeneralReaderPropertyHolder getReader() {
-		return reader.getGeneralReaderPropertyHolder();
+		return reader;
 	}
 
 	/**
@@ -67,21 +66,6 @@ public class ReaderComponent {
 	 */
 	@XmlElement
 	public void setReader(GeneralReaderPropertyHolder grph) {
-		reader = new UIReader();
-		// TODO Change UIReader and GeneralPropertyHolder
-		reader.setNumAntennas(grph.getNumAntennas());
-		reader.setNumGPIs(grph.getNumGPIs());
-		reader.setNumGPOs(grph.getNumGPOs());
-		reader.setPropertiesMap(grph.getPropertiesMap());
-		reader.setReaderName(grph.getReaderName());
-		reader.setReaderClassName(grph.getReaderClassName());
+		this.reader=grph;
 	}
-
-	/**
-	 * @return
-	 */
-	public UIReader getUIReader() {
-		return reader;
-	}
-
 }
