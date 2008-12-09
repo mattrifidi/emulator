@@ -9,6 +9,21 @@ public class ReaderWizardData {
 	String readerType;
 	
 	/**
+	 * @param generalReaderHolder the generalReaderHolder to set
+	 */
+	public void setGeneralReaderHolder(
+			GeneralReaderPropertyHolder generalReaderHolder) {
+		this.generalReaderHolder = generalReaderHolder;
+	}
+
+	/**
+	 * @param readerType the readerType to set
+	 */
+	public void setReaderType(String readerType) {
+		this.readerType = readerType;
+	}
+
+	/**
 	 * @return the generalReaderHolder
 	 */
 	public GeneralReaderPropertyHolder getGeneralReaderHolder() {

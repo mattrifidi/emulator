@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Rifidi Common UI Plug-in
 Bundle-SymbolicName: org.rifidi.ui.common;singleton:=true
-Bundle-Version: 2.3.0
+Bundle-Version: 2.3.1
 Bundle-Activator: org.rifidi.ui.common.Activator
 Bundle-Vendor: Pramari, LLC
 Require-Bundle: org.eclipse.ui,
