@@ -36,7 +36,7 @@ import com.jme.util.export.binary.BinaryImporter;
 import com.jmex.physics.DynamicPhysicsNode;
 
 /**
- * 
+ * FIXME: Class comment.  
  * 
  * @author Jochen Mader - jochen@pramari.com - Apr 3, 2008
  * 

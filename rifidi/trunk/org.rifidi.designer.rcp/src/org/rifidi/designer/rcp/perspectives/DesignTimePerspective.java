@@ -7,7 +7,9 @@ import org.rifidi.designer.rcp.views.entityview.EntityView;
 import org.rifidi.designer.rcp.views.libraryview.LibraryView;
 import org.rifidi.designer.rcp.views.minimapview.MiniMapView;
 import org.rifidi.designer.rcp.views.view3d.View3D;
-
+/*
+ * FIXME: Class comment and header.  
+ */
 public class DesignTimePerspective implements IPerspectiveFactory {
 
 	public void createInitialLayout(IPageLayout layout) {

@@ -92,6 +92,7 @@ import com.jmex.physics.PhysicsSpace;
 import com.jmex.physics.StaticPhysicsNode;
 
 /**
+ * FIXME: Class comment.  
  * 
  * 
  * @author Jochen Mader Jan 25, 2008

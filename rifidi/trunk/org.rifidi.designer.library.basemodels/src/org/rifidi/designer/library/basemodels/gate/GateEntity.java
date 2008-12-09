@@ -382,6 +382,9 @@ public class GateEntity extends VisualEntity implements RifidiEntity,
 		rmimanager.removeReader(reader.getReaderName());
 	}
 
+	/*
+	 * FIXME: needs documentation!
+	 */
 	public void setRMIManager(RMIManager rmimanager) {
 		this.rmimanager = rmimanager;
 	}
@@ -464,15 +467,24 @@ public class GateEntity extends VisualEntity implements RifidiEntity,
 		}
 	}
 
+	/*
+	 * FIXME: needs documentation!
+	 */
 	@Property(displayName = "Reader", description = "type of emulated reader", readonly = true, unit = "")
 	public void setReaderType(String name) {
 
 	}
 
+	/*
+	 * FIXME: needs documentation!
+	 */
 	public String getReaderType() {
 		return reader.getReaderType();
 	}
 
+	/*
+	 * FIXME: needs documentation!
+	 */
 	@Property(displayName = "Reader Connection", description = "connection details for the reader", readonly = true, unit = "")
 	public void setConnectionDetails(String readerDetails) {
 

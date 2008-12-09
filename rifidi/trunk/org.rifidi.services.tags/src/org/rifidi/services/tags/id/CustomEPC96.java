@@ -9,6 +9,8 @@ import java.security.SecureRandom;
 import org.rifidi.common.utilities.ByteAndHexConvertingUtility;
 
 /**
+ * FIXME: Header. 
+ * 
  * This is a basic Class representing a more customizable Tag
  * 
  * @author Andreas Huebner - andreas@pramari.com

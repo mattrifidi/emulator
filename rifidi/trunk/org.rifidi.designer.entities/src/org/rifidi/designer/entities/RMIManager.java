@@ -27,7 +27,7 @@ import org.rifidi.emulator.rmi.server.RifidiManager;
 import org.rifidi.emulator.rmi.server.RifidiManagerInterface;
 
 /**
- * 
+ * FIXME: Class comment.  
  * 
  */
 public class RMIManager {

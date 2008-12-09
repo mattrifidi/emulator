@@ -11,6 +11,8 @@ import org.rifidi.ui.common.wizards.tag.MultipleNewTagsWizard;
 import org.rifidi.ui.ide.views.tagview.TagView;
 
 /**
+ * FIXME: Header.  
+ * 
  * This it the Action for creating and adding multiple tags. It's using the
  * MultipleTagWizard to create the tags. It's contributed to the RCP Application
  * by defining it in the plugin.xml

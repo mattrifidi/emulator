@@ -13,7 +13,7 @@ package org.rifidi.designer.entities.rifidi;
 import org.rifidi.services.tags.impl.RifidiTag;
 
 /**
- * 
+ * FIXME: Class comment.  
  * 
  * @author Jochen Mader - jochen@pramari.com - Nov 26, 2008
  * 

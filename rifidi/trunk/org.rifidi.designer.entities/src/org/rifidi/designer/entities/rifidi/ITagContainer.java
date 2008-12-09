@@ -15,7 +15,7 @@ import java.util.Set;
 import org.rifidi.services.tags.impl.RifidiTag;
 
 /**
- * 
+ * FIXME: Class comment.  
  * 
  * @author Jochen Mader - jochen@pramari.com - Nov 26, 2008
  * 

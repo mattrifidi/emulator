@@ -13,7 +13,7 @@ package org.rifidi.services.initializer;
 import org.rifidi.services.initializer.exceptions.InitializationException;
 
 /**
- * 
+ * FIXME: Class comment.  
  * 
  * @author Jochen Mader - jochen@pramari.com - May 14, 2008
  * 

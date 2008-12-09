@@ -17,7 +17,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.rifidi.designer.entities.gpio.GPOPort.State;
 
 /**
- * 
+ * FIXME: Class comment.  
  * 
  * @author Jochen Mader - jochen@pramari.com - Nov 12, 2008
  * 

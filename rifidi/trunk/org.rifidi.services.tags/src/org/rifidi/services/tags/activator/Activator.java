@@ -7,6 +7,8 @@ import org.rifidi.services.tags.registry.ITagRegistry;
 import org.rifidi.services.tags.registry.impl.TagRegistryImpl;
 
 /**
+ * FIXME: Header
+ * 
  * The activator class controls the plug-in life cycle
  */
 public class Activator extends Plugin {

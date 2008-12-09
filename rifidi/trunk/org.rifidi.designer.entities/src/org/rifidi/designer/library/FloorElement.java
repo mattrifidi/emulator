@@ -23,7 +23,7 @@ import com.jme.scene.Node;
 import com.jme.util.export.binary.BinaryImporter;
 
 /**
- * 
+ * FIXME: Class comment.  
  * 
  * @author Jochen Mader - jochen@pramari.com - Jul 1, 2008
  * 

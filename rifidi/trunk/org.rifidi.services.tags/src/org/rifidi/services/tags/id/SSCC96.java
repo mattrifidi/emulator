@@ -1,5 +1,5 @@
 /*
- *  DoD96.java
+ *  SSCC96.java
  *
  *  Created:	Mar 1, 2007
  *  Project:	RiFidi Emulator - A Software Simulation Tool for RFID Devices

@@ -26,7 +26,7 @@ import com.jme.system.DisplaySystem;
 import com.jme.util.TextureManager;
 
 /**
- * 
+ * FIXME: Class comment.  
  * 
  * @author Jochen Mader - jochen@pramari.com - May 27, 2008
  * @author Dan West

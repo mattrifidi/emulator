@@ -15,6 +15,8 @@ import com.jme.util.resource.MultiFormatResourceLocator;
 import com.jme.util.resource.ResourceLocatorTool;
 
 /**
+ * FIXME: Header
+ * 
  * The activator class controls the plug-in life cycle
  */
 public class Activator extends AbstractUIPlugin {

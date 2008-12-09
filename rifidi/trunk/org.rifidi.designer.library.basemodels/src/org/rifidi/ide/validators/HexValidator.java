@@ -13,7 +13,7 @@ package org.rifidi.ide.validators;
 
 import org.eclipse.jface.viewers.ICellEditorValidator;
 /**
- * 
+ * FIXME: Class comment!
  * 
  * 
  * @author Jochen Mader Feb 1, 2008

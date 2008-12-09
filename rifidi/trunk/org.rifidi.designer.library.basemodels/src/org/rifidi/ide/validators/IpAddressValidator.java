@@ -18,9 +18,10 @@ import org.apache.commons.logging.LogFactory;
 import org.eclipse.jface.viewers.ICellEditorValidator;
 
 /**
+ * FIXME: class comment!
+ * 
  * 
  * @author Jochen Mader
- * 
  */
 public class IpAddressValidator implements ICellEditorValidator {
 	private static Pattern ipaddress=Pattern.compile("^[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}$");

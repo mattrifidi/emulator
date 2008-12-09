@@ -15,7 +15,7 @@ import org.eclipse.ui.model.IWorkbenchAdapter;
 import org.rifidi.services.tags.impl.RifidiTag;
 
 /**
- * 
+ * FIXME: Class comment.  
  * 
  * @author Jochen Mader - jochen@pramari.com - Dec 5, 2008
  * 

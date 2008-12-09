@@ -16,7 +16,7 @@ import java.util.Map;
 import org.eclipse.core.commands.IParameterValues;
 
 /**
- * 
+ * FIXME: Class comment.  
  * 
  * @author Jochen Mader - jochen@pramari.com - Mar 10, 2008
  * 

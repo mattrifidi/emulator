@@ -11,7 +11,7 @@
 package org.rifidi.designer.services.core.world;
 
 /**
- * 
+ * FIXME: Class comment.  
  * 
  * @author Jochen Mader - jochen@pramari.com - Feb 18, 2008
  * 

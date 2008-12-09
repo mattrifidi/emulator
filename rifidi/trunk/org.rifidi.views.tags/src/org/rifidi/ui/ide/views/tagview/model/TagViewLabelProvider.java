@@ -10,6 +10,8 @@ import org.rifidi.services.tags.enums.TagGen;
 import org.rifidi.services.tags.impl.RifidiTag;
 
 /**
+ * FIXME: Header.
+ * 
  * The TagViewLabelProvider is assigning names to the elements of the
  * TagRegistry
  * 

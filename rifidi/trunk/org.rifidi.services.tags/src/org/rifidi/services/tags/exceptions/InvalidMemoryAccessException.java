@@ -3,6 +3,8 @@ package org.rifidi.services.tags.exceptions;
 import org.rifidi.services.tags.enums.TagErrors;
 
 /**
+ * FIXME: Header. 
+ * 
  * Exception class for memory related exceptions.
  * @author Jochen Mader
  *

@@ -186,6 +186,10 @@ public class GateEntityWizard extends RifidiEntityWizard implements
 		return entity;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.jface.wizard.Wizard#canFinish()
+	 */
 	@Override
 	public boolean canFinish() {
 		if (!newReaderDynamicWizardPage.enableGPIO()

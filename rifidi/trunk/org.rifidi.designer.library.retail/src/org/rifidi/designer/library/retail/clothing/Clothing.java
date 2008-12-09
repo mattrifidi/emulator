@@ -31,7 +31,7 @@ import com.jmex.physics.PhysicsNode;
 import com.jmex.physics.PhysicsSpace;
 
 /**
- * 
+ * FIXME: Class comment.  
  * 
  * @author Jochen Mader - jochen@pramari.com - Apr 3, 2008
  * 

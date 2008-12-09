@@ -88,7 +88,7 @@ import com.jmex.physics.PhysicsDebugger;
 import com.jmex.swt.lwjgl.LWJGLSWTCanvas;
 
 /**
- * 
+ * FIXME: Class comment.  
  * 
  * @author Jochen Mader - jochen@pramari.com - May 28, 2008
  * 

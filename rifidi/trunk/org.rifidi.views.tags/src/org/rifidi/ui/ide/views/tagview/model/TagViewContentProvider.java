@@ -8,6 +8,8 @@ import org.eclipse.jface.viewers.Viewer;
 import org.rifidi.services.tags.registry.ITagRegistry;
 
 /**
+ * FIXME: Header.
+ * 
  * This is providing the information about the structure of the TagRegistry Object. 
  * 
  * @author Andreas Huebner - andreas@pramari.com

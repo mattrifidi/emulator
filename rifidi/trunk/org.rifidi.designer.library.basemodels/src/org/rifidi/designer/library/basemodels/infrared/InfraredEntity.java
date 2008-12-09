@@ -190,11 +190,19 @@ public class InfraredEntity extends VisualEntity implements IHasSwitch,
 		this.physicsSpace = physicsSpace;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.rifidi.designer.entities.interfaces.IHasSwitch#isRunning()
+	 */
 	@Override
 	public boolean isRunning() {
 		return running;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.rifidi.designer.entities.interfaces.IField#fieldEntered(org.rifidi.designer.entities.Entity)
+	 */
 	@Override
 	public void fieldEntered(Entity entity) {
 		if (isRunning()) {
@@ -202,6 +210,10 @@ public class InfraredEntity extends VisualEntity implements IHasSwitch,
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.rifidi.designer.entities.interfaces.IField#fieldLeft(org.rifidi.designer.entities.Entity)
+	 */
 	@Override
 	public void fieldLeft(Entity entity) {
 		port.setState(State.LOW);

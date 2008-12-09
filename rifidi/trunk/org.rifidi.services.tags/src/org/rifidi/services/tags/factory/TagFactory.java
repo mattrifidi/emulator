@@ -1,4 +1,4 @@
-/**
+/*
  *  TagFactory.java
  *
  *  Project: Rifidi - A developer tool for RFID
@@ -21,6 +21,8 @@ import org.rifidi.services.tags.impl.C1G2Tag;
 import org.rifidi.services.tags.impl.RifidiTag;
 
 /**
+ * FIXME: Class comment.  
+ * 
  * @author Kyle Neumeier - kyle@pramari.com
  * @author Andreas Huebner - andreas@pramari.com
  * 

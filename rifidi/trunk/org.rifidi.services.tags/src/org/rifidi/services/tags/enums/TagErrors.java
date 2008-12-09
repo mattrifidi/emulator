@@ -12,6 +12,8 @@
 package org.rifidi.services.tags.enums;
 
 /**
+ * FIXME: Class comment.  
+ * 
  * @author Jochen Mader
  *
  */

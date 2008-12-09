@@ -30,10 +30,6 @@ import org.rifidi.services.tags.exceptions.InvalidMemoryAccessException;
  * @author Jochen Mader
  *
  */
-/**
- * @author Andreas Huebner - andreas@pramari.com
- *
- */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class C0G1Tag implements IGen1Tag{

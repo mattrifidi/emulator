@@ -14,7 +14,7 @@ import org.rifidi.designer.entities.Entity;
 import org.rifidi.designer.services.core.events.WorldEvent;
 
 /**
- * 
+ * FIXME: Class comment.  
  * 
  * @author Jochen Mader - jochen@pramari.com - Mar 26, 2008
  * 

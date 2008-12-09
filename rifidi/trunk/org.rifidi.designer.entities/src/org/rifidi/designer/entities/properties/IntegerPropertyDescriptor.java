@@ -5,6 +5,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.views.properties.PropertyDescriptor;
 
 /**
+ * 
+ * FIXME: Header.  
  * Descriptor for integer properties.
  * 
  * 

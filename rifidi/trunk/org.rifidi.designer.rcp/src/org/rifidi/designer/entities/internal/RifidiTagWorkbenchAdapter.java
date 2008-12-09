@@ -16,7 +16,7 @@ import org.rifidi.services.tags.impl.RifidiTag;
 import org.rifidi.views.tags.Activator;
 
 /**
- * 
+ * FIXME: Class comment.  
  * 
  * @author Jochen Mader - jochen@pramari.com - Dec 5, 2008
  * 

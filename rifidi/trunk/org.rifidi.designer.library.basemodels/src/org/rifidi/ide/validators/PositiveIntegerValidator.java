@@ -14,8 +14,9 @@ package org.rifidi.ide.validators;
 import org.eclipse.jface.viewers.ICellEditorValidator;
 
 /**
- * @author kyle
+ * FIXME: Class comment.  
  * 
+ * @author kyle
  */
 public class PositiveIntegerValidator implements ICellEditorValidator {
 

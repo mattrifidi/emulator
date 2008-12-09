@@ -4,6 +4,8 @@
 package org.rifidi.services.tags.id;
 
 /**
+ * FIXME: Header. 
+ * 
  * This is the enum for the different tag types
  * 
  * @author Andreas Huebner - andreas@pramari.com

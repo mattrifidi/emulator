@@ -19,6 +19,12 @@ import org.eclipse.core.databinding.observable.list.IListChangeListener;
  * 
  */
 public interface IEntityObservable {
+	/*
+	 * FIXME: Method comment.  
+	 */
 	public void addListChangeListener(IListChangeListener changeListener);
+	/*
+	 * FIXME: Method comment.  
+	 */
 	public void removeListChangeListener(IListChangeListener changeListener);
 }

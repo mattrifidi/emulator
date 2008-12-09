@@ -31,6 +31,8 @@ import org.rifidi.ui.ide.views.tagview.model.TagViewContentProvider;
 import org.rifidi.ui.ide.views.tagview.model.TagViewLabelProvider;
 
 /**
+ * FIXME: Header.
+ * 
  * This is the TagView displaying the new created tags in a table. It's also a
  * source for the drag&drop functionality to the AntennaView.
  * 

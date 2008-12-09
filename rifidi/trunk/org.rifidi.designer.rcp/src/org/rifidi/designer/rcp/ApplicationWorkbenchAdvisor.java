@@ -7,6 +7,10 @@ import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 import org.eclipse.ui.contexts.IContextActivation;
 import org.eclipse.ui.contexts.IContextService;
 
+/**
+ * FIXME: Class comment, and also header.  
+ *
+ */
 public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
 
 	private static final String PERSPECTIVE_ID = "org.rifidi.designer.rcp.perspectives.designtime";

@@ -19,7 +19,7 @@ import org.osgi.framework.BundleContext;
 import org.rifidi.emulator.rmi.server.RifidiManager;
 
 /**
- * 
+ * FIXME: Class comment.  
  * 
  * @author Jochen Mader - jochen@pramari.com - May 14, 2008
  * 
