@@ -35,6 +35,7 @@ import org.xml.sax.SAXException;
  * them. It's also a providing events whenever a reader was created or removed.
  * 
  * @author Andreas Huebner - andreas@pramari.com
+ * @author Kyle Neumeier - Kyle Neumeier
  * 
  */
 public class ReaderRegistry {
@@ -171,7 +172,7 @@ public class ReaderRegistry {
 	 *            UIReader representing the necessary data to create the reader
 	 * @throws DuplicateReaderException
 	 */
-	public void create(GeneralReaderPropertyHolder grph, String readerType)
+	public void create(GeneralReaderPropertyHolder grph)
 			throws DuplicateReaderException {
 		if (grph == null) {
 			throw new IllegalArgumentException();
@@ -193,7 +194,7 @@ public class ReaderRegistry {
 								new Class[] { ReaderModuleManagerInterface.class });
 			}
 
-			UIReader reader = new UIReader(readerManager, grph, readerType);
+			UIReader reader = new UIReader(readerManager, grph);
 
 			UIReaderCallbackManager readerCallbackManager = new UIReaderCallbackManager(
 					readerManager.getClientProxy());

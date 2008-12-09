@@ -11,29 +11,17 @@
  */
 package org.rifidi.ui.common.reader;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
-import org.rifidi.common.utilities.ByteAndHexConvertingUtility;
 import org.rifidi.emulator.reader.module.GeneralReaderPropertyHolder;
 import org.rifidi.emulator.rmi.server.ReaderModuleManagerInterface;
-import org.rifidi.services.tags.enums.TagGen;
-import org.rifidi.services.tags.factory.TagCreationPattern;
-import org.rifidi.services.tags.factory.TagFactory;
-import org.rifidi.services.tags.id.TagType;
-import org.rifidi.services.tags.impl.RifidiTag;
 import org.rifidi.ui.common.reader.callback.UIReaderCallbackManager;
-import org.w3c.dom.Attr;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 
 /**
  * 
@@ -44,6 +32,7 @@ import org.w3c.dom.NodeList;
  * 
  * @author Jochen Mader - jochen@pramari.com
  * @author Andreas Huebner - andreas@pramari.com
+ * @author Kyle Neumeier - Kyle@pramari.com
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -70,12 +59,14 @@ public class UIReader extends GeneralReaderPropertyHolder {
 	/**
 	 * This holds the reference to the real reader
 	 */
+	@XmlTransient
 	private ReaderModuleManagerInterface readerManager;
 
 	/**
 	 * This is the callback interface implementation it is used to get response
 	 * from the reader without the need of polling it
 	 */
+	@XmlTransient
 	private UIReaderCallbackManager readerCallbackManager;
 
 	/**
@@ -83,7 +74,7 @@ public class UIReader extends GeneralReaderPropertyHolder {
 	 */
 	private HashMap<Integer, UIAntenna> antennas;
 
-	public UIReader(ReaderModuleManagerInterface readerManager, GeneralReaderPropertyHolder grph, String readerType){
+	public UIReader(ReaderModuleManagerInterface readerManager, GeneralReaderPropertyHolder grph){
 		this.readerManager = readerManager;
 		this.setNumAntennas( grph.getNumAntennas());
 		this.setNumGPIs(grph.getNumGPIs());
@@ -139,15 +130,7 @@ public class UIReader extends GeneralReaderPropertyHolder {
 	 * @return the readerType
 	 */
 	public String getReaderType() {
-		return readerType;
-	}
-
-	/**
-	 * @param readerType
-	 *            the readerType to set
-	 */
-	public void setReaderType(String readerType) {
-		this.readerType = readerType;
+		return super.getReaderClassName();
 	}
 
 	/**
@@ -223,160 +206,4 @@ public class UIReader extends GeneralReaderPropertyHolder {
 			UIReaderCallbackManager readerCallbackManager) {
 		this.readerCallbackManager = readerCallbackManager;
 	}
-
-	public void writeObject(Element out) {
-		Document doc = out.getOwnerDocument();
-
-		out.setNodeValue("UIReader");
-		Element rdName = doc.createElement("name");
-		Element rdClass = doc.createElement("class");
-		Element rdAntenna = doc.createElement("antennas");
-
-		rdName.setTextContent(getReaderName());
-		rdClass.setTextContent(getReaderClassName());
-		rdAntenna.setTextContent("" + getNumAntennas());
-
-		Element prop = doc.createElement("properties");
-
-		Map<String, String> props = getPropertiesMap();
-		for (String k : props.keySet()) {
-			String v = props.get(k);
-
-			Element crt = doc.createElement("prop");
-			Attr at = doc.createAttribute("key");
-			at.setTextContent(k);
-			crt.setAttributeNode(at);
-			at = doc.createAttribute("value");
-			at.setTextContent(v);
-			crt.setAttributeNode(at);
-			prop.appendChild(crt);
-		}
-
-		Element ante = doc.createElement("antennaList");
-
-		Map<Integer, UIAntenna> ants = getAntennas();
-
-		for (Integer k : ants.keySet()) {
-			UIAntenna a = ants.get(k);
-
-			List<RifidiTag> tags = a.getTagList();
-
-			Element crt = doc.createElement("ant");
-			Attr at = doc.createAttribute("id");
-			at.setTextContent(k.toString());
-			crt.setAttributeNode(at);
-
-			for (RifidiTag tg : tags) {
-				Element tgcrt = doc.createElement("tag");
-				tagToXML(tg, tgcrt);
-				crt.appendChild(tgcrt);
-			}
-
-			ante.appendChild(crt);
-		}
-
-		out.appendChild(rdName);
-		out.appendChild(rdClass);
-		out.appendChild(rdAntenna);
-		out.appendChild(prop);
-		out.appendChild(ante);
-
-	}
-
-	public static void tagToXML(RifidiTag tg, Element out) {
-		Document doc = out.getOwnerDocument();
-
-		out.setNodeValue("tag");
-		Element rdtype = doc.createElement("type");
-		Element rdval = doc.createElement("value");
-		Element rdgen = doc.createElement("tagGeneration");
-		Element rdIDForm = doc.createElement("idFormat");
-
-		rdtype.setTextContent(tg.getTagType().name());
-		rdval.setTextContent(ByteAndHexConvertingUtility.toHexString(tg
-				.getTag().getId()));
-		rdgen.setTextContent(tg.getTag().getTagGeneration().name());
-		rdIDForm.setTextContent(tg.getTagType().name());
-
-		out.appendChild(rdtype);
-		out.appendChild(rdval);
-		out.appendChild(rdgen);
-		out.appendChild(rdIDForm);
-	}
-
-	public void readAntennas(Element in) {
-		Element ants = (Element) in.getElementsByTagName("antennaList").item(0);
-		NodeList as = ants.getElementsByTagName("ant");
-		int n = as.getLength();
-
-		for (int i = 0; i < n; ++i) {
-			Element crta = (Element) as.item(i);
-			String id = crta.getAttribute("id");
-
-			NodeList tags = crta.getElementsByTagName("tag");
-
-			int m = tags.getLength();
-			List<RifidiTag> antTags = new ArrayList<RifidiTag>();
-
-			for (int j = 0; j < m; ++j) {
-				Element crtt = (Element) tags.item(j);
-				RifidiTag tagr = TagFactory.generateTags(xmlToTag(crtt)).get(0);
-				antTags.add(tagr);
-			}
-
-			UIAntenna uiAnt = new UIAntenna(this.readerManager, Integer.parseInt(id));
-			uiAnt.addTag(antTags);
-
-			this.antennas.put(i, uiAnt);
-		}
-	}
-
-	public void readObject(Element in) {
-
-		String name = in.getElementsByTagName("name").item(0).getTextContent();
-		String cls = in.getElementsByTagName("class").item(0).getTextContent();
-		String ant = in.getElementsByTagName("antennas").item(0)
-				.getTextContent();
-
-		this.setReaderClassName(cls);
-		this.setReaderName(name);
-		this.setNumAntennas(Integer.parseInt(ant));
-
-		Element props = (Element) in.getElementsByTagName("properties").item(0);
-
-		NodeList ps = props.getElementsByTagName("prop");
-		int n = ps.getLength();
-
-		for (int i = 0; i < n; ++i) {
-			Element e = (Element) ps.item(i);
-			String key = e.getAttribute("key");
-			String value = e.getAttribute("value");
-
-			this.setProperty(key, value);
-		}
-	}
-
-	public static TagCreationPattern xmlToTag(Element in) {
-
-		TagGen tg;
-
-		String type = in.getElementsByTagName("type").item(0).getTextContent();
-		String value = in.getElementsByTagName("value").item(0)
-				.getTextContent();
-		String format = in.getElementsByTagName("idFormat").item(0)
-				.getTextContent();
-
-		if (type.equals("GEN1"))
-			tg = TagGen.GEN1;
-		else
-			tg = TagGen.GEN2;
-
-		TagCreationPattern pattern = new TagCreationPattern();
-		pattern.setNumberOfTags(1);
-		pattern.setPrefix(value);
-		pattern.setTagGeneration(tg);
-		pattern.setTagType(TagType.valueOf(format));
-		return pattern;
-	}
-
 }
