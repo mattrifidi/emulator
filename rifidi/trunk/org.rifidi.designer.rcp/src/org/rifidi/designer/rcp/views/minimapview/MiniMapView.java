@@ -16,7 +16,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.SWTException;
+import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseMoveListener;
@@ -27,14 +28,12 @@ import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Scale;
 import org.eclipse.ui.part.ViewPart;
 import org.rifidi.designer.rcp.game.DesignerGame;
-import org.rifidi.designer.rcp.game.ZoomableLWJGLCamera;
-import org.rifidi.designer.rcp.views.view3d.listeners.ZoomMouseWheelListener;
 import org.rifidi.services.annotations.Inject;
 import org.rifidi.services.registry.ServiceRegistry;
 
@@ -55,12 +54,12 @@ public class MiniMapView extends ViewPart {
 	private static Log logger = LogFactory.getLog(MiniMapView.class);
 	/** Camera used to render the map. */
 	private Camera mapCamera;
-	/** Label used to display the map on. */
-	private Label label;
 	/** Map image data. */
 	private ImageData imageData;
 	/** Reusable image object. */
 	private Image image;
+	/** Image for the canvas background. */
+	private Image bgImage;
 	/** Slider to control zoom. */
 	private Scale scale;
 	/** Used for dragging. */
@@ -69,8 +68,8 @@ public class MiniMapView extends ViewPart {
 	private GC graphicsContext;
 	/** true if the view is disposed. */
 	private boolean disposed = false;
-
-	private volatile Updater updater;
+	/** Minimap Canvas. */
+	private Canvas canvas;
 
 	private DesignerGame implementor;
 
@@ -101,12 +100,40 @@ public class MiniMapView extends ViewPart {
 		GridData gridData = new GridData(GridData.FILL_BOTH);
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.grabExcessVerticalSpace = true;
-		GridData gridData2 = new GridData(GridData.FILL_HORIZONTAL);
-		gridData2.grabExcessHorizontalSpace = true;
-		label = new Label(comp, SWT.CENTER);
-		label.setLayoutData(gridData);
+		// label = new Label(comp, SWT.CENTER|SWT.BORDER);
+		// label.setLayoutData(gridData);
+		canvas = new Canvas(comp, SWT.BORDER);
+		canvas.setLayoutData(gridData);
+		canvas.setForeground(new Color(null, 255, 0, 0));
+		image = new Image(Display.getCurrent(), 16, 16);
+		bgImage = new Image(Display.getCurrent(), 16, 16);
+		canvas.addControlListener(new ControlListener() {
 
-		label.addMouseListener(new MouseListener() {
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see
+			 * org.eclipse.swt.events.ControlListener#controlMoved(org.eclipse
+			 * .swt.events.ControlEvent)
+			 */
+			@Override
+			public void controlMoved(ControlEvent e) {
+			}
+
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see
+			 * org.eclipse.swt.events.ControlListener#controlResized(org.eclipse
+			 * .swt.events.ControlEvent)
+			 */
+			@Override
+			public void controlResized(ControlEvent e) {
+				drawImage();
+			}
+
+		});
+		canvas.addMouseListener(new MouseListener() {
 			public void mouseDoubleClick(MouseEvent e) {
 			}
 
@@ -120,14 +147,12 @@ public class MiniMapView extends ViewPart {
 			}
 		});
 
-		label.addMouseMoveListener(new MouseMoveListener() {
+		canvas.addMouseMoveListener(new MouseMoveListener() {
 			public void mouseMove(MouseEvent e) {
 				if (mousedown)
 					centerOn(e.x - 15, e.y - 15);
 			}
 		});
-		label.addMouseWheelListener(new ZoomMouseWheelListener(
-				(ZoomableLWJGLCamera) implementor.getRenderer().getCamera()));
 	}
 
 	/**
@@ -139,13 +164,13 @@ public class MiniMapView extends ViewPart {
 	 *            minimap y coordinate to center on
 	 */
 	private void centerOn(int x, int y) {
-		if (label.getImage() != null
+		if (imageData != null
 				&& waitingCallable.running.compareAndSet(false, true)) {
 			// determine where the user clicked on the map
-			int width = label.getImage().getBounds().width;
-			int height = label.getImage().getBounds().height;
-			float X = x - ((label.getSize().x - width) * .5f);
-			float Y = y - ((label.getSize().y - height) * .5f);
+			int width = bgImage.getBounds().width;
+			int height = bgImage.getBounds().height;
+			float X = x - ((width - image.getBounds().width) * .5f);
+			float Y = y - ((height - image.getBounds().height) * .5f);
 			Y = height - Y;
 
 			// determine the direction to the point that was clicked
@@ -161,32 +186,6 @@ public class MiniMapView extends ViewPart {
 		}
 	}
 
-	/**
-	 * Draw a frame on the minimap.
-	 * 
-	 * @param topleft
-	 *            the coordinate of the top-left corner of the frame
-	 * @param topright
-	 *            the coordinate of the top-right corner of the frame
-	 * @param bottomleft
-	 *            the coordinate of the bottom-left corner of the frame
-	 * @param bottomright
-	 *            the coordinate of the bottom-right corner of the frame
-	 */
-	private void drawFrame() {
-		Vector2f wLeftTop = calcPos(new Vector2f(0, implementor.getCanvas()
-				.getSize().y));
-		Vector2f center = calcPos(new Vector2f(implementor.getCanvas()
-				.getSize().x / 2, implementor.getCanvas().getSize().y / 2));
-		Image tmpImage = new Image(Display.getCurrent(), imageData);
-		graphicsContext.drawImage(tmpImage, 0, 0);
-		graphicsContext.drawRectangle((int) wLeftTop.x, (int) wLeftTop.y,
-				(int) (center.x - wLeftTop.x) * 2,
-				(int) (center.y - wLeftTop.y) * 2);
-		label.setImage(image);
-		label.redraw();
-		tmpImage.dispose();
-	}
 
 	public Vector2f calcPos(Vector2f screenPos) {
 		Vector3f coords = implementor.getCamera().getWorldCoordinates(
@@ -222,25 +221,30 @@ public class MiniMapView extends ViewPart {
 	 *            the minimap image data
 	 */
 	public void setImage(ImageData img, int size) {
-		if (imageData == null) {
-			imageData = img;
-			image = new Image(Display.getCurrent(), img);
-			graphicsContext = new GC(image);
-			label.setImage(image);
-			graphicsContext.setLineWidth(2);
-			graphicsContext.setForeground(new Color(null, 255, 0, 0));
-			graphicsContext.setLineStyle(SWT.LINE_SOLID); 
-		} else if (!imageData.equals(img)) {
-//			imageData = img;
-		}
-		drawFrame();
-		if (updater == null) {
-			synchronized (this) {
-				if (updater == null){
-					updater = new Updater();
-					updater.start();	
-				}
-			}
+		imageData = img;
+		drawImage();
+	}
+
+	protected void drawImage() {
+		if (imageData != null) {
+			image.dispose();
+			image = new Image(Display.getCurrent(), imageData);
+			bgImage.dispose();
+			bgImage = new Image(Display.getCurrent(), canvas.getSize().x,
+					canvas.getSize().y);
+			GC gc = new GC(bgImage);
+			gc.drawImage(image, (canvas.getSize().x - imageData.width) / 2,
+					(canvas.getSize().y - imageData.height) / 2);
+			//draw the frame
+			Vector2f wLeftTop = calcPos(new Vector2f(0, implementor.getCanvas()
+					.getSize().y));
+			Vector2f center = calcPos(new Vector2f(implementor.getCanvas()
+					.getSize().x / 2, implementor.getCanvas().getSize().y / 2));
+			gc.drawRectangle((int) wLeftTop.x, (int) wLeftTop.y,
+					(int) (center.x - wLeftTop.x) * 2,
+					(int) (center.y - wLeftTop.y) * 2);
+			canvas.setBackgroundImage(bgImage);
+			gc.dispose();
 		}
 	}
 
@@ -251,7 +255,7 @@ public class MiniMapView extends ViewPart {
 	 */
 	@Override
 	public void setFocus() {
-		label.setFocus();
+		// label.setFocus();
 	}
 
 	/**
@@ -285,44 +289,6 @@ public class MiniMapView extends ViewPart {
 	@Inject
 	public void setImplementor(DesignerGame implementor) {
 		this.implementor = implementor;
-	}
-
-	private class Updater extends Thread {
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see java.lang.Thread#run()
-		 */
-		@Override
-		public void run() {
-			while (!isInterrupted()) {
-				getViewSite().getShell().getDisplay().syncExec(new Runnable() {
-
-					/*
-					 * (non-Javadoc)
-					 * 
-					 * @see java.lang.Runnable#run()
-					 */
-					@Override
-					public void run() {
-						try {
-							drawFrame();
-						} catch (SWTException e) {
-							// should just occur if the widget is
-							// disposed faster than we can shoot
-							// down the thread.
-							logger.debug(e);
-						}
-					}
-				});
-				try {
-					Thread.sleep(20);
-				} catch (InterruptedException e) {
-					Thread.currentThread().interrupt();
-				}
-			}
-		}
 	}
 
 	private class WaitingCallable implements Callable<Object> {
