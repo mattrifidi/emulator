@@ -6,15 +6,12 @@ import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
-import org.rifidi.emulator.reader.module.GeneralReaderPropertyHolder;
 import org.rifidi.streamer.exceptions.DublicateObjectException;
 import org.rifidi.streamer.registry.InputObjectRegistry;
 import org.rifidi.streamer.xml.components.ReaderComponent;
-import org.rifidi.ui.common.reader.UIReader;
 import org.rifidi.ui.common.registry.ReaderRegistry;
-import org.rifidi.ui.common.wizards.reader.pages.NewReaderDynamicWizardPage;
-import org.rifidi.ui.common.wizards.reader.pages.NewReaderGPIOWizardPage;
-
+import org.rifidi.ui.common.wizards.reader.NewReaderDynamicWizardPage;
+import org.rifidi.ui.common.wizards.reader.NewReaderGPIOWizardPage;
 import org.rifidi.ui.streamer.views.testSuite.TestSuiteView;
 
 public class ComponentWizard extends Wizard implements INewWizard {
@@ -23,10 +20,9 @@ public class ComponentWizard extends Wizard implements INewWizard {
 	private NewReaderDynamicWizardPage newReaderDynamicWizardPage;
 	private NewReaderGPIOWizardPage newReaderGPIOWizardPage;
 
-	private ReaderComponent component;
-	private UIReader reader;
 	private InputObjectRegistry registry;
 	private IWorkbench workbench;
+	private StreamerWizardData data;
 
 	public ComponentWizard() {
 		super();
@@ -34,11 +30,7 @@ public class ComponentWizard extends Wizard implements INewWizard {
 	}
 
 	public void initializeComponent() {
-		if (component == null) {
-			component = new ReaderComponent();
-			component.setReader(new GeneralReaderPropertyHolder());
-			reader = component.getUIReader();
-		}
+		data = new StreamerWizardData();
 		setWindowTitle("New Component Wizard");
 	}
 
@@ -56,6 +48,9 @@ public class ComponentWizard extends Wizard implements INewWizard {
 	@Override
 	public boolean performFinish() {
 		if (registry != null) {
+			ReaderComponent component = new ReaderComponent();
+			component.setReader(data.getGeneralReaderHolder());
+			component.setID(data.getID());
 			try {
 				registry.registerComponent(component);
 			} catch (DublicateObjectException e) {
@@ -90,24 +85,26 @@ public class ComponentWizard extends Wizard implements INewWizard {
 			System.out.println("Blueprints");
 
 		newReaderWizardStreamerPage = new NewReaderWizardStreamerPage(
-				"readerSelectionPage", component, ReaderRegistry.getInstance()
+				"readerSelectionPage", data, ReaderRegistry.getInstance()
 						.getReaderBlueprints());
 		addPage(newReaderWizardStreamerPage);
 
 		newReaderDynamicWizardPage = new NewReaderDynamicWizardPage(
-				"readerCreationPage", reader, ReaderRegistry.getInstance()
+				"readerCreationPage", data, ReaderRegistry.getInstance()
 						.getReaderBlueprints());
 		addPage(newReaderDynamicWizardPage);
 
-		newReaderGPIOWizardPage = new NewReaderGPIOWizardPage("gpioPage",
-				reader, ReaderRegistry.getInstance().getReaderBlueprints());
+		newReaderGPIOWizardPage = new NewReaderGPIOWizardPage("gpioPage", data,
+				ReaderRegistry.getInstance().getReaderBlueprints());
 		addPage(newReaderGPIOWizardPage);
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.jface.wizard.Wizard#createPageControls(org.eclipse.swt.widgets.Composite)
+	 * @see
+	 * org.eclipse.jface.wizard.Wizard#createPageControls(org.eclipse.swt.widgets
+	 * .Composite)
 	 */
 	@Override
 	public void createPageControls(Composite pageContainer) {

@@ -16,8 +16,6 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Spinner;
-import org.rifidi.streamer.xml.components.ReaderComponent;
-import org.rifidi.ui.common.reader.UIReader;
 import org.rifidi.ui.common.reader.blueprints.ReaderBlueprint;
 
 /**
@@ -36,22 +34,18 @@ public class NewReaderWizardStreamerPage extends WizardPage {
 	/**
 	 * UI abstraction of Reader to create
 	 */
-	private UIReader reader;
-
-	private ReaderComponent readerComponent;
+	private StreamerWizardData data;
 
 	private Spinner componentIDSpinner;
 
 	public NewReaderWizardStreamerPage(String pageName,
-			ReaderComponent readerComponent,
+			StreamerWizardData data,
 			Map<String, ReaderBlueprint> supportedReaders) {
 		super(pageName);
 
 		setTitle("New reader wizard");
 		setDescription("Fill out all fields and hit finish to add a reader");
-
-		this.readerComponent = readerComponent;
-		this.reader = readerComponent.getUIReader();
+		this.data = data;
 		this.supportedReaders = supportedReaders;
 
 		setPageComplete(false);
@@ -60,7 +54,9 @@ public class NewReaderWizardStreamerPage extends WizardPage {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets.Composite)
+	 * @see
+	 * org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets
+	 * .Composite)
 	 */
 	public void createControl(Composite parent) {
 
@@ -79,7 +75,7 @@ public class NewReaderWizardStreamerPage extends WizardPage {
 
 			@Override
 			public void handleEvent(Event event) {
-				readerComponent.setID(componentIDSpinner.getSelection());
+				data.setID(componentIDSpinner.getSelection());
 			}
 		});
 
@@ -115,15 +111,13 @@ public class NewReaderWizardStreamerPage extends WizardPage {
 	protected void updateInput() {
 		String selectedReader = readerCombo.getItem(readerCombo
 				.getSelectionIndex());
+		String className = supportedReaders.get(selectedReader)
+				.getReaderclassname();
 		logger.debug("Reader type selected : " + selectedReader);
-		logger.debug("Reader class name : "
-				+ supportedReaders.get(selectedReader).getReaderclassname());
-		// Set the information from the dialog in the UI repesentation of the
-		// reader
-		reader.setReaderType(selectedReader);
-		reader.setReaderClassName(supportedReaders.get(selectedReader)
-				.getReaderclassname());
+		logger.debug("Reader class name : " + className);
 
+		data.setReaderType(selectedReader);
+		data.getGeneralReaderHolder().setReaderClassName(className);
 		setPageComplete(true);
 	}
 

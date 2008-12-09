@@ -2,7 +2,7 @@ package org.rifidi.ui.streamer.data;
 
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
-import org.rifidi.ui.common.reader.UIReader;
+import org.rifidi.emulator.reader.module.GeneralReaderPropertyHolder;
 
 /**
  * @author Andreas Huebner - andreas@pramari.com
@@ -13,8 +13,8 @@ public class ReaderCompositeContentProvider implements
 
 	@Override
 	public Object[] getElements(Object inputElement) {
-		if (inputElement instanceof UIReader) {
-			return ((UIReader) inputElement).getPropertiesMap().entrySet()
+		if (inputElement instanceof GeneralReaderPropertyHolder) {
+			return ((GeneralReaderPropertyHolder) inputElement).getPropertiesMap().entrySet()
 					.toArray();
 		}
 		return null;

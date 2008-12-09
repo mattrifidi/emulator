@@ -27,8 +27,8 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Text;
+import org.rifidi.emulator.reader.module.GeneralReaderPropertyHolder;
 import org.rifidi.streamer.xml.components.ReaderComponent;
-import org.rifidi.ui.common.reader.UIReader;
 import org.rifidi.ui.streamer.data.ReaderCompositeContentProvider;
 
 /**
@@ -214,7 +214,7 @@ public class ReaderComposite extends Composite {
 
 	private void updateWidgets() {
 		readerIDSpinner.setSelection(component.getID());
-		UIReader reader = component.getUIReader();
+		GeneralReaderPropertyHolder reader = component.getReader();
 		readerNameText.setText(reader.getReaderName());
 		numAntennasSpinner.setSelection(reader.getNumAntennas());
 		numGPISpinner.setSelection(reader.getNumGPIs());
@@ -225,7 +225,7 @@ public class ReaderComposite extends Composite {
 
 	private void saveChanges() {
 		// component.setID(readerIDSpinner.getSelection());
-		UIReader reader = component.getUIReader();
+		GeneralReaderPropertyHolder reader = component.getReader();
 		reader.setReaderName(readerNameText.getText());
 		reader.setNumAntennas(numAntennasSpinner.getSelection());
 		reader.setNumGPIs(numGPISpinner.getSelection());
