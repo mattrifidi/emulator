@@ -370,16 +370,14 @@
    <extension
          point="org.eclipse.ui.commands">
       <command
+            defaultHandler="org.rifidi.ui.ide.handlers.SwitchViewHandler"
             id="org.rifidi.ui.ide.editors.commands.switchView"
             name="Switch View">
       </command>
       <command
+            defaultHandler="org.rifidi.ui.ide.handlers.AddTagHandler"
             id="org.rifidi.ui.ide.views.commands.AddTags"
             name="Add New Tags">
-      </command>
-      <command
-            id="org.rifidi.ui.ide.views.commands.StopReader"
-            name="Stop Reader">
       </command>
       <command
             defaultHandler="org.rifidi.ui.ide.handlers.OpenIDEConfigurationHandler"

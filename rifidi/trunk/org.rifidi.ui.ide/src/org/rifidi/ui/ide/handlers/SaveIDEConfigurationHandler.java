@@ -1,23 +1,16 @@
 package org.rifidi.ui.ide.handlers;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -31,13 +24,17 @@ import org.eclipse.swt.widgets.Shell;
 import org.rifidi.emulator.reader.module.GeneralReaderPropertyHolder;
 import org.rifidi.services.annotations.Inject;
 import org.rifidi.services.registry.ServiceRegistry;
+import org.rifidi.services.tags.impl.C0G1Tag;
+import org.rifidi.services.tags.impl.C1G1Tag;
+import org.rifidi.services.tags.impl.C1G2Tag;
 import org.rifidi.services.tags.impl.RifidiTag;
 import org.rifidi.services.tags.registry.ITagRegistry;
 import org.rifidi.ui.common.reader.UIAntenna;
 import org.rifidi.ui.common.reader.UIReader;
 import org.rifidi.ui.common.registry.ReaderRegistry;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
+import org.rifidi.ui.ide.configuration.AntennaTagMap;
+import org.rifidi.ui.ide.configuration.IDEConfiguration;
+import org.rifidi.ui.ide.configuration.ReaderAntennaTagMap;
 
 public class SaveIDEConfigurationHandler extends AbstractHandler {
 
@@ -67,6 +64,10 @@ public class SaveIDEConfigurationHandler extends AbstractHandler {
 		dialog.setFileName("test01.rfts");
 
 		String filename = dialog.open();
+		
+		if(filename==null){
+			return null;
+		}
 
 		ReaderRegistry reg = ReaderRegistry.getInstance();
 		List<UIReader> readers = reg.getReaderList();
@@ -74,97 +75,65 @@ public class SaveIDEConfigurationHandler extends AbstractHandler {
 
 		logger.debug("Perform save to:" + filename);
 
-		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-		DocumentBuilder db = null;
 		try {
-			db = dbf.newDocumentBuilder();
-		} catch (ParserConfigurationException e) {
-			e.printStackTrace();
-		}
-		Document doc = db.getDOMImplementation().createDocument(null, "root",
-				null);
 
-		Element rds = doc.createElement("readers");
-		Element tgs = doc.createElement("tags");
+			IDEConfiguration configuration = new IDEConfiguration();
+			List<GeneralReaderPropertyHolder> readerList = new ArrayList<GeneralReaderPropertyHolder>();
+			ReaderAntennaTagMap readerAntennaTagMap = new ReaderAntennaTagMap();
+			// step through each reader to save it and the tags that are on its
+			// antennas
+			for (UIReader reader : readers) {
+				// save reader itself
+				readerList.add((GeneralReaderPropertyHolder) reader);
 
-		try {
-			JAXBContext context = JAXBContext.newInstance(UIReader.class,UIAntenna.class,
-					RifidiTag.class);
-			Marshaller marshaller = context.createMarshaller();
-
-			for (UIReader ur : readers) {
-				marshaller.marshal(ur, rds);
-				logger.debug("marshalled: " + ur);
+				// step through each antenna and save tags on that antenna
+				AntennaTagMap antennaTagMap = new AntennaTagMap();
+				for (UIAntenna antenna : reader.getAntennas().values()) {
+					ArrayList<Long> tagIDs = new ArrayList<Long>();
+					for (RifidiTag t : antenna.getTagList()) {
+						tagIDs.add(t.getTagEntitiyID());
+					}
+					antennaTagMap.addEntry(antenna.getId(), tagIDs);
+				}
+				readerAntennaTagMap.addEntry(reader.getReaderName(),
+						antennaTagMap);
 			}
+			configuration.setReaders(readerList);
+			configuration.setTags(tags);
+			configuration.setReaderAntennaTagMap(readerAntennaTagMap);
+
+			ArrayList<Class> classes = new ArrayList<Class>();
+			classes.add(IDEConfiguration.class);
+			classes.add(GeneralReaderPropertyHolder.class);
+			classes.add(C0G1Tag.class);
+			classes.add(C1G1Tag.class);
+			classes.add(C1G2Tag.class);
+			classes.add(RifidiTag.class);
+
+			ByteArrayOutputStream fileOutput = new ByteArrayOutputStream();
+
+			JAXBContext context = JAXBContext.newInstance(classes
+					.toArray(new Class[0]));
+			Marshaller marshaller = context.createMarshaller();
+			marshaller.marshal(configuration, fileOutput);
+
+			File xmlOutputFile = new File(filename);
+			FileOutputStream stream = new FileOutputStream(xmlOutputFile);
+			fileOutput.writeTo(stream);
+
+			// saveXMLDocument(filename, doc);
 		} catch (JAXBException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-
-		for (RifidiTag tg : tags) {
-			Element crt = doc.createElement("tag");
-
-			UIReader.tagToXML(tg, crt);
-			tgs.appendChild(crt);
-			logger.debug("Saving tag:" + tg.getTag().getId());
-		}
-
-		doc.getDocumentElement().appendChild(rds);
-
-		doc.getDocumentElement().appendChild(tgs);
-
-		saveXMLDocument(filename, doc);
 		return null;
-	}
-
-	/**
-	 * Saves XML Document into XML file.
-	 * 
-	 * @param fileName
-	 *            XML file name
-	 * @param doc
-	 *            XML document to save
-	 * @return <B>true</B> if method success <B>false</B> otherwise
-	 */
-	public boolean saveXMLDocument(String fileName, Document doc) {
-
-		logger.debug("Saving XML file... " + fileName);
-		File f = new File(fileName);
-		if (f.exists())
-			f.delete();
-
-		// open output stream where XML Document will be saved
-		File xmlOutputFile = new File(fileName);
-		FileOutputStream fos;
-		Transformer transformer;
-		try {
-			fos = new FileOutputStream(xmlOutputFile);
-		} catch (FileNotFoundException e) {
-			logger.debug("Error occured: " + e.getMessage());
-			return false;
-		}
-
-		// Use a Transformer for output
-		TransformerFactory transformerFactory = TransformerFactory
-				.newInstance();
-		try {
-			transformer = transformerFactory.newTransformer();
-			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-		} catch (TransformerConfigurationException e) {
-			logger.debug("Transformer configuration error: " + e.getMessage());
-			return false;
-		}
-		DOMSource source = new DOMSource(doc);
-		StreamResult result = new StreamResult(fos);
-		// transform source into result will do save
-		try {
-			transformer.transform(source, result);
-		} catch (TransformerException e) {
-			logger.debug("Error transform: " + e.getMessage());
-		}
-		logger.debug("XML file saved.");
-		return true;
 	}
 
 	@Inject

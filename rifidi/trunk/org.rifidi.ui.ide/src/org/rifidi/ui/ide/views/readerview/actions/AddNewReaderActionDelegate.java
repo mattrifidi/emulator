@@ -60,7 +60,7 @@ public class AddNewReaderActionDelegate implements IViewActionDelegate,
 			try {
 				ReaderWizardData data = wizard.getReaderWizardData();
 				ReaderRegistry.getInstance().create(
-						data.getGeneralReaderHolder(), data.getReaderType());
+						data.getGeneralReaderHolder());
 			} catch (DuplicateReaderException e) {
 				// ignore this one.. we already care about that
 				e.printStackTrace();

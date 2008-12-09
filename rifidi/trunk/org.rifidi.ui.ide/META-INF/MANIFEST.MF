@@ -1,8 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Ide Plug-in
+Bundle-Name: Rifidi Emulator IDE Plug-in
 Bundle-SymbolicName: org.rifidi.ui.ide; singleton:=true
-Bundle-Version: 2.0.1
+Bundle-Version: 2.1.1
 Bundle-Activator: org.rifidi.ui.ide.Activator
 Bundle-Vendor: Pramari, LLC
 Require-Bundle: org.eclipse.core.runtime,
@@ -10,10 +10,11 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui.views,
  org.rifidi.dependencies;bundle-version="1.0.0",
  org.rifidi.emulator;bundle-version="2.0.2",
- org.rifidi.ui.common;bundle-version="2.2.0",
- org.rifidi.services;bundle-version="1.0.0",
+ org.rifidi.ui.common;bundle-version="2.3.0",
+ org.rifidi.services;bundle-version="2.1.0",
  org.rifidi.services.tags;bundle-version="2.0.2",
- org.rifidi.common.utilities;bundle-version="2.1.0"
+ org.rifidi.common.utilities;bundle-version="2.1.0",
+ org.rifidi.views.tags;bundle-version="2.1.1"
 Eclipse-LazyStart: true
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6

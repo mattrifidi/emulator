@@ -1,12 +1,14 @@
 package org.rifidi.ui.ide.handlers;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -17,21 +19,25 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
+import org.rifidi.emulator.reader.module.GeneralReaderPropertyHolder;
 import org.rifidi.services.annotations.Inject;
 import org.rifidi.services.registry.ServiceRegistry;
-import org.rifidi.services.tags.factory.TagCreationPattern;
+import org.rifidi.services.tags.impl.C0G1Tag;
+import org.rifidi.services.tags.impl.C1G1Tag;
+import org.rifidi.services.tags.impl.C1G2Tag;
+import org.rifidi.services.tags.impl.RifidiTag;
 import org.rifidi.services.tags.registry.ITagRegistry;
 import org.rifidi.ui.common.reader.UIReader;
 import org.rifidi.ui.common.registry.ReaderRegistry;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
+import org.rifidi.ui.common.wizards.reader.exceptions.DuplicateReaderException;
+import org.rifidi.ui.ide.configuration.AntennaTagMap;
+import org.rifidi.ui.ide.configuration.IDEConfiguration;
+import org.rifidi.ui.ide.configuration.ReaderAntennaTagMap;
 
 public class OpenIDEConfigurationHandler extends AbstractHandler {
 
-	public static final String ID= "org.rifidi.ui.ide.handlers.OpenIDEConfigurationHandler"; 
-	
+	public static final String ID = "org.rifidi.ui.ide.handlers.OpenIDEConfigurationHandler";
+
 	private ITagRegistry tagRegistry;
 
 	private static Log logger = LogFactory
@@ -56,6 +62,9 @@ public class OpenIDEConfigurationHandler extends AbstractHandler {
 		// cards
 
 		String filename = dialog.open();
+		if(filename==null){
+			return null;
+		}
 
 		logger.debug("Loading from:" + filename);
 
@@ -71,76 +80,64 @@ public class OpenIDEConfigurationHandler extends AbstractHandler {
 
 		boolean success = true;
 
-		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-		DocumentBuilder db = null;
 		try {
-			db = dbf.newDocumentBuilder();
-		} catch (ParserConfigurationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			success = false;
-		}
+			FileInputStream stream = new FileInputStream(file);
 
-		Document doc = null;
-		try {
-			doc = db.parse(file);
+			ArrayList<Class> classes = new ArrayList<Class>();
+			classes.add(IDEConfiguration.class);
+			classes.add(GeneralReaderPropertyHolder.class);
+			classes.add(C0G1Tag.class);
+			classes.add(C1G1Tag.class);
+			classes.add(C1G2Tag.class);
+			classes.add(RifidiTag.class);
 
-		} catch (SAXException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			success = false;
+			JAXBContext context = JAXBContext.newInstance(classes
+					.toArray(new Class[0]));
+
+			Unmarshaller unmarshaller = context.createUnmarshaller();
+			IDEConfiguration configuration = (IDEConfiguration) unmarshaller
+					.unmarshal(stream);
+			List<RifidiTag> tags = configuration.getTags();
+			if (tags != null) {
+				tagRegistry.initialize(tags);
+			} else {
+				logger.debug("No tags in IDE Configuration");
+			}
+
+			ReaderRegistry readerReg = ReaderRegistry.getInstance();
+			for (UIReader reader : readerReg.getReaderList()) {
+				readerReg.remove(reader);
+			}
+			for (GeneralReaderPropertyHolder reader : configuration
+					.getReaders()) {
+				try {
+					readerReg.create(reader);
+				} catch (DuplicateReaderException e) {
+					logger.error("Already Have a reader with name "
+							+ reader.getReaderName());
+				}
+			}
+			ReaderAntennaTagMap readerAntennaTagMap = configuration
+					.getReaderAntennaTagMap();
+			if (readerAntennaTagMap != null) {
+				for (GeneralReaderPropertyHolder reader : configuration
+						.getReaders()) {
+					AntennaTagMap antennaTagMap = readerAntennaTagMap.getEntry(reader.getReaderName());
+					if(antennaTagMap!=null){
+						for(int i=0; i<reader.getNumAntennas(); i++){
+							UIReader uireader = readerReg.getReaderByName(reader.getReaderName());
+							uireader.getAntenna(i).addTagsByID(antennaTagMap.getEntry(i));
+						}
+					}
+				}
+			}
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			success = false;
-		}
-		doc.getDocumentElement().normalize();
-
-		Element root = doc.getDocumentElement();
-		NodeList nl = root.getElementsByTagName("readers");
-
-		try {
-
-			if (nl.getLength() == 1) {
-				Element readers = (Element) nl.item(0);
-
-				NodeList rds = readers.getElementsByTagName("reader");
-
-				int n = rds.getLength();
-
-				for (int i = 0; i < n; ++i) {
-					Element reader = (Element) rds.item(i);
-					//TODO: create reader
-
-				}
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			success = false;
-		}
-
-		nl = root.getElementsByTagName("tags");
-
-		try {
-
-			if (nl.getLength() == 1) {
-				Element readers = (Element) nl.item(0);
-
-				NodeList rds = readers.getElementsByTagName("tag");
-
-				int n = rds.getLength();
-
-				for (int i = 0; i < n; ++i) {
-					Element tag = (Element) rds.item(i);
-					TagCreationPattern pattern = UIReader.xmlToTag(tag);
-					tagRegistry.createTags(pattern);
-				}
-				// TODO: may need to refresh tag view
-
-			}
-
-		} catch (Exception e) {
+		} catch (JAXBException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 			success = false;
 		}

@@ -324,14 +324,16 @@ public class TagViewer extends TableViewer implements
 						LinkedList<RifidiTag> list = new LinkedList<RifidiTag>();
 						String text = (String) event.data;
 						String[] textArray = text.split("\n");
-						for (String i : textArray) {
-							RifidiTag tag = tagRegistry.getTag(Long
-									.parseLong(i));
-							list.add(tag);
-							logger.debug("Drag and Drop " + i);
+						if (textArray[0].equalsIgnoreCase("rifidiTags")) {
+							for (int i=1; i<textArray.length; i++) {
+								RifidiTag tag = tagRegistry.getTag(Long
+										.parseLong(textArray[i]));
+								list.add(tag);
+								logger.debug("Drag and Drop " + i);
+							}
+							getAntenna().addTag(list);
+							refresh();
 						}
-						getAntenna().addTag(list);
-						refresh();
 					}
 
 					/*
