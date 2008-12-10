@@ -166,52 +166,35 @@ public class MiniMapView extends ViewPart {
 	private void centerOn(int x, int y) {
 		if (imageData != null
 				&& waitingCallable.running.compareAndSet(false, true)) {
-			// determine where the user clicked on the map
-			int width = bgImage.getBounds().width;
-			int height = bgImage.getBounds().height;
-			float X = x - ((width - image.getBounds().width) * .5f);
-			float Y = y - ((height - image.getBounds().height) * .5f);
-			Y = height - Y;
+			int deltaX = (canvas.getSize().x - imageData.width) / 2;
+			int deltaY = (canvas.getSize().y - imageData.height) / 2;
 
-			// determine the direction to the point that was clicked
-			Vector3f one = mapCamera.getWorldCoordinates(new Vector2f(X, Y), 1);
-			Vector3f two = mapCamera.getWorldCoordinates(new Vector2f(X, Y), 2);
-			Vector3f dir = one.subtract(two);
+			Vector3f coords0 = mapCamera.getWorldCoordinates(new Vector2f(x
+					- deltaX, 200 - y + deltaY), 0);
+			Vector3f coords1 = mapCamera.getWorldCoordinates(new Vector2f(x
+					- deltaX, 200 - y + deltaY), 1);
 
+			Vector3f direction = coords0.subtract(coords1).normalizeLocal();
+
+			Vector3f ground1 = coords0.subtract(direction.mult(coords0.y
+					/ direction.y));
+
+			coords0 = implementor.getCamera().getWorldCoordinates(
+					new Vector2f(implementor.getCanvas().getSize().x / 2,
+							implementor.getCanvas().getSize().y / 2), 0);
+			coords1 = implementor.getCamera().getWorldCoordinates(
+					new Vector2f(implementor.getCanvas().getSize().y / 2,
+							implementor.getCanvas().getSize().y / 2), 1);
+			direction = coords0.subtract(coords1).normalizeLocal();
+
+			Vector3f ground2 = coords0.subtract(direction.mult(coords0.y
+					/ direction.y));
+
+			
 			// scale the direction out to the ground plane
-			float scale = Math.abs(one.y / dir.y);
-			dir.multLocal(scale);
-			waitingCallable.pos = one.add(dir);
+			waitingCallable.pos = ground1.subtract(ground2);
 			implementor.render(waitingCallable);
 		}
-	}
-
-
-	public Vector2f calcPos(Vector2f screenPos) {
-		Vector3f coords = implementor.getCamera().getWorldCoordinates(
-				new Vector2f(screenPos.x, screenPos.y), 0);
-		Vector3f coords2 = implementor.getCamera().getWorldCoordinates(
-				new Vector2f(screenPos.x, screenPos.y), 1);
-		Vector3f direction = coords.subtract(coords2).normalizeLocal();
-		coords.subtractLocal(direction.mult(coords.y / direction.y));
-		coords.setY(0);
-
-		Vector3f screencoords = mapCamera.getScreenCoordinates(coords);
-		Vector2f ret = new Vector2f(screencoords.x, imageData.height
-				- screencoords.y);
-		if (ret.x > imageData.width - 1) {
-			ret.x = imageData.width - 1;
-		}
-		if (ret.x < 0) {
-			ret.x = 0;
-		}
-		if (ret.y > imageData.height - 1) {
-			ret.y = imageData.height - 1;
-		}
-		if (ret.y < 0) {
-			ret.y = 0;
-		}
-		return ret;
 	}
 
 	/**
@@ -227,22 +210,32 @@ public class MiniMapView extends ViewPart {
 
 	protected void drawImage() {
 		if (imageData != null) {
+			int deltaX = (canvas.getSize().x - imageData.width) / 2;
+			int deltaY = (canvas.getSize().y - imageData.height) / 2;
 			image.dispose();
 			image = new Image(Display.getCurrent(), imageData);
 			bgImage.dispose();
 			bgImage = new Image(Display.getCurrent(), canvas.getSize().x,
 					canvas.getSize().y);
 			GC gc = new GC(bgImage);
-			gc.drawImage(image, (canvas.getSize().x - imageData.width) / 2,
-					(canvas.getSize().y - imageData.height) / 2);
-			//draw the frame
-			Vector2f wLeftTop = calcPos(new Vector2f(0, implementor.getCanvas()
-					.getSize().y));
-			Vector2f center = calcPos(new Vector2f(implementor.getCanvas()
-					.getSize().x / 2, implementor.getCanvas().getSize().y / 2));
-			gc.drawRectangle((int) wLeftTop.x, (int) wLeftTop.y,
-					(int) (center.x - wLeftTop.x) * 2,
-					(int) (center.y - wLeftTop.y) * 2);
+			gc.drawImage(image, deltaX, deltaY);
+			gc.setLineWidth(3);
+			gc
+					.setForeground(Display.getCurrent().getSystemColor(
+							SWT.COLOR_RED));
+
+			Vector3f coords0 = implementor.getCamera().getWorldCoordinates(
+					new Vector2f(implementor.getCanvas().getSize().x / 2,
+							implementor.getCanvas().getSize().y / 2), 0);
+			Vector3f coords1 = implementor.getCamera().getWorldCoordinates(
+					new Vector2f(implementor.getCanvas().getSize().x / 2,
+							implementor.getCanvas().getSize().y / 2), 1);
+			Vector3f direction = coords0.subtract(coords1).normalizeLocal();
+			coords0.subtractLocal(direction.mult(coords0.y / direction.y));
+			Vector3f coords = mapCamera.getScreenCoordinates(coords0);
+			gc.drawRectangle(deltaX + (int) coords.x - 25, 200 + deltaY
+					- (int) coords.y - 25, 50, 50);
+
 			canvas.setBackgroundImage(bgImage);
 			gc.dispose();
 		}
@@ -303,7 +296,7 @@ public class MiniMapView extends ViewPart {
 		 */
 		@Override
 		public Object call() throws Exception {
-			implementor.getRenderer().getCamera().setLocation(pos);
+			implementor.getRenderer().getCamera().getLocation().addLocal(pos);
 			running.compareAndSet(true, false);
 			return null;
 		}
