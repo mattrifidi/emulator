@@ -36,6 +36,16 @@ import org.rifidi.ui.ide.configuration.AntennaTagMap;
 import org.rifidi.ui.ide.configuration.IDEConfiguration;
 import org.rifidi.ui.ide.configuration.ReaderAntennaTagMap;
 
+/**
+ * This class is the handler for saving an IDE Configuration.
+ * 
+ * 
+ * A special thanks to Costin Boldisor from the University of Applied
+ * Sciences Regensburg for contributing this functionality
+ * 
+ * @author Costin Boldisor - costinbb@live.de
+ * 
+ */
 public class SaveIDEConfigurationHandler extends AbstractHandler {
 
 	private static Log logger = LogFactory

@@ -34,6 +34,16 @@ import org.rifidi.ui.ide.configuration.AntennaTagMap;
 import org.rifidi.ui.ide.configuration.IDEConfiguration;
 import org.rifidi.ui.ide.configuration.ReaderAntennaTagMap;
 
+/**
+ * This class is the handler for opening an IDE Configuration.
+ * 
+ * 
+ * A special thanks to Costin Boldisor from the University of Applied
+ * Sciences Regensburg for contributing this functionality
+ * 
+ * @author Costin Boldisor - costinbb@live.de
+ * 
+ */
 public class OpenIDEConfigurationHandler extends AbstractHandler {
 
 	public static final String ID = "org.rifidi.ui.ide.handlers.OpenIDEConfigurationHandler";
@@ -62,7 +72,7 @@ public class OpenIDEConfigurationHandler extends AbstractHandler {
 		// cards
 
 		String filename = dialog.open();
-		if(filename==null){
+		if (filename == null) {
 			return null;
 		}
 
@@ -122,11 +132,14 @@ public class OpenIDEConfigurationHandler extends AbstractHandler {
 			if (readerAntennaTagMap != null) {
 				for (GeneralReaderPropertyHolder reader : configuration
 						.getReaders()) {
-					AntennaTagMap antennaTagMap = readerAntennaTagMap.getEntry(reader.getReaderName());
-					if(antennaTagMap!=null){
-						for(int i=0; i<reader.getNumAntennas(); i++){
-							UIReader uireader = readerReg.getReaderByName(reader.getReaderName());
-							uireader.getAntenna(i).addTagsByID(antennaTagMap.getEntry(i));
+					AntennaTagMap antennaTagMap = readerAntennaTagMap
+							.getEntry(reader.getReaderName());
+					if (antennaTagMap != null) {
+						for (int i = 0; i < reader.getNumAntennas(); i++) {
+							UIReader uireader = readerReg
+									.getReaderByName(reader.getReaderName());
+							uireader.getAntenna(i).addTagsByID(
+									antennaTagMap.getEntry(i));
 						}
 					}
 				}
