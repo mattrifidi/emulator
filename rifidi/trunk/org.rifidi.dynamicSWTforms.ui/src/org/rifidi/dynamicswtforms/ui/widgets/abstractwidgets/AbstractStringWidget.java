@@ -6,6 +6,8 @@ package org.rifidi.dynamicswtforms.ui.widgets.abstractwidgets;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.eclipse.swt.widgets.Text;
 import org.rifidi.dynamicswtforms.ui.widgets.AbstractWidget;
 import org.rifidi.dynamicswtforms.ui.widgets.data.AbstractWidgetData;
@@ -42,7 +44,9 @@ public abstract class AbstractStringWidget extends AbstractWidget {
 	public AbstractStringWidget(AbstractWidgetData data) {
 		super(data);
 		String regexString = ((StringWidgetData)data).getRegex();
-		if(regexString!=null){
+		if(regexString==null || regexString.equals("")){
+			regexPattern = Pattern.compile("(.)*");
+		}else{
 			regexPattern = Pattern.compile(regexString);
 		}
 	}

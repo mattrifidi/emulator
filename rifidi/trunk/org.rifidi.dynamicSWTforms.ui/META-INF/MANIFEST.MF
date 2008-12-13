@@ -6,14 +6,13 @@ Bundle-Version: 1.0.0
 Bundle-Activator: org.rifidi.dynamicswtforms.ui.Activator
 Bundle-Vendor: Pramari, LLC
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Import-Package: org.apache.commons.logging;version="1.0.4",
- org.osgi.framework;version="1.3.0"
 Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipse.swt;bundle-version="3.4.0",
  org.rifidi.dynamicSWTForms.xml;bundle-version="1.0.0",
  org.eclipse.jface;bundle-version="3.4.0",
  org.jdom;bundle-version="1.0.0",
- org.eclipse.ui.views.properties.tabbed;bundle-version="3.4.0"
+ org.eclipse.ui.views.properties.tabbed;bundle-version="3.4.0",
+ org.rifidi.edge.log4j;bundle-version="1.0.0"
 Export-Package: org.rifidi.dynamicswtforms.ui.exceptions,
  org.rifidi.dynamicswtforms.ui.form,
  org.rifidi.dynamicswtforms.ui.widgets,
@@ -22,3 +21,4 @@ Export-Package: org.rifidi.dynamicswtforms.ui.exceptions,
  org.rifidi.dynamicswtforms.ui.widgets.listeners,
  org.rifidi.dynamicswtforms.ui.widgets.standard,
  org.rifidi.dynamicswtforms.ui.widgets.standard.impl
+Import-Package: org.osgi.framework;version="1.4.0"
