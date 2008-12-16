@@ -1,3 +1,15 @@
+/*
+ *  AddMultipleTagsActionDelegate.java
+ *
+ *  Created:	Sep 21, 2007
+ *  Project:	RiFidi Emulator - A Software Simulation Tool for RFID Devices
+ *  				http://www.rifidi.org
+ *  				http://rifidi.sourceforge.net
+ *  Copyright:	Pramari LLC and the Rifidi Project
+ *  License:	Lesser GNU Public License (LGPL)
+ *  				http://www.opensource.org/licenses/lgpl-license.html
+ */
+
 package org.rifidi.ui.ide.views.tagview.actions;
 
 import org.eclipse.jface.action.IAction;
@@ -11,7 +23,6 @@ import org.rifidi.ui.common.wizards.tag.MultipleNewTagsWizard;
 import org.rifidi.ui.ide.views.tagview.TagView;
 
 /**
- * FIXME: Header.  
  * 
  * This it the Action for creating and adding multiple tags. It's using the
  * MultipleTagWizard to create the tags. It's contributed to the RCP Application

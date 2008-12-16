@@ -1,3 +1,14 @@
+/*
+ *  TagView.java
+ *
+ *  Created:	Sep 21, 2007
+ *  Project:	RiFidi Emulator - A Software Simulation Tool for RFID Devices
+ *  				http://www.rifidi.org
+ *  				http://rifidi.sourceforge.net
+ *  Copyright:	Pramari LLC and the Rifidi Project
+ *  License:	Lesser GNU Public License (LGPL)
+ *  				http://www.opensource.org/licenses/lgpl-license.html
+ */
 package org.rifidi.ui.ide.views.tagview;
 
 import java.beans.PropertyChangeEvent;
@@ -31,7 +42,6 @@ import org.rifidi.ui.ide.views.tagview.model.TagViewContentProvider;
 import org.rifidi.ui.ide.views.tagview.model.TagViewLabelProvider;
 
 /**
- * FIXME: Header.
  * 
  * This is the TagView displaying the new created tags in a table. It's also a
  * source for the drag&drop functionality to the AntennaView.
