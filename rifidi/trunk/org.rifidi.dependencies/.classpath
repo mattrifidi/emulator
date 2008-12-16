@@ -11,7 +11,6 @@
 	<classpathentry exported="true" kind="lib" path="commons-digester-1.7.jar" sourcepath="org.rifidi.dependenciessrc.zip"/>
 	<classpathentry exported="true" kind="lib" path="commons-httpclient-3.0.1.jar" sourcepath="org.rifidi.dependenciessrc.zip"/>
 	<classpathentry exported="true" kind="lib" path="commons-lang-2.1.jar" sourcepath="org.rifidi.dependenciessrc.zip"/>
-	<classpathentry exported="true" kind="lib" path="commons-logging.jar" sourcepath="org.rifidi.dependenciessrc.zip"/>
 	<classpathentry exported="true" kind="lib" path="llrp.jar" sourcepath="org.rifidi.dependenciessrc.zip"/>
 	<classpathentry exported="true" kind="lib" path="log4j-1.2.13.jar" sourcepath="org.rifidi.dependenciessrc.zip"/>
 	<classpathentry exported="true" kind="lib" path="nebula_pgroup_ALPHA.jar" sourcepath="org.rifidi.dependenciessrc.zip"/>
