@@ -4,5 +4,5 @@ Bundle-Name: Developer Fragment
 Bundle-SymbolicName: org.rifidi.log4j.developer
 Bundle-Version: 1.0.0
 Bundle-Vendor: Pramari, LLC
-Fragment-Host: org.rifidi.dependencies;bundle-version="1.0.0"
+Fragment-Host: org.rifidi.logging
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
