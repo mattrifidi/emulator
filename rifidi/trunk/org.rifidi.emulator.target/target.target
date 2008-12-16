@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?pde version="3.2"?>
+
+<target>
+
+   <location path="${workspace_loc}/org.rifidi.emulator.target"/>
+
+   <content useAllPlugins="true">
+      <plugins>
+      </plugins>
+      <features>
+      </features>
+      <extraLocations>
+         <location path="${workspace_loc}/org.rifidi.emulator.target/lib"/>
+      </extraLocations>
+   </content>
+
+</target>
