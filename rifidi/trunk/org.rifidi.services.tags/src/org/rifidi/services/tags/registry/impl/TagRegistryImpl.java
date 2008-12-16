@@ -15,9 +15,9 @@ import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.rifidi.services.tags.factory.TagCreationPattern;
-import org.rifidi.services.tags.factory.TagFactory;
-import org.rifidi.services.tags.impl.RifidiTag;
+import org.rifidi.tags.factory.TagCreationPattern;
+import org.rifidi.tags.factory.TagFactory;
+import org.rifidi.tags.impl.RifidiTag;
 import org.rifidi.services.tags.registry.ITagRegistry;
 import org.rifidi.services.tags.utils.RifidiTagMap;
 
@@ -28,6 +28,7 @@ import org.rifidi.services.tags.utils.RifidiTagMap;
  * @author Andreas Huebner - andreas@prmari.com
  * @author Jochen Mader - jochen@pramari.com
  */
+@Deprecated
 public class TagRegistryImpl implements ITagRegistry {
 	/** Tags by patterns. */
 	private RifidiTagMap tagMap;

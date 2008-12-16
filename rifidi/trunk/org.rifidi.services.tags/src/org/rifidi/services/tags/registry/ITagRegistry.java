@@ -14,8 +14,8 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.rifidi.services.tags.factory.TagCreationPattern;
-import org.rifidi.services.tags.impl.RifidiTag;
+import org.rifidi.tags.factory.TagCreationPattern;
+import org.rifidi.tags.impl.RifidiTag;
 
 /**
  * Tag registries are used to keep track of created/deleted tags.
@@ -23,6 +23,7 @@ import org.rifidi.services.tags.impl.RifidiTag;
  * @author Kyle Neumeier - kyle@pramari.com
  * @author Andreas Huebner - andreas@prmari.com
  */
+@Deprecated
 public interface ITagRegistry {
 
 	/**
