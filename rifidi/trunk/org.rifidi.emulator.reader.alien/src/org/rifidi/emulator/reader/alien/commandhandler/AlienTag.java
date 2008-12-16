@@ -25,8 +25,8 @@ import org.rifidi.emulator.reader.module.abstract_.AbstractReaderSharedResources
 import org.rifidi.emulator.reader.sharedrc.properties.StringReaderProperty;
 import org.rifidi.emulator.reader.sharedrc.radio.generic.GenericRadio;
 import org.rifidi.emulator.reader.sharedrc.tagmemory.formatter.TagListFormatReaderProperty;
-import org.rifidi.services.tags.enums.TagGen;
-import org.rifidi.services.tags.impl.RifidiTag;
+import org.rifidi.tags.enums.TagGen;
+import org.rifidi.tags.impl.RifidiTag;
 
 /**
  * This Class provides all the commands which are needed for proper operation of

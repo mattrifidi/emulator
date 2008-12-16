@@ -16,7 +16,7 @@ import org.rifidi.emulator.reader.alien.autonomous.TagEventTriggerCondition;
 import org.rifidi.emulator.reader.alien.commandhandler.AlienTag;
 import org.rifidi.emulator.reader.alien.gpio.GPOController;
 import org.rifidi.emulator.reader.alien.module.AlienReaderSharedResources;
-import org.rifidi.services.tags.impl.RifidiTag;
+import org.rifidi.tags.impl.RifidiTag;
 import org.rifidi.utilities.Timer;
 
 /**

@@ -25,10 +25,10 @@ import org.rifidi.emulator.reader.command.CommandObject;
 import org.rifidi.emulator.reader.module.abstract_.AbstractReaderSharedResources;
 import org.rifidi.emulator.reader.sharedrc.properties.IntegerReaderProperty;
 import org.rifidi.emulator.reader.sharedrc.radio.C1G2Operations;
-import org.rifidi.services.tags.enums.TagGen;
-import org.rifidi.services.tags.exceptions.InvalidMemoryAccessException;
-import org.rifidi.services.tags.impl.C1G2Tag;
-import org.rifidi.services.tags.impl.RifidiTag;
+import org.rifidi.tags.enums.TagGen;
+import org.rifidi.tags.exceptions.InvalidMemoryAccessException;
+import org.rifidi.tags.impl.C1G2Tag;
+import org.rifidi.tags.impl.RifidiTag;
 
 /**
  * This class handles alien commands that have to do with programming (writing,

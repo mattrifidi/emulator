@@ -53,7 +53,7 @@ import org.rifidi.emulator.reader.sharedrc.properties.IntegerReaderProperty;
 import org.rifidi.emulator.reader.sharedrc.properties.StringReaderProperty;
 import org.rifidi.emulator.reader.sharedrc.radio.Antenna;
 import org.rifidi.emulator.reader.sharedrc.radio.generic.GenericRadio;
-import org.rifidi.services.tags.enums.TagGen;
+import org.rifidi.tags.enums.TagGen;
 
 /**
  * A module which encapsulates an Alien reader. It extends AbstractPowerModule
