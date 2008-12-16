@@ -25,8 +25,8 @@ import org.rifidi.emulator.io.comm.CommunicationException;
 import org.rifidi.emulator.io.comm.ip.tcpclient.TCPClientCommunication;
 import org.rifidi.emulator.io.comm.ip.tcpserver.TCPServerCommunication;
 import org.rifidi.emulator.reader.llrp.module.LLRPReaderSharedResources;
-import org.rifidi.services.tags.enums.TagGen;
-import org.rifidi.services.tags.impl.RifidiTag;
+import org.rifidi.tags.enums.TagGen;
+import org.rifidi.tags.impl.RifidiTag;
 
 import edu.uark.csce.llrp.AntennaID;
 import edu.uark.csce.llrp.C1G2CRC;

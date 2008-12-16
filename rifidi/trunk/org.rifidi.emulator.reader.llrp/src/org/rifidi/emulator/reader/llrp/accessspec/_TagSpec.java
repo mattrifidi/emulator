@@ -12,7 +12,7 @@
  */
 package org.rifidi.emulator.reader.llrp.accessspec;
 
-import org.rifidi.services.tags.impl.RifidiTag;
+import org.rifidi.tags.impl.RifidiTag;
 
 /**
  * @author kyle

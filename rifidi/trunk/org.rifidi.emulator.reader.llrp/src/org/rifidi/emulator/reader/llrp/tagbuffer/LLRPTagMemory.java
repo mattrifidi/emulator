@@ -18,7 +18,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.rifidi.common.utilities.ByteAndHexConvertingUtility;
 import org.rifidi.emulator.reader.sharedrc.tagmemory.TagMemory;
-import org.rifidi.services.tags.impl.RifidiTag;
+import org.rifidi.tags.impl.RifidiTag;
 import org.rifidi.services.tags.utils.RifidiTagMap;
 
 /**

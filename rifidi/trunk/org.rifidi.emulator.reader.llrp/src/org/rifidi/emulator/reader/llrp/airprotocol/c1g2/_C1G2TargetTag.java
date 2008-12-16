@@ -4,9 +4,9 @@ import java.util.BitSet;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.rifidi.services.tags.enums.TagConstants;
-import org.rifidi.services.tags.impl.C1G2Tag;
-import org.rifidi.services.tags.impl.RifidiTag;
+import org.rifidi.tags.enums.TagConstants;
+import org.rifidi.tags.impl.C1G2Tag;
+import org.rifidi.tags.impl.RifidiTag;
 
 public class _C1G2TargetTag {
 
