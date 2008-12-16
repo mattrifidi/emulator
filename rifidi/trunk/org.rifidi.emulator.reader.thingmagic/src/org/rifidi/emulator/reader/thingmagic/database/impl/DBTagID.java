@@ -23,7 +23,7 @@ import org.rifidi.emulator.reader.sharedrc.tagmemory.TagMemory;
 import org.rifidi.emulator.reader.thingmagic.database.IDBRow;
 import org.rifidi.emulator.reader.thingmagic.database.IDBTable;
 import org.rifidi.emulator.reader.thingmagic.database.impl.row.DBTagIDRow;
-import org.rifidi.services.tags.impl.RifidiTag;
+import org.rifidi.tags.impl.RifidiTag;
 
 /**
  * @author Jerry Maine - jerry@pramari.com
