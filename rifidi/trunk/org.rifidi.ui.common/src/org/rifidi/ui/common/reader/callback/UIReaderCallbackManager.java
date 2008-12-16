@@ -10,7 +10,7 @@ import java.util.LinkedList;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.rifidi.emulator.rmi.client.ClientCallbackInterface;
-import org.rifidi.services.tags.IGen1Tag;
+import org.rifidi.tags.IGen1Tag;
 
 /**
  * This is the dispatcher for the ReaderCallback Methods. The reader can send

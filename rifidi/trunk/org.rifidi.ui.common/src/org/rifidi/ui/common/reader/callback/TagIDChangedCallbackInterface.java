@@ -1,6 +1,6 @@
 package org.rifidi.ui.common.reader.callback;
 
-import org.rifidi.services.tags.IGen1Tag;
+import org.rifidi.tags.IGen1Tag;
 
 
 /**

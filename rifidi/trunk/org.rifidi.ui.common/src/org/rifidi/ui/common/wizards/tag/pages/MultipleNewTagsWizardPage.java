@@ -29,9 +29,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Text;
-import org.rifidi.services.tags.enums.TagGen;
-import org.rifidi.services.tags.factory.TagCreationPattern;
-import org.rifidi.services.tags.id.TagType;
+import org.rifidi.tags.enums.TagGen;
+import org.rifidi.tags.factory.TagCreationPattern;
+import org.rifidi.tags.id.TagType;
 import org.rifidi.services.tags.registry.ITagRegistry;
 import org.rifidi.ui.common.validators.HexValidator;
 
