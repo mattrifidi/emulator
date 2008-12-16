@@ -11,8 +11,8 @@ import org.rifidi.emulator.reader.module.abstract_.AbstractReaderSharedResources
 import org.rifidi.emulator.reader.sharedrc.radio.generic.GenericRadio;
 import org.rifidi.emulator.reader.symbol.module.SymbolReaderSharedResources;
 import org.rifidi.emulator.reader.symbol.tagbuffer.SymbolTagMemory;
-import org.rifidi.services.tags.enums.TagGen;
-import org.rifidi.services.tags.impl.RifidiTag;
+import org.rifidi.tags.enums.TagGen;
+import org.rifidi.tags.impl.RifidiTag;
 
 /**
  * These are the handler methods for the bit encoded commands. Note that the
