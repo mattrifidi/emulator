@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Nebula Plug-in
+Bundle-SymbolicName: org.eclipse.swt.nebula
+Bundle-Version: 1.0.0
+Bundle-Activator: org.eclipse.swt.nebula.Activator
+Import-Package: org.osgi.framework;version="1.3.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Eclipse-BuddyPolicy: global
+Bundle-ClassPath: lib/nebula_pgroup_ALPHA.jar,
+ .
+Export-Package: org.eclipse.swt.nebula,
+ org.eclipse.swt.nebula.widgets.pgroup,
+ org.eclipse.swt.nebula.widgets.pgroup.internal
