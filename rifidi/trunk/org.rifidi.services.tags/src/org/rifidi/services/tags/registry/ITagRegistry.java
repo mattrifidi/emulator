@@ -18,11 +18,10 @@ import org.rifidi.services.tags.factory.TagCreationPattern;
 import org.rifidi.services.tags.impl.RifidiTag;
 
 /**
- * FIXME: Class comment.  
+ * Tag registries are used to keep track of created/deleted tags.
  * 
  * @author Kyle Neumeier - kyle@pramari.com
  * @author Andreas Huebner - andreas@prmari.com
- * 
  */
 public interface ITagRegistry {
 

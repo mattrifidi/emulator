@@ -18,8 +18,6 @@ import javax.naming.AuthenticationException;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
-
-import org.apache.commons.lang.NotImplementedException;
 import org.rifidi.services.tags.IGen2Tag;
 import org.rifidi.services.tags.enums.LockStates;
 import org.rifidi.services.tags.enums.TagConstants;
@@ -242,7 +240,7 @@ public class C1G2Tag implements IGen2Tag {
 	 * @see org.rifidi.tags.Gen2Tag#writeId(byte[])
 	 */
 	public void writeId(byte[] id) {
-		throw new NotImplementedException(
+		throw new RuntimeException(
 				"WriteId is not supported for Gen2 tags, use writeMemory");
 	}
 

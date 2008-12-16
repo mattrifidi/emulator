@@ -33,6 +33,7 @@ public class TagRegistryImpl implements ITagRegistry {
 	private RifidiTagMap tagMap;
 	/** Start value for tag ids. */
 	private long uniqueIDSeed;
+	/** Support for listening changes to the taglist. */
 	private PropertyChangeSupport propertyChangeSupport;
 
 	/**
@@ -58,7 +59,7 @@ public class TagRegistryImpl implements ITagRegistry {
 		for (RifidiTag t : newTags) {
 			t.setTagEntitiyID(this.uniqueIDSeed);
 			uniqueIDSeed++;
-			this.tagMap.addTag(t);
+			tagMap.addTag(t);
 		}
 		propertyChangeSupport.firePropertyChange("tags", oldList, getTags());
 		return newTags;
@@ -122,7 +123,7 @@ public class TagRegistryImpl implements ITagRegistry {
 		List<RifidiTag> oldList = getTags();
 		tagMap.removeTag(tag.getTagEntitiyID());
 		propertyChangeSupport.firePropertyChange("tags", oldList, getTags());
-
+		tag.setDeleted(true);
 	}
 
 	/*
@@ -138,6 +139,7 @@ public class TagRegistryImpl implements ITagRegistry {
 
 		for (RifidiTag t : tags) {
 			this.tagMap.removeTag(t.getTagEntitiyID());
+			t.setDeleted(true);
 		}
 		propertyChangeSupport.firePropertyChange("tags", oldList, getTags());
 
@@ -151,6 +153,9 @@ public class TagRegistryImpl implements ITagRegistry {
 	@Override
 	public void remove() {
 		List<RifidiTag> oldList = getTags();
+		for (RifidiTag tag : getTags()) {
+			tag.setDeleted(true);
+		}
 		this.tagMap.clear();
 
 		propertyChangeSupport.firePropertyChange("tags", oldList, getTags());
@@ -165,7 +170,7 @@ public class TagRegistryImpl implements ITagRegistry {
 	public RifidiTag getTag(Long tagEntityID) {
 		return tagMap.getTag(tagEntityID);
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 

@@ -1,5 +1,7 @@
 package org.rifidi.services.tags.impl;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -8,6 +10,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.rifidi.common.utilities.ByteAndHexConvertingUtility;
 import org.rifidi.services.tags.IGen1Tag;
@@ -45,18 +48,18 @@ public class RifidiTag implements Serializable {
 	/** Last seen date of tag */
 	private Date lastSeenDate;
 	/** ID used for XML documents. */
+	@SuppressWarnings("unused")
 	@XmlID
 	private String xmlID;
-	/**
-	 * how many times the tag has been read
-	 */
+	/** If the tag got deleted in the registry this property is set to true */
+	private boolean deleted;
+	/** How many times the tag has been read. */
 	private int readCount = 0;
-
-	/**
-	 * Status of this tag. Could be disabled and only seen by the IDE.
-	 */
+	/** Status of this tag. Could be disabled and only seen by the IDE. */
 	public boolean isVisbile = true;
-
+	
+	@XmlTransient
+	protected PropertyChangeSupport propertyChangeSupport;
 	/**
 	 * The quality rating of the tag. A quality rating is from 0 to 100 and
 	 * correlates to how well the tag may be read compared to a perfect tag (as
@@ -69,10 +72,17 @@ public class RifidiTag implements Serializable {
 	 * Default constructor (used by jaxb)
 	 */
 	public RifidiTag() {
+		propertyChangeSupport = new PropertyChangeSupport(this);
 	}
 
+	/**
+	 * Constructor.
+	 * 
+	 * @param tag
+	 */
 	public RifidiTag(IGen1Tag tag) {
 		this.tag = tag;
+		propertyChangeSupport = new PropertyChangeSupport(this);
 	}
 
 	/**
@@ -219,4 +229,39 @@ public class RifidiTag implements Serializable {
 		this.xmlID = "RIFIDITAG-" + tagEntitiyID;
 	}
 
+	/**
+	 * @return the deleted
+	 */
+	public boolean isDeleted() {
+		return this.deleted;
+	}
+
+	/**
+	 * @param deleted
+	 *            the deleted to set
+	 */
+	public void setDeleted(boolean deleted) {
+		propertyChangeSupport.firePropertyChange("deleted", this.deleted,
+				this.deleted = deleted);
+	}
+
+	/**
+	 * Add a listener for property change events.
+	 * 
+	 * @param propertyChangeListener
+	 */
+	public void addPropertyChangeListener(
+			PropertyChangeListener propertyChangeListener) {
+		propertyChangeSupport.addPropertyChangeListener(propertyChangeListener);
+	}
+
+	/**
+	 * Remove a listener for property change events.
+	 * 
+	 * @param propertyChangeListener
+	 */
+	public void removePropertyChangeListener(
+			PropertyChangeListener propertyChangeListener) {
+		propertyChangeSupport.addPropertyChangeListener(propertyChangeListener);
+	}
 }
