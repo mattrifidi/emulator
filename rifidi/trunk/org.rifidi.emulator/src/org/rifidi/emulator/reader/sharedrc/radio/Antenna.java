@@ -18,7 +18,7 @@ import java.util.Observable;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.rifidi.services.tags.impl.RifidiTag;
+import org.rifidi.tags.impl.RifidiTag;
 import org.rifidi.services.tags.utils.RifidiTagMap;
 
 

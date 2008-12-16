@@ -21,7 +21,7 @@ import org.rifidi.emulator.reader.module.ReaderModule;
 import org.rifidi.emulator.reader.sharedrc.properties.ReaderProperty;
 import org.rifidi.emulator.reader.sharedrc.radio.generic.GenericRadio;
 import org.rifidi.emulator.rmi.client.ClientCallbackInterface;
-import org.rifidi.services.tags.impl.RifidiTag;
+import org.rifidi.tags.impl.RifidiTag;
 
 /**
  * @author Kyle Neumeier - kyle@pramari.com

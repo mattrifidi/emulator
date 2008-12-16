@@ -3,7 +3,7 @@
  */
 package org.rifidi.emulator.rmi.client;
 
-import org.rifidi.services.tags.IGen1Tag;
+import org.rifidi.tags.IGen1Tag;
 
 /**
  * This class is like a listener to events that happen inside of a Rifidi

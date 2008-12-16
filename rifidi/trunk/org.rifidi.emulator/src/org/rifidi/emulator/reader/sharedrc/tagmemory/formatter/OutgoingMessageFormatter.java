@@ -14,7 +14,7 @@ package org.rifidi.emulator.reader.sharedrc.tagmemory.formatter;
 import java.util.Collection;
 
 import org.rifidi.emulator.reader.module.abstract_.AbstractReaderSharedResources;
-import org.rifidi.services.tags.impl.RifidiTag;
+import org.rifidi.tags.impl.RifidiTag;
 
 /**
  * This interface provides a method with which to format an outgoing tag list.

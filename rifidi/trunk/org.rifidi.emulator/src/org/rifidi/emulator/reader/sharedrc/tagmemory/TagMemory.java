@@ -14,7 +14,7 @@ package org.rifidi.emulator.reader.sharedrc.tagmemory;
 
 import java.util.Collection;
 
-import org.rifidi.services.tags.impl.RifidiTag;
+import org.rifidi.tags.impl.RifidiTag;
 
 /**
  * 

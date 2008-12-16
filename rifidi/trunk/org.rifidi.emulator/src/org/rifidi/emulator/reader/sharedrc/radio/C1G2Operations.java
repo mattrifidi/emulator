@@ -17,10 +17,10 @@ import org.apache.commons.logging.LogFactory;
 import org.rifidi.common.utilities.ByteAndHexConvertingUtility;
 import org.rifidi.emulator.reader.sharedrc.radio.Antenna;
 import org.rifidi.emulator.rmi.client.ClientCallbackInterface;
-import org.rifidi.services.tags.enums.LockStates;
-import org.rifidi.services.tags.enums.TagConstants;
-import org.rifidi.services.tags.exceptions.InvalidMemoryAccessException;
-import org.rifidi.services.tags.impl.C1G2Tag;
+import org.rifidi.tags.enums.LockStates;
+import org.rifidi.tags.enums.TagConstants;
+import org.rifidi.tags.exceptions.InvalidMemoryAccessException;
+import org.rifidi.tags.impl.C1G2Tag;
 
 /**
  * 

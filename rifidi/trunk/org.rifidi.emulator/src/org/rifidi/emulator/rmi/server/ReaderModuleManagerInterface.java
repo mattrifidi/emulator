@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.rifidi.emulator.reader.module.GeneralReaderPropertyHolder;
-import org.rifidi.services.tags.impl.RifidiTag;
+import org.rifidi.tags.impl.RifidiTag;
 
 /**
  * The ReaderModuleInterface represents the methods that a reader exposes to the

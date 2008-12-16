@@ -14,7 +14,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.rifidi.emulator.reader.sharedrc.radio.Antenna;
 import org.rifidi.emulator.reader.sharedrc.tagmemory.TagMemory;
-import org.rifidi.services.tags.impl.RifidiTag;
+import org.rifidi.tags.impl.RifidiTag;
 
 /**
  * This is the new GenericRadio for Reader. It's used to scan for tags and to
