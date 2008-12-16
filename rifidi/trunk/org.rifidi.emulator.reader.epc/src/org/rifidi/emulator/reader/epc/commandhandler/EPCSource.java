@@ -30,7 +30,7 @@ import org.rifidi.emulator.reader.module.abstract_.AbstractReaderSharedResources
 import org.rifidi.emulator.reader.sharedrc.radio.generic.GenericRadio;
 import org.rifidi.emulator.reader.source.ReaderSource;
 import org.rifidi.emulator.reader.source.TagSelector;
-import org.rifidi.services.tags.impl.RifidiTag;
+import org.rifidi.tags.impl.RifidiTag;
 
 /**
  * 
