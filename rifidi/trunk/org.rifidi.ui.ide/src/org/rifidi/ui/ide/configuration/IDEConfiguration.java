@@ -6,7 +6,7 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.rifidi.emulator.reader.module.GeneralReaderPropertyHolder;
-import org.rifidi.services.tags.impl.RifidiTag;
+import org.rifidi.tags.impl.RifidiTag;
 
 /**
  * This is a bean that stores all the information necessary to save an IDE
