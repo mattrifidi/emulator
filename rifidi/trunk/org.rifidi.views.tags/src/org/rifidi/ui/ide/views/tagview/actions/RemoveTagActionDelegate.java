@@ -24,7 +24,7 @@ import org.eclipse.ui.IViewActionDelegate;
 import org.eclipse.ui.IViewPart;
 import org.rifidi.services.annotations.Inject;
 import org.rifidi.services.registry.ServiceRegistry;
-import org.rifidi.services.tags.impl.RifidiTag;
+import org.rifidi.tags.impl.RifidiTag;
 import org.rifidi.services.tags.registry.ITagRegistry;
 import org.rifidi.ui.ide.views.tagview.TagView;
 

@@ -14,8 +14,8 @@ package org.rifidi.ui.ide.views.tagview.model;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.swt.graphics.Image;
-import org.rifidi.services.tags.enums.TagGen;
-import org.rifidi.services.tags.impl.RifidiTag;
+import org.rifidi.tags.enums.TagGen;
+import org.rifidi.tags.impl.RifidiTag;
 
 /**
  * 

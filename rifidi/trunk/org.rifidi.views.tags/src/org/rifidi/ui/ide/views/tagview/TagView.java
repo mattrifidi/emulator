@@ -36,7 +36,7 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.part.ViewPart;
 import org.rifidi.services.annotations.Inject;
 import org.rifidi.services.registry.ServiceRegistry;
-import org.rifidi.services.tags.impl.RifidiTag;
+import org.rifidi.tags.impl.RifidiTag;
 import org.rifidi.services.tags.registry.ITagRegistry;
 import org.rifidi.ui.ide.views.tagview.model.TagViewContentProvider;
 import org.rifidi.ui.ide.views.tagview.model.TagViewLabelProvider;
