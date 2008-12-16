@@ -8,9 +8,10 @@ Bundle-Vendor: Pramari, LLC
 Bundle-Localization: plugin
 Import-Package: org.osgi.framework;version="1.3.0"
 Require-Bundle: org.rifidi.emulator;bundle-version="2.1.0",
- org.rifidi.dependencies;bundle-version="2.1.0",
  org.rifidi.common.utilities;bundle-version="2.1.0",
- org.rifidi.services.tags;bundle-version="2.1.0"
+ org.rifidi.services.tags;bundle-version="2.1.0",
+ org.rifidi.logging;bundle-version="1.0.0",
+ edu.uark.csce.llrp;bundle-version="1.0.0"
 Eclipse-LazyStart: true
 Export-Package: org.rifidi.emulator.reader.llrp,
  org.rifidi.emulator.reader.llrp.airprotocol,

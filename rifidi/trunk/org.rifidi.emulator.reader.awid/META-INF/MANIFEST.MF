@@ -14,7 +14,8 @@ Export-Package: org.rifidi.emulator.reader.awid.command.exception,
  org.rifidi.emulator.reader.awid.module,
  org.rifidi.emulator.reader.awid.sharedrc.radio,
  org.rifidi.emulator.reader.awid.sharedrc.tagmemory
-Require-Bundle: org.rifidi.dependencies;bundle-version="2.1.0",
- org.rifidi.emulator;bundle-version="2.1.0",
+Require-Bundle: org.rifidi.emulator;bundle-version="2.1.0",
  org.rifidi.common.utilities;bundle-version="2.1.0",
- org.rifidi.services.tags;bundle-version="2.1.0"
+ org.rifidi.services.tags;bundle-version="2.1.0",
+ org.rifidi.logging;bundle-version="1.0.0",
+ gnu.io;bundle-version="1.0.0"
