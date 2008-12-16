@@ -12,6 +12,7 @@
       </features>
       <extraLocations>
          <location path="${workspace_loc}/org.rifidi.emulator.target/lib"/>
+         <location path="${workspace_loc}/org.rifidi.binary"/>
       </extraLocations>
    </content>
 
