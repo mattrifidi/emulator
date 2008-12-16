@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Tags Plug-in
+Bundle-SymbolicName: org.rifidi.tags
+Bundle-Version: 1.0.0
+Bundle-Vendor: Pramari, LLC
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Import-Package: org.apache.commons.logging;version="1.0.4"
+Require-Bundle: org.rifidi.common.utilities;bundle-version="2.1.0"
+Export-Package: org.rifidi.tags;version="1.0.0",
+ org.rifidi.tags.enums;version="1.0.0",
+ org.rifidi.tags.exceptions;version="1.0.0",
+ org.rifidi.tags.factory;version="1.0.0",
+ org.rifidi.tags.id;version="1.0.0",
+ org.rifidi.tags.impl;version="1.0.0"
