@@ -12,7 +12,7 @@ package org.rifidi.designer.entities.rifidi;
 
 import java.util.Set;
 
-import org.rifidi.services.tags.impl.RifidiTag;
+import org.rifidi.tags.impl.RifidiTag;
 
 /**
  * FIXME: Class comment.  

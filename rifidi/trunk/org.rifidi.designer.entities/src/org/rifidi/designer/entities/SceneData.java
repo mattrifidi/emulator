@@ -15,7 +15,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -28,7 +27,7 @@ import org.eclipse.ui.model.IWorkbenchAdapter;
 import org.rifidi.designer.entities.databinding.IEntityObservable;
 import org.rifidi.designer.entities.grouping.EntityGroup;
 import org.rifidi.designer.entities.grouping.GroupContainer;
-import org.rifidi.services.tags.impl.RifidiTag;
+import org.rifidi.tags.impl.RifidiTag;
 
 import com.jme.input.InputHandler;
 import com.jme.scene.Node;

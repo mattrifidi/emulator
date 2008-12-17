@@ -69,10 +69,10 @@ import org.rifidi.services.annotations.Inject;
 import org.rifidi.services.initializer.IInitService;
 import org.rifidi.services.initializer.exceptions.InitializationException;
 import org.rifidi.services.registry.ServiceRegistry;
-import org.rifidi.services.tags.impl.C0G1Tag;
-import org.rifidi.services.tags.impl.C1G1Tag;
-import org.rifidi.services.tags.impl.C1G2Tag;
-import org.rifidi.services.tags.impl.RifidiTag;
+import org.rifidi.tags.impl.C0G1Tag;
+import org.rifidi.tags.impl.C1G1Tag;
+import org.rifidi.tags.impl.C1G2Tag;
+import org.rifidi.tags.impl.RifidiTag;
 import org.rifidi.services.tags.registry.ITagRegistry;
 
 import com.jme.bounding.BoundingBox;
