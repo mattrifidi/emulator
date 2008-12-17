@@ -2,6 +2,8 @@
 	<readerclassname>org.rifidi.emulator.reader.awid.module.AwidReaderModule</readerclassname>
 	<description>Emulator for the Awid MPR</description>
 	<maxantennas>2</maxantennas>
+	<maxgpis>0</maxgpis>
+	<maxgpos>0</maxgpos>
 	<property>
 		<required>1</required>
 		<name>serial_port</name>

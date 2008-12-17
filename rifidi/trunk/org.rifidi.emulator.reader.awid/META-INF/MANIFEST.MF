@@ -3,7 +3,7 @@ Bundle-RequiredExecutionEnvironment:  JavaSE-1.6
 Bundle-ManifestVersion: 2
 Bundle-Name: Rifidi Awid Reader Plug-in
 Bundle-SymbolicName: org.rifidi.emulator.reader.awid
-Bundle-Version: 2.2.1
+Bundle-Version: 2.2.2
 Bundle-Activator: org.rifidi.emulator.reader.awid.Activator
 Bundle-Vendor: Pramari, LLC
 Bundle-Localization: plugin
