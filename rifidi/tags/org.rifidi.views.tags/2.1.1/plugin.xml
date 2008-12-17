@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            allowMultiple="false"
+            class="org.rifidi.ui.ide.views.tagview.TagView"
+            id="org.rifidi.ui.ide.views.tagsview"
+            name="Tags View"
+            restorable="true">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.viewActions">
+      <viewContribution
+            id="org.rifidi.ui.ide.views.tagview.actions"
+            targetID="org.rifidi.ui.ide.views.tagsview">
+         <action
+               class="org.rifidi.ui.ide.views.tagview.actions.RemoveTagActionDelegate"
+               icon="icons/remove-16x16.png"
+               id="org.rifidi.ui.ide.views.tagview.actions.RemoveTagActionDelegate"
+               label="Remove Tag"
+               toolbarPath="additions">
+         </action>
+         <action
+               class="org.rifidi.ui.ide.views.tagview.actions.AddMultipleTagsActionDelegate"
+               icon="icons/add-inf-16x16.png"
+               id="org.rifidi.ui.ide.views.tagsview.actions.AddMultipleTagsActionDelegate"
+               label="Add multiple Tags"
+               style="push"
+               toolbarPath="additions">
+         </action>
+      </viewContribution>
+   </extension>
+
+</plugin>
