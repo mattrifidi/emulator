@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Digester Plug-in
 Bundle-SymbolicName: org.apache.commons.digester
-Bundle-Version: 1.0.1
+Bundle-Version: 1.0.2
 Bundle-Activator: org.apache.commons.digester.Activator
 Import-Package: org.apache.commons.collections;version="3.2.0",
  org.apache.commons.collections.bag;version="3.2.0",
