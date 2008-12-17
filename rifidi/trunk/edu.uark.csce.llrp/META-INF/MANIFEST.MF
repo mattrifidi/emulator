@@ -2,10 +2,8 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Llrp Plug-in
 Bundle-SymbolicName: edu.uark.csce.llrp
-Bundle-Version: 1.0.1
-Bundle-Activator: edu.uark.csce.llrp.Activator
+Bundle-Version: 1.0.2
 Import-Package: org.osgi.framework;version="1.3.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Bundle-ClassPath: lib/llrp.jar,
- .
-Export-Package: edu.uark.csce.llrp
+Bundle-ClassPath: .
+Export-Package: edu.uark.csce.llrp;version="1.0.2"
