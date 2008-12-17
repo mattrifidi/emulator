@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Log4j Fragment
+Bundle-SymbolicName: org.rifidi.log4j
+Bundle-Version: 1.0.1
+Bundle-Vendor: Pramari, LLC
+Fragment-Host: org.rifidi.logging;bundle-version="1.0.2"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
