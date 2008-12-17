@@ -4,5 +4,5 @@ Bundle-Name: Log4j Fragment
 Bundle-SymbolicName: org.rifidi.log4j
 Bundle-Version: 1.0.0
 Bundle-Vendor: Pramari, LLC
-Fragment-Host: org.rifidi.dependencies;bundle-version="1.0.0"
+Fragment-Host: org.apache.log4j;bundle-version="1.2.13.v200806030600"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
