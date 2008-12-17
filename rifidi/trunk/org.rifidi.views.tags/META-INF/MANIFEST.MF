@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Rifidi Tag View Plug-in
 Bundle-SymbolicName: org.rifidi.views.tags;singleton:=true
-Bundle-Version: 2.1.1
+Bundle-Version: 2.1.2
 Bundle-Activator: org.rifidi.views.tags.Activator
 Bundle-Vendor: Pramari, LLC
 Eclipse-BuddyPolicy: global
