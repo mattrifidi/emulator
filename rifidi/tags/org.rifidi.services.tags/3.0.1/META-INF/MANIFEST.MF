@@ -1,0 +1,22 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Rifidi Tags Service Plug-in
+Bundle-SymbolicName: org.rifidi.services.tags;singleton:=true
+Bundle-Version: 3.0.1
+Bundle-Vendor: Pramari, LLC
+Require-Bundle: org.rifidi.services;bundle-version="2.1.0",
+ org.eclipse.core.runtime,
+ org.rifidi.common.utilities;bundle-version="2.1.0"
+Bundle-Activator: org.rifidi.services.tags.activator.Activator
+Eclipse-LazyStart: true
+Eclipse-BuddyPolicy: dependent
+Service-Component: OSGI-INF/tagsservice.xml
+Export-Package: org.rifidi.services.tags.registry,
+ org.rifidi.services.tags.registry.impl,
+ org.rifidi.services.tags.utils
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy
+Import-Package: org.apache.commons.logging;version="1.0.4",
+ org.rifidi.tags;version="[1.0.0,2.0.0)",
+ org.rifidi.tags.factory;version="[1.0.0,2.0.0)",
+ org.rifidi.tags.impl;version="[1.0.0,2.0.0)"
