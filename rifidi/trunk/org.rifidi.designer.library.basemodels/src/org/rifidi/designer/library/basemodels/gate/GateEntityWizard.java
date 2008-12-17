@@ -22,11 +22,11 @@ import org.rifidi.designer.entities.Entity;
 import org.rifidi.designer.entities.RMIManager;
 import org.rifidi.designer.entities.wizards.RifidiEntityWizard;
 import org.rifidi.designer.library.EntityWizardRifidiIface;
-import org.rifidi.ui.common.reader.UIReader;
 import org.rifidi.ui.common.reader.blueprints.DigestReaders;
 import org.rifidi.ui.common.reader.blueprints.ReaderBlueprint;
-import org.rifidi.ui.common.wizards.reader.pages.NewReaderDynamicWizardPage;
-import org.rifidi.ui.common.wizards.reader.pages.NewReaderGPIOWizardPage;
+import org.rifidi.ui.common.wizards.reader.NewReaderDynamicWizardPage;
+import org.rifidi.ui.common.wizards.reader.NewReaderGPIOWizardPage;
+import org.rifidi.ui.common.wizards.reader.ReaderWizardData;
 import org.xml.sax.SAXException;
 
 /**
@@ -56,7 +56,7 @@ public class GateEntityWizard extends RifidiEntityWizard implements
 	/**
 	 * The reader instance.
 	 */
-	private UIReader reader;
+	private ReaderWizardData reader;
 	/**
 	 * Dynamic wizard page for the different readers.
 	 */
@@ -71,7 +71,7 @@ public class GateEntityWizard extends RifidiEntityWizard implements
 	 */
 	public GateEntityWizard() {
 		super();
-		reader = new UIReader();
+		reader = new ReaderWizardData();
 	}
 
 	/**
@@ -122,8 +122,8 @@ public class GateEntityWizard extends RifidiEntityWizard implements
 				readerBlueprints, reader);
 		addPage(gateEntityWizardPage);
 
-		newReaderDynamicWizardPage = new NewReaderDynamicWizardPage("GateWizardPage",
-				reader, readerBlueprints);
+		newReaderDynamicWizardPage = new NewReaderDynamicWizardPage(
+				"GateWizardPage", reader, readerBlueprints);
 		addPage(newReaderDynamicWizardPage);
 
 		newReaderGPIOpage = new NewReaderGPIOWizardPage("IGPIO info page",
@@ -148,10 +148,13 @@ public class GateEntityWizard extends RifidiEntityWizard implements
 			}
 
 			logger.debug("Reader Wizard finished. Reader '"
-					+ reader.getReaderName() + "' will be created.");
+					+ reader.getGeneralReaderHolder().getReaderName()
+					+ "' will be created.");
 			entity = new GateEntity();
+			entity.setReaderType(reader.getReaderType());
 			entity.setName(gateEntityWizardPage.getName());
-			entity.setReader(reader);
+			entity.setGeneralReaderPropertyHolder(reader
+					.getGeneralReaderHolder());
 			// entity.setName(gateEntityWizardPage.getName());
 			// entity.setReaderName(reader.getReaderName());
 			// entity.setReaderClassName(reader.getReaderClassName());
@@ -170,7 +173,9 @@ public class GateEntityWizard extends RifidiEntityWizard implements
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.jface.wizard.Wizard#createPageControls(org.eclipse.swt.widgets.Composite)
+	 * @see
+	 * org.eclipse.jface.wizard.Wizard#createPageControls(org.eclipse.swt.widgets
+	 * .Composite)
 	 */
 	@Override
 	public void createPageControls(Composite pageContainer) {
@@ -188,6 +193,7 @@ public class GateEntityWizard extends RifidiEntityWizard implements
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.jface.wizard.Wizard#canFinish()
 	 */
 	@Override

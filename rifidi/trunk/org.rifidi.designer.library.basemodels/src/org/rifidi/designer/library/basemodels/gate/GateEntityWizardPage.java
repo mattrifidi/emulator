@@ -22,8 +22,8 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import org.rifidi.ui.common.reader.UIReader;
 import org.rifidi.ui.common.reader.blueprints.ReaderBlueprint;
+import org.rifidi.ui.common.wizards.reader.ReaderWizardData;
 
 /**
  * Wizard page for the GateEntity.
@@ -51,7 +51,7 @@ public class GateEntityWizardPage extends WizardPage {
 	/**
 	 * Reader instance.
 	 */
-	private UIReader reader;
+	private ReaderWizardData reader;
 
 	/**
 	 * Constructor.
@@ -61,7 +61,8 @@ public class GateEntityWizardPage extends WizardPage {
 	 * @param reader
 	 */
 	public GateEntityWizardPage(String pageName,
-			HashMap<String, ReaderBlueprint> availableReaders, UIReader reader) {
+			HashMap<String, ReaderBlueprint> availableReaders,
+			ReaderWizardData reader) {
 		super(pageName);
 		setTitle("Gate Wizard");
 		setMessage("Please give a name for the gate.");
@@ -72,7 +73,9 @@ public class GateEntityWizardPage extends WizardPage {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets.Composite)
+	 * @see
+	 * org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets
+	 * .Composite)
 	 */
 	public void createControl(Composite parent) {
 		pageComposite = new Composite(parent, SWT.NONE);
@@ -105,7 +108,9 @@ public class GateEntityWizardPage extends WizardPage {
 			/*
 			 * (non-Javadoc)
 			 * 
-			 * @see org.eclipse.swt.events.SelectionListener#widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent)
+			 * @see
+			 * org.eclipse.swt.events.SelectionListener#widgetDefaultSelected
+			 * (org.eclipse.swt.events.SelectionEvent)
 			 */
 			public void widgetDefaultSelected(SelectionEvent e) {
 			}
@@ -113,14 +118,17 @@ public class GateEntityWizardPage extends WizardPage {
 			/*
 			 * (non-Javadoc)
 			 * 
-			 * @see org.eclipse.swt.events.SelectionListener#widgetSelected(org.eclipse.swt.events.SelectionEvent)
+			 * @see
+			 * org.eclipse.swt.events.SelectionListener#widgetSelected(org.eclipse
+			 * .swt.events.SelectionEvent)
 			 */
 			public void widgetSelected(SelectionEvent e) {
 				String selectedReaderType = readerCombo.getItem(readerCombo
 						.getSelectionIndex());
 				reader.setReaderType(selectedReaderType);
-				reader.setReaderClassName(availableReaders.get(
-						selectedReaderType).getReaderclassname());
+				reader.getGeneralReaderHolder().setReaderClassName(
+						availableReaders.get(selectedReaderType)
+								.getReaderclassname());
 				// for(String type:availableReaders.keySet()){
 				// if(availableReaders.get(type).getReaderclass().equals(generalReaderPropertyHolder.getReaderClassName())){
 				// generalReaderPropertyHolder.setReaderType(type);

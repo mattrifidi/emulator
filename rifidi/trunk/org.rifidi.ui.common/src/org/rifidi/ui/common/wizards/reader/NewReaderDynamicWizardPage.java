@@ -102,8 +102,8 @@ public class NewReaderDynamicWizardPage extends WizardPage {
 	 * 
 	 * @param name
 	 *            name of this page
-	 * @param reader
-	 *            the readerobject to operate on
+	 * @param data
+	 *            data container object for the new reader
 	 * @param availableReaders
 	 *            a Map containing the available readers/ReaderBlueprints
 	 */

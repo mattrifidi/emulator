@@ -16,7 +16,7 @@ import java.util.Stack;
 import org.rifidi.designer.entities.interfaces.AbstractVisualProduct;
 import org.rifidi.designer.library.basemodels.cardbox.CardboxEntity;
 import org.rifidi.designer.services.core.entities.ProductService;
-import org.rifidi.services.tags.impl.RifidiTag;
+import org.rifidi.tags.impl.RifidiTag;
 
 import com.jme.math.Matrix3f;
 import com.jme.math.Quaternion;

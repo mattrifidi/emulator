@@ -16,7 +16,7 @@ import java.util.Stack;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.rifidi.emulator.rmi.server.ReaderModuleManagerInterface;
-import org.rifidi.services.tags.impl.RifidiTag;
+import org.rifidi.tags.impl.RifidiTag;
 
 /**
  * Rifidi emulator RMI communication is slow so all communication is done in

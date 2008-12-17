@@ -52,8 +52,8 @@ import org.rifidi.designer.services.core.entities.SceneDataService;
 import org.rifidi.designer.services.core.selection.SelectionService;
 import org.rifidi.services.annotations.Inject;
 import org.rifidi.services.registry.ServiceRegistry;
-import org.rifidi.services.tags.impl.RifidiTag;
 import org.rifidi.services.tags.registry.ITagRegistry;
+import org.rifidi.tags.impl.RifidiTag;
 
 /**
  * View that holds a tree viewer for the entities.

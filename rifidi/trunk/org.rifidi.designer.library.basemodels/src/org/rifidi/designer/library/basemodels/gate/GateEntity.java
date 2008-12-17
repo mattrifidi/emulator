@@ -39,8 +39,8 @@ import org.rifidi.designer.entities.grouping.IParentEntity;
 import org.rifidi.designer.entities.interfaces.IHasSwitch;
 import org.rifidi.designer.entities.rifidi.RifidiEntity;
 import org.rifidi.designer.library.basemodels.antennafield.AntennaFieldEntity;
+import org.rifidi.emulator.reader.module.GeneralReaderPropertyHolder;
 import org.rifidi.emulator.rmi.server.ReaderModuleManagerInterface;
-import org.rifidi.ui.common.reader.UIReader;
 import org.rifidi.ui.common.reader.callback.GPOEventCallbackInterface;
 import org.rifidi.ui.common.reader.callback.UIReaderCallbackManager;
 
@@ -81,8 +81,8 @@ public class GateEntity extends VisualEntity implements RifidiEntity,
 	/** Right antenna entity. */
 	@XmlTransient
 	private AntennaFieldEntity antennaR;
-	/** Reader associated with this gate. */
-	private UIReader reader;
+	/** Properties for the reader. */
+	private GeneralReaderPropertyHolder generalReaderPropertyHolder;
 	/** List of ChildEntites connected to this gate. */
 	@XmlIDREF
 	private List<VisualEntity> children;
@@ -103,7 +103,8 @@ public class GateEntity extends VisualEntity implements RifidiEntity,
 	private List<GPIPort> gpiPorts;
 	/** Available GPO ports. */
 	private List<GPOPort> gpoPorts;
-
+	/** Type of reader associated with the gate. */
+	private String readerType;
 	/**
 	 * Constructor.
 	 */
@@ -135,7 +136,7 @@ public class GateEntity extends VisualEntity implements RifidiEntity,
 
 		// find the snappoints
 		children = new ArrayList<VisualEntity>();
-		if (reader.getNumAntennas() > 0) {
+		if (generalReaderPropertyHolder.getNumAntennas() > 0) {
 			// instantiate the right antenna
 			antennaR = new AntennaFieldEntity(0, readerModuleManagerInterface);
 			antennaR.setName("Right antenna");
@@ -146,7 +147,7 @@ public class GateEntity extends VisualEntity implements RifidiEntity,
 			children.add(antennaR);
 		}
 
-		if (reader.getNumAntennas() > 1) {
+		if (generalReaderPropertyHolder.getNumAntennas() > 1) {
 			// instantiate the left antenna
 			antennaL = new AntennaFieldEntity(1, readerModuleManagerInterface);
 			antennaL.setName("Left antenna");
@@ -201,13 +202,15 @@ public class GateEntity extends VisualEntity implements RifidiEntity,
 		_node.setCullHint(CullHint.Always);
 		getNode().attachChild(_node);
 		try {
-			for (int count = 0; count < reader.getNumGPIs(); count++) {
+			for (int count = 0; count < generalReaderPropertyHolder
+					.getNumGPIs(); count++) {
 				GPIPort gpiPort = new GPIPort();
 				gpiPort.setNr(count);
 				gpiPort.setId(getEntityId() + "-gpi-" + count);
 				gpiPorts.add(gpiPort);
 			}
-			for (int count = 0; count < reader.getNumGPOs(); count++) {
+			for (int count = 0; count < generalReaderPropertyHolder
+					.getNumGPOs(); count++) {
 				GPOPort gpoPort = new GPOPort();
 				gpoPort.setNr(count);
 				gpoPort.setId(getEntityId() + "-gpo-" + count);
@@ -272,14 +275,13 @@ public class GateEntity extends VisualEntity implements RifidiEntity,
 			}
 		}
 		try {
-			readerModuleManagerInterface = rmimanager.createReader(reader
-					.getGeneralReaderPropertyHolder());
+			readerModuleManagerInterface = rmimanager
+					.createReader(generalReaderPropertyHolder);
 			try {
 				UIReaderCallbackManager readerCallbackManager;
 				readerCallbackManager = new UIReaderCallbackManager(
 						readerModuleManagerInterface.getClientProxy());
-				reader.setReaderCallbackManager(readerCallbackManager);
-				reader.getReaderCallbackManager().addGPOPortListener(this);
+				readerCallbackManager.addGPOPortListener(this);
 			} catch (Exception e) {
 				e.printStackTrace();
 				logger.error("Problem connecting to RMI: " + e);
@@ -379,7 +381,7 @@ public class GateEntity extends VisualEntity implements RifidiEntity,
 		} catch (Exception e) {
 			logger.warn("Unable to turn off reader: " + e);
 		}
-		rmimanager.removeReader(reader.getReaderName());
+		rmimanager.removeReader(generalReaderPropertyHolder.getReaderName());
 	}
 
 	/*
@@ -406,21 +408,6 @@ public class GateEntity extends VisualEntity implements RifidiEntity,
 	 */
 	public boolean isRunning() {
 		return running;
-	}
-
-	/**
-	 * @return the reader
-	 */
-	public UIReader getReader() {
-		return reader;
-	}
-
-	/**
-	 * @param reader
-	 *            the reader to set
-	 */
-	public void setReader(UIReader reader) {
-		this.reader = reader;
 	}
 
 	/*
@@ -472,14 +459,14 @@ public class GateEntity extends VisualEntity implements RifidiEntity,
 	 */
 	@Property(displayName = "Reader", description = "type of emulated reader", readonly = true, unit = "")
 	public void setReaderType(String name) {
-
+		this.readerType=name;
 	}
 
 	/*
 	 * FIXME: needs documentation!
 	 */
 	public String getReaderType() {
-		return reader.getReaderType();
+		return readerType;
 	}
 
 	/*
@@ -491,8 +478,8 @@ public class GateEntity extends VisualEntity implements RifidiEntity,
 	}
 
 	public String getConnectionDetails() {
-		if (reader.getProperty("inet_address") != null) {
-			return reader.getProperty("inet_address");
+		if (generalReaderPropertyHolder.getProperty("inet_address") != null) {
+			return generalReaderPropertyHolder.getProperty("inet_address");
 		}
 		return "no connection info available";
 	}
@@ -602,6 +589,22 @@ public class GateEntity extends VisualEntity implements RifidiEntity,
 	@Override
 	public void GPOPortSetLow(int gpoPortNum) {
 		gpoPorts.get(gpoPortNum).setState(State.LOW);
+	}
+
+	/**
+	 * @return the generalReaderPropertyHolder
+	 */
+	public GeneralReaderPropertyHolder getGeneralReaderPropertyHolder() {
+		return this.generalReaderPropertyHolder;
+	}
+
+	/**
+	 * @param generalReaderPropertyHolder
+	 *            the generalReaderPropertyHolder to set
+	 */
+	public void setGeneralReaderPropertyHolder(
+			GeneralReaderPropertyHolder generalReaderPropertyHolder) {
+		this.generalReaderPropertyHolder = generalReaderPropertyHolder;
 	}
 
 }

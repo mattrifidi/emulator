@@ -28,10 +28,10 @@ import org.rifidi.designer.entities.interfaces.IContainer;
 import org.rifidi.designer.library.retail.Position;
 import org.rifidi.designer.library.retail.clothing.Clothing;
 import org.rifidi.services.annotations.Inject;
-import org.rifidi.services.tags.enums.TagGen;
-import org.rifidi.services.tags.factory.TagCreationPattern;
-import org.rifidi.services.tags.id.TagType;
-import org.rifidi.services.tags.impl.RifidiTag;
+import org.rifidi.tags.enums.TagGen;
+import org.rifidi.tags.factory.TagCreationPattern;
+import org.rifidi.tags.id.TagType;
+import org.rifidi.tags.impl.RifidiTag;
 import org.rifidi.services.tags.registry.ITagRegistry;
 
 import com.jme.bounding.BoundingBox;

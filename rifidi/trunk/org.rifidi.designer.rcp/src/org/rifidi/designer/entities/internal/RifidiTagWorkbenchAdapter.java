@@ -12,11 +12,12 @@ package org.rifidi.designer.entities.internal;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.model.IWorkbenchAdapter;
-import org.rifidi.services.tags.impl.RifidiTag;
+import org.rifidi.tags.impl.RifidiTag;
 import org.rifidi.views.tags.Activator;
 
 /**
- * FIXME: Class comment.  
+ * Workbenchadapter for displaying a RifidiTag bellow the boxproducer it is
+ * associated with.
  * 
  * @author Jochen Mader - jochen@pramari.com - Dec 5, 2008
  * 
@@ -42,7 +43,8 @@ public class RifidiTagWorkbenchAdapter implements IWorkbenchAdapter {
 	 */
 	@Override
 	public ImageDescriptor getImageDescriptor(Object arg0) {
-		return Activator.getDefault().getImageRegistry().getDescriptor(RifidiTagWorkbenchAdapter.class.getName());
+		return Activator.getDefault().getImageRegistry().getDescriptor(
+				RifidiTagWorkbenchAdapter.class.getName());
 	}
 
 	/*

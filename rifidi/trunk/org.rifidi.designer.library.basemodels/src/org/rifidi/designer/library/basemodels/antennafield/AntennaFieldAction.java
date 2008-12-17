@@ -10,7 +10,7 @@
  */
 package org.rifidi.designer.library.basemodels.antennafield;
 
-import org.rifidi.services.tags.impl.RifidiTag;
+import org.rifidi.tags.impl.RifidiTag;
 
 /**
  * Just a little container for add/delete actions on the emulator.

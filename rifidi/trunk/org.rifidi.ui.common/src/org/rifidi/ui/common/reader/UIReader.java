@@ -73,7 +73,12 @@ public class UIReader extends GeneralReaderPropertyHolder {
 	 * UI representation of the Antenna Fields
 	 */
 	private HashMap<Integer, UIAntenna> antennas;
-
+	
+	/**
+	 * Constructor.
+	 * @param readerManager
+	 * @param grph
+	 */
 	public UIReader(ReaderModuleManagerInterface readerManager, GeneralReaderPropertyHolder grph){
 		this.readerManager = readerManager;
 		this.setNumAntennas( grph.getNumAntennas());
@@ -107,7 +112,6 @@ public class UIReader extends GeneralReaderPropertyHolder {
 	}
 
 	public void suspend() {
-		// TODO implment functionality
 		readerState = "suspended";
 		try {
 			readerManager.suspendReader();
@@ -117,7 +121,6 @@ public class UIReader extends GeneralReaderPropertyHolder {
 	}
 
 	public void resume() {
-		// TODO implment functionality
 		readerState = "running";
 		try {
 			readerManager.resumeReader();

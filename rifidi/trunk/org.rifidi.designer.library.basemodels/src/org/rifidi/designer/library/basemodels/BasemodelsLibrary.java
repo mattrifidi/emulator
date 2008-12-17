@@ -135,7 +135,7 @@ public class BasemodelsLibrary implements EntityLibrary {
 		library.add(prodRef);
 
 		EntityLibraryReference prodCont = new EntityLibraryReference();
-		prodCont.setId(BoxproducerEntity.class.getName());
+		prodCont.setId(BoxproducerContinuousEntity.class.getName());
 		prodCont.setImageDescriptor(Activator.getDefault().getImageRegistry()
 				.getDescriptor(BoxproducerContinuousEntity.class.getName()));
 		prodCont.setLibrary(BasemodelsLibrary.class);
