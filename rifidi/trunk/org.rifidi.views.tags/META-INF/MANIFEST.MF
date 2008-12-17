@@ -5,6 +5,7 @@ Bundle-SymbolicName: org.rifidi.views.tags;singleton:=true
 Bundle-Version: 2.1.1
 Bundle-Activator: org.rifidi.views.tags.Activator
 Bundle-Vendor: Pramari, LLC
+Eclipse-BuddyPolicy: global
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.rifidi.services;bundle-version="2.1.0",
@@ -20,3 +21,4 @@ Import-Package: org.apache.commons.logging;version="1.0.4",
  org.rifidi.tags;version="1.0.0",
  org.rifidi.tags.enums;version="1.0.0",
  org.rifidi.tags.impl;version="1.0.0"
+ 
