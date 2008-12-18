@@ -15,8 +15,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Spinner;
-import org.rifidi.services.tags.factory.TagCreationPattern;
 import org.rifidi.streamer.xml.actions.TagAction;
+import org.rifidi.tags.factory.TagCreationPattern;
 import org.rifidi.ui.streamer.composites.items.dialog.AbstractCustomAddDialog;
 import org.rifidi.ui.streamer.data.EventAwareWrapper;
 
