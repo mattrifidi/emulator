@@ -2,17 +2,20 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Rifidi Streamer Xml Plug-in
 Bundle-SymbolicName: org.rifidi.streamer.xml
-Bundle-Version: 2.1.1
+Bundle-Version: 2.1.2
 Bundle-Activator: org.rifidi.streamer.xml.Activator
 Bundle-Vendor: Pramari, LLC
-Eclipse-LazyStart: true
-Import-Package: org.osgi.framework;version="1.3.0"
+Bundle-ActivationPolicy: lazy
+Import-Package: org.apache.commons.logging;version="1.0.4",
+ org.osgi.framework;version="1.3.0"
 Export-Package: org.rifidi.streamer.xml,
  org.rifidi.streamer.xml.actions,
  org.rifidi.streamer.xml.batch,
  org.rifidi.streamer.xml.components,
  org.rifidi.streamer.xml.scenario,
  org.rifidi.streamer.xml.testSuite
-Require-Bundle: org.rifidi.emulator;bundle-version="2.1.1",
- org.rifidi.ui.common;bundle-version="2.3.1",
- org.rifidi.services.tags;bundle-version="2.2.1"
+Require-Bundle: org.rifidi.emulator;bundle-version="2.2.0",
+ org.rifidi.ui.common;bundle-version="2.4.0",
+ org.rifidi.services.tags;bundle-version="3.0.1",
+ org.rifidi.tags;bundle-version="1.0.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6

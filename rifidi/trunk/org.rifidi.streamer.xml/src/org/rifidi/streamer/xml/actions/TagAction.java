@@ -14,7 +14,7 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.rifidi.services.tags.factory.TagCreationPattern;
+import org.rifidi.tags.factory.TagCreationPattern;
 
 /**
  * This is the TagAction implementation
