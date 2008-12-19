@@ -11,8 +11,9 @@
       <features>
       </features>
       <extraLocations>
-         <location path="${workspace_loc}/org.rifidi.emulator.target/lib"/>
          <location path="${workspace_loc}/org.rifidi.binary/rifidi"/>
+         <location path="${workspace_loc}/org.rifidi.emulator.target/lib"/>
+         <location path="${workspace_loc}/org.rifidi.emulator.target/junit"/>
          <location path="${workspace_loc}/org.rifidi.binary/thirdparty"/>
       </extraLocations>
    </content>
