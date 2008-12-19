@@ -11,6 +11,7 @@
  */
 package org.rifidi.ui.common.wizards.tag;
 
+
 import org.eclipse.jface.wizard.Wizard;
 import org.rifidi.services.annotations.Inject;
 import org.rifidi.services.registry.ServiceRegistry;
@@ -23,6 +24,7 @@ import org.rifidi.ui.common.wizards.tag.pages.MultipleNewTagsWizardPage;
  * @author Jochen Mader - jochen@pramari.com
  * 
  */
+@Deprecated
 public class MultipleNewTagsWizard extends Wizard {
 
 	private MultipleNewTagsWizardPage multipleNewTagsWizardPage;

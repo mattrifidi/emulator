@@ -42,6 +42,7 @@ import org.rifidi.ui.common.validators.HexValidator;
  * @author Jochen Mader - jochen@pramari.com
  * 
  */
+@Deprecated
 public class MultipleNewTagsWizardPage extends WizardPage {
 
 	private Log logger = LogFactory.getLog(MultipleNewTagsWizardPage.class);
