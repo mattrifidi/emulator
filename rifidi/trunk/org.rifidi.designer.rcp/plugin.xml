@@ -1059,7 +1059,7 @@
    <extension
          point="org.eclipse.core.runtime.adapters">
       <factory
-            adaptableType="org.rifidi.services.tags.impl.RifidiTag"
+            adaptableType="org.rifidi.tags.impl.RifidiTag"
             class="org.rifidi.designer.entities.internal.RifidiTagAdapterFactory">
          <adapter
                type="org.eclipse.ui.model.IWorkbenchAdapter">

@@ -13,6 +13,7 @@ package org.rifidi.designer.library.basemodels.boxproducercont;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -31,12 +32,13 @@ import org.rifidi.designer.entities.databinding.annotations.MonitoredProperties;
 import org.rifidi.designer.entities.interfaces.AbstractVisualProducer;
 import org.rifidi.designer.entities.interfaces.AbstractVisualProduct;
 import org.rifidi.designer.entities.interfaces.IHasSwitch;
-import org.rifidi.designer.entities.rifidi.ITagContainer;
 import org.rifidi.designer.library.basemodels.cardbox.CardboxEntity;
 import org.rifidi.designer.services.core.entities.ProductService;
 import org.rifidi.services.annotations.Inject;
+import org.rifidi.services.tags.IRifidiTagService;
+import org.rifidi.services.tags.exceptions.RifidiTagNotAvailableException;
+import org.rifidi.services.tags.model.IRifidiTagContainer;
 import org.rifidi.tags.impl.RifidiTag;
-import org.rifidi.services.tags.registry.ITagRegistry;
 
 import com.jme.bounding.BoundingBox;
 import com.jme.math.Vector3f;
@@ -60,7 +62,7 @@ import com.jme.system.DisplaySystem;
  */
 @MonitoredProperties(names = { "name" })
 public class BoxproducerContinuousEntity extends AbstractVisualProducer
-		implements IHasSwitch, ITagContainer, IEntityObservable, PropertyChangeListener {
+		implements IHasSwitch, IRifidiTagContainer, IEntityObservable, PropertyChangeListener {
 
 	/** Logger for this class. */
 	@XmlTransient
@@ -81,14 +83,14 @@ public class BoxproducerContinuousEntity extends AbstractVisualProducer
 	/** Reference to the product service. */
 	@XmlTransient
 	private ProductService productService;
-	/** Reference to the tag registry */
-	@XmlTransient
-	private ITagRegistry tagRegistry;
 	/** Set containing all available tags. */
 	@XmlIDREF
 	private List<RifidiTag> tags;
 	@XmlTransient
 	private List<RifidiTag> sharedtags;
+	/** Reference to the tag service. */
+	@XmlTransient
+	private IRifidiTagService tagService;
 	/**
 	 * Constructor
 	 */
@@ -229,6 +231,11 @@ public class BoxproducerContinuousEntity extends AbstractVisualProducer
 		if (running)
 			turnOn();
 		for(RifidiTag tag:tags){
+			try {
+				tagService.takeRifidiTag(tag, this);
+			} catch (RifidiTagNotAvailableException e) {
+				logger.error(e);
+			}
 			tag.addPropertyChangeListener(this);
 		}
 	}
@@ -330,22 +337,6 @@ public class BoxproducerContinuousEntity extends AbstractVisualProducer
 		this.productService = productService;
 	}
 
-	/**
-	 * @return the tagRegistry
-	 */
-	public ITagRegistry getTagRegistry() {
-		return this.tagRegistry;
-	}
-
-	/**
-	 * @param tagRegistry
-	 *            the tagRegistry to set
-	 */
-	@Inject
-	public void setTagRegistry(ITagRegistry tagRegistry) {
-		this.tagRegistry = tagRegistry;
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -366,58 +357,7 @@ public class BoxproducerContinuousEntity extends AbstractVisualProducer
 	public Node getBoundingNode() {
 		return (Node) getNode().getChild("hiliter");
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.rifidi.designer.entities.interfaces.ITagContainer#addTags(java.util
-	 * .Set)
-	 */
-	@Override
-	public void addTags(Set<RifidiTag> tags) {
-		for(RifidiTag tag:tags){
-			tag.addPropertyChangeListener(this);
-		}
-		// remove dups
-		tags.removeAll(this.tags);
-		this.tags.addAll(tags);
-		sharedtags.clear();
-		sharedtags.addAll(tags);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.rifidi.designer.entities.interfaces.ITagContainer#removeTag(org.rifidi
-	 * .services.tags.impl.RifidiTag)
-	 */
-	@Override
-	public void removeTag(RifidiTag tag) {
-		this.tags.remove(tag);
-		sharedtags.clear();
-		sharedtags.addAll(tags);
-		tag.removePropertyChangeListener(this);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.rifidi.designer.entities.interfaces.ITagContainer#removeTags(java
-	 * .util.Set)
-	 */
-	@Override
-	public void removeTags(Set<RifidiTag> tags) {
-		this.tags.removeAll(tags);
-		sharedtags.clear();
-		sharedtags.addAll(tags);
-		for(RifidiTag tag:tags){
-			tag.removePropertyChangeListener(this);	
-		}
-	}
-
+	
 	/**
 	 * Get a string representation of the tags this producer owns.
 	 * 
@@ -463,6 +403,42 @@ public class BoxproducerContinuousEntity extends AbstractVisualProducer
 		if("deleted".equals(evt.getPropertyName())){
 			tags.remove(((RifidiTag)evt.getSource()));
 		}
+	}
+
+	/* (non-Javadoc)
+	 * @see org.rifidi.services.tags.model.IRifidiTagContainer#addTags(java.util.Collection)
+	 */
+	@Override
+	public void addTags(Collection<RifidiTag> tags) {
+		for(RifidiTag tag:tags){
+			tag.addPropertyChangeListener(this);
+		}
+		// remove dups
+		tags.removeAll(this.tags);
+		this.tags.addAll(tags);
+		sharedtags.clear();
+		sharedtags.addAll(tags);
+	}
+
+	/* (non-Javadoc)
+	 * @see org.rifidi.services.tags.model.IRifidiTagContainer#removeTags(java.util.Collection)
+	 */
+	@Override
+	public void removeTags(Collection<RifidiTag> tags) {
+		this.tags.removeAll(tags);
+		sharedtags.clear();
+		sharedtags.addAll(tags);
+		for(RifidiTag tag:tags){
+			tag.removePropertyChangeListener(this);	
+		}
+	}
+
+	/**
+	 * @param tagService the tagService to set
+	 */
+	@Inject
+	public void setTagService(IRifidiTagService tagService) {
+		this.tagService = tagService;
 	}
 
 }

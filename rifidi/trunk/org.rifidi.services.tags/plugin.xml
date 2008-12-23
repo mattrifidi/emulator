@@ -5,7 +5,7 @@
          point="org.rifidi.services.singletonServices">
       <singletonService
             class="org.rifidi.services.tags.impl.TagServiceImpl"
-            interface="org.rifidi.services.tags.TagService">
+            interface="org.rifidi.services.tags.IRifidiTagService">
       </singletonService>
    </extension>
 

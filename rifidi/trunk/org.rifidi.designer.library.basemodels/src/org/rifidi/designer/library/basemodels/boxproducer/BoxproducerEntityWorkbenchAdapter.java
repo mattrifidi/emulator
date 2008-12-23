@@ -13,6 +13,7 @@ package org.rifidi.designer.library.basemodels.boxproducer;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.model.IWorkbenchAdapter;
 import org.rifidi.designer.library.basemodels.Activator;
+import org.rifidi.tags.impl.RifidiTag;
  
 /**
  * IWorkbenchAdapter for the boxproducer.

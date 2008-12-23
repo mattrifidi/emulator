@@ -120,17 +120,19 @@ public class ZoomableLWJGLCamera extends LWJGLCamera {
 			if (lod != 3) {
 				lod = 3;
 			}
-			if (lod == 3 && cameraValues == null) {
-				cameraValues = new Vector3f[3];
-				cameraValues[0] = getLeft();
-				cameraValues[1] = getUp();
-				cameraValues[2] = getDirection();
-				setAxes(new Vector3f(-1f, 0f, 0f), new Vector3f(0f, 0f, -1f),
-						new Vector3f(0f, -1f, 0f));
-
-				update();
-				apply();
-			}
+			//death to 2d view
+//			if (lod == 3 && cameraValues == null) {
+//				cameraValues = new Vector3f[3];
+//				cameraValues[0] = getLeft();
+//				cameraValues[1] = getUp();
+//				cameraValues[2] = getDirection();
+//				setAxes(new Vector3f(-1f, 0f, 0f), new Vector3f(0f, 0f, -1f),
+//						new Vector3f(0f, -1f, 0f));
+//
+//				update();
+//				apply();
+//			}
+			//yep, it's dead
 		}
 		if (cameraValues != null && lod != 3) {
 			setAxes(cameraValues[0], cameraValues[1], cameraValues[2]);

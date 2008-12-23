@@ -11,7 +11,11 @@ Bundle-Activator: org.rifidi.services.tags.activator.Activator
 Eclipse-LazyStart: true
 Eclipse-BuddyPolicy: dependent
 Service-Component: OSGI-INF/tagsservice.xml
-Export-Package: org.rifidi.services.tags.registry,
+Export-Package: org.rifidi.services.tags,
+ org.rifidi.services.tags.exceptions,
+ org.rifidi.services.tags.impl,
+ org.rifidi.services.tags.model,
+ org.rifidi.services.tags.registry,
  org.rifidi.services.tags.registry.impl,
  org.rifidi.services.tags.utils
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6

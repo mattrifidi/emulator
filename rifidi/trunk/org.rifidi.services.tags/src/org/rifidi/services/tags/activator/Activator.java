@@ -3,6 +3,8 @@ package org.rifidi.services.tags.activator;
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
+import org.rifidi.services.tags.IRifidiTagService;
+import org.rifidi.services.tags.impl.RifidiTagServiceImpl;
 import org.rifidi.services.tags.registry.ITagRegistry;
 import org.rifidi.services.tags.registry.impl.TagRegistryImpl;
 
@@ -22,7 +24,8 @@ public class Activator extends Plugin {
 	 * The service registration for removing the service on stop.
 	 */
 	private ServiceRegistration serviceRegistration;
-	
+	private ServiceRegistration serviceRegistration2;
+
 	/**
 	 * The constructor
 	 */
@@ -32,20 +35,25 @@ public class Activator extends Plugin {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.core.runtime.Plugins#start(org.osgi.framework.BundleContext)
+	 * @see
+	 * org.eclipse.core.runtime.Plugins#start(org.osgi.framework.BundleContext)
 	 */
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
 		ITagRegistry tagRegistry = new TagRegistryImpl();
 		tagRegistry.initialize();
-		serviceRegistration=context.registerService(ITagRegistry.class.getName(), tagRegistry, null);
+		serviceRegistration = context.registerService(ITagRegistry.class
+				.getName(), tagRegistry, null);
+		serviceRegistration2 = context.registerService(IRifidiTagService.class
+				.getName(), new RifidiTagServiceImpl(), null);
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
+	 * @see
+	 * org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
 	 */
 	public void stop(BundleContext context) throws Exception {
 		plugin = null;

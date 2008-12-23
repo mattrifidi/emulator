@@ -45,14 +45,15 @@ import org.rifidi.designer.entities.SceneData;
 import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.databinding.ObservableTreeContentProvider;
 import org.rifidi.designer.entities.grouping.EntityGroup;
-import org.rifidi.designer.entities.rifidi.ITagContainer;
 import org.rifidi.designer.services.core.entities.EntitiesService;
 import org.rifidi.designer.services.core.entities.SceneDataChangedListener;
 import org.rifidi.designer.services.core.entities.SceneDataService;
 import org.rifidi.designer.services.core.selection.SelectionService;
 import org.rifidi.services.annotations.Inject;
 import org.rifidi.services.registry.ServiceRegistry;
-import org.rifidi.services.tags.registry.ITagRegistry;
+import org.rifidi.services.tags.IRifidiTagService;
+import org.rifidi.services.tags.exceptions.RifidiTagNotAvailableException;
+import org.rifidi.services.tags.model.IRifidiTagContainer;
 import org.rifidi.tags.impl.RifidiTag;
 
 /**
@@ -77,8 +78,8 @@ public class EntityView extends ViewPart implements ISelectionChangedListener,
 	private SelectionService selectionService;
 	/** Reference to the scene data service. */
 	private SceneDataService sceneDataService;
-	/** Reference to the tagss service. */
-	private ITagRegistry tagRegistry;
+	/** Reference to the tags service. */
+	private IRifidiTagService tagService;
 
 	/**
 	 * Constructor.
@@ -164,18 +165,28 @@ public class EntityView extends ViewPart implements ISelectionChangedListener,
 					entitiesService.addEntitiesToGroup(
 							(EntityGroup) ((TreeItem) event.item).getData(),
 							(String) event.data);
-				} else if ((((TreeItem) event.item).getData() instanceof ITagContainer)
+				} else if ((((TreeItem) event.item).getData() instanceof IRifidiTagContainer)
 						&& ((String) event.data).contains("RIFIDITAGS")) {
+					
 					Set<RifidiTag> tags = new HashSet<RifidiTag>();
 					for (String token : ((String) event.data).split("\n")) {
 						try {
-							tags.add(tagRegistry.getTag(Long.parseLong(token)));
+							tags.add(tagService.getTag(Long.parseLong(token)));
 						} catch (NumberFormatException nfe) {
 							logger.debug(nfe.toString());
 						}
 					}
-					((ITagContainer) ((TreeItem) event.item).getData())
-							.addTags(tags);
+					
+					try{
+						for (RifidiTag tag : tags) {
+							tagService.takeRifidiTag(tag, (IRifidiTagContainer) ((TreeItem) event.item).getData());
+						}
+						((IRifidiTagContainer) ((TreeItem) event.item).getData())
+								.addTags(tags);	
+					}catch(RifidiTagNotAvailableException e){
+						logger.fatal(e);
+					}
+					
 				}
 			}
 
@@ -187,7 +198,7 @@ public class EntityView extends ViewPart implements ISelectionChangedListener,
 			 * .swt.dnd.DropTargetEvent)
 			 */
 			public void dropAccept(DropTargetEvent event) {
-				if ((((TreeItem) event.item).getData() instanceof ITagContainer)) {
+				if ((((TreeItem) event.item).getData() instanceof IRifidiTagContainer)) {
 				} else if (!(((TreeItem) event.item).getData() instanceof EntityGroup)) {
 					event.detail = DND.ERROR_CANNOT_INIT_DROP;
 				}
@@ -342,11 +353,11 @@ public class EntityView extends ViewPart implements ISelectionChangedListener,
 	}
 
 	/**
-	 * @param tagRegistry
-	 *            the tagRegistry to set
+	 * @param tagService
+	 *            the tag service to set
 	 */
 	@Inject
-	public void setTagRegistry(ITagRegistry tagRegistry) {
-		this.tagRegistry = tagRegistry;
+	public void setTagRegistry(IRifidiTagService tagService) {
+		this.tagService = tagService;
 	}
 }

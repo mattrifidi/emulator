@@ -69,11 +69,12 @@ import org.rifidi.services.annotations.Inject;
 import org.rifidi.services.initializer.IInitService;
 import org.rifidi.services.initializer.exceptions.InitializationException;
 import org.rifidi.services.registry.ServiceRegistry;
+import org.rifidi.services.tags.IRifidiTagService;
+import org.rifidi.services.tags.model.IRifidiTagContainer;
 import org.rifidi.tags.impl.C0G1Tag;
 import org.rifidi.tags.impl.C1G1Tag;
 import org.rifidi.tags.impl.C1G2Tag;
 import org.rifidi.tags.impl.RifidiTag;
-import org.rifidi.services.tags.registry.ITagRegistry;
 
 import com.jme.bounding.BoundingBox;
 import com.jme.input.InputHandler;
@@ -124,11 +125,11 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	private RoomOctree roomTree = null;
 	/** Default implementor. */
 	private SWTDefaultImplementor implementor;
-	/** Reference to the tag registry. */
-	private ITagRegistry tagRegistry;
 	/** World service reference */
 	private WorldService worldService;
-
+	/** Reference to the tag service. */
+	private IRifidiTagService tagService;
+	
 	/**
 	 * Constructor.
 	 */
@@ -509,7 +510,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 		IWorkbench wb = PlatformUI.getWorkbench();
 		wb.getProgressService();
 
-		tagRegistry.initialize();
+		tagService.clear();
 		// invalidate the current sceneData
 		for (SceneDataChangedListener listener : listeners) {
 			listener.destroySceneData(this.sceneData);
@@ -577,7 +578,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 							Object unm = unmarshaller.unmarshal(file
 									.getContents());
 							sceneData = (SceneData) unm;
-							tagRegistry.initialize(sceneData.getTags());
+							tagService.registerTags(sceneData.getTags());
 
 						} catch (JAXBException e) {
 							logger.fatal("Unable to load file (JAXB): " + e);
@@ -774,6 +775,9 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 				}
 			}
 		}
+		if(entity instanceof IRifidiTagContainer){
+			tagService.registerTagContainer((IRifidiTagContainer)entity);
+		}
 		// do custom initialization
 		try {
 			iinitService.init(entity);
@@ -815,7 +819,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 				Node parent = sceneData.getRootNode().getParent();
 				sceneData.getRootNode().removeFromParent();
 				sceneData.getRoomNode().removeFromParent();
-				sceneData.setTags(tagRegistry.getTags());
+				sceneData.setTags(tagService.getRegisteredTags());
 				sceneData.getDisplay().syncExec(new Runnable() {
 
 					/*
@@ -1177,15 +1181,6 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	}
 
 	/**
-	 * @param tagRegistry
-	 *            the tagRegistry to set
-	 */
-	@Inject
-	public void setTagRegistry(ITagRegistry tagRegistry) {
-		this.tagRegistry = tagRegistry;
-	}
-
-	/**
 	 * @param worldService
 	 *            the worldService to set
 	 */
@@ -1194,4 +1189,12 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 		this.worldService = worldService;
 	}
 
+	/**
+	 * @param tagService the tagService to set
+	 */
+	@Inject
+	public void setTagService(IRifidiTagService tagService) {
+		this.tagService = tagService;
+	}
+ 
 }
