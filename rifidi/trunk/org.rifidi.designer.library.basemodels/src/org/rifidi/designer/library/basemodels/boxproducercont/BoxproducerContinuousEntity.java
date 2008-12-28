@@ -32,6 +32,7 @@ import org.rifidi.designer.entities.databinding.annotations.MonitoredProperties;
 import org.rifidi.designer.entities.interfaces.AbstractVisualProducer;
 import org.rifidi.designer.entities.interfaces.AbstractVisualProduct;
 import org.rifidi.designer.entities.interfaces.IHasSwitch;
+import org.rifidi.designer.entities.internal.RifidiTagWithParent;
 import org.rifidi.designer.library.basemodels.cardbox.CardboxEntity;
 import org.rifidi.designer.services.core.entities.ProductService;
 import org.rifidi.services.annotations.Inject;
@@ -62,7 +63,8 @@ import com.jme.system.DisplaySystem;
  */
 @MonitoredProperties(names = { "name" })
 public class BoxproducerContinuousEntity extends AbstractVisualProducer
-		implements IHasSwitch, IRifidiTagContainer, IEntityObservable, PropertyChangeListener {
+		implements IHasSwitch, IRifidiTagContainer, IEntityObservable,
+		PropertyChangeListener {
 
 	/** Logger for this class. */
 	@XmlTransient
@@ -91,14 +93,19 @@ public class BoxproducerContinuousEntity extends AbstractVisualProducer
 	/** Reference to the tag service. */
 	@XmlTransient
 	private IRifidiTagService tagService;
+	/** List of wrapper objects that bind tags and container together. */
+	@XmlTransient
+	private WritableList wrappers;
+
 	/**
 	 * Constructor
 	 */
 	@SuppressWarnings("unchecked")
 	public BoxproducerContinuousEntity() {
 		this.speed = 4;
-		this.tags = new WritableList();
+		this.tags = new ArrayList<RifidiTag>();
 		sharedtags = new ArrayList<RifidiTag>();
+		wrappers = new WritableList();
 		setName("Continuous Boxproducer");
 	}
 
@@ -111,7 +118,7 @@ public class BoxproducerContinuousEntity extends AbstractVisualProducer
 	 */
 	@Override
 	public void addListChangeListener(IListChangeListener changeListener) {
-		((WritableList) tags).addListChangeListener(changeListener);
+		((WritableList) wrappers).addListChangeListener(changeListener);
 	}
 
 	/*
@@ -123,7 +130,7 @@ public class BoxproducerContinuousEntity extends AbstractVisualProducer
 	 */
 	@Override
 	public void removeListChangeListener(IListChangeListener changeListener) {
-		((WritableList) tags).removeListChangeListener(changeListener);
+		((WritableList) wrappers).removeListChangeListener(changeListener);
 	}
 
 	/**
@@ -201,7 +208,12 @@ public class BoxproducerContinuousEntity extends AbstractVisualProducer
 				products, sharedtags);
 		thread.setInterval((int) speed * 1000);
 		thread.start();
-
+		for (RifidiTag tag : getTags()) {
+			RifidiTagWithParent r = new RifidiTagWithParent();
+			r.parent = this;
+			r.tag = tag;
+			wrappers.add(r);
+		}
 	}
 
 	/*
@@ -230,13 +242,19 @@ public class BoxproducerContinuousEntity extends AbstractVisualProducer
 		thread.start();
 		if (running)
 			turnOn();
-		for(RifidiTag tag:tags){
+		for (RifidiTag tag : tags) {
 			try {
 				tagService.takeRifidiTag(tag, this);
 			} catch (RifidiTagNotAvailableException e) {
 				logger.error(e);
 			}
 			tag.addPropertyChangeListener(this);
+		}
+		for (RifidiTag tag : getTags()) {
+			RifidiTagWithParent r = new RifidiTagWithParent();
+			r.parent = this;
+			r.tag = tag;
+			wrappers.add(r);
 		}
 	}
 
@@ -357,7 +375,7 @@ public class BoxproducerContinuousEntity extends AbstractVisualProducer
 	public Node getBoundingNode() {
 		return (Node) getNode().getChild("hiliter");
 	}
-	
+
 	/**
 	 * Get a string representation of the tags this producer owns.
 	 * 
@@ -395,50 +413,78 @@ public class BoxproducerContinuousEntity extends AbstractVisualProducer
 		products.remove(product);
 	}
 
-	/* (non-Javadoc)
-	 * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @seejava.beans.PropertyChangeListener#propertyChange(java.beans.
+	 * PropertyChangeEvent)
 	 */
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-		if("deleted".equals(evt.getPropertyName())){
-			tags.remove(((RifidiTag)evt.getSource()));
+		if ("deleted".equals(evt.getPropertyName())) {
+			tags.remove(((RifidiTag) evt.getSource()));
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see org.rifidi.services.tags.model.IRifidiTagContainer#addTags(java.util.Collection)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.rifidi.services.tags.model.IRifidiTagContainer#addTags(java.util.
+	 * Collection)
 	 */
 	@Override
 	public void addTags(Collection<RifidiTag> tags) {
+		Set<RifidiTagWithParent> add=new HashSet<RifidiTagWithParent>();
 		for(RifidiTag tag:tags){
 			tag.addPropertyChangeListener(this);
+			RifidiTagWithParent r = new RifidiTagWithParent();
+			r.parent = this;
+			r.tag = tag;
+			add.add(r);
 		}
-		// remove dups
-		tags.removeAll(this.tags);
 		this.tags.addAll(tags);
 		sharedtags.clear();
 		sharedtags.addAll(tags);
+		wrappers.addAll(add);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.rifidi.services.tags.model.IRifidiTagContainer#removeTags(java.util.Collection)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.rifidi.services.tags.model.IRifidiTagContainer#removeTags(java.util
+	 * .Collection)
 	 */
 	@Override
 	public void removeTags(Collection<RifidiTag> tags) {
 		this.tags.removeAll(tags);
 		sharedtags.clear();
 		sharedtags.addAll(tags);
-		for(RifidiTag tag:tags){
-			tag.removePropertyChangeListener(this);	
+		Set<RifidiTagWithParent> rem = new HashSet<RifidiTagWithParent>();
+		for (Object wrapper : wrappers) {
+			if (tags.contains(((RifidiTagWithParent) wrapper).tag)) {
+				((RifidiTagWithParent) wrapper).tag
+						.removePropertyChangeListener(this);
+				rem.add((RifidiTagWithParent) wrapper);
+			}
 		}
+		wrappers.removeAll(rem);
 	}
 
 	/**
-	 * @param tagService the tagService to set
+	 * @param tagService
+	 *            the tagService to set
 	 */
 	@Inject
 	public void setTagService(IRifidiTagService tagService) {
 		this.tagService = tagService;
 	}
 
+	/**
+	 * @return the wrappers
+	 */
+	public WritableList getWrappers() {
+		return this.wrappers;
+	}
 }

@@ -152,4 +152,43 @@
       </adapter>
    </factory>
    </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <category
+            id="org.rifidi.designer.library.basemodels.boxproducercommands"
+            name="Box Producer Commands">
+      </category>
+      <command
+            category="org.rifidi.designer.library.basemodels.boxproducercommands"
+            id="org.rifidi.designer.library.basemodels.boxproducer.removetags"
+            name="Remove Tag">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="org.rifidi.designer.library.basemodels.boxproducer.RemoveTagsHandler"
+            commandId="org.rifidi.designer.library.basemodels.boxproducer.removetags">
+         <enabledWhen>
+            <iterate
+                  ifEmpty="false">
+               <instanceof
+                     value="org.rifidi.designer.entities.internal.RifidiTagWithParent">
+               </instanceof>
+            </iterate>
+         </enabledWhen>
+      </handler>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="popup:org.eclipse.ui.popup.any?after=additions">
+         <command
+               commandId="org.rifidi.designer.library.basemodels.boxproducer.removetags"
+               id="org.rifidi.designer.library.basemodels.boxproducer.removetagsBinding"
+               label="Remove Tags"
+               style="push">
+         </command>
+      </menuContribution>
+   </extension>
 </plugin>

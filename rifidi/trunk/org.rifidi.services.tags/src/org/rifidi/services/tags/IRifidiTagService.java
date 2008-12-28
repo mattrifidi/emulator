@@ -11,6 +11,7 @@
 package org.rifidi.services.tags;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.rifidi.services.tags.exceptions.RifidiTagNotAvailableException;
@@ -96,14 +97,32 @@ public interface IRifidiTagService {
 			throws RifidiTagNotAvailableException;
 
 	/**
+	 * Take tags from the service. The tags are removed from the list of
+	 * available tags. A taken take has to be returned using releaseRifidiTag!
+	 * 
+	 * @param tags
+	 * @param taker
+	 * @throws RifidiTagNotAvailableException
+	 */
+	void takeRifidiTags(Collection<RifidiTag> tags, IRifidiTagContainer taker)
+			throws RifidiTagNotAvailableException;
+	
+	/**
 	 * Release the given tag and make it available again.
 	 * 
 	 * @param tag
 	 * @param taker
-	 * @throws RifidiTagNotAvailableException
 	 */
 	void releaseRifidiTag(RifidiTag tag, IRifidiTagContainer taker);
 
+	/**
+	 * Release the given collection of tags and make em available again.
+	 * 
+	 * @param tags
+	 * @param taker
+	 */
+	void releaseRifidiTags(Collection<RifidiTag> tags, IRifidiTagContainer taker);
+	
 	/**
 	 * Add a new listener to the list of listeners for changes to the set of
 	 * available tags.

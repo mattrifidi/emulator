@@ -13,8 +13,7 @@ package org.rifidi.designer.library.basemodels.boxproducer;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.model.IWorkbenchAdapter;
 import org.rifidi.designer.library.basemodels.Activator;
-import org.rifidi.tags.impl.RifidiTag;
- 
+
 /**
  * IWorkbenchAdapter for the boxproducer.
  * 
@@ -29,7 +28,7 @@ public class BoxproducerEntityWorkbenchAdapter implements IWorkbenchAdapter {
 	 * @see org.eclipse.ui.model.IWorkbenchAdapter#getChildren(java.lang.Object)
 	 */
 	public Object[] getChildren(Object o) {
-		return ((BoxproducerEntity) o).getTags().toArray();
+		return ((BoxproducerEntity) o).getWrappers().toArray();
 	}
 
 	/*

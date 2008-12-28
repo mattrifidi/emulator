@@ -28,7 +28,7 @@ public class BoxproducerContinuousEntityWorkbenchAdapter implements IWorkbenchAd
 	 * @see org.eclipse.ui.model.IWorkbenchAdapter#getChildren(java.lang.Object)
 	 */
 	public Object[] getChildren(Object o) {
-		return ((BoxproducerContinuousEntity) o).getTags().toArray();
+		return ((BoxproducerContinuousEntity) o).getWrappers().toArray();
 	}
 
 	/*

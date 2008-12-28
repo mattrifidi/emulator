@@ -11,6 +11,7 @@
 package org.rifidi.services.tags.impl;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -188,6 +189,31 @@ public class RifidiTagServiceImpl implements IRifidiTagService {
 	 * (non-Javadoc)
 	 * 
 	 * @see
+	 * org.rifidi.services.tags.IRifidiTagService#releaseRifidiTags(java.util
+	 * .Collection, org.rifidi.services.tags.model.IRifidiTagContainer)
+	 */
+	@Override
+	public void releaseRifidiTags(Collection<RifidiTag> tags,
+			IRifidiTagContainer taker) {
+		while (!writing.compareAndSet(false, true)) {
+		}
+		try {
+			for (RifidiTag tag : tags) {
+				if (tagMap.values().contains(tag)) {
+					availableTags.add(tag);
+				}
+			}
+
+		} finally {
+			writing.compareAndSet(true, false);
+		}
+		update();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
 	 * org.rifidi.services.tags.IRifidiTagService#takeRifidiTag(org.rifidi.tags
 	 * .impl.RifidiTag, org.rifidi.services.tags.model.IRifidiTagContainer)
 	 */
@@ -198,6 +224,24 @@ public class RifidiTagServiceImpl implements IRifidiTagService {
 		}
 		try {
 			availableTags.remove(tag);
+		} finally {
+			writing.compareAndSet(true, false);
+		}
+		update();
+	}
+
+	/* (non-Javadoc)
+	 * @see org.rifidi.services.tags.IRifidiTagService#takeRifidiTags(java.util.Collection, org.rifidi.services.tags.model.IRifidiTagContainer)
+	 */
+	@Override
+	public void takeRifidiTags(Collection<RifidiTag> tags,
+			IRifidiTagContainer taker) throws RifidiTagNotAvailableException {
+		while (!writing.compareAndSet(false, true)) {
+		}
+		try {
+			for(RifidiTag tag:tags){
+				availableTags.remove(tag);	
+			}
 		} finally {
 			writing.compareAndSet(true, false);
 		}

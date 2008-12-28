@@ -12,7 +12,6 @@ package org.rifidi.designer.entities.internal;
 
 import org.eclipse.core.runtime.IAdapterFactory;
 import org.eclipse.ui.model.IWorkbenchAdapter;
-import org.rifidi.tags.impl.RifidiTag;
 
 /**
  * FIXME: Class comment.  
@@ -30,8 +29,8 @@ public class RifidiTagAdapterFactory implements IAdapterFactory {
 	@Override
 	public Object getAdapter(Object arg0, Class arg1) {
 		if(IWorkbenchAdapter.class.equals(arg1)){
-			if(arg0 instanceof RifidiTag){
-				return new RifidiTagWorkbenchAdapter();
+			if(arg0 instanceof RifidiTagWithParent){
+				return new RifidiTagWithParentWorkbenchAdapter();
 			}	
 		}
 		

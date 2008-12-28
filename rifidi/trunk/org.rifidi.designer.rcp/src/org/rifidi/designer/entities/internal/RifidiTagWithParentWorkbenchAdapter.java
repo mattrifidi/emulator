@@ -1,5 +1,5 @@
 /*
- *  RifidiTagWorkbenchAdapter.java
+ *  RifidiTagWithParentWorkbenchAdapter.java
  *
  *  Project:		RiFidi Designer - A Virtualization tool for 3D RFID environments
  *  http://www.rifidi.org
@@ -12,7 +12,6 @@ package org.rifidi.designer.entities.internal;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.model.IWorkbenchAdapter;
-import org.rifidi.tags.impl.RifidiTag;
 import org.rifidi.views.tags.Activator;
 
 /**
@@ -22,7 +21,7 @@ import org.rifidi.views.tags.Activator;
  * @author Jochen Mader - jochen@pramari.com - Dec 5, 2008
  * 
  */
-public class RifidiTagWorkbenchAdapter implements IWorkbenchAdapter {
+public class RifidiTagWithParentWorkbenchAdapter implements IWorkbenchAdapter {
 
 	/*
 	 * (non-Javadoc)
@@ -44,7 +43,7 @@ public class RifidiTagWorkbenchAdapter implements IWorkbenchAdapter {
 	@Override
 	public ImageDescriptor getImageDescriptor(Object arg0) {
 		return Activator.getDefault().getImageRegistry().getDescriptor(
-				RifidiTagWorkbenchAdapter.class.getName());
+				RifidiTagWithParentWorkbenchAdapter.class.getName());
 	}
 
 	/*
@@ -54,7 +53,7 @@ public class RifidiTagWorkbenchAdapter implements IWorkbenchAdapter {
 	 */
 	@Override
 	public String getLabel(Object arg0) {
-		return ((RifidiTag) arg0).toString();
+		return ((RifidiTagWithParent) arg0).tag.toString();
 	}
 
 	/*
@@ -64,8 +63,7 @@ public class RifidiTagWorkbenchAdapter implements IWorkbenchAdapter {
 	 */
 	@Override
 	public Object getParent(Object arg0) {
-		// TODO Auto-generated method stub
-		return null;
+		return ((RifidiTagWithParent) arg0).parent;
 	}
 
 }
