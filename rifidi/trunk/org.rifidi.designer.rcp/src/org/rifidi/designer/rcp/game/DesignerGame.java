@@ -139,7 +139,7 @@ public class DesignerGame extends SWTDefaultImplementor implements
 
 	/** Scene related stuff. */
 
-	private boolean gridEnabled = true;
+	private boolean gridEnabled = false;
 	/** Node for the grid. */
 	private GridNode gridNode;
 	/** Grid game state. */
@@ -749,7 +749,7 @@ public class DesignerGame extends SWTDefaultImplementor implements
 		gridNode.updateRenderState();
 		gridNode.updateGeometricState(0, true);
 		GameStateManager.getInstance().attachChild(gridState);
-		gridEnabled = false;
+		gridEnabled=!gridEnabled;
 		toggleGrid();
 	}
 

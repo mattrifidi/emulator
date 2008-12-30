@@ -384,8 +384,9 @@ public class GateEntity extends VisualEntity implements RifidiEntity,
 		rmimanager.removeReader(generalReaderPropertyHolder.getReaderName());
 	}
 
-	/*
-	 * FIXME: needs documentation!
+	/**
+	 * Set the rmi manager.
+	 * @param rmimanager
 	 */
 	public void setRMIManager(RMIManager rmimanager) {
 		this.rmimanager = rmimanager;

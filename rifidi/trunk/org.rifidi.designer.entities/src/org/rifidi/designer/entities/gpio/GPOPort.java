@@ -14,7 +14,6 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
 import javax.xml.bind.annotation.XmlID;
-import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -29,6 +28,7 @@ public class GPOPort {
 	public enum State {
 		HIGH, LOW
 	};
+
 	/** Support for monitoring properties. */
 	private PropertyChangeSupport changeSupport = new PropertyChangeSupport(
 			this);
@@ -40,6 +40,7 @@ public class GPOPort {
 	private int nr = 0;
 	/** Global unique ID. */
 	private String id = "";
+
 	/**
 	 * Default constructor used by JAXB.
 	 */
@@ -120,7 +121,8 @@ public class GPOPort {
 	}
 
 	/**
-	 * @param id the id to set
+	 * @param id
+	 *            the id to set
 	 */
 	public void setId(String id) {
 		this.id = id;
@@ -129,19 +131,21 @@ public class GPOPort {
 	/**
 	 * Add a listener for property changes.
 	 * 
-	 * @param name 
+	 * @param name
 	 * @param l
 	 */
-	public void addPropertyChangeListener(String name,PropertyChangeListener l) {
-		changeSupport.addPropertyChangeListener(name,l);
+	public void addPropertyChangeListener(String name, PropertyChangeListener l) {
+		changeSupport.addPropertyChangeListener(name, l);
 	}
 
 	/**
 	 * Remove a listener for property changes.
+	 * 
 	 * @param name
 	 * @param l
 	 */
-	public void removePropertyChangeListener(String name, PropertyChangeListener l) {
+	public void removePropertyChangeListener(String name,
+			PropertyChangeListener l) {
 		changeSupport.removePropertyChangeListener(name, l);
 	}
 

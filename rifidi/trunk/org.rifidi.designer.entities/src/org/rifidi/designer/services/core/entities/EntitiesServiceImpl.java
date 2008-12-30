@@ -93,8 +93,7 @@ import com.jmex.physics.PhysicsSpace;
 import com.jmex.physics.StaticPhysicsNode;
 
 /**
- * FIXME: Class comment.  
- * 
+ * Implementation of the entities service and several related services.
  * 
  * @author Jochen Mader Jan 25, 2008
  * @tags
@@ -129,7 +128,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	private WorldService worldService;
 	/** Reference to the tag service. */
 	private IRifidiTagService tagService;
-	
+
 	/**
 	 * Constructor.
 	 */
@@ -188,10 +187,14 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 			// disconnect all cables
 			if (entity instanceof IGPIO) {
 				for (GPOPort port : ((IGPIO) entity).getGPOPorts()) {
-					port.getCable().disconnect();
+					if (port.getCable() != null) {
+						port.getCable().disconnect();
+					}
 				}
 				for (GPIPort port : ((IGPIO) entity).getGPIPorts()) {
-					port.getCable().disconnect();
+					if (port.getCable() != null) {
+						port.getCable().disconnect();
+					}
 				}
 			}
 			// get the visual ones
@@ -669,8 +672,8 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 					if (entity instanceof VisualEntity) {
 						nodeToEntity.put(((VisualEntity) entity).getNode(),
 								(VisualEntity) entity);
-						if(!(entity instanceof IProduct)){
-							collisionOctree.insertEntity((VisualEntity) entity);	
+						if (!(entity instanceof IProduct)) {
+							collisionOctree.insertEntity((VisualEntity) entity);
 						}
 					}
 				}
@@ -736,7 +739,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	}
 
 	/**
-	 * Initialze the entity TODO: REDUNDANT!!!
+	 * Initialze the entity.
 	 * 
 	 * @param entity
 	 * @param sceneData
@@ -775,8 +778,8 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 				}
 			}
 		}
-		if(entity instanceof IRifidiTagContainer){
-			tagService.registerTagContainer((IRifidiTagContainer)entity);
+		if (entity instanceof IRifidiTagContainer) {
+			tagService.registerTagContainer((IRifidiTagContainer) entity);
 		}
 		// do custom initialization
 		try {
@@ -1190,11 +1193,12 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	}
 
 	/**
-	 * @param tagService the tagService to set
+	 * @param tagService
+	 *            the tagService to set
 	 */
 	@Inject
 	public void setTagService(IRifidiTagService tagService) {
 		this.tagService = tagService;
 	}
- 
+
 }

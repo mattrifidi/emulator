@@ -63,8 +63,8 @@ import com.jmex.physics.material.Material;
  * This entity detects collisions with entities and notifies the associated
  * reader if the colliding entity has an RFID tag
  * 
+ * @author Jochen Mader - jochen@pramari.com
  * @author Dan West - 'Phoenix' - dan@pramari.com
- * @author Jochen Mader
  */
 public class AntennaFieldEntity extends VisualEntity implements IHasSwitch,
 		INeedsPhysics, IField, IChildEntity {
@@ -161,8 +161,17 @@ public class AntennaFieldEntity extends VisualEntity implements IHasSwitch,
 			getNode().getLocalRotation().fromAngles(baseRotation.x,
 					baseRotation.y, baseRotation.z);
 		}
-		loaded();
+		switchNode.setLocalScale(factor);
 
+		// apply the transparency
+		getNode().setRenderQueueMode(Renderer.QUEUE_OPAQUE);
+		getNode().setRenderState(ms);
+		getNode().setRenderState(as);
+		getNode().updateRenderState();
+
+		// set up the collision properties for the field
+		((PhysicsNode) getNode()).generatePhysicsGeometry();
+		((StaticPhysicsNode) getNode()).setMaterial(Material.GHOST);
 		running = false;
 		fieldService.registerField(this);
 	}
@@ -248,7 +257,7 @@ public class AntennaFieldEntity extends VisualEntity implements IHasSwitch,
 	 * @see org.rifidi.designer.entities.interfaces.IHasSwitch#turnOn()
 	 */
 	public void turnOn() {
-		if (!running == true) {
+		if (antennaFieldThread == null) {
 			// attach the node to the scene and enable the collision checks
 			update(new Callable<Object>() {
 
@@ -280,7 +289,7 @@ public class AntennaFieldEntity extends VisualEntity implements IHasSwitch,
 	 * @see org.rifidi.designer.entities.interfaces.IHasSwitch#turnOff()
 	 */
 	public void turnOff() {
-		if (!running == false) {
+		if (antennaFieldThread != null) {
 			// detach the node from the scene and disable the collision checks
 			update(new Callable<Object>() {
 
@@ -298,7 +307,8 @@ public class AntennaFieldEntity extends VisualEntity implements IHasSwitch,
 				}
 
 			});
-			antennaFieldThread.setKeepRunning(false);
+			antennaFieldThread.interrupt();
+			antennaFieldThread = null;
 		}
 		running = false;
 	}
@@ -496,7 +506,6 @@ public class AntennaFieldEntity extends VisualEntity implements IHasSwitch,
 	 */
 	@Override
 	public Node getBoundingNode() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

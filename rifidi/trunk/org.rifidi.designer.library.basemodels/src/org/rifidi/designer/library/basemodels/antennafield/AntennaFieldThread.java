@@ -71,7 +71,7 @@ public class AntennaFieldThread extends Thread {
 	public void run() {
 		ArrayList<RifidiTag> addTags = new ArrayList<RifidiTag>();
 		ArrayList<Long> remTags = new ArrayList<Long>();
-		while (keepRunning) {
+		while (!isInterrupted()) {
 			while (!actionStack.isEmpty()) {
 				AntennaFieldAction action = actionStack.pop();
 				if (action.add) {
@@ -95,6 +95,7 @@ public class AntennaFieldThread extends Thread {
 			try {
 				Thread.sleep(20);
 			} catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
 			}
 		}
 	}
