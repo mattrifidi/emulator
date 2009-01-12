@@ -75,6 +75,8 @@ public class RifidiTagServiceImpl implements IRifidiTagService {
 		}
 		try {
 			tagMap.clear();
+			availableTags.clear();
+			containers.clear();
 			idCounter = 0l;
 		} finally {
 			writing.compareAndSet(true, false);
