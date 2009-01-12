@@ -1,5 +1,5 @@
 /*
- *  CreateMultipleTagsHandler.java
+ *  DeleteTagsHandler.java
  *
  *  Project:		RiFidi Designer - A Virtualization tool for 3D RFID environments
  *  http://www.rifidi.org
@@ -10,30 +10,39 @@
  */
 package org.rifidi.views.tags.commands;
 
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.jface.wizard.WizardDialog;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.MessageBox;
+import org.eclipse.ui.handlers.HandlerUtil;
 import org.rifidi.services.annotations.Inject;
 import org.rifidi.services.registry.ServiceRegistry;
 import org.rifidi.services.tags.IRifidiTagService;
-import org.rifidi.views.tags.wizard.MultipleNewTagsWizard;
+import org.rifidi.tags.impl.RifidiTag;
+import org.rifidi.ui.ide.views.tagview.TagView;
 
 /**
- * Handler for creating multiple new tags.
  * 
- * @author Jochen Mader - jochen@pramari.com - Dec 19, 2008
+ * 
+ * @author Jochen Mader - jochen@pramari.com - Jan 12, 2009
  * 
  */
-public class CreateMultipleTagsHandler extends AbstractHandler {
+public class DeleteTagsHandler extends AbstractHandler {
+
 	/** Reference to the tag service. */
 	private IRifidiTagService tagService;
 
 	/**
 	 * Constructor.
 	 */
-	public CreateMultipleTagsHandler() {
+	public DeleteTagsHandler() {
 		super();
 		ServiceRegistry.getInstance().service(this);
 	}
@@ -47,12 +56,19 @@ public class CreateMultipleTagsHandler extends AbstractHandler {
 	 */
 	@Override
 	public Object execute(ExecutionEvent arg0) throws ExecutionException {
-		MultipleNewTagsWizard wizard = new MultipleNewTagsWizard();
-		WizardDialog wizardDialog = new WizardDialog(Display.getCurrent()
-				.getActiveShell(), wizard);
-		wizardDialog.open();
-		if (wizard.getPattern() != null) {
-			tagService.createTags(wizard.getPattern());
+		MessageBox messageBox = new MessageBox(Display.getCurrent()
+				.getActiveShell(), SWT.OK | SWT.CANCEL | SWT.ICON_WARNING);
+		messageBox.setMessage("Do you really want to delete these Tags?");
+		messageBox.setText("Warning");
+
+		if (messageBox.open() == SWT.OK) {
+			Iterator<?> iterator = ((IStructuredSelection) HandlerUtil
+					.getCurrentSelectionChecked(arg0)).iterator();
+			Set<RifidiTag> tags=new HashSet<RifidiTag>();
+			while(iterator.hasNext()){
+				tags.add((RifidiTag)iterator.next());
+			}
+			tagService.deleteTags(tags);
 		}
 		return null;
 	}

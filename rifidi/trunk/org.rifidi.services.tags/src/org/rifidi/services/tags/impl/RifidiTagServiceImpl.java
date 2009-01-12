@@ -74,7 +74,6 @@ public class RifidiTagServiceImpl implements IRifidiTagService {
 		while (!writing.compareAndSet(false, true)) {
 		}
 		try {
-			listeners.clear();
 			tagMap.clear();
 			idCounter = 0l;
 		} finally {
@@ -91,7 +90,7 @@ public class RifidiTagServiceImpl implements IRifidiTagService {
 	 * .factory.TagCreationPattern)
 	 */
 	@Override
-	public ArrayList<RifidiTag> createTags(TagCreationPattern tagCreationPattern) {
+	public List<RifidiTag> createTags(TagCreationPattern tagCreationPattern) {
 		while (!writing.compareAndSet(false, true)) {
 		}
 		try {
@@ -104,6 +103,29 @@ public class RifidiTagServiceImpl implements IRifidiTagService {
 			}
 			update();
 			return newTags;
+		} finally {
+			writing.compareAndSet(true, false);
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.rifidi.services.tags.IRifidiTagService#deleteTags(java.util.Collection
+	 * )
+	 */
+	@Override
+	public void deleteTags(Collection<RifidiTag> tags) {
+		while (!writing.compareAndSet(false, true)) {
+		}
+		try {
+			for (RifidiTag t : tags) {
+				t.setDeleted(true);
+				tagMap.remove(t.getTagEntitiyID());
+				availableTags.remove(t);
+			}
+			update();
 		} finally {
 			writing.compareAndSet(true, false);
 		}
@@ -230,8 +252,11 @@ public class RifidiTagServiceImpl implements IRifidiTagService {
 		update();
 	}
 
-	/* (non-Javadoc)
-	 * @see org.rifidi.services.tags.IRifidiTagService#takeRifidiTags(java.util.Collection, org.rifidi.services.tags.model.IRifidiTagContainer)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @seeorg.rifidi.services.tags.IRifidiTagService#takeRifidiTags(java.util.
+	 * Collection, org.rifidi.services.tags.model.IRifidiTagContainer)
 	 */
 	@Override
 	public void takeRifidiTags(Collection<RifidiTag> tags,
@@ -239,8 +264,8 @@ public class RifidiTagServiceImpl implements IRifidiTagService {
 		while (!writing.compareAndSet(false, true)) {
 		}
 		try {
-			for(RifidiTag tag:tags){
-				availableTags.remove(tag);	
+			for (RifidiTag tag : tags) {
+				availableTags.remove(tag);
 			}
 		} finally {
 			writing.compareAndSet(true, false);

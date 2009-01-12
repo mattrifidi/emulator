@@ -188,6 +188,18 @@
                id="org.rifidi.designer.library.basemodels.boxproducer.removetagsBinding"
                label="Remove Tags"
                style="push">
+            <visibleWhen>
+               <and>
+                  <count
+                        value="+">
+                  </count>
+                  <iterate>
+                     <instanceof
+                           value="org.rifidi.designer.entities.internal.RifidiTagWithParent">
+                     </instanceof>
+                  </iterate>
+               </and>
+            </visibleWhen>
          </command>
       </menuContribution>
    </extension>

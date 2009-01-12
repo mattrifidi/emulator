@@ -52,12 +52,22 @@
             id="org.rifidi.views.tags.tagcategory"
             name="Rifidi Tag Commands">
       </category>
+      <command
+            categoryId="org.rifidi.views.tags.tagcategory"
+            description="Delete Tags"
+            id="org.rifidi.views.tags.deletetags"
+            name="Delete Tags">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
       <handler
             class="org.rifidi.views.tags.commands.CreateMultipleTagsHandler"
             commandId="org.rifidi.views.tags.createmultipletags">
+      </handler>
+      <handler
+            class="org.rifidi.views.tags.commands.DeleteTagsHandler"
+            commandId="org.rifidi.views.tags.deletetags">
       </handler>
    </extension>
    <extension
@@ -71,6 +81,25 @@
                label="Create New Tags"
                style="push"
                tooltip="create a set of new tags">
+         </command>
+         <command
+               commandId="org.rifidi.views.tags.deletetags"
+               icon="icons/remove-16x16.png"
+               id="org.rifidi.views.tags.deletetags.contrib"
+               label="Delete Tags"
+               style="push"
+               tooltip="delete a set of tags">
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="popup:org.rifidi.views.tags.tagview2?after=additions">
+         <command
+               commandId="org.rifidi.views.tags.deletetags"
+               icon="icons/remove-16x16.png"
+               id="org.rifidi.views.tags.deletetags.contrib"
+               label="Delete Tags"
+               style="push"
+               tooltip="delete a set of tags">
          </command>
       </menuContribution>
    </extension>

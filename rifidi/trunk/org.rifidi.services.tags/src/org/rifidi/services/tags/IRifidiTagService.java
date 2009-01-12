@@ -10,7 +10,6 @@
  */
 package org.rifidi.services.tags;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -61,7 +60,14 @@ public interface IRifidiTagService {
 	 * @param tagCreationPattern
 	 * @return The list of tags that were created
 	 */
-	ArrayList<RifidiTag> createTags(TagCreationPattern tagCreationPattern);
+	List<RifidiTag> createTags(TagCreationPattern tagCreationPattern);
+
+	/**
+	 * Delete the given tags from the registry.
+	 * 
+	 * @param tags
+	 */
+	void deleteTags(Collection<RifidiTag> tags);
 
 	/**
 	 * Returns a list of all tags registered to the service.
@@ -106,7 +112,7 @@ public interface IRifidiTagService {
 	 */
 	void takeRifidiTags(Collection<RifidiTag> tags, IRifidiTagContainer taker)
 			throws RifidiTagNotAvailableException;
-	
+
 	/**
 	 * Release the given tag and make it available again.
 	 * 
@@ -122,7 +128,7 @@ public interface IRifidiTagService {
 	 * @param taker
 	 */
 	void releaseRifidiTags(Collection<RifidiTag> tags, IRifidiTagContainer taker);
-	
+
 	/**
 	 * Add a new listener to the list of listeners for changes to the set of
 	 * available tags.
