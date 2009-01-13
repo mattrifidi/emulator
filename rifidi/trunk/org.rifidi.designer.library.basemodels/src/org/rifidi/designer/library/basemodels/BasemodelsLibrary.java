@@ -162,7 +162,25 @@ public class BasemodelsLibrary implements EntityLibrary {
 		floorElement
 				.setPath("org/rifidi/designer/library/basemodels/map_2.jme");
 		floorelements.add(floorElement);
-
+		
+		
+		floorElement = new FloorElement();
+		floorElement.setId("4walls");
+		floorElement.setImageDescriptor(Activator.getDefault()
+				.getImageRegistry().getDescriptor("4walls"));
+		floorElement.setName("Empty Room");
+		floorElement
+				.setPath("org/rifidi/designer/library/basemodels/4walls.jme");
+		floorelements.add(floorElement);
+		
+		floorElement = new FloorElement();
+		floorElement.setId("blank");
+		floorElement.setImageDescriptor(Activator.getDefault()
+				.getImageRegistry().getDescriptor("blank"));
+		floorElement.setName("Blank Room");
+		floorElement
+				.setPath("org/rifidi/designer/library/basemodels/blank.jme");
+		floorelements.add(floorElement);
 	}
 
 	/*

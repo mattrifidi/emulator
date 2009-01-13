@@ -107,5 +107,9 @@ public class Activator extends AbstractUIPlugin {
 				PLUGIN_ID, iconPath + "map_1.png"));
 		reg.put("map_2", imageDescriptorFromPlugin(
 				PLUGIN_ID, iconPath + "map_2.png"));
+		reg.put("blank", imageDescriptorFromPlugin(
+				PLUGIN_ID, iconPath + "blank.png"));
+		reg.put("4walls", imageDescriptorFromPlugin(
+				PLUGIN_ID, iconPath + "4walls.png"));
 	}
 }
