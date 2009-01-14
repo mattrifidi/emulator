@@ -243,8 +243,6 @@ public class GateEntity extends VisualEntity implements RifidiEntity,
 		for (GPIPort gpiPort : gpiPorts) {
 			gpiPort.addPropertyChangeListener("state", this);
 		}
-		if (running)
-			turnOn();
 	}
 
 	private void prepare() {
@@ -324,7 +322,9 @@ public class GateEntity extends VisualEntity implements RifidiEntity,
 					running = true;
 					// attach antenna fields to the gate
 					for (VisualEntity antenna : children) {
-						((AntennaFieldEntity) antenna).turnOn();
+						if(((AntennaFieldEntity) antenna).isRunning()==false){
+							((AntennaFieldEntity) antenna).turnOn();	
+						}
 					}
 				} catch (Exception e) {
 					e.printStackTrace();

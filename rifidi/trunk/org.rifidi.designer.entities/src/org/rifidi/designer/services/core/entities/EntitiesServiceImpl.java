@@ -49,6 +49,7 @@ import org.rifidi.designer.entities.gpio.GPOPort;
 import org.rifidi.designer.entities.gpio.IGPIO;
 import org.rifidi.designer.entities.grouping.EntityGroup;
 import org.rifidi.designer.entities.interfaces.IContainer;
+import org.rifidi.designer.entities.interfaces.IHasSwitch;
 import org.rifidi.designer.entities.interfaces.INeedsPhysics;
 import org.rifidi.designer.entities.interfaces.IProduct;
 import org.rifidi.designer.entities.rifidi.RifidiEntity;
@@ -625,6 +626,9 @@ public class EntitiesServiceImpl implements EntitiesService, FinderService,
 										.insertEntity((VisualEntity) entity);
 							}
 						}
+						if (entity instanceof IHasSwitch && ((IHasSwitch)entity).isRunning()){
+							((IHasSwitch)entity).turnOn();
+						}
 					}
 					monitor.worked(60);
 					Display.getDefault().syncExec(new Runnable() {
@@ -1018,6 +1022,7 @@ public class EntitiesServiceImpl implements EntitiesService, FinderService,
 					initEntity(vent, sceneData, true);
 					vent.init();
 					entity.getNode().attachChild(vent.getNode());
+					vent.getNode().setName(vent.getEntityId());
 					nodeToEntity.put(((VisualEntity) vent).getNode(),
 							(VisualEntity) vent);
 				}
