@@ -12,10 +12,12 @@ Require-Bundle: org.eclipse.core.runtime,
  org.rifidi.emulator,
  org.eclipse.ui,
  org.eclipse.ui.views,
+ org.eclipse.core.databinding;bundle-version="1.1.1",
  org.rifidi.designer.entities,
  org.monklypse.jme2;bundle-version="1.0.0",
  org.monklypse.jme2.physics;bundle-version="1.0.0",
  org.monklypse.lwjgl;bundle-version="1.0.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Import-Package: org.apache.commons.logging;version="1.0.4",
  org.rifidi.tags;version="1.0.0",

@@ -10,29 +10,37 @@
  */
 package org.rifidi.designer.library.retail.clothingrack;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.Callable;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlTransient;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.eclipse.core.databinding.observable.list.WritableList;
 import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.interfaces.IContainer;
+import org.rifidi.designer.entities.internal.RifidiTagWithParent;
 import org.rifidi.designer.library.retail.Position;
 import org.rifidi.designer.library.retail.clothing.Clothing;
 import org.rifidi.services.annotations.Inject;
-import org.rifidi.tags.enums.TagGen;
-import org.rifidi.tags.factory.TagCreationPattern;
-import org.rifidi.tags.id.TagType;
+import org.rifidi.services.tags.IRifidiTagService;
+import org.rifidi.services.tags.model.IRifidiTagContainer;
 import org.rifidi.tags.impl.RifidiTag;
-import org.rifidi.services.tags.registry.ITagRegistry;
 
 import com.jme.bounding.BoundingBox;
 import com.jme.math.FastMath;
@@ -47,12 +55,14 @@ import com.jme.util.export.binary.BinaryImporter;
 import com.jmex.physics.DynamicPhysicsNode;
 
 /**
- * FIXME: Class comment.  
+ * FIXME: Class comment.
  * 
  * @author Jochen Mader - jochen@pramari.com - Apr 3, 2008
  * 
  */
-public class ClothingRack extends VisualEntity implements IContainer {
+@XmlAccessorType(XmlAccessType.FIELD)
+public class ClothingRack extends VisualEntity implements IContainer,
+		IRifidiTagContainer, PropertyChangeListener {
 	/** Logger for this class. */
 	@XmlTransient
 	private static final Log logger = LogFactory.getLog(ClothingRack.class);
@@ -68,13 +78,18 @@ public class ClothingRack extends VisualEntity implements IContainer {
 	/** Model for shared meshes */
 	@XmlTransient
 	private static Node[] lod = null;
-	/** Reference to the tag registry. */
-	@XmlTransient
-	private ITagRegistry tagRegistry;
 	/** Node that contains the different lods. */
 	@XmlTransient
 	private SwitchNode switchNode;
-
+	/** Set containing all available tags. */
+	@XmlIDREF
+	private List<RifidiTag> tags;
+	/** Reference to the tag service. */
+	@XmlTransient
+	private IRifidiTagService tagService;
+	/** List of wrapper objects that bind tags and container together. */
+	@XmlTransient
+	private WritableList wrappers;
 	/**
 	 * Constructor.
 	 */
@@ -151,22 +166,6 @@ public class ClothingRack extends VisualEntity implements IContainer {
 		node.attachChild(switchNode);
 		entities = new ArrayList<VisualEntity>(capacity);
 		positions = new ArrayList<Position>(capacity);
-		TagCreationPattern tagpattern = new TagCreationPattern();
-		tagpattern.setTagGeneration(TagGen.GEN2);
-		tagpattern.setTagType(TagType.GID96);
-		tagpattern.setNumberOfTags(capacity);
-		List<RifidiTag> tags = tagRegistry.createTags(tagpattern);
-		for (int count = 0; count < capacity; count++) {
-			Clothing clothing = new Clothing();
-			Position pos = new Position(calcPos(count), calcRot(count));
-			entities.add(clothing);
-			positions.add(pos);
-			clothing.setStartTranslation((Vector3f) pos.translation.clone());
-			clothing.setStartRotation(new Quaternion(pos.rotation));
-			clothing.setUserData(tags.get(count));
-			clothing.setName(clothing.getUserData().toString());
-			itemCount++;
-		}
 		setNode(mainNode);
 		getNode().updateGeometricState(0f, true);
 		getNode().updateModelBound();
@@ -342,15 +341,6 @@ public class ClothingRack extends VisualEntity implements IContainer {
 		return visualEntity instanceof Clothing;
 	}
 
-	/**
-	 * @param tagRegistry
-	 *            the tagRegistry to set
-	 */
-	@Inject
-	public void setTagRegistry(ITagRegistry tagRegistry) {
-		this.tagRegistry = tagRegistry;
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -373,4 +363,85 @@ public class ClothingRack extends VisualEntity implements IContainer {
 		return (Node) getNode().getChild("hiliter");
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.rifidi.services.tags.model.IRifidiTagContainer#addTags(java.util.
+	 * Collection)
+	 */
+	@Override
+	public void addTags(Collection<RifidiTag> tags) {
+		Set<RifidiTagWithParent> add = new HashSet<RifidiTagWithParent>();
+		for (RifidiTag tag : tags) {
+			tag.addPropertyChangeListener(this);
+			RifidiTagWithParent r = new RifidiTagWithParent();
+			r.parent = this;
+			r.tag = tag;
+			add.add(r);
+			Clothing clothing = new Clothing();
+			Position pos = new Position(calcPos(itemCount), calcRot(itemCount));
+			entities.add(clothing);
+			positions.add(pos);
+			clothing.setStartTranslation((Vector3f) pos.translation.clone());
+			clothing.setStartRotation(new Quaternion(pos.rotation));
+			clothing.setName("Clothing");
+			itemCount++;
+		}
+		this.tags.addAll(tags);
+		wrappers.addAll(add);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.rifidi.services.tags.model.IRifidiTagContainer#removeTags(java.util
+	 * .Collection)
+	 */
+	@Override
+	public void removeTags(Collection<RifidiTag> tags) {
+		this.tags.removeAll(tags);
+		Set<RifidiTagWithParent> rem = new HashSet<RifidiTagWithParent>();
+		for (Object wrapper : wrappers) {
+			if (tags.contains(((RifidiTagWithParent) wrapper).tag)) {
+				((RifidiTagWithParent) wrapper).tag
+						.removePropertyChangeListener(this);
+				rem.add((RifidiTagWithParent) wrapper);
+			}
+		}
+		wrappers.removeAll(rem);
+	}
+
+	/**
+	 * @param tagService
+	 *            the tagService to set
+	 */
+	@Inject
+	public void setTagService(IRifidiTagService tagService) {
+		this.tagService = tagService;
+	}
+
+	/**
+	 * @return the wrappers
+	 */
+	public WritableList getWrappers() {
+		return this.wrappers;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
+	 */
+	@Override
+	public void propertyChange(PropertyChangeEvent arg0) {
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see org.rifidi.services.tags.model.IRifidiTagContainer#getTags()
+	 */
+	@Override
+	public Collection<RifidiTag> getTags() {
+		return tags;
+	}
 }

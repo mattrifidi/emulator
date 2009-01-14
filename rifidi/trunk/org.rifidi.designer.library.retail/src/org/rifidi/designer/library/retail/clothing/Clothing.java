@@ -19,6 +19,8 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.interfaces.INeedsPhysics;
+import org.rifidi.designer.entities.rifidi.ITagged;
+import org.rifidi.tags.impl.RifidiTag;
 
 import com.jme.input.InputHandler;
 import com.jme.math.Quaternion;
@@ -36,7 +38,7 @@ import com.jmex.physics.PhysicsSpace;
  * @author Jochen Mader - jochen@pramari.com - Apr 3, 2008
  * 
  */
-public class Clothing extends VisualEntity implements INeedsPhysics {
+public class Clothing extends VisualEntity implements INeedsPhysics, ITagged {
 	/** Reference to the current physics space. */
 	@XmlTransient
 	private PhysicsSpace physicsSpace;
@@ -161,5 +163,23 @@ public class Clothing extends VisualEntity implements INeedsPhysics {
 	@Override
 	public Node getBoundingNode() {
 		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.rifidi.designer.entities.rifidi.ITagged#getRifidiTag()
+	 */
+	@Override
+	public RifidiTag getRifidiTag() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.rifidi.designer.entities.rifidi.ITagged#setRifidiTag(org.rifidi.tags.impl.RifidiTag)
+	 */
+	@Override
+	public void setRifidiTag(RifidiTag tag) {
+		// TODO Auto-generated method stub
+		
 	}
 }
