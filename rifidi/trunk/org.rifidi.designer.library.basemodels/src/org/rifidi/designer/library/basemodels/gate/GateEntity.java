@@ -105,7 +105,6 @@ public class GateEntity extends VisualEntity implements RifidiEntity,
 	private List<GPOPort> gpoPorts;
 	/** Type of reader associated with the gate. */
 	private String readerType;
-
 	/**
 	 * Constructor.
 	 */
@@ -389,7 +388,6 @@ public class GateEntity extends VisualEntity implements RifidiEntity,
 
 	/**
 	 * Set the rmi manager.
-	 * 
 	 * @param rmimanager
 	 */
 	public void setRMIManager(RMIManager rmimanager) {
@@ -441,7 +439,7 @@ public class GateEntity extends VisualEntity implements RifidiEntity,
 	 */
 	@Property(displayName = "Reader", description = "type of emulated reader", readonly = true, unit = "")
 	public void setReaderType(String name) {
-		this.readerType = name;
+		this.readerType=name;
 	}
 
 	/*
@@ -589,69 +587,46 @@ public class GateEntity extends VisualEntity implements RifidiEntity,
 		this.generalReaderPropertyHolder = generalReaderPropertyHolder;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.rifidi.designer.entities.interfaces.IContainer#accepts(org.rifidi
-	 * .designer.entities.VisualEntity)
+	/* (non-Javadoc)
+	 * @see org.rifidi.designer.entities.interfaces.IContainer#accepts(org.rifidi.designer.entities.VisualEntity)
 	 */
 	@Override
 	public boolean accepts(VisualEntity visualEntity) {
-		// We don't accept anything.
 		return false;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.rifidi.designer.entities.interfaces.IContainer#addVisualEntity(org
-	 * .rifidi.designer.entities.VisualEntity)
+	/* (non-Javadoc)
+	 * @see org.rifidi.designer.entities.interfaces.IContainer#addVisualEntity(org.rifidi.designer.entities.VisualEntity)
 	 */
 	@Override
-	public void addVisualEntity(VisualEntity visualEntity) {
-		// Doesn't accept new entities.
+	public void addVisualEntity(VisualEntity visualEntity) {	
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/* (non-Javadoc)
 	 * @see org.rifidi.designer.entities.interfaces.IContainer#getVisualEntity()
 	 */
 	@Override
 	public VisualEntity getVisualEntity() {
-		// you can't drag antennas away.
 		return null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.rifidi.designer.entities.interfaces.IContainer#getVisualEntity(org
-	 * .rifidi.designer.entities.VisualEntity)
+	/* (non-Javadoc)
+	 * @see org.rifidi.designer.entities.interfaces.IContainer#getVisualEntity(org.rifidi.designer.entities.VisualEntity)
 	 */
 	@Override
 	public VisualEntity getVisualEntity(VisualEntity visualEntity) {
-		// you can't drag antennas away.
 		return null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.rifidi.designer.entities.interfaces.IContainer#getVisualEntityList()
+	/* (non-Javadoc)
+	 * @see org.rifidi.designer.entities.interfaces.IContainer#getVisualEntityList()
 	 */
 	@Override
 	public List<VisualEntity> getVisualEntityList() {
 		return children;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/* (non-Javadoc)
 	 * @see org.rifidi.designer.entities.interfaces.IContainer#isFull()
 	 */
 	@Override

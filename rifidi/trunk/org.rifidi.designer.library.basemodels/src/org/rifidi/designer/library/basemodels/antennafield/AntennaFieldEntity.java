@@ -126,7 +126,6 @@ public class AntennaFieldEntity extends VisualEntity implements IHasSwitch,
 	 * Default constructor (used by JAXB)
 	 */
 	public AntennaFieldEntity() {
-		visible=false;
 		factor = 1.0f;
 	}
 
@@ -139,7 +138,6 @@ public class AntennaFieldEntity extends VisualEntity implements IHasSwitch,
 	 *            the interface for communicating with this field's reader
 	 */
 	public AntennaFieldEntity(int antNum, ReaderModuleManagerInterface rmmi) {
-		visible=false;
 		factor = 1.0f;
 		readerInterface = rmmi;
 		antennaNum = antNum;
@@ -512,13 +510,6 @@ public class AntennaFieldEntity extends VisualEntity implements IHasSwitch,
 	@Inject
 	public void setFieldService(FieldService fieldService) {
 		this.fieldService = fieldService;
-	}
-
-	/**
-	 * @return the gate
-	 */
-	public GateEntity getGate() {
-		return this.gate;
 	}
 
 	/**

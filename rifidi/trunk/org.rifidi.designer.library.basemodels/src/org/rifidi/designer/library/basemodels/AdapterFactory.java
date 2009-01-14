@@ -68,8 +68,7 @@ public class AdapterFactory implements IAdapterFactory {
 			if (IPropertySource.class.equals(adapterType)) {
 				return new DefaultPropertySource((Entity) adaptableObject);
 			}
-		}
-		else if (adaptableObject instanceof CardboxEntity) {
+		} else if (adaptableObject instanceof CardboxEntity) {
 			if (IWorkbenchAdapter.class.equals(adapterType)) {
 				return new CardboxEntityWorkbenchAdapter();
 			}

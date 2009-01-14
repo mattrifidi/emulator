@@ -215,8 +215,7 @@ public class DestroyerEntity extends VisualEntity implements INeedsPhysics {
 	}
 
 	/**
-	 * @param entitiesService
-	 *            the entitiesService to set
+	 * @param entitiesService the entitiesService to set
 	 */
 	@Inject
 	public void setEntitiesService(EntitiesService entitiesService) {
