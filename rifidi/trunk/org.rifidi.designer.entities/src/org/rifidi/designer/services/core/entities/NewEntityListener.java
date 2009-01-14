@@ -13,7 +13,8 @@ package org.rifidi.designer.services.core.entities;
 import org.rifidi.designer.entities.VisualEntity;
 
 /**
- * FIXME: Class comment.  
+ * Classes implementing this interface will be notified about entities being
+ * added to the scene.
  * 
  * @author Jochen Mader - jochen@pramari.com - May 29, 2008
  * 

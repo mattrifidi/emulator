@@ -13,9 +13,7 @@ package org.rifidi.designer.entities;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
-import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -23,7 +21,6 @@ import org.eclipse.core.databinding.observable.list.IListChangeListener;
 import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.model.IWorkbenchAdapter;
 import org.rifidi.designer.entities.databinding.IEntityObservable;
 import org.rifidi.designer.entities.grouping.EntityGroup;
@@ -84,14 +81,10 @@ public class SceneData implements IAdaptable, IWorkbenchAdapter,
 	private PhysicsSpace physicsSpace;
 	/** The currently uised collision handler. */
 	private InputHandler collisionHandler;
-	/** This map conatins the 4 walls that surround the scene. */
-	private Map<Direction, Node> walls;
 	/** Container for entity groups. */
 	private GroupContainer groupedComponentsContainer;
 	/** Synchronized list of entites. */
 	private List<Entity> syncedEntities;
-	/** Current SWT display. */
-	private Display display;
 	/** Id of the floorplan to use. */
 	private String floorId;
 	/** Only used to store tags from the tagregistry to an xml file. */
@@ -316,7 +309,7 @@ public class SceneData implements IAdaptable, IWorkbenchAdapter,
 	public List<String> getEntityNames() {
 		return entityNames;
 	}
-	
+
 	/**
 	 * @return the producedEntities
 	 */
@@ -366,26 +359,6 @@ public class SceneData implements IAdaptable, IWorkbenchAdapter,
 	}
 
 	/**
-	 * Get the walls of the room.
-	 * 
-	 * @return the walls
-	 */
-	@XmlTransient
-	public Map<Direction, Node> getWalls() {
-		return walls;
-	}
-
-	/**
-	 * Set the walls of the room.
-	 * 
-	 * @param walls
-	 *            the walls to set
-	 */
-	public void setWalls(final Map<Direction, Node> walls) {
-		this.walls = walls;
-	}
-
-	/**
 	 * @return the cableGroup
 	 */
 	public EntityGroup getCableGroup() {
@@ -398,22 +371,6 @@ public class SceneData implements IAdaptable, IWorkbenchAdapter,
 	 */
 	public void setCableGroup(EntityGroup cableGroup) {
 		this.cableGroup = cableGroup;
-	}
-
-	/**
-	 * @return the display
-	 */
-	public Display getDisplay() {
-		return this.display;
-	}
-
-	/**
-	 * @param display
-	 *            the display to set
-	 */
-	@XmlTransient
-	public void setDisplay(Display display) {
-		this.display = display;
 	}
 
 	/**
@@ -439,7 +396,8 @@ public class SceneData implements IAdaptable, IWorkbenchAdapter,
 	}
 
 	/**
-	 * @param tags the tags to set
+	 * @param tags
+	 *            the tags to set
 	 */
 	public void setTags(List<RifidiTag> tags) {
 		this.tags = tags;
@@ -468,5 +426,5 @@ public class SceneData implements IAdaptable, IWorkbenchAdapter,
 	public void removeListChangeListener(IListChangeListener changeListener) {
 		((WritableList) entityGroups).removeListChangeListener(changeListener);
 	}
-	
+
 }

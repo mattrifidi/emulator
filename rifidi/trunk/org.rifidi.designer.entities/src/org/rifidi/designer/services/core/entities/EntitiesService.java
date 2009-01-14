@@ -36,8 +36,8 @@ public interface EntitiesService {
 	 * @param newEntityListener
 	 *            a callback for the submitter of the new entity.
 	 * @param screenPos
-	 *            position on the screen where the entity should be created
-	 *            (can be null)
+	 *            position on the screen where the entity should be created (can
+	 *            be null)
 	 */
 	void addEntity(Entity ent, NewEntityListener newEntityListener,
 			Point screenPos);

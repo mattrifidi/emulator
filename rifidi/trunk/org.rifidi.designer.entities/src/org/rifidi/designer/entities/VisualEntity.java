@@ -29,38 +29,27 @@ import com.jme.util.GameTaskQueue;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 public abstract class VisualEntity extends Entity {
-	/**
-	 * Queue that gets executed in the opengl context.
-	 */
+	/** Queue that gets executed in the opengl context. */
 	@XmlTransient
 	private GameTaskQueue renderQueue;
-	/**
-	 * Queue that gets executed in the update context.
-	 */
+	/** Queue that gets executed in the update context. */
 	@XmlTransient
 	private GameTaskQueue updateQueue;
-	/**
-	 * The node that belongs to the VisualEntity.
-	 */
+	/** The node that belongs to the VisualEntity. */
 	@XmlTransient
 	private Node node;
-	/**
-	 * Whether or not the entity's footprint is collidable.
-	 */
+	/** Whether or not the entity's footprint is collidable. */
 	private boolean collides = true;
-	/**
-	 * Whether or not to show the footprint pattern for this entity.
-	 */
+	/** Whether or not to show the footprint pattern for this entity. */
 	@XmlTransient
 	private boolean showfootprint = false;
-	/**
-	 * 90 degree rotation matrix.
-	 */
+	/** 90 degree rotation matrix. */
 	@XmlTransient
 	private static Matrix3f rotLeft = null;
-
 	@XmlTransient
 	private static Matrix3f rotRight = null;
+	/** True if the entity can be destroied by other entitites */
+	protected boolean destructible = false;
 
 	/**
 	 * @return the node
@@ -131,7 +120,7 @@ public abstract class VisualEntity extends Entity {
 	@Override
 	public void setEntityId(String entityId) {
 		super.setEntityId(entityId);
-		if(getNode()!=null){
+		if (getNode() != null) {
 			getNode().setName(entityId);
 		}
 	}
@@ -195,4 +184,11 @@ public abstract class VisualEntity extends Entity {
 	 * @return
 	 */
 	public abstract Node getBoundingNode();
+
+	/**
+	 * @return the destructible
+	 */
+	public boolean isDestructible() {
+		return this.destructible;
+	}
 }

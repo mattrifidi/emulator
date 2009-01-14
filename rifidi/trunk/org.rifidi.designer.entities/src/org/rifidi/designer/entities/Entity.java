@@ -29,29 +29,21 @@ import org.rifidi.designer.entities.annotations.Property;
 @XmlAccessorType(XmlAccessType.FIELD)
 public abstract class Entity {
 
-	/**
-	 * The name of this entity, doesn't have to be unique.
-	 */
+	/** The name of this entity, doesn't have to be unique. */
 	private String name;
-	/**
-	 * This id has to be unique inside each project.
-	 */
+	/** This id has to be unique inside each project. */
 	@XmlID
 	private String entityId;
-	/**
-	 * Support for monitoring property changes.
-	 */
+	/** Support for monitoring property changes. */
 	@XmlTransient
 	private PropertyChangeSupport changeSupport = new PropertyChangeSupport(
 			this);
-	/**
-	 * The user data object for this entity.
-	 */
+	/** The user data object for this entity. */
 	private Object userData;
-	/**
-	 * Set to true if the entity is delted.
-	 */
+	/** Set to true if the entity is delted. */
 	private boolean deleted = false;
+	/** Used to hide an entity from the entities view. */
+	protected boolean visible = true;
 
 	/**
 	 * @return the entityId
@@ -177,4 +169,12 @@ public abstract class Entity {
 	 */
 	public void reset() {
 	}
+
+	/**
+	 * @return the visible
+	 */
+	public boolean isVisible() {
+		return this.visible;
+	}
+	
 }

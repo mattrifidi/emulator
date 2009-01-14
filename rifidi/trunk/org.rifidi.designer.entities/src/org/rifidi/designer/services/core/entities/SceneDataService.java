@@ -10,14 +10,8 @@
  */
 package org.rifidi.designer.services.core.entities;
 
-import java.util.Map;
-
 import org.eclipse.core.resources.IFile;
-import org.eclipse.swt.widgets.Display;
 import org.rifidi.designer.entities.SceneData;
-import org.rifidi.designer.entities.SceneData.Direction;
-
-import com.jme.scene.Node;
 
 /**
  * This service is responsible for loading and saving of scenedata. It is also
@@ -37,7 +31,7 @@ public interface SceneDataService {
 	 *            the current SWT display
 	 * @param file
 	 */
-	void loadScene(Display display, IFile file);
+	void loadScene(IFile file);
 
 	/**
 	 * Save the currently loaded scene to the given file.
@@ -69,13 +63,6 @@ public interface SceneDataService {
 	 * @param listener
 	 */
 	void removeSceneDataChangedListener(SceneDataChangedListener listener);
-
-	/**
-	 * Get the roomwalls.
-	 * 
-	 * @return
-	 */
-	Map<Direction, Node> getWalls();
 
 	/**
 	 * Get the currently loaded SceneData.

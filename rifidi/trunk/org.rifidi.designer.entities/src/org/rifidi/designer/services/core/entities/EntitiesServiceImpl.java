@@ -29,8 +29,6 @@ import javax.xml.bind.Unmarshaller;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.eclipse.core.databinding.observable.Realm;
-import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -46,19 +44,12 @@ import org.rifidi.designer.entities.Activator;
 import org.rifidi.designer.entities.Entity;
 import org.rifidi.designer.entities.SceneData;
 import org.rifidi.designer.entities.VisualEntity;
-import org.rifidi.designer.entities.SceneData.Direction;
 import org.rifidi.designer.entities.gpio.GPIPort;
 import org.rifidi.designer.entities.gpio.GPOPort;
 import org.rifidi.designer.entities.gpio.IGPIO;
 import org.rifidi.designer.entities.grouping.EntityGroup;
-import org.rifidi.designer.entities.grouping.IChildEntity;
-import org.rifidi.designer.entities.grouping.IParentEntity;
-import org.rifidi.designer.entities.interfaces.AbstractVisualProducer;
-import org.rifidi.designer.entities.interfaces.AbstractVisualProduct;
 import org.rifidi.designer.entities.interfaces.IContainer;
-import org.rifidi.designer.entities.interfaces.IInternalEntity;
 import org.rifidi.designer.entities.interfaces.INeedsPhysics;
-import org.rifidi.designer.entities.interfaces.IProducer;
 import org.rifidi.designer.entities.interfaces.IProduct;
 import org.rifidi.designer.entities.rifidi.RifidiEntity;
 import org.rifidi.designer.library.EntityLibraryRegistry;
@@ -88,7 +79,6 @@ import com.jme.system.DisplaySystem;
 import com.jme.util.TextureManager;
 import com.jme.util.export.binary.BinaryExporter;
 import com.jme.util.export.binary.BinaryImporter;
-import com.jmex.physics.PhysicsNode;
 import com.jmex.physics.PhysicsSpace;
 import com.jmex.physics.StaticPhysicsNode;
 
@@ -99,8 +89,8 @@ import com.jmex.physics.StaticPhysicsNode;
  * @tags
  * 
  */
-public class EntitiesServiceImpl implements EntitiesService, ProductService,
-		FinderService, SceneDataService {
+public class EntitiesServiceImpl implements EntitiesService, FinderService,
+		SceneDataService {
 	/** Logger for this class. */
 	private static Log logger = LogFactory.getLog(EntitiesServiceImpl.class);
 	/** Reference to the current scene. */
@@ -150,28 +140,74 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	@Override
 	public void addEntity(Entity ent, NewEntityListener newEntityListener,
 			Point screenPos) {
-		int namecount = 0;
-		String orgName = ent.getName();
-		while (sceneData.getEntityNames().contains(ent.getName())) {
-			ent.setName(orgName + namecount++);
-		}
 		initEntity(ent, sceneData, true);
-
+		// visual entities need to be created in the opengl thread
+		if (ent.isVisible() && !(ent instanceof IProduct)) {
+			sceneData.getDefaultGroup().addEntity(ent);
+		} else if (ent.isVisible()) {
+			sceneData.getProducedEntities().addEntity(ent);
+		}
 		if (ent instanceof VisualEntity) {
 			implementor.update(new UpdateCallable(sceneData.getRootNode(),
 					(VisualEntity) ent, screenPos, newEntityListener));
-		} else {
-			ent.setEntityId(sceneData.getNextID().toString());
-			sceneData.getEntityNames().add(ent.getName());
-			sceneData.getSyncedEntities().add(ent);
-			if (!(ent instanceof IInternalEntity)
-					|| (ent instanceof IInternalEntity && ((IInternalEntity) ent)
-							.isVisible())) {
-				sceneData.getDefaultGroup().addEntity(ent);
-			}
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.rifidi.services.registry.core.entities.ProductService#deleteProducts
+	 * (java.util.List)
+	 */
+	// @Override
+	// public void deleteProducts(final List<AbstractVisualProduct> product) {
+	// implementor.update(new Callable<Object>() {
+	//	
+	// /*
+	// * (non-Javadoc)
+	// *
+	// * @see java.util.concurrent.Callable#call()
+	// */
+	// public Object call() throws Exception {
+	// for (AbstractVisualProduct entity : product) {
+	// sceneData.getSyncedEntities().remove(entity);
+	// sceneData.getDefaultGroup().removeEntity(entity);
+	// sceneData.getProducedEntities().removeEntity(entity);
+	// sceneData.getEntityNames().remove(entity.getName());
+	// nodeToEntity.remove(((VisualEntity) entity).getNode());
+	// entity.getNode().removeFromParent();
+	// entity.destroy();
+	// entity.setDeleted(true);
+	// }
+	// return new Object();
+	// }
+	// });
+	// if (!((WritableList) sceneData.getEntityGroups()).getRealm().equals(
+	// Realm.getDefault())) {
+	// ((WritableList) sceneData.getEntityGroups()).getRealm().asyncExec(
+	// new Runnable() {
+	//	
+	// /*
+	// * (non-Javadoc)
+	// *
+	// * @see java.lang.Runnable#run()
+	// */
+	// @Override
+	// public void run() {
+	// for (Entity entity : product) {
+	// for (EntityGroup entityGroup : sceneData
+	// .getEntityGroups()) {
+	// entityGroup.removeEntity(entity);
+	// }
+	// }
+	// }
+	//	
+	// });
+	// }
+	// ;
+	//	
+	// }
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -228,7 +264,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 			}
 			sceneData.getEntityNames().remove(entity.getName());
 		}
-		// VisualEntities need a special
+		// VisualEntities need a special treatment
 		if (visuals.size() > 0) {
 			implementor.update(new Callable<Object>() {
 
@@ -356,85 +392,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 				break;
 			}
 		}
-		if (ret instanceof IChildEntity) {
-			return (VisualEntity) ((IChildEntity) ret).getParent();
-		}
 		return (VisualEntity) ret;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.rifidi.designer.services.core.entities.ProductService#addProduct(
-	 * org.rifidi.designer.entities.interfaces.AbstractVisualProduct)
-	 */
-	@Override
-	public void addProduct(final AbstractVisualProduct product) {
-		sceneData.getEntityNames().add(product.getName());
-		initEntity(product, sceneData, true);
-		sceneData.getSyncedEntities().add(product);
-		sceneData.getProducedEntities().addEntity(product);
-		if (product instanceof VisualEntity) {
-			implementor.update(new UpdateCallable(sceneData.getRootNode(),
-					(VisualEntity) product, null, null));
-		}
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.rifidi.services.registry.core.entities.ProductService#deleteProducts
-	 * (java.util.List)
-	 */
-	@Override
-	public void deleteProducts(final List<AbstractVisualProduct> product) {
-		implementor.update(new Callable<Object>() {
-
-			/*
-			 * (non-Javadoc)
-			 * 
-			 * @see java.util.concurrent.Callable#call()
-			 */
-			public Object call() throws Exception {
-				for (AbstractVisualProduct entity : product) {
-					sceneData.getSyncedEntities().remove(entity);
-					sceneData.getDefaultGroup().removeEntity(entity);
-					sceneData.getProducedEntities().removeEntity(entity);
-					sceneData.getEntityNames().remove(entity.getName());
-					nodeToEntity.remove(((VisualEntity) entity).getNode());
-					entity.getNode().removeFromParent();
-					entity.destroy();
-					entity.setDeleted(true);
-				}
-				return new Object();
-			}
-		});
-		if (!((WritableList) sceneData.getEntityGroups()).getRealm().equals(
-				Realm.getDefault())) {
-			((WritableList) sceneData.getEntityGroups()).getRealm().asyncExec(
-					new Runnable() {
-
-						/*
-						 * (non-Javadoc)
-						 * 
-						 * @see java.lang.Runnable#run()
-						 */
-						@Override
-						public void run() {
-							for (Entity entity : product) {
-								for (EntityGroup entityGroup : sceneData
-										.getEntityGroups()) {
-									entityGroup.removeEntity(entity);
-								}
-							}
-						}
-
-					});
-		}
-		;
-
 	}
 
 	/*
@@ -505,9 +463,9 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	 * 
 	 * @see
 	 * org.rifidi.services.registry.core.scenedata.SceneDataService#loadScene
-	 * (org.eclipse.swt.widgets.Display, org.eclipse.core.resources.IFile)
+	 * (org.eclipse.core.resources.IFile)
 	 */
-	public void loadScene(final Display display, final IFile file) {
+	public void loadScene(final IFile file) {
 		worldService.pause();
 
 		IWorkbench wb = PlatformUI.getWorkbench();
@@ -536,7 +494,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 			@Override
 			protected IStatus run(final IProgressMonitor monitor) {
 				monitor.beginTask("Load new scene", 100);
-				display.syncExec(new Runnable() {
+				Display.getDefault().syncExec(new Runnable() {
 
 					/*
 					 * (non-Javadoc)
@@ -596,36 +554,80 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 
 				monitor.worked(10);
 				monitor.subTask("Convert to scene");
-				sceneData.setDisplay(display);
-				sceneData.setPhysicsSpace(PhysicsSpace.create());
-				sceneData.setCollisionHandler(new InputHandler());
+				if (sceneData != null) {
+					sceneData.setPhysicsSpace(PhysicsSpace.create());
+					sceneData.setCollisionHandler(new InputHandler());
 
-				// initialize the JME importer to handle physics
-				sceneData.getPhysicsSpace().setupBinaryClassLoader(
-						BinaryImporter.getInstance());
-				// if this is a new file create an empty room
-				if (sceneData.getNodeBytes() != null) {
-					// load the model from the stored bytes
-					try {
-						sceneData.setRootNode((Node) BinaryImporter
-								.getInstance().load(sceneData.getNodeBytes()));
-					} catch (IOException e) {
-						logger.warn("failed loading " + e);
+					// initialize the JME importer to handle physics
+					sceneData.getPhysicsSpace().setupBinaryClassLoader(
+							BinaryImporter.getInstance());
+					// if this is a new file create an empty room
+					if (sceneData.getNodeBytes() != null) {
+						// load the model from the stored bytes
+						try {
+							sceneData.setRootNode((Node) BinaryImporter
+									.getInstance().load(
+											sceneData.getNodeBytes()));
+						} catch (IOException e) {
+							logger.warn("failed loading " + e);
+						}
+						monitor.worked(10);
+						monitor.subTask("Registering entities");
+						// initialize entities
+						for (Entity entity : sceneData.getEntities()) {
+							initEntity(entity, sceneData, false);
+						}
+						monitor.worked(10);
+						monitor.subTask("Registering products");
+						// we need to wait for this to finish
+						Display.getDefault().syncExec(new Runnable() {
+
+							/*
+							 * (non-Javadoc)
+							 * 
+							 * @see java.lang.Runnable#run()
+							 */
+							@Override
+							public void run() {
+								for (EntityGroup entityGroup : sceneData
+										.getEntityGroups()) {
+									entityGroup.setSceneData(sceneData);
+								}
+								monitor.worked(10);
+								monitor.subTask("Initialize visual entities");
+								// has to be the last step!!!
+								for (Entity entity : sceneData.getEntities()) {
+									if (entity instanceof VisualEntity) {
+										((VisualEntity) entity).loaded();
+									}
+								}
+							}
+
+						});
 					}
+					logger.debug("loading: done");
+
 					monitor.worked(10);
-					monitor.subTask("Registering entities");
-					// add entity names to the list in scnedata
-					for (Entity entity : sceneData.getEntities()) {
-						// take care that entites get there dependencies
-						// injected
-						ServiceRegistry.getInstance().service(entity);
-						sceneData.getEntityNames().add(entity.getName());
-						initEntity(entity, sceneData, false);
+					monitor.setTaskName("Load room");
+					sceneData.setRoomNode(createNode(sceneData));
+
+					nodeToEntity = Collections
+							.synchronizedMap(new HashMap<Node, VisualEntity>());
+					sceneData.getRootNode().updateGeometricState(0f, true);
+
+					// fill the octree
+					for (Entity entity : sceneData.getSearchableEntities()) {
+						if (entity instanceof VisualEntity) {
+							nodeToEntity.put(((VisualEntity) entity).getNode(),
+									(VisualEntity) entity);
+							if (!(entity instanceof IProduct)) {
+								collisionOctree
+										.insertEntity((VisualEntity) entity);
+							}
+						}
 					}
-					monitor.worked(10);
-					monitor.subTask("Registering products");
-					// we need to wai for this to finish
-					display.syncExec(new Runnable() {
+					monitor.worked(60);
+					Display.getDefault().syncExec(new Runnable() {
 
 						/*
 						 * (non-Javadoc)
@@ -634,71 +636,20 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 						 */
 						@Override
 						public void run() {
-							for (Entity entity : sceneData
-									.getProducedEntities().getEntities()) {
-								ServiceRegistry.getInstance().service(entity);
-								sceneData.getEntityNames()
-										.add(entity.getName());
-								initEntity(entity, sceneData, false);
-							}
-							for (EntityGroup entityGroup : sceneData
-									.getEntityGroups()) {
-								entityGroup.setSceneData(sceneData);
-							}
-							monitor.worked(10);
-							monitor.subTask("Initialize visual entities");
-							// has to be the last step!!!
-							for (Entity entity : sceneData.getEntities()) {
-								if (entity instanceof VisualEntity) {
-									((VisualEntity) entity).loaded();
-								}
+							for (SceneDataChangedListener listener : listeners) {
+								listener.sceneDataChanged(sceneData);
 							}
 						}
 
 					});
+					monitor.worked(100);
+					// old scene is destroied
+					sceneDataOld = null;
+					// store the file info
+					fileOfCurrentScene = file;
+					return Status.OK_STATUS;
 				}
-				logger.debug("loading: done");
-
-				monitor.worked(10);
-				monitor.setTaskName("Load room");
-				sceneData.setRoomNode(createNode(sceneData));
-
-				nodeToEntity = Collections
-						.synchronizedMap(new HashMap<Node, VisualEntity>());
-				sceneData.getRootNode().updateGeometricState(0f, true);
-
-				// fill the octree
-				for (Entity entity : sceneData.getSearchableEntities()) {
-					if (entity instanceof VisualEntity) {
-						nodeToEntity.put(((VisualEntity) entity).getNode(),
-								(VisualEntity) entity);
-						if (!(entity instanceof IProduct)) {
-							collisionOctree.insertEntity((VisualEntity) entity);
-						}
-					}
-				}
-				monitor.worked(60);
-				display.syncExec(new Runnable() {
-
-					/*
-					 * (non-Javadoc)
-					 * 
-					 * @see java.lang.Runnable#run()
-					 */
-					@Override
-					public void run() {
-						for (SceneDataChangedListener listener : listeners) {
-							listener.sceneDataChanged(sceneData);
-						}
-					}
-
-				});
-				monitor.worked(100);
-				// old scene is destroied
-				sceneDataOld = null;
-				// store the file info
-				fileOfCurrentScene = file;
-				return Status.OK_STATUS;
+				return Status.CANCEL_STATUS;
 			}
 		};
 		loadJob.setUser(true);
@@ -738,57 +689,6 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 		return roomnode;
 	}
 
-	/**
-	 * Initialze the entity.
-	 * 
-	 * @param entity
-	 * @param sceneData
-	 * @param isNew
-	 *            set to true if the entity was just created (not loaded)
-	 */
-	private void initEntity(Entity entity, SceneData sceneData, boolean isNew) {
-		// reassociate the entities with their nodes if it is loaded, skip if it
-		// is a new one
-		if (entity instanceof VisualEntity) {
-			((VisualEntity) entity)
-					.setUpdateQueue(implementor.getUpdateQueue());
-			((VisualEntity) entity)
-					.setRenderQueue(implementor.getRenderQueue());
-			if (!isNew) {
-				((VisualEntity) entity).setNode((Node) sceneData.getRootNode()
-						.getChild(entity.getEntityId().toString()));
-			}
-		}
-		if (entity instanceof RifidiEntity) {
-			((RifidiEntity) entity)
-					.setRMIManager(Activator.getDefault().rifidiManager);
-		}
-		if (entity instanceof INeedsPhysics) {
-			((INeedsPhysics) entity).setPhysicsSpace(sceneData
-					.getPhysicsSpace());
-			((INeedsPhysics) entity).setCollisionHandler(sceneData
-					.getCollisionHandler());
-		}
-		ServiceRegistry.getInstance().service(entity);
-		if (entity instanceof IProducer) {
-			for (AbstractVisualProduct prod : ((AbstractVisualProducer) entity)
-					.getProducts()) {
-				if (prod instanceof Entity) {
-					sceneData.getProducedEntities().addEntity((Entity) prod);
-				}
-			}
-		}
-		if (entity instanceof IRifidiTagContainer) {
-			tagService.registerTagContainer((IRifidiTagContainer) entity);
-		}
-		// do custom initialization
-		try {
-			iinitService.init(entity);
-		} catch (InitializationException e) {
-			e.printStackTrace();
-		}
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -823,7 +723,7 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 				sceneData.getRootNode().removeFromParent();
 				sceneData.getRoomNode().removeFromParent();
 				sceneData.setTags(tagService.getRegisteredTags());
-				sceneData.getDisplay().syncExec(new Runnable() {
+				Display.getDefault().syncExec(new Runnable() {
 
 					/*
 					 * (non-Javadoc)
@@ -877,17 +777,6 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 	@Override
 	public void removeSceneDataChangedListener(SceneDataChangedListener listener) {
 		listeners.remove(listener);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.rifidi.services.registry.core.scenedata.SceneDataService#getWalls()
-	 */
-	@Override
-	public Map<Direction, Node> getWalls() {
-		return sceneData.getWalls();
 	}
 
 	/**
@@ -1083,19 +972,6 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 
 		public Object call() throws Exception {
 			prepareEntity((VisualEntity) newentity, rootNode);
-			// add child entities to the searchable entities
-			if (newentity instanceof IParentEntity) {
-				for (VisualEntity child : ((IParentEntity) newentity)
-						.getChildEntites()) {
-					sceneData.getEntityNames().add(child.getName());
-					initEntity(child, sceneData, true);
-					sceneData.getSyncedEntities().add(child);
-					((IChildEntity) child).setParent((VisualEntity) newentity);
-
-					prepareEntity((VisualEntity) child,
-							((VisualEntity) newentity).getNode());
-				}
-			}
 
 			// center the object in the scene if a screen position is given
 			if (screenPos != null) {
@@ -1115,17 +991,9 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 						.setLocalTranslation(coords);
 			}
 
-			sceneData.getEntityNames().add(newentity.getName());
-			sceneData.getSyncedEntities().add(newentity);
-			if (!(newentity instanceof IInternalEntity)
-					|| (newentity instanceof IInternalEntity && ((IInternalEntity) newentity)
-							.isVisible())) {
-				sceneData.getDefaultGroup().addEntity(newentity);
-			}
-
 			// inform listeners
 			if (listener != null) {
-				sceneData.getDisplay().asyncExec(new Runnable() {
+				Display.getDefault().asyncExec(new Runnable() {
 
 					/*
 					 * (non-Javadoc)
@@ -1143,35 +1011,86 @@ public class EntitiesServiceImpl implements EntitiesService, ProductService,
 		}
 
 		private void prepareEntity(VisualEntity entity, Node target) {
-			String id = sceneData.getNextID().toString();
-			entity.setEntityId(id);
 			entity.init();
 			if (entity instanceof IContainer) {
 				for (VisualEntity vent : ((IContainer) entity)
 						.getVisualEntityList()) {
 					initEntity(vent, sceneData, true);
 					vent.init();
-					vent.setEntityId(sceneData.getNextID().toString());
-					sceneData.getSyncedEntities().add(vent);
 					entity.getNode().attachChild(vent.getNode());
 					nodeToEntity.put(((VisualEntity) vent).getNode(),
 							(VisualEntity) vent);
 				}
 			}
+
+			target.attachChild(entity.getNode());
 			entity.getNode().updateModelBound();
 			entity.getNode().updateWorldData(0);
-			target.attachChild(entity.getNode());
 			entity.getNode().updateWorldBound();
-			entity.getNode().setName(id);
-			if (entity.getNode() instanceof PhysicsNode) {
-				((PhysicsNode) entity.getNode()).generatePhysicsGeometry();
-			}
-
+			entity.getNode().setName(entity.getEntityId());
 			entity.getNode().updateRenderState();
 
 			nodeToEntity.put(((VisualEntity) entity).getNode(),
 					(VisualEntity) entity);
 		}
+	}
+
+	/**
+	 * Initialze the entity.
+	 * 
+	 * @param entity
+	 * @param sceneData
+	 * @param isNew
+	 *            set to true if the entity was just created (not loaded)
+	 */
+	private void initEntity(Entity entity, SceneData sceneData, boolean isNew) {
+		ServiceRegistry.getInstance().service(entity);
+		if (isNew) {
+			int namecount = 0;
+			// check if the name of the entity is already taken, if so create a
+			// unique one
+			String orgName = entity.getName();
+			while (sceneData.getEntityNames().contains(entity.getName())) {
+				entity.setName(orgName + namecount++);
+			}
+			sceneData.getEntityNames().add(entity.getName());
+
+			sceneData.getSyncedEntities().add(entity);
+			entity.setEntityId(sceneData.getNextID().toString());
+
+		}
+		// reassociate the entities with their nodes if it is loaded, skip if it
+		// is a new one
+		if (entity instanceof VisualEntity) {
+			((VisualEntity) entity)
+					.setUpdateQueue(implementor.getUpdateQueue());
+			((VisualEntity) entity)
+					.setRenderQueue(implementor.getRenderQueue());
+			if (!isNew) {
+				((VisualEntity) entity).setNode((Node) sceneData.getRootNode()
+						.getChild(entity.getEntityId().toString()));
+			}
+		}
+		if (entity instanceof RifidiEntity) {
+			((RifidiEntity) entity)
+					.setRMIManager(Activator.getDefault().rifidiManager);
+		}
+		if (entity instanceof INeedsPhysics) {
+			((INeedsPhysics) entity).setPhysicsSpace(sceneData
+					.getPhysicsSpace());
+			((INeedsPhysics) entity).setCollisionHandler(sceneData
+					.getCollisionHandler());
+		}
+		if (entity instanceof IRifidiTagContainer) {
+			tagService.registerTagContainer((IRifidiTagContainer) entity);
+		}
+		// do custom initialization
+		try {
+			iinitService.init(entity);
+		} catch (InitializationException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	/**

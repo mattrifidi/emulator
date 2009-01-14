@@ -19,6 +19,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.ui.console;bundle-version="3.3.0"
 Bundle-Activator: org.rifidi.designer.entities.Activator
 Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Eclipse-BuddyPolicy: dependent
 Export-Package: org.rifidi.designer.entities,
  org.rifidi.designer.entities.adapters,
