@@ -29,15 +29,16 @@ import org.apache.commons.logging.LogFactory;
 import org.eclipse.core.databinding.observable.list.IListChangeListener;
 import org.eclipse.core.databinding.observable.list.WritableList;
 import org.monklypse.core.NodeHelper;
+import org.rifidi.designer.entities.Entity;
+import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.annotations.Property;
 import org.rifidi.designer.entities.databinding.IEntityObservable;
 import org.rifidi.designer.entities.databinding.annotations.MonitoredProperties;
-import org.rifidi.designer.entities.interfaces.AbstractVisualProducer;
-import org.rifidi.designer.entities.interfaces.AbstractVisualProduct;
 import org.rifidi.designer.entities.interfaces.IHasSwitch;
+import org.rifidi.designer.entities.interfaces.IProducer;
 import org.rifidi.designer.entities.internal.RifidiTagWithParent;
 import org.rifidi.designer.library.basemodels.cardbox.CardboxEntity;
-import org.rifidi.designer.services.core.entities.ProductService;
+import org.rifidi.designer.services.core.entities.EntitiesService;
 import org.rifidi.services.annotations.Inject;
 import org.rifidi.services.tags.IRifidiTagService;
 import org.rifidi.services.tags.exceptions.RifidiTagNotAvailableException;
@@ -66,8 +67,9 @@ import com.jme.system.DisplaySystem;
  */
 @MonitoredProperties(names = { "name" })
 @XmlAccessorType(XmlAccessType.FIELD)
-public class BoxproducerEntity extends AbstractVisualProducer implements
-		IHasSwitch, IRifidiTagContainer, IEntityObservable, PropertyChangeListener {
+public class BoxproducerEntity extends VisualEntity implements IHasSwitch,
+		IRifidiTagContainer, IEntityObservable, PropertyChangeListener,
+		IProducer<CardboxEntity> {
 
 	/** Logger for this class. */
 	@XmlTransient
@@ -86,7 +88,7 @@ public class BoxproducerEntity extends AbstractVisualProducer implements
 	private Node model;
 	/** Reference to the product service. */
 	@XmlTransient
-	private ProductService productService;
+	private EntitiesService entitiesService;
 	/** Stack shared with the boxproducer thread. */
 	@XmlTransient
 	private Stack<RifidiTag> tagStack;
@@ -99,15 +101,18 @@ public class BoxproducerEntity extends AbstractVisualProducer implements
 	/** List of wrapper objects that bind tags and container together. */
 	@XmlTransient
 	private WritableList wrappers;
+	@XmlIDREF
+	private List<CardboxEntity> products;
+
 	/**
 	 * Constructor
 	 */
-	@SuppressWarnings("unchecked")
 	public BoxproducerEntity() {
 		this.speed = 4;
 		this.tagStack = new Stack<RifidiTag>();
 		this.tags = new ArrayList<RifidiTag>();
 		this.wrappers = new WritableList();
+		this.products = new ArrayList<CardboxEntity>();
 		setName("Batch Boxproducer");
 	}
 
@@ -206,7 +211,7 @@ public class BoxproducerEntity extends AbstractVisualProducer implements
 
 		logger.debug(NodeHelper.printNodeHierarchy(getNode(), 3));
 
-		thread = new BoxproducerEntityThread(this, productService, products,
+		thread = new BoxproducerEntityThread(this, entitiesService, products,
 				tagStack);
 		thread.setInterval((int) speed * 1000);
 		thread.start();
@@ -232,18 +237,18 @@ public class BoxproducerEntity extends AbstractVisualProducer implements
 		}
 
 		Set<RifidiTag> temptags = new HashSet<RifidiTag>(tags);
-		for (AbstractVisualProduct vis : products) {
-			temptags.remove(((CardboxEntity) vis).getRifidiTag());
+		for (CardboxEntity vis : products) {
+			temptags.remove(vis.getRifidiTag());
 		}
 		tagStack.addAll(temptags);
-		thread = new BoxproducerEntityThread(this, productService, products,
+		thread = new BoxproducerEntityThread(this, entitiesService, products,
 				tagStack);
 		thread.setInterval((int) speed * 1000);
 		thread.setPaused(paused);
 		thread.start();
 		if (running)
 			turnOn();
-		for(RifidiTag tag:tags){
+		for (RifidiTag tag : tags) {
 			try {
 				tagService.takeRifidiTag(tag, this);
 			} catch (RifidiTagNotAvailableException e) {
@@ -310,8 +315,7 @@ public class BoxproducerEntity extends AbstractVisualProducer implements
 	public void reset() {
 		paused = true;
 		thread.setPaused(true);
-		productService.deleteProducts(new ArrayList<AbstractVisualProduct>(
-				products));
+		entitiesService.deleteEntities(new ArrayList<Entity>(products));
 	}
 
 	/*
@@ -347,13 +351,13 @@ public class BoxproducerEntity extends AbstractVisualProducer implements
 	}
 
 	/**
-	 * Set the product service.
+	 * Set the entities service.
 	 * 
-	 * @param productService
+	 * @param entitiesService
 	 */
 	@Inject
-	public void setProductService(ProductService productService) {
-		this.productService = productService;
+	public void setEntitiesService(EntitiesService entitiesService) {
+		this.entitiesService = entitiesService;
 	}
 
 	/*
@@ -377,7 +381,6 @@ public class BoxproducerEntity extends AbstractVisualProducer implements
 		return (Node) getNode().getChild("hiliter");
 	}
 
-	
 	/**
 	 * Get a string representation of the tags this producer owns.
 	 * 
@@ -411,30 +414,37 @@ public class BoxproducerEntity extends AbstractVisualProducer implements
 	 * .rifidi.designer.entities.interfaces.IProduct)
 	 */
 	@Override
-	public void productDestroied(AbstractVisualProduct product) {
+	public void productDestroied(CardboxEntity product) {
 		products.remove(product);
-		if(tags.contains(((CardboxEntity) product).getRifidiTag())){
-			tagStack.push(((CardboxEntity) product).getRifidiTag());	
+		if (tags.contains(((CardboxEntity) product).getRifidiTag())) {
+			tagStack.push(((CardboxEntity) product).getRifidiTag());
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @seejava.beans.PropertyChangeListener#propertyChange(java.beans.
+	 * PropertyChangeEvent)
 	 */
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-		if("deleted".equals(evt.getPropertyName())){
-			tags.remove(((RifidiTag)evt.getSource()));
+		if ("deleted".equals(evt.getPropertyName())) {
+			tags.remove(((RifidiTag) evt.getSource()));
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see org.rifidi.services.tags.model.IRifidiTagContainer#addTags(java.util.Collection)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.rifidi.services.tags.model.IRifidiTagContainer#addTags(java.util.
+	 * Collection)
 	 */
 	@Override
 	public void addTags(Collection<RifidiTag> tags) {
-		Set<RifidiTagWithParent> add=new HashSet<RifidiTagWithParent>();
-		for(RifidiTag tag:tags){
+		Set<RifidiTagWithParent> add = new HashSet<RifidiTagWithParent>();
+		for (RifidiTag tag : tags) {
 			tag.addPropertyChangeListener(this);
 			RifidiTagWithParent r = new RifidiTagWithParent();
 			r.parent = this;
@@ -446,25 +456,31 @@ public class BoxproducerEntity extends AbstractVisualProducer implements
 		wrappers.addAll(add);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.rifidi.services.tags.model.IRifidiTagContainer#removeTags(java.util.Collection)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.rifidi.services.tags.model.IRifidiTagContainer#removeTags(java.util
+	 * .Collection)
 	 */
 	@Override
 	public void removeTags(Collection<RifidiTag> tags) {
 		this.tags.removeAll(tags);
 		tagStack.removeAll(tags);
-		Set<RifidiTagWithParent> rem=new HashSet<RifidiTagWithParent>();
-		for(Object wrapper:wrappers){
-			if(tags.contains(((RifidiTagWithParent)wrapper).tag)){
-				((RifidiTagWithParent)wrapper).tag.removePropertyChangeListener(this);
-				rem.add((RifidiTagWithParent)wrapper);
+		Set<RifidiTagWithParent> rem = new HashSet<RifidiTagWithParent>();
+		for (Object wrapper : wrappers) {
+			if (tags.contains(((RifidiTagWithParent) wrapper).tag)) {
+				((RifidiTagWithParent) wrapper).tag
+						.removePropertyChangeListener(this);
+				rem.add((RifidiTagWithParent) wrapper);
 			}
 		}
 		wrappers.removeAll(rem);
 	}
 
 	/**
-	 * @param tagService the tagService to set
+	 * @param tagService
+	 *            the tagService to set
 	 */
 	@Inject
 	public void setTagService(IRifidiTagService tagService) {
@@ -476,6 +492,29 @@ public class BoxproducerEntity extends AbstractVisualProducer implements
 	 */
 	public WritableList getWrappers() {
 		return this.wrappers;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.rifidi.designer.entities.interfaces.IProducer#getProducts()
+	 */
+	@Override
+	public List<CardboxEntity> getProducts() {
+		return new ArrayList<CardboxEntity>(products);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.rifidi.designer.entities.interfaces.IProducer#setProducts(java.util
+	 * .List)
+	 */
+	@Override
+	public void setProducts(List<CardboxEntity> entities) {
+		products.clear();
+		products.addAll(entities);
 	}
 
 }

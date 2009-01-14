@@ -26,7 +26,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.rifidi.designer.entities.Entity;
 import org.rifidi.designer.entities.VisualEntity;
-import org.rifidi.designer.entities.grouping.IChildEntity;
 import org.rifidi.designer.entities.interfaces.IField;
 import org.rifidi.designer.entities.interfaces.IHasSwitch;
 import org.rifidi.designer.entities.interfaces.INeedsPhysics;
@@ -67,7 +66,7 @@ import com.jmex.physics.material.Material;
  * @author Dan West - 'Phoenix' - dan@pramari.com
  */
 public class AntennaFieldEntity extends VisualEntity implements IHasSwitch,
-		INeedsPhysics, IField, IChildEntity {
+		INeedsPhysics, IField {
 	/** Logger for this class. */
 	@XmlTransient
 	private static Log logger = LogFactory.getLog(AntennaFieldEntity.class);
@@ -98,7 +97,7 @@ public class AntennaFieldEntity extends VisualEntity implements IHasSwitch,
 	private Vector3f baseRotation;
 	/** The entity this antenna is attached to. */
 	@XmlIDREF
-	private VisualEntity parent;
+	private GateEntity gate;
 	/** The factor by which the field gets resized. */
 	@XmlTransient
 	private float factor;
@@ -127,6 +126,7 @@ public class AntennaFieldEntity extends VisualEntity implements IHasSwitch,
 	 * Default constructor (used by JAXB)
 	 */
 	public AntennaFieldEntity() {
+		visible=false;
 		factor = 1.0f;
 	}
 
@@ -139,6 +139,7 @@ public class AntennaFieldEntity extends VisualEntity implements IHasSwitch,
 	 *            the interface for communicating with this field's reader
 	 */
 	public AntennaFieldEntity(int antNum, ReaderModuleManagerInterface rmmi) {
+		visible=false;
 		factor = 1.0f;
 		readerInterface = rmmi;
 		antennaNum = antNum;
@@ -332,7 +333,7 @@ public class AntennaFieldEntity extends VisualEntity implements IHasSwitch,
 						.getRifidiTag(), readerInterface, antennaNum, true));
 			}
 			// inform the parent of the collision
-			((GateEntity) getParent()).tagSeen();
+			gate.tagSeen();
 		}
 	}
 
@@ -405,28 +406,6 @@ public class AntennaFieldEntity extends VisualEntity implements IHasSwitch,
 	 */
 	public void setPhysicsSpace(PhysicsSpace physicsSpace) {
 		this.physicsSpace = physicsSpace;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.rifidi.designer.entities.interfaces.ChildEntity#getParent()
-	 */
-	@Override
-	public VisualEntity getParent() {
-		return parent;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.rifidi.designer.entities.interfaces.ChildEntity#setParent(org.rifidi
-	 * .designer.entities.VisualEntity)
-	 */
-	@Override
-	public void setParent(VisualEntity entity) {
-		this.parent = entity;
 	}
 
 	/**
@@ -533,6 +512,20 @@ public class AntennaFieldEntity extends VisualEntity implements IHasSwitch,
 	@Inject
 	public void setFieldService(FieldService fieldService) {
 		this.fieldService = fieldService;
+	}
+
+	/**
+	 * @return the gate
+	 */
+	public GateEntity getGate() {
+		return this.gate;
+	}
+
+	/**
+	 * @param gate the gate to set
+	 */
+	public void setGate(GateEntity gate) {
+		this.gate = gate;
 	}
 
 }

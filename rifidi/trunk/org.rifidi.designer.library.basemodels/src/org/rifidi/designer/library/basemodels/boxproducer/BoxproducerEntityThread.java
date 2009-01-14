@@ -13,9 +13,8 @@ package org.rifidi.designer.library.basemodels.boxproducer;
 import java.util.List;
 import java.util.Stack;
 
-import org.rifidi.designer.entities.interfaces.AbstractVisualProduct;
 import org.rifidi.designer.library.basemodels.cardbox.CardboxEntity;
-import org.rifidi.designer.services.core.entities.ProductService;
+import org.rifidi.designer.services.core.entities.EntitiesService;
 import org.rifidi.tags.impl.RifidiTag;
 
 import com.jme.math.Matrix3f;
@@ -38,9 +37,9 @@ public class BoxproducerEntityThread extends Thread {
 	/** Production intervall length. */
 	private Integer interval;
 	/** Produced entities. */
-	private List<AbstractVisualProduct> products;
+	private List<CardboxEntity> products;
 	/** Reference to the product service. */
-	private ProductService productService;
+	private EntitiesService entitiesService;
 	/** Stack for RifidiTags, shared with the entity. */
 	private Stack<RifidiTag> tagStack;
 
@@ -57,12 +56,12 @@ public class BoxproducerEntityThread extends Thread {
 	 * 
 	 */
 	public BoxproducerEntityThread(BoxproducerEntity entity,
-			ProductService productService,
-			List<AbstractVisualProduct> products, Stack<RifidiTag> tagStack) {
+			EntitiesService entitiesService,
+			List<CardboxEntity> products, Stack<RifidiTag> tagStack) {
 		super();
 		this.entity = entity;
 		this.products = products;
-		this.productService = productService;
+		this.entitiesService = entitiesService;
 		this.tagStack = tagStack;
 	}
 
@@ -86,7 +85,7 @@ public class BoxproducerEntityThread extends Thread {
 						.getLocalTranslation().clone();
 				startPos.setY(10);
 				ca.setStartPos(startPos);
-				productService.addProduct(ca);
+				entitiesService.addEntity(ca, null, null);
 				products.add(ca);
 			}
 

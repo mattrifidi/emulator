@@ -20,11 +20,13 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.annotations.Property;
 import org.rifidi.designer.entities.databinding.annotations.MonitoredProperties;
-import org.rifidi.designer.entities.interfaces.AbstractVisualProduct;
 import org.rifidi.designer.entities.interfaces.INeedsPhysics;
+import org.rifidi.designer.entities.interfaces.IProduct;
 import org.rifidi.designer.entities.rifidi.ITagged;
+import org.rifidi.designer.library.basemodels.boxproducer.BoxproducerEntity;
 import org.rifidi.tags.impl.RifidiTag;
 
 import com.jme.bounding.BoundingBox;
@@ -46,8 +48,8 @@ import com.jmex.physics.PhysicsSpace;
  * 
  */
 @MonitoredProperties(names = { "name" })
-public class CardboxEntity extends AbstractVisualProduct implements
-		INeedsPhysics, ITagged {
+public class CardboxEntity extends VisualEntity implements INeedsPhysics,
+		ITagged, IProduct<BoxproducerEntity> {
 	/** logger for this class. */
 	@XmlTransient
 	private static Log logger = LogFactory.getLog(CardboxEntity.class);
@@ -66,11 +68,14 @@ public class CardboxEntity extends AbstractVisualProduct implements
 	/** Tag associated with this entity. */
 	@XmlIDREF
 	private RifidiTag rifidiTag;
-
+	/** Reference to the producer of this cardbox. */
+	@XmlIDREF
+	private BoxproducerEntity producer;
 	/**
 	 * Constructor.
 	 */
 	public CardboxEntity() {
+		destructible = true;
 		setName("Cardbox");
 	}
 
@@ -169,10 +174,11 @@ public class CardboxEntity extends AbstractVisualProduct implements
 	 */
 	@Override
 	public void destroy() {
-		super.destroy();
-		update(new Callable<Object>(){
+		update(new Callable<Object>() {
 
-			/* (non-Javadoc)
+			/*
+			 * (non-Javadoc)
+			 * 
 			 * @see java.util.concurrent.Callable#call()
 			 */
 			@Override
@@ -181,8 +187,9 @@ public class CardboxEntity extends AbstractVisualProduct implements
 				getNode().removeFromParent();
 				return null;
 			}
-			
+
 		});
+		producer.productDestroied(this);
 	}
 
 	/*
@@ -277,6 +284,21 @@ public class CardboxEntity extends AbstractVisualProduct implements
 			return rifidiTag.toString();
 		}
 		return "";
+	}
+
+	/* (non-Javadoc)
+	 * @see org.rifidi.designer.entities.interfaces.IProduct#getProducer()
+	 */
+	@Override
+	public BoxproducerEntity getProducer() {
+		return producer;
+	}
+
+	/**
+	 * @param producer the producer to set
+	 */
+	public void setProducer(BoxproducerEntity producer) {
+		this.producer = producer;
 	}
 
 }

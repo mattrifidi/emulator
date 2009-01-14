@@ -16,12 +16,12 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import org.rifidi.designer.entities.Entity;
 import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.databinding.annotations.MonitoredProperties;
-import org.rifidi.designer.entities.interfaces.AbstractVisualProduct;
 import org.rifidi.designer.entities.interfaces.INeedsPhysics;
+import org.rifidi.designer.services.core.entities.EntitiesService;
 import org.rifidi.designer.services.core.entities.FinderService;
-import org.rifidi.designer.services.core.entities.ProductService;
 import org.rifidi.services.annotations.Inject;
 
 import com.jme.bounding.BoundingBox;
@@ -60,7 +60,7 @@ public class DestroyerEntity extends VisualEntity implements INeedsPhysics {
 	private InputHandler collisionHandler;
 	/** Reference to the products service. */
 	@XmlTransient
-	private ProductService productService;
+	private EntitiesService entitiesService;
 	/** Reference to the finder service. */
 	@XmlTransient
 	private FinderService finderService;
@@ -138,12 +138,12 @@ public class DestroyerEntity extends VisualEntity implements INeedsPhysics {
 				VisualEntity ent = finderService
 						.getVisualEntityByNode(collider);
 				if (ent != null) {
-					if (ent instanceof AbstractVisualProduct && !ent.isDeleted()) {
+					if (ent.isDestructible() && !ent.isDeleted()) {
 						//required to prevent the deletion action from happening more than once
 						ent.setDeleted(true);
-						List<AbstractVisualProduct> entities = new ArrayList<AbstractVisualProduct>();
-						entities.add((AbstractVisualProduct) ent);
-						productService.deleteProducts(entities);
+						List<Entity> entities = new ArrayList<Entity>();
+						entities.add(ent);
+						entitiesService.deleteEntities(entities);
 					}
 				}
 			}
@@ -215,11 +215,11 @@ public class DestroyerEntity extends VisualEntity implements INeedsPhysics {
 	}
 
 	/**
-	 * @param productService
-	 *            the productService to set
+	 * @param entitiesService
+	 *            the entitiesService to set
 	 */
 	@Inject
-	public void setProductService(ProductService productService) {
-		this.productService = productService;
+	public void setEntitiesService(EntitiesService entitiesService) {
+		this.entitiesService = entitiesService;
 	}
 }

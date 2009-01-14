@@ -35,10 +35,6 @@ public class AntennaFieldThread extends Thread {
 	 */
 	private Stack<AntennaFieldAction> actionStack;
 	/**
-	 * Flag for stopping the thread.
-	 */
-	private boolean keepRunning = true;
-	/**
 	 * RMI interface for emulator.
 	 */
 	private ReaderModuleManagerInterface readerInterface;
@@ -107,14 +103,6 @@ public class AntennaFieldThread extends Thread {
 	 */
 	public void addAction(AntennaFieldAction action) {
 		actionStack.push(action);
-	}
-
-	/**
-	 * @param keepRunning
-	 *            the keepRunning to set
-	 */
-	public void setKeepRunning(boolean keepRunning) {
-		this.keepRunning = keepRunning;
 	}
 
 }
