@@ -22,7 +22,6 @@ import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.databinding.annotations.MonitoredProperties;
 import org.rifidi.designer.entities.interfaces.IField;
 import org.rifidi.designer.entities.interfaces.IHasSwitch;
-import org.rifidi.designer.entities.interfaces.IInternalEntity;
 import org.rifidi.designer.entities.interfaces.INeedsPhysics;
 import org.rifidi.designer.services.core.collision.FieldService;
 import org.rifidi.designer.services.core.events.EventsService;
@@ -49,7 +48,7 @@ import com.jmex.physics.material.Material;
  */
 @MonitoredProperties(names = { "name" })
 public class WatchAreaEntity extends VisualEntity implements INeedsPhysics,
-		IField, IHasSwitch, IInternalEntity, IAdaptable {
+		IField, IHasSwitch, IAdaptable {
 	/** Reference to the physicsspace. */
 	@XmlTransient
 	private PhysicsSpace physicsSpace;
@@ -281,16 +280,6 @@ public class WatchAreaEntity extends VisualEntity implements INeedsPhysics,
 	@Inject
 	public void setFieldService(FieldService fieldService) {
 		this.fieldService = fieldService;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.rifidi.designer.entities.interfaces.IInternalEntity#isVisible()
-	 */
-	@Override
-	public boolean isVisible() {
-		return true;
 	}
 
 	/*

@@ -13,8 +13,6 @@ package org.rifidi.designer.rcp.views.minimapview;
 import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
@@ -50,8 +48,6 @@ import com.jme.renderer.Camera;
 public class MiniMapView extends ViewPart {
 	/** Eclipse ID */
 	public static String ID = "org.rifidi.designer.rcp.views.MiniMapView";
-	/** Logger */
-	private static Log logger = LogFactory.getLog(MiniMapView.class);
 	/** Camera used to render the map. */
 	private Camera mapCamera;
 	/** Map image data. */
@@ -64,13 +60,11 @@ public class MiniMapView extends ViewPart {
 	private Scale scale;
 	/** Used for dragging. */
 	private boolean mousedown = false;
-	/** Graphics context for manipulating the map image */
-	private GC graphicsContext;
 	/** true if the view is disposed. */
 	private boolean disposed = false;
 	/** Minimap Canvas. */
 	private Canvas canvas;
-
+	/** Implementationof the designer functionality. */
 	private DesignerGame implementor;
 
 	private WaitingCallable waitingCallable;
@@ -190,7 +184,6 @@ public class MiniMapView extends ViewPart {
 			Vector3f ground2 = coords0.subtract(direction.mult(coords0.y
 					/ direction.y));
 
-			
 			// scale the direction out to the ground plane
 			waitingCallable.pos = ground1.subtract(ground2);
 			implementor.render(waitingCallable);
@@ -284,9 +277,17 @@ public class MiniMapView extends ViewPart {
 		this.implementor = implementor;
 	}
 
+	/**
+	 * Callable for moving the camera.
+	 * 
+	 * 
+	 * @author Jochen Mader - jochen@pramari.com - Jan 12, 2009
+	 * 
+	 */
 	private class WaitingCallable implements Callable<Object> {
-
+		/** Prevent the callabel from being called more than once. */
 		public AtomicBoolean running = new AtomicBoolean(false);
+		/** Vector that should be added to the camera position */
 		public Vector3f pos;
 
 		/*

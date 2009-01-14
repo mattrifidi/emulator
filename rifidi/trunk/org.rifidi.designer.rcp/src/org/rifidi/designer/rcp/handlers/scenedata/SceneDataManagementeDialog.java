@@ -35,12 +35,9 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.PlatformUI;
 import org.rifidi.designer.rcp.Activator;
-import org.rifidi.designer.rcp.views.view3d.View3D;
 import org.rifidi.designer.services.core.entities.SceneDataService;
 import org.rifidi.services.annotations.Inject;
 import org.rifidi.services.registry.ServiceRegistry;
@@ -68,9 +65,9 @@ public class SceneDataManagementeDialog {
 	private Button cancel;
 	/** Button for deleting the selected file. */
 	private Button delete;
-	/** Reference to the scene data service*/
+	/** Reference to the scene data service */
 	private SceneDataService sceneDataService;
-	
+
 	/**
 	 * Constructor
 	 * 
@@ -115,7 +112,9 @@ public class SceneDataManagementeDialog {
 			/*
 			 * (non-Javadoc)
 			 * 
-			 * @see org.eclipse.swt.events.SelectionListener#widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent)
+			 * @see
+			 * org.eclipse.swt.events.SelectionListener#widgetDefaultSelected
+			 * (org.eclipse.swt.events.SelectionEvent)
 			 */
 			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
@@ -124,7 +123,9 @@ public class SceneDataManagementeDialog {
 			/*
 			 * (non-Javadoc)
 			 * 
-			 * @see org.eclipse.swt.events.SelectionListener#widgetSelected(org.eclipse.swt.events.SelectionEvent)
+			 * @see
+			 * org.eclipse.swt.events.SelectionListener#widgetSelected(org.eclipse
+			 * .swt.events.SelectionEvent)
 			 */
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -140,7 +141,9 @@ public class SceneDataManagementeDialog {
 			/*
 			 * (non-Javadoc)
 			 * 
-			 * @see org.eclipse.swt.events.SelectionListener#widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent)
+			 * @see
+			 * org.eclipse.swt.events.SelectionListener#widgetDefaultSelected
+			 * (org.eclipse.swt.events.SelectionEvent)
 			 */
 			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
@@ -149,7 +152,9 @@ public class SceneDataManagementeDialog {
 			/*
 			 * (non-Javadoc)
 			 * 
-			 * @see org.eclipse.swt.events.SelectionListener#widgetSelected(org.eclipse.swt.events.SelectionEvent)
+			 * @see
+			 * org.eclipse.swt.events.SelectionListener#widgetSelected(org.eclipse
+			 * .swt.events.SelectionEvent)
 			 */
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -182,7 +187,9 @@ public class SceneDataManagementeDialog {
 			/*
 			 * (non-Javadoc)
 			 * 
-			 * @see org.eclipse.swt.events.SelectionListener#widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent)
+			 * @see
+			 * org.eclipse.swt.events.SelectionListener#widgetDefaultSelected
+			 * (org.eclipse.swt.events.SelectionEvent)
 			 */
 			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
@@ -191,13 +198,15 @@ public class SceneDataManagementeDialog {
 			/*
 			 * (non-Javadoc)
 			 * 
-			 * @see org.eclipse.swt.events.SelectionListener#widgetSelected(org.eclipse.swt.events.SelectionEvent)
+			 * @see
+			 * org.eclipse.swt.events.SelectionListener#widgetSelected(org.eclipse
+			 * .swt.events.SelectionEvent)
 			 */
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				logger.info("Loading " + file.getName());
 				shell.close();
-				sceneDataService.loadScene(Display.getCurrent(), file);
+				sceneDataService.loadScene(file);
 			}
 
 		});
@@ -206,13 +215,15 @@ public class SceneDataManagementeDialog {
 			/*
 			 * (non-Javadoc)
 			 * 
-			 * @see org.eclipse.swt.events.MouseAdapter#mouseDoubleClick(org.eclipse.swt.events.MouseEvent)
+			 * @see
+			 * org.eclipse.swt.events.MouseAdapter#mouseDoubleClick(org.eclipse
+			 * .swt.events.MouseEvent)
 			 */
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
 				logger.info("Loading " + file.getName());
 				shell.close();
-				sceneDataService.loadScene(Display.getCurrent(), file);
+				sceneDataService.loadScene(file);
 			}
 
 		});
@@ -241,8 +252,9 @@ public class SceneDataManagementeDialog {
 		/*
 		 * (non-Javadoc)
 		 * 
-		 * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnImage(java.lang.Object,
-		 *      int)
+		 * @see
+		 * org.eclipse.jface.viewers.ITableLabelProvider#getColumnImage(java
+		 * .lang.Object, int)
 		 */
 		public Image getColumnImage(Object element, int columnIndex) {
 			return null;
@@ -251,8 +263,9 @@ public class SceneDataManagementeDialog {
 		/*
 		 * (non-Javadoc)
 		 * 
-		 * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnText(java.lang.Object,
-		 *      int)
+		 * @see
+		 * org.eclipse.jface.viewers.ITableLabelProvider#getColumnText(java.
+		 * lang.Object, int)
 		 */
 		public String getColumnText(Object element, int columnIndex) {
 			return ((IResource) element).getName();
@@ -261,7 +274,8 @@ public class SceneDataManagementeDialog {
 	}
 
 	/**
-	 * @param sceneDataService the sceneDataService to set
+	 * @param sceneDataService
+	 *            the sceneDataService to set
 	 */
 	@Inject
 	public void setSceneDataService(SceneDataService sceneDataService) {

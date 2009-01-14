@@ -51,8 +51,7 @@ public class NewSceneDataHandler extends AbstractHandler {
 		int result = dialog.open();
 		if (WizardDialog.CANCEL != result) {
 			wizard.getNewLayout();
-			sceneDataService.loadScene(Display.getCurrent(), wizard
-					.getNewLayout());
+			sceneDataService.loadScene(wizard.getNewLayout());
 		}
 		return null;
 	}

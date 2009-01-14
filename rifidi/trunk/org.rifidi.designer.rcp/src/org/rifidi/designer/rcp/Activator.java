@@ -19,7 +19,6 @@ import org.rifidi.designer.services.core.collision.FieldServiceImpl;
 import org.rifidi.designer.services.core.entities.EntitiesService;
 import org.rifidi.designer.services.core.entities.EntitiesServiceImpl;
 import org.rifidi.designer.services.core.entities.FinderService;
-import org.rifidi.designer.services.core.entities.ProductService;
 import org.rifidi.designer.services.core.entities.SceneDataService;
 import org.rifidi.designer.services.core.events.EventsService;
 import org.rifidi.designer.services.core.events.EventsServiceImpl;
@@ -89,10 +88,11 @@ public class Activator extends AbstractUIPlugin {
 		}
 		context.registerService(FieldService.class.getName(),
 				new FieldServiceImpl(), null);
-		context.registerService(new String[] { EntitiesService.class.getName(),
-				ProductService.class.getName(), FinderService.class.getName(),
-				SceneDataService.class.getName() }, new EntitiesServiceImpl(),
-				null);
+		context.registerService(
+				new String[] { EntitiesService.class.getName(),
+						FinderService.class.getName(),
+						SceneDataService.class.getName() },
+				new EntitiesServiceImpl(), null);
 		context.registerService(EventsService.class.getName(),
 				new EventsServiceImpl(), null);
 		context.registerService(SelectionService.class.getName(),

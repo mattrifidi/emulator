@@ -273,7 +273,6 @@ public class MouseMoveEntityListener implements MouseMoveListener,
 	public void mouseDown(MouseEvent e) {
 		if (colliders.size() == 0 && collidesWithFloor.size() == 0
 				&& e.button == 1) {
-			System.out.println("dropping");
 			drop();
 			view3D.switchMode(View3D.Mode.PickMode);
 			inPlacement = false;

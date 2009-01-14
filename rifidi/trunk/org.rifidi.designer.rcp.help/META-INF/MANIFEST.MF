@@ -5,6 +5,7 @@ Bundle-SymbolicName: org.rifidi.designer.rcp.help; singleton:=true
 Bundle-Version: 1.0.0
 Bundle-Activator: org.rifidi.designer.rcp.help.Activator
 Bundle-Vendor: Pramari, LLC
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime
-Eclipse-LazyStart: true
+Bundle-ActivationPolicy: lazy

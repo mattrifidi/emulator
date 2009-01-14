@@ -48,7 +48,6 @@ import org.monklypse.core.renderer.OffscreenRenderer;
 import org.rifidi.designer.entities.Entity;
 import org.rifidi.designer.entities.SceneData;
 import org.rifidi.designer.entities.VisualEntity;
-import org.rifidi.designer.entities.SceneData.Direction;
 import org.rifidi.designer.rcp.GlobalProperties;
 import org.rifidi.designer.rcp.views.minimapview.MiniMapView;
 import org.rifidi.designer.services.core.collision.FieldService;
@@ -88,7 +87,7 @@ import com.jmex.physics.PhysicsDebugger;
 import com.jmex.swt.lwjgl.LWJGLSWTCanvas;
 
 /**
- * FIXME: Class comment.  
+ * FIXME: Class comment.
  * 
  * @author Jochen Mader - jochen@pramari.com - May 28, 2008
  * 
@@ -474,18 +473,6 @@ public class DesignerGame extends SWTDefaultImplementor implements
 		});
 	}
 
-	/**
-	 * @param dir
-	 *            direction specifying which wall to show
-	 */
-	public void showWall(Direction dir) {
-		sceneDataService.getWalls().get(dir).clearRenderState(
-				RenderState.RS_BLEND);
-		sceneDataService.getWalls().get(dir).setRenderQueueMode(
-				Renderer.QUEUE_SKIP);
-		sceneDataService.getWalls().get(dir).updateRenderState();
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -590,13 +577,17 @@ public class DesignerGame extends SWTDefaultImplementor implements
 	 * KeyEvent)
 	 */
 	public void keyPressed(KeyEvent e) {
-		if (e.character == 'a' || e.character == 'A' || e.keyCode == SWT.ARROW_LEFT) {
+		if (e.character == 'a' || e.character == 'A'
+				|| e.keyCode == SWT.ARROW_LEFT) {
 			updownleftright[2] = true;
-		} else if (e.character == 'd' || e.character == 'D' || e.keyCode == SWT.ARROW_RIGHT) {
+		} else if (e.character == 'd' || e.character == 'D'
+				|| e.keyCode == SWT.ARROW_RIGHT) {
 			updownleftright[3] = true;
-		} else if (e.character == 'w' || e.character == 'W' || e.keyCode == SWT.ARROW_UP) {
+		} else if (e.character == 'w' || e.character == 'W'
+				|| e.keyCode == SWT.ARROW_UP) {
 			updownleftright[0] = true;
-		} else if (e.character == 's' || e.character == 'S' || e.keyCode == SWT.ARROW_DOWN) {
+		} else if (e.character == 's' || e.character == 'S'
+				|| e.keyCode == SWT.ARROW_DOWN) {
 			updownleftright[1] = true;
 		}
 	}
@@ -749,7 +740,7 @@ public class DesignerGame extends SWTDefaultImplementor implements
 		gridNode.updateRenderState();
 		gridNode.updateGeometricState(0, true);
 		GameStateManager.getInstance().attachChild(gridState);
-		gridEnabled=!gridEnabled;
+		gridEnabled = !gridEnabled;
 		toggleGrid();
 	}
 
