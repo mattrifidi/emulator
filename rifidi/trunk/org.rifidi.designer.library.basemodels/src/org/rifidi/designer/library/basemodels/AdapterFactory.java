@@ -20,8 +20,6 @@ import org.rifidi.designer.entities.adapters.SwitchActionFilterAdapter;
 import org.rifidi.designer.entities.properties.DefaultPropertySource;
 import org.rifidi.designer.library.basemodels.boxproducer.BoxproducerEntity;
 import org.rifidi.designer.library.basemodels.boxproducer.BoxproducerEntityWorkbenchAdapter;
-import org.rifidi.designer.library.basemodels.boxproducercont.BoxproducerContinuousEntity;
-import org.rifidi.designer.library.basemodels.boxproducercont.BoxproducerContinuousEntityWorkbenchAdapter;
 import org.rifidi.designer.library.basemodels.cardbox.CardboxEntity;
 import org.rifidi.designer.library.basemodels.cardbox.CardboxEntityWorkbenchAdapter;
 import org.rifidi.designer.library.basemodels.conveyor.ConveyorEntity;
@@ -70,17 +68,8 @@ public class AdapterFactory implements IAdapterFactory {
 			if (IPropertySource.class.equals(adapterType)) {
 				return new DefaultPropertySource((Entity) adaptableObject);
 			}
-		} else if (adaptableObject instanceof BoxproducerContinuousEntity) {
-			if (IWorkbenchAdapter.class.equals(adapterType)) {
-				return new BoxproducerContinuousEntityWorkbenchAdapter();
-			}
-			if (IActionFilter.class.equals(adapterType)) {
-				return new SwitchActionFilterAdapter();
-			}
-			if (IPropertySource.class.equals(adapterType)) {
-				return new DefaultPropertySource((Entity) adaptableObject);
-			}
-		} else if (adaptableObject instanceof CardboxEntity) {
+		}
+		else if (adaptableObject instanceof CardboxEntity) {
 			if (IWorkbenchAdapter.class.equals(adapterType)) {
 				return new CardboxEntityWorkbenchAdapter();
 			}
