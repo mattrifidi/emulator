@@ -52,7 +52,6 @@ import org.rifidi.designer.services.core.selection.SelectionService;
 import org.rifidi.services.annotations.Inject;
 import org.rifidi.services.registry.ServiceRegistry;
 import org.rifidi.services.tags.IRifidiTagService;
-import org.rifidi.services.tags.exceptions.RifidiTagNotAvailableException;
 import org.rifidi.services.tags.model.IRifidiTagContainer;
 import org.rifidi.tags.impl.RifidiTag;
 
@@ -167,7 +166,7 @@ public class EntityView extends ViewPart implements ISelectionChangedListener,
 							(String) event.data);
 				} else if ((((TreeItem) event.item).getData() instanceof IRifidiTagContainer)
 						&& ((String) event.data).contains("RIFIDITAGS")) {
-					
+
 					Set<RifidiTag> tags = new HashSet<RifidiTag>();
 					for (String token : ((String) event.data).split("\n")) {
 						try {
@@ -176,17 +175,10 @@ public class EntityView extends ViewPart implements ISelectionChangedListener,
 							logger.debug(nfe.toString());
 						}
 					}
-					
-					try{
-						for (RifidiTag tag : tags) {
-							tagService.takeRifidiTag(tag, (IRifidiTagContainer) ((TreeItem) event.item).getData());
-						}
-						((IRifidiTagContainer) ((TreeItem) event.item).getData())
-								.addTags(tags);	
-					}catch(RifidiTagNotAvailableException e){
-						logger.fatal(e);
-					}
-					
+
+					((IRifidiTagContainer) ((TreeItem) event.item).getData())
+							.addTags(tags);
+
 				}
 			}
 

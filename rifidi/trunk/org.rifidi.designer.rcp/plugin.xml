@@ -209,6 +209,15 @@
                values="org.rifidi.designer.rcp.commands.global.ShowPerspectiveParameters">
          </commandParameter>
       </command>
+      <category
+            id="org.rifidi.designer.library.basemodels.boxproducercommands"
+            name="Box Producer Commands">
+      </category>
+      <command
+            category="org.rifidi.designer.library.basemodels.boxproducercommands"
+            id="org.rifidi.designer.rcp.handlers.entities.removetags"
+            name="Remove Tag">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -357,6 +366,18 @@
       <handler
             class="org.rifidi.designer.rcp.handlers.global.OpenPerspectiveHandler"
             commandId="org.rifidi.designer.rcp.commands.global.openperspective">
+      </handler>
+      <handler
+            class="org.rifidi.designer.rcp.handlers.entities.RemoveTagsHandler"
+            commandId="org.rifidi.designer.rcp.handlers.entities.removetags">
+         <enabledWhen>
+            <iterate
+                  ifEmpty="false">
+               <instanceof
+                     value="org.rifidi.designer.entities.internal.RifidiTagWithParent">
+               </instanceof>
+            </iterate>
+         </enabledWhen>
       </handler>
    </extension>
    <extension
@@ -902,6 +923,24 @@
                      <test
                            property="org.rifidi.designer.rcp.entitygroups.locked">
                      </test></not>
+               </and>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="org.rifidi.designer.rcp.handlers.entities.removetags"
+               id="org.rifidi.designer.rcp.handlers.entities.removetagsBinding"
+               label="Remove Tags"
+               style="push">
+            <visibleWhen>
+               <and>
+                  <count
+                        value="+">
+                  </count>
+                  <iterate>
+                     <instanceof
+                           value="org.rifidi.designer.entities.internal.RifidiTagWithParent">
+                     </instanceof>
+                  </iterate>
                </and>
             </visibleWhen>
          </command>

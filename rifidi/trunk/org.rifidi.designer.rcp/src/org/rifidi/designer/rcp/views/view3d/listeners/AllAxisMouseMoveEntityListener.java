@@ -24,6 +24,7 @@ import org.eclipse.swt.widgets.Display;
 import org.monklypse.core.JMECanvasImplementor2;
 import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.interfaces.IContainer;
+import org.rifidi.designer.entities.interfaces.IProduct;
 import org.rifidi.designer.rcp.game.DesignerGame;
 import org.rifidi.designer.rcp.game.ZoomableLWJGLCamera;
 import org.rifidi.designer.rcp.views.view3d.View3D;
@@ -54,50 +55,30 @@ import com.jmex.physics.material.Material;
  */
 public class AllAxisMouseMoveEntityListener implements MouseListener,
 		MouseMoveListener, MouseWheelListener {
-	/**
-	 * The currently picked entity.
-	 */
+	/** The currently picked entity. */
 	private VisualEntity pickedEntity = null;
-	/**
-	 * Reference to the 3d view.
-	 */
+	/** Reference to the 3d view. */
 	private View3D view3D;
-	/**
-	 * Center of the screen.
-	 */
+	/** Center of the screen. */
 	private Point center;
-	/**
-	 * Movement delta on the mouse x axis.
-	 */
+	/** Movement delta on the mouse x axis. */
 	float deltaX = 0;
-	/**
-	 * Movement delta on the mouse y axis.
-	 */
+	/** Movement delta on the mouse y axis. */
 	float deltaY = 0;
-	/**
-	 * Mouse movement sensitivity.
-	 */
+	/** Mouse movement sensitivity. */
 	private float sensitivity = 5;
-	/**
-	 * Reference to the scene data service.
-	 */
+	/** Reference to the scene data service. */
 	private SceneDataService sceneDataService;
-	/**
-	 * Reference to the finder service.
-	 */
+	/** Reference to the finder service. */
 	private FinderService finderService;
-	/**
-	 * Reference to the entities service.
-	 */
+	/** Reference to the entities service. */
 	private EntitiesService entitiesService;
-	/**
-	 * Translation of the last hit object.
-	 */
+	/** Translation of the last hit object. */
 	private Vector3f lastHit;
-	/**
-	 * Reference to the implementor.
-	 */
+	/** Reference to the implementor. */
 	private DesignerGame implementor;
+	/** Used to check if the picked entity is already initialized. */
+	private boolean init = false;
 
 	/**
 	 * Constructor.
@@ -128,6 +109,7 @@ public class AllAxisMouseMoveEntityListener implements MouseListener,
 	 * .MouseEvent)
 	 */
 	public void mouseDown(MouseEvent e) {
+		// check what we got
 		if (e.button == 1 || e.button == 3) {
 			pickedEntity = null;
 			Camera cam = DisplaySystem.getDisplaySystem().getRenderer()
@@ -149,72 +131,27 @@ public class AllAxisMouseMoveEntityListener implements MouseListener,
 			// loop[ through the results to find an entity
 			// this has to be done as for some reasons a bounding box appears
 			// around the room and is hit first, darn
+			pickedEntity = null;
 			for (int count = 0; count < pickResults.getNumber(); count++) {
 				node = pickResults.getPickData(count).getTargetMesh()
 						.getParent().getParent();
-
 				pickedEntity = finderService.getVisualEntityByNode(node);
+				if (pickedEntity != null) {
+					break;
+				}
 			}
 		}
+		// if it's a container get a child of the container
 		if (pickedEntity != null && pickedEntity instanceof IContainer) {
 			lastHit = (Vector3f) pickedEntity.getNode().getWorldTranslation()
 					.clone();
-			pickedEntity = ((IContainer) pickedEntity)
-					.getVisualEntity();
-			if (pickedEntity != null) {
-				implementor.update(new Callable<Object>() {
-
-					/*
-					 * (non-Javadoc)
-					 * 
-					 * @see java.util.concurrent.Callable#call()
-					 */
-					@Override
-					public Object call() throws Exception {
-						pickedEntity.getNode().removeFromParent();
-						lastHit.setY(((BoundingBox) pickedEntity.getNode()
-								.getWorldBound()).yExtent + 0.1f);
-						pickedEntity.getNode().setLocalTranslation(lastHit);
-						pickedEntity.getNode().setLocalRotation(new Matrix3f());
-						sceneDataService.getCurrentSceneData().getRootNode()
-								.attachChild(pickedEntity.getNode());
-						sceneDataService.getCurrentSceneData().getRootNode()
-								.updateRenderState();
-						return null;
-					}
-
-				});
-			}
-		}
-		if (pickedEntity != null
-				&& pickedEntity.getNode() instanceof DynamicPhysicsNode) {
-			Rectangle bounds = Display.getCurrent().getActiveShell()
-					.getBounds();
-			center = new Point(bounds.x + bounds.width / 2, bounds.y
-					+ bounds.height / 2);
-			Display.getCurrent().setCursorLocation(center);
-			deltaX = 0;
-			deltaY = 0;
-			view3D.hideMousePointer();
-			implementor.update(new Callable<Object>() {
-
-				/*
-				 * (non-Javadoc)
-				 * 
-				 * @see java.util.concurrent.Callable#call()
-				 */
-				@Override
-				public Object call() throws Exception {
-					((PhysicsNode) pickedEntity.getNode())
-							.setMaterial(Material.GHOST);
-					((PhysicsNode) pickedEntity.getNode()).setActive(false);
-					return null;
-				}
-
-			});
-		} else {
+			pickedEntity = ((IContainer) pickedEntity).getVisualEntity();
+			init = false;
+		} else if (!(pickedEntity instanceof IProduct)) {
 			pickedEntity = null;
+			init = true;
 		}
+
 		ignore = false;
 	}
 
@@ -226,6 +163,7 @@ public class AllAxisMouseMoveEntityListener implements MouseListener,
 	 */
 	public void mouseUp(MouseEvent e) {
 		view3D.showMousePointer();
+		center = null;
 		if (pickedEntity != null) {
 			Set<VisualEntity> colls = entitiesService
 					.getColliders(pickedEntity);
@@ -236,8 +174,7 @@ public class AllAxisMouseMoveEntityListener implements MouseListener,
 						// if it vollides with an EntityHolder then try dropping
 						// it into it
 						if (((IContainer) ent).accepts(pickedEntity)) {
-							((IContainer) ent)
-									.addVisualEntity(pickedEntity);
+							((IContainer) ent).addVisualEntity(pickedEntity);
 							pickedEntity = null;
 						}
 					}
@@ -264,8 +201,46 @@ public class AllAxisMouseMoveEntityListener implements MouseListener,
 
 	@Override
 	public void mouseMove(MouseEvent e) {
-		if (pickedEntity != null && ignore == false) {
+		if (pickedEntity != null && pickedEntity.getNode() != null
+				&& init == false) {
+			implementor.update(new Callable<Object>() {
+
+				/*
+				 * (non-Javadoc)
+				 * 
+				 * @see java.util.concurrent.Callable#call()
+				 */
+				@Override
+				public Object call() throws Exception {
+					lastHit.setY(((BoundingBox) pickedEntity.getNode()
+							.getWorldBound()).yExtent + 0.1f);
+					pickedEntity.getNode().setLocalTranslation(lastHit);
+					pickedEntity.getNode().setLocalRotation(new Matrix3f());
+					init = true;
+					return null;
+				}
+
+			});
+		}
+		// if it is a physics node prevent it from colliding.
+		if (pickedEntity != null && init == true
+				&& pickedEntity.getNode() instanceof DynamicPhysicsNode
+				&& center == null) {
+			Rectangle bounds = Display.getCurrent().getActiveShell()
+					.getBounds();
+			center = new Point(bounds.x + bounds.width / 2, bounds.y
+					+ bounds.height / 2);
+			Display.getCurrent().setCursorLocation(center);
+			deltaX = 0;
+			deltaY = 0;
+			// deactivate collisions
+			((PhysicsNode) pickedEntity.getNode()).setMaterial(Material.GHOST);
+			((PhysicsNode) pickedEntity.getNode()).setActive(false);
+		}
+
+		if (pickedEntity != null && ignore == false && init == true) {
 			// calculate how far to move the object(s)
+			view3D.hideMousePointer();
 			Point loc = Display.getCurrent().getCursorLocation();
 			deltaX += ((float) loc.x - (float) center.x) / sensitivity;
 			deltaY += ((float) loc.y - (float) center.y) / sensitivity;
@@ -349,7 +324,8 @@ public class AllAxisMouseMoveEntityListener implements MouseListener,
 					.zoomIn(e.x, ((GLCanvas) e.widget).getSize().y - e.y);
 			return;
 		}
-		((ZoomableLWJGLCamera) implementor.getRenderer().getCamera()).zoomOut(e.x, ((GLCanvas) e.widget).getSize().y - e.y);
+		((ZoomableLWJGLCamera) implementor.getRenderer().getCamera()).zoomOut(
+				e.x, ((GLCanvas) e.widget).getSize().y - e.y);
 	}
 
 	/**

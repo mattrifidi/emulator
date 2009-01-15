@@ -13,8 +13,6 @@ package org.rifidi.designer.rcp.game;
 import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.rifidi.designer.rcp.game.DesignerGame;
-
 import com.jme.math.FastMath;
 import com.jme.math.Matrix4f;
 import com.jme.math.Quaternion;
@@ -121,17 +119,17 @@ public class ZoomableLWJGLCamera extends LWJGLCamera {
 				lod = 3;
 			}
 			//death to 2d view
-//			if (lod == 3 && cameraValues == null) {
-//				cameraValues = new Vector3f[3];
-//				cameraValues[0] = getLeft();
-//				cameraValues[1] = getUp();
-//				cameraValues[2] = getDirection();
-//				setAxes(new Vector3f(-1f, 0f, 0f), new Vector3f(0f, 0f, -1f),
-//						new Vector3f(0f, -1f, 0f));
-//
-//				update();
-//				apply();
-//			}
+			if (lod == 3 && cameraValues == null) {
+				cameraValues = new Vector3f[3];
+				cameraValues[0] = getLeft();
+				cameraValues[1] = getUp();
+				cameraValues[2] = getDirection();
+				setAxes(new Vector3f(-1f, 0f, 0f), new Vector3f(0f, 0f, -1f),
+						new Vector3f(0f, -1f, 0f));
+
+				update();
+				apply();
+			}
 			//yep, it's dead
 		}
 		if (cameraValues != null && lod != 3) {
