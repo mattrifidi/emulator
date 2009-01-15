@@ -35,6 +35,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.core.databinding.observable.list.IListChangeListener;
 import org.eclipse.core.databinding.observable.list.WritableList;
+import org.rifidi.designer.entities.Entity;
 import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.annotations.Property;
 import org.rifidi.designer.entities.databinding.IEntityObservable;
@@ -46,6 +47,7 @@ import org.rifidi.designer.library.retail.clothing.Clothing;
 import org.rifidi.designer.services.core.entities.EntitiesService;
 import org.rifidi.services.annotations.Inject;
 import org.rifidi.services.tags.IRifidiTagService;
+import org.rifidi.services.tags.exceptions.RifidiTagNotAvailableException;
 import org.rifidi.services.tags.model.IRifidiTagContainer;
 import org.rifidi.tags.impl.RifidiTag;
 
@@ -259,6 +261,7 @@ public class ClothingRack extends VisualEntity implements IContainer,
 	 */
 	@Override
 	public void loaded() {
+		prepare();
 		for (RifidiTag tag : getTags()) {
 			RifidiTagWithParent r = new RifidiTagWithParent();
 			r.parent = this;
@@ -303,46 +306,17 @@ public class ClothingRack extends VisualEntity implements IContainer,
 	 */
 	@Override
 	public void addVisualEntity(final VisualEntity visualEntity) {
-		// if (accepts(visualEntity) && !isFull()) {
-		// entities.add(visualEntity);
-		// update(new Callable<Object>() {
-		//
-		// /*
-		// * (non-Javadoc)
-		// *
-		// * @see java.util.concurrent.Callable#call()
-		// */
-		// @Override
-		// public Object call() throws Exception {
-		// visualEntity.getNode().removeFromParent();
-		// int count = 0;
-		// while (count < capacity) {
-		// if (entities.get(count) == null) {
-		// break;
-		// }
-		// count++;
-		// }
-		// getNode().attachChild(visualEntity.getNode());
-		// visualEntity.getNode()
-		// .setLocalTranslation(
-		// (Vector3f) positions.get(count).translation
-		// .clone());
-		// visualEntity.getNode().setLocalRotation(
-		// new Quaternion(positions.get(count).rotation));
-		// visualEntity.getNode().setIsCollidable(false);
-		//					
-		// ((DynamicPhysicsNode) visualEntity.getNode())
-		// .setActive(false);
-		// entities.set(count, visualEntity);
-		// return null;
-		// }
-		//
-		// });
-		// itemCount++;
-		// return;
-		// }
-		// throw new RuntimeException("Stupid!! Wrong type or full: "
-		// + accepts(visualEntity) + " " + isFull());
+		if (accepts(visualEntity) && !isFull()
+				&& products.contains(visualEntity)) {
+			List<Entity> del = new ArrayList<Entity>();
+			del.add(visualEntity);
+			entitiesService.deleteEntities(del);
+			addClothing();
+			tagStack.push(((Clothing)visualEntity).getRifidiTag());
+			return;
+		}
+		throw new RuntimeException("Stupid!! Wrong type or full: "
+				+ accepts(visualEntity) + " " + isFull());
 	}
 
 	/*
@@ -354,6 +328,7 @@ public class ClothingRack extends VisualEntity implements IContainer,
 	@Override
 	public VisualEntity getVisualEntity() {
 		try {
+			removeClothing();
 			RifidiTag tag = tagStack.pop();
 			Clothing clothing = new Clothing();
 			clothing.setRifidiTag(tag);
@@ -363,6 +338,7 @@ public class ClothingRack extends VisualEntity implements IContainer,
 			clothing.setStartRotation(getNode().getLocalRotation().clone());
 			clothing.setProducer(this);
 			entitiesService.addEntity(clothing, null, null);
+			products.add(clothing);
 			return clothing;
 		} catch (EmptyStackException e) {
 			return null;
@@ -444,43 +420,67 @@ public class ClothingRack extends VisualEntity implements IContainer,
 	 */
 	@Override
 	public void addTags(Collection<RifidiTag> tags) {
-		Set<RifidiTagWithParent> add = new HashSet<RifidiTagWithParent>();
 		for (RifidiTag tag : tags) {
-			tag.addPropertyChangeListener(this);
-			RifidiTagWithParent r = new RifidiTagWithParent();
-			r.parent = this;
-			r.tag = tag;
-			add.add(r);
-			update(new Callable<Object>() {
-
-				/*
-				 * (non-Javadoc)
-				 * 
-				 * @see java.util.concurrent.Callable#call()
-				 */
-				@Override
-				public Object call() throws Exception {
-					// TODO: Possible race condition
-					Node clothing = new Node("cloth " + itemCount++);
-					SharedNode shared = new SharedNode(clotModel);
-					clothing.attachChild(shared);
-					Position pos = new Position(calcPos(itemCount),
-							calcRot(itemCount));
-					clothing.getLocalTranslation().addLocal(
-							(Vector3f) pos.translation.clone());
-					clothing.getLocalRotation().set(
-							new Quaternion(pos.rotation));
-					clothing.setName("Clothing");
-					getNode().attachChild(clothing);
-					return null;
+			if (this.tags.size() < capacity) {
+				try {
+					tagService.takeRifidiTag(tag, this);
+					tag.addPropertyChangeListener(this);
+					RifidiTagWithParent r = new RifidiTagWithParent();
+					r.parent = this;
+					r.tag = tag;
+					addClothing();
+					wrappers.add(r);
+					this.tags.add(tag);
+					tagStack.push(tag);
+				} catch (RifidiTagNotAvailableException e) {
+					logger.error("Tag not available: " + e);
 				}
-
-			});
-
+			}
 		}
-		this.tags.addAll(tags);
-		wrappers.addAll(add);
-		tagStack.addAll(tags);
+	}
+
+	private void addClothing() {
+		update(new Callable<Object>() {
+
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see java.util.concurrent.Callable#call()
+			 */
+			@Override
+			public Object call() throws Exception {
+				// TODO: Possible race condition
+				Node clothing = new Node("cloth " + itemCount++);
+				SharedNode shared = new SharedNode(clotModel);
+				clothing.attachChild(shared);
+				Position pos = new Position(calcPos(itemCount),
+						calcRot(itemCount));
+				clothing.getLocalTranslation().addLocal(
+						(Vector3f) pos.translation.clone());
+				clothing.getLocalRotation().set(new Quaternion(pos.rotation));
+				getNode().attachChild(clothing);
+				return null;
+			}
+
+		});
+	}
+
+	private void removeClothing() {
+		update(new Callable<Object>() {
+
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see java.util.concurrent.Callable#call()
+			 */
+			@Override
+			public Object call() throws Exception {
+				itemCount--;
+				getNode().getChild("cloth " + itemCount).removeFromParent();
+				return null;
+			}
+
+		});
 	}
 
 	/*

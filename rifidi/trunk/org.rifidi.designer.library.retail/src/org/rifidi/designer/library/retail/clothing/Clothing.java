@@ -63,6 +63,17 @@ public class Clothing extends VisualEntity implements INeedsPhysics, ITagged,
 	/** Reference to the rack this cloth came out of. */
 	@XmlIDREF
 	private ClothingRack producer;
+	/** Tag associated with this clothing. */
+	@XmlIDREF
+	private RifidiTag tag;
+	
+	/**
+	 * 
+	 */
+	public Clothing() {
+		super();
+		setName("Clothing ");
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -187,8 +198,7 @@ public class Clothing extends VisualEntity implements INeedsPhysics, ITagged,
 	 */
 	@Override
 	public RifidiTag getRifidiTag() {
-		// TODO Auto-generated method stub
-		return null;
+		return tag;
 	}
 
 	/*
@@ -200,8 +210,7 @@ public class Clothing extends VisualEntity implements INeedsPhysics, ITagged,
 	 */
 	@Override
 	public void setRifidiTag(RifidiTag tag) {
-		// TODO Auto-generated method stub
-
+		this.tag=tag;
 	}
 
 	/*

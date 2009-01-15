@@ -142,9 +142,9 @@ public class AllAxisMouseMoveEntityListener implements MouseListener,
 			}
 		}
 		// if it's a container get a child of the container
+		lastHit = (Vector3f) pickedEntity.getNode().getWorldTranslation()
+				.clone();
 		if (pickedEntity != null && pickedEntity instanceof IContainer) {
-			lastHit = (Vector3f) pickedEntity.getNode().getWorldTranslation()
-					.clone();
 			pickedEntity = ((IContainer) pickedEntity).getVisualEntity();
 			init = false;
 		} else if (!(pickedEntity instanceof IProduct)) {
