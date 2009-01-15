@@ -458,11 +458,16 @@ public class BoxproducerEntity extends VisualEntity implements IHasSwitch,
 	public void addTags(Collection<RifidiTag> tags) {
 		Set<RifidiTagWithParent> add = new HashSet<RifidiTagWithParent>();
 		for (RifidiTag tag : tags) {
-			tag.addPropertyChangeListener(this);
-			RifidiTagWithParent r = new RifidiTagWithParent();
-			r.parent = this;
-			r.tag = tag;
-			add.add(r);
+			try {
+				tagService.takeRifidiTag(tag, this);
+				tag.addPropertyChangeListener(this);
+				RifidiTagWithParent r = new RifidiTagWithParent();
+				r.parent = this;
+				r.tag = tag;
+				add.add(r);
+			} catch (RifidiTagNotAvailableException e) {
+				logger.error("Tried to take unavailable tag: "+tag);
+			}
 		}
 		this.tags.addAll(tags);
 		tagStack.addAll(tags);
@@ -478,17 +483,22 @@ public class BoxproducerEntity extends VisualEntity implements IHasSwitch,
 	 */
 	@Override
 	public void removeTags(Collection<RifidiTag> tags) {
-		this.tags.removeAll(tags);
-		tagStack.removeAll(tags);
-		Set<RifidiTagWithParent> rem = new HashSet<RifidiTagWithParent>();
-		for (Object wrapper : wrappers) {
-			if (tags.contains(((RifidiTagWithParent) wrapper).tag)) {
-				((RifidiTagWithParent) wrapper).tag
-						.removePropertyChangeListener(this);
-				rem.add((RifidiTagWithParent) wrapper);
+		//only remove tags that are currently available.
+		//TODO: Wuhu, behold, It's a race condition. let's see who wins.
+		if(this.tagStack.containsAll(tags)){
+			this.tags.removeAll(tags);
+			tagStack.removeAll(tags);
+			Set<RifidiTagWithParent> rem = new HashSet<RifidiTagWithParent>();
+			for (Object wrapper : wrappers) {
+				if (tags.contains(((RifidiTagWithParent) wrapper).tag)) {
+					((RifidiTagWithParent) wrapper).tag
+							.removePropertyChangeListener(this);
+					rem.add((RifidiTagWithParent) wrapper);
+				}
 			}
+			wrappers.removeAll(rem);
+			tagService.releaseRifidiTags(tags, this);
 		}
-		wrappers.removeAll(rem);
 	}
 
 	/**
