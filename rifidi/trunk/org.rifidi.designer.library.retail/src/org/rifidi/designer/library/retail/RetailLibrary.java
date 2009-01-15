@@ -23,7 +23,7 @@ import org.rifidi.designer.library.retail.retailbox.RetailBox;
 import org.rifidi.designer.library.retail.shelf.Shelf;
 
 /**
- * FIXME: Class comment.  
+ * Library for retail models.
  * 
  * @author Jochen Mader - jochen@pramari.com - Apr 3, 2008
  * 

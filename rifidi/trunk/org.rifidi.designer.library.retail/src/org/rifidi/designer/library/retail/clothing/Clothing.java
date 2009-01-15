@@ -15,13 +15,19 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlTransient;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.interfaces.INeedsPhysics;
+import org.rifidi.designer.entities.interfaces.IProduct;
 import org.rifidi.designer.entities.rifidi.ITagged;
+import org.rifidi.designer.library.retail.clothingrack.ClothingRack;
 import org.rifidi.tags.impl.RifidiTag;
 
+import com.jme.bounding.BoundingBox;
 import com.jme.input.InputHandler;
 import com.jme.math.Quaternion;
 import com.jme.math.Vector3f;
@@ -33,12 +39,15 @@ import com.jmex.physics.PhysicsNode;
 import com.jmex.physics.PhysicsSpace;
 
 /**
- * FIXME: Class comment.  
+ * FIXME: Class comment.
  * 
  * @author Jochen Mader - jochen@pramari.com - Apr 3, 2008
  * 
  */
-public class Clothing extends VisualEntity implements INeedsPhysics, ITagged {
+public class Clothing extends VisualEntity implements INeedsPhysics, ITagged,
+		IProduct<ClothingRack> {
+	/** Logger for this class. */
+	private static Log logger = LogFactory.getLog(Clothing.class);
 	/** Reference to the current physics space. */
 	@XmlTransient
 	private PhysicsSpace physicsSpace;
@@ -51,6 +60,9 @@ public class Clothing extends VisualEntity implements INeedsPhysics, ITagged {
 	/** Rotation given on creation, ignored later on. */
 	@XmlTransient
 	private Quaternion startRotation;
+	/** Reference to the rack this cloth came out of. */
+	@XmlIDREF
+	private ClothingRack producer;
 
 	/*
 	 * (non-Javadoc)
@@ -59,6 +71,7 @@ public class Clothing extends VisualEntity implements INeedsPhysics, ITagged {
 	 */
 	@Override
 	public void destroy() {
+		destructible = true;
 		((PhysicsNode) getNode()).setActive(false);
 		((PhysicsNode) getNode()).delete();
 	}
@@ -82,25 +95,27 @@ public class Clothing extends VisualEntity implements INeedsPhysics, ITagged {
 				model = (Node) BinaryImporter.getInstance().load(
 						modelpath.toURL());
 			} catch (MalformedURLException e) {
-				e.printStackTrace();
+				logger.error("Can't load model: " + e);
 			} catch (IOException e) {
-				e.printStackTrace();
+				logger.error("Can't load model: " + e);
 			} catch (URISyntaxException e) {
-				e.printStackTrace();
+				logger.error("Can't load model: " + e);
 			}
 			Quaternion quat = new Quaternion(new float[] {
 					(float) Math.toRadians(270f), 0f, 0f });
 			model.setLocalRotation(quat);
 		}
 		DynamicPhysicsNode physix = physicsSpace.createDynamicNode();
+		physix.setModelBound(new BoundingBox());
 		physix.attachChild(new SharedNode("sharedcloth", model));
 		setNode(physix);
 		physix.setLocalTranslation(startTranslation);
 		physix.setLocalRotation(startRotation);
 		physix.updateModelBound();
 		physix.generatePhysicsGeometry();
-		physix.setIsCollidable(false);
-		physix.setActive(false);
+		physix.setIsCollidable(true);
+		physix.setActive(true);
+		physix.updateModelBound();
 	}
 
 	/*
@@ -165,7 +180,9 @@ public class Clothing extends VisualEntity implements INeedsPhysics, ITagged {
 		return null;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.rifidi.designer.entities.rifidi.ITagged#getRifidiTag()
 	 */
 	@Override
@@ -174,12 +191,34 @@ public class Clothing extends VisualEntity implements INeedsPhysics, ITagged {
 		return null;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.rifidi.designer.entities.rifidi.ITagged#setRifidiTag(org.rifidi.tags.impl.RifidiTag)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.rifidi.designer.entities.rifidi.ITagged#setRifidiTag(org.rifidi.tags
+	 * .impl.RifidiTag)
 	 */
 	@Override
 	public void setRifidiTag(RifidiTag tag) {
 		// TODO Auto-generated method stub
-		
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.rifidi.designer.entities.interfaces.IProduct#getProducer()
+	 */
+	@Override
+	public ClothingRack getProducer() {
+		return producer;
+	}
+
+	/**
+	 * @param producer
+	 *            the producer to set
+	 */
+	public void setProducer(ClothingRack producer) {
+		this.producer = producer;
 	}
 }

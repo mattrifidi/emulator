@@ -19,32 +19,43 @@ import org.rifidi.designer.library.retail.Activator;
  * 
  * @see CardboxEntity
  * @author Jochen Mader Oct 8, 2007
- *
+ * 
  */
-public class ClothingRackWorkbenchAdapter implements IWorkbenchAdapter{
+public class ClothingRackWorkbenchAdapter implements IWorkbenchAdapter {
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.ui.model.IWorkbenchAdapter#getChildren(java.lang.Object)
 	 */
 	public Object[] getChildren(Object o) {
-		return new Object[]{};
+		return ((ClothingRack) o).getWrappers().toArray();
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.ui.model.IWorkbenchAdapter#getImageDescriptor(java.lang.Object)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.ui.model.IWorkbenchAdapter#getImageDescriptor(java.lang.Object
+	 * )
 	 */
 	public ImageDescriptor getImageDescriptor(Object object) {
-		return Activator.getDefault().getImageRegistry().getDescriptor(ClothingRack.class.getName());
+		return Activator.getDefault().getImageRegistry().getDescriptor(
+				ClothingRack.class.getName());
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.ui.model.IWorkbenchAdapter#getLabel(java.lang.Object)
 	 */
 	public String getLabel(Object o) {
-		return ((ClothingRack)o).getName();
+		return ((ClothingRack) o).getName();
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.ui.model.IWorkbenchAdapter#getParent(java.lang.Object)
 	 */
 	public Object getParent(Object o) {
