@@ -1,7 +1,7 @@
 /*
- *  FloatCellEditor.java
+ *  BooleanCellEditor.java
  *
- *  Project:		RiFidi IDE 2.0 - A Virtualization tool for 3D RFID environments
+ *  Project:		RiFidi Designer - A Virtualization tool for 3D RFID environments
  *  http://www.rifidi.org
  *  http://rifidi.sourceforge.net
  *  Copyright:	    Pramari LLC and the Rifidi Project
@@ -12,57 +12,51 @@ package org.rifidi.designer.entities.properties;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.eclipse.jface.viewers.TextCellEditor;
+import org.eclipse.jface.viewers.CheckboxCellEditor;
 import org.eclipse.swt.widgets.Composite;
 
 /**
- * Cell editor for float values.
+ * Cell editor for boolean values.
  * 
- * @author Jochen Mader
+ * @author Jochen Mader - jochen@pramari.com - Jan 15, 2009
  * 
  */
-public class FloatCellEditor extends TextCellEditor {
+public class BooleanCellEditor extends CheckboxCellEditor {
 	/** Logger for this class */
-	private static Log logger = LogFactory.getLog(FloatCellEditor.class);
+	private static Log logger = LogFactory.getLog(CheckboxCellEditor.class);
 
 	/**
-	 * Constructor.
+	 * 
 	 */
-	public FloatCellEditor() {
+	public BooleanCellEditor() {
 		super();
 	}
 
 	/**
-	 * Constructor.
-	 * 
 	 * @param parent
-	 *            parent composite
 	 * @param style
-	 *            swt style
 	 */
-	public FloatCellEditor(Composite parent, int style) {
+	public BooleanCellEditor(Composite parent, int style) {
 		super(parent, style);
 	}
 
 	/**
-	 * Constructor.
-	 * 
 	 * @param parent
-	 *            parent composite
 	 */
-	public FloatCellEditor(Composite parent) {
+	public BooleanCellEditor(Composite parent) {
 		super(parent);
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.jface.viewers.TextCellEditor#doSetValue(java.lang.Object)
+	 * @see
+	 * org.eclipse.jface.viewers.CheckboxCellEditor#doSetValue(java.lang.Object)
 	 */
 	@Override
 	protected void doSetValue(Object value) {
 		try {
-			super.doSetValue(((Float) value).toString());
+			super.doSetValue((Boolean) value);
 		} catch (NumberFormatException nfe) {
 			logger.debug("Got " + value + " " + nfe);
 			// Just to make sure, TextCellEditor uses assert to refuse wrong

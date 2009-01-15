@@ -46,13 +46,15 @@ import org.rifidi.services.tags.model.IRifidiTagContainer;
 import org.rifidi.tags.impl.RifidiTag;
 
 import com.jme.bounding.BoundingBox;
+import com.jme.math.Quaternion;
 import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.renderer.Renderer;
 import com.jme.scene.Node;
 import com.jme.scene.SharedNode;
 import com.jme.scene.Spatial.CullHint;
-import com.jme.scene.shape.Box;
+import com.jme.scene.shape.Cylinder;
+import com.jme.scene.shape.Disk;
 import com.jme.scene.state.BlendState;
 import com.jme.scene.state.MaterialState;
 import com.jme.scene.state.BlendState.DestinationFunction;
@@ -103,6 +105,7 @@ public class BoxproducerEntity extends VisualEntity implements IHasSwitch,
 	private WritableList wrappers;
 	@XmlIDREF
 	private List<CardboxEntity> products;
+	private Boolean continuous = false;
 
 	/**
 	 * Constructor
@@ -168,8 +171,7 @@ public class BoxproducerEntity extends VisualEntity implements IHasSwitch,
 	public void init() {
 		if (model == null) {
 			model = new Node();
-			model.attachChild(new Box("producer", new Vector3f(0, 12f, 0), 3f,
-					.5f, 3f));
+			attachCylinder(model);
 		}
 		setCollides(false);
 
@@ -200,10 +202,7 @@ public class BoxproducerEntity extends VisualEntity implements IHasSwitch,
 		setNode(node);
 
 		Node _node = new Node("hiliter");
-		Box box = new Box("hiliter", new Vector3f(0, 12f, 0), 3f, .5f, 3f);
-		box.setModelBound(new BoundingBox());
-		box.updateModelBound();
-		_node.attachChild(box);
+		attachCylinder(_node);
 		_node.setModelBound(new BoundingBox());
 		_node.updateModelBound();
 		_node.setCullHint(CullHint.Always);
@@ -223,6 +222,18 @@ public class BoxproducerEntity extends VisualEntity implements IHasSwitch,
 		}
 	}
 
+	private void attachCylinder(Node node) {
+		Cylinder cyl = new Cylinder("cyl", 32, 32, 1.5f, 0.4f);
+		cyl.setModelBound(new BoundingBox());
+		cyl.updateModelBound();
+		Disk disk1 = new Disk("top", 32, 32, 1.5f);
+		node.setLocalTranslation(new Vector3f(0, 12f, 0));
+		node.setLocalRotation(new Quaternion(new float[] {
+				(float) Math.toRadians(270), 0, 0 }));
+		node.attachChild(cyl);
+		node.attachChild(disk1);
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -232,8 +243,7 @@ public class BoxproducerEntity extends VisualEntity implements IHasSwitch,
 	public void loaded() {
 		if (model == null) {
 			model = new Node();
-			model.attachChild(new Box("producer", new Vector3f(0, 12f, 0), 3f,
-					.5f, 3f));
+			attachCylinder(model);
 		}
 
 		Set<RifidiTag> temptags = new HashSet<RifidiTag>(tags);
@@ -316,6 +326,8 @@ public class BoxproducerEntity extends VisualEntity implements IHasSwitch,
 		paused = true;
 		thread.setPaused(true);
 		entitiesService.deleteEntities(new ArrayList<Entity>(products));
+		tagStack.clear();
+		tagStack.addAll(tags);
 	}
 
 	/*
@@ -416,7 +428,8 @@ public class BoxproducerEntity extends VisualEntity implements IHasSwitch,
 	@Override
 	public void productDestroied(CardboxEntity product) {
 		products.remove(product);
-		if (tags.contains(((CardboxEntity) product).getRifidiTag())) {
+		if (continuous
+				&& tags.contains(((CardboxEntity) product).getRifidiTag())) {
 			tagStack.push(((CardboxEntity) product).getRifidiTag());
 		}
 	}
@@ -515,6 +528,22 @@ public class BoxproducerEntity extends VisualEntity implements IHasSwitch,
 	public void setProducts(List<CardboxEntity> entities) {
 		products.clear();
 		products.addAll(entities);
+	}
+
+	/**
+	 * @return the continuous
+	 */
+	public Boolean getContinuous() {
+		return this.continuous;
+	}
+
+	/**
+	 * @param continuous
+	 *            the continuous to set
+	 */
+	@Property(displayName = "Continuous", description = "read destroied tags", readonly = false, unit = "")
+	public void setContinuous(Boolean continuous) {
+		this.continuous = continuous;
 	}
 
 }

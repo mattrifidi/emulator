@@ -49,6 +49,7 @@ public class DefaultPropertySource implements IPropertySource {
 
 	/**
 	 * Constructor.
+	 * 
 	 * @param entity
 	 */
 	public DefaultPropertySource(Entity entity) {
@@ -57,16 +58,17 @@ public class DefaultPropertySource implements IPropertySource {
 			propertyDescriptors = new ArrayList<PropertyDescriptor>();
 			for (java.beans.PropertyDescriptor prop : Introspector.getBeanInfo(
 					entity.getClass()).getPropertyDescriptors()) {
-				//only check properties that have a setter method
+				// only check properties that have a setter method
 				if (prop.getWriteMethod() != null
 						&& prop.getWriteMethod().getAnnotation(Property.class) != null) {
 					Property property = prop.getWriteMethod().getAnnotation(
 							Property.class);
-					String displayName="";
+					String displayName = "";
 					if (property.unit().length() > 0) {
-						displayName=property.displayName()+" ("+property.unit()+")";
+						displayName = property.displayName() + " ("
+								+ property.unit() + ")";
 					} else {
-						displayName=property.displayName();
+						displayName = property.displayName();
 					}
 					if (property.readonly()) {
 						propertyDescriptors.add(new PropertyDescriptor(prop,
@@ -76,6 +78,9 @@ public class DefaultPropertySource implements IPropertySource {
 								prop, displayName);
 						coProp.setLabelProvider(new ComboLabelProvider());
 						propertyDescriptors.add(coProp);
+					} else if (prop.getPropertyType().equals(Boolean.class)) {
+						propertyDescriptors.add(new BooleanPropertyDescriptor(
+								prop, displayName));
 					} else if (prop.getPropertyType().equals(String.class)) {
 						propertyDescriptors.add(new TextPropertyDescriptor(
 								prop, displayName));
@@ -107,7 +112,8 @@ public class DefaultPropertySource implements IPropertySource {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.ui.views.properties.IPropertySource#getPropertyDescriptors()
+	 * @see
+	 * org.eclipse.ui.views.properties.IPropertySource#getPropertyDescriptors()
 	 */
 	public IPropertyDescriptor[] getPropertyDescriptors() {
 		IPropertyDescriptor[] ret = new IPropertyDescriptor[propertyDescriptors
@@ -120,7 +126,9 @@ public class DefaultPropertySource implements IPropertySource {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.ui.views.properties.IPropertySource#getPropertyValue(java.lang.Object)
+	 * @see
+	 * org.eclipse.ui.views.properties.IPropertySource#getPropertyValue(java
+	 * .lang.Object)
 	 */
 	public Object getPropertyValue(final Object id) {
 		try {
@@ -140,7 +148,9 @@ public class DefaultPropertySource implements IPropertySource {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.ui.views.properties.IPropertySource#isPropertySet(java.lang.Object)
+	 * @see
+	 * org.eclipse.ui.views.properties.IPropertySource#isPropertySet(java.lang
+	 * .Object)
 	 */
 	public boolean isPropertySet(final Object id) {
 		return false;
@@ -149,7 +159,9 @@ public class DefaultPropertySource implements IPropertySource {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.ui.views.properties.IPropertySource#resetPropertyValue(java.lang.Object)
+	 * @see
+	 * org.eclipse.ui.views.properties.IPropertySource#resetPropertyValue(java
+	 * .lang.Object)
 	 */
 	public void resetPropertyValue(final Object id) {
 	}
@@ -157,8 +169,9 @@ public class DefaultPropertySource implements IPropertySource {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.ui.views.properties.IPropertySource#setPropertyValue(java.lang.Object,
-	 *      java.lang.Object)
+	 * @see
+	 * org.eclipse.ui.views.properties.IPropertySource#setPropertyValue(java
+	 * .lang.Object, java.lang.Object)
 	 */
 	public void setPropertyValue(final Object id, final Object value) {
 		if (!((Property) ((java.beans.PropertyDescriptor) id).getWriteMethod()
