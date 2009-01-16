@@ -15,10 +15,15 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlTransient;
 
 import org.rifidi.designer.entities.VisualEntity;
 import org.rifidi.designer.entities.interfaces.INeedsPhysics;
+import org.rifidi.designer.entities.interfaces.IProduct;
+import org.rifidi.designer.entities.rifidi.ITagged;
+import org.rifidi.designer.library.retail.shelf.Shelf;
+import org.rifidi.tags.impl.RifidiTag;
 
 import com.jme.input.InputHandler;
 import com.jme.math.Vector3f;
@@ -28,12 +33,13 @@ import com.jmex.physics.DynamicPhysicsNode;
 import com.jmex.physics.PhysicsSpace;
 
 /**
+ * Box for retail scenarios.
  * 
- * FIXME: Class comment.  
  * @author Jochen Mader - jochen@pramari.com - Apr 3, 2008
  * 
  */
-public class RetailBox extends VisualEntity implements INeedsPhysics {
+public class RetailBox extends VisualEntity implements INeedsPhysics, ITagged, IProduct<Shelf> {
+
 	/** Reference to the current physics space. */
 	@XmlTransient
 	private PhysicsSpace physicsSpace;
@@ -43,7 +49,21 @@ public class RetailBox extends VisualEntity implements INeedsPhysics {
 	/** Translation for initial translation. Never used afterwards. */
 	@XmlTransient
 	private Vector3f startTranslation;
-
+	/** Tag that's associated with this box. */
+	@XmlIDREF
+	private RifidiTag tag;
+	/** Reference to the producer of this box. */
+	@XmlIDREF
+	private Shelf producer;
+	
+	/**
+	 * Constructor. 
+	 */
+	public RetailBox() {
+		super();
+		setName("Retail box");
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -80,8 +100,8 @@ public class RetailBox extends VisualEntity implements INeedsPhysics {
 		phys.setLocalTranslation(startTranslation);
 		phys.updateModelBound();
 		phys.generatePhysicsGeometry();
-		phys.setActive(false);
-		phys.setIsCollidable(false);
+		phys.setActive(true);
+		phys.setIsCollidable(true);
 		setNode(phys);
 	}
 
@@ -146,6 +166,37 @@ public class RetailBox extends VisualEntity implements INeedsPhysics {
 	public Node getBoundingNode() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.rifidi.designer.entities.rifidi.ITagged#getRifidiTag()
+	 */
+	@Override
+	public RifidiTag getRifidiTag() {
+		return tag;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.rifidi.designer.entities.rifidi.ITagged#setRifidiTag(org.rifidi.tags.impl.RifidiTag)
+	 */
+	@Override
+	public void setRifidiTag(RifidiTag tag) {
+		this.tag=tag;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.rifidi.designer.entities.interfaces.IProduct#getProducer()
+	 */
+	@Override
+	public Shelf getProducer() {
+		return producer;
+	}
+
+	/**
+	 * @param producer the producer to set
+	 */
+	public void setProducer(Shelf producer) {
+		this.producer = producer;
 	}
 
 }

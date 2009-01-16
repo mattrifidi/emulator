@@ -149,10 +149,11 @@ public class ClothingRack extends VisualEntity implements IContainer,
 	 */
 	@Override
 	public void destroy() {
-		for (VisualEntity child : getVisualEntityList()) {
-			if (child != null) {
-				child.destroy();
-			}
+		List<Entity> del=new ArrayList<Entity>();
+		del.addAll(products);
+		entitiesService.deleteEntities(del);
+		for (RifidiTag tag : tags) {
+			tagService.releaseRifidiTag(tag, this);
 		}
 	}
 
@@ -312,7 +313,7 @@ public class ClothingRack extends VisualEntity implements IContainer,
 			del.add(visualEntity);
 			entitiesService.deleteEntities(del);
 			addClothing();
-			tagStack.push(((Clothing)visualEntity).getRifidiTag());
+			tagStack.push(((Clothing) visualEntity).getRifidiTag());
 			return;
 		}
 		throw new RuntimeException("Stupid!! Wrong type or full: "
@@ -459,6 +460,7 @@ public class ClothingRack extends VisualEntity implements IContainer,
 						(Vector3f) pos.translation.clone());
 				clothing.getLocalRotation().set(new Quaternion(pos.rotation));
 				getNode().attachChild(clothing);
+				clothing.updateRenderState();
 				return null;
 			}
 

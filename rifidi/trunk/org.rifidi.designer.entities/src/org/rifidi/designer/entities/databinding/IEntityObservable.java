@@ -19,12 +19,14 @@ import org.eclipse.core.databinding.observable.list.IListChangeListener;
  * 
  */
 public interface IEntityObservable {
-	/*
-	 * FIXME: Method comment.  
+	/**
+	 * Subscribe to listen for list change events.
+	 * @param changeListener
 	 */
 	public void addListChangeListener(IListChangeListener changeListener);
-	/*
-	 * FIXME: Method comment.  
+	/**
+	 * Unsubscribe from listening for list change events.
+	 * @param changeListener
 	 */
 	public void removeListChangeListener(IListChangeListener changeListener);
 }
