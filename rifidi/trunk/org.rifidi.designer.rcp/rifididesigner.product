@@ -12,10 +12,14 @@
 
    <plugins>
       <plugin id="com.ibm.icu"/>
+      <plugin id="edu.uark.csce.llrp"/>
+      <plugin id="gnu.cajo"/>
+      <plugin id="gnu.io"/>
       <plugin id="javax.servlet"/>
       <plugin id="javax.servlet.jsp"/>
+      <plugin id="org.apache.commons.collections"/>
+      <plugin id="org.apache.commons.digester"/>
       <plugin id="org.apache.commons.el"/>
-      <plugin id="org.apache.commons.logging"/>
       <plugin id="org.apache.jasper"/>
       <plugin id="org.apache.lucene"/>
       <plugin id="org.apache.lucene.analysis"/>
@@ -96,10 +100,12 @@
       <plugin id="org.rifidi.emulator.reader.llrp"/>
       <plugin id="org.rifidi.emulator.reader.symbol"/>
       <plugin id="org.rifidi.emulator.reader.thingmagic"/>
-      <plugin id="org.rifidi.log4j.designer" fragment="true"/>
+      <plugin id="org.rifidi.log4j" fragment="true"/>
+      <plugin id="org.rifidi.logging"/>
       <plugin id="org.rifidi.services"/>
       <plugin id="org.rifidi.services.initializer"/>
       <plugin id="org.rifidi.services.tags"/>
+      <plugin id="org.rifidi.tags"/>
       <plugin id="org.rifidi.ui.common"/>
       <plugin id="org.rifidi.views.tags"/>
    </plugins>
