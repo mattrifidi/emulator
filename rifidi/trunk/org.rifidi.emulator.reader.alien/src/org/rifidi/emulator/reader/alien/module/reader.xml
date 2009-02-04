@@ -422,7 +422,7 @@
 		</commandHandlerDetails>
 		<actionTag>EDITABLE</actionTag>
 		<category>MISC</category>
-		<defaultValue>Off</defaultValue>
+		<defaultValue>OFF</defaultValue>
 	</Command>
 
 	<Command>
@@ -437,7 +437,7 @@
 		</commandHandlerDetails>
 		<actionTag>EDITABLE</actionTag>
 		<category>MISC</category>
-		<defaultValue>0</defaultValue>
+		<defaultValue>OFF</defaultValue>
 	</Command>
 
 	<Command>

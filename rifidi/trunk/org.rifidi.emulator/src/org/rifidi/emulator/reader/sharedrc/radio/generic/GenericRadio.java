@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Observable;
@@ -51,7 +52,7 @@ public class GenericRadio implements Observer {
 	 * The logger for this class.
 	 */
 	private static Log logger = LogFactory.getLog(GenericRadio.class);
-	
+
 	private static Log eventLogger = LogFactory.getLog("EventLogger");
 
 	/**
@@ -76,7 +77,7 @@ public class GenericRadio implements Observer {
 	private boolean suspended = false;
 
 	private boolean shouldScanAfterResume = false;
-	
+
 	/**
 	 * The name of the reader that this radio is attached to
 	 */
@@ -90,7 +91,8 @@ public class GenericRadio implements Observer {
 	 * @param minScanTime
 	 *            minimal Time one scan takes (seconds)
 	 */
-	public GenericRadio(HashMap<Integer, Antenna> antHash, int minScanTime, String readerName) {
+	public GenericRadio(HashMap<Integer, Antenna> antHash, int minScanTime,
+			String readerName) {
 		Iterator<Antenna> antennas = antHash.values().iterator();
 		while (antennas.hasNext()) {
 			antennas.next().addObserver(this);
@@ -108,8 +110,8 @@ public class GenericRadio implements Observer {
 	 * @param minScanTime
 	 *            minimal Time one scan takes (seconds)
 	 */
-	public GenericRadio(HashMap<Integer, Antenna> antHash, int minScanTime, String readerName,
-			TagMemory tagMem) {
+	public GenericRadio(HashMap<Integer, Antenna> antHash, int minScanTime,
+			String readerName, TagMemory tagMem) {
 		this(antHash, minScanTime, readerName);
 		this.tagMem = tagMem;
 
@@ -118,8 +120,8 @@ public class GenericRadio implements Observer {
 	/**
 	 * Scans the set of denoted antennas for discoverable tags. Nonexistant
 	 * antennas are ignored.<br>
-	 * <i>Note</i>: Passing in a null as the set of antennas automatically
-	 * scans all antennas available to the reader.
+	 * <i>Note</i>: Passing in a null as the set of antennas automatically scans
+	 * all antennas available to the reader.
 	 * 
 	 * @param antennaIDs
 	 *            List of Antennas whose fields should be scaned
@@ -159,8 +161,8 @@ public class GenericRadio implements Observer {
 			logger.debug("scantime was longer than minScanTime");
 		}
 
-		eventLogger.info("[TAG EVENT]: Latest scan found " + readTags.size() + " tags on "
-				+ antennaIDs.size() + " antennas");
+		eventLogger.info("[TAG EVENT]: Latest scan found " + readTags.size()
+				+ " tags on " + antennaIDs.size() + " antennas");
 
 		return readTags;
 	}
@@ -169,17 +171,23 @@ public class GenericRadio implements Observer {
 	 * This method is used for polling. It updates a TagMemory with the new tags
 	 * by calling the addCollectionTags() method of the Tag Memory
 	 * 
-	 * @param antennaIDs.
-	 *            If null, use all antennas
+	 * @param antennaIDs
+	 *            . If null, use all antennas
 	 * @param memory
 	 */
 	public void scan(Set<Integer> antennaIDs, TagMemory memory) {
 		if (antennaIDs == null) {
 			antennaIDs = this.antennas.keySet();
 		} else if (!this.antennas.keySet().containsAll(antennaIDs)) {
-
-			throw new IllegalArgumentException(
-					"Scan() method given an antenna to scan that does not exist");
+			//This conditional runs if an antenna is specified which does not exist.  
+			//This will pick out the antennas which aren't there and keep the rest.  
+			Set<Integer> tempAntennaIDs = new HashSet<Integer>();
+			for (Integer i : antennaIDs) {
+				if (antennas.keySet().contains(i)) {
+					tempAntennaIDs.add(i);
+				}
+			}
+			antennaIDs = tempAntennaIDs;
 		}
 		List<RifidiTag> tags = scan(antennaIDs);
 		List<RifidiTag> tagsToAdd = new ArrayList<RifidiTag>();
