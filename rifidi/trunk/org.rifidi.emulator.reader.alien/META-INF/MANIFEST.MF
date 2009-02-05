@@ -3,7 +3,7 @@ Bundle-RequiredExecutionEnvironment:  JavaSE-1.6
 Bundle-ManifestVersion: 2
 Bundle-Name: Rifidi Alien Reader Plug-in
 Bundle-SymbolicName: org.rifidi.emulator.reader.alien
-Bundle-Version: 2.2.0
+Bundle-Version: 2.2.1
 Bundle-Activator: org.rifidi.emulator.reader.alien.Activator
 Bundle-Vendor: Pramari, LLC
 Bundle-Localization: plugin
