@@ -1,0 +1,21 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Apache Commons Configuration Plug-in
+Bundle-SymbolicName: org.apache.commons.configuration
+Bundle-Version: 1.6.0
+Bundle-ClassPath: .
+Bundle-Vendor: Pramari, LLC
+Export-Package: org.apache.commons.configuration,
+ org.apache.commons.configuration.beanutils,
+ org.apache.commons.configuration.event,
+ org.apache.commons.configuration.interpol,
+ org.apache.commons.configuration.plist,
+ org.apache.commons.configuration.reloading,
+ org.apache.commons.configuration.tree,
+ org.apache.commons.configuration.tree.xpath,
+ org.apache.commons.configuration.web
+Require-Bundle: org.apache.commons.lang;bundle-version="2.3.0";visibility:=reexport,
+ org.apache.commons.collections;bundle-version="3.2.0"
+Import-Package: org.apache.commons.configuration,
+ org.apache.commons.logging;version="1.1.1",
+ org.apache.commons.logging.impl;version="1.1.1"
