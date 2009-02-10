@@ -143,14 +143,15 @@ public class EntitiesServiceImpl implements EntitiesService, FinderService,
 			Point screenPos) {
 		initEntity(ent, sceneData, true);
 		// visual entities need to be created in the opengl thread
-		if (ent.isVisible() && !(ent instanceof IProduct)) {
-			sceneData.getDefaultGroup().addEntity(ent);
-		} else if (ent.isVisible()) {
-			sceneData.getProducedEntities().addEntity(ent);
-		}
 		if (ent instanceof VisualEntity) {
 			implementor.update(new UpdateCallable(sceneData.getRootNode(),
 					(VisualEntity) ent, screenPos, newEntityListener));
+		} else {
+			if (ent.isVisible() && !(ent instanceof IProduct)) {
+				sceneData.getDefaultGroup().addEntity(ent);
+			} else if (ent.isVisible()) {
+				sceneData.getProducedEntities().addEntity(ent);
+			}
 		}
 	}
 
@@ -626,8 +627,9 @@ public class EntitiesServiceImpl implements EntitiesService, FinderService,
 										.insertEntity((VisualEntity) entity);
 							}
 						}
-						if (entity instanceof IHasSwitch && ((IHasSwitch)entity).isRunning()){
-							((IHasSwitch)entity).turnOn();
+						if (entity instanceof IHasSwitch
+								&& ((IHasSwitch) entity).isRunning()) {
+							((IHasSwitch) entity).turnOn();
 						}
 					}
 					monitor.worked(60);
@@ -1006,6 +1008,13 @@ public class EntitiesServiceImpl implements EntitiesService, FinderService,
 					 */
 					@Override
 					public void run() {
+						if (newentity.isVisible()
+								&& !(newentity instanceof IProduct)) {
+							sceneData.getDefaultGroup().addEntity(newentity);
+						} else if (newentity.isVisible()) {
+							sceneData.getProducedEntities()
+									.addEntity(newentity);
+						}
 						listener.entityAdded((VisualEntity) newentity);
 					}
 
