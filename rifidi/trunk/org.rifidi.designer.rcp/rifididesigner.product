@@ -10,6 +10,18 @@
       <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts</vmArgsMac>
    </launcherArgs>
 
+   <windowImages/>
+
+   <launcher>
+      <solaris/>
+      <win useIco="false">
+         <bmp/>
+      </win>
+   </launcher>
+
+   <vm>
+   </vm>
+
    <plugins>
       <plugin id="com.ibm.icu"/>
       <plugin id="edu.uark.csce.llrp"/>
@@ -39,6 +51,7 @@
       <plugin id="org.eclipse.core.resources"/>
       <plugin id="org.eclipse.core.resources.win32.x86" fragment="true"/>
       <plugin id="org.eclipse.core.runtime"/>
+      <plugin id="org.eclipse.core.runtime.compatibility.auth"/>
       <plugin id="org.eclipse.core.variables"/>
       <plugin id="org.eclipse.draw2d"/>
       <plugin id="org.eclipse.equinox.app"/>
@@ -79,6 +92,7 @@
       <plugin id="org.eclipse.ui.win32" fragment="true"/>
       <plugin id="org.eclipse.ui.workbench"/>
       <plugin id="org.eclipse.ui.workbench.texteditor"/>
+      <plugin id="org.eclipse.update.configurator"/>
       <plugin id="org.monklypse.jme2"/>
       <plugin id="org.monklypse.jme2.physics"/>
       <plugin id="org.monklypse.lwjgl"/>
@@ -86,7 +100,6 @@
       <plugin id="org.monklypse.lwjgl.macosx" fragment="true"/>
       <plugin id="org.monklypse.lwjgl.win32" fragment="true"/>
       <plugin id="org.rifidi.common.utilities"/>
-      <plugin id="org.rifidi.dependencies"/>
       <plugin id="org.rifidi.designer.entities"/>
       <plugin id="org.rifidi.designer.gpio.editor"/>
       <plugin id="org.rifidi.designer.library.basemodels"/>
@@ -101,6 +114,7 @@
       <plugin id="org.rifidi.emulator.reader.symbol"/>
       <plugin id="org.rifidi.emulator.reader.thingmagic"/>
       <plugin id="org.rifidi.log4j" fragment="true"/>
+      <plugin id="org.rifidi.log4j.developer" fragment="true"/>
       <plugin id="org.rifidi.logging"/>
       <plugin id="org.rifidi.services"/>
       <plugin id="org.rifidi.services.initializer"/>
