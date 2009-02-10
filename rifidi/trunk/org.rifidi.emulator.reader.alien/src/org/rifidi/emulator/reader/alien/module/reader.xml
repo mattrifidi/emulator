@@ -1657,6 +1657,51 @@
 	</Command>
 	
 	<Command>
+		<queryName>getTime</queryName>
+		<displayName>time</displayName>
+		<commandState>Interactive</commandState>
+		<commandHandlerDetails>
+			<handlerClass>org.rifidi.emulator.reader.alien.commandhandler.AlienTime</handlerClass>
+			<handlerMethod>time</handlerMethod>
+			<argumentType>String</argumentType>
+		</commandHandlerDetails>
+		<actionTag>READ_ONLY</actionTag>
+		<category>TIME</category>
+		<defaultValue>0</defaultValue>
+	</Command>
+	
+	<Command>
+		<queryName>getTimeServer</queryName>
+		<queryName>setTimeServer</queryName>
+		<displayName>timeServer</displayName>
+		<commandState>Interactive</commandState>
+		<commandHandlerDetails>
+			<handlerClass>org.rifidi.emulator.reader.alien.commandhandler.AlienTime</handlerClass>
+			<handlerMethod>timeServer</handlerMethod>
+			<argumentType>String</argumentType>
+		</commandHandlerDetails>
+		<actionTag>EDITABLE</actionTag>
+		<category>TIME</category>
+		<defaultValue>127.0.0.1</defaultValue>
+	</Command>
+	
+	<Command>
+		<queryName>getTimeZone</queryName>
+		<queryName>setTimeZone</queryName>
+		<displayName>timeZone</displayName>
+		<commandState>Interactive</commandState>
+		<commandHandlerDetails>
+			<handlerClass>org.rifidi.emulator.reader.alien.commandhandler.AlienTime</handlerClass>
+			<handlerMethod>timeZone</handlerMethod>
+			<argumentType>Integer</argumentType>
+		</commandHandlerDetails>
+		<actionTag>EDITABLE</actionTag>
+		<category>TIME</category>
+		<defaultValue>-5</defaultValue>
+	</Command>
+	
+	
+	<Command>
 		<queryName>autoTagList</queryName>
 		<displayName>autoTagList</displayName>
 		<commandState>Autonomous</commandState>

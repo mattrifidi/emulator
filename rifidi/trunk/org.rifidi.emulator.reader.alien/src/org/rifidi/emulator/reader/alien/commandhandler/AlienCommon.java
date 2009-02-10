@@ -134,7 +134,7 @@ public class AlienCommon {
 	 *            method.
 	 * @return The CommandObject with the returnValue from the current Value.
 	 */
-	public static CommandObject returnCurrentValue(CommandObject arg,
+	 public static CommandObject returnCurrentValue(CommandObject arg,
 			AbstractReaderSharedResources asr) {
 		HashMap<String, ReaderProperty> comMap = (HashMap<String, ReaderProperty>) asr
 				.getPropertyMap();
@@ -142,7 +142,7 @@ public class AlienCommon {
 		ArrayList<Object> retVal = new ArrayList<Object>();
 		retVal.add(newProp.getPropertyStringValue());
 		arg.setReturnValue(retVal);
-		return arg;
+		return formatResponse(arg,asr);
 	}
 	
 	/**
