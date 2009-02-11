@@ -3,6 +3,13 @@
 
 <product name="Rifidi Designer" id="org.rifidi.designer.rcp.rifididesignerproduct" application="org.rifidi.designer.rcp.application" useFeatures="false">
 
+   <aboutInfo>
+      <image path="/org.rifidi.designer.rcp/about.gif"/>
+      <text>
+         Version 1.4.0
+      </text>
+   </aboutInfo>
+
    <configIni use="default">
    </configIni>
 
@@ -18,6 +25,7 @@
          <bmp/>
       </win>
    </launcher>
+
 
    <vm>
    </vm>
