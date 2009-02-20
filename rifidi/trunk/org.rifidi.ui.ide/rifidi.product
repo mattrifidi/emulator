@@ -6,7 +6,7 @@
    <aboutInfo>
       <image path="about.gif"/>
       <text>
-         Thank you for using Rifidi 1.5.2
+         Thank you for using Rifidi 1.5.3
 You can find more information on http://www.rifidi.org.
 Please look at the docs at http://wiki.rifidi.org for a complete User&apos;s Manual.
 
@@ -32,6 +32,7 @@ Please look at the docs at http://wiki.rifidi.org for a complete User&apos;s Man
          <bmp/>
       </win>
    </launcher>
+
 
    <vm>
    </vm>
