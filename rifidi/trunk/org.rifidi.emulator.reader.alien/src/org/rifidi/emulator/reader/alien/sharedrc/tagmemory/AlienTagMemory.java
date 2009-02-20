@@ -185,9 +185,33 @@ public class AlienTagMemory implements TagMemory {
 	 * @param tagTypes
 	 */
 	public void setTagTypeSelection(HashSet<TagGen> types) {
+		HashSet<TagGen> oldTypes = this.typeFilter;
 		this.typeFilter = types;
+		
+		for(TagGen g:oldTypes) {
+			if(!this.typeFilter.contains(g)) {
+				this.removeFromMemory(g);
+			}
+		}
 	}
-
+	
+	/**
+	 * Removes all tags of a given type from memory.  
+	 * 
+	 * @param type
+	 */
+	private void removeFromMemory(TagGen type) {
+		ArrayList<Long> tagsToRemove = new ArrayList<Long>();
+		for(RifidiTag t:this.tagList.getTagList()) {
+			if(t.getTagGen().equals(type)) {
+				tagsToRemove.add(t.getTagEntitiyID());
+			}
+		}
+		for(Long l:tagsToRemove) {
+			this.tagList.removeTag(l);
+		}
+	}
+	
 	/**
 	 * This static method returns a set of integers that represent the antennas
 	 * that should be scanned as defined by the antennalist variable
