@@ -115,8 +115,8 @@ public class FetchCommand extends Command {
 				
 				token = tokenIterator.next();
 				if (!token.matches(COMMA_WITH_WS)){
-					throw new CommandCreationException(
-							"Error 0100:     syntax error at '" + token + "'");
+					tokenIterator.previous();
+					break;
 				}
 				
 			} while (true);
