@@ -32,6 +32,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.rifidi.ui.common.reader.blueprints.PropertyBlueprint;
@@ -128,7 +129,6 @@ public class NewReaderDynamicWizardPage extends WizardPage {
 	 * .Composite)
 	 */
 	public void createControl(Composite parent) {
-
 		readerBlueprint = availableReaders.get(data.readerType);
 		setDescription(readerBlueprint.getDescription());
 
@@ -312,7 +312,40 @@ public class NewReaderDynamicWizardPage extends WizardPage {
 		}
 		return null;
 	}
-
+	
+	@Override
+	public Control getControl() {
+		if (isControlCreated()) {
+			/*
+			 * see if the user change the reader type he wants to create.
+			 */
+			if (!availableReaders.get(data.readerType)
+					.getReaderclassname().equals(readerBlueprint.getReaderclassname())) {
+				/* 
+				 * clear all lists
+				 */
+				validators.clear();
+				inputfields.clear();
+				boolfields.clear();
+				
+				/*
+				 * recreate the dynamic page.
+				 */
+				Control old = super.getControl();
+				Composite parent = old.getParent();
+				createControl(parent);
+				old.dispose();
+				
+				/*
+				 * tell the parent that things have changed.
+				 */
+				super.getControl().getParent().layout();
+			}
+			
+		}
+		return super.getControl();
+	}
+	
 	public boolean enableGPIO() {
 		return enableGPIOs;
 	}
