@@ -189,12 +189,13 @@ public class UIAntenna extends Observable implements PropertyChangeListener {
 
 	}
 
+	
 	/**
 	 * Remove Tags from the field of the antenna
 	 * 
 	 * @param tagsToRemove
 	 */
-	public void removeTag(List<RifidiTag> tagsToRemove) {
+	private void removeTagHelper(List<RifidiTag> tagsToRemove) {
 		ArrayList<Long> list = new ArrayList<Long>(tagsToRemove.size());
 		for (RifidiTag tag : tagsToRemove) {
 			list.add(tag.getTagEntitiyID());
@@ -211,12 +212,34 @@ public class UIAntenna extends Observable implements PropertyChangeListener {
 		notifyObservers(REMOVE_TAG_EVENT);
 	}
 	
+	
+	/**
+	 * Remove Tags from the field of the antenna
+	 * 
+	 * @param tagsToRemove
+	 */
+	public void removeTag(List<RifidiTag> tagsToRemove) {
+		List<RifidiTag> tags = new ArrayList<RifidiTag>(tagsToRemove);
+		
+		for (RifidiTag tag : tagsToRemove) {
+		     if (inactiveTags.remove(tag.getTagEntitiyID() )) 
+		    		 tags.remove(tag);
+		}
+		removeTagHelper(tags);
+	}
+	
 	/**
 	 * Remove Tags from the field of the antenna
 	 * 
 	 * @param tagsToRemove
 	 */
 	public void removeTagByID(List<Long> tagsToRemove) {
+		List<Long> tags = new ArrayList<Long>(tagsToRemove);
+		for (Long tag : tagsToRemove) {
+		     if (inactiveTags.remove(tag)) 
+		    		 tags.remove(tag);
+		}
+		
 		try {
 			readerManager.removeTags(id, tagsToRemove);
 			for (Long tag : tagsToRemove)
@@ -242,7 +265,7 @@ public class UIAntenna extends Observable implements PropertyChangeListener {
 			tag.isVisbile = false;
 			inactiveTags.add(tag.getTagEntitiyID());
 		}
-		removeTag(tagsToDisable);
+		removeTagHelper(tagsToDisable);
 	}
 
 	/**
