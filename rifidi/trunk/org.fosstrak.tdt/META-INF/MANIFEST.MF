@@ -6,5 +6,5 @@ Bundle-Version: 0.5.0
 Bundle-Vendor: Pramari, LLC
 Main-Class: org.fosstrak.tdt.TDTFrontEnd
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Export-Package: epcglobal.tdt.xsd._1,
+Export-Package: org.epcglobalinc,
  org.fosstrak.tdt

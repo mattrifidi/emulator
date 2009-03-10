@@ -52,18 +52,17 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
+import org.epcglobalinc.EpcTagDataTranslation;
+import org.epcglobalinc.Field;
+import org.epcglobalinc.Level;
+import org.epcglobalinc.LevelTypeList;
+import org.epcglobalinc.ModeList;
+import org.epcglobalinc.Option;
+import org.epcglobalinc.PadDirectionList;
+import org.epcglobalinc.Rule;
+import org.epcglobalinc.Scheme;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
-
-import epcglobal.tdt.xsd._1.EpcTagDataTranslation;
-import epcglobal.tdt.xsd._1.Field;
-import epcglobal.tdt.xsd._1.Level;
-import epcglobal.tdt.xsd._1.LevelTypeList;
-import epcglobal.tdt.xsd._1.ModeList;
-import epcglobal.tdt.xsd._1.Option;
-import epcglobal.tdt.xsd._1.PadDirectionList;
-import epcglobal.tdt.xsd._1.Rule;
-import epcglobal.tdt.xsd._1.Scheme;
 
 /**
  * 

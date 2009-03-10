@@ -22,7 +22,7 @@ package org.fosstrak.tdt;
 
 import java.util.HashMap;
 
-import epcglobal.tdt.xsd._1.LevelTypeList;
+import org.epcglobalinc.LevelTypeList;
 
 public class TDTFrontEnd { // demonstration front-end application which makes
 	// use of the TDT package
@@ -30,7 +30,7 @@ public class TDTFrontEnd { // demonstration front-end application which makes
 	public static final void main(String args[]) {
 		try {
 			TDTEngine engine = new TDTEngine();
-//			 TDTEngine engine = new TDTEngine("."); // path to directory
+			// TDTEngine engine = new TDTEngine("."); // path to directory
 			// containing the
 			// subdirectories 'schemes'
 			// and 'auxiliary'
@@ -117,9 +117,9 @@ public class TDTFrontEnd { // demonstration front-end application which makes
 						LevelTypeList.PURE_IDENTITY);
 				// System.out.println(" as PURE_IDENTITY: " + o3);
 			}
-			long delta=System.currentTimeMillis() - t;
-			System.out.println(" time to perform 1000 conversions = "
-					+ delta + " milliseconds");
+			long delta = System.currentTimeMillis() - t;
+			System.out.println(" time to perform 1000 conversions = " + delta
+					+ " milliseconds");
 
 			if (outboundformat.equals("BINARY")) {
 				// System.out.println("Hex is "+engine.bin2hex(outbound));
