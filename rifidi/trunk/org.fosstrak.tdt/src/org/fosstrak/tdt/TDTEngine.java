@@ -135,12 +135,25 @@ public class TDTEngine {
 	@Deprecated
 	public TDTEngine(String confdir) throws FileNotFoundException,
 			MarshalException, ValidationException, TDTException {
+
 		try {
-			URL scheme = new URL(confdir + "/schemes");
+			Unmarshaller unmar = getUnmarshaller();
+			URL scheme = new URL(confdir + "/schemes/");
 			URL aux = new URL(confdir + "/auxiliary/ManagerTranslation.xml");
 			Set<URL> schemes = new HashSet<URL>();
 			schemes.add(scheme);
-			loadFiles(aux, schemes);
+			URLConnection urlcon = scheme.openConnection();
+			urlcon.connect();
+			BufferedReader in = new BufferedReader(new InputStreamReader(urlcon
+					.getInputStream()));
+			String line;
+			for (; (line = in.readLine()) != null;) {
+				if (line.endsWith(".xml")) {
+					loadEpcTagDataTranslation(unmar, new URL(scheme.toString()
+							+ line));
+				}
+			}
+			loadGEPC64Table(unmar, aux);
 		} catch (MalformedURLException e) {
 			throw new FileNotFoundException(e.getMessage());
 		} catch (IOException e) {
@@ -167,13 +180,24 @@ public class TDTEngine {
 	 *             thrown if the files could not be parsed
 	 */
 	public TDTEngine() throws IOException, JAXBException {
+		Unmarshaller unmar = getUnmarshaller();
+
 		URL auxiliary = this.getClass().getClassLoader().getResource(
 				"org/fosstrak/tdt/resources/auxiliary/ManagerTranslation.xml");
+
 		URL schemes = TDTFrontEnd.class.getClassLoader().getResource(
-				"org/fosstrak/tdt/resources/schemes");
-		Set<URL> schemesSet = new HashSet<URL>();
-		schemesSet.add(schemes);
-		loadFiles(auxiliary, schemesSet);
+				"org/fosstrak/tdt/resources/schemes/schemes.list");
+
+		URLConnection urlcon = schemes.openConnection();
+		urlcon.connect();
+		BufferedReader in = new BufferedReader(new InputStreamReader(urlcon
+				.getInputStream()));
+		String line;
+		for (; (line = in.readLine()) != null;) {
+			loadEpcTagDataTranslation(unmar, TDTFrontEnd.class.getClassLoader()
+					.getResource("org/fosstrak/tdt/resources/schemes/" + line));
+		}
+		loadGEPC64Table(unmar, auxiliary);
 	}
 
 	/**
@@ -192,9 +216,19 @@ public class TDTEngine {
 	 */
 	public TDTEngine(URL auxiliary, URL schemes) throws IOException,
 			JAXBException {
-		Set<URL> schemesSet = new HashSet<URL>();
-		schemesSet.add(schemes);
-		loadFiles(auxiliary, schemesSet);
+		Unmarshaller unmar = getUnmarshaller();
+		URLConnection urlcon = schemes.openConnection();
+		urlcon.connect();
+		BufferedReader in = new BufferedReader(new InputStreamReader(urlcon
+				.getInputStream()));
+		String line;
+		for (; (line = in.readLine()) != null;) {
+			if (line.endsWith(".xml")) {
+				loadEpcTagDataTranslation(unmar, new URL(schemes.toString()
+						+ line));
+			}
+		}
+		loadGEPC64Table(unmar, auxiliary);
 	}
 
 	/**
@@ -206,46 +240,82 @@ public class TDTEngine {
 	 * @param schemes
 	 *            set containing several urls pointing to directories containing
 	 *            the schemes. All files ending in xml are read and parsed.
+	 * @param absolute
+	 *            true if the given URLs are absolute
 	 * @throws IOException
 	 *             thrown if the url is unreachable
 	 * @throws JAXBException
 	 *             thrown if the files could not be parsed
 	 */
-	public TDTEngine(URL auxiliary, Set<URL> schemes) throws JAXBException,
-			IOException {
-		loadFiles(auxiliary, schemes);
-	}
+	public TDTEngine(URL auxiliary, Set<URL> schemes, boolean absolute)
+			throws JAXBException, IOException {
+		Unmarshaller unmar = getUnmarshaller();
+		for (URL scheme : schemes) {
+			if (absolute) {
+				loadEpcTagDataTranslation(unmar, scheme);
+				continue;
+			}
 
-	private void loadFiles(URL auxiliary, Set<URL> schemes) throws IOException,
-			JAXBException {
-		JAXBContext context = JAXBContext.newInstance(
-				EpcTagDataTranslation.class, GEPC64Table.class, Entry.class);
-		Unmarshaller unmar = context.createUnmarshaller();
-		for (URL schemeUrl : schemes) {
-			URLConnection urlcon = schemeUrl.openConnection();
+			URLConnection urlcon = scheme.openConnection();
 			urlcon.connect();
-
 			BufferedReader in = new BufferedReader(new InputStreamReader(urlcon
 					.getInputStream()));
 			String line;
 			for (; (line = in.readLine()) != null;) {
-				// check if we got an xml file
-				if (line.toLowerCase().endsWith(".xml")) {
-					URL xmlfile = new URL(schemeUrl.toExternalForm() + "/"
-							+ line);
-					URLConnection xmlcon = xmlfile.openConnection();
-					xmlcon.connect();
-					// xml doesn't have enough info for jaxb to figure out
-					// the
-					// classname, so we are doing explicit loading
-					JAXBElement<EpcTagDataTranslation> el = unmar.unmarshal(
-							new StreamSource(xmlcon.getInputStream()),
-							EpcTagDataTranslation.class);
-					EpcTagDataTranslation tdt = el.getValue();
-					initFromTDT(tdt);
+				if (line.endsWith(".xml")) {
+					loadEpcTagDataTranslation(unmar, new URL(schemes.toString()
+							+ line));
 				}
 			}
 		}
+		loadGEPC64Table(unmar, auxiliary);
+	}
+
+	/**
+	 * Creates the unmarshaller.
+	 * 
+	 * @return
+	 * @throws JAXBException
+	 */
+	private Unmarshaller getUnmarshaller() throws JAXBException {
+		JAXBContext context = JAXBContext.newInstance(
+				EpcTagDataTranslation.class, GEPC64Table.class, Entry.class);
+		return context.createUnmarshaller();
+	}
+
+	/**
+	 * Load an xml file from the given url and unmarshal it into an
+	 * EPCTagDataTranslation.
+	 * 
+	 * @param unmar
+	 * @param schemeUrl
+	 * @throws IOException
+	 * @throws JAXBException
+	 */
+	private void loadEpcTagDataTranslation(Unmarshaller unmar, URL schemeUrl)
+			throws IOException, JAXBException {
+		URLConnection urlcon = schemeUrl.openConnection();
+		urlcon.connect();
+		// xml doesn't have enough info for jaxb to figure out
+		// the
+		// classname, so we are doing explicit loading
+		JAXBElement<EpcTagDataTranslation> el = unmar.unmarshal(
+				new StreamSource(urlcon.getInputStream()),
+				EpcTagDataTranslation.class);
+		EpcTagDataTranslation tdt = el.getValue();
+		initFromTDT(tdt);
+	}
+
+	/**
+	 * Load an xml file from the given url and unmarshal it into a GEPC64Table.
+	 * 
+	 * @param unmar
+	 * @param auxiliary
+	 * @throws IOException
+	 * @throws JAXBException
+	 */
+	private void loadGEPC64Table(Unmarshaller unmar, URL auxiliary)
+			throws IOException, JAXBException {
 		URLConnection urlcon = auxiliary.openConnection();
 		urlcon.connect();
 		// load the GEPC64Table
