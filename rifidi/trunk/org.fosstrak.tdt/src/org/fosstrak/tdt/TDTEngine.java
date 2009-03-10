@@ -72,7 +72,8 @@ import epcglobal.tdt.xsd._1.Scheme;
  * PURE_IDENTITY and LEGACY formats. An additional output level ONS_HOSTNAME may
  * be defined for some coding schemes.
  * 
- * @author University of Cambridge
+ * @author Mark Harrison [University of Cambridge] - mark.harrison@cantab.net
+ * @author James Brusey
  * @author Jochen Mader - jochen@pramari.com
  */
 public class TDTEngine {

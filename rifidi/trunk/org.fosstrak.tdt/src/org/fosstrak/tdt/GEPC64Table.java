@@ -29,10 +29,6 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
-//---------------------------------/
-//- Imported classes and packages -/
-//---------------------------------/
-
 /**
  * This class is used to represent a GEPC64Table. Class is annotated to be used
  * by JAXB for unmarshalling.
