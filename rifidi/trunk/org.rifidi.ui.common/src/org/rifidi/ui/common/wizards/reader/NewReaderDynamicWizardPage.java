@@ -228,6 +228,12 @@ public class NewReaderDynamicWizardPage extends WizardPage {
 						dialogChanged();
 					}
 				});
+				
+				//TODO: Do we want the emulator plugins to choose its default gpio enable state?
+				hasGpio.setSelection(true);
+				logger.debug("GPIO enable state changed");
+				enableGPIOs = hasGpio.getSelection();
+				dialogChanged();
 			}
 		} else {
 			logger
