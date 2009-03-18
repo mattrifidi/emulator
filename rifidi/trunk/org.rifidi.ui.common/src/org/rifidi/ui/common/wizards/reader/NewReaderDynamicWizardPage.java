@@ -96,7 +96,7 @@ public class NewReaderDynamicWizardPage extends WizardPage {
 	private List<Button> boolfields = new ArrayList<Button>();
 
 	private Button hasGpio;
-	private boolean enableGPIOs = false;
+	private boolean enableGPIOs;
 
 	/**
 	 * Constructor
@@ -129,6 +129,7 @@ public class NewReaderDynamicWizardPage extends WizardPage {
 	 * .Composite)
 	 */
 	public void createControl(Composite parent) {
+		enableGPIOs = false;
 		readerBlueprint = availableReaders.get(data.readerType);
 		setDescription(readerBlueprint.getDescription());
 
