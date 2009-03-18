@@ -15,7 +15,6 @@ public class RemoveTagsAntennaViewActionDelegate implements IViewActionDelegate 
 	public void init(IViewPart arg0) {
 		// TODO Auto-generated method stub
 		logger.debug("Remove tag delegate init.");
-		System.out.println("test");
 	}
 
 	@Override

@@ -103,14 +103,6 @@
                style="push"
                toolbarPath="antennaActions">
          </action>
-         <action
-               class="org.rifidi.ui.ide.views.antennaview.actions.RemoveTagsAntennaViewActionDelegate"
-               icon="icons/remove-16x16.png"
-               id="org.rifidi.ui.ide.views.antennaview.actions.RemoveTagsAntenna"
-               label="remove all tags on antenna"
-               style="push"
-               toolbarPath="antennaActions">
-         </action>
       </viewContribution>
       <viewContribution
             id="org.rifidi.ui.ide.views.consoleview.actions"
