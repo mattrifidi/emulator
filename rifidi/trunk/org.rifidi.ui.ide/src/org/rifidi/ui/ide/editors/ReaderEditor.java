@@ -158,6 +158,12 @@ public class ReaderEditor extends EditorPart {
 					reader.getAntenna(i), reader.getReaderCallbackManager());
 			tagcomposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
 					true));
+			
+			/*
+			 * remove expand/collapse control on group.
+			 */
+			tagcomposite.setToggleRenderer(null);
+			
 			item.setControl(composite);
 		}
 		// Select the first antenna tab to be displayed
@@ -175,6 +181,11 @@ public class ReaderEditor extends EditorPart {
 						reader);
 				gpioView.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
 						true));
+				
+				/*
+				 * remove expand/collapse control on group.
+				 */
+				gpioView.setToggleRenderer(null);
 
 			}
 		} catch (RifidiIndexDoesNotMatchException e) {

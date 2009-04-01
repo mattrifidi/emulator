@@ -7,6 +7,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.nebula.widgets.pgroup.PGroup;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ExpandEvent;
+import org.eclipse.swt.events.ExpandListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
@@ -178,6 +180,24 @@ public class GPIOPGroup extends PGroup implements GPOEventCallbackInterface {
 		scroller.setWidget(base);
 		scroller.pack();
 		this.pack();
+		
+		/* WORKAROUND:
+		 * This is a workaround for eclipse bug 270890
+		 * https://bugs.eclipse.org/bugs/show_bug.cgi?id=270890
+		 */
+		addExpandListener(new ExpandListener () {
+
+			@Override
+			public void itemCollapsed(ExpandEvent e) {
+				GPIOPGroup.this.setExpanded(true);
+			}
+
+			@Override
+			public void itemExpanded(ExpandEvent e) {
+				GPIOPGroup.this.setExpanded(true);
+			}
+			
+		});
 	}
 
 	/*

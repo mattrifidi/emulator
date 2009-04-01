@@ -1,6 +1,8 @@
 package org.rifidi.ui.ide.views.antennaview;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ExpandEvent;
+import org.eclipse.swt.events.ExpandListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.nebula.widgets.pgroup.PGroup;
 import org.eclipse.swt.widgets.Composite;
@@ -27,6 +29,24 @@ public class TagPGroup extends PGroup {
 		setForeground(getShell().getDisplay().getSystemColor(SWT.COLOR_WHITE));
 		viewer = new TagViewer(this, SWT.MULTI | SWT.FULL_SELECTION, antenna,
 				callbackManager);
+		
+		/* WORKAROUND:
+		 * This is a workaround for eclipse bug 270890
+		 * https://bugs.eclipse.org/bugs/show_bug.cgi?id=270890
+		 */
+		addExpandListener(new ExpandListener () {
+
+			@Override
+			public void itemCollapsed(ExpandEvent e) {
+				TagPGroup.this.setExpanded(true);
+			}
+
+			@Override
+			public void itemExpanded(ExpandEvent e) {
+				TagPGroup.this.setExpanded(true);
+			}
+			
+		});
 	}
 
 	/*

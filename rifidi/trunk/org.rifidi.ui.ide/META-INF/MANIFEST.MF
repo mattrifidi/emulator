@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Rifidi Emulator IDE Plug-in
 Bundle-SymbolicName: org.rifidi.ui.ide; singleton:=true
-Bundle-Version: 2.2.3
+Bundle-Version: 2.2.4
 Bundle-Activator: org.rifidi.ui.ide.Activator
 Bundle-Vendor: Pramari, LLC
 Require-Bundle: org.eclipse.core.runtime,
