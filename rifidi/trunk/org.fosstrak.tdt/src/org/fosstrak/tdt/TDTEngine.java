@@ -467,7 +467,6 @@ public class TDTEngine {
 			LevelTypeList outputLevel) {
 
 		PrefixMatch match = findPrefixMatch(input, tagLength, inputLevel);
-
 		return convertLevel(match.getScheme(), match.getLevel(), input,
 				inputParameters, outputLevel);
 	}

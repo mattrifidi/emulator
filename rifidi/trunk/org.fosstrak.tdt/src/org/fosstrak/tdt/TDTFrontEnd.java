@@ -20,6 +20,8 @@
 
 package org.fosstrak.tdt;
 
+import java.io.File;
+import java.net.URL;
 import java.util.HashMap;
 
 import org.epcglobalinc.LevelTypeList;
@@ -29,7 +31,27 @@ public class TDTFrontEnd { // demonstration front-end application which makes
 
 	public static final void main(String args[]) {
 		try {
+			
+			
+//			engine = new TDTEngine(
+//			(new File(
+//					"/home/jochen/workspaces/workspace_es/org.fosstrak.tdt/src/org/fosstrak/tdt/resources/auxiliary/ManagerTranslation.xml"))
+//					.toURI().toURL(),
+//			(new File(
+//					"/home/jochen/workspaces/workspace_es/org.fosstrak.tdt/src/org/fosstrak/tdt/resources/schemes"))
+//					.toURI().toURL());
+//	engine = new TDTEngine(
+//			new URL(
+//					"http://www.onsepc.com/ManagerTranslation.xml")
+//					,
+//			(new File(
+//					"/home/jochen/workspaces/workspace_es/org.fosstrak.tdt/src/org/fosstrak/tdt/resources/schemes"))
+//					.toURI().toURL());
+			
+			
 			TDTEngine engine = new TDTEngine();
+			//TDTEngine engine = new TDTEngine(new URL("/home/jochen/workspaces/workspace_es/org.fosstrak.tdt/src/org/fosstrak/tdt/resources/auxiliary"),new URL("/home/jochen/workspaces/workspace_es/org.fosstrak.tdt/src/org/fosstrak/tdt/resources/schemes"));
+			//TDTEngine engine = new TDTEngine("/home/jochen/workspaces/workspace_es/org.fosstrak.tdt/src/org/fosstrak/tdt/resources"));
 			// TDTEngine engine = new TDTEngine("."); // path to directory
 			// containing the
 			// subdirectories 'schemes'
@@ -48,15 +70,15 @@ public class TDTFrontEnd { // demonstration front-end application which makes
 			// input
 			// value
 
-			extraparams.put("taglength", "64"); // for inbound levels
+			extraparams.put("taglength", "96"); // for inbound levels
 			// 'PURE_IDENTITY' or 'LEGACY',
 			// the taglength must be
 			// specified as "64" or "96"
-			extraparams.put("filter", "1"); // for inbound levels
+//			extraparams.put("filter", "2"); // for inbound levels
 			// 'PURE_IDENTITY' or 'LEGACY', the
 			// filter value must be specified -
 			// range depends on coding scheme.
-			extraparams.put("companyprefixlength", "7"); // for inbound levels
+//			extraparams.put("companyprefixlength", "7"); // for inbound levels
 			// 'PURE_IDENTITY'
 			// or 'LEGACY', the
 			// companyprefixlength
@@ -65,8 +87,8 @@ public class TDTFrontEnd { // demonstration front-end application which makes
 			// Prefix) must be
 			// specified for GS1
 			// coding schemes
-
-			String inbound = "gtin=00037000302414;serial=33554431";
+			String inbound = "001100001100100101111000111100110100111101001101011011000101011010010111111101101011111011011101";
+			//String inbound = "gtin=00037000302414;serial=33554431";
 			// String inbound = "urn:epc:id:sgtin:00370001.23456.101";
 			// String inbound =
 			// "1010100000000000001000001110110001000010000011111110011000110010";
@@ -78,7 +100,7 @@ public class TDTFrontEnd { // demonstration front-end application which makes
 			// String inbound = "cageordodaac=2S194;serial=12345678901";
 			// String inhex = "2F02032533139342DFDC1C35";
 
-			LevelTypeList outboundformat = LevelTypeList.BINARY; // permitted
+			LevelTypeList outboundformat = LevelTypeList.PURE_IDENTITY; // permitted
 			// values
 			// are
 			// 'BINARY',
