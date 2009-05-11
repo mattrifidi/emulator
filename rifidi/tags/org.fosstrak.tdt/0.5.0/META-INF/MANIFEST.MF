@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Fosstrak Tdt Plug-in
+Bundle-SymbolicName: org.fosstrak.tdt
+Bundle-Version: 0.5.0
+Bundle-Vendor: Pramari, LLC
+Main-Class: org.fosstrak.tdt.TDTFrontEnd
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Export-Package: org.epcglobalinc,
+ org.fosstrak.tdt
