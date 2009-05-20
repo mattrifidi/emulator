@@ -32,14 +32,42 @@ public class _C1G2ReadOpSpecResult implements _OpSpecResult {
 	public _C1G2ReadOpSpecResult(byte[] readData, int opSpecID, int result) {
 		this.opSpecID = opSpecID;
 		this.result = result;
+		this.readData = new short[readData.length / 2];
 		if (readData != null) {
-			this.readData = new short[readData.length];
-			for (int i = 0; i < readData.length; i++) {
-				this.readData[i] = (short) readData[i];
+			
+			//need to convert byte array into a short array
+			int j = 0;
+			for (int i = 0; i < readData.length; i = i + 2) {
+				Byte b1 = new Byte(readData[i]);
+				Byte b2 = new Byte(readData[i + 1]);
+				this.readData[j] = unsignedByteToShort(b1, b2);
+				j++;
 			}
-		}else{
+		} else {
 			this.readData = new short[0];
 		}
+	}
+
+	/**
+	 * Helper method to convert two bytes to a short
+	 * 
+	 * @param b1
+	 * @param b2
+	 * @return
+	 */
+	private short unsignedByteToShort(byte b1, byte b2) {
+		short s = (short) ((unsignedByteToShort(b1) << 8) + (unsignedByteToShort(b2)));
+		return s;
+	}
+
+	/**
+	 * helper method to convert a byte to a short
+	 * 
+	 * @param b1
+	 * @return
+	 */
+	private static short unsignedByteToShort(byte b1) {
+		return (short) (b1 & 0xFF);
 	}
 
 	/*

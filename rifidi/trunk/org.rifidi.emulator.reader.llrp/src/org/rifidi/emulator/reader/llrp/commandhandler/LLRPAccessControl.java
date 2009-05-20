@@ -124,9 +124,9 @@ public class LLRPAccessControl {
 			accessReportTrigger = specIn.getAccessReportSpecParam()
 					.getAccessReportTrigger();
 		}
-
+		
 		// If the protocol is C1G2
-		if (specIn.getProtocolId() == 1) {
+		if (specIn.getProtocolId() == (byte)1) {
 			C1G2TagSpec tagspecIn = (C1G2TagSpec) specIn
 					.getAccessCommandParam().getTagSpecParam();
 
