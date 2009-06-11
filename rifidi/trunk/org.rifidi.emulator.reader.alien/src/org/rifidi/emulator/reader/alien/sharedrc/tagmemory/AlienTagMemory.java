@@ -67,7 +67,9 @@ public class AlienTagMemory implements TagMemory {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.emulator.reader.sharedrc.tagmemory.NewTagMemory#disable_buffer()
+	 * @see
+	 * org.rifidi.emulator.reader.sharedrc.tagmemory.NewTagMemory#disable_buffer
+	 * ()
 	 */
 	public void suspend() {
 		logger.debug("Disabling Alien Tag Memory");
@@ -78,7 +80,9 @@ public class AlienTagMemory implements TagMemory {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.emulator.reader.sharedrc.tagmemory.NewTagMemory#enable_buffer()
+	 * @see
+	 * org.rifidi.emulator.reader.sharedrc.tagmemory.NewTagMemory#enable_buffer
+	 * ()
 	 */
 	public void resume() {
 		logger.debug("Enabling Alien Tag Memory");
@@ -89,7 +93,8 @@ public class AlienTagMemory implements TagMemory {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.emulator.reader.sharedrc.tagmemory.NewTagMemory#getTagReport()
+	 * @see
+	 * org.rifidi.emulator.reader.sharedrc.tagmemory.NewTagMemory#getTagReport()
 	 */
 	public ArrayList<RifidiTag> getTagReport() {
 		return getTagReport(null);
@@ -127,7 +132,9 @@ public class AlienTagMemory implements TagMemory {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.emulator.reader.sharedrc.tagmemory.NewTagMemory#updateMemory(java.util.Collection)
+	 * @see
+	 * org.rifidi.emulator.reader.sharedrc.tagmemory.NewTagMemory#updateMemory
+	 * (java.util.Collection)
 	 */
 	public void updateMemory(Collection<RifidiTag> tagsToAdd) {
 		logger.debug("Getting tag report.  buffer is "
@@ -153,15 +160,10 @@ public class AlienTagMemory implements TagMemory {
 		logger.debug("persistTime is " + this.persistTimeProperty.getValue());
 		if (this.persistTimeProperty.getValue() == -1) {
 			return;
-		} else if (this.persistTimeProperty.getValue() <= 200) {
-			// don't let persistTime be less than 200 ms, else unexpected
-			// results
-			// may happen (such as people not getting the tags back that are on
-			// the antenna)
-			persistTime = 200;
 		} else {
 			persistTime = this.persistTimeProperty.getValue();
 		}
+		persistTime = persistTime * 1000;
 
 		int removedTags = 0;
 
@@ -187,31 +189,31 @@ public class AlienTagMemory implements TagMemory {
 	public void setTagTypeSelection(HashSet<TagGen> types) {
 		HashSet<TagGen> oldTypes = this.typeFilter;
 		this.typeFilter = types;
-		
-		for(TagGen g:oldTypes) {
-			if(!this.typeFilter.contains(g)) {
+
+		for (TagGen g : oldTypes) {
+			if (!this.typeFilter.contains(g)) {
 				this.removeFromMemory(g);
 			}
 		}
 	}
-	
+
 	/**
-	 * Removes all tags of a given type from memory.  
+	 * Removes all tags of a given type from memory.
 	 * 
 	 * @param type
 	 */
 	private void removeFromMemory(TagGen type) {
 		ArrayList<Long> tagsToRemove = new ArrayList<Long>();
-		for(RifidiTag t:this.tagList.getTagList()) {
-			if(t.getTagGen().equals(type)) {
+		for (RifidiTag t : this.tagList.getTagList()) {
+			if (t.getTagGen().equals(type)) {
 				tagsToRemove.add(t.getTagEntitiyID());
 			}
 		}
-		for(Long l:tagsToRemove) {
+		for (Long l : tagsToRemove) {
 			this.tagList.removeTag(l);
 		}
 	}
-	
+
 	/**
 	 * This static method returns a set of integers that represent the antennas
 	 * that should be scanned as defined by the antennalist variable
