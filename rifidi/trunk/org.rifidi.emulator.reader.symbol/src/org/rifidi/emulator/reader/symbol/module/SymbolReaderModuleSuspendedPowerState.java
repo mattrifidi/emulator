@@ -80,7 +80,6 @@ public class SymbolReaderModuleSuspendedPowerState extends
 		rm.getInteractiveHttpController().turnOff(this.getClass());
 
 		rm.getByteComm().turnOff(this.getClass());
-		rm.getByteComm().turnOff(this.getClass());
 
 		rm.getSharedResources().getInteractiveByteConnectionSignal()
 				.setControlVariableValue(false);
