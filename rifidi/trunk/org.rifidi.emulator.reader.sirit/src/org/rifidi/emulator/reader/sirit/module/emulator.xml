@@ -1,0 +1,13 @@
+<reader>
+	<readerclassname>org.rifidi.emulator.reader.sirit.module.SiritReaderModule</readerclassname>
+	<description>Emulator for the Sirit INfinity 510</description>
+	<maxantennas>4</maxantennas>
+	<property>
+		<required>1</required>
+		<name>ipaddress</name>
+		<display>ip address</display>
+		<tooltip>The address the reader should be reachable through</tooltip>
+		<defaultvalue>127.0.0.1:50007</defaultvalue>		
+		<validatorclassname>IpAddressValidator</validatorclassname>
+	</property>
+</reader>
