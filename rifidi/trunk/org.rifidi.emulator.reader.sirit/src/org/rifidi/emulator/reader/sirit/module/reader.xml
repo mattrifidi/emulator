@@ -2,9 +2,23 @@
 
 <ReaderCommand version="1.0">
 
-	<ReaderCompany>Alien</ReaderCompany>
-	<Reader>ALR9800</Reader>
+	<ReaderCompany>Sirit</ReaderCompany>
+	<Reader>INfinity 510</Reader>
 	
+	<!-- 
+	<Command>
+		<queryName>infoName</queryName>
+		<displayName>ReaderName</displayName>
+		<commandState>Interactive</commandState>
+		<commandHandlerDetails>
+			<handlerClass>org.rifidi.emulator.reader.sirit.commandhandler.SiritInfo</handlerClass>
+			<handlerMethod>infoName</handlerMethod>
+			<argumentType>String</argumentType>
+		</commandHandlerDetails>
+		<actionTag>EDITABLE</actionTag>
+		<category>INFO</category>
+		<defaultValue>unknown</defaultValue>
+	</Command>
+	-->
 	
-		
 </ReaderCommand>

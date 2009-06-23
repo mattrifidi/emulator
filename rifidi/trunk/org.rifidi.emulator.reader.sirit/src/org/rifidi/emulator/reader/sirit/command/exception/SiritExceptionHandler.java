@@ -13,17 +13,32 @@ package org.rifidi.emulator.reader.sirit.command.exception;
 
 import java.util.ArrayList;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.rifidi.emulator.reader.command.CommandObject;
 import org.rifidi.emulator.reader.command.exception.GenericExceptionHandler;
 
 /**
+ * This class will be used to handle any exceptions during the Interactive
+ * state.
+ * 
  * @author Stefan Fahrnbauer - stefan@pramari.com
- *
+ * 
  */
-public class SiritExceptionHandler extends GenericExceptionHandler{
+public class SiritExceptionHandler extends GenericExceptionHandler {
 
-	/* (non-Javadoc)
-	 * @see org.rifidi.emulator.reader.command.exception.GenericExceptionHandler#commandNotFoundError(java.util.ArrayList, org.rifidi.emulator.reader.command.CommandObject)
+	/**
+	 * Message logger
+	 */
+	private static Log logger = LogFactory.getLog(SiritExceptionHandler.class);
+	
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.rifidi.emulator.reader.command.exception.GenericExceptionHandler#
+	 * commandNotFoundError(java.util.ArrayList,
+	 * org.rifidi.emulator.reader.command.CommandObject)
 	 */
 	@Override
 	public ArrayList<Object> commandNotFoundError(ArrayList<Object> arg0,
@@ -32,8 +47,13 @@ public class SiritExceptionHandler extends GenericExceptionHandler{
 		return null;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.rifidi.emulator.reader.command.exception.GenericExceptionHandler#invalidCommandError(java.util.ArrayList, java.lang.String, org.rifidi.emulator.reader.command.CommandObject)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.rifidi.emulator.reader.command.exception.GenericExceptionHandler#
+	 * invalidCommandError(java.util.ArrayList, java.lang.String,
+	 * org.rifidi.emulator.reader.command.CommandObject)
 	 */
 	@Override
 	public ArrayList<Object> invalidCommandError(ArrayList<Object> arg0,
@@ -42,8 +62,13 @@ public class SiritExceptionHandler extends GenericExceptionHandler{
 		return null;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.rifidi.emulator.reader.command.exception.GenericExceptionHandler#malformedMessageError(java.util.ArrayList, org.rifidi.emulator.reader.command.CommandObject)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.rifidi.emulator.reader.command.exception.GenericExceptionHandler#
+	 * malformedMessageError(java.util.ArrayList,
+	 * org.rifidi.emulator.reader.command.CommandObject)
 	 */
 	@Override
 	public ArrayList<Object> malformedMessageError(ArrayList<Object> arg0,

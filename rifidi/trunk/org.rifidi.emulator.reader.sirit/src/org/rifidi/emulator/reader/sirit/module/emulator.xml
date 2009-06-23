@@ -2,6 +2,8 @@
 	<readerclassname>org.rifidi.emulator.reader.sirit.module.SiritReaderModule</readerclassname>
 	<description>Emulator for the Sirit INfinity 510</description>
 	<maxantennas>4</maxantennas>
+	<maxgpis>0</maxgpis>
+	<maxgpos>0</maxgpos>
 	<property>
 		<required>1</required>
 		<name>ipaddress</name>
