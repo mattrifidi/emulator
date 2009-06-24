@@ -118,6 +118,16 @@ public class AlienExternalIO {
 			if (arg.getArguments().size() != 0) {
 				logger.debug("hello");
 				String temp = (String) arg.getArguments().get(0);
+				temp = temp.trim();
+
+				// Check for "0" and "1"
+				if (temp.equals("0")) {
+					temp = "OFF";
+				}
+				if (temp.equals("1")) {
+					temp = "ON";
+				}
+
 				if (!(temp.equalsIgnoreCase("ON") || temp
 						.equalsIgnoreCase("OFF"))) {
 					String cur = arg.getCurrentQueryName();
@@ -165,6 +175,16 @@ public class AlienExternalIO {
 		try {
 			if (arg.getArguments().size() != 0) {
 				String temp = (String) arg.getArguments().get(0);
+				temp = temp.trim();
+
+				// Check for "0" and "1"
+				if (temp.equals("0")) {
+					temp = "OFF";
+				}
+				if (temp.equals("1")) {
+					temp = "ON";
+				}
+
 				if (!(temp.equalsIgnoreCase("ON") || temp
 						.equalsIgnoreCase("OFF"))) {
 					String cur = arg.getCurrentQueryName();
@@ -208,7 +228,7 @@ public class AlienExternalIO {
 	 */
 	public CommandObject initExternalOutput(CommandObject arg,
 			AbstractReaderSharedResources asr) {
-		//TODO: Maybe adjust this to return an error when their are no GPIOs?
+		// TODO: Maybe adjust this to return an error when their are no GPIOs?
 		return (AlienCommon.getter_setter(arg, asr));
 	}
 
