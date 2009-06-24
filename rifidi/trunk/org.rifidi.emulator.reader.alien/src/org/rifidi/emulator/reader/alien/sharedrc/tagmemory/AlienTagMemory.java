@@ -17,8 +17,9 @@ import org.rifidi.tags.impl.RifidiTag;
 import org.rifidi.services.tags.utils.RifidiTagMap;
 
 /**
- * @author kyle
  * 
+ * 
+ * @author kyle
  */
 public class AlienTagMemory implements TagMemory {
 
