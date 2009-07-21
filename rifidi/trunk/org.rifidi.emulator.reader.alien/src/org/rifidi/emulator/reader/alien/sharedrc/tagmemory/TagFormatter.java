@@ -72,6 +72,11 @@ public class TagFormatter {
 		regExToken = regExToken.replaceAll("%A", Integer.toString(aTag
 				.getAntennaLastSeen()));
 		
+		regExToken = regExToken.replaceAll("%s", aTag.getSpeed());
+		
+		regExToken = regExToken.replaceAll("%m", Float.toString(aTag.getRSSI()));
+		
+		
 		String tagProtocol;
 		if(aTag.getTagGen().equals(TagGen.GEN1)) tagProtocol="1";
 		else if(aTag.getTagGen().equals(TagGen.GEN2)) tagProtocol="2";
