@@ -33,6 +33,10 @@ public class RifidiTag implements Serializable {
 
 	/** Serial version for serializable. */
 	private static final long serialVersionUID = 1L;
+	
+	private String speed = "0";
+
+	private float rssi = 0.0f;
 
 	/** The unique ID for identify this tag internally */
 	private long tagEntitiyID;
@@ -90,6 +94,34 @@ public class RifidiTag implements Serializable {
 	 */
 	public TagType getTagType() {
 		return tagType;
+	}
+
+	/**
+	 * @return the speed
+	 */
+	public String getSpeed() {
+		return speed;
+	}
+
+	/**
+	 * @param speed the speed to set
+	 */
+	public void setSpeed(String speed) {
+		this.speed = speed;
+	}
+
+	/**
+	 * @return the rssi
+	 */
+	public float getRssi() {
+		return rssi;
+	}
+
+	/**
+	 * @param rssi the rssi to set
+	 */
+	public void setRssi(float rssi) {
+		this.rssi = rssi;
 	}
 
 	/**
