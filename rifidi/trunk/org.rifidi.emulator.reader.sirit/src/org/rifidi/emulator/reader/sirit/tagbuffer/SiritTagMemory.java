@@ -22,99 +22,69 @@ import org.rifidi.tags.impl.RifidiTag;
 
 /**
  * @author Stefan Fahrnbauer - stefan@pramari.com
- *
+ * 
  */
 public class SiritTagMemory implements TagMemory {
 
-	/**
-	 * The logger for this class.
-	 */
-	@SuppressWarnings("unused")
+	/** logger instance for this class. */
 	private static Log logger = LogFactory.getLog(SiritTagMemory.class);
 
-	/**
-	 * Map of the current buffer of tags, which includes tags in tagMap, and
-	 * also those which have been removed but have not been reported yet.
-	 */
-	private RifidiTagMap tagBufferVisible;
+	/** the tag database, represented by a RifidiTagMap */
+	private RifidiTagMap tagDatabase;
 
-	private RifidiTagMap tagBufferInvisible;
-
+	/** flag that holds the suspend state of the memory */
 	private boolean suspended = false;
 
-
 	public SiritTagMemory() {
-		this.tagBufferVisible = new RifidiTagMap();
-		this.tagBufferInvisible = new RifidiTagMap();
+		this.tagDatabase = new RifidiTagMap();
 	}
 
-	/**
-	 * Add a tag to the visible hash map and remove it from the invisible hash
-	 * map if it is there
-	 * 
-	 * @param newTag
-	 *            The tag to add to the buffer.
-	 */
-	private void addTagVisible(RifidiTag newTag) {
-		this.tagBufferVisible.addTag(newTag);
-		this.tagBufferInvisible.removeTag(newTag.getTagEntitiyID());
-	}
-
-	/**
-	 * Adds a collection of tags to the visible hash map
-	 * 
-	 * @param tagsToAdd
-	 */
-	public void addCollectionTagsVisible(Collection<RifidiTag> tagsToAdd) {
-		for (RifidiTag r : tagsToAdd) {
-			this.addTagVisible(r);
-		}
-	}
-
-	/**
-	 * Tells the buffer it should start reading tags.
-	 */
+	/** Tells the memory to stop reading tags */
 	public void suspend() {
+		logger.debug("Disabling Sirit's TagMemory");
 		suspended = true;
 	}
 
-	/**
-	 * Tells the buffer to stop reading tags.
-	 */
+	/** Tells the memory that reading tags is allowed again */
 	public void resume() {
+		logger.debug("Enabling Sirit's TagMemory");
 		suspended = false;
 	}
 
-	public ArrayList<RifidiTag> getInvisibleTags() {
-		return this.tagBufferInvisible.getTagList();
-	}
-	/**
-	 * Purge
-	 */
+	/** Purges the tag database */
 	public void clear() {
-		this.tagBufferVisible.clear();
-		this.tagBufferInvisible.clear();		
+		this.tagDatabase.clear();
 	}
 
 	/**
-	 * Get visible tags
+	 * Returns the tag database
+	 * 
+	 * @return list of the tags currently in the reader's antennas' fields
 	 */
-	public Collection<RifidiTag> getTagReport() {
-		return this.tagBufferVisible.getTagList();
+	public ArrayList<RifidiTag> getTagReport() {
+		return this.tagDatabase.getTagList();
 	}
 
-	public void updateMemory(Collection<RifidiTag> tagsSeen) {
+	/**
+	 * Adds the most recent seen tags to the database. This method is called
+	 * after a scan.
+	 */
+	public void updateMemory(Collection<RifidiTag> tagsToAdd) {
+		logger.debug("SiritTagMemory - updateMemory() with " + tagsToAdd.size()
+				+ " Tags");
 		if (!suspended) {
-			//add new tags to visible
-			tagBufferVisible.addTags(tagsSeen);
-			
-			//move old tags to invisible tags
-			Collection<RifidiTag>diff = tagBufferVisible.generateSetDiff(tagsSeen);
-			tagBufferInvisible.addTags(diff);
-			for(RifidiTag t : diff){
-				tagBufferVisible.removeTag(t.getTagEntitiyID());
+			for (RifidiTag t : tagsToAdd) {
+				this.tagDatabase.addTag(t);
 			}
-			
+		}
+
+		logger.debug("sirit's taglist inventory:");
+		for (RifidiTag tag : this.tagDatabase.getTagList()) {
+			logger.debug("\t TagID: " + tag.getTag().getId() + "\t First: "
+					+ tag.getDiscoveryDate() + "\t Last: "
+					+ tag.getLastSeenDate() + "\t Antenna: "
+					+ tag.getAntennaLastSeen() + "\t Count: "
+					+ tag.getReadCount());
 		}
 	}
 }

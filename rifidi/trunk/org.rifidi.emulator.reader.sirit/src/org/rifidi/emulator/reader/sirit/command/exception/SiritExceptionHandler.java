@@ -17,6 +17,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.rifidi.emulator.reader.command.CommandObject;
 import org.rifidi.emulator.reader.command.exception.GenericExceptionHandler;
+import org.rifidi.emulator.reader.sirit.commandhandler.SiritCommon;
 
 /**
  * This class will be used to handle any exceptions during the Interactive
@@ -41,10 +42,10 @@ public class SiritExceptionHandler extends GenericExceptionHandler {
 	 * org.rifidi.emulator.reader.command.CommandObject)
 	 */
 	@Override
-	public ArrayList<Object> commandNotFoundError(ArrayList<Object> arg0,
-			CommandObject arg1) {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayList<Object> commandNotFoundError(ArrayList<Object> arg,
+			CommandObject obj) {
+		
+		return this.errorFormat("error.parser.unknown_variable", "", obj);
 	}
 
 	/*
@@ -75,6 +76,21 @@ public class SiritExceptionHandler extends GenericExceptionHandler {
 			CommandObject arg1) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	/* Private method that takes care of any formatting involved in the process */
+	private ArrayList<Object> errorFormat(String errorMsg, String retVal,
+			CommandObject obj) {
+		logger.debug("send error message: " + errorMsg);
+		
+		retVal += errorMsg + SiritCommon.ENDOFREPLY;
+		if (obj.getCurrentQueryName().startsWith("\1")) {
+		} else {
+			retVal += SiritCommon.PROMPT;
+		}
+		ArrayList<Object> returnValue = new ArrayList<Object>();
+		returnValue.add(retVal);
+		return returnValue;
 	}
 
 }

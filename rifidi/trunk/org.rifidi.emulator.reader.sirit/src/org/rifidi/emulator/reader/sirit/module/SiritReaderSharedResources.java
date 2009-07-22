@@ -11,7 +11,11 @@
  */
 package org.rifidi.emulator.reader.sirit.module;
 
+import java.util.HashMap;
+import java.util.HashSet;
+
 import org.rifidi.emulator.common.ControlSignal;
+import org.rifidi.emulator.reader.command.CommandObject;
 import org.rifidi.emulator.reader.command.exception.GenericExceptionHandler;
 import org.rifidi.emulator.reader.command.xml.CommandDigester;
 import org.rifidi.emulator.reader.module.abstract_.AbstractReaderSharedResources;
@@ -27,8 +31,11 @@ public class SiritReaderSharedResources extends AbstractReaderSharedResources {
 	private ControlSignal<Boolean> interactivePowerSignal;
 	private ControlSignal<Boolean> interactiveConnectionSignal;
 
+	private String commandIP;
+	private Integer commandPort;
+
 	/**
-	 * 
+	 * Constructor
 	 * 
 	 * @param aRadio
 	 * @param aTagMemory
@@ -41,15 +48,26 @@ public class SiritReaderSharedResources extends AbstractReaderSharedResources {
 	 */
 	public SiritReaderSharedResources(GenericRadio aRadio,
 			TagMemory aTagMemory, ControlSignal<Boolean> readerPowerSignal,
-			String readerName, GenericExceptionHandler geh,
-			CommandDigester dig,
+			ControlSignal<Boolean> interactivePowerSignal,
 			ControlSignal<Boolean> interactiveConnectionSignal,
-			ControlSignal<Boolean> interactivePowerSignal, int numAntennas) {
+			String readerName, HashMap<String, CommandObject> allCommands,
+			CommandDigester dig, GenericExceptionHandler geh, String commandIP,
+			Integer commandPort, int numAntennas) {
+
+		/* Call the super constructor */
 		super(aRadio, aTagMemory, readerPowerSignal, readerName, geh, dig,
 				numAntennas);
 
+		/* Assign other instance variables */
 		this.interactiveConnectionSignal = interactiveConnectionSignal;
 		this.interactivePowerSignal = interactivePowerSignal;
+		this.commandIP = commandIP;
+		this.commandPort = commandPort;
+
+		for (CommandObject i : allCommands.values()) {
+			this.getPropertyMap().put(i.getDisplayName().toLowerCase(),
+					i.getReaderProperty());
+		}
 	}
 
 	/**
@@ -65,4 +83,40 @@ public class SiritReaderSharedResources extends AbstractReaderSharedResources {
 	public ControlSignal<Boolean> getInteractivePowerSignal() {
 		return interactivePowerSignal;
 	}
+
+	/**
+	 * @return the commandIP
+	 */
+	public String getCommandIP() {
+		return commandIP;
+	}
+
+	/**
+	 * @return the commandPort
+	 */
+	public Integer getCommandPort() {
+		return commandPort;
+	}
+
+	/**
+	 * This method returns a set of integers that represent the antennas that
+	 * should be scanned as defined by the antennalist variable
+	 * 
+	 * @return an HashSet of the antennas' numbers to be scanned
+	 */
+	public HashSet<Integer> getAntennas() {
+		/* read the property with the list of created antennas */
+		String antennas = this.getPropertyMap().get("detectedantennas")
+				.getPropertyStringValue();
+
+		/* create return value */
+		HashSet<Integer> antennasToScan = new HashSet<Integer>();
+
+		for (String antenna : antennas.split(" ")) {
+			antennasToScan.add(new Integer(antenna));
+		}
+
+		return antennasToScan;
+	}
+
 }

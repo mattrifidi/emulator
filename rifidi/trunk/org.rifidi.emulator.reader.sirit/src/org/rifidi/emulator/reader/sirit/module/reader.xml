@@ -5,20 +5,59 @@
 	<ReaderCompany>Sirit</ReaderCompany>
 	<Reader>INfinity 510</Reader>
 	
-	<!-- 
 	<Command>
-		<queryName>infoName</queryName>
+		<queryName>info.name</queryName>
 		<displayName>ReaderName</displayName>
 		<commandState>Interactive</commandState>
 		<commandHandlerDetails>
 			<handlerClass>org.rifidi.emulator.reader.sirit.commandhandler.SiritInfo</handlerClass>
-			<handlerMethod>infoName</handlerMethod>
+			<handlerMethod>info_name</handlerMethod>
 			<argumentType>String</argumentType>
 		</commandHandlerDetails>
 		<actionTag>EDITABLE</actionTag>
-		<category>INFO</category>
+		<category>NONE</category>
 		<defaultValue>unknown</defaultValue>
 	</Command>
-	-->
 	
+	<Command>
+		<queryName>setup.operating_mode</queryName>
+		<displayName>OperatingMode</displayName>
+		<commandState>Interactive</commandState>
+		<commandHandlerDetails>
+			<handlerClass>org.rifidi.emulator.reader.sirit.commandhandler.SiritSetup</handlerClass>
+			<handlerMethod>setup_operatingMode</handlerMethod>
+			<argumentType>String</argumentType>
+		</commandHandlerDetails>
+		<actionTag>EDITABLE</actionTag>
+		<category>NONE</category>
+		<defaultValue>standby</defaultValue>
+	</Command>
+	
+	<Command>
+		<queryName>tag.db.get</queryName>
+		<displayName>GetDatabase</displayName>
+		<commandState>Interactive</commandState>
+		<commandHandlerDetails>
+			<handlerClass>org.rifidi.emulator.reader.sirit.commandhandler.SiritTag</handlerClass>
+			<handlerMethod>tag_db_get</handlerMethod>
+			<argumentType>String</argumentType>
+		</commandHandlerDetails>
+		<actionTag>IGNORE</actionTag>
+		<category>NONE</category>
+		<defaultValue></defaultValue>
+	</Command>
+	
+	<Command>
+		<queryName>antennas.detected</queryName>
+		<displayName>DetectedAntennas</displayName>
+		<commandState>Interactive</commandState>
+		<commandHandlerDetails>
+			<handlerClass>org.rifidi.emulator.reader.sirit.commandhandler.SiritAntennas</handlerClass>
+			<handlerMethod>antennas_detected</handlerMethod>
+			<argumentType>String</argumentType>
+		</commandHandlerDetails>
+		<actionTag>EDITABLE</actionTag>
+		<category>NONE</category>
+		<defaultValue>1 2</defaultValue>
+	</Command>
 </ReaderCommand>

@@ -17,7 +17,8 @@ Require-Bundle: org.rifidi.common.utilities;bundle-version="2.1.0",
  org.rifidi.emulator;bundle-version="2.2.1"
 Export-Package: org.rifidi.emulator.reader.sirit,
  org.rifidi.emulator.reader.sirit.command.exception,
+ org.rifidi.emulator.reader.sirit.commandhandler,
+ org.rifidi.emulator.reader.sirit.formatter,
  org.rifidi.emulator.reader.sirit.module,
  org.rifidi.emulator.reader.sirit.tagbuffer
-Eclipse-LazyStart: false
 Bundle-ActivationPolicy: lazy

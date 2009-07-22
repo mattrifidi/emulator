@@ -1,7 +1,7 @@
 /*
- *  SiritInfo.java
+ *  SiritSetup.java
  *
- *  Created:	23.06.2009
+ *  Created:	10.07.2009
  *  Project:	RiFidi org.rifidi.emulator.reader.sirit
  *  				http://www.rifidi.org
  *  				http://rifidi.sourceforge.net
@@ -17,18 +17,19 @@ import org.rifidi.emulator.reader.command.CommandObject;
 import org.rifidi.emulator.reader.module.abstract_.AbstractReaderSharedResources;
 
 /**
- * This is the class for all commands of sirit's "info" namespace.
+ * This is the class for all commands of sirit's "setup" namespace
  * 
  * @author Stefan Fahrnbauer - stefan@pramari.com
  * 
  */
-public class SiritInfo {
+public class SiritSetup {
 
 	/** logger instance for this class. */
-	private static Log logger = LogFactory.getLog(SiritInfo.class);
+	private static Log logger = LogFactory.getLog(SiritSetup.class);
 
 	/**
-	 * Gets and sets the reader's name variable in namespace info
+	 * Gets and sets the reader's operating mode variable. When set to "active"
+	 * the autonomous mode is to be enabled.
 	 * 
 	 * @param arg
 	 *            The CommandObject which contains the information from the
@@ -39,12 +40,12 @@ public class SiritInfo {
 	 * @return The CommandObject, unmodified if the command was a get, modified
 	 *         if the command is a set.
 	 */
-	public CommandObject info_name(CommandObject arg,
+	public CommandObject setup_operatingMode(CommandObject arg,
 			AbstractReaderSharedResources asr) {
-		
-		/* sirit debug info */
-		logger.debug("SiritInfo - info_name()");
+		logger.debug("SiritSetup.setup_operatingmode() just got called!");
 
+		/* start autonomous mode */
+		// todo
 		return SiritCommon.getter_setter(arg, asr);
 	}
 

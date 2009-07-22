@@ -1,7 +1,7 @@
 /*
- *  SiritInfo.java
+ *  SiritAntenna.java
  *
- *  Created:	23.06.2009
+ *  Created:	17.07.2009
  *  Project:	RiFidi org.rifidi.emulator.reader.sirit
  *  				http://www.rifidi.org
  *  				http://rifidi.sourceforge.net
@@ -17,18 +17,18 @@ import org.rifidi.emulator.reader.command.CommandObject;
 import org.rifidi.emulator.reader.module.abstract_.AbstractReaderSharedResources;
 
 /**
- * This is the class for all commands of sirit's "info" namespace.
+ * This is the class ta handle commands of sirit's "antenna" namespace
  * 
  * @author Stefan Fahrnbauer - stefan@pramari.com
- * 
+ *
  */
-public class SiritInfo {
-
+public class SiritAntennas {
+	
 	/** logger instance for this class. */
-	private static Log logger = LogFactory.getLog(SiritInfo.class);
-
+	private static Log logger = LogFactory.getLog(SiritTag.class);
+	
 	/**
-	 * Gets and sets the reader's name variable in namespace info
+	 * Gets the list of antennas connected to the reader
 	 * 
 	 * @param arg
 	 *            The CommandObject which contains the information from the
@@ -39,11 +39,9 @@ public class SiritInfo {
 	 * @return The CommandObject, unmodified if the command was a get, modified
 	 *         if the command is a set.
 	 */
-	public CommandObject info_name(CommandObject arg,
+	public CommandObject antennas_detected(CommandObject arg,
 			AbstractReaderSharedResources asr) {
-		
-		/* sirit debug info */
-		logger.debug("SiritInfo - info_name()");
+		logger.debug("SiritAntenna - antenna_detected");
 
 		return SiritCommon.getter_setter(arg, asr);
 	}

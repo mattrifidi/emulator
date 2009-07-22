@@ -36,6 +36,7 @@ import org.rifidi.emulator.reader.module.abstract_.AbstractPowerModule;
 import org.rifidi.emulator.reader.sharedrc.radio.Antenna;
 import org.rifidi.emulator.reader.sharedrc.radio.generic.GenericRadio;
 import org.rifidi.emulator.reader.sirit.command.exception.SiritExceptionHandler;
+import org.rifidi.emulator.reader.sirit.formatter.SiritCommandFormatter;
 import org.rifidi.emulator.reader.sirit.tagbuffer.SiritTagMemory;
 
 /**
@@ -125,7 +126,7 @@ public class SiritReaderModule extends AbstractPowerModule implements
 				+ properties.getReaderName());
 		consoleLogger.info(SiritReaderModule.startupText
 				+ properties.getReaderName() + " IP Address: "
-				+ properties.getProperty("byte_address"));
+				+ properties.getProperty("ipaddress"));
 		consoleLogger.info(SiritReaderModule.startupText
 				+ properties.getReaderName() + " has "
 				+ properties.getNumAntennas() + " antennas");
@@ -153,7 +154,7 @@ public class SiritReaderModule extends AbstractPowerModule implements
 		GenericRadio genericRadio = new GenericRadio(antennaList, 25, name,
 				tagMemory);
 
-		// Parse out the IPs and ports from the GeneralReaderPropertyHolder
+		// Parse out the IP and port from the GeneralReaderPropertyHolder
 		String ipAddress = ((String) properties.getProperty("ipaddress"))
 				.split(":")[0];
 		int tcpPort = Integer.parseInt(((String) properties
@@ -161,9 +162,10 @@ public class SiritReaderModule extends AbstractPowerModule implements
 
 		// create the shared resources and supply necessary information to it
 		this.sharedResources = new SiritReaderSharedResources(genericRadio,
-				tagMemory, new ControlSignal<Boolean>(false), name, null,
-				digester, new ControlSignal<Boolean>(false),
-				new ControlSignal<Boolean>(false), antennaList.size());
+				tagMemory, powerControlSignal,
+				new ControlSignal<Boolean>(false), new ControlSignal<Boolean>(
+						false), name, digester.getAllCommands(), digester,
+				new SiritExceptionHandler(), ipAddress, tcpPort, antennaList.size());
 
 		// Create the communication object
 		this.tcpComm = new TCPServerCommunication(new RawProtocol(),
@@ -174,8 +176,9 @@ public class SiritReaderModule extends AbstractPowerModule implements
 
 		// Build the adapters for this reader
 		this.interactiveCommandAdapter = new ReflectiveCommandAdapter(
-				"Interactive", null, new SiritExceptionHandler(),
-				this.sharedResources, new RawCommandSearcher());
+				"Interactive", new SiritCommandFormatter(),
+				new SiritExceptionHandler(), this.sharedResources,
+				new RawCommandSearcher());
 
 		// Build the controllers
 		this.interactiveCommandController = new InteractiveCommandController(
