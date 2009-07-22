@@ -40,6 +40,28 @@ public class AlienGeneral {
 	private static Log logger = LogFactory.getLog(AlienGeneral.class);
 
 	/**
+	 * 
+	 * @param arg
+	 * @param asr
+	 * @return
+	 */
+	public CommandObject speedFilter(CommandObject arg,
+			AbstractReaderSharedResources asr) {
+		return AlienCommon.getter_setter(arg, asr);
+	}
+
+	/**
+	 * 
+	 * @param arg
+	 * @param asr
+	 * @return
+	 */
+	public CommandObject rssiFilter(CommandObject arg,
+			AbstractReaderSharedResources asr) {
+		return AlienCommon.getter_setter(arg, asr);
+	}
+
+	/**
 	 * The help file for this reader.
 	 * 
 	 * @param arg
@@ -220,9 +242,11 @@ public class AlienGeneral {
 	 */
 	public CommandObject uptime(CommandObject arg,
 			AbstractReaderSharedResources asr) {
-		ReaderProperty rp = asr.getPropertyMap().get(arg.getDisplayName().toLowerCase());
+		ReaderProperty rp = asr.getPropertyMap().get(
+				arg.getDisplayName().toLowerCase());
 		System.out.println("The readerProperty: " + rp);
-		rp.setPropertyValue(String.valueOf(AlienUptime.getInstance().getUptimeInSeconds()));
+		rp.setPropertyValue(String.valueOf(AlienUptime.getInstance()
+				.getUptimeInSeconds()));
 		return AlienCommon.getter_setter(arg, asr);
 	}
 

@@ -424,6 +424,36 @@
 		<category>MISC</category>
 		<defaultValue>OFF</defaultValue>
 	</Command>
+	
+		<Command>
+		<queryName>getSpeedFilter</queryName>
+		<queryName>setSpeedFilter</queryName>
+		<displayName>SpeedFilter</displayName>
+		<commandState>Interactive</commandState>
+		<commandHandlerDetails>
+			<handlerClass>org.rifidi.emulator.reader.alien.commandhandler.AlienGeneral</handlerClass>
+			<handlerMethod>speedFilter</handlerMethod>
+			<argumentType>String</argumentType>
+		</commandHandlerDetails>
+		<actionTag>IGNORE</actionTag>
+		<category>TAG</category>
+		<defaultValue>0</defaultValue>
+	</Command>
+	
+	<Command>
+		<queryName>getRSSIFilter</queryName>
+		<queryName>setRSSIFilter</queryName>
+		<displayName>RSSIFilter</displayName>
+		<commandState>Interactive</commandState>
+		<commandHandlerDetails>
+			<handlerClass>org.rifidi.emulator.reader.alien.commandhandler.AlienGeneral</handlerClass>
+			<handlerMethod>rssiFilter</handlerMethod>
+			<argumentType>String</argumentType>
+		</commandHandlerDetails>
+		<actionTag>IGNORE</actionTag>
+		<category>TAG</category>
+		<defaultValue>0</defaultValue>
+	</Command>
 
 	<Command>
 		<queryName>getInvertExternalInput</queryName>
