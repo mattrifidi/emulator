@@ -16,20 +16,6 @@ public interface RifidiManagerInterface {
 	
 	/**
 	 * 
-	 * @return
-	 * @throws Exception
-	 */
-	public abstract String getLocalHostname() throws Exception;
-	
-	/**
-	 * 
-	 * @return
-	 * @throws Exception
-	 */
-	public abstract Integer getLocalPort() throws Exception;
-	
-	/**
-	 * 
 	 * @param name
 	 * @return
 	 * @throws Exception

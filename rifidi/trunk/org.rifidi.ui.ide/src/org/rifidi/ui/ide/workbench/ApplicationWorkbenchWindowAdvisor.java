@@ -80,25 +80,6 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 
 		logger.debug("Log4J system initialized and started");
 
-		// TODO logic for RifidiManager startUP
-		try {
-			RifidiManager.startManager("127.0.0.1", 1198);
-		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (RemoteException e) {
-			logger.debug(e.getMessage());
-			MessageBox messageBox = new MessageBox(configurer.getWindow()
-					.getShell());
-			messageBox.setMessage("Could not start RMI Server because "
-					+ "the socket is already in use!");
-			messageBox.open();
-			ActionFactory.QUIT.create(configurer.getWindow()).run();
-			return;
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
 		logger.debug("Starting up ViewManager ");
 		// Get the View Manager responsible for showing Views like (AntennaView
 		// and ConsoleView)

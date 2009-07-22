@@ -105,7 +105,7 @@ public class ReaderRegistry {
 
 		try {
 			rifidiManager = (RifidiManagerInterface) TransparentItemProxy
-					.getItem(connectionURI + RifidiManager.URL,
+					.getItem(connectionURI + "rifidiManager",
 							new Class[] { RifidiManagerInterface.class });
 		} catch (java.rmi.ConnectException e) {
 			logger.error("Connection could not be established");

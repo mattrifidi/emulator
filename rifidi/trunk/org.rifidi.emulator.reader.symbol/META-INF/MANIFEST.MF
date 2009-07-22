@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Rifidi Symbol Reader Plug-in
 Bundle-SymbolicName: org.rifidi.emulator.reader.symbol
-Bundle-Version: 2.2.0
+Bundle-Version: 2.2.1
 Bundle-Activator: org.rifidi.emulator.reader.symbol.Activator
 Bundle-Vendor: Pramari, LLC
 Bundle-Localization: plugin

@@ -11,6 +11,7 @@
  */
 package org.rifidi.ui.common.reader.blueprints;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -20,33 +21,24 @@ import org.xml.sax.SAXException;
 /**
  * This class takes an InputStream and digests it as an xml-file.
  * 
- * Below an example of the xmlfile, the roottag is the reader-tag:
- * <reader>
- *  <readerclassname>org.rifidi.emulator.reader.module.alien.AlienReaderModule</readerclassname>
- *  <!-- name of the baseclass of the reader --->
- * 	<description>Emulator for the Alien 9800</description>
- *  <!-- a brief description -->
- * 	<maxantennas>4</maxantennas>
- *  <!-- max numbers of antennas this reader supports -->
- *  <!-- the following is used to map readerproperties to the ui -->
- * 	<property>
- * 		<required>1</required>
- * 		<!-- is this property required 1/0 -->
- * TODO: currently the required field is ignored
- * 		<name>inet_address</name>
- * 		<!-- name of the property to be used in the GeneralPropertyHolder-->
- * 		<display>ip address</display>
- * 		<!-- name to be displayed in the UI -->
- * 		<tooltip>The address the reader should be reachable through</tooltip>
- * 		<!-- UI tooltip -->
- * 		<defaultvalue>127.0.0.1:10000</defaultvalue>
- * 		<!-- a default value to be displayed in the UI-->
- * 		<validatorclassname>IpAddressValidator</validatorclassname>
- * 		<!-- the validator to be used for this parameter, if just a classname is
- * 		given it will resolve to org.rifidi.ide.validators.<classname> otherwise the
- * 		specified packagename will be used-->
- * 	</property>
- * </reader>
+ * Below an example of the xmlfile, the roottag is the reader-tag: <reader>
+ * <readerclassname
+ * >org.rifidi.emulator.reader.module.alien.AlienReaderModule</readerclassname>
+ * <!-- name of the baseclass of the reader ---> <description>Emulator for the
+ * Alien 9800</description> <!-- a brief description -->
+ * <maxantennas>4</maxantennas> <!-- max numbers of antennas this reader
+ * supports --> <!-- the following is used to map readerproperties to the ui -->
+ * <property> <required>1</required> <!-- is this property required 1/0 -->
+ * TODO: currently the required field is ignored <name>inet_address</name> <!--
+ * name of the property to be used in the GeneralPropertyHolder--> <display>ip
+ * address</display> <!-- name to be displayed in the UI --> <tooltip>The
+ * address the reader should be reachable through</tooltip> <!-- UI tooltip -->
+ * <defaultvalue>127.0.0.1:10000</defaultvalue> <!-- a default value to be
+ * displayed in the UI-->
+ * <validatorclassname>IpAddressValidator</validatorclassname> <!-- the
+ * validator to be used for this parameter, if just a classname is given it will
+ * resolve to org.rifidi.ide.validators.<classname> otherwise the specified
+ * packagename will be used--> </property> </reader>
  * 
  * 
  * @author Jochen Mader - jochen@pramari.com
@@ -54,35 +46,46 @@ import org.xml.sax.SAXException;
  */
 public class DigestReaders {
 	private Digester digester;
+
 	/**
 	 * Constructor
-	 *
+	 * 
 	 */
-	public DigestReaders(){
+	public DigestReaders() {
 		digester = new Digester();
 		digester.setClassLoader(this.getClass().getClassLoader());
-		
-        digester.setValidating( false );
-        digester.addObjectCreate("reader", ReaderBlueprint.class);
-        digester.addBeanPropertySetter("reader/readerclassname");
-        digester.addBeanPropertySetter("reader/description");
-        digester.addBeanPropertySetter("reader/maxantennas");
-        digester.addBeanPropertySetter("reader/maxgpis");
+
+		digester.setValidating(false);
+		digester.addObjectCreate("reader", ReaderBlueprint.class);
+		digester.addBeanPropertySetter("reader/readerclassname");
+		digester.addBeanPropertySetter("reader/description");
+		digester.addBeanPropertySetter("reader/maxantennas");
+		digester.addBeanPropertySetter("reader/maxgpis");
 		digester.addBeanPropertySetter("reader/maxgpos");
 		digester.addObjectCreate("reader/property", PropertyBlueprint.class);
-        digester.addSetNestedProperties("reader/property");
-        digester.addSetNext("reader/property", "addProperty");
+		digester.addSetNestedProperties("reader/property");
+		digester.addSetNext("reader/property", "addProperty");
 	}
-	
+
 	/**
 	 * Takes an InputSTream and digests it
-	 * @param is an InputStream containing a reader description xml-file
+	 * 
+	 * @param is
+	 *            an InputStream containing a reader description xml-file
 	 * @return the created blueprint for the ui
 	 * @throws SAXException
 	 * @throws IOException
 	 */
-	public ReaderBlueprint digest(InputStream is) throws SAXException, IOException{
+	public ReaderBlueprint digest(InputStream is) throws SAXException,
+			IOException {
 		digester.clear();
-        return (ReaderBlueprint)digester.parse(is);
+
+		try {
+			ReaderBlueprint bp = (ReaderBlueprint) digester.parse(is);
+			return bp;
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

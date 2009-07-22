@@ -74,7 +74,7 @@ public class TagFormatter {
 		
 		regExToken = regExToken.replaceAll("%s", aTag.getSpeed());
 		
-		regExToken = regExToken.replaceAll("%m", Float.toString(aTag.getRSSI()));
+		regExToken = regExToken.replaceAll("%m", Float.toString(aTag.getRssi()));
 		
 		
 		String tagProtocol;

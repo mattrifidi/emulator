@@ -6,7 +6,6 @@ package org.rifidi.emulator.rmi.server;
 import gnu.cajo.invoke.Remote;
 import gnu.cajo.utils.ItemServer;
 
-import java.io.IOException;
 import java.net.UnknownHostException;
 import java.rmi.AccessException;
 import java.rmi.NoSuchObjectException;
@@ -16,11 +15,10 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.log4j.BasicConfigurator;
 import org.rifidi.emulator.log.ReaderLogCacheSingleton;
 import org.rifidi.emulator.reader.module.GeneralReaderPropertyHolder;
 import org.rifidi.emulator.reader.module.ReaderModule;
@@ -43,166 +41,91 @@ import org.rifidi.emulator.reader.module.ReaderModuleFactory;
  */
 public class RifidiManager implements RifidiManagerInterface {
 
-	/**
-	 * The log4j logger for this class.
-	 */
+	/** The log4j logger for this class. */
 	private static Log logger = LogFactory.getLog(RifidiManager.class);
-
-	/**
-	 * Instance of the log cache
-	 */
+	/** Instance of the log cache */
 	private ReaderLogCacheSingleton readerLogCache = ReaderLogCacheSingleton
 			.getInstance();
-
-	/**
-	 * Singleton Pattern
-	 */
-	private static RifidiManagerInterface INSTANCE = null;
-
-	/**
-	 * Is RifidiManager running
-	 */
+	/** Is RifidiManager running */
 	private static boolean isStarted = false;
-	
-	/**
-	 * List of all created readers
-	 */
+	/** List of all created readers */
 	private HashMap<String, ReaderModuleManager> readerRegistry = new HashMap<String, ReaderModuleManager>();
-
-	/**
-	 * Connection Informations
-	 */
+	/** Connection hostname */
 	private static String hostname = "127.0.0.1";
+	/** Connection port */
 	private static int port = 1198;
+	/** RMI Path for the rifidiManager */
+	private static final String URL = "rifidiManager";
+	/** A factory for creating readers */
+	private Set<ReaderModuleFactory> readerModuleFactory;
 
 	/**
-	 * RMI Path for the rifidiManager
-	 */
-	public static final String URL = "rifidiManager";
-
-	/**
-	 * Constructor for the RifidiManager (this is a singleton so please use
-	 * startManager)
+	 * Called by spring. Constructor for the RifidiManager
 	 * 
-	 * @param ip
-	 *            IpAddress to bind to
-	 * @param port
-	 *            Port to bind to
 	 * @throws UnknownHostException
 	 *             this exception is thrown when the hostname (ip) is not
 	 *             resolve able
 	 * @throws RemoteException
 	 *             this exception is thrown when the port is already used
 	 */
-	private RifidiManager(String ip, int port) throws UnknownHostException,
-			RemoteException {
-		Remote.config(ip, port, null, 0);
+	public RifidiManager() throws UnknownHostException, RemoteException {
+		logger.info("Starting up RMI Service at hostname: " + hostname
+				+ " Port: " + port);
+		Remote.config(hostname, port, null, 0);
 		ItemServer.bind(this, URL);
+		isStarted = true;
 	}
 
 	/**
-	 * Main method to start the emulator thru console
+	 * Called by spring
 	 * 
-	 * @param args
-	 *            Arguments are IP-Address and Port-Number
+	 * @param readerModuleFactory
+	 *            the readerModuleFactory to set
 	 */
-	public static void main(String[] args) {
-		BasicConfigurator.configure();
-		if (args.length == 2) {
-			if (args[0] != null) {
-				hostname = args[0];
-			}
-			if (args[1] != null) {
-				port = Integer.parseInt(args[1]);
-			}
-		}
-
-		try {
-			startManager(hostname, port);
-		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			System.exit(-1);
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			System.exit(-1);
-		} catch (IOException e) {
-			logger
-					.fatal("Could not start RMIServer because socket allready in use!");
-			System.exit(-1);
-		}
-	}
-
-	/**
-	 * start the RMI Service for the reader emulation at the given IP and Port
-	 * both need to be local
-	 * 
-	 * @param _hostname
-	 *            IPAddress of local Host
-	 * @param _port
-	 *            Port of local Host
-	 * @throws UnknownHostException
-	 *             when local IPAddress could not be resolved
-	 * @throws RemoteException
-	 *             when Port is already used by something else
-	 * @throws IOException
-	 */
-	public static void startManager(String _hostname, Integer _port)
-			throws UnknownHostException, RemoteException, IOException {
-		hostname = _hostname;
-		port = _port;
-		if (INSTANCE == null) {
-			INSTANCE = new RifidiManager(hostname, port);
-			logger.info("Starting up RMI Service at hostname: " + hostname
-					+ " Port: " + port);
-			isStarted = true;
-		}
-	}
-
-	/**
-	 * Get the instance of the RifidiManager
-	 * 
-	 * @return the RifidiManager
-	 */
-	public static RifidiManagerInterface getManager() {
-		return INSTANCE;
+	public void setReaderFactories(Set<ReaderModuleFactory> readerFactories) {
+		this.readerModuleFactory = readerFactories;
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.sandbox.cajo.test.RifidiManagerInterface#createReader(java.lang.String,
-	 *      java.lang.String, int, int, int, Map<String, String>)
+	 * @see
+	 * org.rifidi.sandbox.cajo.test.RifidiManagerInterface#createReader(java
+	 * .lang.String, java.lang.String, int, int, int, Map<String, String>)
 	 */
 	public Boolean createReader(GeneralReaderPropertyHolder properties) {
-		if (!readerRegistry.containsKey(properties.getReaderName())) {
-			// TODO Remember that the ReaderFactory is the old way of creating a
-			// reader
-			ReaderModule rm = ReaderModuleFactory
-					.createReaderModule(properties);
-
-			ReaderModuleManager moduleManager = new ReaderModuleManager(rm);
-
-			try {
-				logger.info("Binding new Reader /" + properties.getReaderName() );
-				ItemServer.bind(moduleManager, properties.getReaderName());
-				readerRegistry.put(properties.getReaderName(), moduleManager);
-			} catch (RemoteException e) {
-				logger.debug("Cannot bind " + properties.getReaderName()
-						+ " to cajo registry");
-				return false;
-			}
-
-			return true;
+		if (readerRegistry.containsKey(properties.getReaderName())) {
+			return false;
 		}
-		return false;
+		ReaderModuleFactory factory = getReaderFactoryByModuleClass(properties
+				.getReaderClassName());
+		if (factory == null) {
+			return false;
+		}
+		ReaderModule reader = factory.createReaderModule(properties);
+
+		ReaderModuleManager moduleManager = new ReaderModuleManager(reader);
+
+		try {
+			logger.info("Binding new Reader /" + properties.getReaderName());
+			ItemServer.bind(moduleManager, properties.getReaderName());
+			readerRegistry.put(properties.getReaderName(), moduleManager);
+		} catch (RemoteException e) {
+			logger.debug("Cannot bind " + properties.getReaderName()
+					+ " to cajo registry");
+			return false;
+		}
+
+		return true;
+
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.sandbox.cajo.test.RifidiManagerInterface#removeReader(java.lang.String)
+	 * @see
+	 * org.rifidi.sandbox.cajo.test.RifidiManagerInterface#removeReader(java
+	 * .lang.String)
 	 */
 	public Boolean removeReader(String name) {
 		try {
@@ -236,13 +159,17 @@ public class RifidiManager implements RifidiManagerInterface {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.sandbox.cajo.test.RifidiManagerInterface#getSupportedReaderTypes()
+	 * @see
+	 * org.rifidi.sandbox.cajo.test.RifidiManagerInterface#getSupportedReaderTypes
+	 * ()
 	 */
 	@SuppressWarnings("unchecked")
 	public List<String> getSupportedReaderTypes() {
-		Map<String, Class> map = ReaderModuleFactory.getSupportedReaders();
-		List<String> ret = new ArrayList<String>(map.keySet());
-		return ret;
+		List<String> types = new ArrayList<String>();
+		for (ReaderModuleFactory factory : readerModuleFactory) {
+			types.add(factory.getReaderType());
+		}
+		return types;
 	}
 
 	/*
@@ -285,35 +212,27 @@ public class RifidiManager implements RifidiManagerInterface {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.emulator.rmi.server.RifidiManagerInterface#getReaderXMLDescription(java.lang.String)
+	 * @see
+	 * org.rifidi.emulator.rmi.server.RifidiManagerInterface#getReaderXMLDescription
+	 * (java.lang.String)
 	 */
 	public String getReaderXMLDescription(String readerModule) {
 		logger.info(readerModule);
-		return ReaderModuleFactory.getReaderXMLDescription(readerModule);
+		ReaderModuleFactory factory = getReaderFactoryByReaderType(readerModule);
+		if (factory != null) {
+			return factory.getReaderXMLDescription();
+		} else {
+			logger.warn("No factory found for " + readerModule);
+			return null;
+		}
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.emulator.rmi.server.RifidiManagerInterface#getLocalHostname()
-	 */
-	public String getLocalHostname() {
-		return hostname;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.rifidi.emulator.rmi.server.RifidiManagerInterface#getLocalPort()
-	 */
-	public Integer getLocalPort() {
-		return port;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.rifidi.emulator.rmi.server.RifidiManagerInterface#getCachedLogs(java.lang.String)
+	 * @see
+	 * org.rifidi.emulator.rmi.server.RifidiManagerInterface#getCachedLogs(java
+	 * .lang.String)
 	 */
 	public List<String> getCachedLogs(String readerName) throws Exception {
 		// TODO: Implement this Method as a Callback because it get's invoked
@@ -327,5 +246,35 @@ public class RifidiManager implements RifidiManagerInterface {
 	public static boolean isStarted() {
 		return isStarted;
 	}
-	
+
+	/**
+	 * Helper method to lookup reader factory by the reader type
+	 * 
+	 * @param name
+	 * @return
+	 */
+	private ReaderModuleFactory getReaderFactoryByReaderType(String name) {
+		for (ReaderModuleFactory factory : this.readerModuleFactory) {
+			if (factory.getReaderType().equals(name)) {
+				return factory;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Helper method to look up reader factory by the reader module class name
+	 * 
+	 * @param className
+	 * @return
+	 */
+	private ReaderModuleFactory getReaderFactoryByModuleClass(String className) {
+		for (ReaderModuleFactory factory : this.readerModuleFactory) {
+			if (factory.getReaderModuleClassName().equals(className)) {
+				return factory;
+			}
+		}
+		return null;
+	}
+
 }
