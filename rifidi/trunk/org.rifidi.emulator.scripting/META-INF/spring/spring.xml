@@ -5,12 +5,8 @@
     http://www.springframework.org/schema/context 
     http://www.springframework.org/schema/context/spring-context.xsd">
 
-	<bean id="ScriptingReaderManager" class="org.rifidi.emulator.scripting.ReaderManager">
+	<bean id="ScriptingReaderManager" class="org.rifidi.emulator.scripting.ReaderManagerImpl">
 		<property name="moduleFactoryList" ref="readerFactories"></property>
-	</bean>
-	
-	<bean id="SpringTest" class="org.rifidi.emulator.scripting.testing.SpringTest">
-		<property name="scriptingReaderManager" ref="ScriptingReaderManager"></property>
 	</bean>
 
 </beans>
