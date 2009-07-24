@@ -80,7 +80,10 @@ public class ReaderManagerImpl implements ReaderManager {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.rifidi.emulator.scripting.ReaderManager#createGen2Tag(java.lang.String)
+	 * 
+	 * @see
+	 * org.rifidi.emulator.scripting.ReaderManager#createGen2Tag(java.lang.String
+	 * )
 	 */
 	@Override
 	public RifidiTag createGen2Tag(String data) {
@@ -118,7 +121,10 @@ public class ReaderManagerImpl implements ReaderManager {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.rifidi.emulator.scripting.ReaderManager#deleteReader(java.lang.String)
+	 * 
+	 * @see
+	 * org.rifidi.emulator.scripting.ReaderManager#deleteReader(java.lang.String
+	 * )
 	 */
 	@Override
 	public void deleteReader(String readerID) {
@@ -129,17 +135,24 @@ public class ReaderManagerImpl implements ReaderManager {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.rifidi.emulator.scripting.ReaderManager#getDefault(java.lang.String)
+	 * 
+	 * @see
+	 * org.rifidi.emulator.scripting.ReaderManager#getDefault(java.lang.String)
 	 */
 	@Override
 	public GeneralReaderPropertyHolder getDefault(String readerType) {
-		// TODO Auto-generated method stub
+		// FIXME: The more I think about this method the more I doubt its possibility.
+		// If we make it we might as well create a new method for every reader,
+		// as we can't create a general one for all readers.
 		return null;
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.rifidi.emulator.scripting.ReaderManager#removeTags(java.lang.String, int, java.util.Set)
+	 * 
+	 * @see
+	 * org.rifidi.emulator.scripting.ReaderManager#removeTags(java.lang.String,
+	 * int, java.util.Set)
 	 */
 	@Override
 	public void removeTags(String readerID, int antenna, Set<RifidiTag> tagList) {
@@ -160,26 +173,33 @@ public class ReaderManagerImpl implements ReaderManager {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.rifidi.emulator.scripting.ReaderManager#setGPIPortHigh(java.lang.String, int)
+	 * 
+	 * @see
+	 * org.rifidi.emulator.scripting.ReaderManager#setGPIPortHigh(java.lang.
+	 * String, int)
 	 */
 	@Override
 	public void setGPIPortHigh(String readerID, int port) {
-		// TODO Auto-generated method stub
-
+		this.readerModuleList.get(readerID).getSharedResources()
+				.getGpioController()._setGPIHigh(port);
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.rifidi.emulator.scripting.ReaderManager#setGPIPortLow(java.lang.String, int)
+	 * 
+	 * @see
+	 * org.rifidi.emulator.scripting.ReaderManager#setGPIPortLow(java.lang.String
+	 * , int)
 	 */
 	@Override
 	public void setGPIPortLow(String readerID, int port) {
-		// TODO Auto-generated method stub
-
+		this.readerModuleList.get(readerID).getSharedResources()
+				.getGpioController()._setGPILow(port);
 	}
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.rifidi.emulator.scripting.ReaderManager#start(java.lang.String)
 	 */
 	@Override
@@ -189,6 +209,7 @@ public class ReaderManagerImpl implements ReaderManager {
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.rifidi.emulator.scripting.ReaderManager#stop(java.lang.String)
 	 */
 	@Override
@@ -198,11 +219,14 @@ public class ReaderManagerImpl implements ReaderManager {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.rifidi.emulator.scripting.ReaderManager#testGPOPort(java.lang.String, int)
+	 * 
+	 * @see
+	 * org.rifidi.emulator.scripting.ReaderManager#testGPOPort(java.lang.String,
+	 * int)
 	 */
 	@Override
 	public boolean testGPOPort(String readerID, int port) {
-		//Return the GPIO stuff.  
-		return false;
+		return this.readerModuleList.get(readerID).getSharedResources()
+				.getGpioController().getGPOState(port);
 	}
 }
