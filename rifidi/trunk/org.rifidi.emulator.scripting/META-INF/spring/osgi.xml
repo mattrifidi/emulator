@@ -7,7 +7,7 @@
 	http://www.springframework.org/schema/osgi
 	http://www.springframework.org/schema/osgi/spring-osgi.xsd">
 	
-	<osgi:service id="scriptingReaderManagerOSGi" ref="scriptingReaderManager" interface="org.rifidi.emulator.scripting.ReaderManager"/>
+	<osgi:service id="scriptingReaderManagerOSGi" ref="ScriptingReaderManager" interface="org.rifidi.emulator.scripting.ReaderManager"/>
 	<osgi:set id="readerFactories"
 		interface="org.rifidi.emulator.reader.module.ReaderModuleFactory" />
 
