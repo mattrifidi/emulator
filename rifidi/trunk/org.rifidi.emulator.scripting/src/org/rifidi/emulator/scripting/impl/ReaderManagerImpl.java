@@ -3,11 +3,15 @@
  */
 package org.rifidi.emulator.scripting.impl;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.rifidi.emulator.reader.module.GeneralReaderPropertyHolder;
+import org.rifidi.emulator.reader.module.ReaderModule;
 import org.rifidi.emulator.reader.module.ReaderModuleFactory;
+import org.rifidi.emulator.reader.sharedrc.radio.generic.GenericRadio;
 import org.rifidi.emulator.scripting.ReaderManager;
 import org.rifidi.tags.impl.RifidiTag;
 
@@ -19,6 +23,8 @@ public class ReaderManagerImpl implements ReaderManager {
 
 	private Set<ReaderModuleFactory> moduleFactoryList = null;
 
+	private HashMap<String, ReaderModule> readerModuleList = new HashMap<String, ReaderModule>();
+
 	/**
 	 * Called by spring.
 	 * 
@@ -29,85 +35,174 @@ public class ReaderManagerImpl implements ReaderManager {
 		this.moduleFactoryList = moduleFactoryList;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.rifidi.emulator.scripting.ReaderManager#getReaderTypes()
+	 */
 	public Set<String> getReaderTypes() {
 		Set<String> retVal = new HashSet<String>();
 		for (ReaderModuleFactory rmf : this.moduleFactoryList) {
 			retVal.add(rmf.getReaderType());
-			
 		}
-
 		return retVal;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.rifidi.emulator.scripting.ReaderManager#addTags(java.lang.String,
+	 * int, java.util.Set)
+	 */
 	@Override
 	public void addTags(String readerID, int antenna, Set<RifidiTag> tagList) {
-		// TODO Auto-generated method stub
-		
+		ReaderModule rm = this.readerModuleList.get(readerID);
+		if (rm == null) {
+			return;
+		}
+		GenericRadio r = (GenericRadio) rm.getSharedResources().getRadio();
+		r.getAntennas().get(antenna).addTags(tagList);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.rifidi.emulator.scripting.ReaderManager#createGen1Tag(java.lang.String
+	 * )
+	 */
 	@Override
 	public RifidiTag createGen1Tag(String data) {
-		// TODO Auto-generated method stub
+
 		return null;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.rifidi.emulator.scripting.ReaderManager#createGen2Tag(java.lang.String)
+	 */
 	@Override
 	public RifidiTag createGen2Tag(String data) {
-		// TODO Auto-generated method stub
+
 		return null;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.rifidi.emulator.scripting.ReaderManager#createReader(org.rifidi.emulator
+	 * .reader.module.GeneralReaderPropertyHolder)
+	 */
 	@Override
 	public String createReader(GeneralReaderPropertyHolder grph) {
-		// TODO Auto-generated method stub
+		if (this.readerModuleList.containsKey(grph.getReaderName())) {
+			// Reader with this unique ID already created.
+			return null;
+		}
+
+		for (ReaderModuleFactory rmf : moduleFactoryList) {
+			if (rmf.getReaderModuleClassName()
+					.equals(grph.getReaderClassName())) {
+				ReaderModule newMod = rmf.createReaderModule(grph);
+
+				// Check for problems here, maybe for IP conflicts as well
+				this.readerModuleList.put(grph.getReaderName(), newMod);
+
+				return newMod.getName();
+			}
+		}
 		return null;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.rifidi.emulator.scripting.ReaderManager#deleteReader(java.lang.String)
+	 */
 	@Override
 	public void deleteReader(String readerID) {
-		// TODO Auto-generated method stub
-		
+		ReaderModule rm = this.readerModuleList.get(readerID);
+		rm.turnOff(this.getClass());
+		this.readerModuleList.remove(readerID);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.rifidi.emulator.scripting.ReaderManager#getDefault(java.lang.String)
+	 */
 	@Override
 	public GeneralReaderPropertyHolder getDefault(String readerType) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.rifidi.emulator.scripting.ReaderManager#removeTags(java.lang.String, int, java.util.Set)
+	 */
 	@Override
 	public void removeTags(String readerID, int antenna, Set<RifidiTag> tagList) {
-		// TODO Auto-generated method stub
-		
+		ReaderModule rm = this.readerModuleList.get(readerID);
+		if (rm == null) {
+			return;
+		}
+		Set<Long> tags = new LinkedHashSet<Long>();
+		for (RifidiTag rt : tagList) {
+			tags.add(rt.getTagEntitiyID());
+		}
+
+		// Whats up with this long removal thing? Should add a RifidiTag
+		// convenience method.
+		GenericRadio r = (GenericRadio) rm.getSharedResources().getRadio();
+		r.getAntennas().get(antenna).removeTags(tags);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.rifidi.emulator.scripting.ReaderManager#setGPIPortHigh(java.lang.String, int)
+	 */
 	@Override
 	public void setGPIPortHigh(String readerID, int port) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.rifidi.emulator.scripting.ReaderManager#setGPIPortLow(java.lang.String, int)
+	 */
 	@Override
 	public void setGPIPortLow(String readerID, int port) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.rifidi.emulator.scripting.ReaderManager#start(java.lang.String)
+	 */
 	@Override
 	public void start(String readerID) {
-		// TODO Auto-generated method stub
-		
+		this.readerModuleList.get(readerID).turnOn();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.rifidi.emulator.scripting.ReaderManager#stop(java.lang.String)
+	 */
 	@Override
 	public void stop(String readerID) {
-		// TODO Auto-generated method stub
-		
+		this.readerModuleList.get(readerID).turnOff(this.getClass());
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.rifidi.emulator.scripting.ReaderManager#testGPOPort(java.lang.String, int)
+	 */
 	@Override
 	public boolean testGPOPort(String readerID, int port) {
-		// TODO Auto-generated method stub
+		//Return the GPIO stuff.  
 		return false;
 	}
 }
