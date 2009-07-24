@@ -1,13 +1,14 @@
 /**
  * 
  */
-package org.rifidi.emulator.scripting;
+package org.rifidi.emulator.scripting.impl;
 
 import java.util.HashSet;
 import java.util.Set;
 
 import org.rifidi.emulator.reader.module.GeneralReaderPropertyHolder;
 import org.rifidi.emulator.reader.module.ReaderModuleFactory;
+import org.rifidi.emulator.scripting.ReaderManager;
 import org.rifidi.tags.impl.RifidiTag;
 
 /**
