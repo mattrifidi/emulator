@@ -64,4 +64,20 @@ public class LLRPReaderModuleFactory extends ReaderModuleFactory {
 						+ "emulator.xml"));
 	}
 
+	/* (non-Javadoc)
+	 * @see org.rifidi.emulator.reader.module.ReaderModuleFactory#getDefaultProperties()
+	 */
+	@Override
+	public GeneralReaderPropertyHolder getDefaultProperties() {
+		GeneralReaderPropertyHolder holder=new GeneralReaderPropertyHolder();
+		holder.setNumAntennas(2);
+		holder.setNumGPIs(4);
+		holder.setNumGPOs(4);
+		holder.setReaderClassName(LLRPReaderModule.class.getCanonicalName());
+		holder.setReaderName("LLRP");
+		holder.setProperty("inet_address", "127.0.0.1:10101");
+		holder.setProperty("llrp_inet_address", "127.0.0.1:5084");
+		holder.setProperty("servermode", "1");
+		return holder;
+	}
 }

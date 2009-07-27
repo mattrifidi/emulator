@@ -64,4 +64,19 @@ public class AwidReaderModuleFactory extends ReaderModuleFactory {
 						+ "emulator.xml"));
 	}
 
+	/* (non-Javadoc)
+	 * @see org.rifidi.emulator.reader.module.ReaderModuleFactory#getDefaultProperties()
+	 */
+	@Override
+	public GeneralReaderPropertyHolder getDefaultProperties() {
+		GeneralReaderPropertyHolder holder=new GeneralReaderPropertyHolder();
+		holder.setNumAntennas(2);
+		holder.setNumGPIs(0);
+		holder.setNumGPOs(0);
+		holder.setReaderClassName(AwidReaderModule.class.getCanonicalName());
+		holder.setReaderName("AWIDMPR");
+		holder.setProperty("serial_port", "COM1");
+		return holder;
+	}
+
 }

@@ -63,4 +63,19 @@ public class EPCReaderModuleFactory extends ReaderModuleFactory {
 						+ "emulator.xml"));
 	}
 
+	/* (non-Javadoc)
+	 * @see org.rifidi.emulator.reader.module.ReaderModuleFactory#getDefaultProperties()
+	 */
+	@Override
+	public GeneralReaderPropertyHolder getDefaultProperties() {
+		GeneralReaderPropertyHolder holder=new GeneralReaderPropertyHolder();
+		holder.setNumAntennas(2);
+		holder.setNumGPIs(0);
+		holder.setNumGPOs(0);
+		holder.setReaderClassName(EPCReaderModule.class.getCanonicalName());
+		holder.setReaderName("EPC");
+		holder.setProperty("inet_address", "127.0.0.1:10000");
+		return holder;
+	}
+
 }

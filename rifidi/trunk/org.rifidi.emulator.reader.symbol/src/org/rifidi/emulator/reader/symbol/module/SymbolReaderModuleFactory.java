@@ -64,4 +64,20 @@ public class SymbolReaderModuleFactory extends ReaderModuleFactory {
 						+ "emulator.xml"));
 	}
 
+	/* (non-Javadoc)
+	 * @see org.rifidi.emulator.reader.module.ReaderModuleFactory#getDefaultProperties()
+	 */
+	@Override
+	public GeneralReaderPropertyHolder getDefaultProperties() {
+		GeneralReaderPropertyHolder holder=new GeneralReaderPropertyHolder();
+		holder.setNumAntennas(2);
+		holder.setNumGPIs(0);
+		holder.setNumGPOs(0);
+		holder.setReaderClassName(SymbolReaderModule.class.getCanonicalName());
+		holder.setReaderName("SymbolXR400");
+		holder.setProperty("byte_address", "127.0.0.1:3000");
+		holder.setProperty("http_address", "127.0.0.1:10080");
+		return holder;
+	}
+
 }

@@ -64,4 +64,19 @@ public class ThingMagicReaderModuleFactory extends ReaderModuleFactory {
 						+ "emulator.xml"));
 	}
 
+	/* (non-Javadoc)
+	 * @see org.rifidi.emulator.reader.module.ReaderModuleFactory#getDefaultProperties()
+	 */
+	@Override
+	public GeneralReaderPropertyHolder getDefaultProperties() {
+		GeneralReaderPropertyHolder holder=new GeneralReaderPropertyHolder();
+		holder.setNumAntennas(2);
+		holder.setNumGPIs(0);
+		holder.setNumGPOs(0);
+		holder.setReaderClassName(ThingMagicReaderModule.class.getCanonicalName());
+		holder.setReaderName("ThingMagicMercury4");
+		holder.setProperty("rql_address", "127.0.0.1:8080");
+		return holder;
+	}
+	
 }
