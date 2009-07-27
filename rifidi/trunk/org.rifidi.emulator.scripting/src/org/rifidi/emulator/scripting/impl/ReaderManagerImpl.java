@@ -8,6 +8,8 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.rifidi.emulator.reader.module.GeneralReaderPropertyHolder;
 import org.rifidi.emulator.reader.module.ReaderModule;
 import org.rifidi.emulator.reader.module.ReaderModuleFactory;
@@ -21,9 +23,13 @@ import org.rifidi.tags.impl.RifidiTag;
  */
 public class ReaderManagerImpl implements ReaderManager {
 
-	private Set<ReaderModuleFactory> moduleFactoryList = null;
-
-	private HashMap<String, ReaderModule> readerModuleList = new HashMap<String, ReaderModule>();
+	/** Logger for this class. */
+	private static final Logger logger = LogManager
+			.getLogger(ReaderManagerImpl.class);
+	/** Reader factories, set by spring. */
+	private volatile Set<ReaderModuleFactory> moduleFactoryList = null;
+	/** Mapping between reader name and instance. */
+	private final HashMap<String, ReaderModule> readerModuleList = new HashMap<String, ReaderModule>();
 
 	/**
 	 * Called by spring.
@@ -32,6 +38,7 @@ public class ReaderManagerImpl implements ReaderManager {
 	 *            the moduleFactoryList to set
 	 */
 	public void setModuleFactoryList(Set<ReaderModuleFactory> moduleFactoryList) {
+		logger.info("Setting reader module factories: "+moduleFactoryList);
 		this.moduleFactoryList = moduleFactoryList;
 	}
 
@@ -102,6 +109,8 @@ public class ReaderManagerImpl implements ReaderManager {
 	public String createReader(GeneralReaderPropertyHolder grph) {
 		if (this.readerModuleList.containsKey(grph.getReaderName())) {
 			// Reader with this unique ID already created.
+			logger.warn("A reader named " + grph.getReaderName()
+					+ " already exists.");
 			return null;
 		}
 
@@ -112,7 +121,7 @@ public class ReaderManagerImpl implements ReaderManager {
 
 				// Check for problems here, maybe for IP conflicts as well
 				this.readerModuleList.put(grph.getReaderName(), newMod);
-
+				logger.warn("Created reader named " + grph.getReaderName());
 				return newMod.getName();
 			}
 		}
@@ -141,9 +150,11 @@ public class ReaderManagerImpl implements ReaderManager {
 	 */
 	@Override
 	public GeneralReaderPropertyHolder getDefault(String readerType) {
-		// FIXME: The more I think about this method the more I doubt its possibility.
-		// If we make it we might as well create a new method for every reader,
-		// as we can't create a general one for all readers.
+		for (ReaderModuleFactory checkfact : moduleFactoryList) {
+			if (checkfact.getReaderType().equals(readerType)) {
+				return checkfact.getDefaultProperties();
+			}
+		}
 		return null;
 	}
 

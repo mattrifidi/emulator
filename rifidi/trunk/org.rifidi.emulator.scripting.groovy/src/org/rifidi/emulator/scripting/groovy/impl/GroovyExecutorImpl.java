@@ -222,6 +222,8 @@ public class GroovyExecutorImpl implements GroovyExecutor {
 				GroovyShell shell = new GroovyShell(binding);
 				return shell.evaluate(script);
 			} catch (Exception e) {
+				e.printStackTrace();
+				logger.warn(e);
 				return e.toString();
 			}
 		}

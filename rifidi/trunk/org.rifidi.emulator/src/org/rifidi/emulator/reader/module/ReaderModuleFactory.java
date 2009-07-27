@@ -28,6 +28,14 @@ public abstract class ReaderModuleFactory {
 			GeneralReaderPropertyHolder properties);
 
 	/**
+	 * Get a general reader property holder that contains all the defautl values
+	 * for the reader.
+	 * 
+	 * @return
+	 */
+	public abstract GeneralReaderPropertyHolder getDefaultProperties();
+
+	/**
 	 * 
 	 * @param readerName
 	 * @return
