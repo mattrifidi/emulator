@@ -102,16 +102,16 @@ public interface ReaderManager {
 	 * @param data	The data that the tag will be created from.  
 	 * @return		A Gen2 RifidiTag containing the given data.  
 	 */
-	public RifidiTag createGen1Tag(String data);
-
+	public RifidiTag createGen1Tag(byte[] epcID);
 	/**
-	 * Creates a Gen2 RifidiTag with the given data.  
+	 * Creates a Gen2 Class 1 RifidiTag with the given data.  
 	 * 
 	 * @param data	The data that the tag will be created from.  
 	 * @return		A Gen2 RifidiTag containing the given data.  
 	 */
-	public RifidiTag createGen2Tag(String data);
+	public RifidiTag createGen2Class1Tag(byte[] epcID, byte[] accessPass, byte[] killPass);
 
+	
 	/**
 	 * Returns a default GeneralReaderPropertyHolder for the given reader type.  
 	 * 

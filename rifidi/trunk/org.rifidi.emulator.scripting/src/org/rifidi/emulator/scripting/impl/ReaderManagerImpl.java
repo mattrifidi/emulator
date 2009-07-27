@@ -17,7 +17,10 @@ import org.rifidi.emulator.reader.sharedrc.radio.generic.GenericRadio;
 import org.rifidi.emulator.scripting.ReaderManager;
 import org.rifidi.services.tags.IRifidiTagService;
 import org.rifidi.tags.enums.TagGen;
+import org.rifidi.tags.exceptions.InvalidMemoryAccessException;
 import org.rifidi.tags.factory.TagCreationPattern;
+import org.rifidi.tags.impl.C0G1Tag;
+import org.rifidi.tags.impl.C1G2Tag;
 import org.rifidi.tags.impl.RifidiTag;
 
 /**
@@ -88,32 +91,28 @@ public class ReaderManagerImpl implements ReaderManager {
 		r.getAntennas().get(antenna).addTags(tagList);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.rifidi.emulator.scripting.ReaderManager#createGen1Tag(java.lang.String
-	 * )
+
+	/* (non-Javadoc)
+	 * @see org.rifidi.emulator.scripting.ReaderManager#createGen1Tag(byte[])
 	 */
 	@Override
-	public RifidiTag createGen1Tag(String data) {
-		TagCreationPattern pattern=new TagCreationPattern();
-		pattern.setTagGeneration(TagGen.GEN1);
-		return null;
+	public RifidiTag createGen1Tag(byte[] epcID) {
+		C0G1Tag ret=new C0G1Tag();
+		try {
+			ret.setId(epcID);
+		} catch (InvalidMemoryAccessException e) {
+			logger.fatal("Couldn't create tag: "+e);
+		}
+		return new RifidiTag(ret);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.rifidi.emulator.scripting.ReaderManager#createGen2Tag(java.lang.String
-	 * )
+	/* (non-Javadoc)
+	 * @see org.rifidi.emulator.scripting.ReaderManager#createGen2Class1Tag(byte[], byte[], byte[])
 	 */
 	@Override
-	public RifidiTag createGen2Tag(String data) {
-		TagCreationPattern pattern=new TagCreationPattern();
-		pattern.setTagGeneration(TagGen.GEN2);
-		return null;
+	public RifidiTag createGen2Class1Tag(byte[] epcID, byte[] accessPass,
+			byte[] killPass) {
+		return new RifidiTag(new C1G2Tag(epcID,accessPass,killPass));
 	}
 
 	/*
