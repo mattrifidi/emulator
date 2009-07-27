@@ -15,10 +15,14 @@ import org.rifidi.emulator.reader.module.ReaderModule;
 import org.rifidi.emulator.reader.module.ReaderModuleFactory;
 import org.rifidi.emulator.reader.sharedrc.radio.generic.GenericRadio;
 import org.rifidi.emulator.scripting.ReaderManager;
+import org.rifidi.services.tags.IRifidiTagService;
+import org.rifidi.tags.enums.TagGen;
+import org.rifidi.tags.factory.TagCreationPattern;
 import org.rifidi.tags.impl.RifidiTag;
 
 /**
  * @author Matthew Dean - matt@pramari.com
+ * @author Jochen Mader - jochen@pramari.com
  * 
  */
 public class ReaderManagerImpl implements ReaderManager {
@@ -31,6 +35,18 @@ public class ReaderManagerImpl implements ReaderManager {
 	/** Mapping between reader name and instance. */
 	private final HashMap<String, ReaderModule> readerModuleList = new HashMap<String, ReaderModule>();
 
+	private volatile IRifidiTagService tagService;
+
+	/**
+	 * Called by spring.
+	 * 
+	 * @param tagService
+	 *            the tagService to set
+	 */
+	public void setTagService(IRifidiTagService tagService) {
+		this.tagService = tagService;
+	}
+
 	/**
 	 * Called by spring.
 	 * 
@@ -38,7 +54,7 @@ public class ReaderManagerImpl implements ReaderManager {
 	 *            the moduleFactoryList to set
 	 */
 	public void setModuleFactoryList(Set<ReaderModuleFactory> moduleFactoryList) {
-		logger.info("Setting reader module factories: "+moduleFactoryList);
+		logger.info("Setting reader module factories: " + moduleFactoryList);
 		this.moduleFactoryList = moduleFactoryList;
 	}
 
@@ -81,7 +97,8 @@ public class ReaderManagerImpl implements ReaderManager {
 	 */
 	@Override
 	public RifidiTag createGen1Tag(String data) {
-
+		TagCreationPattern pattern=new TagCreationPattern();
+		pattern.setTagGeneration(TagGen.GEN1);
 		return null;
 	}
 
@@ -94,7 +111,8 @@ public class ReaderManagerImpl implements ReaderManager {
 	 */
 	@Override
 	public RifidiTag createGen2Tag(String data) {
-
+		TagCreationPattern pattern=new TagCreationPattern();
+		pattern.setTagGeneration(TagGen.GEN2);
 		return null;
 	}
 

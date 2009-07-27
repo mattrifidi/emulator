@@ -6,7 +6,8 @@
     http://www.springframework.org/schema/context/spring-context.xsd">
 
 	<bean id="ScriptingReaderManager" class="org.rifidi.emulator.scripting.impl.ReaderManagerImpl">
-		<property name="moduleFactoryList" ref="readerFactories"></property>
+		<property name="moduleFactoryList" ref="readerFactories" />
+		<property name="tagService" ref="tagService" />
 	</bean>
 
 </beans>

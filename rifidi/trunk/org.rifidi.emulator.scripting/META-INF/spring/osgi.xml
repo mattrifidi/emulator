@@ -8,8 +8,8 @@
 	http://www.springframework.org/schema/osgi/spring-osgi.xsd">
 	
 	<osgi:service id="scriptingReaderManagerOSGi" ref="ScriptingReaderManager" interface="org.rifidi.emulator.scripting.ReaderManager"/>
+	<osgi:reference id="tagService" interface="org.rifidi.services.tags.IRifidiTagService" />
 	<osgi:set id="readerFactories"
 		interface="org.rifidi.emulator.reader.module.ReaderModuleFactory" cardinality="0..N"/>
 		
-
 </beans>
