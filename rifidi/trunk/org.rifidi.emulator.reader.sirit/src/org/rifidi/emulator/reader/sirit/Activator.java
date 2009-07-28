@@ -4,8 +4,8 @@ import java.util.Hashtable;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
-import org.rifidi.emulator.reader.sirit.module.SiritReaderModule;
-import org.rifidi.emulator.reader.module.ReaderModule;
+import org.rifidi.emulator.reader.sirit.module.SiritReaderModuleFactory;
+import org.rifidi.emulator.reader.module.ReaderModuleFactory;
 
 public class Activator implements BundleActivator {
 
@@ -16,9 +16,9 @@ public class Activator implements BundleActivator {
 	 */
 	@SuppressWarnings("unchecked")
 	public void start(BundleContext context) throws Exception {
-		System.out.println("Registered org.rifidi.emulator.reader.sirit");
-		context.registerService(new String[] { ReaderModule.class.getName() },
-				new SiritReaderModule(), new Hashtable());
+		System.out.println("Registered org.rifidi.emulator.reader.sirit local");
+		context.registerService(new String[] { ReaderModuleFactory.class
+				.getName() }, new SiritReaderModuleFactory(), new Hashtable());
 
 	}
 

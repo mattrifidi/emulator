@@ -60,11 +60,7 @@ public class SiritTag {
 
 		try {
 			ssr = (SiritReaderSharedResources) asr;
-			GenericRadio radio = ssr.getRadio();
 			SiritTagMemory tagMem = (SiritTagMemory) ssr.getTagMemory();
-
-			/* scan tags */
-			//radio.scan(ssr.getAntennas(), tagMem);
 
 			/* create the tagdb formatter */
 			SiritTagDBFormatter formatter = new SiritTagDBFormatter();

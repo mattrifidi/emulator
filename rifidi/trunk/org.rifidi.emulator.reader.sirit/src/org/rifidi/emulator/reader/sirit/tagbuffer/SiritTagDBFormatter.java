@@ -31,7 +31,7 @@ public class SiritTagDBFormatter {
 	private static Log logger = LogFactory.getLog(SiritTagDBFormatter.class);
 
 	/** date and time format for output */
-	SimpleDateFormat siritDateFormat = new SimpleDateFormat("yyyy-mm-dd");
+	SimpleDateFormat siritDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	SimpleDateFormat siritTimeFormat = new SimpleDateFormat("HH:mm:ss.S");
 
 	/** format for one entry in taglist */

@@ -32,8 +32,10 @@ public class SiritTagMemory implements TagMemory {
 	/** the tag database, represented by a RifidiTagMap */
 	private RifidiTagMap tagDatabase;
 
-	/** flag that holds the suspend state of the memory */
-	private boolean suspended = false;
+	/**
+	 * flag that holds the active state of the reader and thus of the tag memory
+	 */
+	private boolean active = true;
 
 	public SiritTagMemory() {
 		this.tagDatabase = new RifidiTagMap();
@@ -42,13 +44,13 @@ public class SiritTagMemory implements TagMemory {
 	/** Tells the memory to stop reading tags */
 	public void suspend() {
 		logger.debug("Disabling Sirit's TagMemory");
-		suspended = true;
+		active = false;
 	}
 
 	/** Tells the memory that reading tags is allowed again */
 	public void resume() {
 		logger.debug("Enabling Sirit's TagMemory");
-		suspended = false;
+		active = true;
 	}
 
 	/** Purges the tag database */
@@ -59,32 +61,39 @@ public class SiritTagMemory implements TagMemory {
 	/**
 	 * Returns the tag database
 	 * 
-	 * @return list of the tags currently in the reader's antennas' fields
+	 * @return list of the tags
 	 */
 	public ArrayList<RifidiTag> getTagReport() {
 		return this.tagDatabase.getTagList();
 	}
 
 	/**
-	 * Adds the most recent seen tags to the database. This method is called
-	 * after a scan.
+	 * This method is called after a scan. It handles the most recent seen tags
+	 * by adding them to the database. Tags that were already in the database
+	 * are quasi updated. Tags are only added/updated when operating mode is
+	 * "active".
 	 */
 	public void updateMemory(Collection<RifidiTag> tagsToAdd) {
-		logger.debug("SiritTagMemory - updateMemory() with " + tagsToAdd.size()
-				+ " Tags");
-		if (!suspended) {
-			for (RifidiTag t : tagsToAdd) {
-				this.tagDatabase.addTag(t);
-			}
-		}
+		logger.debug("SiritTagMemory - updateMemory()");
 
-		logger.debug("sirit's taglist inventory:");
-		for (RifidiTag tag : this.tagDatabase.getTagList()) {
-			logger.debug("\t TagID: " + tag.getTag().getId() + "\t First: "
-					+ tag.getDiscoveryDate() + "\t Last: "
-					+ tag.getLastSeenDate() + "\t Antenna: "
-					+ tag.getAntennaLastSeen() + "\t Count: "
-					+ tag.getReadCount());
+		/* check operating mode */
+		if (this.active) {
+			logger.debug("SiritTagMemory - adding tags to tag database");
+
+			/* update read count and (re-)add tags */
+			for (RifidiTag tag : tagsToAdd) {
+				tag.incrementReadCount();
+				this.tagDatabase.addTag(tag);
+			}
+
+			logger.debug("sirit's taglist inventory:");
+			for (RifidiTag tag : this.tagDatabase.getTagList()) {
+				logger.debug("\t TagID: " + tag.getTag().getId() + "\t First: "
+						+ tag.getDiscoveryDate() + "\t Last: "
+						+ tag.getLastSeenDate() + "\t Antenna: "
+						+ tag.getAntennaLastSeen() + "\t Count: "
+						+ tag.getReadCount());
+			}
 		}
 	}
 }
