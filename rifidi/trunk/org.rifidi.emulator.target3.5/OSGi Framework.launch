@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.eclipse.pde.ui.EquinoxLauncher">
+<booleanAttribute key="append.args" value="true"/>
+<booleanAttribute key="automaticAdd" value="true"/>
+<booleanAttribute key="automaticValidate" value="false"/>
+<stringAttribute key="bootstrap" value=""/>
+<stringAttribute key="checked" value="[NONE]"/>
+<booleanAttribute key="clearConfig" value="false"/>
+<stringAttribute key="configLocation" value="${workspace_loc}/.metadata/.plugins/org.eclipse.pde.core/OSGi Framework"/>
+<booleanAttribute key="default_auto_start" value="true"/>
+<intAttribute key="default_start_level" value="4"/>
+<stringAttribute key="deselected_workspace_plugins" value="org.rifidi.emulator.reader.awid,org.rifidi.emulator.reader.symbol,org.rifidi.emulator.reader.epc,org.rifidi.emulator.reader.llrp,org.rifidi.emulator.reader.thingmagic,org.rifidi.emulator.reader.sirit"/>
+<booleanAttribute key="includeOptional" value="true"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl} -console"/>
+<stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Declipse.ignoreApp=true -Dosgi.noShutdown=true"/>
+<booleanAttribute key="pde.generated.config" value="true"/>
+<stringAttribute key="pde.version" value="3.3"/>
+<booleanAttribute key="show_selected_only" value="false"/>
+<stringAttribute key="target_bundles" value="org.eclipse.jface.databinding@default:default,org.rifidi.log4j@default:false,org.apache.commons.configuration@default:default,org.rifidi.common.utilities@default:default,org.springframework.osgi.core@default:default,org.eclipse.core.commands@default:default,org.eclipse.core.databinding.observable@default:default,org.eclipse.equinox.registry@default:default,org.eclipse.equinox.simpleconfigurator@1:true,org.eclipse.help@default:default,org.springframework.osgi.io@default:default,org.rifidi.streamer.xml@default:default,org.eclipse.core.contenttype@default:default,org.eclipse.core.runtime.compatibility.auth@default:default,org.eclipse.core.databinding.property@default:default,org.eclipse.jface@default:default,org.rifidi.ui.common@default:default,org.rifidi.ui.common@default:default,org.jdom@default:default,org.eclipse.osgi@-1:true,org.rifidi.ui.ide@default:default,org.springframework.aop@default:default,org.eclipse.update.configurator@3:true,org.eclipse.ui.workbench@default:default,org.eclipse.core.jobs@default:default,org.rifidi.streamer@default:default,com.springsource.net.sf.cglib@default:default,org.springframework.core@default:default,org.rifidi.ui.streamer@default:default,org.apache.commons.collections@default:default,org.eclipse.equinox.preferences@default:default,com.springsource.org.aopalliance@default:default,org.rifidi.views.tags@default:default,org.eclipse.core.runtime@default:true,gnu.cajo@default:default,org.eclipse.equinox.app@default:default,groovy-all@default:default,org.rifidi.log4j.developer@default:false,org.eclipse.equinox.common@2:true,org.rifidi.ui.ide@default:default,org.rifidi.tags@default:default,org.apache.commons.digester@default:default,org.eclipse.swt.win32.win32.x86@default:false,org.rifidi.tags@default:default,org.eclipse.core.databinding@default:default,org.eclipse.equinox.util@default:default,org.springframework.osgi.extender@default:default,org.eclipse.rcp@default:default,org.springframework.context@default:default,org.springframework.beans@default:default,org.eclipse.equinox.ds@1:true,org.rifidi.logging@default:default,org.eclipse.osgi.services@default:default,org.eclipse.swt@default:default,org.eclipse.ui@default:default,com.ibm.icu@default:default,org.eclipse.equinox.launcher.win32.win32.x86@default:false,gnu.io@default:default,org.apache.commons.lang@default:default,org.eclipse.nebula.widgets.pgroup@default:default,org.eclipse.equinox.launcher@default:default,org.eclipse.ui.views@default:default,org.eclipse.core.expressions@default:default,org.eclipse.core.databinding.beans@default:default,javax.servlet@default:default,edu.uark.csce.llrp@default:default"/>
+<booleanAttribute key="tracing" value="false"/>
+<booleanAttribute key="useDefaultConfigArea" value="true"/>
+<stringAttribute key="workspace_bundles" value="org.rifidi.services@default:default,org.rifidi.ui.ide@default:default,org.rifidi.tags@default:default,org.rifidi.emulator.scripting.groovy.console@default:default,org.rifidi.services.tags@default:default,org.rifidi.emulator.reader.alien@default:default,org.rifidi.services.initializer@default:default,org.rifidi.emulator.scripting.groovy@default:default,org.rifidi.ui.common@default:default,org.rifidi.emulator.scripting@default:default,org.rifidi.emulator@default:default"/>
+</launchConfiguration>
