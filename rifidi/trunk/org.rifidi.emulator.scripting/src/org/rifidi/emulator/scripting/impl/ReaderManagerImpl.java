@@ -147,7 +147,7 @@ public class ReaderManagerImpl implements ReaderManager {
 
 				// Check for problems here, maybe for IP conflicts as well
 				this.readerModuleList.put(grph.getReaderName(), newMod);
-				logger.warn("Created reader named " + grph.getReaderName());
+				logger.info("Created reader named " + grph.getReaderName());
 				return newMod.getName();
 			}
 		}
