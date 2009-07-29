@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicLong;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -35,7 +36,8 @@ public class ReaderManagerImpl implements ReaderManager {
 	private volatile Set<ReaderModuleFactory> moduleFactoryList = null;
 	/** Mapping between reader name and instance. */
 	private final HashMap<String, ReaderModule> readerModuleList = new HashMap<String, ReaderModule>();
-
+	/** Counter for tag entitiy ids. */
+	private AtomicLong counter = new AtomicLong(0);
 	private volatile IRifidiTagService tagService;
 
 	/**
@@ -96,13 +98,15 @@ public class ReaderManagerImpl implements ReaderManager {
 	 */
 	@Override
 	public RifidiTag createGen1Tag(byte[] epcID) {
-		C0G1Tag ret = new C0G1Tag();
+		C0G1Tag tag = new C0G1Tag();
 		try {
-			ret.setId(epcID);
+			tag.setId(epcID);
 		} catch (InvalidMemoryAccessException e) {
 			logger.fatal("Couldn't create tag: " + e);
 		}
-		return new RifidiTag(ret);
+		RifidiTag ret = new RifidiTag(tag);
+		ret.setTagEntitiyID(counter.incrementAndGet());
+		return ret;
 	}
 
 	/*
@@ -115,7 +119,9 @@ public class ReaderManagerImpl implements ReaderManager {
 	@Override
 	public RifidiTag createGen2Class1Tag(byte[] epcID, byte[] accessPass,
 			byte[] killPass) {
-		return new RifidiTag(new C1G2Tag(epcID, accessPass, killPass));
+		RifidiTag ret = new RifidiTag(new C1G2Tag(epcID, accessPass, killPass));
+		ret.setTagEntitiyID(counter.incrementAndGet());
+		return ret;
 	}
 
 	/*
