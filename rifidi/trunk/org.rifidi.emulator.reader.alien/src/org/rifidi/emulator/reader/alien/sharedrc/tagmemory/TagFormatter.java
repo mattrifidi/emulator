@@ -10,7 +10,6 @@ import org.apache.commons.logging.LogFactory;
 import org.rifidi.tags.enums.TagGen;
 import org.rifidi.tags.impl.RifidiTag;
 
-
 /**
  * This class is used to format a Tag class in to a specified custom format.
  * INPUT - A Tag object, Additional Tag Information Object and the Regular
@@ -46,48 +45,53 @@ public class TagFormatter {
 	public String formatTag(RifidiTag aTag, String regExToken,
 			SimpleDateFormat dateformat, SimpleDateFormat timeformat) {
 
-		regExToken = regExToken
-				.replaceAll("%i", this.addWhitespace(this.removeWhitespace(aTag.toString())));
-		
-		regExToken = regExToken.replaceAll("%k", this.removeWhitespace(aTag.toString()));
-		
+		regExToken = regExToken.replaceAll("%i", this.addWhitespace(this
+				.removeWhitespace(aTag.toString())));
+
+		regExToken = regExToken.replaceAll("%k", this.removeWhitespace(aTag
+				.toString()));
+
 		String discDate = dateformat.format(aTag.getDiscoveryDate());
 		regExToken = regExToken.replaceAll("%d", discDate);
-		
+
 		String discTime = timeformat.format(aTag.getDiscoveryDate());
 		regExToken = regExToken.replaceAll("%t", discTime);
-		
+
 		String seenDate = dateformat.format(aTag.getLastSeenDate());
 		regExToken = regExToken.replaceAll("%D", seenDate);
-		
+
 		String seenTime = timeformat.format(aTag.getLastSeenDate());
 		regExToken = regExToken.replaceAll("%T", seenTime);
-		
+
 		regExToken = regExToken.replaceAll("%r", Integer.toString(aTag
 				.getReadCount()));
-		
+
 		regExToken = regExToken.replaceAll("%a", Integer.toString(aTag
 				.getAntennaLastSeen()));
-		
+
 		regExToken = regExToken.replaceAll("%A", Integer.toString(aTag
 				.getAntennaLastSeen()));
-		
-		regExToken = regExToken.replaceAll("%s", aTag.getSpeed());
-		
-		regExToken = regExToken.replaceAll("%m", Float.toString(aTag.getRssi()));
-		
-		
+
+		regExToken = regExToken.replaceAll("%s", Float
+				.toString(aTag.getSpeed()));
+
+		regExToken = regExToken
+				.replaceAll("%m", Float.toString(aTag.getRssi()));
+
 		String tagProtocol;
-		if(aTag.getTagGen().equals(TagGen.GEN1)) tagProtocol="1";
-		else if(aTag.getTagGen().equals(TagGen.GEN2)) tagProtocol="2";
-		else tagProtocol="0";
-		
+		if (aTag.getTagGen().equals(TagGen.GEN1))
+			tagProtocol = "1";
+		else if (aTag.getTagGen().equals(TagGen.GEN2))
+			tagProtocol = "2";
+		else
+			tagProtocol = "0";
+
 		regExToken = regExToken.replaceAll("%p", tagProtocol);
-		
+
 		regExToken = regExToken.replaceAll("%P", aTag.getTagGen().toString());
 
 		String formatted_tag = regExToken;
-		
+
 		return formatted_tag;
 	}
 

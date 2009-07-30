@@ -20,6 +20,8 @@ import org.rifidi.emulator.reader.alien.autonomous.states.AutoStateController;
 import org.rifidi.emulator.reader.alien.gpio.GPIController;
 import org.rifidi.emulator.reader.alien.gpio.GPOController;
 import org.rifidi.emulator.reader.alien.heartbeat.HeartbeatController;
+import org.rifidi.emulator.reader.alien.sharedrc.tagmemory.AlienTagMemory;
+import org.rifidi.emulator.reader.alien.speed.SpeedFilter;
 import org.rifidi.emulator.reader.command.CommandObject;
 import org.rifidi.emulator.reader.command.exception.GenericExceptionHandler;
 import org.rifidi.emulator.reader.command.xml.CommandDigester;
@@ -80,8 +82,10 @@ public class AlienReaderSharedResources extends AbstractReaderSharedResources {
 	private GPIController autoStartTrigger;
 
 	private GPIController autoStopTrigger;
-	
+
 	private HeartbeatController hearbeatController;
+
+	private SpeedFilter speedFilter;
 
 	/**
 	 * A constructor which takes in all necessary shared resources to be a
@@ -114,7 +118,7 @@ public class AlienReaderSharedResources extends AbstractReaderSharedResources {
 			ControlSignal<Boolean> autoCommConnectionSignal, String readerName,
 			HashMap<String, CommandObject> allCommands, CommandDigester dig,
 			GenericExceptionHandler geh, String commandIP, Integer commandPort,
-			int numAntennas) {
+			SpeedFilter speedfilter, int numAntennas) {
 		/* Call the super constructor */
 		super(aRadio, aTagMemory, readerPowerSignal, readerName, geh, dig,
 				numAntennas);
@@ -128,6 +132,11 @@ public class AlienReaderSharedResources extends AbstractReaderSharedResources {
 		this.commandIP = commandIP;
 		this.commandPort = commandPort;
 
+		this.speedFilter = speedfilter;
+
+		AlienTagMemory alienmem = (AlienTagMemory) aTagMemory;
+		alienmem.setSpeedFilter(speedFilter);
+
 		for (CommandObject i : allCommands.values()) {
 			this.getPropertyMap().put(i.getDisplayName().toLowerCase(),
 					i.getReaderProperty());
@@ -137,9 +146,22 @@ public class AlienReaderSharedResources extends AbstractReaderSharedResources {
 		this.autoFalseOutput = new GPOController(this.getGpioController());
 		this.autoWaitOutput = new GPOController(this.getGpioController());
 		this.autoWorkOutput = new GPOController(this.getGpioController());
-
 	}
 
+	/**
+	 * @return the speedFilter
+	 */
+	public SpeedFilter getSpeedFilter() {
+		return speedFilter;
+	}
+
+	/**
+	 * @param speedFilter
+	 *            the speedFilter to set
+	 */
+	public void setSpeedFilter(SpeedFilter speedFilter) {
+		this.speedFilter = speedFilter;
+	}
 
 	/**
 	 * Returns the interactiveConnectionSignal.
@@ -243,7 +265,8 @@ public class AlienReaderSharedResources extends AbstractReaderSharedResources {
 	}
 
 	/**
-	 * @param hearbeatController the hearbeatController to set
+	 * @param hearbeatController
+	 *            the hearbeatController to set
 	 */
 	public void setHearbeatController(HeartbeatController hearbeatController) {
 		this.hearbeatController = hearbeatController;

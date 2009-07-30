@@ -38,6 +38,8 @@ import org.rifidi.emulator.reader.alien.gpio.GPIController;
 import org.rifidi.emulator.reader.alien.heartbeat.HeartbeatController;
 import org.rifidi.emulator.reader.alien.io.protocol.AlienProtocol;
 import org.rifidi.emulator.reader.alien.sharedrc.tagmemory.AlienTagMemory;
+import org.rifidi.emulator.reader.alien.speed.SpeedException;
+import org.rifidi.emulator.reader.alien.speed.SpeedFilter;
 import org.rifidi.emulator.reader.command.CommandObject;
 import org.rifidi.emulator.reader.command.controller.BasicCommandControllerOperatingState;
 import org.rifidi.emulator.reader.command.controller.interactive.InteractiveCommandController;
@@ -198,6 +200,13 @@ public class AlienReaderModule extends AbstractPowerModule implements
 		digester.parseToCommand(this.getClass().getClassLoader()
 				.getResourceAsStream(XMLLOCATION + "reader.xml"));
 
+		SpeedFilter sf = null;
+
+		try {
+			sf = new SpeedFilter(0.0f);
+		} catch (SpeedException e) {
+		}
+
 		/* Make the AlienTagMemory */
 		AlienTagMemory alienTagMemory = new AlienTagMemory(TagGen.GEN1,
 				TagGen.GEN2);
@@ -227,7 +236,7 @@ public class AlienReaderModule extends AbstractPowerModule implements
 						.getProperty("inet_address")).split(":")[0], Integer
 						.parseInt(((String) properties
 								.getProperty("inet_address")).split(":")[1]),
-				antennaHash.size());
+				sf, antennaHash.size());
 
 		int numGPOs = properties.getNumGPOs();
 		int numGPIs = properties.getNumGPIs();
@@ -474,7 +483,9 @@ public class AlienReaderModule extends AbstractPowerModule implements
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.rifidi.emulator.reader.module.ReaderModule#getGPIPortNumbers(int)
+	 * 
+	 * @see
+	 * org.rifidi.emulator.reader.module.ReaderModule#getGPIPortNumbers(int)
 	 */
 	@Override
 	public List<String> getGPIPortNumbers(int numberOfPorts) {
@@ -489,7 +500,9 @@ public class AlienReaderModule extends AbstractPowerModule implements
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.rifidi.emulator.reader.module.ReaderModule#getGPOPortNumbers(int)
+	 * 
+	 * @see
+	 * org.rifidi.emulator.reader.module.ReaderModule#getGPOPortNumbers(int)
 	 */
 	@Override
 	public List<String> getGPOPortNumbers(int numberOfPorts) {

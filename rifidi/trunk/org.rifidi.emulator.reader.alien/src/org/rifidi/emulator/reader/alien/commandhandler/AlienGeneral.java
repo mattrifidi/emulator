@@ -17,6 +17,8 @@ import org.apache.commons.logging.LogFactory;
 import org.rifidi.emulator.common.ControlSignal;
 import org.rifidi.emulator.reader.alien.command.exception.AlienExceptionHandler;
 import org.rifidi.emulator.reader.alien.module.AlienReaderSharedResources;
+import org.rifidi.emulator.reader.alien.sharedrc.tagmemory.AlienTagMemory;
+import org.rifidi.emulator.reader.alien.speed.SpeedFilter;
 import org.rifidi.emulator.reader.alien.uptime.AlienUptime;
 import org.rifidi.emulator.reader.command.CommandObject;
 import org.rifidi.emulator.reader.module.abstract_.AbstractReaderSharedResources;
@@ -47,6 +49,45 @@ public class AlienGeneral {
 	 */
 	public CommandObject speedFilter(CommandObject arg,
 			AbstractReaderSharedResources asr) {
+		try {
+			AlienReaderSharedResources arsr = (AlienReaderSharedResources) asr;
+			String floats = null;
+
+			floats = (String) arg.getArguments().get(0);
+
+			floats = floats.trim();
+			String[] splitString = floats.split("\\|");
+			ArrayList<Float> floatArray = new ArrayList<Float>();
+
+			for (String i : splitString) {
+				// System.out.println("1VALUE SPLITSTRING: " + i);
+				i = i.trim();
+				String[] splitFloats = i.split(" ");
+				for (String f : splitFloats) {
+					// System.out.println("2VALUE SPLITSTRING: " + f);
+					if (!f.equals("")) {
+						floatArray.add(Float.valueOf(f));
+					}
+				}
+			}
+
+			SpeedFilter sf = new SpeedFilter(floatArray
+					.toArray(new Float[floatArray.size()]));
+
+			AlienTagMemory atm = (AlienTagMemory) arsr.getTagMemory();
+			atm.setSpeedFilter(sf);
+
+		} catch (Exception e) {
+			ArrayList<Object> retVal = arg.getReturnValue();
+			String cur = arg.getCurrentQueryName();
+			ArrayList<Object> tempVal = new ArrayList<Object>();
+			tempVal.add(cur);
+			retVal = new AlienExceptionHandler().malformedMessageError(tempVal,
+					arg);
+			arg.setReturnValue(retVal);
+			return arg;
+		}
+
 		return AlienCommon.getter_setter(arg, asr);
 	}
 

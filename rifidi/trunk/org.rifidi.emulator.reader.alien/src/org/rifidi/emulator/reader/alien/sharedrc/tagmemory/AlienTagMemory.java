@@ -10,11 +10,12 @@ import java.util.HashSet;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.rifidi.emulator.reader.alien.module.AlienReaderSharedResources;
+import org.rifidi.emulator.reader.alien.speed.SpeedFilter;
 import org.rifidi.emulator.reader.sharedrc.properties.IntegerReaderProperty;
 import org.rifidi.emulator.reader.sharedrc.tagmemory.TagMemory;
+import org.rifidi.services.tags.utils.RifidiTagMap;
 import org.rifidi.tags.enums.TagGen;
 import org.rifidi.tags.impl.RifidiTag;
-import org.rifidi.services.tags.utils.RifidiTagMap;
 
 /**
  * 
@@ -34,6 +35,8 @@ public class AlienTagMemory implements TagMemory {
 
 	private HashSet<TagGen> typeFilter;
 
+	private SpeedFilter sf = null;
+
 	/** The PersistTime Property */
 	private IntegerReaderProperty persistTimeProperty;
 
@@ -45,7 +48,6 @@ public class AlienTagMemory implements TagMemory {
 	 *            tag should read
 	 */
 	public AlienTagMemory(TagGen... tagTypes) {
-
 		typeFilter = new HashSet<TagGen>();
 		for (TagGen t : tagTypes) {
 			typeFilter.add(t);
@@ -112,6 +114,21 @@ public class AlienTagMemory implements TagMemory {
 
 			// return a new list
 			ArrayList<RifidiTag> returnList = tagList.getTagList();
+			ArrayList<RifidiTag> removeList = new ArrayList<RifidiTag>();
+
+			// If the SpeedFilter is enabled, look for and remove any tags that
+			// don't match the filter.
+			if (this.sf.isEnabled()) {
+				for (RifidiTag rt : returnList) {
+					if (!sf.matches(rt.getSpeed())) {
+						removeList.add(rt);
+					}
+				}
+				for (RifidiTag remove : removeList) {
+					System.out.println("Removing a tag!");
+					returnList.remove(remove);
+				}
+			}
 
 			// if persistTime==-1, clear taglist
 			if (persistTimeProperty.getValue() == -1) {
@@ -144,6 +161,7 @@ public class AlienTagMemory implements TagMemory {
 			// we only need to add the new tags, because the old
 			// ones will be removed when their persist time is up
 			for (RifidiTag t : tagsToAdd) {
+
 				if (typeFilter.contains(t.getTagGen())) {
 					this.tagList.addTag(t);
 				}
@@ -233,6 +251,14 @@ public class AlienTagMemory implements TagMemory {
 			antennasToScan.add(new Integer(ant));
 		}
 		return antennasToScan;
+	}
+
+	/**
+	 * 
+	 * @param sf
+	 */
+	public void setSpeedFilter(SpeedFilter sf) {
+		this.sf = sf;
 	}
 
 }
