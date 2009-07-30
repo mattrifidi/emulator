@@ -34,7 +34,7 @@ public class RifidiTag implements Serializable {
 	/** Serial version for serializable. */
 	private static final long serialVersionUID = 1L;
 	
-	private String speed = "0";
+	private float speed = 0.0f;
 
 	private float rssi = 0.0f;
 
@@ -99,14 +99,14 @@ public class RifidiTag implements Serializable {
 	/**
 	 * @return the speed
 	 */
-	public String getSpeed() {
+	public Float getSpeed() {
 		return speed;
 	}
 
 	/**
 	 * @param speed the speed to set
 	 */
-	public void setSpeed(String speed) {
+	public void setSpeed(Float speed) {
 		this.speed = speed;
 	}
 
