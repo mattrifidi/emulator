@@ -134,6 +134,7 @@ public class AlienTag {
 		} catch (Exception exc) {
 			logger.error("Error occured during getting tags");
 			logger.error(exc.getClass() + ": " + exc.getMessage());
+			exc.printStackTrace();
 		}
 
 		/* If no prompt suppress add endofreply and prompt to the output */

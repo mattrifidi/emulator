@@ -10,6 +10,7 @@ import java.util.HashSet;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.rifidi.emulator.reader.alien.module.AlienReaderSharedResources;
+import org.rifidi.emulator.reader.alien.rssi.RSSIFilter;
 import org.rifidi.emulator.reader.alien.speed.SpeedFilter;
 import org.rifidi.emulator.reader.sharedrc.properties.IntegerReaderProperty;
 import org.rifidi.emulator.reader.sharedrc.tagmemory.TagMemory;
@@ -36,6 +37,8 @@ public class AlienTagMemory implements TagMemory {
 	private HashSet<TagGen> typeFilter;
 
 	private SpeedFilter sf = null;
+
+	private RSSIFilter rf = null;
 
 	/** The PersistTime Property */
 	private IntegerReaderProperty persistTimeProperty;
@@ -124,10 +127,19 @@ public class AlienTagMemory implements TagMemory {
 						removeList.add(rt);
 					}
 				}
-				for (RifidiTag remove : removeList) {
-					System.out.println("Removing a tag!");
-					returnList.remove(remove);
+			}
+
+			if (this.rf.isEnabled()) {
+				for (RifidiTag rt : returnList) {
+					if (!rf.matches(rt.getRssi())) {
+						removeList.add(rt);
+					}
 				}
+			}
+
+			for (RifidiTag remove : removeList) {
+				// System.out.println("Removing a tag!");
+				returnList.remove(remove);
 			}
 
 			// if persistTime==-1, clear taglist
@@ -259,6 +271,10 @@ public class AlienTagMemory implements TagMemory {
 	 */
 	public void setSpeedFilter(SpeedFilter sf) {
 		this.sf = sf;
+	}
+
+	public void setRSSIFilter(RSSIFilter sf2) {
+		this.rf = sf2;
 	}
 
 }

@@ -37,6 +37,8 @@ import org.rifidi.emulator.reader.alien.formatter.AlienOutgoingMessageFormatter;
 import org.rifidi.emulator.reader.alien.gpio.GPIController;
 import org.rifidi.emulator.reader.alien.heartbeat.HeartbeatController;
 import org.rifidi.emulator.reader.alien.io.protocol.AlienProtocol;
+import org.rifidi.emulator.reader.alien.rssi.RSSIException;
+import org.rifidi.emulator.reader.alien.rssi.RSSIFilter;
 import org.rifidi.emulator.reader.alien.sharedrc.tagmemory.AlienTagMemory;
 import org.rifidi.emulator.reader.alien.speed.SpeedException;
 import org.rifidi.emulator.reader.alien.speed.SpeedFilter;
@@ -201,10 +203,17 @@ public class AlienReaderModule extends AbstractPowerModule implements
 				.getResourceAsStream(XMLLOCATION + "reader.xml"));
 
 		SpeedFilter sf = null;
+		RSSIFilter rf = null;
 
 		try {
 			sf = new SpeedFilter(0.0f);
 		} catch (SpeedException e) {
+		}
+
+		try {
+			rf = new RSSIFilter(0.0f);
+		} catch (RSSIException e) {
+			e.printStackTrace();
 		}
 
 		/* Make the AlienTagMemory */
@@ -236,7 +245,7 @@ public class AlienReaderModule extends AbstractPowerModule implements
 						.getProperty("inet_address")).split(":")[0], Integer
 						.parseInt(((String) properties
 								.getProperty("inet_address")).split(":")[1]),
-				sf, antennaHash.size());
+				sf, rf, antennaHash.size());
 
 		int numGPOs = properties.getNumGPOs();
 		int numGPIs = properties.getNumGPIs();

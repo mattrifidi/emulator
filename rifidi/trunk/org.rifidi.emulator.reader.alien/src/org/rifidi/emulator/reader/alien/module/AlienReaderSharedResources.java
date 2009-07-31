@@ -20,6 +20,7 @@ import org.rifidi.emulator.reader.alien.autonomous.states.AutoStateController;
 import org.rifidi.emulator.reader.alien.gpio.GPIController;
 import org.rifidi.emulator.reader.alien.gpio.GPOController;
 import org.rifidi.emulator.reader.alien.heartbeat.HeartbeatController;
+import org.rifidi.emulator.reader.alien.rssi.RSSIFilter;
 import org.rifidi.emulator.reader.alien.sharedrc.tagmemory.AlienTagMemory;
 import org.rifidi.emulator.reader.alien.speed.SpeedFilter;
 import org.rifidi.emulator.reader.command.CommandObject;
@@ -87,6 +88,8 @@ public class AlienReaderSharedResources extends AbstractReaderSharedResources {
 
 	private SpeedFilter speedFilter;
 
+	private RSSIFilter rssiFilter;
+
 	/**
 	 * A constructor which takes in all necessary shared resources to be a
 	 * complete Alien reader.
@@ -118,7 +121,7 @@ public class AlienReaderSharedResources extends AbstractReaderSharedResources {
 			ControlSignal<Boolean> autoCommConnectionSignal, String readerName,
 			HashMap<String, CommandObject> allCommands, CommandDigester dig,
 			GenericExceptionHandler geh, String commandIP, Integer commandPort,
-			SpeedFilter speedfilter, int numAntennas) {
+			SpeedFilter speedfilter, RSSIFilter rssiFilter, int numAntennas) {
 		/* Call the super constructor */
 		super(aRadio, aTagMemory, readerPowerSignal, readerName, geh, dig,
 				numAntennas);
@@ -133,9 +136,11 @@ public class AlienReaderSharedResources extends AbstractReaderSharedResources {
 		this.commandPort = commandPort;
 
 		this.speedFilter = speedfilter;
+		this.rssiFilter = rssiFilter;
 
 		AlienTagMemory alienmem = (AlienTagMemory) aTagMemory;
-		alienmem.setSpeedFilter(speedFilter);
+		alienmem.setSpeedFilter(this.speedFilter);
+		alienmem.setRSSIFilter(this.rssiFilter);
 
 		for (CommandObject i : allCommands.values()) {
 			this.getPropertyMap().put(i.getDisplayName().toLowerCase(),
@@ -146,21 +151,6 @@ public class AlienReaderSharedResources extends AbstractReaderSharedResources {
 		this.autoFalseOutput = new GPOController(this.getGpioController());
 		this.autoWaitOutput = new GPOController(this.getGpioController());
 		this.autoWorkOutput = new GPOController(this.getGpioController());
-	}
-
-	/**
-	 * @return the speedFilter
-	 */
-	public SpeedFilter getSpeedFilter() {
-		return speedFilter;
-	}
-
-	/**
-	 * @param speedFilter
-	 *            the speedFilter to set
-	 */
-	public void setSpeedFilter(SpeedFilter speedFilter) {
-		this.speedFilter = speedFilter;
 	}
 
 	/**
