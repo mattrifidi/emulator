@@ -11,10 +11,14 @@
  */
 package org.rifidi.emulator.reader.sirit.commandhandler;
 
+import java.util.ArrayList;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.rifidi.emulator.reader.command.CommandObject;
 import org.rifidi.emulator.reader.module.abstract_.AbstractReaderSharedResources;
+import org.rifidi.emulator.reader.sirit.command.exception.SiritExceptionHandler;
+import org.rifidi.emulator.reader.sirit.module.SiritReaderSharedResources;
 
 /**
  * This is the class for all commands of sirit's "setup" namespace
@@ -29,7 +33,7 @@ public class SiritSetup {
 
 	/**
 	 * Gets and sets the reader's operating mode variable. When set to "active"
-	 * the autonomous mode is to be enabled.
+	 * the active mode is to be enabled.
 	 * 
 	 * @param arg
 	 *            The CommandObject which contains the information from the
@@ -42,11 +46,48 @@ public class SiritSetup {
 	 */
 	public CommandObject setup_operatingMode(CommandObject arg,
 			AbstractReaderSharedResources asr) {
-		logger.debug("SiritSetup.setup_operatingmode() just got called!");
+		logger.debug("SiritSetup - setup_operatingMode() "
+				+ arg.getArguments().toString());
 
-		/* start autonomous mode */
-		// todo
+		/* validate argument value. valid values: active, standby */
+		if (arg.getArguments().size() > 0) {
+			String mode = arg.getArguments().get(0).toString();	
+
+			if (mode.equalsIgnoreCase("active")) {
+				/* start active mode */
+				((SiritReaderSharedResources) asr).startActiveMode();
+			} else if (mode.equalsIgnoreCase("standby")) {
+				/* stop active mode */
+				((SiritReaderSharedResources) asr).stopActiveMode();
+			}
+			else {
+				ArrayList<Object> retVal = new SiritExceptionHandler().illegalValueError(arg);
+				arg.setReturnValue(retVal);
+				return arg;
+			}
+		}
+		
 		return SiritCommon.getter_setter(arg, asr);
 	}
 
+	/**
+	 * Gets and sets the reader's default login level (user role).
+	 * 
+	 * @param arg
+	 *            The CommandObject which contains the information from the
+	 *            method.
+	 * @param asr
+	 *            An Shared Resources Object which is needed for access to
+	 *            Radio, TagMemory and so on
+	 * @return The CommandObject, unmodified if the command was a get, modified
+	 *         if the command is a set.
+	 */
+	public CommandObject setup_defaultLoginLevel(CommandObject arg,
+			AbstractReaderSharedResources asr) {
+		logger.debug("SiritSetup - setup_defaultLoginLevel() "
+				+ arg.getArguments().toString());
+
+		// todo: only allow "admin"
+		return SiritCommon.getter_setter(arg, asr);
+	}
 }

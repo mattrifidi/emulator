@@ -16,7 +16,9 @@ import java.util.Collection;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.rifidi.emulator.reader.module.abstract_.AbstractReaderSharedResources;
 import org.rifidi.emulator.reader.sharedrc.tagmemory.TagMemory;
+import org.rifidi.emulator.reader.sirit.module.SiritReaderSharedResources;
 import org.rifidi.services.tags.utils.RifidiTagMap;
 import org.rifidi.tags.impl.RifidiTag;
 
@@ -30,16 +32,16 @@ public class SiritTagMemory implements TagMemory {
 	private static Log logger = LogFactory.getLog(SiritTagMemory.class);
 
 	/** the tag database, represented by a RifidiTagMap */
-	private RifidiTagMap tagDatabase;
+	private RifidiTagMap tagDatabase = new RifidiTagMap();
 
 	/**
 	 * flag that holds the active state of the reader and thus of the tag memory
 	 */
 	private boolean active = true;
 
-	public SiritTagMemory() {
-		this.tagDatabase = new RifidiTagMap();
-	}
+	/** the shared resources for this reader */
+	private SiritReaderSharedResources srsr;
+
 
 	/** Tells the memory to stop reading tags */
 	public void suspend() {

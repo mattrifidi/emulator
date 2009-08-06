@@ -9,7 +9,23 @@
 		<name>ipaddress</name>
 		<display>ip address</display>
 		<tooltip>The address the reader should be reachable through</tooltip>
-		<defaultvalue>127.0.0.1:50007</defaultvalue>		
+		<defaultvalue>127.0.0.1</defaultvalue>		
 		<validatorclassname>IpAddressValidator</validatorclassname>
+	</property>
+	<property>
+		<required>1</required>
+		<name>communicationport</name>
+		<display>communication port</display>
+		<tooltip>The port on which the client communicates with the reader</tooltip>
+		<defaultvalue>50007</defaultvalue>		
+		<validatorclassname></validatorclassname>
+	</property>
+	<property>
+		<required>1</required>
+		<name>eventport</name>
+		<display>event port</display>
+		<tooltip>The port on which the readersends its event messages</tooltip>
+		<defaultvalue>50008</defaultvalue>		
+		<validatorclassname></validatorclassname>
 	</property>
 </reader>

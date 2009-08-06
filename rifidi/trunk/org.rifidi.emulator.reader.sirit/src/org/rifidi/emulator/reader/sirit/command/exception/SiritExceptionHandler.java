@@ -32,20 +32,54 @@ public class SiritExceptionHandler extends GenericExceptionHandler {
 	 * Message logger
 	 */
 	private static Log logger = LogFactory.getLog(SiritExceptionHandler.class);
-	
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.rifidi.emulator.reader.command.exception.GenericExceptionHandler#
-	 * commandNotFoundError(java.util.ArrayList,
-	 * org.rifidi.emulator.reader.command.CommandObject)
+
+	/**
+	 * called by the native command handler when a variable/command can not be
+	 * mapped
 	 */
 	@Override
 	public ArrayList<Object> commandNotFoundError(ArrayList<Object> arg,
 			CommandObject obj) {
+
+		/** check whether command or variable was passed in */
+		if (obj.getCurrentQueryName().indexOf("(") != -1) {
+			return this.unknownCommandError(arg, obj);	
+		}
+		else {
+			return this.unknownVariableError(arg, obj);
+		}
 		
+	}
+
+	/** tells that the given variable can not be found */
+	public ArrayList<Object> unknownCommandError(ArrayList<Object> arg,
+			CommandObject obj) {
+
+		return this.errorFormat("error.parser.unknown_command", "", obj);
+	}
+	
+	/** tells that the given variable can not be found */
+	public ArrayList<Object> unknownVariableError(ArrayList<Object> arg,
+			CommandObject obj) {
+
 		return this.errorFormat("error.parser.unknown_variable", "", obj);
+	}
+
+	/** called when an argument is not valid */
+	public ArrayList<Object> illegalValueError(CommandObject arg) {
+
+		return this.errorFormat("error.parser.illegal_value", "", arg);
+	}
+
+	/* Private method that takes care of any formatting involved in the process */
+	private ArrayList<Object> errorFormat(String errorMsg, String retVal,
+			CommandObject obj) {
+		logger.debug("send error message: " + errorMsg);
+
+		retVal += errorMsg + SiritCommon.ENDOFREPLY;
+		ArrayList<Object> returnValue = new ArrayList<Object>();
+		returnValue.add(retVal);
+		return returnValue;
 	}
 
 	/*
@@ -77,20 +111,4 @@ public class SiritExceptionHandler extends GenericExceptionHandler {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	/* Private method that takes care of any formatting involved in the process */
-	private ArrayList<Object> errorFormat(String errorMsg, String retVal,
-			CommandObject obj) {
-		logger.debug("send error message: " + errorMsg);
-		
-		retVal += errorMsg + SiritCommon.ENDOFREPLY;
-		if (obj.getCurrentQueryName().startsWith("\1")) {
-		} else {
-			retVal += SiritCommon.PROMPT;
-		}
-		ArrayList<Object> returnValue = new ArrayList<Object>();
-		returnValue.add(retVal);
-		return returnValue;
-	}
-
 }

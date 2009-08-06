@@ -126,7 +126,8 @@ public class SiritReaderModule extends AbstractPowerModule implements
 				+ properties.getReaderName());
 		consoleLogger.info(SiritReaderModule.startupText
 				+ properties.getReaderName() + " IP Address: "
-				+ properties.getProperty("ipaddress"));
+				+ properties.getProperty("ipaddress") + ":"
+				+ properties.getProperty("communicationport"));
 		consoleLogger.info(SiritReaderModule.startupText
 				+ properties.getReaderName() + " has "
 				+ properties.getNumAntennas() + " antennas");
@@ -143,6 +144,7 @@ public class SiritReaderModule extends AbstractPowerModule implements
 
 		// Create a new tag memory
 		SiritTagMemory tagMemory = new SiritTagMemory();
+
 		// , create antennas
 		HashMap<Integer, Antenna> antennaList = new HashMap<Integer, Antenna>();
 		for (int i = 0; i < properties.getNumAntennas(); i++) {
@@ -151,21 +153,20 @@ public class SiritReaderModule extends AbstractPowerModule implements
 		}
 		// , create a new radio and supply the tagMemory and antennas to the
 		// radio
-		GenericRadio genericRadio = new GenericRadio(antennaList, 25, name,
-				tagMemory);
+		GenericRadio genericRadio = new GenericRadio(antennaList, 25, name);
 
 		// Parse out the IP and port from the GeneralReaderPropertyHolder
-		String ipAddress = ((String) properties.getProperty("ipaddress"))
-				.split(":")[0];
+		String ipAddress = ((String) properties.getProperty("ipaddress"));
 		int tcpPort = Integer.parseInt(((String) properties
-				.getProperty("ipaddress")).split(":")[1]);
+				.getProperty("communicationport")));
 
 		// create the shared resources and supply necessary information to it
 		this.sharedResources = new SiritReaderSharedResources(genericRadio,
 				tagMemory, powerControlSignal,
 				new ControlSignal<Boolean>(false), new ControlSignal<Boolean>(
 						false), name, digester.getAllCommands(), digester,
-				new SiritExceptionHandler(), ipAddress, tcpPort, antennaList.size());
+				new SiritExceptionHandler(), ipAddress, tcpPort, antennaList
+						.size());
 
 		// Create the communication object
 		this.tcpComm = new TCPServerCommunication(new RawProtocol(),

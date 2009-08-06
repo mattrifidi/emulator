@@ -34,6 +34,20 @@
 	</Command>
 	
 	<Command>
+		<queryName>setup.default_login_level</queryName>
+		<displayName>DefaultLoginLevel</displayName>
+		<commandState>Interactive</commandState>
+		<commandHandlerDetails>
+			<handlerClass>org.rifidi.emulator.reader.sirit.commandhandler.SiritSetup</handlerClass>
+			<handlerMethod>setup_defaultLoginLevel</handlerMethod>
+			<argumentType>String</argumentType>
+		</commandHandlerDetails>
+		<actionTag>EDITABLE</actionTag>
+		<category>NONE</category>
+		<defaultValue>admin</defaultValue>
+	</Command>
+	
+	<Command>
 		<queryName>tag.db.get</queryName>
 		<displayName>GetDatabase</displayName>
 		<commandState>Interactive</commandState>
@@ -59,5 +73,19 @@
 		<actionTag>EDITABLE</actionTag>
 		<category>NONE</category>
 		<defaultValue>1 2</defaultValue>
+	</Command>
+	
+	<Command>
+		<queryName>reader.is_alive</queryName>
+		<displayName>isAlive</displayName>
+		<commandState>Interactive</commandState>
+		<commandHandlerDetails>
+			<handlerClass>org.rifidi.emulator.reader.sirit.commandhandler.SiritReader</handlerClass>
+			<handlerMethod>reader_isAlive</handlerMethod>
+			<argumentType>String</argumentType>
+		</commandHandlerDetails>
+		<actionTag>IGNORE</actionTag>
+		<category>NONE</category>
+		<defaultValue></defaultValue>
 	</Command>
 </ReaderCommand>

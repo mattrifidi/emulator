@@ -21,6 +21,7 @@ import org.rifidi.emulator.reader.command.xml.CommandDigester;
 import org.rifidi.emulator.reader.module.abstract_.AbstractReaderSharedResources;
 import org.rifidi.emulator.reader.sharedrc.radio.generic.GenericRadio;
 import org.rifidi.emulator.reader.sharedrc.tagmemory.TagMemory;
+import org.rifidi.emulator.reader.sirit.active.SiritActiveWorker;
 
 /**
  * @author Stefan Fahrnbauer - stefan@pramari.com
@@ -33,6 +34,8 @@ public class SiritReaderSharedResources extends AbstractReaderSharedResources {
 
 	private String commandIP;
 	private Integer commandPort;
+
+	private Thread activeModeThread;
 
 	/**
 	 * Constructor
@@ -58,7 +61,10 @@ public class SiritReaderSharedResources extends AbstractReaderSharedResources {
 		super(aRadio, aTagMemory, readerPowerSignal, readerName, geh, dig,
 				numAntennas);
 
-		/* Assign other instance variables */
+		/*
+		 * 
+		 * /* Assign other instance variables
+		 */
 		this.interactiveConnectionSignal = interactiveConnectionSignal;
 		this.interactivePowerSignal = interactivePowerSignal;
 		this.commandIP = commandIP;
@@ -104,7 +110,7 @@ public class SiritReaderSharedResources extends AbstractReaderSharedResources {
 	 * 
 	 * @return an HashSet of the antennas' numbers to be scanned
 	 */
-	public HashSet<Integer> getAntennas() {
+	public HashSet<Integer> getAntennas2() {
 		/* read the property with the list of created antennas */
 		String antennas = this.getPropertyMap().get("detectedantennas")
 				.getPropertyStringValue();
@@ -117,6 +123,28 @@ public class SiritReaderSharedResources extends AbstractReaderSharedResources {
 		}
 
 		return antennasToScan;
+	}
+
+	/** Starts the active mode. The reader periodically scans for new tags */
+	public void startActiveMode() {
+		/* activate tag memory */
+		this.getTagMemory().resume();
+
+		/* create thread for scanning */
+		SiritActiveWorker saw = new SiritActiveWorker(this.getRadio(), this
+				.getTagMemory());
+
+		activeModeThread = new Thread(saw);
+		activeModeThread.start();
+	}
+
+	/** Stops the active mode. */
+	public void stopActiveMode() {
+		if (activeModeThread != null) {
+			if (activeModeThread.isAlive()) {
+				activeModeThread.interrupt();
+			}
+		}
 	}
 
 }
