@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Tags Plug-in
 Bundle-SymbolicName: org.rifidi.tags
-Bundle-Version: 1.0.1
+Bundle-Version: 1.1.0
 Bundle-Vendor: Pramari, LLC
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: org.apache.commons.logging;version="1.0.4"
