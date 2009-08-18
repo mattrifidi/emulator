@@ -1,0 +1,24 @@
+Manifest-Version: 1.0
+Bundle-RequiredExecutionEnvironment:  JavaSE-1.6
+Bundle-ManifestVersion: 2
+Bundle-Name: Rifidi Awid Reader Plug-in
+Bundle-SymbolicName: org.rifidi.emulator.reader.awid
+Bundle-Version: 2.2.3
+Bundle-Activator: org.rifidi.emulator.reader.awid.Activator
+Bundle-Vendor: Pramari, LLC
+Bundle-Localization: plugin
+Import-Package: gnu.io;version="2.0.0",
+ org.apache.commons.logging;version="1.0.4",
+ org.osgi.framework;version="1.3.0",
+ org.rifidi.tags;version="1.0.0",
+ org.rifidi.tags.enums;version="1.0.0",
+ org.rifidi.tags.impl;version="1.0.0"
+Export-Package: org.rifidi.emulator.reader.awid.command.exception,
+ org.rifidi.emulator.reader.awid.commandhandler,
+ org.rifidi.emulator.reader.awid.formatter,
+ org.rifidi.emulator.reader.awid.module,
+ org.rifidi.emulator.reader.awid.sharedrc.radio,
+ org.rifidi.emulator.reader.awid.sharedrc.tagmemory
+Require-Bundle: org.rifidi.emulator;bundle-version="2.1.0",
+ org.rifidi.common.utilities;bundle-version="2.1.0",
+ org.rifidi.services.tags;bundle-version="2.1.0"
