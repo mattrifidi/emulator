@@ -24,14 +24,14 @@ import org.eclipse.swt.widgets.Shell;
 import org.rifidi.emulator.reader.module.GeneralReaderPropertyHolder;
 import org.rifidi.services.annotations.Inject;
 import org.rifidi.services.registry.ServiceRegistry;
+import org.rifidi.services.tags.registry.ITagRegistry;
 import org.rifidi.tags.impl.C0G1Tag;
 import org.rifidi.tags.impl.C1G1Tag;
 import org.rifidi.tags.impl.C1G2Tag;
 import org.rifidi.tags.impl.RifidiTag;
-import org.rifidi.services.tags.registry.ITagRegistry;
 import org.rifidi.ui.common.reader.UIAntenna;
 import org.rifidi.ui.common.reader.UIReader;
-import org.rifidi.ui.common.registry.ReaderRegistry;
+import org.rifidi.ui.common.registry.ReaderRegistryService;
 import org.rifidi.ui.ide.configuration.AntennaTagMap;
 import org.rifidi.ui.ide.configuration.IDEConfiguration;
 import org.rifidi.ui.ide.configuration.ReaderAntennaTagMap;
@@ -49,9 +49,11 @@ import org.rifidi.ui.ide.configuration.ReaderAntennaTagMap;
 public class SaveIDEConfigurationHandler extends AbstractHandler {
 
 	private static Log logger = LogFactory
-			.getLog(ConnectionSettingsHandler.class);
+			.getLog(SaveIDEConfigurationHandler.class);
 
 	private ITagRegistry tagReg;
+	
+	private ReaderRegistryService readerRegistry;
 
 	public SaveIDEConfigurationHandler() {
 		super();
@@ -79,8 +81,7 @@ public class SaveIDEConfigurationHandler extends AbstractHandler {
 			return null;
 		}
 
-		ReaderRegistry reg = ReaderRegistry.getInstance();
-		List<UIReader> readers = reg.getReaderList();
+		List<UIReader> readers = readerRegistry.getReaderList();
 		List<RifidiTag> tags = tagReg.getTags();
 
 		logger.debug("Perform save to:" + filename);
@@ -149,6 +150,14 @@ public class SaveIDEConfigurationHandler extends AbstractHandler {
 	@Inject
 	public void setTagRegistry(ITagRegistry tagReg) {
 		this.tagReg = tagReg;
+	}
+
+	/**
+	 * @param readerRegistry the readerRegistry to set
+	 */
+	@Inject
+	public void setReaderRegistry(ReaderRegistryService readerRegistry) {
+		this.readerRegistry = readerRegistry;
 	}
 
 }

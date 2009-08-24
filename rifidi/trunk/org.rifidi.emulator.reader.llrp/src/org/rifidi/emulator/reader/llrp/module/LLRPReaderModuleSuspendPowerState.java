@@ -48,7 +48,7 @@ public class LLRPReaderModuleSuspendPowerState extends
 				.getSharedResources();
 
 		llrpsr.getKeepAliveController().resume();
-		
+
 		ROSpecController rsc = ROSpecControllerFactory.getInstance()
 				.getReportController(llrpsr.getReaderName());
 
@@ -59,18 +59,18 @@ public class LLRPReaderModuleSuspendPowerState extends
 		llrp.getInteractiveCommandController().resume();
 
 		llrp.changePowerState(LLRPReaderModuleOnPowerState.getInstance());
-		
+
 		String readername = llrp.getSharedResources().getReaderName();
-		LogFactory.getLog("console." + readername).info(readername + " resumed");
+		LogFactory.getLog("console." + readername)
+				.info(readername + " resumed");
 	}
 
-	public void turnOff(PowerControllable pcObject, Class callingClass) {
-		logger.debug("Turned off by: " + callingClass);
+	public void turnOff(PowerControllable pcObject) {
 
 		LLRPReaderModule llrp = (LLRPReaderModule) pcObject;
 
-		llrp.getInteractiveCommandController().turnOff(this.getClass());
-		llrp.getInteractiveCommunication().turnOff(this.getClass());
+		llrp.getInteractiveCommandController().turnOff();
+		llrp.getInteractiveCommunication().turnOff();
 
 		llrp.getSharedResources().getInteractivePowerSignal()
 				.setControlVariableValue(false);
@@ -78,7 +78,7 @@ public class LLRPReaderModuleSuspendPowerState extends
 				.setControlVariableValue(false);
 
 		llrp.changePowerState(LLRPReaderModuleOffPowerState.getInstance());
-		
+
 		String readername = llrp.getSharedResources().getReaderName();
 		LogFactory.getLog("console." + readername).info(readername + " off");
 

@@ -46,7 +46,9 @@ public class EPCReaderModuleSuspendedPowerState extends
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.emulator.common.PowerState#resume(org.rifidi.emulator.common.PowerControllable)
+	 * @see
+	 * org.rifidi.emulator.common.PowerState#resume(org.rifidi.emulator.common
+	 * .PowerControllable)
 	 */
 	public void resume(PowerControllable pcObject) {
 		EPCReaderModule epcMod = (EPCReaderModule) pcObject;
@@ -55,25 +57,26 @@ public class EPCReaderModuleSuspendedPowerState extends
 		epcMod.getInteractiveCommunication().resume();
 		epcMod.getInteractiveCommandController().resume();
 
-		epcMod.changePowerState(EPCReaderModuleOnPowerState
-				.getInstance());
-		
+		epcMod.changePowerState(EPCReaderModuleOnPowerState.getInstance());
+
 		String readername = epcMod.getSharedResources().getReaderName();
-		LogFactory.getLog("console." + readername).info(readername + " resumed");
+		LogFactory.getLog("console." + readername)
+				.info(readername + " resumed");
 
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.emulator.common.PowerState#turnOff(org.rifidi.emulator.common.PowerControllable)
+	 * @see
+	 * org.rifidi.emulator.common.PowerState#turnOff(org.rifidi.emulator.common
+	 * .PowerControllable)
 	 */
-	@SuppressWarnings("unchecked")
-	public void turnOff(PowerControllable pcObject, Class callingClass) {
+	public void turnOff(PowerControllable pcObject) {
 		EPCReaderModule epcMod = (EPCReaderModule) pcObject;
 
-		epcMod.getInteractiveCommunication().turnOff(this.getClass());
-		epcMod.getInteractiveCommandController().turnOff(this.getClass());
+		epcMod.getInteractiveCommunication().turnOff();
+		epcMod.getInteractiveCommandController().turnOff();
 
 		epcMod.getSharedResources().getInteractivePowerSignal()
 				.setControlVariableValue(false);
@@ -81,7 +84,7 @@ public class EPCReaderModuleSuspendedPowerState extends
 				.setControlVariableValue(false);
 
 		epcMod.changePowerState(EPCReaderModuleOffPowerState.getInstance());
-		
+
 		String readername = epcMod.getSharedResources().getReaderName();
 		LogFactory.getLog("console." + readername).info(readername + " off");
 	}

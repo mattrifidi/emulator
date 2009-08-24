@@ -328,8 +328,8 @@ public class LLRPReaderModule extends AbstractPowerModule implements
 
 	@SuppressWarnings("unused")
 	private void turnOffSignals() {
-		this.getInteractiveCommandController().turnOff(this.getClass());
-		this.getInteractiveCommunication().turnOff(this.getClass());
+		this.getInteractiveCommandController().turnOff();
+		this.getInteractiveCommunication().turnOff();
 
 		this.getSharedResources().getInteractivePowerSignal()
 				.setControlVariableValue(false);
@@ -511,23 +511,29 @@ public class LLRPReaderModule extends AbstractPowerModule implements
 	 * org.rifidi.emulator.reader.module.ReaderModule#getGPIPortNumbers(int)
 	 */
 	@Override
-	public List<String> getGPIPortNumbers(int numberOfPorts) {
-		List<String> retVal = new ArrayList<String>();
+	public List<Integer> getGPIPortNumbers() {
+		int numberOfPorts = this.getSharedResources().getGpioController()
+				.getNumGPIPorts();
+		List<Integer> retVal = new ArrayList<Integer>();
 		for (int i = 1; i <= numberOfPorts; i++) {
-			retVal.add(String.valueOf(i));
+			retVal.add(i);
 		}
 		return retVal;
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.rifidi.emulator.reader.module.ReaderModule#getGPOPortNumbers(int)
+	 * 
+	 * @see
+	 * org.rifidi.emulator.reader.module.ReaderModule#getGPOPortNumbers(int)
 	 */
 	@Override
-	public List<String> getGPOPortNumbers(int numberOfPorts) {
-		List<String> retVal = new ArrayList<String>();
+	public List<Integer> getGPOPortNumbers() {
+		int numberOfPorts = this.getSharedResources().getGpioController()
+				.getNumGPOPorts();
+		List<Integer> retVal = new ArrayList<Integer>();
 		for (int i = 1; i <= numberOfPorts; i++) {
-			retVal.add(String.valueOf(i));
+			retVal.add(i);
 		}
 		return retVal;
 	}

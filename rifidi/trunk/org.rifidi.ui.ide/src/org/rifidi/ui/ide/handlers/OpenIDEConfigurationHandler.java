@@ -22,13 +22,14 @@ import org.eclipse.swt.widgets.Shell;
 import org.rifidi.emulator.reader.module.GeneralReaderPropertyHolder;
 import org.rifidi.services.annotations.Inject;
 import org.rifidi.services.registry.ServiceRegistry;
+import org.rifidi.services.tags.registry.ITagRegistry;
 import org.rifidi.tags.impl.C0G1Tag;
 import org.rifidi.tags.impl.C1G1Tag;
 import org.rifidi.tags.impl.C1G2Tag;
 import org.rifidi.tags.impl.RifidiTag;
-import org.rifidi.services.tags.registry.ITagRegistry;
 import org.rifidi.ui.common.reader.UIReader;
 import org.rifidi.ui.common.registry.ReaderRegistry;
+import org.rifidi.ui.common.registry.ReaderRegistryService;
 import org.rifidi.ui.common.wizards.reader.exceptions.DuplicateReaderException;
 import org.rifidi.ui.ide.configuration.AntennaTagMap;
 import org.rifidi.ui.ide.configuration.IDEConfiguration;
@@ -52,6 +53,8 @@ public class OpenIDEConfigurationHandler extends AbstractHandler {
 
 	private static Log logger = LogFactory
 			.getLog(OpenIDEConfigurationHandler.class);
+	
+	private ReaderRegistryService readerRegistry;
 
 	public OpenIDEConfigurationHandler() {
 		super();
@@ -78,12 +81,12 @@ public class OpenIDEConfigurationHandler extends AbstractHandler {
 
 		logger.debug("Loading from:" + filename);
 
-		ReaderRegistry reg = ReaderRegistry.getInstance();
+		
 
 		tagRegistry.remove(tagRegistry.getTags());
-		List<UIReader> prevReaderList = reg.getReaderList();
+		List<UIReader> prevReaderList = readerRegistry.getReaderList();
 		for (UIReader u : prevReaderList) {
-			reg.remove(u);
+			readerRegistry.remove(u);
 		}
 
 		File file = new File(filename);
@@ -114,14 +117,13 @@ public class OpenIDEConfigurationHandler extends AbstractHandler {
 				logger.debug("No tags in IDE Configuration");
 			}
 
-			ReaderRegistry readerReg = ReaderRegistry.getInstance();
-			for (UIReader reader : readerReg.getReaderList()) {
-				readerReg.remove(reader);
+			for (UIReader reader : readerRegistry.getReaderList()) {
+				readerRegistry.remove(reader);
 			}
 			for (GeneralReaderPropertyHolder reader : configuration
 					.getReaders()) {
 				try {
-					readerReg.create(reader);
+					readerRegistry.create(reader);
 				} catch (DuplicateReaderException e) {
 					logger.error("Already Have a reader with name "
 							+ reader.getReaderName());
@@ -136,7 +138,7 @@ public class OpenIDEConfigurationHandler extends AbstractHandler {
 							.getEntry(reader.getReaderName());
 					if (antennaTagMap != null) {
 						for (int i = 0; i < reader.getNumAntennas(); i++) {
-							UIReader uireader = readerReg
+							UIReader uireader = readerRegistry
 									.getReaderByName(reader.getReaderName());
 							uireader.getAntenna(i).addTagsByID(
 									antennaTagMap.getEntry(i));
@@ -162,6 +164,14 @@ public class OpenIDEConfigurationHandler extends AbstractHandler {
 	@Inject
 	public void setTagRegistry(ITagRegistry tagReg) {
 		this.tagRegistry = tagReg;
+	}
+
+	/**
+	 * @param readerRegistry the readerRegistry to set
+	 */
+	@Inject
+	public void setReaderRegistry(ReaderRegistryService readerRegistry) {
+		this.readerRegistry = readerRegistry;
 	}
 
 }

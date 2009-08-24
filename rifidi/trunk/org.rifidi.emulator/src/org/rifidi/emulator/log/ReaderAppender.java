@@ -14,6 +14,8 @@ package org.rifidi.emulator.log;
 import org.apache.log4j.AppenderSkeleton;
 import org.apache.log4j.Level;
 import org.apache.log4j.spi.LoggingEvent;
+import org.rifidi.services.annotations.Inject;
+import org.rifidi.services.registry.ServiceRegistry;
 
 /**
  * 
@@ -28,6 +30,16 @@ import org.apache.log4j.spi.LoggingEvent;
 public class ReaderAppender extends AppenderSkeleton {
 
 	private int maxCacheLines = 2000;
+	private ReaderLogService log;
+	
+	public ReaderAppender(){
+		ServiceRegistry.getInstance().service(this);
+	}
+	
+	@Inject
+	public void setReaderLogService(ReaderLogService readerLogService){
+		this.log = readerLogService;
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -41,7 +53,6 @@ public class ReaderAppender extends AppenderSkeleton {
 
 		// we are only interested on INFO-level messages
 		if (event.getLevel().equals(Level.INFO)) {
-			ReaderLogCacheSingleton log = ReaderLogCacheSingleton.getInstance();
 			log.setMaxCacheLines(maxCacheLines);
 			String type = "";
 			for (String line : event.getRenderedMessage().split("\n")) {

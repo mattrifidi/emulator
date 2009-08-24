@@ -9,5 +9,5 @@
 	<osgi:service ref="groovyExecutor"
 		interface="org.rifidi.emulator.scripting.groovy.GroovyExecutor" />
 	<osgi:reference id="readerManager"
-		interface="org.rifidi.emulator.scripting.ReaderManager" />
+		interface="org.rifidi.emulator.manager.ReaderManager" />
 </beans>

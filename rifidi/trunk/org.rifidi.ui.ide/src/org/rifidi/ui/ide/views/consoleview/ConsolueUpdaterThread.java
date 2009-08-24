@@ -16,7 +16,9 @@ import java.util.List;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
-import org.rifidi.ui.common.registry.ReaderRegistry;
+import org.rifidi.services.annotations.Inject;
+import org.rifidi.services.registry.ServiceRegistry;
+import org.rifidi.ui.common.registry.ReaderRegistryService;
 
 /**
  * This Thread updates the output on the console for the associated Reader. The
@@ -33,6 +35,29 @@ public class ConsolueUpdaterThread extends Thread {
 	private StyledText text;
 	private String readerName;
 	private boolean stopped = false;
+	private ReaderRegistryService readerRegistry;
+
+	/**
+	 * Constructor
+	 * 
+	 * @param text
+	 * @param readerName
+	 */
+	public ConsolueUpdaterThread(StyledText text, String readerName) {
+		this.text = text;
+		this.readerName = readerName;
+		ServiceRegistry.getInstance().service(this);
+	}
+
+
+	/**
+	 * @param readerRegistry the readerRegistry to set
+	 */
+	@Inject
+	public void setReaderRegistry(ReaderRegistryService readerRegistry) {
+		this.readerRegistry = readerRegistry;
+	}
+
 
 	/**
 	 * @return the stopped
@@ -49,17 +74,6 @@ public class ConsolueUpdaterThread extends Thread {
 		this.stopped = stopped;
 	}
 
-	/**
-	 * Constructor
-	 * 
-	 * @param text
-	 * @param readerName
-	 */
-	public ConsolueUpdaterThread(StyledText text, String readerName) {
-		this.text = text;
-		this.readerName = readerName;
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -72,8 +86,6 @@ public class ConsolueUpdaterThread extends Thread {
 
 		// ArrayList for Console output
 		ArrayList<String> consoleCache = null;
-
-		ReaderRegistry readerRegistry = ReaderRegistry.getInstance();
 
 		while (stopped == false) {
 			// Fetch the ConsoleCache for Reader
@@ -112,7 +124,8 @@ public class ConsolueUpdaterThread extends Thread {
 		private boolean firstRun = true;
 
 		/**
-		 * @param text is the Text to set in the Widget
+		 * @param text
+		 *            is the Text to set in the Widget
 		 */
 		public Runner(StyledText text) {
 			this.text = text;

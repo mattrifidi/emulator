@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.rifidi.emulator.manager.ClientCallbackInterface;
 import org.rifidi.emulator.reader.command.CommandObject;
 import org.rifidi.emulator.reader.llrp.accessspec._AccessSpec;
 import org.rifidi.emulator.reader.llrp.accessspec._OpSpec;
@@ -24,7 +25,6 @@ import org.rifidi.emulator.reader.llrp.module.LLRPReaderSharedResources;
 import org.rifidi.emulator.reader.module.abstract_.AbstractReaderSharedResources;
 import org.rifidi.emulator.reader.sharedrc.radio.Antenna;
 import org.rifidi.emulator.reader.sharedrc.radio.generic.GenericRadio;
-import org.rifidi.emulator.rmi.client.ClientCallbackInterface;
 
 import edu.uark.csce.llrp.AccessCommand;
 import edu.uark.csce.llrp.AccessSpec;

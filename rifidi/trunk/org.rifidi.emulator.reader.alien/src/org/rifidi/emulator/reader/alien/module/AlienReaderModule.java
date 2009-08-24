@@ -497,11 +497,13 @@ public class AlienReaderModule extends AbstractPowerModule implements
 	 * org.rifidi.emulator.reader.module.ReaderModule#getGPIPortNumbers(int)
 	 */
 	@Override
-	public List<String> getGPIPortNumbers(int numberOfPorts) {
-		List<String> retVal = new ArrayList<String>();
+	public List<Integer> getGPIPortNumbers() {
+		int numberOfPorts = this.getSharedResources().getGpioController()
+				.getNumGPIPorts();
+		List<Integer> retVal = new ArrayList<Integer>();
 		int x = 1;
 		for (int i = 0; i < numberOfPorts; i++) {
-			retVal.add(String.valueOf(x));
+			retVal.add(x);
 			x = x * 2;
 		}
 		return retVal;
@@ -514,11 +516,13 @@ public class AlienReaderModule extends AbstractPowerModule implements
 	 * org.rifidi.emulator.reader.module.ReaderModule#getGPOPortNumbers(int)
 	 */
 	@Override
-	public List<String> getGPOPortNumbers(int numberOfPorts) {
-		List<String> retVal = new ArrayList<String>();
+	public List<Integer> getGPOPortNumbers() {
+		int numberOfPorts = this.getSharedResources().getGpioController()
+				.getNumGPOPorts();
+		List<Integer> retVal = new ArrayList<Integer>();
 		int x = 1;
 		for (int i = 0; i < numberOfPorts; i++) {
-			retVal.add(String.valueOf(x));
+			retVal.add(x);
 			x = x * 2;
 		}
 		return retVal;

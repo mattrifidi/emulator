@@ -16,15 +16,15 @@ import javax.naming.AuthenticationException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.rifidi.common.utilities.ByteAndHexConvertingUtility;
+import org.rifidi.emulator.manager.ClientCallbackInterface;
 import org.rifidi.emulator.reader.llrp.accessspec._OpSpec;
 import org.rifidi.emulator.reader.llrp.accessspec._OpSpecResult;
 import org.rifidi.emulator.reader.sharedrc.radio.Antenna;
 import org.rifidi.emulator.reader.sharedrc.radio.C1G2Operations;
-import org.rifidi.emulator.rmi.client.ClientCallbackInterface;
 import org.rifidi.tags.exceptions.InvalidMemoryAccessException;
 import org.rifidi.tags.impl.C1G2Tag;
 import org.rifidi.tags.impl.RifidiTag;
+import org.rifidi.utilities.ByteAndHexConvertingUtility;
 
 /**
  * 

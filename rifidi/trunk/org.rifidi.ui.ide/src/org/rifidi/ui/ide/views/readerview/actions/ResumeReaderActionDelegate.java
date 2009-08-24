@@ -39,22 +39,18 @@ public class ResumeReaderActionDelegate implements IViewActionDelegate {
 	 */
 	public void run(IAction action) {
 		for (UIReader reader : readerList) {
-			try {
-				reader.getReaderManager().resumeReader();
-				reader.setReaderState("running");
-				((ReaderView) view).update(reader);
-			} catch (Exception e) {
-				// TODO fix error Handling
-				e.printStackTrace();
-			}
+			reader.resume();
+			((ReaderView) view).update(reader);
+
 		}
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.ui.IActionDelegate#selectionChanged(org.eclipse.jface.action.IAction,
-	 *      org.eclipse.jface.viewers.ISelection)
+	 * @see
+	 * org.eclipse.ui.IActionDelegate#selectionChanged(org.eclipse.jface.action
+	 * .IAction, org.eclipse.jface.viewers.ISelection)
 	 */
 	@SuppressWarnings("unchecked")
 	public void selectionChanged(IAction action, ISelection selection) {

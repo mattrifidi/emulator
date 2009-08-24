@@ -8,7 +8,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import org.rifidi.common.utilities.ByteAndHexConvertingUtility;
+import org.rifidi.utilities.ByteAndHexConvertingUtility;
 
 import edu.uark.csce.llrp.AISpec;
 import edu.uark.csce.llrp.AISpecStopTrigger;

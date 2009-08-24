@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Rifidi Epc Reader Plug-in
 Bundle-SymbolicName: org.rifidi.emulator.reader.epc
-Bundle-Version: 2.2.1
+Bundle-Version: 2.3.0
 Bundle-Activator: org.rifidi.emulator.reader.epc.Activator
 Bundle-Vendor: Pramari, LLC
 Bundle-Localization: plugin
@@ -15,7 +15,6 @@ Export-Package: org.rifidi.emulator.reader.epc,
  org.rifidi.emulator.reader.epc.commandhandler,
  org.rifidi.emulator.reader.epc.formatter,
  org.rifidi.emulator.reader.epc.module
-Require-Bundle: org.rifidi.emulator;bundle-version="2.1.0",
- org.rifidi.common.utilities;bundle-version="2.1.0",
+Require-Bundle: org.rifidi.emulator;bundle-version="3.0.0",
  org.rifidi.services.tags;bundle-version="2.1.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6

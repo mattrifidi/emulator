@@ -45,7 +45,9 @@ public class EPCReaderModuleOnPowerState extends AbstractOnPowerState {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.emulator.common.PowerState#suspend(org.rifidi.emulator.common.PowerControllable)
+	 * @see
+	 * org.rifidi.emulator.common.PowerState#suspend(org.rifidi.emulator.common
+	 * .PowerControllable)
 	 */
 	public void suspend(PowerControllable pcObject) {
 		EPCReaderModule epcMod = (EPCReaderModule) pcObject;
@@ -56,23 +58,25 @@ public class EPCReaderModuleOnPowerState extends AbstractOnPowerState {
 
 		epcMod.changePowerState(EPCReaderModuleSuspendedPowerState
 				.getInstance());
-		
+
 		String readername = epcMod.getSharedResources().getReaderName();
-		LogFactory.getLog("console." + readername).info(readername + " suspended");
+		LogFactory.getLog("console." + readername).info(
+				readername + " suspended");
 
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.emulator.common.PowerState#turnOff(org.rifidi.emulator.common.PowerControllable)
+	 * @see
+	 * org.rifidi.emulator.common.PowerState#turnOff(org.rifidi.emulator.common
+	 * .PowerControllable)
 	 */
-	@SuppressWarnings("unchecked")
-	public void turnOff(PowerControllable pcObject, Class callingClass) {
+	public void turnOff(PowerControllable pcObject) {
 		EPCReaderModule epcMod = (EPCReaderModule) pcObject;
 
-		epcMod.getInteractiveCommunication().turnOff(this.getClass());
-		epcMod.getInteractiveCommandController().turnOff(this.getClass());
+		epcMod.getInteractiveCommunication().turnOff();
+		epcMod.getInteractiveCommandController().turnOff();
 
 		epcMod.getSharedResources().getInteractivePowerSignal()
 				.setControlVariableValue(false);
@@ -80,7 +84,7 @@ public class EPCReaderModuleOnPowerState extends AbstractOnPowerState {
 				.setControlVariableValue(false);
 
 		epcMod.changePowerState(EPCReaderModuleOffPowerState.getInstance());
-		
+
 		String readername = epcMod.getSharedResources().getReaderName();
 		LogFactory.getLog("console." + readername).info(readername + " off");
 	}

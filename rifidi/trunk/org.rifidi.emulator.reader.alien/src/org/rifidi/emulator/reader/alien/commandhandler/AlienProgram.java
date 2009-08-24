@@ -18,7 +18,6 @@ import javax.naming.AuthenticationException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.rifidi.common.utilities.ByteAndHexConvertingUtility;
 import org.rifidi.emulator.reader.alien.command.exception.AlienExceptionHandler;
 import org.rifidi.emulator.reader.alien.sharedrc.tagmemory.AlienTagMemory;
 import org.rifidi.emulator.reader.command.CommandObject;
@@ -29,6 +28,7 @@ import org.rifidi.tags.enums.TagGen;
 import org.rifidi.tags.exceptions.InvalidMemoryAccessException;
 import org.rifidi.tags.impl.C1G2Tag;
 import org.rifidi.tags.impl.RifidiTag;
+import org.rifidi.utilities.ByteAndHexConvertingUtility;
 
 /**
  * This class handles alien commands that have to do with programming (writing,

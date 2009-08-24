@@ -8,7 +8,10 @@ import org.eclipse.ui.IViewActionDelegate;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
+import org.rifidi.services.annotations.Inject;
+import org.rifidi.services.registry.ServiceRegistry;
 import org.rifidi.ui.common.registry.ReaderRegistry;
+import org.rifidi.ui.common.registry.ReaderRegistryService;
 import org.rifidi.ui.common.wizards.reader.NewReaderWizard;
 import org.rifidi.ui.common.wizards.reader.ReaderWizardData;
 import org.rifidi.ui.common.wizards.reader.exceptions.DuplicateReaderException;
@@ -27,6 +30,21 @@ public class AddNewReaderActionDelegate implements IViewActionDelegate,
 	// private Log logger = LogFactory.getLog(AddNewReaderActionDelegate.class);
 
 	private static IViewPart view = null;
+	private ReaderRegistryService readerRegistry;
+
+	public AddNewReaderActionDelegate() {
+		super();
+		ServiceRegistry.getInstance().service(this);
+	}
+
+	/**
+	 * @param readerRegistry
+	 *            the readerRegistry to set
+	 */
+	@Inject
+	public void setReaderRegistry(ReaderRegistryService readerRegistry) {
+		this.readerRegistry = readerRegistry;
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -59,8 +77,7 @@ public class AddNewReaderActionDelegate implements IViewActionDelegate,
 		if (wizardDialog.open() == Window.OK) {
 			try {
 				ReaderWizardData data = wizard.getReaderWizardData();
-				ReaderRegistry.getInstance().create(
-						data.getGeneralReaderHolder());
+				readerRegistry.create(data.getGeneralReaderHolder());
 			} catch (DuplicateReaderException e) {
 				// ignore this one.. we already care about that
 				e.printStackTrace();

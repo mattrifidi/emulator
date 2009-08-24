@@ -66,7 +66,7 @@ public class LLRPReaderModuleOnPowerState extends AbstractOnPowerState {
 
 	}
 
-	public void turnOff(PowerControllable pcObject, Class callingClass) {
+	public void turnOff(PowerControllable pcObject) {
 		LLRPReaderModule llrp = (LLRPReaderModule) pcObject;
 
 		String readername = llrp.getSharedResources().getReaderName();
@@ -83,13 +83,13 @@ public class LLRPReaderModuleOnPowerState extends AbstractOnPowerState {
 		rsc.cleanUp();
 		llrpsr.getAdded_Rospecs().clear();
 		llrpsr.accessSpecs.clear();
-		
+
 		llrp.getAdminInterface().stop();
 
-		
 		llrp.getSharedResources().getInteractivePowerSignal()
 				.setControlVariableValue(false);
-		llrp.getSharedResources().getInteractiveConnectionSignal().setControlVariableValue(false);
+		llrp.getSharedResources().getInteractiveConnectionSignal()
+				.setControlVariableValue(false);
 
 		logger.debug("Turing off power...");
 

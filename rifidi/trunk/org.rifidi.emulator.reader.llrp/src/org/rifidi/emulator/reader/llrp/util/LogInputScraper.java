@@ -17,7 +17,7 @@ import java.io.ByteArrayInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 
-import org.rifidi.common.utilities.ByteAndHexConvertingUtility;
+import org.rifidi.utilities.ByteAndHexConvertingUtility;
 
 import edu.uark.csce.llrp.Message;
 

@@ -13,8 +13,11 @@ import org.eclipse.ui.IViewActionDelegate;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
+import org.rifidi.services.annotations.Inject;
+import org.rifidi.services.registry.ServiceRegistry;
 import org.rifidi.ui.common.reader.UIReader;
 import org.rifidi.ui.common.registry.ReaderRegistry;
+import org.rifidi.ui.common.registry.ReaderRegistryService;
 import org.rifidi.ui.ide.views.readerview.ReaderView;
 
 /**
@@ -25,10 +28,26 @@ import org.rifidi.ui.ide.views.readerview.ReaderView;
  * @author Andreas Huebner - andreas@pramari.com
  * 
  */
-public class RemoveReaderActionDelegate implements IViewActionDelegate, IWorkbenchWindowActionDelegate {
+public class RemoveReaderActionDelegate implements IViewActionDelegate,
+		IWorkbenchWindowActionDelegate {
 
 	private static IViewPart view;
 	private List<UIReader> currentSelection;
+	private ReaderRegistryService readerRegistry;
+
+	public RemoveReaderActionDelegate() {
+		super();
+		ServiceRegistry.getInstance().service(this);
+	}
+
+	/**
+	 * @param readerRegistry
+	 *            the readerRegistry to set
+	 */
+	@Inject
+	public void setReaderRegistry(ReaderRegistryService readerRegistry) {
+		this.readerRegistry = readerRegistry;
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -53,9 +72,12 @@ public class RemoveReaderActionDelegate implements IViewActionDelegate, IWorkben
 
 				});
 	}
-	
-	/* (non-Javadoc)
-	 * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#init(org.eclipse.ui.IWorkbenchWindow)
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @seeorg.eclipse.ui.IWorkbenchWindowActionDelegate#init(org.eclipse.ui.
+	 * IWorkbenchWindow)
 	 */
 	public void init(IWorkbenchWindow window) {
 	}
@@ -72,8 +94,9 @@ public class RemoveReaderActionDelegate implements IViewActionDelegate, IWorkben
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.ui.IActionDelegate#selectionChanged(org.eclipse.jface.action.IAction,
-	 *      org.eclipse.jface.viewers.ISelection)
+	 * @see
+	 * org.eclipse.ui.IActionDelegate#selectionChanged(org.eclipse.jface.action
+	 * .IAction, org.eclipse.jface.viewers.ISelection)
 	 */
 	@SuppressWarnings("unchecked")
 	public void selectionChanged(IAction action, ISelection selection) {
@@ -91,17 +114,17 @@ public class RemoveReaderActionDelegate implements IViewActionDelegate, IWorkben
 				+ "delete the selected readers?");
 		if (messageBox.open() == SWT.OK) {
 			for (UIReader reader : currentSelection) {
-				ReaderRegistry.getInstance().remove(reader);
+				readerRegistry.remove(reader);
 			}
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#dispose()
 	 */
 	public void dispose() {
 	}
-
-	
 
 }

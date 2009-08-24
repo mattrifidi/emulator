@@ -15,7 +15,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.widgets.Composite;
-import org.rifidi.ui.common.registry.ReaderRegistry;
+import org.rifidi.services.annotations.Inject;
+import org.rifidi.services.registry.ServiceRegistry;
+import org.rifidi.ui.common.registry.ReaderRegistryService;
 
 /**
  * A wizard to create a new reader.
@@ -35,31 +37,45 @@ public class NewReaderWizard extends Wizard {
 
 	private ReaderWizardData data = new ReaderWizardData();
 
+	private ReaderRegistryService readerRegistry;
+
 	public NewReaderWizard() {
 		super();
+		ServiceRegistry.getInstance().service(this);
+	}
+
+	/**
+	 * @param readerRegistry
+	 *            the readerRegistry to set
+	 */
+	@Inject
+	public void setReaderRegistry(ReaderRegistryService readerRegistry) {
+		this.readerRegistry = readerRegistry;
 	}
 
 	@Override
 	public void addPages() {
 		newReaderWizardSelectionPage = new NewReaderWizardSelectionPage(
-				"readerSelectionPage", data, ReaderRegistry.getInstance()
+				"readerSelectionPage", data, readerRegistry
 						.getReaderBlueprints());
 		addPage(newReaderWizardSelectionPage);
 
 		newReaderDynamicWizardPage = new NewReaderDynamicWizardPage(
-				"readerCreationPage", data, ReaderRegistry.getInstance()
+				"readerCreationPage", data, readerRegistry
 						.getReaderBlueprints());
 		addPage(newReaderDynamicWizardPage);
 
-		newReaderGPIOWizardPage = new NewReaderGPIOWizardPage("gpioPage",
-				data, ReaderRegistry.getInstance().getReaderBlueprints());
+		newReaderGPIOWizardPage = new NewReaderGPIOWizardPage("gpioPage", data,
+				readerRegistry.getReaderBlueprints());
 		addPage(newReaderGPIOWizardPage);
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.jface.wizard.Wizard#createPageControls(org.eclipse.swt.widgets.Composite)
+	 * @see
+	 * org.eclipse.jface.wizard.Wizard#createPageControls(org.eclipse.swt.widgets
+	 * .Composite)
 	 */
 	@Override
 	public void createPageControls(Composite pageContainer) {
@@ -91,8 +107,8 @@ public class NewReaderWizard extends Wizard {
 			return true;
 		return false;
 	}
-	
-	public ReaderWizardData getReaderWizardData(){
+
+	public ReaderWizardData getReaderWizardData() {
 		return data;
 	}
 }

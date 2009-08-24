@@ -164,7 +164,7 @@ public class TCPServerCommunicationIncomingConnectionHandler implements
 			/* Log the error message. */
 			logger.error(errorMessage);
 			/* Force a shutdown of the component. */
-			this.hostCommunication.turnOff(this.getClass());
+			this.hostCommunication.turnOff();
 		}
 		/* All done running. */
 	}

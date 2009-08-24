@@ -77,12 +77,11 @@ public class SiritReaderModuleOnPowerState extends AbstractOnPowerState {
 	 * org.rifidi.emulator.common.PowerState#turnOff(org.rifidi.emulator.common
 	 * .PowerControllable, java.lang.Class)
 	 */
-	@SuppressWarnings("unchecked")
-	public void turnOff(PowerControllable pcObject, Class callingClass) {
+	public void turnOff(PowerControllable pcObject) {
 		SiritReaderModule rm = (SiritReaderModule) pcObject;
 
 		// turn off communication object and controller
-		rm.getInteractiveCommandController().turnOff(this.getClass());
+		rm.getInteractiveCommandController().turnOff();
 		// turns off the communication by turning off the communication
 		// object's power and connection signal
 		rm.getSharedResources().getInteractivePowerSignal()

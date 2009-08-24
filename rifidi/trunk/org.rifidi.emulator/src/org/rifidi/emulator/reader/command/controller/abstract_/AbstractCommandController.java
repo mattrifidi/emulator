@@ -120,7 +120,7 @@ public abstract class AbstractCommandController extends AbstractPowerModule
 			Communication communication) {
 		/* Call the AbstractPowerModule's constructor */
 		super(initialPowerState, powerControlSignal);
-		
+
 		logger.debug("powerstate: " + initialPowerState);
 		logger.debug("cur power state: " + super.getPowerState());
 
@@ -140,7 +140,7 @@ public abstract class AbstractCommandController extends AbstractPowerModule
 		this.suspensionLock = new Object();
 		this.interrupted = false;
 		this.suspended = false;
-		
+
 		/* Synchronize on the passed processor's suspension lock */
 		Object lock = this.getSuspensionLock();
 		synchronized (lock) {
@@ -326,17 +326,18 @@ public abstract class AbstractCommandController extends AbstractPowerModule
 
 					// certain operating states, such as the loginUnconnected,
 					// need to do something as soon as a new connection is made
-					if(this.connectionControlSignal.getExtraInformation()==null){
-						this.getCurOperatingState().initialize(this, this.getCurCommunication());
+					if (this.connectionControlSignal.getExtraInformation() == null) {
+						this.getCurOperatingState().initialize(this,
+								this.getCurCommunication());
 					}
-					
+
 				}
 
 			} else {
 				/* Disconnection signal... turn this off and disconnect. */
 				logger
 						.debug("abstract command controller is turing off and disconnecting because connection signal changed to false");
-				this.turnOff(this.getClass());
+				this.turnOff();
 				this.getCurCommunication().disconnect();
 
 			}

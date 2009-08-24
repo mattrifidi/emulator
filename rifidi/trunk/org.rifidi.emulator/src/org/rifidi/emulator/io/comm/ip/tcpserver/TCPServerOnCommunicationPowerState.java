@@ -96,8 +96,7 @@ public class TCPServerOnCommunicationPowerState extends
 	 */
 	@Override
 	@SuppressWarnings("unchecked")
-	public void turnOff(PowerControllable pcObject, Class callingClass) {
-		logger.debug("Turned off by " + callingClass);
+	public void turnOff(PowerControllable pcObject) {
 
 		/* Cast the passed PowerControllable to a TCPServerCommmunication. */
 		TCPServerCommunication curTCPComm = (TCPServerCommunication) pcObject;	
@@ -110,7 +109,7 @@ public class TCPServerOnCommunicationPowerState extends
 		curTCPComm.disconnect();
 
 		/* Invoke buffered handlers (not first, since disconnect will change). */
-		super.turnOff(pcObject, this.getClass());
+		super.turnOff(pcObject);
 
 		/* Close the server socket */
 		if (curTCPComm.getServerSocket() != null) {

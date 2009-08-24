@@ -4,7 +4,7 @@
 package org.rifidi.ui.ide.workbench;
 
 import org.apache.commons.logging.Log;
-import org.apache.commons.logging.impl.Log4jFactory;
+import org.apache.commons.logging.LogFactory;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -14,8 +14,11 @@ import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
+import org.rifidi.services.annotations.Inject;
+import org.rifidi.services.registry.ServiceRegistry;
 import org.rifidi.ui.common.reader.UIReader;
 import org.rifidi.ui.common.registry.ReaderRegistry;
+import org.rifidi.ui.common.registry.ReaderRegistryService;
 import org.rifidi.ui.common.registry.RegistryChangeListener;
 import org.rifidi.ui.ide.editors.ReaderEditor;
 import org.rifidi.ui.ide.editors.ReaderEditorInput;
@@ -33,18 +36,17 @@ import org.rifidi.ui.ide.views.readerview.ReaderView;
  */
 public class ViewManager implements RegistryChangeListener {
 
-	private Log logger = Log4jFactory.getLog(ViewManager.class);
-	
+	private Log logger = LogFactory.getLog(ViewManager.class);
+
 	// private static Log logger =
 	// LogFactory.getLog(RegistryChangeListener.class);
 
-	private ReaderRegistry readerRegistry;
+	private ReaderRegistryService readerRegistry;
 	private IWorkbenchWindow window;
 
 	public ViewManager(IWorkbenchWindow window) {
+		ServiceRegistry.getInstance().service(this);
 		this.window = window;
-		this.readerRegistry = ReaderRegistry.getInstance();
-		readerRegistry.addListener(this);
 
 		// Register a listener in the ReaderViews SelectionService to bring up
 		// the actual selected Reader
@@ -82,6 +84,16 @@ public class ViewManager implements RegistryChangeListener {
 				}
 			}
 		});
+	}
+
+	/**
+	 * @param readerRegistry
+	 *            the readerRegistry to set
+	 */
+	@Inject
+	public void setReaderRegistry(ReaderRegistryService readerRegistry) {
+		this.readerRegistry = readerRegistry;
+		this.readerRegistry.addListener(this);
 	}
 
 	public void add(Object event) {

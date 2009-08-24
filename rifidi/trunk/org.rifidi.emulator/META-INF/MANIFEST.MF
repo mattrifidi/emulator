@@ -3,14 +3,10 @@ Bundle-RequiredExecutionEnvironment:  JavaSE-1.6
 Bundle-ManifestVersion: 2
 Bundle-Name: Rifidi Emulator Plug-in
 Bundle-SymbolicName: org.rifidi.emulator
-Bundle-Version: 2.3.0
+Bundle-Version: 3.0.0
 Bundle-Activator: org.rifidi.emulator.Activator
 Bundle-Vendor: Pramari, LLC
-Import-Package: gnu.cajo;version="0.1.100",
- gnu.cajo.invoke;version="0.1.100",
- gnu.cajo.utils;version="0.1.100",
- gnu.cajo.utils.extra;version="0.1.100",
- gnu.io;version="2.0.0",
+Import-Package: gnu.io,
  org.apache.commons.digester;version="1.7.0",
  org.apache.commons.logging;version="1.0.4",
  org.apache.log4j;version="1.2.13",
@@ -24,7 +20,8 @@ Import-Package: gnu.cajo;version="0.1.100",
 Eclipse-BuddyPolicy: global
 Bundle-ClassPath: .
 Require-Bundle: org.rifidi.common.utilities;bundle-version="2.1.0",
- org.rifidi.services.tags;bundle-version="2.1.0"
+ org.rifidi.services.tags;bundle-version="2.1.0",
+ org.rifidi.services;bundle-version="2.1.0"
 Export-Package: org.rifidi.emulator;uses:="org.osgi.framework",
  org.rifidi.emulator.common;uses:="junit.framework",
  org.rifidi.emulator.common.math,
@@ -53,6 +50,7 @@ Export-Package: org.rifidi.emulator;uses:="org.osgi.framework",
  org.rifidi.emulator.io.comm.streamreader,
  org.rifidi.emulator.io.protocol,
  org.rifidi.emulator.log;uses:="org.apache.log4j,org.apache.log4j.spi",
+ org.rifidi.emulator.manager,
  org.rifidi.emulator.reader.command;uses:="org.rifidi.emulator.reader.sharedrc.properties",
  org.rifidi.emulator.reader.command.controller;uses:="org.rifidi.emulator.common,org.rifidi.emulator.reader.command.controller.abstract_,org.rifidi.emulator.reader.control.adapter",
  org.rifidi.emulator.reader.command.controller.abstract_;
@@ -87,8 +85,6 @@ Export-Package: org.rifidi.emulator;uses:="org.osgi.framework",
  org.rifidi.emulator.reader.sharedrc.tagmemory.formatter;uses:="org.rifidi.emulator.reader.module.abstract_,org.rifidi.emulator.reader.sharedrc.properties",
  org.rifidi.emulator.reader.sharedrc.tagmemory.tagevent;uses:="org.rifidi.emulator.tags.impl",
  org.rifidi.emulator.reader.source,
- org.rifidi.emulator.rmi.client;uses:="gnu.cajo.utils.extra,gnu.cajo.invoke,org.rifidi.emulator.tags",
- org.rifidi.emulator.rmi.server;uses:="org.rifidi.emulator.reader.module,gnu.cajo.invoke",
  org.rifidi.utilities,
  org.rifidi.utilities.comm.CRC,
  org.rifidi.utilities.device;uses:="junit.framework",

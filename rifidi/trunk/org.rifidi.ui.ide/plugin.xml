@@ -338,11 +338,6 @@
                id="org.rifidi.emulator.ide.menus.file"
                label="File">
             <command
-                  commandId="org.rifidi.ui.ide.handlers.ConnectionSettingsHandler"
-                  label="Connection Settings"
-                  style="push">
-            </command>
-            <command
                   commandId="org.rifidi.ui.ide.handlers.OpenIDEConfigurationHandler"
                   label="Open IDE Configuration">
             </command>
@@ -383,11 +378,6 @@
             defaultHandler="org.rifidi.ui.ide.handlers.OpenIDEConfigurationHandler"
             id="org.rifidi.ui.ide.handlers.OpenIDEConfigurationHandler"
             name="OpenIDEConfigurationHandler">
-      </command>
-      <command
-            defaultHandler="org.rifidi.ui.ide.handlers.ConnectionSettingsHandler"
-            id="org.rifidi.ui.ide.handlers.ConnectionSettingsHandler"
-            name="ConnectionSettingsHandler">
       </command>
       <command
             defaultHandler="org.rifidi.ui.ide.handlers.SaveIDEConfigurationHandler"

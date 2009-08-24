@@ -23,7 +23,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import org.rifidi.emulator.scripting.ReaderManager;
+import org.rifidi.emulator.manager.ReaderManager;
 import org.rifidi.emulator.scripting.groovy.GroovyExecutor;
 
 /**

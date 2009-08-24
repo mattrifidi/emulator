@@ -15,8 +15,8 @@ import org.rifidi.emulator.common.PowerControllable;
 import org.rifidi.emulator.reader.module.abstract_.AbstractSuspendedPowerState;
 
 /**
- * This represents a suspended reader state.  The reader can be resumed or 
- * turned off from this state.  
+ * This represents a suspended reader state. The reader can be resumed or turned
+ * off from this state.
  * 
  * @author Matthew Dean
  * @since <$INITIAL_VERSION$>
@@ -28,8 +28,7 @@ public class AwidReaderModuleSuspendedPowerState extends
 	/**
 	 * The singleton instance for this class.
 	 */
-	private static final AwidReaderModuleSuspendedPowerState SINGLETON_INSTANCE 
-		= new AwidReaderModuleSuspendedPowerState();
+	private static final AwidReaderModuleSuspendedPowerState SINGLETON_INSTANCE = new AwidReaderModuleSuspendedPowerState();
 
 	/**
 	 * Returns the singleton instance for this class.
@@ -49,7 +48,9 @@ public class AwidReaderModuleSuspendedPowerState extends
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.emulator.common.PowerState#resume(org.rifidi.emulator.common.PowerControllable)
+	 * @see
+	 * org.rifidi.emulator.common.PowerState#resume(org.rifidi.emulator.common
+	 * .PowerControllable)
 	 */
 	public void resume(PowerControllable pcObject) {
 		AwidReaderModule awidModule = (AwidReaderModule) pcObject;
@@ -59,22 +60,24 @@ public class AwidReaderModuleSuspendedPowerState extends
 		awidModule.getInteractiveCommandController().resume();
 
 		awidModule.changePowerState(AwidReaderModuleOnPowerState.getInstance());
-		
+
 		String readername = awidModule.getSharedResources().getReaderName();
-		LogFactory.getLog("console." + readername).info(readername + " resumed");
+		LogFactory.getLog("console." + readername)
+				.info(readername + " resumed");
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.emulator.common.PowerState#turnOff(org.rifidi.emulator.common.PowerControllable)
+	 * @see
+	 * org.rifidi.emulator.common.PowerState#turnOff(org.rifidi.emulator.common
+	 * .PowerControllable)
 	 */
-	@SuppressWarnings("unchecked")
-	public void turnOff(PowerControllable pcObject, Class callingClass) {
+	public void turnOff(PowerControllable pcObject) {
 		AwidReaderModule awidModule = (AwidReaderModule) pcObject;
 
-		awidModule.getInteractiveCommunication().turnOff(this.getClass());
-		awidModule.getInteractiveCommandController().turnOff(this.getClass());
+		awidModule.getInteractiveCommunication().turnOff();
+		awidModule.getInteractiveCommandController().turnOff();
 
 		awidModule.getSharedResources().getInteractiveConnectionSignal()
 				.setControlVariableValue(false);
@@ -83,7 +86,7 @@ public class AwidReaderModuleSuspendedPowerState extends
 
 		awidModule
 				.changePowerState(AwidReaderModuleOffPowerState.getInstance());
-		
+
 		String readername = awidModule.getSharedResources().getReaderName();
 		LogFactory.getLog("console." + readername).info(readername + " off");
 	}

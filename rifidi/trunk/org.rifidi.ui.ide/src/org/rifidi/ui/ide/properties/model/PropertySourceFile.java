@@ -101,27 +101,15 @@ public class PropertySourceFile implements IPropertySource {
 	 */
 	public void setPropertyDescriptors() {
 
-		try {
-			categoryList = new ArrayList<String>(reader.getReaderManager()
-					.getAllCategories());
-		} catch (Exception e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		categoryList = new ArrayList<String>(reader.getAllCategories());
 
 		propertiesTable = new HashMap<String, PropertyDescriptor>();
 		for (String categoryString : categoryList) {
 			// Collection<CommandObject> listByCategory = module
 			// .getCommandsByCategory(categoryString);
 			HashMap<String, String> actionMap = null;
-			try {
-				actionMap = new HashMap<String, String>(reader
-						.getReaderManager().getCommandActionTagsByCategory(
-								categoryString));
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			actionMap = new HashMap<String, String>(reader
+					.getCommandActionTagsByCategory(categoryString));
 
 			// Find out the action type of the string, and set the category as
 			// such
@@ -162,7 +150,8 @@ public class PropertySourceFile implements IPropertySource {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.ui.views.properties.IPropertySource#getPropertyDescriptors()
+	 * @see
+	 * org.eclipse.ui.views.properties.IPropertySource#getPropertyDescriptors()
 	 */
 	public IPropertyDescriptor[] getPropertyDescriptors() {
 		PropertyDescriptor[] retVal = new PropertyDescriptor[this.propertiesTable
@@ -179,7 +168,9 @@ public class PropertySourceFile implements IPropertySource {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.ui.views.properties.IPropertySource#getPropertyValue(java.lang.Object)
+	 * @see
+	 * org.eclipse.ui.views.properties.IPropertySource#getPropertyValue(java
+	 * .lang.Object)
 	 */
 	public Object getPropertyValue(Object arg0) {
 
@@ -188,8 +179,7 @@ public class PropertySourceFile implements IPropertySource {
 
 		String propertyValue = "NULL";
 		try {
-			propertyValue = reader.getReaderManager().getReaderProperty(
-					argument);
+			propertyValue = reader.getReaderProperty(argument);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -201,7 +191,9 @@ public class PropertySourceFile implements IPropertySource {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.ui.views.properties.IPropertySource#isPropertySet(java.lang.Object)
+	 * @see
+	 * org.eclipse.ui.views.properties.IPropertySource#isPropertySet(java.lang
+	 * .Object)
 	 */
 	public boolean isPropertySet(Object arg0) {
 		return false;
@@ -210,25 +202,23 @@ public class PropertySourceFile implements IPropertySource {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.ui.views.properties.IPropertySource#setPropertyValue(java.lang.Object,
-	 *      java.lang.Object)
+	 * @see
+	 * org.eclipse.ui.views.properties.IPropertySource#setPropertyValue(java
+	 * .lang.Object, java.lang.Object)
 	 */
 	public void setPropertyValue(Object arg0, Object arg1) {
 		String argument = (String) arg0;
 		argument = argument.toLowerCase();
-		try {
-			reader.getReaderManager()
-					.setReaderProperty(argument, (String) arg1);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		reader.setReaderProperty(argument, (String) arg1);
+
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.ui.views.properties.IPropertySource#resetPropertyValue(java.lang.Object)
+	 * @see
+	 * org.eclipse.ui.views.properties.IPropertySource#resetPropertyValue(java
+	 * .lang.Object)
 	 */
 	public void resetPropertyValue(Object arg0) {
 	}

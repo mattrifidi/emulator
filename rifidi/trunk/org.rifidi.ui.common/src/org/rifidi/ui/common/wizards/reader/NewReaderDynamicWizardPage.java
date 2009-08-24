@@ -35,9 +35,11 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.rifidi.services.annotations.Inject;
+import org.rifidi.services.registry.ServiceRegistry;
 import org.rifidi.ui.common.reader.blueprints.PropertyBlueprint;
 import org.rifidi.ui.common.reader.blueprints.ReaderBlueprint;
-import org.rifidi.ui.common.registry.ReaderRegistry;
+import org.rifidi.ui.common.registry.ReaderRegistryService;
 import org.rifidi.ui.common.validators.BooleanValidator;
 import org.rifidi.ui.common.validators.ReaderNameValidator;
 
@@ -54,6 +56,8 @@ public class NewReaderDynamicWizardPage extends WizardPage {
 
 	private static Log logger = LogFactory
 			.getLog(NewReaderDynamicWizardPage.class);
+
+	private ReaderRegistryService readerRegistry;
 
 	/**
 	 * textwidget for the name of the reader
@@ -97,6 +101,7 @@ public class NewReaderDynamicWizardPage extends WizardPage {
 
 	private Button hasGpio;
 	private boolean enableGPIOs;
+	private ReaderRegistryService registry;
 
 	/**
 	 * Constructor
@@ -111,6 +116,7 @@ public class NewReaderDynamicWizardPage extends WizardPage {
 	public NewReaderDynamicWizardPage(String name, ReaderWizardData data,
 			Map<String, ReaderBlueprint> availableReaders) {
 		super(name);
+		ServiceRegistry.getInstance().service(this);
 
 		setTitle("New reader wizard");
 		setDescription("Fill out all fields and hit finish to add a reader");
@@ -119,6 +125,15 @@ public class NewReaderDynamicWizardPage extends WizardPage {
 		this.availableReaders = availableReaders;
 
 		setPageComplete(false);
+	}
+
+	/**
+	 * @param readerRegistry
+	 *            the readerRegistry to set
+	 */
+	@Inject
+	public void setReaderRegistry(ReaderRegistryService readerRegistry) {
+		this.readerRegistry = readerRegistry;
 	}
 
 	/*
@@ -229,8 +244,9 @@ public class NewReaderDynamicWizardPage extends WizardPage {
 						dialogChanged();
 					}
 				});
-				
-				//TODO: Do we want the emulator plugins to choose its default gpio enable state?
+
+				// TODO: Do we want the emulator plugins to choose its default
+				// gpio enable state?
 				hasGpio.setSelection(true);
 				logger.debug("GPIO enable state changed");
 				enableGPIOs = hasGpio.getSelection();
@@ -289,7 +305,7 @@ public class NewReaderDynamicWizardPage extends WizardPage {
 			data.generalReaderHolder.setProperty(blueprint.getName(), Boolean
 					.toString(button.getSelection()));
 		}
-		if (ReaderRegistry.getInstance().isNameAvailable(readerName.getText()))
+		if (readerRegistry.isNameAvailable(readerName.getText()))
 			data.generalReaderHolder.setReaderName(readerName.getText());
 		else
 			sb.append("Name of the reader already taken");
@@ -319,22 +335,22 @@ public class NewReaderDynamicWizardPage extends WizardPage {
 		}
 		return null;
 	}
-	
+
 	@Override
 	public Control getControl() {
 		if (isControlCreated()) {
 			/*
 			 * see if the user change the reader type he wants to create.
 			 */
-			if (!availableReaders.get(data.readerType)
-					.getReaderclassname().equals(readerBlueprint.getReaderclassname())) {
-				/* 
+			if (!availableReaders.get(data.readerType).getReaderclassname()
+					.equals(readerBlueprint.getReaderclassname())) {
+				/*
 				 * clear all lists
 				 */
 				validators.clear();
 				inputfields.clear();
 				boolfields.clear();
-				
+
 				/*
 				 * recreate the dynamic page.
 				 */
@@ -342,17 +358,17 @@ public class NewReaderDynamicWizardPage extends WizardPage {
 				Composite parent = old.getParent();
 				createControl(parent);
 				old.dispose();
-				
+
 				/*
 				 * tell the parent that things have changed.
 				 */
 				super.getControl().getParent().layout();
 			}
-			
+
 		}
 		return super.getControl();
 	}
-	
+
 	public boolean enableGPIO() {
 		return enableGPIOs;
 	}

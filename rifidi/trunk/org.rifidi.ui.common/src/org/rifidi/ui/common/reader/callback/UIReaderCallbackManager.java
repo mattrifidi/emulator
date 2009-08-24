@@ -3,14 +3,11 @@
  */
 package org.rifidi.ui.common.reader.callback;
 
-import gnu.cajo.invoke.RemoteInvoke;
-import gnu.cajo.utils.extra.ItemProxy;
-
 import java.util.LinkedList;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.rifidi.emulator.rmi.client.ClientCallbackInterface;
+import org.rifidi.emulator.manager.ClientCallbackInterface;
 import org.rifidi.tags.IGen1Tag;
 
 /**
@@ -26,28 +23,12 @@ public class UIReaderCallbackManager implements ClientCallbackInterface {
 
 	private Log logger = LogFactory.getLog(UIReaderCallbackManager.class);
 
-	/**
-	 * List of listeners for gpo port changes
-	 */
+	/** List of listeners for gpo port changes*/
 	private LinkedList<GPOEventCallbackInterface> gpoPortListeners = new LinkedList<GPOEventCallbackInterface>();
-
-	/**
-	 * List of listeners for reader turned of events
-	 */
+	/** List of listeners for reader turned of events*/
 	private LinkedList<ReaderTurnOffCallbackInterface> readerTurnOffListeners = new LinkedList<ReaderTurnOffCallbackInterface>();
-
-	/**
-	 * List of listeners for tag id changes
-	 */
+	/** List of listeners for tag id changes */
 	private LinkedList<TagIDChangedCallbackInterface> tagIDChangedListeners = new LinkedList<TagIDChangedCallbackInterface>();
-
-	/**
-	 * @param clientProxy
-	 */
-	public UIReaderCallbackManager(RemoteInvoke clientProxy) {
-		//create the ItemProxy needed for the RMI Callback
-		new ItemProxy(clientProxy, this);
-	}
 
 	/*
 	 * (non-Javadoc)

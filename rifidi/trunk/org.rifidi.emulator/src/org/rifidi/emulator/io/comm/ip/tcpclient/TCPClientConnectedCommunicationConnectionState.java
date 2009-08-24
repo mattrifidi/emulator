@@ -105,7 +105,7 @@ public class TCPClientConnectedCommunicationConnectionState extends
 
 		//turn the power off it is not already off
 		if(!curTCPComm.getPowerState().equals(TCPClientOffCommunicationPowerState.getInstance())){
-			curTCPComm.turnOff(this.getClass());
+			curTCPComm.turnOff();
 		}
 
 		logger.debug("Connection Signal is " + curTCPComm.getConnectionControlSignal().getControlVariableValue());

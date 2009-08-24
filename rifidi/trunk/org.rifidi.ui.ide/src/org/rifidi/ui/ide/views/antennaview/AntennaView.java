@@ -13,7 +13,6 @@ package org.rifidi.ui.ide.views.antennaview;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -25,9 +24,11 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.ViewPart;
+import org.rifidi.services.annotations.Inject;
+import org.rifidi.services.registry.ServiceRegistry;
 import org.rifidi.ui.common.reader.UIAntenna;
 import org.rifidi.ui.common.reader.UIReader;
-import org.rifidi.ui.common.registry.ReaderRegistry;
+import org.rifidi.ui.common.registry.ReaderRegistryService;
 import org.rifidi.ui.ide.views.antennaview.exception.RifidiIndexDoesNotMatchException;
 
 /**
@@ -60,6 +61,22 @@ public class AntennaView extends ViewPart implements ISelectionProvider {
 
 	private List<ISelectionChangedListener> selectionListeners = new ArrayList<ISelectionChangedListener>();
 
+	private ReaderRegistryService readerRegistry;
+
+	public AntennaView() {
+		super();
+		ServiceRegistry.getInstance().service(this);
+	}
+
+	/**
+	 * @param readerRegistry
+	 *            the readerRegistry to set
+	 */
+	@Inject
+	public void setReaderRegistry(ReaderRegistryService readerRegistry) {
+		this.readerRegistry = readerRegistry;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -81,8 +98,8 @@ public class AntennaView extends ViewPart implements ISelectionProvider {
 				.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		sc.setContent(antennaChild);
 
-		uiReader = ReaderRegistry.getInstance().getReaderByName(
-				this.getViewSite().getSecondaryId());
+		uiReader = readerRegistry.getReaderByName(this.getViewSite()
+				.getSecondaryId());
 
 		createAntennas(uiReader);
 		try {

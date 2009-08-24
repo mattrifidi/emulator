@@ -14,11 +14,11 @@ import javax.xml.bind.annotation.XmlElement;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.rifidi.emulator.rmi.server.ReaderModuleManagerInterface;
+import org.rifidi.emulator.manager.ReaderManager;
 import org.rifidi.services.annotations.Inject;
 import org.rifidi.services.registry.ServiceRegistry;
-import org.rifidi.tags.impl.RifidiTag;
 import org.rifidi.services.tags.registry.ITagRegistry;
+import org.rifidi.tags.impl.RifidiTag;
 
 /**
  * This is a UI representation of an antenna associated to a reader. It's
@@ -50,13 +50,15 @@ public class UIAntenna extends Observable implements PropertyChangeListener {
 
 	private Log logger = LogFactory.getLog(UIAntenna.class);
 
-	private ReaderModuleManagerInterface readerManager;
+	private ReaderManager readerManager;
 
-	/**
-	 * Number or Name of this Antenna
-	 */
+	/** Number or Name of this Antenna */
 	@XmlElement
 	private Integer id;
+
+	/** Reader ID of the reader this antenna is on */
+	@XmlElement
+	private String readerID;
 
 	/**
 	 * This are the tags which are also in the list of the real antenna of the
@@ -70,9 +72,7 @@ public class UIAntenna extends Observable implements PropertyChangeListener {
 	 */
 	private Set<Long> inactiveTags = new HashSet<Long>();
 
-	/**
-	 * TagRegistrySerbive
-	 */
+	/** TagRegistrySerbive */
 	private ITagRegistry tagRegistry;
 
 	/**
@@ -90,8 +90,9 @@ public class UIAntenna extends Observable implements PropertyChangeListener {
 	 * @param id
 	 *            Number (or Name) of the antenna
 	 */
-	public UIAntenna(ReaderModuleManagerInterface readerManager, Integer id) {
+	public UIAntenna(ReaderManager readerManager, String readerID, Integer id) {
 		this.id = id;
+		this.readerID = readerID;
 		this.readerManager = readerManager;
 		ServiceRegistry.getInstance().service(this);
 	}
@@ -115,6 +116,14 @@ public class UIAntenna extends Observable implements PropertyChangeListener {
 		this.id = id;
 	}
 
+	public String getReaderID() {
+		return readerID;
+	}
+
+	public void setReaderID(String readerID) {
+		this.readerID = readerID;
+	}
+
 	/**
 	 * Get the tags in the field of the antenna. If there are any inactive Tags
 	 * they will added to the return value.
@@ -125,11 +134,7 @@ public class UIAntenna extends Observable implements PropertyChangeListener {
 		List<RifidiTag> tagsToReturn = new ArrayList<RifidiTag>();
 		List<RifidiTag> tagsFromReader = null;
 
-		try {
-			tagsFromReader = readerManager.getTagList(id);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		tagsFromReader = readerManager.getTagList(readerID, id);
 
 		if (tagsFromReader != null) {
 			tagList = new HashSet<Long>();
@@ -155,15 +160,11 @@ public class UIAntenna extends Observable implements PropertyChangeListener {
 	 * @param tagsToAdd
 	 */
 	public void addTag(List<RifidiTag> tagsToAdd) {
-		try {
-			readerManager.addTags(id, tagsToAdd);
-			for (RifidiTag tag : tagsToAdd)
-				tagList.add(tag.getTagEntitiyID());
-			super.setChanged();
-			notifyObservers(ADD_TAG_EVENT);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		readerManager.addTags(readerID, id, new HashSet<RifidiTag>(tagsToAdd));
+		for (RifidiTag tag : tagsToAdd)
+			tagList.add(tag.getTagEntitiyID());
+		super.setChanged();
+		notifyObservers(ADD_TAG_EVENT);
 	}
 
 	/**
@@ -178,41 +179,25 @@ public class UIAntenna extends Observable implements PropertyChangeListener {
 			tags.add(tagRegistry.getTag(id));
 			tagList.add(id);
 		}
-		
-		try {
-			readerManager.addTags(id, tags);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+
+		readerManager.addTags(readerID, id, new HashSet<RifidiTag>(tags));
 		super.setChanged();
 		notifyObservers(ADD_TAG_EVENT);
 
 	}
 
-	
 	/**
 	 * Remove Tags from the field of the antenna
 	 * 
 	 * @param tagsToRemove
 	 */
 	private void removeTagHelper(List<RifidiTag> tagsToRemove) {
-		ArrayList<Long> list = new ArrayList<Long>(tagsToRemove.size());
-		for (RifidiTag tag : tagsToRemove) {
-			list.add(tag.getTagEntitiyID());
-		}
-		try {
-			readerManager.removeTags(id, list);
-			for (RifidiTag tag : tagsToRemove)
-				tagList.remove(tag.getTagEntitiyID());
-			logger.debug("TagList is now : " + tagList.size());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		readerManager.removeTags(readerID, id, new HashSet<RifidiTag>(
+				tagsToRemove));
 		super.setChanged();
 		notifyObservers(REMOVE_TAG_EVENT);
 	}
-	
-	
+
 	/**
 	 * Remove Tags from the field of the antenna
 	 * 
@@ -220,34 +205,29 @@ public class UIAntenna extends Observable implements PropertyChangeListener {
 	 */
 	public void removeTag(List<RifidiTag> tagsToRemove) {
 		List<RifidiTag> tags = new ArrayList<RifidiTag>(tagsToRemove);
-		
+
 		for (RifidiTag tag : tagsToRemove) {
-		     if (inactiveTags.remove(tag.getTagEntitiyID() )) 
-		    		 tags.remove(tag);
+			if (inactiveTags.remove(tag.getTagEntitiyID()))
+				tags.remove(tag);
 		}
 		removeTagHelper(tags);
 	}
-	
+
 	/**
 	 * Remove Tags from the field of the antenna
 	 * 
 	 * @param tagsToRemove
 	 */
+	@Deprecated
 	public void removeTagByID(List<Long> tagsToRemove) {
-		List<Long> tags = new ArrayList<Long>(tagsToRemove);
+		Set<RifidiTag> rifidiTagsToRemove = new HashSet<RifidiTag>();
 		for (Long tag : tagsToRemove) {
-		     if (inactiveTags.remove(tag)) 
-		    		 tags.remove(tag);
+			inactiveTags.remove(tag);
+			rifidiTagsToRemove.add(tagRegistry.getTag(tag));
 		}
-		
-		try {
-			readerManager.removeTags(id, tagsToRemove);
-			for (Long tag : tagsToRemove)
-				tagList.remove(tag);
-			logger.debug("TagList is now : " + tagList.size());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+
+		readerManager.removeTags(readerID, id, rifidiTagsToRemove);
+
 		super.setChanged();
 		notifyObservers(REMOVE_TAG_EVENT);
 	}
@@ -292,20 +272,20 @@ public class UIAntenna extends Observable implements PropertyChangeListener {
 
 	@Override
 	public void propertyChange(PropertyChangeEvent arg0) {
-		//check to see if tag was deleted
-		if(arg0.getPropertyName()=="tags"){
+		// check to see if tag was deleted
+		if (arg0.getPropertyName() == "tags") {
 			List<RifidiTag> newList = (List<RifidiTag>) arg0.getNewValue();
 			ArrayList<Long> newIDList = new ArrayList<Long>();
-			for(RifidiTag t : newList){
+			for (RifidiTag t : newList) {
 				newIDList.add(t.getTagEntitiyID());
 			}
 			ArrayList<Long> thisIDList = new ArrayList<Long>(this.tagList);
 			thisIDList.addAll(this.inactiveTags);
 			thisIDList.removeAll(newIDList);
-			if(thisIDList.size()!=0){
+			if (thisIDList.size() != 0) {
 				this.removeTagByID(thisIDList);
 			}
-			
+
 		}
 	}
 }

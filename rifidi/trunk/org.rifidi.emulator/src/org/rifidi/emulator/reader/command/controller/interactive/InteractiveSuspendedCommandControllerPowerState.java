@@ -79,10 +79,7 @@ public class InteractiveSuspendedCommandControllerPowerState extends
 	 * @see org.rifidi.emulator.reader.command.controller.abstract_.AbstractSuspendedCommandControllerPowerState#turnOff(org.rifidi.emulator.common.PowerControllable)
 	 */
 	@Override
-	@SuppressWarnings("unchecked")
-	public void turnOff(PowerControllable pcObject, Class callingClass) {
-		
-		logger.debug("turned off by "+ callingClass);
+	public void turnOff(PowerControllable pcObject) {
 		
 		/* Call the super turnOff implementation */
 		super.turnOff(pcObject, this.getClass());

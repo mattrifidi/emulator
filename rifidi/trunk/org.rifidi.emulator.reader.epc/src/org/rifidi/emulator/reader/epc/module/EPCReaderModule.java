@@ -269,13 +269,13 @@ public class EPCReaderModule extends AbstractPowerModule implements
 	}
 
 	@Override
-	public List<String> getGPIPortNumbers(int numberOfPorts) {
+	public List<Integer> getGPIPortNumbers() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<String> getGPOPortNumbers(int numberOfPorts) {
+	public List<Integer> getGPOPortNumbers() {
 		// TODO Auto-generated method stub
 		return null;
 	}

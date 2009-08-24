@@ -30,13 +30,15 @@ import org.rifidi.ui.ide.views.antennaview.exception.RifidiIndexDoesNotMatchExce
  * @author Matthew Dean - matt@pramari.com
  */
 public class GPIOPGroup extends PGroup implements GPOEventCallbackInterface {
-	
-	//TODO: Find an OSGI solution to referencing these images
+
+	// TODO: Find an OSGI solution to referencing these images
 	private static final String RED_FILENAME = "icons/red_16.png";
 	private static final String GREEN_FILENAME = "icons/green_16.png";
 
-	private static final Image RED_LED = Activator.getImageDescriptor(RED_FILENAME).createImage();
-	private static final Image GREEN_LED = Activator.getImageDescriptor(GREEN_FILENAME).createImage();
+	private static final Image RED_LED = Activator.getImageDescriptor(
+			RED_FILENAME).createImage();
+	private static final Image GREEN_LED = Activator.getImageDescriptor(
+			GREEN_FILENAME).createImage();
 
 	private Log logger = LogFactory.getLog(GPIOPGroup.class);
 
@@ -61,10 +63,8 @@ public class GPIOPGroup extends PGroup implements GPOEventCallbackInterface {
 		this.uiReader = reader;
 		display = parent.getShell().getDisplay();
 
-		List<String> gpiStringList = reader.getReaderManager().getGPIList(
-				reader.getNumGPIs());
-		List<String> gpoStringList = reader.getReaderManager().getGPOList(
-				reader.getNumGPOs());
+		List<Integer> gpiStringList = reader.getGPIList();
+		List<Integer> gpoStringList = reader.getGPOList();
 
 		if (gpiStringList.size() != reader.getNumGPIs()
 				|| gpoStringList.size() != reader.getNumGPOs()) {
@@ -112,7 +112,7 @@ public class GPIOPGroup extends PGroup implements GPOEventCallbackInterface {
 			if (gpiStringList == null) {
 				label.setText(String.valueOf(i));
 			} else {
-				label.setText(gpiStringList.get(i));
+				label.setText(gpiStringList.get(i).toString());
 			}
 
 			Button check = new Button(buttonComp, SWT.CENTER | SWT.CHECK);
@@ -125,15 +125,13 @@ public class GPIOPGroup extends PGroup implements GPOEventCallbackInterface {
 				public void widgetSelected(SelectionEvent e) {
 					if (((Button) e.widget).getSelection()) {
 						try {
-							uiReader.getReaderManager().setGPIHigh(
-									(Integer) e.widget.getData());
+							uiReader.setGPIHigh((Integer) e.widget.getData());
 						} catch (Exception e1) {
 							e1.printStackTrace();
 						}
 					} else {
 						try {
-							uiReader.getReaderManager().setGPILow(
-									(Integer) e.widget.getData());
+							uiReader.setGPILow((Integer) e.widget.getData());
 						} catch (Exception e1) {
 							e1.printStackTrace();
 						}
@@ -168,7 +166,7 @@ public class GPIOPGroup extends PGroup implements GPOEventCallbackInterface {
 			if (gpoStringList == null) {
 				label.setText(String.valueOf(i));
 			} else {
-				label.setText(gpoStringList.get(i));
+				label.setText(gpoStringList.get(i).toString());
 			}
 
 			Label image_label = new Label(buttonComp, SWT.IMAGE_PNG);
@@ -180,12 +178,12 @@ public class GPIOPGroup extends PGroup implements GPOEventCallbackInterface {
 		scroller.setWidget(base);
 		scroller.pack();
 		this.pack();
-		
-		/* WORKAROUND:
-		 * This is a workaround for eclipse bug 270890
+
+		/*
+		 * WORKAROUND: This is a workaround for eclipse bug 270890
 		 * https://bugs.eclipse.org/bugs/show_bug.cgi?id=270890
 		 */
-		addExpandListener(new ExpandListener () {
+		addExpandListener(new ExpandListener() {
 
 			@Override
 			public void itemCollapsed(ExpandEvent e) {
@@ -196,7 +194,7 @@ public class GPIOPGroup extends PGroup implements GPOEventCallbackInterface {
 			public void itemExpanded(ExpandEvent e) {
 				GPIOPGroup.this.setExpanded(true);
 			}
-			
+
 		});
 	}
 

@@ -55,8 +55,7 @@ public abstract class AbstractOffPowerState implements PowerState {
 	 * 
 	 * @see org.rifidi.emulator.common.PowerState#turnOff(org.rifidi.emulator.common.PowerControllable)
 	 */
-	@SuppressWarnings("unchecked")
-	public void turnOff(PowerControllable pcObject, Class callingClass) {
+	public void turnOff(PowerControllable pcObject) {
 		/* Invalid transition - do nothing */
 
 	}

@@ -17,7 +17,9 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.handlers.HandlerUtil;
-import org.rifidi.ui.common.registry.ReaderRegistry;
+import org.rifidi.services.annotations.Inject;
+import org.rifidi.services.registry.ServiceRegistry;
+import org.rifidi.ui.common.registry.ReaderRegistryService;
 import org.rifidi.ui.common.wizards.reader.NewReaderWizard;
 import org.rifidi.ui.common.wizards.reader.ReaderWizardData;
 import org.rifidi.ui.common.wizards.reader.exceptions.DuplicateReaderException;
@@ -27,6 +29,22 @@ import org.rifidi.ui.common.wizards.reader.exceptions.DuplicateReaderException;
  * 
  */
 public class NewReaderHandler extends AbstractHandler {
+
+	private ReaderRegistryService readerRegistry;
+
+	public NewReaderHandler() {
+		super();
+		ServiceRegistry.getInstance().service(this);
+	}
+
+	/**
+	 * @param readerRegistry
+	 *            the readerRegistry to set
+	 */
+	@Inject
+	public void setReaderRegistry(ReaderRegistryService readerRegistry) {
+		this.readerRegistry = readerRegistry;
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -46,8 +64,7 @@ public class NewReaderHandler extends AbstractHandler {
 		if (wizardDialog.open() == Window.OK) {
 			try {
 				ReaderWizardData data = wizard.getReaderWizardData();
-				ReaderRegistry.getInstance().create(
-						data.getGeneralReaderHolder());
+				readerRegistry.create(data.getGeneralReaderHolder());
 			} catch (DuplicateReaderException e) {
 				// ignore this one.. we already care about that
 				e.printStackTrace();

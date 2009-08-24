@@ -84,12 +84,10 @@ public class UDPOnCommunicationPowerState extends
 	 * @see org.rifidi.emulator.io.comm.buffered.BufferedOnCommunicationPowerState#turnOff(org.rifidi.emulator.common.PowerControllable)
 	 */
 	@Override
-	@SuppressWarnings("unchecked")
-	public void turnOff(PowerControllable pcObject, Class callingClass) {
-		logger.debug("Turned off by: " + callingClass);
+	public void turnOff(PowerControllable pcObject) {
 
 		/* Invoke buffered handlers. */
-		super.turnOff(pcObject, this.getClass());
+		super.turnOff(pcObject);
 
 		/* Cast the passed PowerControllable to a TCPServerCommmunication. */
 		UDPCommunication curUDPComm = (UDPCommunication) pcObject;

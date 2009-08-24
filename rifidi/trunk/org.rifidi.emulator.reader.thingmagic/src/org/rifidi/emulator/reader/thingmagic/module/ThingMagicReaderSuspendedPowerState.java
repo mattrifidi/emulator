@@ -17,17 +17,19 @@ import org.rifidi.emulator.reader.module.abstract_.AbstractSuspendedPowerState;
 
 /**
  * @author Jerry Maine - jerry@pramari.com
- *
+ * 
  */
-public class ThingMagicReaderSuspendedPowerState extends AbstractSuspendedPowerState {
-	
+public class ThingMagicReaderSuspendedPowerState extends
+		AbstractSuspendedPowerState {
+
 	private static ThingMagicReaderSuspendedPowerState instance = new ThingMagicReaderSuspendedPowerState();
-	
+
 	/**
-	 * Get the instance that represents this reader being suspended. 
+	 * Get the instance that represents this reader being suspended.
+	 * 
 	 * @return The single instance of this class.
 	 */
-	public static ThingMagicReaderSuspendedPowerState getInstance(){
+	public static ThingMagicReaderSuspendedPowerState getInstance() {
 		return instance;
 	}
 
@@ -39,13 +41,17 @@ public class ThingMagicReaderSuspendedPowerState extends AbstractSuspendedPowerS
 		super();
 	}
 
-	/* (non-Javadoc)
-	 * @see org.rifidi.emulator.common.PowerState#resume(org.rifidi.emulator.common.PowerControllable)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.rifidi.emulator.common.PowerState#resume(org.rifidi.emulator.common
+	 * .PowerControllable)
 	 */
 	@Override
 	public void resume(PowerControllable pcObject) {
 		// TODO Auto-generated method stub
-		
+
 		/* cast pcObject to something useful */
 		ThingMagicReaderModule rm = (ThingMagicReaderModule) pcObject;
 
@@ -54,43 +60,48 @@ public class ThingMagicReaderSuspendedPowerState extends AbstractSuspendedPowerS
 		rm.getInteractiveRQLController().resume();
 
 		/* resume the tag memory */
-		ThingMagicReaderSharedResources tmsr = rm.getSharedResources();		
+		ThingMagicReaderSharedResources tmsr = rm.getSharedResources();
 		tmsr.getTagMemory().resume();
-		 
+
 		/* switch the reader state to on */
 		rm.changePowerState(ThingMagicReaderModuleOnPowerState.getInstance());
-		
+
 		/* send to the console that we have resumed */
 		String readername = rm.getSharedResources().getReaderName();
-		LogFactory.getLog("console." + readername).info(readername + " resumed");
+		LogFactory.getLog("console." + readername)
+				.info(readername + " resumed");
 	}
 
-	/* (non-Javadoc)
-	 * @see org.rifidi.emulator.common.PowerState#turnOff(org.rifidi.emulator.common.PowerControllable, java.lang.Class)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.rifidi.emulator.common.PowerState#turnOff(org.rifidi.emulator.common
+	 * .PowerControllable, java.lang.Class)
 	 */
 	@Override
-	public void turnOff(PowerControllable pcObject, Class callingClass) {
+	public void turnOff(PowerControllable pcObject) {
 		// TODO Auto-generated method stub
 		/* cast the pcObject to something we can use */
 		ThingMagicReaderModule rm = (ThingMagicReaderModule) pcObject;
-		
+
 		rm.getSharedResources().getAutoModeControler().stop();
-		
-		/* clear cursor registry... as it is volatile in the real reader. */ 
+
+		/* clear cursor registry... as it is volatile in the real reader. */
 		rm.getSharedResources().getCursorCommandRegistry().clear();
-		
+
 		/* turn off tcp connection */
-		//rm.getInteractiveRQLController().turnOff(this.getClass());
-		
+		// rm.getInteractiveRQLController().turnOff(this.getClass());
+
 		/* more things to do to turn off the tcp connection */
 		rm.getSharedResources().getInteractiveRQLPowerSignal()
-		.setControlVariableValue(false);
+				.setControlVariableValue(false);
 		rm.getSharedResources().getInteractiveRQLConnectionSignal()
-		.setControlVariableValue(false);
+				.setControlVariableValue(false);
 
 		/* set the reader to the off position */
 		rm.changePowerState(ThingMagicReaderModuleOffPowerState.getInstance());
-		
+
 		/* send to the console that this reader is not turned off. */
 		String readername = rm.getSharedResources().getReaderName();
 		LogFactory.getLog("console." + readername).info(readername + " off");

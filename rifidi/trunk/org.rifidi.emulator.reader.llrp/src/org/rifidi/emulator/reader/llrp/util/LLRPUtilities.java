@@ -3,7 +3,7 @@
  */
 package org.rifidi.emulator.reader.llrp.util;
 
-import org.rifidi.common.utilities.ByteAndHexConvertingUtility;
+import org.rifidi.utilities.ByteAndHexConvertingUtility;
 
 /**
  * @author kyle

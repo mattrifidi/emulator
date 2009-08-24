@@ -90,10 +90,8 @@ public class TCPClientOnCommunicationPowerState extends
 	 * 
 	 * @see org.rifidi.emulator.io.comm.buffered.BufferedOnCommunicationPowerState#turnOff(org.rifidi.emulator.common.PowerControllable)
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
-	public void turnOff(PowerControllable pcObject, Class callingClass) {
-		logger.debug("TCP Client Turned off by " + callingClass);
+	public void turnOff(PowerControllable pcObject) {
 		logger.debug("Turning off TCPClient...");
 
 		/* Cast the passed PowerControllable to a TCPServerCommmunication. */

@@ -81,9 +81,8 @@ public class NotifySuspendedCommandControllerPowerState extends
 	/**
 	 * @see org.rifidi.emulator.reader.command.controller.abstract_.AbstractSuspendedCommandControllerPowerState#turnOff(org.rifidi.emulator.common.PowerControllable)
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
-	public void turnOff(PowerControllable pcObject, Class callingClass) {
+	public void turnOff(PowerControllable pcObject) {
 		logger.debug("Autonomous mode turned off");
 		
 		/* Call the abstract implementation first */

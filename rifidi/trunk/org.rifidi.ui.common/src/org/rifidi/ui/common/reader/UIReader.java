@@ -11,7 +11,10 @@
  */
 package org.rifidi.ui.common.reader;
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -19,8 +22,8 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import org.rifidi.emulator.manager.ReaderManager;
 import org.rifidi.emulator.reader.module.GeneralReaderPropertyHolder;
-import org.rifidi.emulator.rmi.server.ReaderModuleManagerInterface;
 import org.rifidi.ui.common.reader.callback.UIReaderCallbackManager;
 
 /**
@@ -39,28 +42,20 @@ import org.rifidi.ui.common.reader.callback.UIReaderCallbackManager;
 @XmlRootElement
 public class UIReader extends GeneralReaderPropertyHolder {
 
-	/**
-	 * SerialVersionUID
-	 */
+	/** SerialVersionUID */
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * The state of the reader - can be running, stopped or suspended
-	 */
+	/** The state of the reader - can be running, stopped or suspended */
 	// FIXME Use enums, not this
 	private String readerState = "NEW";
 
-	/**
-	 * This is the selection from the wizard Page
-	 */
+	/** This is the selection from the wizard Page */
 	@XmlElement
 	private String readerType;
 
-	/**
-	 * This holds the reference to the real reader
-	 */
+	/** This holds the reference to the real reader */
 	@XmlTransient
-	private ReaderModuleManagerInterface readerManager;
+	private ReaderManager readerManager;
 
 	/**
 	 * This is the callback interface implementation it is used to get response
@@ -69,64 +64,52 @@ public class UIReader extends GeneralReaderPropertyHolder {
 	@XmlTransient
 	private UIReaderCallbackManager readerCallbackManager;
 
-	/**
-	 * UI representation of the Antenna Fields
-	 */
+	/** UI representation of the Antenna Fields */
 	private HashMap<Integer, UIAntenna> antennas;
-	
+
 	/**
 	 * Constructor.
+	 * 
 	 * @param readerManager
 	 * @param grph
 	 */
-	public UIReader(ReaderModuleManagerInterface readerManager, GeneralReaderPropertyHolder grph){
+	public UIReader(ReaderManager readerManager,
+			GeneralReaderPropertyHolder grph) {
 		this.readerManager = readerManager;
-		this.setNumAntennas( grph.getNumAntennas());
+		this.setNumAntennas(grph.getNumAntennas());
 		this.setNumGPIs(grph.getNumGPIs());
 		this.setNumGPOs(grph.getNumGPOs());
 		this.setPropertiesMap(grph.getPropertiesMap());
 		this.setReaderName(grph.getReaderName());
 		this.setReaderClassName(grph.getReaderClassName());
 		antennas = new HashMap<Integer, UIAntenna>();
-		for(int i=0; i<getNumAntennas(); i++){
-			antennas.put(i, new UIAntenna(readerManager,i));
+		for (int i = 0; i < getNumAntennas(); i++) {
+			antennas.put(i, new UIAntenna(readerManager, grph.getReaderName(),
+					i));
 		}
 	}
-	
+
 	public void start() {
+		readerManager.start(super.getReaderName());
 		readerState = "running";
-		try {
-			readerManager.turnReaderOn();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+
 	}
 
 	public void stop() {
+		readerManager.stop(super.getReaderName());
 		readerState = "stopped";
-		try {
-			readerManager.turnReaderOff();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+
 	}
 
 	public void suspend() {
+		readerManager.suspend(super.getReaderName());
 		readerState = "suspended";
-		try {
-			readerManager.suspendReader();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+
 	}
 
 	public void resume() {
+		readerManager.resume(super.getReaderName());
 		readerState = "running";
-		try {
-			readerManager.resumeReader();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 
 	/**
@@ -141,21 +124,6 @@ public class UIReader extends GeneralReaderPropertyHolder {
 	 */
 	public String getReaderState() {
 		return readerState;
-	}
-
-	/**
-	 * @param readerState
-	 *            the readerState to set
-	 */
-	public void setReaderState(String readerState) {
-		this.readerState = readerState;
-	}
-
-	/**
-	 * @return the readerManager
-	 */
-	public ReaderModuleManagerInterface getReaderManager() {
-		return readerManager;
 	}
 
 	/**
@@ -176,7 +144,6 @@ public class UIReader extends GeneralReaderPropertyHolder {
 	public UIAntenna getAntenna(Integer id) {
 		return antennas.get(id);
 	}
-
 
 	/**
 	 * GeneralPropertyHolder describing this Reader for creation in the Emulator
@@ -208,5 +175,46 @@ public class UIReader extends GeneralReaderPropertyHolder {
 	public void setReaderCallbackManager(
 			UIReaderCallbackManager readerCallbackManager) {
 		this.readerCallbackManager = readerCallbackManager;
+		readerManager.setReaderCallback(this.getReaderName(),
+				readerCallbackManager);
+	}
+
+	public Collection<String> getAllCategories() {
+		return readerManager.getAllCategories(this.getReaderName());
+	}
+
+	public Map<String, String> getCommandActionTagsByCategory(String category) {
+		return readerManager.getCommandActionTagsByCategory(this
+				.getReaderName(), category);
+	}
+
+	public String getReaderProperty(String propertyName) {
+		return readerManager.getReaderProperty(this.getReaderName(),
+				propertyName);
+	}
+
+	public Boolean setReaderProperty(String propertyName, String propertyValue) {
+		return readerManager.setReaderProperty(this.getReaderName(),
+				propertyName, propertyValue);
+	}
+
+	public List<Integer> getGPIList() {
+		return readerManager.getGPIList(this.getReaderName());
+	}
+
+	public List<Integer> getGPOList() {
+		return readerManager.getGPOList(this.getReaderName());
+	}
+
+	public void setGPIHigh(int port) {
+		readerManager.setGPIPortHigh(getReaderName(), port);
+	}
+
+	public void setGPILow(int port) {
+		readerManager.setGPIPortLow(getReaderName(), port);
+	}
+
+	public Boolean testGPO(int port) {
+		return readerManager.testGPOPort(getReaderName(), port);
 	}
 }

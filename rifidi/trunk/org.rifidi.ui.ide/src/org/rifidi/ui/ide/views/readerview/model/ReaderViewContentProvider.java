@@ -10,6 +10,7 @@ import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 import org.rifidi.ui.common.reader.UIReader;
 import org.rifidi.ui.common.registry.ReaderRegistry;
+import org.rifidi.ui.common.registry.ReaderRegistryService;
 
 /**
  * This is the ContentProvider for the ReaderView it's telling the view about
@@ -75,7 +76,7 @@ public class ReaderViewContentProvider implements ITreeContentProvider {
 	 */
 	public Object[] getElements(Object inputElement) {
 		if (inputElement instanceof ReaderRegistry) {
-			List<UIReader> list = ((ReaderRegistry) inputElement)
+			List<UIReader> list = ((ReaderRegistryService) inputElement)
 					.getReaderList();
 			return (Object[]) list.toArray();
 		}

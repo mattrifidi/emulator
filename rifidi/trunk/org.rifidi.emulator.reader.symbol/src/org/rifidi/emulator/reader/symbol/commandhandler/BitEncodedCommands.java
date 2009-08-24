@@ -5,7 +5,6 @@ import java.util.Collection;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.rifidi.common.utilities.ByteAndHexConvertingUtility;
 import org.rifidi.emulator.reader.command.CommandObject;
 import org.rifidi.emulator.reader.module.abstract_.AbstractReaderSharedResources;
 import org.rifidi.emulator.reader.sharedrc.radio.generic.GenericRadio;
@@ -13,6 +12,7 @@ import org.rifidi.emulator.reader.symbol.module.SymbolReaderSharedResources;
 import org.rifidi.emulator.reader.symbol.tagbuffer.SymbolTagMemory;
 import org.rifidi.tags.enums.TagGen;
 import org.rifidi.tags.impl.RifidiTag;
+import org.rifidi.utilities.ByteAndHexConvertingUtility;
 
 /**
  * These are the handler methods for the bit encoded commands. Note that the

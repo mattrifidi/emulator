@@ -59,10 +59,8 @@ public class BufferedOnCommunicationPowerState extends
 	 * 
 	 * @see org.rifidi.emulator.common.PowerState#turnOff(org.rifidi.emulator.common.PowerControllable)
 	 */
-	@SuppressWarnings("unchecked")
-	public void turnOff(PowerControllable pcObject, Class callingClass) {
+	public void turnOff(PowerControllable pcObject) {
 		
-		logger.debug("Turned off by " + this.getClass());
 		
 		/* Cast the pcObject to a BufferedCommunication object */
 		BufferedCommunication curComm = (BufferedCommunication) pcObject;

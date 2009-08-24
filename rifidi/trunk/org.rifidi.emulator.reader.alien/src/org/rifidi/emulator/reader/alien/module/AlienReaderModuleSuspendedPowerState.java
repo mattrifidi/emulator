@@ -57,9 +57,9 @@ public class AlienReaderModuleSuspendedPowerState extends
 	public void resume(PowerControllable pcObject) {
 		/* Cast to an AlienReaderModule object. */
 		AlienReaderModule alienModule = (AlienReaderModule) pcObject;
-		
+
 		alienModule.getSharedResources().getHearbeatController().resume();
-		
+
 		alienModule.getSharedResources().getTagMemory().resume();
 		alienModule.getInteractiveCommunication().resume();
 		alienModule.getInteractiveCommandController().resume();
@@ -67,9 +67,10 @@ public class AlienReaderModuleSuspendedPowerState extends
 		/* Switch to the on state */
 		alienModule.changePowerState(AlienReaderModuleOnPowerState
 				.getInstance());
-		
+
 		String readername = alienModule.getSharedResources().getReaderName();
-		LogFactory.getLog("console." + readername).info(readername + " resumed");
+		LogFactory.getLog("console." + readername)
+				.info(readername + " resumed");
 
 	}
 
@@ -78,15 +79,14 @@ public class AlienReaderModuleSuspendedPowerState extends
 	 * 
 	 * @see org.rifidi.emulator.common.PowerState#turnOff(org.rifidi.emulator.common.PowerControllable)
 	 */
-	@SuppressWarnings("unchecked")
-	public void turnOff(PowerControllable pcObject, Class callingClass) {
+	public void turnOff(PowerControllable pcObject) {
 		/* Cast to an AlienReaderModule object. */
 		AlienReaderModule alienModule = (AlienReaderModule) pcObject;
 
-
-		alienModule.getSharedResources().getHearbeatController().stopHeartbeat();
-		alienModule.getInteractiveCommunication().turnOff(this.getClass());
-		alienModule.getInteractiveCommandController().turnOff(this.getClass());
+		alienModule.getSharedResources().getHearbeatController()
+				.stopHeartbeat();
+		alienModule.getInteractiveCommunication().turnOff();
+		alienModule.getInteractiveCommandController().turnOff();
 
 		alienModule.getSharedResources().getInteractivePowerSignal()
 				.setControlVariableValue(false);
@@ -96,7 +96,7 @@ public class AlienReaderModuleSuspendedPowerState extends
 		/* Switch to the off state */
 		alienModule.changePowerState(AlienReaderModuleOffPowerState
 				.getInstance());
-		
+
 		String readername = alienModule.getSharedResources().getReaderName();
 		LogFactory.getLog("console." + readername).info(readername + " off");
 

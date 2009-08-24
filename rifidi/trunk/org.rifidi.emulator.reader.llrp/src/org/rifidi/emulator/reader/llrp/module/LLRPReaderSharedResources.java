@@ -1,6 +1,5 @@
 package org.rifidi.emulator.reader.llrp.module;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.rifidi.emulator.common.ControlSignal;
@@ -15,7 +14,6 @@ import org.rifidi.emulator.reader.sharedrc.radio.generic.GenericRadio;
 import org.rifidi.emulator.reader.sharedrc.tagmemory.TagMemory;
 
 import edu.uark.csce.llrp.ROSpec;
-import edu.uark.csce.llrp.TagReportData;
 
 public class LLRPReaderSharedResources extends AbstractReaderSharedResources {
 

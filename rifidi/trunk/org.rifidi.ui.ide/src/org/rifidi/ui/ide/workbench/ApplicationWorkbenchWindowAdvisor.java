@@ -1,21 +1,18 @@
 package org.rifidi.ui.ide.workbench;
 
-import java.io.IOException;
-import java.net.UnknownHostException;
 import java.rmi.ConnectException;
-import java.rmi.RemoteException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.widgets.MessageBox;
-import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.application.ActionBarAdvisor;
 import org.eclipse.ui.application.IActionBarConfigurer;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
-import org.rifidi.emulator.rmi.server.RifidiManager;
+import org.rifidi.services.annotations.Inject;
+import org.rifidi.services.registry.ServiceRegistry;
 import org.rifidi.ui.common.registry.ReaderRegistry;
+import org.rifidi.ui.common.registry.ReaderRegistryService;
 
 /**
  * Eclipse generated file, defining the Workbench Window. Additional added
@@ -36,6 +33,7 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 	@SuppressWarnings("unused")
 	private ViewManager viewManager;
 	private IWorkbenchWindowConfigurer configurer;
+	private ReaderRegistryService readerRegistry;
 
 	/**
 	 * @param configurer
@@ -43,7 +41,18 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 	public ApplicationWorkbenchWindowAdvisor(
 			IWorkbenchWindowConfigurer configurer) {
 		super(configurer);
+		ServiceRegistry.getInstance().service(this);
 	}
+
+	/**
+	 * @param readerRegistry the readerRegistry to set
+	 */
+	@Inject
+	public void setReaderRegistry(ReaderRegistryService readerRegistry) {
+		this.readerRegistry = readerRegistry;
+	}
+
+
 
 	/*
 	 * (non-Javadoc)
@@ -85,15 +94,8 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 		// and ConsoleView)
 		viewManager = new ViewManager(configurer.getWindow());
 
-		// Starting the RMI Service to provide the Emulator functionality
-		try {
-			ReaderRegistry.getInstance().connect("127.0.0.1", 1198);
-		} catch (ConnectException e) {
-			// Handle this Exception better
-			e.printStackTrace();
-		}
 		getWindowConfigurer().getActionBarConfigurer().getStatusLineManager()
-				.setMessage("RMI - Emulator connected to 127.0.0.1:1198");
+				.setMessage("ReaderManagerService is available");
 		super.postWindowOpen();
 	}
 }

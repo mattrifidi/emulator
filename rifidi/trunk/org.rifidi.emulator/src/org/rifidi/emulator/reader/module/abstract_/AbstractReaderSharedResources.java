@@ -19,6 +19,7 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.rifidi.emulator.common.ControlSignal;
+import org.rifidi.emulator.manager.ClientCallbackInterface;
 import org.rifidi.emulator.reader.command.CommandObject;
 import org.rifidi.emulator.reader.command.exception.GenericExceptionHandler;
 import org.rifidi.emulator.reader.command.xml.CommandDigester;
@@ -27,7 +28,6 @@ import org.rifidi.emulator.reader.sharedrc.properties.ReaderProperty;
 import org.rifidi.emulator.reader.sharedrc.radio.generic.GenericRadio;
 import org.rifidi.emulator.reader.sharedrc.tagmemory.TagMemory;
 import org.rifidi.emulator.reader.source.ReaderSource;
-import org.rifidi.emulator.rmi.client.ClientCallbackInterface;
 
 /**
  * A container for resources which are unique to a single reader, but shared by

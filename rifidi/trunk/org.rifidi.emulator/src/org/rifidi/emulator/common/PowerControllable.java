@@ -31,8 +31,7 @@ public interface PowerControllable {
 	/**
 	 * Turns off the device.
 	 */
-	@SuppressWarnings("unchecked")
-	public void turnOff(Class callingClass);
+	public void turnOff();
 
 	/**
 	 * Suspends the device.

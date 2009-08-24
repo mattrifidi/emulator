@@ -12,9 +12,7 @@ import java.util.Map;
  * @author Andreas Huebner - andreas@pramari.com
  * 
  */
-public class ReaderLogCacheSingleton {
-
-	private static ReaderLogCacheSingleton instance;
+public class ReaderLogServiceImpl implements ReaderLogService{
 
 	/**
 	 * Map containing all readers and log messages
@@ -24,17 +22,6 @@ public class ReaderLogCacheSingleton {
 	 * History size of log
 	 */
 	private int maxCacheLines = 2000;
-
-	private ReaderLogCacheSingleton() {
-
-	}
-
-	public static ReaderLogCacheSingleton getInstance() {
-		if (instance == null) {
-			instance = new ReaderLogCacheSingleton();
-		}
-		return instance;
-	}
 
 	public void addMessage(String readerName, String message) {
 		if (!consoleCache.containsKey(readerName)) {

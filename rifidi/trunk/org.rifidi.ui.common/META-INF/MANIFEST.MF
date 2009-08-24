@@ -2,15 +2,14 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Rifidi Common UI Plug-in
 Bundle-SymbolicName: org.rifidi.ui.common;singleton:=true
-Bundle-Version: 2.5.0
+Bundle-Version: 3.0.0
 Bundle-Activator: org.rifidi.ui.common.Activator
 Bundle-Vendor: Pramari, LLC
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- org.rifidi.emulator;bundle-version="2.1.0",
+ org.rifidi.emulator;bundle-version="3.0.0",
  org.rifidi.services.tags;bundle-version="2.1.0",
- org.rifidi.services;bundle-version="2.1.0",
- org.rifidi.common.utilities;bundle-version="2.1.0"
+ org.rifidi.services;bundle-version="2.1.0"
 Eclipse-LazyStart: true
 Export-Package: org.rifidi.ui.common,
  org.rifidi.ui.common.reader,
@@ -23,11 +22,7 @@ Export-Package: org.rifidi.ui.common,
  org.rifidi.ui.common.wizards.tag
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
-Import-Package: gnu.cajo,
- gnu.cajo.invoke,
- gnu.cajo.utils,
- gnu.cajo.utils.extra,
- org.apache.commons.digester,
+Import-Package: org.apache.commons.digester,
  org.apache.commons.logging;version="1.0.4",
  org.rifidi.tags;version="1.0.0",
  org.rifidi.tags.enums;version="1.0.0",

@@ -71,8 +71,7 @@ public interface ReaderModule {
 	/**
 	 * Turns the reader off.
 	 */
-	@SuppressWarnings("unchecked")
-	public void turnOff(Class callingClass);
+	public void turnOff();
 
 	/**
 	 * Suspends the reader.
@@ -95,7 +94,7 @@ public interface ReaderModule {
 	 * 
 	 * @return
 	 */
-	public List<String> getGPIPortNumbers(int numberOfPorts);
+	public List<Integer> getGPIPortNumbers();
 	
 	/**
 	 * Returns the GPO port numbers in the standard the reader uses. If the
@@ -103,5 +102,5 @@ public interface ReaderModule {
 	 * 
 	 * @return
 	 */
-	public List<String> getGPOPortNumbers(int numberOfPorts);
+	public List<Integer> getGPOPortNumbers();
 }

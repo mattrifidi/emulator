@@ -20,8 +20,10 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
+import org.rifidi.services.annotations.Inject;
+import org.rifidi.services.registry.ServiceRegistry;
 import org.rifidi.ui.common.reader.UIReader;
-import org.rifidi.ui.common.registry.ReaderRegistry;
+import org.rifidi.ui.common.registry.ReaderRegistryService;
 import org.rifidi.ui.common.registry.RegistryChangeListener;
 import org.rifidi.ui.ide.editors.ReaderEditor;
 import org.rifidi.ui.ide.editors.ReaderEditorInput;
@@ -42,9 +44,25 @@ public class ReaderView extends ViewPart implements RegistryChangeListener {
 	private Log logger = LogFactory.getLog(ReaderView.class);
 
 	public static final String ID = "org.rifidi.ui.ide.views.readerview.ReaderView";
+	
 	private TreeViewer treeViewer = null;
 
 	private HashMap<UIReader, ReaderEditorInput> readerEditorInputList = new HashMap<UIReader, ReaderEditorInput>();
+	
+	private ReaderRegistryService readerRegistry;
+
+	public ReaderView(){
+		ServiceRegistry.getInstance().service(this);
+	}
+
+	/**
+	 * @param readerRegistry the readerRegistry to set
+	 */
+	@Inject
+	public void setReaderRegistry(ReaderRegistryService readerRegistry) {
+		this.readerRegistry = readerRegistry;
+	}
+
 
 	/*
 	 * (non-Javadoc)
@@ -82,10 +100,8 @@ public class ReaderView extends ViewPart implements RegistryChangeListener {
 		getSite().registerContextMenu(menuMgr, treeViewer);
 
 		// getSite().getPage().
-
-		ReaderRegistry registry = ReaderRegistry.getInstance();
-		registry.addListener(this);
-		treeViewer.setInput(registry);
+		readerRegistry.addListener(this);
+		treeViewer.setInput(readerRegistry);
 	}
 
 	/*

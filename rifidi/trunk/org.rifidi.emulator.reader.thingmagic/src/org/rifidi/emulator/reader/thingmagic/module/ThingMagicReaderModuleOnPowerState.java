@@ -73,7 +73,7 @@ public class ThingMagicReaderModuleOnPowerState extends AbstractOnPowerState {
 	 * @see org.rifidi.emulator.common.PowerState#turnOff(org.rifidi.emulator.common.PowerControllable, java.lang.Class)
 	 */
 	@Override
-	public void turnOff(PowerControllable pcObject, Class callingClass) {
+	public void turnOff(PowerControllable pcObject) {
 		//logger.debug("ThingMagicReaderModuleOnPowerState.turnOff() was called.");
 		
 		/* cast the pcObject to something we can use */

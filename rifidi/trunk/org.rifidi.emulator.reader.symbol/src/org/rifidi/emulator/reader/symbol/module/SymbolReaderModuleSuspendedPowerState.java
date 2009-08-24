@@ -73,13 +73,12 @@ public class SymbolReaderModuleSuspendedPowerState extends
 	 * @see org.rifidi.emulator.common.PowerState#turnOff(org.rifidi.emulator.common.PowerControllable,
 	 *      java.lang.Class)
 	 */
-	@SuppressWarnings("unchecked")
-	public void turnOff(PowerControllable pcObject, Class callingClass) {
+	public void turnOff(PowerControllable pcObject) {
 		SymbolReaderModule rm = (SymbolReaderModule) pcObject;
-		rm.getInteractiveBitController().turnOff(this.getClass());
-		rm.getInteractiveHttpController().turnOff(this.getClass());
+		rm.getInteractiveBitController().turnOff();
+		rm.getInteractiveHttpController().turnOff();
 
-		rm.getByteComm().turnOff(this.getClass());
+		rm.getByteComm().turnOff();
 
 		rm.getSharedResources().getInteractiveByteConnectionSignal()
 				.setControlVariableValue(false);

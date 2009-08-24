@@ -77,12 +77,11 @@ public class AwidReaderModuleOnPowerState extends AbstractOnPowerState {
 	 * 
 	 * @see org.rifidi.emulator.common.PowerState#turnOff(org.rifidi.emulator.common.PowerControllable)
 	 */
-	@SuppressWarnings("unchecked")
-	public void turnOff(PowerControllable pcObject, Class callingClass) {
+	public void turnOff(PowerControllable pcObject) {
 		AwidReaderModule awidModule = (AwidReaderModule) pcObject;
 
-		awidModule.getInteractiveCommunication().turnOff(this.getClass());
-		awidModule.getInteractiveCommandController().turnOff(this.getClass());
+		awidModule.getInteractiveCommunication().turnOff();
+		awidModule.getInteractiveCommandController().turnOff();
 
 		awidModule.getSharedResources().getInteractiveConnectionSignal()
 				.setControlVariableValue(false);

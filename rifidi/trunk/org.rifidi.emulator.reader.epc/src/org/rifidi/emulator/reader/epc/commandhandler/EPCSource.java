@@ -21,7 +21,6 @@ import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.rifidi.common.utilities.ByteAndHexConvertingUtility;
 import org.rifidi.emulator.reader.command.CommandObject;
 import org.rifidi.emulator.reader.epc.command.exception.EPCExceptionHandler;
 import org.rifidi.emulator.reader.epc.module.EPCReaderSharedResources;
@@ -31,6 +30,7 @@ import org.rifidi.emulator.reader.sharedrc.radio.generic.GenericRadio;
 import org.rifidi.emulator.reader.source.ReaderSource;
 import org.rifidi.emulator.reader.source.TagSelector;
 import org.rifidi.tags.impl.RifidiTag;
+import org.rifidi.utilities.ByteAndHexConvertingUtility;
 
 /**
  * 

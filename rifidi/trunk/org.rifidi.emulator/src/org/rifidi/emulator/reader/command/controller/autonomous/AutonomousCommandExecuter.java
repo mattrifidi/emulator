@@ -35,8 +35,8 @@ public class AutonomousCommandExecuter implements Runnable {
 	/**
 	 * The log4j logger for this class.
 	 */
-	private static Log logger =
-		 LogFactory.getLog(AutonomousCommandExecuter.class);
+	private static Log logger = LogFactory
+			.getLog(AutonomousCommandExecuter.class);
 
 	/**
 	 * Interruption flag to control thread execution.
@@ -100,10 +100,10 @@ public class AutonomousCommandExecuter implements Runnable {
 	 * @param period
 	 *            The period between command generations.
 	 * @param value
-	 * 			  The amount of time in ms the command will run for, or the
-	 * 			  number of cycles the command will run for.  
+	 *            The amount of time in ms the command will run for, or the
+	 *            number of cycles the command will run for.
 	 * @param state
-	 * 			  
+	 * 
 	 */
 	public AutonomousCommandExecuter(AutonomousCommandController controller,
 			byte[] command, int period, int value,
@@ -121,8 +121,8 @@ public class AutonomousCommandExecuter implements Runnable {
 	 * specified time unit. This may be suspended or ended by invoking a few of
 	 * the control methods described.
 	 * 
-	 * If you are running multiple autonomous commands then you cannot use any of
-	 * the limited states.
+	 * If you are running multiple autonomous commands then you cannot use any
+	 * of the limited states.
 	 * 
 	 * @see java.lang.Runnable#run()
 	 */
@@ -136,7 +136,8 @@ public class AutonomousCommandExecuter implements Runnable {
 			 * This is to determine if the executor only runs for a limited
 			 * time. If this was the case then set the start time here.
 			 */
-			if (state.equals(CommandInformation.LimitedRunningState.TIME_LIMITED)) {
+			if (state
+					.equals(CommandInformation.LimitedRunningState.TIME_LIMITED)) {
 				time = System.currentTimeMillis();
 				logger.debug("Time Limited time = " + time);
 			}
@@ -144,15 +145,15 @@ public class AutonomousCommandExecuter implements Runnable {
 			while (!this.interrupted) {
 				/*
 				 * This is a cycle limited state where it only does a certain
-				 * amount of reads.  When the number of cycles are reached it turns off
-				 * the autonomous controller completely.
+				 * amount of reads. When the number of cycles are reached it
+				 * turns off the autonomous controller completely.
 				 */
 				if (state
 						.equals(CommandInformation.LimitedRunningState.CYCLE_LIMITED)
 						&& value == 0) {
 					/* Turn off when no cycles left */
 					commandController.getPowerState()
-							.turnOff(commandController, this.getClass());
+							.turnOff(commandController);
 				} else if (state
 						.equals(CommandInformation.LimitedRunningState.CYCLE_LIMITED)) {
 					value--;
@@ -192,7 +193,7 @@ public class AutonomousCommandExecuter implements Runnable {
 						&& (System.currentTimeMillis() - time) > value) {
 					logger.debug("Time controller turn off");
 					commandController.getPowerState()
-							.turnOff(commandController, this.getClass());
+							.turnOff(commandController);
 				}
 			}
 		}

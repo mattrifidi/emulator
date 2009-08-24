@@ -133,11 +133,10 @@ public abstract class AbstractPowerModule implements PowerControllable,
 	/**
 	 * @see org.rifidi.emulator.common.PowerControllable#turnOff()
 	 */
-	@SuppressWarnings("unchecked")
-	public void turnOff(Class callingClass) {
+	public void turnOff() {
 		
 		/* Call the current power state's implementation of this method */
-			this.curPowerState.turnOff(this, callingClass);
+			this.curPowerState.turnOff(this);
 	}
 
 	/**
@@ -180,7 +179,7 @@ public abstract class AbstractPowerModule implements PowerControllable,
 					this.turnOn(this.powerControlSignal.getExtraInformation());
 				}
 			} else {
-				this.turnOff(this.getClass());
+				this.turnOff();
 
 			}
 

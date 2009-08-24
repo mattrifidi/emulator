@@ -59,12 +59,10 @@ public class SerialOnCommunicationPowerState extends
 	 * @see org.rifidi.emulator.io.comm.buffered.BufferedOnCommunicationPowerState#turnOff(org.rifidi.emulator.common.PowerControllable)
 	 */
 	@Override
-	@SuppressWarnings("unchecked")
-	public void turnOff(PowerControllable pcObject, Class callingClass) {
-		logger.debug("Turned off by " + callingClass);
+	public void turnOff(PowerControllable pcObject) {
 		
 		/* Invoke buffered handlers. */
-		super.turnOff(pcObject, this.getClass());
+		super.turnOff(pcObject);
 		
 		/* Get the SerialCommunication object to close the streams */
 		SerialCommunication serialObject = (SerialCommunication)pcObject;

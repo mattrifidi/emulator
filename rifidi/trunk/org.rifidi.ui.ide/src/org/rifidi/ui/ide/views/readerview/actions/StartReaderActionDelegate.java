@@ -23,7 +23,8 @@ import org.rifidi.ui.ide.views.readerview.ReaderView;
  * @author Andreas Huebner - andreas@pramari.com
  * 
  */
-public class StartReaderActionDelegate implements IViewActionDelegate, IWorkbenchWindowActionDelegate {
+public class StartReaderActionDelegate implements IViewActionDelegate,
+		IWorkbenchWindowActionDelegate {
 
 	private static IViewPart view;
 	private List<UIReader> readerList;
@@ -36,7 +37,7 @@ public class StartReaderActionDelegate implements IViewActionDelegate, IWorkbenc
 	public void init(IViewPart view) {
 		StartReaderActionDelegate.view = (ReaderView) view;
 	}
-	
+
 	public void init(IWorkbenchWindow window) {
 	}
 
@@ -47,22 +48,17 @@ public class StartReaderActionDelegate implements IViewActionDelegate, IWorkbenc
 	 */
 	public void run(IAction action) {
 		for (UIReader reader : readerList) {
-			try {
-				reader.getReaderManager().turnReaderOn();
-				reader.setReaderState("running");
-				((ReaderView) view).update(reader);
-			} catch (Exception e) {
-				// TODO fix error Handling
-				e.printStackTrace();
-			}
+			reader.start();
+			((ReaderView) view).update(reader);
 		}
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.ui.IActionDelegate#selectionChanged(org.eclipse.jface.action.IAction,
-	 *      org.eclipse.jface.viewers.ISelection)
+	 * @see
+	 * org.eclipse.ui.IActionDelegate#selectionChanged(org.eclipse.jface.action
+	 * .IAction, org.eclipse.jface.viewers.ISelection)
 	 */
 	@SuppressWarnings("unchecked")
 	public void selectionChanged(IAction action, ISelection selection) {
@@ -70,7 +66,9 @@ public class StartReaderActionDelegate implements IViewActionDelegate, IWorkbenc
 		readerList = list;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#dispose()
 	 */
 	public void dispose() {

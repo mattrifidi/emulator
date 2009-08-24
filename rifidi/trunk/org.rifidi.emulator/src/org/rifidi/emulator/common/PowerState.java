@@ -52,8 +52,7 @@ public interface PowerState {
 	 *            The PowerControllable which invoked this method.
 	 * 
 	 */
-	@SuppressWarnings("unchecked")
-	public void turnOff(PowerControllable pcObject, Class callingClass);
+	public void turnOff(PowerControllable pcObject);
 
 	/**
 	 * Turns on the specified device.

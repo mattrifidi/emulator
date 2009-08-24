@@ -5,8 +5,11 @@
     http://www.springframework.org/schema/context 
     http://www.springframework.org/schema/context/spring-context.xsd">
 
-	<bean id="rifidiManager" class="org.rifidi.emulator.rmi.server.RifidiManager">
-		<property name="readerFactories" ref="readerFactories" />
+	<bean id="readerLogService" class="org.rifidi.emulator.log.ReaderLogServiceImpl" />
+
+	<bean id="readerManager" class="org.rifidi.emulator.manager.ReaderManagerImpl">
+		<property name="moduleFactoryList" ref="readerFactories" />
+		<property name="tagService" ref="tagService" />
 	</bean>
 
 </beans>

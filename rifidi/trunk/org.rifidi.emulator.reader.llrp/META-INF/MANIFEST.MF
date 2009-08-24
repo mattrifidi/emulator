@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Rifidi Llrp Reader Plug-in
 Bundle-SymbolicName: org.rifidi.emulator.reader.llrp
-Bundle-Version: 2.2.4
+Bundle-Version: 2.3.0
 Bundle-Activator: org.rifidi.emulator.reader.llrp.Activator
 Bundle-Vendor: Pramari, LLC
 Bundle-Localization: plugin
@@ -13,8 +13,7 @@ Import-Package: edu.uark.csce.llrp;version="1.0.2",
  org.rifidi.tags.enums;version="1.0.0",
  org.rifidi.tags.exceptions;version="1.0.0",
  org.rifidi.tags.impl;version="1.0.0"
-Require-Bundle: org.rifidi.emulator;bundle-version="2.1.0",
- org.rifidi.common.utilities;bundle-version="2.1.0",
+Require-Bundle: org.rifidi.emulator;bundle-version="3.0.0",
  org.rifidi.services.tags;bundle-version="2.1.0"
 Eclipse-LazyStart: true
 Export-Package: org.rifidi.emulator.reader.llrp,
