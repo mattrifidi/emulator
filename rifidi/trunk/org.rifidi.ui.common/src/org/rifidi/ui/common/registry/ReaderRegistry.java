@@ -179,7 +179,7 @@ public class ReaderRegistry implements ReaderRegistryService {
 	 */
 	public void update(UIReader event) {
 		for (RegistryChangeListener listener : listeners) {
-			listener.remove(event);
+			listener.update(event);
 		}
 	}
 

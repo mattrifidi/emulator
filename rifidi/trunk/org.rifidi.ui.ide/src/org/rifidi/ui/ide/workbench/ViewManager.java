@@ -14,16 +14,15 @@ import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
+import org.rifidi.emulator.readerview.views.ReaderView;
 import org.rifidi.services.annotations.Inject;
 import org.rifidi.services.registry.ServiceRegistry;
 import org.rifidi.ui.common.reader.UIReader;
-import org.rifidi.ui.common.registry.ReaderRegistry;
 import org.rifidi.ui.common.registry.ReaderRegistryService;
 import org.rifidi.ui.common.registry.RegistryChangeListener;
 import org.rifidi.ui.ide.editors.ReaderEditor;
 import org.rifidi.ui.ide.editors.ReaderEditorInput;
 import org.rifidi.ui.ide.views.consoleview.ConsoleView;
-import org.rifidi.ui.ide.views.readerview.ReaderView;
 
 /**
  * This Manager listens for events like a reader add event. If it detects a new
@@ -69,21 +68,21 @@ public class ViewManager implements RegistryChangeListener {
 		//
 		// });
 
-		TreeViewer viewer = ((ReaderView) window.getActivePage().findView(
-				ReaderView.ID)).getTreeViewer();
-		viewer.addDoubleClickListener(new IDoubleClickListener() {
-			public void doubleClick(DoubleClickEvent event) {
-				IStructuredSelection selection = (IStructuredSelection) event
-						.getSelection();
-				if (selection.getFirstElement().getClass().equals(
-						UIReader.class)) {
-					UIReader selectedReader = (UIReader) selection
-							.getFirstElement();
-
-					add(selectedReader);
-				}
-			}
-		});
+//		TreeViewer viewer = ((ReaderView) window.getActivePage().findView(
+//				ReaderView.ID)).getTreeViewer();
+//		viewer.addDoubleClickListener(new IDoubleClickListener() {
+//			public void doubleClick(DoubleClickEvent event) {
+//				IStructuredSelection selection = (IStructuredSelection) event
+//						.getSelection();
+//				if (selection.getFirstElement().getClass().equals(
+//						UIReader.class)) {
+//					UIReader selectedReader = (UIReader) selection
+//							.getFirstElement();
+//
+//					add(selectedReader);
+//				}
+//			}
+//		});
 	}
 
 	/**

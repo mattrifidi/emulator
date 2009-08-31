@@ -30,8 +30,12 @@ import org.rifidi.ui.common.wizards.reader.exceptions.DuplicateReaderException;
  */
 public class NewReaderHandler extends AbstractHandler {
 
+	/** The reader regsitry */
 	private ReaderRegistryService readerRegistry;
 
+	/**
+	 * Constructor.  
+	 */
 	public NewReaderHandler() {
 		super();
 		ServiceRegistry.getInstance().service(this);

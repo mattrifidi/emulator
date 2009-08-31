@@ -23,12 +23,6 @@
    <extension
          point="org.eclipse.ui.views">
       <view
-            class="org.rifidi.ui.ide.views.readerview.ReaderView"
-            icon="icons/reader-24x24.png"
-            id="org.rifidi.ui.ide.views.readerview.ReaderView"
-            name="ReaderView">
-      </view>
-      <view
             allowMultiple="true"
             class="org.rifidi.ui.ide.views.consoleview.ConsoleView"
             icon="icons/konsole-24x24.png"
@@ -51,28 +45,6 @@
    </extension>
    <extension
          point="org.eclipse.ui.viewActions">
-      <viewContribution
-            id="org.rifidi.ui.ide.views.readerview.actions"
-            targetID="org.rifidi.ui.ide.views.readerview.ReaderView">
-         <action
-               class="org.rifidi.ui.ide.views.readerview.actions.RemoveReaderActionDelegate"
-               icon="icons/remove-16x16.png"
-               id="org.rifidi.ui.ide.views.readerview.actions.RemoveReaderActionDelegate"
-               label="Remove Reader"
-               style="push"
-               toolbarPath="readerActions"
-               tooltip="remove a reader">
-         </action>
-         <action
-               class="org.rifidi.ui.ide.views.readerview.actions.AddNewReaderActionDelegate"
-               icon="icons/add-16x16.png"
-               id="org.rifidi.ui.ide.views.readerview.actions.AddNewReader"
-               label="Add new Reader"
-               style="push"
-               toolbarPath="readerActions"
-               tooltip="add a reader">
-         </action>
-      </viewContribution>
       <viewContribution
             id="org.rifidi.ui.ide.views.tagview.actions"
             targetID="org.rifidi.ui.ide.views.tagsview.TagsView">
@@ -126,87 +98,6 @@
             id="org.rifidi.ui.common.wizards.tag.MultipleNewTagsWizard"
             name="Multiple new tags wizard">
       </wizard>
-      <wizard
-            class="org.rifidi.ui.common.wizards.reader.NewReaderWizard"
-            hasPages="true"
-            icon="icons/Get-Info-48x48.png"
-            id="org.rifidi.ui.common.wizards.reader.NewReaderWizard"
-            name="New Reader wizard">
-      </wizard>
-   </extension>
-   <extension
-         point="org.eclipse.ui.popupMenus">
-      <viewerContribution
-            id="org.rifidi.ui.ide.views.readerview.ReaderView"
-            targetID="org.rifidi.ui.ide.views.readerview.ReaderView">
-         <action
-               class="org.rifidi.ui.ide.views.readerview.actions.StopReaderActionDelegate"
-               icon="icons/control_stop.png"
-               id="org.rifidi.ui.ide.views.readerview.actions.StopReaderAction"
-               label="stop"
-               menubarPath="additions"
-               style="push">
-            <enablement>
-               <objectState
-                     name="readerState"
-                     value="running">
-               </objectState>
-            </enablement>
-         </action>
-         <visibility>
-            <objectClass
-                  name="org.rifidi.ui.common.reader.UIReader">
-            </objectClass>
-         </visibility>
-         <action
-               class="org.rifidi.ui.ide.views.readerview.actions.StartReaderActionDelegate"
-               icon="icons/control_play.png"
-               id="org.rifidi.ui.ide.views.readerview.actions.StartReaderActionDelegate"
-               label="start"
-               menubarPath="additions"
-               style="push">
-            <enablement>
-               <or>
-                  <objectState
-                        name="readerState"
-                        value="NEW">
-                  </objectState>
-                  <objectState
-                        name="readerState"
-                        value="stopped">
-                  </objectState>
-               </or>
-            </enablement>
-         </action>
-         <action
-               class="org.rifidi.ui.ide.views.readerview.actions.ResumeReaderActionDelegate"
-               icon="icons/control_repeat_blue.png"
-               id="org.rifidi.ui.ide.views.readerview.actions.ResumeReaderActionDelegate"
-               label="resume"
-               menubarPath="additions"
-               style="push">
-            <enablement>
-               <objectState
-                     name="readerState"
-                     value="suspended">
-               </objectState>
-            </enablement>
-         </action>
-         <action
-               class="org.rifidi.ui.ide.views.readerview.actions.SuspendReaderActionDelegate"
-               icon="icons/control_pause.png"
-               id="org.rifidi.ui.ide.views.readerview.actions.SuspendReaderActionDelegate"
-               label="suspend"
-               menubarPath="additions"
-               style="push">
-            <enablement>
-               <objectState
-                     name="readerState"
-                     value="running">
-               </objectState>
-            </enablement>
-         </action>
-      </viewerContribution>
    </extension>
    <extension
          id="product"
@@ -241,60 +132,6 @@
       </product>
    </extension>
    <extension
-         point="org.eclipse.ui.actionSets">
-      <actionSet
-            id="org.rifidi.ui.ide.workbench.toolbar"
-            label="Toolbar Actions"
-            visible="true">
-         <action
-               class="org.rifidi.ui.ide.views.readerview.actions.StopReaderActionDelegate"
-               icon="icons/control_stop.png"
-               id="org.rifidi.ui.ide.views.readerview.actions.StopReaderActionDelegate"
-               label="Stop reader"
-               style="push"
-               toolbarPath="readerControls"
-               tooltip="stop reader">
-            <enablement>
-               <and>
-                  <objectClass
-                        name="org.rifidi.ui.common.reader.UIReader">
-                  </objectClass>
-                  <objectState
-                        name="readerState"
-                        value="running">
-                  </objectState>
-               </and>
-            </enablement>
-         </action>
-         <action
-               class="org.rifidi.ui.ide.views.readerview.actions.StartReaderActionDelegate"
-               icon="icons/control_play.png"
-               id="org.rifidi.ui.ide.views.readerview.actions.StartReaderActionDelegate"
-               label="Start reader"
-               style="push"
-               toolbarPath="readerControls"
-               tooltip="Start reader">
-            <enablement>
-               <and>
-                  <objectClass
-                        name="org.rifidi.ui.common.reader.UIReader">
-                  </objectClass>
-                  <or>
-                     <objectState
-                           name="readerState"
-                           value="NEW">
-                     </objectState>
-                     <objectState
-                           name="readerState"
-                           value="stopped">
-                     </objectState>
-                  </or>
-               </and>
-            </enablement>
-         </action>
-      </actionSet>
-   </extension>
-   <extension
          point="org.eclipse.ui.editors">
       <editor
             class="org.rifidi.ui.ide.editors.ReaderEditor"
@@ -309,12 +146,6 @@
             locationURI="toolbar:org.eclipse.ui.main.toolbar?after=additions">
          <toolbar
                id="org.rifidi.ui.ide.views.ReaderActions">
-            <command
-                  commandId="org.rifidi.ui.common.handlers.NewReaderHandler"
-                  icon="icons/reader-add-16x16.png"
-                  label="Add New Reader"
-                  style="push">
-            </command>
             <command
                   commandId="org.rifidi.ui.ide.views.commands.AddTags"
                   icon="icons/taglist-add-16x16.png"

@@ -11,6 +11,8 @@
  */
 package org.rifidi.ui.common.reader;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -49,6 +51,9 @@ public class UIReader extends GeneralReaderPropertyHolder {
 	// FIXME Use enums, not this
 	private String readerState = "NEW";
 
+	@XmlTransient
+	private PropertyChangeSupport pcs;
+
 	/** This is the selection from the wizard Page */
 	@XmlElement
 	private String readerType;
@@ -74,7 +79,9 @@ public class UIReader extends GeneralReaderPropertyHolder {
 	 * @param grph
 	 */
 	public UIReader(ReaderManager readerManager,
-			GeneralReaderPropertyHolder grph) {
+
+	GeneralReaderPropertyHolder grph) {
+		pcs = new PropertyChangeSupport(this);
 		this.readerManager = readerManager;
 		this.setNumAntennas(grph.getNumAntennas());
 		this.setNumGPIs(grph.getNumGPIs());
@@ -91,25 +98,34 @@ public class UIReader extends GeneralReaderPropertyHolder {
 
 	public void start() {
 		readerManager.start(super.getReaderName());
+		String oldstate = readerState;
 		readerState = "running";
+		pcs.firePropertyChange("readerstate", oldstate, readerState);
 
 	}
 
 	public void stop() {
 		readerManager.stop(super.getReaderName());
+		String oldstate = readerState;
 		readerState = "stopped";
+		pcs.firePropertyChange("readerstate", oldstate, readerState);
 
 	}
 
 	public void suspend() {
 		readerManager.suspend(super.getReaderName());
+		String oldstate = readerState;
 		readerState = "suspended";
+		pcs.firePropertyChange("readerstate", oldstate, readerState);
 
 	}
 
 	public void resume() {
 		readerManager.resume(super.getReaderName());
+		String oldstate = readerState;
 		readerState = "running";
+		pcs.firePropertyChange("readerstate", oldstate, readerState);
+
 	}
 
 	/**
@@ -216,5 +232,23 @@ public class UIReader extends GeneralReaderPropertyHolder {
 
 	public Boolean testGPO(int port) {
 		return readerManager.testGPOPort(getReaderName(), port);
+	}
+
+	/**
+	 * Add a state change listener
+	 * 
+	 * @param listener
+	 */
+	public void addPropertyChangeListener(PropertyChangeListener listener) {
+		pcs.addPropertyChangeListener(listener);
+	}
+
+	/**
+	 * Remove a state change listener
+	 * 
+	 * @param listener
+	 */
+	public void removePropertyChangeListener(PropertyChangeListener listener) {
+		pcs.removePropertyChangeListener(listener);
 	}
 }
