@@ -36,7 +36,7 @@ public class UDPCommunicationIncomingMessageHandler implements Runnable {
 	/**
 	 * The size of the packet (anything after is ignored)
 	 */
-	private static final int PACKET_SIZE = 1024;
+	private static final int PACKET_SIZE = 96;
 
 	/**
 	 * The UDPCommunication object that contains the socket
@@ -87,7 +87,9 @@ public class UDPCommunicationIncomingMessageHandler implements Runnable {
 
 			/* receive messages on the socket */
 			try {
+				System.out.println("Attempting to recieve a packet");
 				newSock.receive(pack);
+				System.out.println("RECIEVED A PACKET OMG");
 			} catch (Exception e) {
 				logger.warn(e.getMessage());
 			}

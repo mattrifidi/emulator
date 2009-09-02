@@ -76,20 +76,18 @@ public class UDPCommunication extends IPCommunication {
 	public UDPCommunication(Protocol prot,
 			ControlSignal<Boolean> powerControlSignal,
 			ControlSignal<Boolean> connectionControlSignal, String localIP,
-			int localPort, String remoteIP, int remotePort, boolean outputOnly)
+			int localPort, boolean outputOnly)
 			throws CommunicationException {
 
 		/* call the super constructor for ip communication and set vars */
 		super(UDPOffCommunicationPowerState.getInstance(),
 				UDPConnectionlessCommunicationConnectionState.getInstance(),
 				prot, powerControlSignal, connectionControlSignal, localIP,
-				localPort, remoteIP, remotePort);
+				localPort, null, 0);
 
 		/* Validate that the ip parameters passed in are not null */
 		if (localIP == null
-				|| !GeneralFormattingUtility.isValidIPPort(localPort)
-				|| remoteIP == null
-				|| !GeneralFormattingUtility.isValidIPPort(remotePort)) {
+				|| !GeneralFormattingUtility.isValidIPPort(localPort)) {
 			throw new CommunicationException("Invalid ip Parameters");
 		}
 
@@ -100,8 +98,10 @@ public class UDPCommunication extends IPCommunication {
 			newSock = new DatagramSocket(null);
 		} catch (SocketException e) {
 			logger.warn(e.getMessage());
+			
 		}
 		this.prot = prot;
+		System.out.println("UDP communication created successfuly");
 	}
 
 	/**
