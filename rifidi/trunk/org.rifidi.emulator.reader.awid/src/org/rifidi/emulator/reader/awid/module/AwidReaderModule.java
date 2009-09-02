@@ -10,8 +10,6 @@
  */
 package org.rifidi.emulator.reader.awid.module;
 
-import gnu.io.SerialPort;
-
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -22,10 +20,7 @@ import org.apache.commons.logging.LogFactory;
 import org.rifidi.emulator.common.ControlSignal;
 import org.rifidi.emulator.common.PowerState;
 import org.rifidi.emulator.io.comm.CommunicationException;
-import org.rifidi.emulator.io.comm.serial.SerialCommunication;
-import org.rifidi.emulator.io.comm.serial.SerialConnectionlessCommunicationConnectionState;
-import org.rifidi.emulator.io.comm.serial.SerialIOBean;
-import org.rifidi.emulator.io.comm.serial.SerialOffCommunicationPowerState;
+import org.rifidi.emulator.io.comm.ip.udp.UDPCommunication;
 import org.rifidi.emulator.io.protocol.RawProtocol;
 import org.rifidi.emulator.reader.awid.command.exception.AwidExceptionHandler;
 import org.rifidi.emulator.reader.awid.formatter.AwidAutonomousCommandFormatter;
@@ -61,7 +56,7 @@ public class AwidReaderModule extends AbstractPowerModule implements
 	public static final String READERTYPE = "AwidMPR";
 
 	public static final String XMLLOCATION = "org/rifidi/emulator/reader/awid/module/";
-	
+
 	private boolean rf_power;
 
 	/**
@@ -72,32 +67,32 @@ public class AwidReaderModule extends AbstractPowerModule implements
 	/**
 	 * The baud to transfer at
 	 */
-	private static final int BAUD = 9600;
+	// private static final int BAUD = 9600;
 
 	/**
 	 * The number of data bits to use
 	 */
-	private static final int DATA_BITS = SerialPort.DATABITS_8;
+	// private static final int DATA_BITS = SerialPort.DATABITS_8;
 
 	/**
 	 * The number of stop bits available
 	 */
-	private static final int STOP_BITS = SerialPort.STOPBITS_1;
+	// private static final int STOP_BITS = SerialPort.STOPBITS_1;
 
 	/**
 	 * The number of parity bits available
 	 */
-	private static final int PARITY_BITS = SerialPort.PARITY_NONE;
+	// private static final int PARITY_BITS = SerialPort.PARITY_NONE;
 
 	/**
 	 * The flow control used
 	 */
-	private static final int FLOW_CONTROL = SerialPort.FLOWCONTROL_NONE;
+	// private static final int FLOW_CONTROL = SerialPort.FLOWCONTROL_NONE;
 
 	/**
 	 * The max message length of the packet
 	 */
-	private static final int MAX_MESSAGE_LENGTH = 1024;
+	// private static final int MAX_MESSAGE_LENGTH = 1024;
 
 	/**
 	 * The command adapter which the interactive mode uses when a user is in
@@ -111,9 +106,9 @@ public class AwidReaderModule extends AbstractPowerModule implements
 	private CommandAdapter autonomousCommandAdapter;
 
 	/**
-	 * The communication that this reader will use.
+	 * The communication which the interactive controller uses.
 	 */
-	private SerialCommunication serialCommunication;
+	private UDPCommunication interactiveCommunication;
 
 	/**
 	 * The interactive command controller for this. This allows the reader to
@@ -148,12 +143,12 @@ public class AwidReaderModule extends AbstractPowerModule implements
 
 	/**
 	 * Blank constructor that should ONLY be used by sun services API!!!
-	 *
+	 * 
 	 */
-	public AwidReaderModule(){
-		
+	public AwidReaderModule() {
+
 	}
-	
+
 	/**
 	 * Constructor for AwidReaderModule. This represents an AWID MPR reader.
 	 * Properties: serial_port: a String that matches COM<number>
@@ -164,7 +159,7 @@ public class AwidReaderModule extends AbstractPowerModule implements
 	public AwidReaderModule(ControlSignal<Boolean> powerControlSignal,
 			GeneralReaderPropertyHolder properties) {
 		super(AwidReaderModuleOffPowerState.getInstance(), powerControlSignal);
-		rf_power=true;
+		rf_power = true;
 		this.name = properties.getReaderName();
 
 		// Get the digester ready
@@ -196,39 +191,45 @@ public class AwidReaderModule extends AbstractPowerModule implements
 		// antennas.put("antenna1", new Antenna(255, null));
 		AwidTagMemory newTagMemory = new AwidTagMemory();
 
-
 		// Start the shared resources
 		AwidReaderSharedResources awidSharedResources = new AwidReaderSharedResources(
 				newRadio, newTagMemory, new ControlSignal<Boolean>(false),
 				new ControlSignal<Boolean>(false), new ControlSignal<Boolean>(
 						false), powerControlSignal, properties.getReaderName(),
-				digester.getAllCommands(), digester, new AwidExceptionHandler(), properties.getNumAntennas());
+				digester.getAllCommands(), digester,
+				new AwidExceptionHandler(), properties.getNumAntennas());
 
 		this.sharedResources = awidSharedResources;
 
+		// this.interactiveCommunication = new UDPCommunication(
+		// new RawProtocol(), this.sharedResources
+		// .getInteractivePowerSignal(), this.sharedResources
+		// .getInteractiveConnectionSignal(), ((String) properties
+		// .getProperty("inet_address")).split(":")[0], Integer
+		// .parseInt(((String) properties
+		// .getProperty("inet_address")).split(":")[1]), this.name,
+		// GenericByteStreamReader.class, new GenericStringLogFormatter());
 		try {
-			SerialIOBean newBean = new SerialIOBean((String) properties
-					.getProperty("serial_port"), BAUD, DATA_BITS, PARITY_BITS,
-					STOP_BITS, FLOW_CONTROL, MAX_MESSAGE_LENGTH);
-			this.serialCommunication = new SerialCommunication(
+			this.interactiveCommunication = new UDPCommunication(
 					new RawProtocol(), this.sharedResources
 							.getInteractivePowerSignal(), this.sharedResources
 							.getInteractiveConnectionSignal(),
-					SerialOffCommunicationPowerState.getInstance(),
-					SerialConnectionlessCommunicationConnectionState
-							.getInstance(), newBean, this.name);
-
+					((String) properties.getProperty("inet_address"))
+							.split(":")[0],
+					Integer.parseInt(((String) properties
+							.getProperty("inet_address")).split(":")[1]), false);
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
 		} catch (CommunicationException e) {
-			logger.error(e.getMessage());
+			e.printStackTrace();
 		}
 
-		interactiveCommandAdapter = new ReflectiveCommandAdapter(
-				"Interactive", new AwidCommandFormatter(), 
-				new AwidExceptionHandler(), this.sharedResources,
-				new RelativeCommandSearcher());
+		interactiveCommandAdapter = new ReflectiveCommandAdapter("Interactive",
+				new AwidCommandFormatter(), new AwidExceptionHandler(),
+				this.sharedResources, new RelativeCommandSearcher());
 
-		autonomousCommandAdapter = new ReflectiveCommandAdapter(
-				"Autonomous", new AwidAutonomousCommandFormatter(), 
+		autonomousCommandAdapter = new ReflectiveCommandAdapter("Autonomous",
+				new AwidAutonomousCommandFormatter(),
 				new AwidExceptionHandler(), this.sharedResources,
 				new RelativeCommandSearcher());
 
@@ -237,7 +238,7 @@ public class AwidReaderModule extends AbstractPowerModule implements
 						interactiveCommandAdapter), this.sharedResources
 						.getInteractivePowerSignal(), this.sharedResources
 						.getInteractiveConnectionSignal(),
-				this.serialCommunication);
+				this.interactiveCommunication);
 
 		Map<byte[], Integer> autoCommands = new HashMap<byte[], Integer>();
 		autoCommands.put(null, 300);
@@ -246,7 +247,7 @@ public class AwidReaderModule extends AbstractPowerModule implements
 				new BasicCommandControllerOperatingState(
 						autonomousCommandAdapter), this.sharedResources
 						.getAutonomousPowerSignal(), null,
-				this.serialCommunication, autoCommands);
+				this.interactiveCommunication, autoCommands);
 
 		this.sharedResources.saveAllSharedProperties();
 		// start the xmlrpc-server for this reader
@@ -297,8 +298,8 @@ public class AwidReaderModule extends AbstractPowerModule implements
 	/**
 	 * @return the serialCommunication
 	 */
-	public SerialCommunication getInteractiveCommunication() {
-		return serialCommunication;
+	public UDPCommunication getInteractiveCommunication() {
+		return interactiveCommunication;
 	}
 
 	/**

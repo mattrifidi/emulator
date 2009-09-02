@@ -6,10 +6,10 @@
 	<maxgpos>0</maxgpos>
 	<property>
 		<required>1</required>
-		<name>serial_port</name>
-		<display>com port</display>
-		<tooltip>The com port the reader should be reachable through</tooltip>
-		<defaultvalue>COM1</defaultvalue>		
-		<validatorclassname>ComPortValidator</validatorclassname>
+		<name>inet_address</name>
+		<display>ip address</display>
+		<tooltip>The address the reader should be reachable through</tooltip>
+		<defaultvalue>127.0.0.1:4000</defaultvalue>		
+		<validatorclassname>IpAddressValidator</validatorclassname>
 	</property>
 </reader>
