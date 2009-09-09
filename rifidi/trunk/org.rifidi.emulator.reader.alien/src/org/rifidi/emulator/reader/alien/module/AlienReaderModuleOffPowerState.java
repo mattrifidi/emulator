@@ -57,30 +57,32 @@ public class AlienReaderModuleOffPowerState extends AbstractOffPowerState {
 	public void turnOn(PowerControllable pcObject) {
 		/* Cast to an AlienReaderModule object. */
 		AlienReaderModule alienModule = (AlienReaderModule) pcObject;
-		
-		alienModule.getSharedResources().getHearbeatController().startHeartbeat();
 
-		//If the autonomous mode is "on", we have to turn on the automode again
-		if(alienModule.getSharedResources().getPropertyMap().get("automode").getPropertyStringValue().equalsIgnoreCase("on")) {
-			alienModule.getSharedResources().getAutoStateController().startAutoMode();
+		alienModule.getSharedResources().getHearbeatController()
+				.startHeartbeat();
+
+		// If the autonomous mode is "on", we have to turn on the automode again
+		if (alienModule.getSharedResources().getPropertyMap().get("automode")
+				.getPropertyStringValue().equalsIgnoreCase("on")) {
+			alienModule.getSharedResources().getAutoStateController()
+					.startAutoMode();
 		}
-		
+
 		/* Set interactive and heartbeat power signals to appropriate values. */
 
 		alienModule.getSharedResources().getInteractivePowerSignal()
 				.setControlVariableValue(true);
-		
-		alienModule.getSharedResources().getInteractiveConnectionSignal()
-		.setControlVariableValue(false);
 
+		alienModule.getSharedResources().getInteractiveConnectionSignal()
+				.setControlVariableValue(false);
 
 		/* Reset all properties */
-		//alienModule.getSharedResources().resetAllSharedProperties();
+		// alienModule.getSharedResources().resetAllSharedProperties();
 
 		/* Switch to the on state */
 		alienModule.changePowerState(AlienReaderModuleOnPowerState
 				.getInstance());
-		
+
 		String readername = alienModule.getSharedResources().getReaderName();
 		LogFactory.getLog("console." + readername).info(readername + " on");
 

@@ -13,10 +13,9 @@ package org.rifidi.emulator.reader.alien.commandhandler;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.rifidi.emulator.io.comm.ip.udp.UDPCommunicationIncomingMessageHandler;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
+import org.rifidi.emulator.io.comm.ip.udp.UDPCommunicationIncomingMessageHandler;
 import org.rifidi.emulator.reader.command.CommandObject;
 import org.rifidi.emulator.reader.module.abstract_.AbstractReaderSharedResources;
 import org.rifidi.emulator.reader.sharedrc.properties.ReaderProperty;
