@@ -28,7 +28,6 @@ import org.rifidi.tags.impl.C1G1Tag;
 import org.rifidi.tags.impl.C1G2Tag;
 import org.rifidi.tags.impl.RifidiTag;
 import org.rifidi.ui.common.reader.UIReader;
-import org.rifidi.ui.common.registry.ReaderRegistry;
 import org.rifidi.ui.common.registry.ReaderRegistryService;
 import org.rifidi.ui.common.wizards.reader.exceptions.DuplicateReaderException;
 import org.rifidi.ui.ide.configuration.AntennaTagMap;

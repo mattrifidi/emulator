@@ -8,8 +8,6 @@ import org.rifidi.emulator.reader.llrp.report.LLRPReportController;
 import org.rifidi.emulator.reader.llrp.report.LLRPReportControllerFactory;
 
 import edu.uark.csce.llrp.ConnectionAttemptEvent;
-import edu.uark.csce.llrp.LLRPConfigurationStateValue;
-import edu.uark.csce.llrp.LLRPStatus;
 import edu.uark.csce.llrp.ReaderEventNotificationData;
 
 /**

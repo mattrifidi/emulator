@@ -18,6 +18,7 @@ import javax.naming.AuthenticationException;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
+
 import org.rifidi.tags.IGen2Tag;
 import org.rifidi.tags.enums.LockStates;
 import org.rifidi.tags.enums.TagConstants;

@@ -4,9 +4,7 @@ import java.util.Hashtable;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
-import org.rifidi.emulator.reader.module.ReaderModule;
 import org.rifidi.emulator.reader.module.ReaderModuleFactory;
-import org.rifidi.emulator.reader.symbol.module.SymbolReaderModule;
 import org.rifidi.emulator.reader.symbol.module.SymbolReaderModuleFactory;
 
 public class Activator implements BundleActivator {

@@ -1,7 +1,5 @@
 package org.rifidi.ui.ide.workbench;
 
-import java.rmi.ConnectException;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.swt.graphics.Point;
@@ -11,7 +9,6 @@ import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 import org.rifidi.services.annotations.Inject;
 import org.rifidi.services.registry.ServiceRegistry;
-import org.rifidi.ui.common.registry.ReaderRegistry;
 import org.rifidi.ui.common.registry.ReaderRegistryService;
 
 /**

@@ -15,11 +15,11 @@ import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.rifidi.services.tags.registry.ITagRegistry;
+import org.rifidi.services.tags.utils.RifidiTagMap;
 import org.rifidi.tags.factory.TagCreationPattern;
 import org.rifidi.tags.factory.TagFactory;
 import org.rifidi.tags.impl.RifidiTag;
-import org.rifidi.services.tags.registry.ITagRegistry;
-import org.rifidi.services.tags.utils.RifidiTagMap;
 
 /**
  * Service for handling all tags created in a Rifidi application.

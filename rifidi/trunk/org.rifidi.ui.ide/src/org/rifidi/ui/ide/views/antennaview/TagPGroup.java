@@ -1,10 +1,10 @@
 package org.rifidi.ui.ide.views.antennaview;
 
+import org.eclipse.nebula.widgets.pgroup.PGroup;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ExpandEvent;
 import org.eclipse.swt.events.ExpandListener;
 import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.nebula.widgets.pgroup.PGroup;
 import org.eclipse.swt.widgets.Composite;
 import org.rifidi.ui.common.reader.UIAntenna;
 import org.rifidi.ui.common.reader.callback.UIReaderCallbackManager;

@@ -5,7 +5,6 @@ package org.rifidi.emulator.reader.llrp.report;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 
 import edu.uark.csce.llrp.EPC96;
 import edu.uark.csce.llrp.EPCData;

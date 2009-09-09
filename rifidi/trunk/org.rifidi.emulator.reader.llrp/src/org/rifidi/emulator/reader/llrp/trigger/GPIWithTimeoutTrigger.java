@@ -1,14 +1,10 @@
 package org.rifidi.emulator.reader.llrp.trigger;
 
-import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
 import org.rifidi.emulator.reader.llrp.properties.GPISettings;
-import org.rifidi.emulator.reader.sharedrc.GPIO.GPIOController;
 import org.rifidi.utilities.Timer;
-
-import edu.uark.csce.llrp.GPIPortCurrentState;
 
 /**
  * A GPI trigger with a timeout.
