@@ -7,6 +7,7 @@
 
 	<Command>
 		<queryName>00_00</queryName>
+		<queryName>00</queryName>
 		<queryName>STOP</queryName>
 		<displayName>stop</displayName>
 		<commandState>Interactive</commandState>
@@ -87,12 +88,12 @@
 		<commandState>Interactive</commandState>
 		<commandHandlerDetails>
 			<handlerClass>org.rifidi.emulator.reader.awid.commandhandler.AwidGeneral</handlerClass>
-			<handlerMethod>temp</handlerMethod>
+			<handlerMethod>temperature</handlerMethod>
 			<argumentType>String</argumentType>
 		</commandHandlerDetails>
 		<actionTag>EDITABLE</actionTag>
 		<category>GENERAL</category>
-		<defaultValue>44</defaultValue>
+		<defaultValue>48</defaultValue>
 	</Command>
 
 	<Command>

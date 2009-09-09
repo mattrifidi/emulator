@@ -19,8 +19,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.rifidi.emulator.common.ControlSignal;
 import org.rifidi.emulator.common.PowerState;
-import org.rifidi.emulator.io.comm.CommunicationException;
-import org.rifidi.emulator.io.comm.ip.udp.UDPCommunication;
+import org.rifidi.emulator.io.comm.ip.tcpserver.TCPServerCommunication;
+import org.rifidi.emulator.io.comm.logFormatter.GenericByteLogFormatter;
+import org.rifidi.emulator.io.comm.streamreader.GenericByteStreamReader;
 import org.rifidi.emulator.io.protocol.RawProtocol;
 import org.rifidi.emulator.reader.awid.command.exception.AwidExceptionHandler;
 import org.rifidi.emulator.reader.awid.formatter.AwidAutonomousCommandFormatter;
@@ -65,36 +66,6 @@ public class AwidReaderModule extends AbstractPowerModule implements
 	private static Log logger = LogFactory.getLog(AwidReaderModule.class);
 
 	/**
-	 * The baud to transfer at
-	 */
-	// private static final int BAUD = 9600;
-
-	/**
-	 * The number of data bits to use
-	 */
-	// private static final int DATA_BITS = SerialPort.DATABITS_8;
-
-	/**
-	 * The number of stop bits available
-	 */
-	// private static final int STOP_BITS = SerialPort.STOPBITS_1;
-
-	/**
-	 * The number of parity bits available
-	 */
-	// private static final int PARITY_BITS = SerialPort.PARITY_NONE;
-
-	/**
-	 * The flow control used
-	 */
-	// private static final int FLOW_CONTROL = SerialPort.FLOWCONTROL_NONE;
-
-	/**
-	 * The max message length of the packet
-	 */
-	// private static final int MAX_MESSAGE_LENGTH = 1024;
-
-	/**
 	 * The command adapter which the interactive mode uses when a user is in
 	 * authenticated mode.
 	 */
@@ -108,7 +79,7 @@ public class AwidReaderModule extends AbstractPowerModule implements
 	/**
 	 * The communication which the interactive controller uses.
 	 */
-	private UDPCommunication interactiveCommunication;
+	private TCPServerCommunication interactiveCommunication;
 
 	/**
 	 * The interactive command controller for this. This allows the reader to
@@ -173,8 +144,8 @@ public class AwidReaderModule extends AbstractPowerModule implements
 				+ "Instantiated AWID MPR with name: "
 				+ properties.getReaderName());
 		consoleLogger.info(AwidReaderModule.startupText
-				+ properties.getReaderName() + " Serial Port: "
-				+ properties.getProperty("serial_port"));
+				+ properties.getReaderName() + " IP Address: "
+				+ properties.getProperty("inet_address"));
 		consoleLogger.info(AwidReaderModule.startupText
 				+ properties.getReaderName() + " has "
 				+ properties.getNumAntennas() + " antennas");
@@ -201,26 +172,18 @@ public class AwidReaderModule extends AbstractPowerModule implements
 
 		this.sharedResources = awidSharedResources;
 
-		// this.interactiveCommunication = new UDPCommunication(
-		// new RawProtocol(), this.sharedResources
-		// .getInteractivePowerSignal(), this.sharedResources
-		// .getInteractiveConnectionSignal(), ((String) properties
-		// .getProperty("inet_address")).split(":")[0], Integer
-		// .parseInt(((String) properties
-		// .getProperty("inet_address")).split(":")[1]), this.name,
-		// GenericByteStreamReader.class, new GenericStringLogFormatter());
 		try {
-			this.interactiveCommunication = new UDPCommunication(
+			this.interactiveCommunication = new TCPServerCommunication(
 					new RawProtocol(), this.sharedResources
 							.getInteractivePowerSignal(), this.sharedResources
 							.getInteractiveConnectionSignal(),
 					((String) properties.getProperty("inet_address"))
 							.split(":")[0],
 					Integer.parseInt(((String) properties
-							.getProperty("inet_address")).split(":")[1]), false);
+							.getProperty("inet_address")).split(":")[1]),
+					this.name, GenericByteStreamReader.class,
+					new GenericByteLogFormatter());
 		} catch (NumberFormatException e) {
-			e.printStackTrace();
-		} catch (CommunicationException e) {
 			e.printStackTrace();
 		}
 
@@ -298,7 +261,7 @@ public class AwidReaderModule extends AbstractPowerModule implements
 	/**
 	 * @return the serialCommunication
 	 */
-	public UDPCommunication getInteractiveCommunication() {
+	public TCPServerCommunication getInteractiveCommunication() {
 		return interactiveCommunication;
 	}
 
@@ -369,7 +332,6 @@ public class AwidReaderModule extends AbstractPowerModule implements
 
 	@Override
 	public List<Integer> getGPOPortNumbers() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

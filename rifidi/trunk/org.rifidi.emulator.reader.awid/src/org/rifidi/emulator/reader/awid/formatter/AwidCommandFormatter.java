@@ -15,12 +15,11 @@ import java.util.ArrayList;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.rifidi.emulator.reader.formatter.CommandFormatter;
 
 /**
- * The formatter for the Awid reader Calsulates the checksum
- * going out, checks the checksum coming in, and does little else.  
+ * The formatter for the Awid reader Calsulates the checksum going out, checks
+ * the checksum coming in, and does little else.
  * 
  * @author Matthew Dean - matt@pramari.com
  * @since <$INITIAL_VERSION$>
@@ -31,8 +30,7 @@ public class AwidCommandFormatter implements CommandFormatter {
 	/**
 	 * Message logger
 	 */
-	private static Log logger =
-		 LogFactory.getLog(AwidCommandFormatter.class);
+	private static Log logger = LogFactory.getLog(AwidCommandFormatter.class);
 
 	/*
 	 * (non-Javadoc)
@@ -54,63 +52,69 @@ public class AwidCommandFormatter implements CommandFormatter {
 			newArg[i] = arg[i];
 		}
 		retVal.add(bytesToHex(newArg));
+
 		return retVal;
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.emulator.reader.formatter.CommandFormatter#encode(java.util.ArrayList)
+	 * @see
+	 * org.rifidi.emulator.reader.formatter.CommandFormatter#encode(java.util
+	 * .ArrayList)
 	 */
 	public ArrayList<Object> encode(ArrayList<Object> arg) {
 		// ArrayList that holds the return value
 		ArrayList<Object> retVal = new ArrayList<Object>();
 		// byte[] byteArray = stringToByteArray((String) arg.get(0));
 
-		String str = (String) arg.get(0);
-		if (!str.equalsIgnoreCase("FF") && !str.equalsIgnoreCase("00")
-				&& !str.equals(new byte[] { 0x00, 0x00 }) && !str.equals("00 00")) {
-			String[] strArray = str.split(" ");
-			String value = "";
-			for (int i = 1; i < strArray.length; i++) {
-				value += strArray[i];
-			}
+		if (!arg.isEmpty()) {
+			String str = (String) arg.get(0);
+			if (!str.equalsIgnoreCase("FF") && !str.equalsIgnoreCase("00")
+					&& !str.equals(new byte[] { 0x00, 0x00 })
+					&& !str.equals("00 00")) {
+				String[] strArray = str.split(" ");
+				String value = "";
+				for (int i = 1; i < strArray.length; i++) {
+					value += strArray[i];
+				}
 
-			logger.debug("value = " + value);
+				logger.debug("value = " + value);
 
-			byte[] byteArray = fromHexString(value);
+				byte[] byteArray = fromHexString(value);
 
-			logger.debug("after first byte print");
+				logger.debug("after first byte print");
 
-			int crc = crc16(byteArray);
+				int crc = crc16(byteArray);
 
-			byte[] returnByte = new byte[byteArray.length + 2];
-			for (int i = 0; i < byteArray.length; i++) {
-				returnByte[i] = (byte) byteArray[i];
-			}
+				byte[] returnByte = new byte[byteArray.length + 2];
+				for (int i = 0; i < byteArray.length; i++) {
+					returnByte[i] = (byte) byteArray[i];
+				}
 
-			logger.debug("crc = " + Integer.toHexString(crc));
-			byte[] crcBytes;
-			if (crc > 4095) {
-				crcBytes = fromHexString(Integer.toHexString(crc));
+				logger.debug("crc = " + Integer.toHexString(crc));
+				byte[] crcBytes;
+				if (crc > 4095) {
+					crcBytes = fromHexString(Integer.toHexString(crc));
+				} else {
+					crcBytes = fromHexString("0" + Integer.toHexString(crc));
+				}
+				returnByte[byteArray.length] = crcBytes[0];
+				returnByte[byteArray.length + 1] = crcBytes[1];
+
+				byte[] ackReturn = new byte[returnByte.length + 1];
+				ackReturn[0] = 0x00;
+				for (int i = 1; i < ackReturn.length; i++) {
+					ackReturn[i] = returnByte[i - 1];
+				}
+
+				retVal.add(new String(ackReturn));
 			} else {
-				crcBytes = fromHexString("0" + Integer.toHexString(crc));
-			}
-			returnByte[byteArray.length] = crcBytes[0];
-			returnByte[byteArray.length + 1] = crcBytes[1];
-
-			byte[] ackReturn = new byte[returnByte.length + 1];
-			ackReturn[0] = 0x00;
-			for (int i = 1; i < ackReturn.length; i++) {
-				ackReturn[i] = returnByte[i - 1];
-			}
-
-			retVal.add(new String(ackReturn));
-		} else {
-			if (str.equalsIgnoreCase("FF")) {
-				retVal.add(new String(new byte[] { (byte) 0xFF }));
-			} else {
-				retVal.add(new String(new byte[] { (byte) 0x00 }));
+				if (str.equalsIgnoreCase("FF")) {
+					retVal.add(new String(new byte[] { (byte) 0xFF }));
+				} else {
+					retVal.add(new String(new byte[] { (byte) 0x00 }));
+				}
 			}
 		}
 		return retVal;
@@ -119,7 +123,9 @@ public class AwidCommandFormatter implements CommandFormatter {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.emulator.reader.formatter.CommandFormatter#getActualCommand(byte[])
+	 * @see
+	 * org.rifidi.emulator.reader.formatter.CommandFormatter#getActualCommand
+	 * (byte[])
 	 */
 	public String getActualCommand(byte[] arg) {
 		return new String(arg);
@@ -128,7 +134,8 @@ public class AwidCommandFormatter implements CommandFormatter {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.emulator.reader.formatter.CommandFormatter#promptSuppress()
+	 * @see
+	 * org.rifidi.emulator.reader.formatter.CommandFormatter#promptSuppress()
 	 */
 	public boolean promptSuppress() {
 		return false;

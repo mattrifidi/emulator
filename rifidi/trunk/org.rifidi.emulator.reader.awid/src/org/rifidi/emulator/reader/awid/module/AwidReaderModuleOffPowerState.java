@@ -10,18 +10,17 @@
  */
 package org.rifidi.emulator.reader.awid.module;
 
-import org.rifidi.emulator.common.PowerControllable;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
+import org.rifidi.emulator.common.PowerControllable;
 import org.rifidi.emulator.reader.module.abstract_.AbstractOffPowerState;
 
 /**
- * Represents a reader that is turned off.  The reader can be turned
- * on from this state.  
- *
+ * Represents a reader that is turned off. The reader can be turned on from this
+ * state.
+ * 
  * @author Matthew Dean
- * @since  <$INITIAL_VERSION$>
+ * @since <$INITIAL_VERSION$>
  * @version <$CURRENT_VERSION$>
  */
 public class AwidReaderModuleOffPowerState extends AbstractOffPowerState {
@@ -30,14 +29,13 @@ public class AwidReaderModuleOffPowerState extends AbstractOffPowerState {
 	 * The log4j logger for this class.
 	 */
 	@SuppressWarnings("unused")
-	private static Log logger =
-		 LogFactory.getLog(AwidReaderModuleOffPowerState.class);
-	
+	private static Log logger = LogFactory
+			.getLog(AwidReaderModuleOffPowerState.class);
+
 	/**
 	 * The singleton instance for this class.
 	 */
-	private static final AwidReaderModuleOffPowerState SINGLETON_INSTANCE 
-				= new AwidReaderModuleOffPowerState();
+	private static final AwidReaderModuleOffPowerState SINGLETON_INSTANCE = new AwidReaderModuleOffPowerState();
 
 	/**
 	 * Returns the singleton instance for this class.
@@ -47,28 +45,32 @@ public class AwidReaderModuleOffPowerState extends AbstractOffPowerState {
 	public static AwidReaderModuleOffPowerState getInstance() {
 		return AwidReaderModuleOffPowerState.SINGLETON_INSTANCE;
 	}
-	
-	
+
 	/**
 	 * This represents the reader module in the "off" state
 	 */
 	private AwidReaderModuleOffPowerState() {
 	}
-	
 
-
-	/* (non-Javadoc)
-	 * @see org.rifidi.emulator.common.PowerState#turnOn(org.rifidi.emulator.common.PowerControllable)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.rifidi.emulator.common.PowerState#turnOn(org.rifidi.emulator.common
+	 * .PowerControllable)
 	 */
 	public void turnOn(PowerControllable pcObject) {
 		AwidReaderModule awidModule = (AwidReaderModule) pcObject;
 
 		awidModule.getInteractiveCommunication().turnOn();
 		awidModule.getInteractiveCommandController().turnOn();
+		awidModule.getSharedResources().getInteractivePowerSignal()
+				.setControlVariableValue(true);
+		awidModule.getSharedResources().getInteractiveConnectionSignal()
+				.setControlVariableValue(false);
 
-		awidModule.changePowerState(AwidReaderModuleOnPowerState
-				.getInstance());
-		
+		awidModule.changePowerState(AwidReaderModuleOnPowerState.getInstance());
+
 		String readername = awidModule.getSharedResources().getReaderName();
 		LogFactory.getLog("console." + readername).info(readername + " on");
 	}

@@ -13,8 +13,6 @@ package org.rifidi.emulator.reader.formatter;
 
 import java.util.ArrayList;
 
-//import junit.framework.TestCase;
-
 import org.rifidi.emulator.reader.awid.formatter.AwidAutonomousCommandFormatter;
 import org.rifidi.emulator.reader.awid.formatter.AwidCommandFormatter;
 
