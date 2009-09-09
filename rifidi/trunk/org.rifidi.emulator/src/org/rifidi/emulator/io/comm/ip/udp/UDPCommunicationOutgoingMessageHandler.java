@@ -10,15 +10,14 @@
  */
 package org.rifidi.emulator.io.comm.ip.udp;
 
+import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.rifidi.emulator.common.DataBufferInterruptedException;
-
-import java.net.DatagramSocket;
-import java.net.DatagramPacket;
-import java.io.IOException;
-import java.net.InetAddress;
 
 /**
  * This class handles outgoing messages from the reader.

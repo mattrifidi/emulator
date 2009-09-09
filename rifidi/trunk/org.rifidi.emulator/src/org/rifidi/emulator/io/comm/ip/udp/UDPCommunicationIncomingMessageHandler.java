@@ -10,15 +10,13 @@
  */
 package org.rifidi.emulator.io.comm.ip.udp;
 
+import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.rifidi.emulator.common.DataBufferInterruptedException;
-import org.rifidi.emulator.io.protocol.ProtocolValidationException;
-
-import java.net.DatagramSocket;
-import java.net.DatagramPacket;
-import java.util.List;
 
 /**
  * This class handles incoming messages.
@@ -36,7 +34,7 @@ public class UDPCommunicationIncomingMessageHandler implements Runnable {
 	/**
 	 * The size of the packet (anything after is ignored)
 	 */
-	private static final int PACKET_SIZE = 96;
+	private static final int PACKET_SIZE = 1024;
 
 	/**
 	 * The UDPCommunication object that contains the socket
@@ -90,26 +88,32 @@ public class UDPCommunicationIncomingMessageHandler implements Runnable {
 				System.out.println("Attempting to recieve a packet");
 				newSock.receive(pack);
 				System.out.println("RECIEVED A PACKET OMG");
-			} catch (Exception e) {
+			} catch (IOException e) {
+				e.printStackTrace();
 				logger.warn(e.getMessage());
 			}
 
 			/* put messages into the buffer */
 			if (pack.getData() != null) {
 				try {
-					List<byte[]> listOfBytes = this.host.getProtocol()
-							.removeProtocol(pack.getData());
-					for (byte[] b : listOfBytes) {
-						this.host.getReceiveBuffer().addToBuffer(b);
-					}
+					// List<byte[]> listOfBytes = this.host.getProtocol()
+					// .removeProtocol(pack.getData());
+					// for (byte[] b : listOfBytes) {
+					this.host.getReceiveBuffer().addToBuffer(pack.getData());
+					this.host.setRemoteIPAddress(pack.getAddress().getHostAddress());
+					this.host.setRemotePort(pack.getPort());
+					
+					// }
 				} catch (DataBufferInterruptedException e) {
 					/* Thrown because socket was interrupted */
 					logger.warn(e.getMessage());
 					keepRunning = false;
-				} catch (ProtocolValidationException e) {
-					/* Thrown because of a problem with the protocol */
-					logger.warn(e.getMessage());
-				}
+				} 
+
+				// catch (ProtocolValidationException e) {
+				// /* Thrown because of a problem with the protocol */
+				// logger.warn(e.getMessage());
+				// }
 			}
 		}
 	}

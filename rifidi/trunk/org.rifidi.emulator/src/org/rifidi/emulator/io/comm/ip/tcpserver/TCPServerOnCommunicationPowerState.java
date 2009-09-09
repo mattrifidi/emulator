@@ -14,10 +14,10 @@ package org.rifidi.emulator.io.comm.ip.tcpserver;
 
 import java.io.IOException;
 
-import org.rifidi.emulator.common.PowerControllable;
-import org.rifidi.emulator.io.comm.buffered.BufferedOnCommunicationPowerState;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.rifidi.emulator.common.PowerControllable;
+import org.rifidi.emulator.io.comm.buffered.BufferedOnCommunicationPowerState;
 
 
 /**

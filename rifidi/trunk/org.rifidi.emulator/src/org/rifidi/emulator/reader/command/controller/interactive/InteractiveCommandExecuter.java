@@ -14,10 +14,9 @@ package org.rifidi.emulator.reader.command.controller.interactive;
 
 import java.util.ArrayList;
 
-import org.rifidi.emulator.io.comm.CommunicationException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
+import org.rifidi.emulator.io.comm.CommunicationException;
 import org.rifidi.emulator.reader.command.controller.CommandControllerException;
 
 /**
@@ -89,7 +88,6 @@ public class InteractiveCommandExecuter implements Runnable {
 				boolean sentinelBool = controller.getSentinel()
 						.containsCommand(curCommand);
 
-
 				/* If the command is not recognized by the sentinel */
 				if (!sentinelBool) {
 					ArrayList<Object> curResponse = this.controller
@@ -101,17 +99,21 @@ public class InteractiveCommandExecuter implements Runnable {
 					 * or strings to read from the socket (ByteStreamReader or
 					 * CharStreamReader)
 					 */
-					for (Object obj : curResponse) {
-						byte[] bytes;
+					//FIXME: there may be a better way to do this
+					if (curResponse != null) {
+						for (Object obj : curResponse) {
+							byte[] bytes;
 
-						// TODO: not a great solution
+							// TODO: not a great solution
 
-						if (obj instanceof String) {
-							bytes = ((String) obj).getBytes();
-						} else {
-							bytes = (byte[]) obj;
+							if (obj instanceof String) {
+								bytes = ((String) obj).getBytes();
+							} else {
+								bytes = (byte[]) obj;
+							}
+							this.controller.getCurCommunication().sendBytes(
+									bytes);
 						}
-						this.controller.getCurCommunication().sendBytes(bytes);
 					}
 				} else {
 

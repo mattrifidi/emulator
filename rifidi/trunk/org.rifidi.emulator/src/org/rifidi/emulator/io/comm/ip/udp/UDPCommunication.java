@@ -12,19 +12,18 @@
 
 package org.rifidi.emulator.io.comm.ip.udp;
 
-import org.rifidi.emulator.io.comm.CommunicationPowerState;
-import org.rifidi.emulator.io.comm.ip.IPCommunication;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import org.rifidi.emulator.io.protocol.Protocol;
-import org.rifidi.emulator.common.DataBuffer;
-import org.rifidi.emulator.common.ControlSignal;
-import org.rifidi.emulator.io.comm.CommunicationException;
-import org.rifidi.utilities.formatting.GeneralFormattingUtility;
-
 import java.net.DatagramSocket;
 import java.net.SocketException;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.rifidi.emulator.common.ControlSignal;
+import org.rifidi.emulator.common.DataBuffer;
+import org.rifidi.emulator.io.comm.CommunicationException;
+import org.rifidi.emulator.io.comm.CommunicationPowerState;
+import org.rifidi.emulator.io.comm.ip.IPCommunication;
+import org.rifidi.emulator.io.protocol.Protocol;
+import org.rifidi.utilities.formatting.GeneralFormattingUtility;
 
 /**
  * An extension of the IPCommunication class which communicates using UDP (User

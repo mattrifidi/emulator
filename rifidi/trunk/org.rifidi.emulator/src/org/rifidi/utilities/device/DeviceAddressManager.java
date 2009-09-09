@@ -30,7 +30,6 @@ import java.util.TreeSet;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.rifidi.utilities.device.SystemNetworkInterface.NetworkAddressType;
 
 

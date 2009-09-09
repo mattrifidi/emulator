@@ -17,11 +17,11 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.rifidi.emulator.common.DataBuffer;
 import org.rifidi.emulator.common.DataBufferInterruptedException;
 import org.rifidi.emulator.io.protocol.ProtocolValidationException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * This class handles the incoming messages for the SerialCommunication module.

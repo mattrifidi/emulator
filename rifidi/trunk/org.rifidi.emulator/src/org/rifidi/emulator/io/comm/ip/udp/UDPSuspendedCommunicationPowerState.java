@@ -12,10 +12,10 @@ package org.rifidi.emulator.io.comm.ip.udp;
 
 import java.net.DatagramSocket;
 
-import org.rifidi.emulator.common.PowerControllable;
-import org.rifidi.emulator.io.comm.buffered.BufferedSuspendedCommunicationPowerState;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.rifidi.emulator.common.PowerControllable;
+import org.rifidi.emulator.io.comm.buffered.BufferedSuspendedCommunicationPowerState;
 
 
 

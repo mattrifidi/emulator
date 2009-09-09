@@ -10,15 +10,14 @@
  */
 package org.rifidi.emulator.io.comm.ip.udp;
 
-import org.rifidi.emulator.common.PowerControllable;
-import org.rifidi.emulator.io.comm.buffered.BufferedOffCommunicationPowerState;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-
+import java.io.IOException;
 import java.net.DatagramSocket;
 import java.net.InetSocketAddress;
-import java.io.IOException;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.rifidi.emulator.common.PowerControllable;
+import org.rifidi.emulator.io.comm.buffered.BufferedOffCommunicationPowerState;
 
 /**
  * This represents the "off" state for the communication module.  It can be

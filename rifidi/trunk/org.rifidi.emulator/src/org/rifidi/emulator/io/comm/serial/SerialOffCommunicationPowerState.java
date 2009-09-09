@@ -12,10 +12,10 @@ package org.rifidi.emulator.io.comm.serial;
 
 import gnu.io.UnsupportedCommOperationException;
 
-import org.rifidi.emulator.common.PowerControllable;
-import org.rifidi.emulator.io.comm.buffered.BufferedOffCommunicationPowerState;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.rifidi.emulator.common.PowerControllable;
+import org.rifidi.emulator.io.comm.buffered.BufferedOffCommunicationPowerState;
 
 
 /**

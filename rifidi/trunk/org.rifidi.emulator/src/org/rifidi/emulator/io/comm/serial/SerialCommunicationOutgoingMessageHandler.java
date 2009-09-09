@@ -13,10 +13,10 @@ package org.rifidi.emulator.io.comm.serial;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import org.rifidi.emulator.common.DataBuffer;
-import org.rifidi.emulator.common.DataBufferInterruptedException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.rifidi.emulator.common.DataBuffer;
+import org.rifidi.emulator.common.DataBufferInterruptedException;
 
 
 /**

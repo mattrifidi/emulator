@@ -21,16 +21,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.rifidi.emulator.common.ControlSignal;
 import org.rifidi.emulator.common.DataBuffer;
 import org.rifidi.emulator.io.comm.CommunicationConnectionState;
+import org.rifidi.emulator.io.comm.CommunicationException;
 import org.rifidi.emulator.io.comm.CommunicationPowerState;
 import org.rifidi.emulator.io.comm.buffered.BufferedCommunication;
 import org.rifidi.emulator.io.protocol.Protocol;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import org.rifidi.emulator.io.comm.CommunicationException;
 
 /**
  * An extension of the BufferedCommunication class which uses a serial port to

@@ -10,12 +10,12 @@
  */
 package org.rifidi.emulator.reader.commandhandler;
 
-import java.lang.reflect.*;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.rifidi.emulator.reader.command.CommandObject;
 import org.rifidi.emulator.reader.command.exception.GenericExceptionHandler;
 import org.rifidi.emulator.reader.module.abstract_.AbstractReaderSharedResources;
