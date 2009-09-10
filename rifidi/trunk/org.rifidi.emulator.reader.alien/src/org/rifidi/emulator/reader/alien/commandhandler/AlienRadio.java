@@ -455,7 +455,6 @@ public class AlienRadio {
 			antennaList.add(3);
 			for (String i : splitString) {
 				try {
-//					System.out.println("Parsing an int: " + i);
 					int antenna = Integer.parseInt(i);
 					if (!antennaList.contains(antenna)) {
 						String cur = arg.getCurrentQueryName();

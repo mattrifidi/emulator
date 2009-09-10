@@ -53,8 +53,6 @@ public class GenericRadio implements Observer {
 	 */
 	private static Log logger = LogFactory.getLog(GenericRadio.class);
 
-	private static Log eventLogger = LogFactory.getLog("EventLogger");
-
 	/**
 	 * The time for a complete scan of tags
 	 */
@@ -161,7 +159,7 @@ public class GenericRadio implements Observer {
 			logger.debug("scantime was longer than minScanTime");
 		}
 
-		eventLogger.info("[TAG EVENT]: Latest scan found " + readTags.size()
+		logger.debug("[TAG EVENT]: Latest scan found " + readTags.size()
 				+ " tags on " + antennaIDs.size() + " antennas");
 
 		return readTags;

@@ -36,8 +36,6 @@ public class C1G2Operations {
 	 */
 	private static Log logger = LogFactory.getLog(C1G2Operations.class);
 
-	private static Log eventLogger = LogFactory.getLog("EventLogger");
-
 	public static byte[] C1G2ReadTagMem(C1G2Tag tag, int memoryBank,
 			int wordPtr, int wordCount, byte accessPassword[])
 			throws InvalidMemoryAccessException, AuthenticationException {
@@ -60,16 +58,18 @@ public class C1G2Operations {
 		tag.sendPassword(accessPassword);
 
 		bytes = tag.readMemory(mb, wordPtr, wordCount);
-		eventLogger.info("[TAG EVENT]: " + wordCount * 2 + " bytes read from "
-				+ mb);
+		logger
+				.debug("[TAG EVENT]: " + wordCount * 2 + " bytes read from "
+						+ mb);
 
 		return bytes;
 	}
 
-	public static void C1G2WriteTagMem(C1G2Tag tag, Long entityID, int memoryBank,
-			int wordPtr, byte[] writeData, byte[] accessPassword,
-			ClientCallbackInterface callback, Antenna antenna)
-			throws AuthenticationException, InvalidMemoryAccessException {
+	public static void C1G2WriteTagMem(C1G2Tag tag, Long entityID,
+			int memoryBank, int wordPtr, byte[] writeData,
+			byte[] accessPassword, ClientCallbackInterface callback,
+			Antenna antenna) throws AuthenticationException,
+			InvalidMemoryAccessException {
 
 		TagConstants mb = null;
 
@@ -94,7 +94,7 @@ public class C1G2Operations {
 			tag.sendPassword(accessPassword);
 
 			tag.writeMemory(mb, wordPtr, writeData);
-			eventLogger.info("[TAG EVENT]: Wrote " + writeData.length
+			logger.debug("[TAG EVENT]: Wrote " + writeData.length
 					+ " bytes to " + mb);
 
 		} catch (AuthenticationException ex) {
@@ -117,11 +117,12 @@ public class C1G2Operations {
 
 	}
 
-	public static void C1G2WriteID(C1G2Tag tag,  Long tagEntityID, byte[] newID,
+	public static void C1G2WriteID(C1G2Tag tag, Long tagEntityID, byte[] newID,
 			byte[] accessPassword, ClientCallbackInterface callback, Antenna ant)
 			throws AuthenticationException, InvalidMemoryAccessException {
 
-		C1G2WriteTagMem(tag, tagEntityID, 1, 2, newID, accessPassword, callback, ant);
+		C1G2WriteTagMem(tag, tagEntityID, 1, 2, newID, accessPassword,
+				callback, ant);
 
 	}
 
@@ -129,7 +130,7 @@ public class C1G2Operations {
 			throws AuthenticationException {
 
 		c1g2tag.kill(killPassword);
-		eventLogger.info("[TAG EVENT]: Tag with ID "
+		logger.debug("[TAG EVENT]: Tag with ID "
 				+ ByteAndHexConvertingUtility.toHexString(c1g2tag.getId())
 				+ " killed");
 
@@ -169,7 +170,7 @@ public class C1G2Operations {
 
 		tag.sendPassword(password);
 		tag.lock(mb, ls);
-		eventLogger.info("[TAG EVENT]: Tag with ID "
+		logger.debug("[TAG EVENT]: Tag with ID "
 				+ ByteAndHexConvertingUtility.toHexString(tag.readId())
 				+ " state changed to " + ls + " state");
 

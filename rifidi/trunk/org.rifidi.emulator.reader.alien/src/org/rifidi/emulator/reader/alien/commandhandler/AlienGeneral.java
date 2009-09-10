@@ -61,11 +61,9 @@ public class AlienGeneral {
 			ArrayList<Float> floatArray = new ArrayList<Float>();
 
 			for (String i : splitString) {
-				// System.out.println("1VALUE SPLITSTRING: " + i);
 				i = i.trim();
 				String[] splitFloats = i.split(" ");
 				for (String f : splitFloats) {
-					// System.out.println("2VALUE SPLITSTRING: " + f);
 					if (!f.equals("")) {
 						floatArray.add(Float.valueOf(f));
 					}
@@ -111,11 +109,9 @@ public class AlienGeneral {
 			ArrayList<Float> floatArray = new ArrayList<Float>();
 
 			for (String i : splitString) {
-				// System.out.println("1VALUE SPLITSTRING: " + i);
 				i = i.trim();
 				String[] splitFloats = i.split(" ");
 				for (String f : splitFloats) {
-					// System.out.println("2VALUE SPLITSTRING: " + f);
 					if (!f.equals("")) {
 						floatArray.add(Float.valueOf(f));
 					}
@@ -325,7 +321,6 @@ public class AlienGeneral {
 			AbstractReaderSharedResources asr) {
 		ReaderProperty rp = asr.getPropertyMap().get(
 				arg.getDisplayName().toLowerCase());
-		System.out.println("The readerProperty: " + rp);
 		rp.setPropertyValue(String.valueOf(AlienUptime.getInstance()
 				.getUptimeInSeconds()));
 		return AlienCommon.getter_setter(arg, asr);

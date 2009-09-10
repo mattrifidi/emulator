@@ -42,10 +42,7 @@ public class Antenna extends Observable {
 	/**
 	 * The log4j logger for this class.
 	 */
-	@SuppressWarnings("unused")
 	private static Log logger = LogFactory.getLog(Antenna.class);
-	
-	private static Log eventLogger = LogFactory.getLog("EventLogger");
 
 	/**
 	 * This is the Name of the Antenna ( "antenna[index]" e.g. antenna1)
@@ -113,7 +110,7 @@ public class Antenna extends Observable {
 			}
 
 		}
-		eventLogger.info("[TAG EVENT]: "+ids.size() + " tags removed from antenna " + this.ID + " on reader " + readerName);
+		logger.debug("[TAG EVENT]: "+ids.size() + " tags removed from antenna " + this.ID + " on reader " + readerName);
 		// notify radio that tags on radio have changed
 		this.setChanged();
 		this.notifyObservers();
@@ -137,7 +134,7 @@ public class Antenna extends Observable {
 			if (!addTag(t))
 				success = false;
 		}
-		eventLogger.info("[TAG EVENT]: "+tagsToAdd.size() + " tags added to antenna " + this.ID + " on reader " + readerName);
+		logger.debug("[TAG EVENT]: "+tagsToAdd.size() + " tags added to antenna " + this.ID + " on reader " + readerName);
 		// Tell radio that the tags on the antenna have changed
 		this.setChanged();
 		this.notifyObservers();
