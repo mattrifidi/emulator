@@ -69,14 +69,16 @@ public class AwidAutonomous {
 
 		if (awidSR.isRf_power()) {
 			for (RifidiTag i : tagList) {
-				String returnValue = "15 20 00 ";
+				
 				if (i.getTagGen().equals(TagGen.GEN2)) {
+					String returnValue = "20 00 ";
 					returnValue += AwidCommon.formatTagString("30"
 							+ "00"
 							+ ByteAndHexConvertingUtility.toHexString(
 									i.getTag().readId()).replace(" ", "")
 							+ getCRC(i));
-					retVal.add(returnValue);
+					this.getPrefix(returnValue);
+					retVal.add(this.getPrefix(returnValue));
 				}
 			}
 		}
@@ -115,9 +117,10 @@ public class AwidAutonomous {
 		if (awidSR.isRf_power()) {
 			for (RifidiTag i : tagList) {
 				if (i.getTagGen().equals(TagGen.GEN1)) {
-					retVal.add("12 16 00 "
+					String tempString1 = "16 00 "
 							+ ByteAndHexConvertingUtility.toHexString(i
-									.getTag().readId()));
+									.getTag().readId());
+					retVal.add(this.getPrefix(tempString1));
 				}
 			}
 		}
@@ -162,9 +165,11 @@ public class AwidAutonomous {
 		if (awidSR.isRf_power()) {
 			for (RifidiTag i : tagList) {
 				if (i.getTagGen().equals(TagGen.GEN1)) {
-					retVal.add("12 16 11 "
+					String tempString1 = "16 11 "
 							+ ByteAndHexConvertingUtility.toHexString(i
-									.getTag().readId()) + " 20");
+									.getTag().readId()) + " 20";
+
+					retVal.add(this.getPrefix(tempString1));
 				}
 			}
 		}
@@ -208,12 +213,13 @@ public class AwidAutonomous {
 		if (awidSR.isRf_power()) {
 			for (RifidiTag i : tagList) {
 				if (i.getTagGen().equals(TagGen.GEN2)) {
-					retVal.add("16 20 11 "
+					String tempString1 = "30 00 "
 							+ AwidCommon.formatTagString("30"
 									+ "00"
 									+ ByteAndHexConvertingUtility.toHexString(
 											i.getTag().readId()).replace(" ",
-											"") + getCRC(i)));
+											"") + getCRC(i));
+					retVal.add(this.getPrefix(tempString1));
 				}
 			}
 		}
@@ -224,6 +230,12 @@ public class AwidAutonomous {
 		arg.setReturnValue(retVal);
 
 		return arg;
+	}
+
+	private String getPrefix(String data) {
+		Integer count = ((data.length() + 1) / 3) + 3;
+		String retVal = Integer.toHexString(count) + " " + data;
+		return retVal;
 	}
 
 	public String getCRC(RifidiTag tag) {

@@ -33,7 +33,7 @@
 		</commandHandlerDetails>
 		<actionTag>IGNORE</actionTag>
 		<category>NONE</category>
-		<defaultValue>00 17 00 00 46 69 72 6D 77 61 72 65 20 56 65 72 20 33 2E 30 38 4D</defaultValue>
+		<defaultValue>00 17 00 00 46 69 72 6d 77 61 72 65 20 56 65 72 20 32 2E 32 32 4E</defaultValue>
 	</Command>
 
 	<Command>
@@ -63,7 +63,7 @@
 		</commandHandlerDetails>
 		<actionTag>IGNORE</actionTag>
 		<category>NONE</category>
-		<defaultValue>00 11 00 08 3F 30 34 2E 30 32 2C 30 34 2E 30 32</defaultValue>
+		<defaultValue>00 11 00 08 00 30 35 2E 31 31 00 30 35 2E 31 31</defaultValue>
 	</Command>
 
 	<Command>
@@ -93,7 +93,7 @@
 		</commandHandlerDetails>
 		<actionTag>EDITABLE</actionTag>
 		<category>GENERAL</category>
-		<defaultValue>48</defaultValue>
+		<defaultValue>00 07 00 01 01 4F</defaultValue>
 	</Command>
 
 	<Command>
@@ -138,7 +138,7 @@
 		</commandHandlerDetails>
 		<actionTag>IGNORE</actionTag>
 		<category>NONE</category>
-		<defaultValue>00 19 00 0B 00 04 00 21 01 FF FF FF FF 64 64 FF FF C8 C8 D6 D6 FF FF 89</defaultValue>
+		<defaultValue>00 19 00 0B 00 04 00 12 01 FF FF FF FF 32 32 FF FF 64 64 00 00 32 32 0C</defaultValue>
 	</Command>
 
 	<Command>
