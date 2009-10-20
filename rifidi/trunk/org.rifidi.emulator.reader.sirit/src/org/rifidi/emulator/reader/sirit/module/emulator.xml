@@ -10,7 +10,7 @@
 		<display>ip address</display>
 		<tooltip>The address the reader should be reachable through</tooltip>
 		<defaultvalue>127.0.0.1</defaultvalue>		
-		<validatorclassname>IpAddressValidator</validatorclassname>
+		<validatorclassname>ReaderNameValidator</validatorclassname>
 	</property>
 	<property>
 		<required>1</required>
@@ -18,7 +18,7 @@
 		<display>communication port</display>
 		<tooltip>The port on which the client communicates with the reader</tooltip>
 		<defaultvalue>50007</defaultvalue>		
-		<validatorclassname></validatorclassname>
+		<validatorclassname>PositiveIntegerValidator</validatorclassname>
 	</property>
 	<property>
 		<required>1</required>
@@ -26,6 +26,6 @@
 		<display>event port</display>
 		<tooltip>The port on which the readersends its event messages</tooltip>
 		<defaultvalue>50008</defaultvalue>		
-		<validatorclassname></validatorclassname>
+		<validatorclassname>PositiveIntegerValidator</validatorclassname>
 	</property>
 </reader>

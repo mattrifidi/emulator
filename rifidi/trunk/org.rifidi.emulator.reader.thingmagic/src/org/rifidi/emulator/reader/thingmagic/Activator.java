@@ -15,36 +15,40 @@ import java.util.Hashtable;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
-import org.rifidi.emulator.reader.module.ReaderModule;
-import org.rifidi.emulator.reader.thingmagic.module.ThingMagicReaderModule;
-
-
+import org.rifidi.emulator.reader.module.ReaderModuleFactory;
+import org.rifidi.emulator.reader.thingmagic.module.ThingMagicReaderModuleFactory;
 
 /**
  * The activator class controls the plug-in life cycle
  * 
  * @author Jerry Maine - jerry@pramari.com
- *
+ * 
  */
-public class Activator implements BundleActivator  {
-
+public class Activator implements BundleActivator {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
+	 * 
+	 * @see
+	 * org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext
+	 * )
 	 */
 	public void start(BundleContext context) throws Exception {
 		System.out.println("Registered org.rifidi.emulator.reader.thingmagic");
-		context.registerService(new String[]{ReaderModule.class.getName()}, new ThingMagicReaderModule(), new Hashtable());
+		context.registerService(new String[] { ReaderModuleFactory.class.getName() },
+				new ThingMagicReaderModuleFactory(), new Hashtable());
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
+	 * 
+	 * @see
+	 * org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext
+	 * )
 	 */
 	public void stop(BundleContext context) throws Exception {
-		System.out.println("Shutting down org.rifidi.emulator.reader.thingmagic");
+		System.out
+				.println("Shutting down org.rifidi.emulator.reader.thingmagic");
 	}
-
 
 }

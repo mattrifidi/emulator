@@ -11,6 +11,9 @@
  */
 package org.rifidi.ui.common.reader.blueprints;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /**
  * Blueprint for properties defined in the Emulator.xml
  * 
@@ -27,6 +30,8 @@ public class PropertyBlueprint {
 	private String defaultvalue;
 
 	private String tooltip;
+	
+	private Log logger = LogFactory.getLog(PropertyBlueprint.class);
 
 	@SuppressWarnings("unchecked")
 	private Class validatorclass;
@@ -106,7 +111,7 @@ public class PropertyBlueprint {
 			this.validatorclass = getClass().getClassLoader().loadClass(
 					validatorclass);
 		} catch (ClassNotFoundException cnfe) {
-			cnfe.printStackTrace();
+			logger.warn("No validator found: " + validatorclass);
 		}
 	}
 
