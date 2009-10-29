@@ -1,8 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Rifidi Llrp Reader Plug-in
+Bundle-Name: Rifidi LLRP Reader Plug-in
 Bundle-SymbolicName: org.rifidi.emulator.reader.llrp
-Bundle-Version: 2.3.0
+Bundle-Version: 2.3.1
 Bundle-Activator: org.rifidi.emulator.reader.llrp.Activator
 Bundle-Vendor: Pramari, LLC
 Bundle-Localization: plugin

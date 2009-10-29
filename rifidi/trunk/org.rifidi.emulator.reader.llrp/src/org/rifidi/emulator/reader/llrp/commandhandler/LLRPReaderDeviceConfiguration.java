@@ -621,19 +621,21 @@ public class LLRPReaderDeviceConfiguration {
 									.addAirProtocolSupported(AirProtocolEnums.Unspecified);
 						}
 					}
-					as.setRecieverSensitivityTableIndex(ac.getRFReceiverParam()
-							.getReceiverSensitivity());
-
-					as.setChannelIndex(ac.getRFTransmitterParam()
-							.getChannelIndex());
-					as
-							.setHopTableID(ac.getRFTransmitterParam()
-									.getHopTableId());
-					/**
-					 * TODO: not sure if this is right
-					 */
-					as.setTransmitPowerTableIndex(ac.getRFTransmitterParam()
-							.getTransmitPower());
+					if (ac.getRFReceiverParam() != null) {
+						as.setRecieverSensitivityTableIndex(ac
+								.getRFReceiverParam().getReceiverSensitivity());
+					}
+					if (ac.getRFTransmitterParam() != null) {
+						as.setChannelIndex(ac.getRFTransmitterParam()
+								.getChannelIndex());
+						as.setHopTableID(ac.getRFTransmitterParam()
+								.getHopTableId());
+						/**
+						 * TODO: not sure if this is right
+						 */
+						as.setTransmitPowerTableIndex(ac
+								.getRFTransmitterParam().getTransmitPower());
+					}
 				} else {
 					status.setErrorCode((short) 100);
 					status
@@ -690,7 +692,7 @@ public class LLRPReaderDeviceConfiguration {
 			props.roReportFormat_Global.enableTagSeenCount = rrs
 					.getTagReportContentSelectorParam().getEnableTagSeenCount();
 
-			try{
+			try {
 				AirProtocolSpecificEPCMemorySelector memSel = rrs
 						.getTagReportContentSelectorParam()
 						.getAirProtocolSpecificEPCMemorySelectorParam(0);
@@ -701,15 +703,15 @@ public class LLRPReaderDeviceConfiguration {
 							.getEnableCRC();
 					props.roReportFormat_Global.enablePC = c1g2memSel
 							.getEnablePCBits();
-				
-			}
-			}catch(IndexOutOfBoundsException e){
+
+				}
+			} catch (IndexOutOfBoundsException e) {
 				status.setErrorCode((short) 100);
 				status.setErrorDescription("No Air Protocol Specific EPC "
 						+ "Memory Selector"
 						+ " Parameter in RoReportSpec parameter");
 			}
-				
+
 			logger.debug("set ro report spec");
 		}
 

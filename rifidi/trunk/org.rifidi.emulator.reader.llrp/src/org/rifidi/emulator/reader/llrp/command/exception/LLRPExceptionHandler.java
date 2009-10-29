@@ -68,9 +68,7 @@ public class LLRPExceptionHandler extends GenericExceptionHandler {
 
 		llrpstat.setErrorDescription("Internal error in Rifidi "
 				+ "when processing a message of type "
-				+ LLRPUtilities.calculateMessageNumber(com)
-				+ " Please report error at "
-				+ "rifidi sourceforge page");
+				+ LLRPUtilities.calculateMessageNumber(com));
 		em.setLLRPStatusParam(llrpstat);
 
 		
