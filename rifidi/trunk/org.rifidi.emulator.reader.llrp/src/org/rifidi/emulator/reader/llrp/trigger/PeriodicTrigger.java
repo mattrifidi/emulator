@@ -77,7 +77,6 @@ public class PeriodicTrigger implements TimerTrigger, Observer {
 		this.period = period;
 		extraInfo = new ArrayList<Object>();
 		extraInfo.add(this.getClass());
-		stopTimer = false;
 		this.offset = offset;
 	}
 
@@ -99,6 +98,7 @@ public class PeriodicTrigger implements TimerTrigger, Observer {
 
 	public void startTimer() {
 		logger.debug("Starting Offset timer...");
+		stopTimer=false;
 		initial_start = new Timer(offset);
 		initial_start.addObserver(this);
 		Thread t = new Thread(initial_start, INITIAL_START_TIMER);

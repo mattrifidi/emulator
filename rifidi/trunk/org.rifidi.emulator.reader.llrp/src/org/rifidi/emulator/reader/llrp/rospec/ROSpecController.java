@@ -125,7 +125,7 @@ public class ROSpecController implements Observer {
 			PeriodicTrigger pt = (PeriodicTrigger) rospecToAdd
 					.getStartTrigger();
 			pt.setTriggerObservable(ss);
-			pt.startTimer();
+			//pt.startTimer();
 		}
 		if(rospecToAdd.getStartTrigger() instanceof ImmediateTrigger){
 			rospecToAdd.getStartTrigger().setTriggerObservable(ss);
@@ -160,6 +160,10 @@ public class ROSpecController implements Observer {
 		if (spec.getStartTrigger() instanceof ImmediateTrigger) {
 			return startROSpec(rospecToEnable);
 
+		}
+		
+		if (spec.getStartTrigger() instanceof PeriodicTrigger) {
+			((PeriodicTrigger) spec.getStartTrigger()).startTimer();
 		}
 		
 		return true;
