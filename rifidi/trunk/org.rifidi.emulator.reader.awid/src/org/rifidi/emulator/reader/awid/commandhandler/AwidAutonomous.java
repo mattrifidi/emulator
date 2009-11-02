@@ -86,6 +86,56 @@ public class AwidAutonomous {
 
 		return arg;
 	}
+	
+	/**
+	 * Single tag meter for EPC C1 Gen2 tags.
+	 * 
+	 * @param arg
+	 *            The CommandObject which contains the information from the
+	 *            method.
+	 * @return The CommandObject, unmodified if the command was a get, modified
+	 *         if it was a set.
+	 */
+	public CommandObject gen2_portal(CommandObject arg,
+			AbstractReaderSharedResources asr) {
+		logger.debug("calling single_epc_c1_gen2");
+
+		AwidReaderSharedResources awidSR = (AwidReaderSharedResources) asr;
+
+		GenericRadio newRadio = awidSR.getRadio();
+		
+		
+
+		logger.debug("before scan");
+
+		newRadio.scan(null, awidSR.getTagMemory());
+		logger.debug("after scan");
+
+		AwidTagMemory memory = (AwidTagMemory) asr.getTagMemory();
+		ArrayList<RifidiTag> tagList = (ArrayList<RifidiTag>) memory
+				.getTagReport();
+
+		ArrayList<Object> retVal = new ArrayList<Object>();
+
+		if (awidSR.isRf_power()) {
+			for (RifidiTag i : tagList) {
+				
+				if (i.getTagGen().equals(TagGen.GEN2)) {
+					String returnValue = "20 00 ";
+					returnValue += AwidCommon.formatTagString("30"
+							+ "00"
+							+ ByteAndHexConvertingUtility.toHexString(
+									i.getTag().readId()).replace(" ", "")
+							+ getCRC(i));
+					this.getPrefix(returnValue);
+					retVal.add(this.getPrefix(returnValue));
+				}
+			}
+		}
+		arg.setReturnValue(retVal);
+
+		return arg;
+	}
 
 	/**
 	 * Single tag meter for EPC C1 Gen1 tags.

@@ -594,13 +594,41 @@
 		<queryName>07_17_1E</queryName>
 		<queryName>07_1A_1E</queryName>
 		<queryName>07_1B_1E</queryName>
-		<queryName>07_20_1E</queryName>
 		<queryName>PORTAL_IDS</queryName>
 		<displayName>portal_ids</displayName>
 		<commandState>Interactive</commandState>
 		<commandHandlerDetails>
 			<handlerClass>org.rifidi.emulator.reader.awid.commandhandler.AwidTagReader</handlerClass>
 			<handlerMethod>portal_ids</handlerMethod>
+			<argumentType>String</argumentType>
+		</commandHandlerDetails>
+		<actionTag>IGNORE</actionTag>
+		<category>NONE</category>
+		<defaultValue></defaultValue>
+	</Command>
+	
+	<Command>
+		<queryName>07_20_1E</queryName>
+		<queryName>GEN2_PORTAL_HANDLER</queryName>
+		<displayName>gen2_portal_handler</displayName>
+		<commandState>Interactive</commandState>
+		<commandHandlerDetails>
+			<handlerClass>org.rifidi.emulator.reader.awid.commandhandler.AwidTagReader</handlerClass>
+			<handlerMethod>gen2_portal_handler</handlerMethod>
+			<argumentType>String</argumentType>
+		</commandHandlerDetails>
+		<actionTag>IGNORE</actionTag>
+		<category>NONE</category>
+		<defaultValue></defaultValue>
+	</Command>
+	
+	<Command>
+		<queryName>GEN2_PORTAL</queryName>
+		<displayName>gen2_portal</displayName>
+		<commandState>Autonomous</commandState>
+		<commandHandlerDetails>
+			<handlerClass>org.rifidi.emulator.reader.awid.commandhandler.AwidAutonomous</handlerClass>
+			<handlerMethod>gen2_portal</handlerMethod>
 			<argumentType>String</argumentType>
 		</commandHandlerDetails>
 		<actionTag>IGNORE</actionTag>
