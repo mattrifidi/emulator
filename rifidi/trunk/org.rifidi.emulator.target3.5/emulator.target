@@ -5,9 +5,7 @@
 <locations>
 <location path="${workspace_loc}/org.rifidi.binary/thirdparty" type="Directory"/>
 <location path="${workspace_loc}/org.rifidi.emulator.target3.5/other" type="Directory"/>
-<location path="${workspace_loc}/org.rifidi.emulator.target3.5/plugins" type="Directory"/>
-<location path="${workspace_loc}/org.rifidi.emulator.target3.5/deltapack" type="Directory"/>
-<location path="${workspace_loc}/org.rifidi.emulator.target3.5/source" type="Directory"/>
 <location path="${workspace_loc}/org.rifidi.binary/rifidi" type="Directory"/>
+<location path="${workspace_loc}/org.rifidi.emulator.target3.5" type="Directory"/>
 </locations>
 </target>
