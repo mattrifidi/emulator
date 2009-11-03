@@ -120,20 +120,22 @@ public class ROSpecController implements Observer {
 		this.disabledList.put(rospecToAdd.getId(), rospecToAdd);
 
 		rospecToAdd.setCurrentState(STATE_DISABLED);
-		
+
 		if (rospecToAdd.getStartTrigger() instanceof PeriodicTrigger) {
 			PeriodicTrigger pt = (PeriodicTrigger) rospecToAdd
 					.getStartTrigger();
 			pt.setTriggerObservable(ss);
-			//pt.startTimer();
+			// pt.startTimer();
 		}
-		if(rospecToAdd.getStartTrigger() instanceof ImmediateTrigger){
+		if (rospecToAdd.getStartTrigger() instanceof ImmediateTrigger) {
 			rospecToAdd.getStartTrigger().setTriggerObservable(ss);
 		}
-		if(rospecToAdd.getStartTrigger() instanceof GPIWithTimeoutTrigger){
+		if (rospecToAdd.getStartTrigger() instanceof GPIWithTimeoutTrigger) {
 			rospecToAdd.getStartTrigger().setTriggerObservable(ss);
 		}
-		
+
+		logger.info("ROSpec Added: " + rospecToAdd.getId());
+
 		return true;
 	}
 
@@ -156,18 +158,20 @@ public class ROSpecController implements Observer {
 		this.disabledList.remove(rospecToEnable);
 		spec.setCurrentState(STATE_INACTIVE);
 
+		logger.info("ROSpec enabled: " + rospecToEnable);
+
 		/* If the rospec has an Immediate trigger, start it now */
 		if (spec.getStartTrigger() instanceof ImmediateTrigger) {
 			return startROSpec(rospecToEnable);
 
 		}
-		
+
 		if (spec.getStartTrigger() instanceof PeriodicTrigger) {
 			((PeriodicTrigger) spec.getStartTrigger()).startTimer();
 		}
-		
+
 		return true;
-		
+
 	}
 
 	/**
@@ -222,9 +226,10 @@ public class ROSpecController implements Observer {
 				trig.setTriggerObservable(ss);
 			}
 
-			logger.debug("Starting ROSpec with ID " + rospecToStart);
 			rs.execute();
-
+			if(logger.isDebugEnabled()){
+				logger.debug("ROSpec started: " + rospecToStart);
+			}
 			return true;
 		}
 	}
@@ -266,7 +271,6 @@ public class ROSpecController implements Observer {
 			ss.fireStopTrigger(this.getClass());
 			return true;
 		} else {
-			logger.debug("stopping ROSpec");
 			stopSpec.stop();
 
 			if (stopSpec.getStopTrigger() instanceof TimerTrigger) {
@@ -280,6 +284,10 @@ public class ROSpecController implements Observer {
 
 			int nextState = this.afterStopStateList.get(rospecToStop);
 
+			if (logger.isDebugEnabled()) {
+				logger.debug("ROSpec stopped: " + stopSpec.getId());
+			}
+
 			/*
 			 * If the rospec should make an additional transition, as noted by
 			 * the nextState variable, do it here
@@ -289,7 +297,7 @@ public class ROSpecController implements Observer {
 			} else if (nextState == STATE_DELETED) {
 				return deleteROSpec(stopSpec.getId());
 			}
-			
+
 			return true;
 		}
 	}
@@ -334,6 +342,8 @@ public class ROSpecController implements Observer {
 			this.disabledList.put(rospecToDisable, allROSpecs
 					.get(rospecToDisable));
 			rs.setCurrentState(STATE_DISABLED);
+
+			logger.info("ROSpec Disabled: " + rs.getId());
 			return true;
 		}
 		/* Else active list contains rospec. Must stop it and then disable it. */
@@ -382,15 +392,16 @@ public class ROSpecController implements Observer {
 		this.executionStateList.remove(rospecToDelete);
 		this.afterStopStateList.remove(rospecToDelete);
 
+		logger.info("ROSpec deleted: " + rospecToDelete);
 		return true;
 	}
-	
-	public void cleanUp(){
-			Iterator<_ROSpec> iter = allROSpecs.values().iterator();
-			while(iter.hasNext()){
-				_ROSpec current = iter.next();
-				this.deleteROSpec(current.getId());
-			}
+
+	public void cleanUp() {
+		Iterator<_ROSpec> iter = allROSpecs.values().iterator();
+		while (iter.hasNext()) {
+			_ROSpec current = iter.next();
+			this.deleteROSpec(current.getId());
+		}
 
 	}
 
@@ -415,39 +426,15 @@ public class ROSpecController implements Observer {
 
 			// If rospec stop trigger
 			if (newState == false) {
-				if (callingClass.equals(DurationTrigger.class)) {
-					logger.debug("ROSpec Stop Trigger fired"
-							+ " by Duration Trigger");
-				} else if (callingClass.equals(GPIWithTimeoutTrigger.class)) {
-					logger.debug("ROSpec Stop Trigger fired by GPI Trigger");
-				} else if (callingClass.equals(this.getClass())) {
-					logger.debug("ROSpec Stop Trigger fired "
-							+ "by STOP_ROSPEC Message or because the last "
-							+ "AISpec finished executing");
-				} else {
-					logger.debug("Unidentified class stopped ROSpec: "
-							+ callingClass);
-				}
 				this.stopROSpec(rospecID);
-
-				
+				if (this.allROSpecs.get(rospecID).getStartTrigger() instanceof ImmediateTrigger) {
+					ImmediateTrigger trig = (ImmediateTrigger) this.allROSpecs
+							.get(rospecID).getStartTrigger();
+					trig.restartRoSpec();
+				}
 			}
 			// if rospec start trigger
 			else {
-				if (callingClass.equals(this.getClass())) {
-					logger.debug("ROSpec Start Trigger fired by START_ROSPEC "
-							+ "Message or Immediate Trigger");
-				} else if (callingClass.equals(PeriodicTrigger.class)) {
-					logger
-							.debug("ROSpec Start Trigger fired by Periodic Trigger");
-				} else if (callingClass.equals(GPIWithTimeoutTrigger.class)) {
-					logger.debug("ROSpec Start Trigger Fired by GPI Trigger");
-				} else if (callingClass.equals(ImmediateTrigger.class)) {
-					logger.debug("ROSpec Start Trigger Fired by Immediate Trigger");
-				} else {
-					logger.debug("Unidentified class started ROSPec: "
-							+ callingClass);
-				}
 				this.startROSpec(rospecID);
 			}
 

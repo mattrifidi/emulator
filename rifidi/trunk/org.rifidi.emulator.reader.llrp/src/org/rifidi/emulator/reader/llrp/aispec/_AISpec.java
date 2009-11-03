@@ -179,13 +179,6 @@ public class _AISpec implements Observer {
 		totalSuspendTime = 0;
 		lastSuspendTime = 0;
 
-		if (lastAISPecExecution == 0) {
-			logger.debug("Starting AISpec for first time");
-		} else {
-			logger.debug("Starting AISpec.  Real time since last "
-					+ "AISpec execution: "
-					+ (System.currentTimeMillis() - lastAISPecExecution));
-		}
 		lastAISPecExecution = System.currentTimeMillis();
 
 		while (readMoreTags) {
@@ -194,8 +187,7 @@ public class _AISpec implements Observer {
 				try {
 					Thread.sleep(500);
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					Thread.currentThread().interrupt();
 				}
 			}
 
@@ -208,7 +200,7 @@ public class _AISpec implements Observer {
 			for (RifidiTag t : tagMem.getTagReport()) {
 
 				t.incrementReadCount();
-				
+
 				TagReportData trd = LLRPReportController.formatTagReport(
 						getReportFormat(), t, roSpecID, specIndex, llrpsr);
 
@@ -241,36 +233,28 @@ public class _AISpec implements Observer {
 									.getReportController(
 											this.llrpsr.getReaderName())
 									.sendAllReports(llrpsr, getReportFormat().N);
-
-							logger.debug("Sent a report because"
-									+ " of N tag trigger");
-
 						}
 					}
 				}
 			}
-			
 
 			// if we are using Tag Observation Trigger, update it with new tags
 			if (this.stopTrigger instanceof TagObservationTrigger) {
 				TagObservationTrigger trig = (TagObservationTrigger) stopTrigger;
 				trig.updateTagTrigger(tagMem.getTagReport().size());
 			}
-			
+
 			tagMem.clear();
 
 			// wait so that this while loop is not so expensive
 			try {
 				Thread.sleep(500);
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+				Thread.currentThread().interrupt();
 			}
 
 		}
 
-		long totalTime = System.currentTimeMillis() - startAISpecTime;
-		logger.debug("Stopping AISpec.  Total time was " + totalTime
-				+ ". ExecutionTime was " + (totalTime - this.totalSuspendTime));
 		if (this.stopTrigger instanceof TimerTrigger) {
 			((TimerTrigger) stopTrigger).stopTimer();
 		}
@@ -400,20 +384,6 @@ public class _AISpec implements Observer {
 			callingClass = (Class) extraInfo.get(1);
 
 			if (newState == false) {
-				if (callingClass.equals(DurationTrigger.class)) {
-					logger.debug("AIStop Trigger fired by Duration Trigger");
-				} else if (callingClass.equals(TagObservationTrigger.class)) {
-					logger
-							.debug("AIStop Trigger fired by Tag Observation Trigger");
-				} else if (callingClass.equals(GPIWithTimeoutTrigger.class)) {
-					logger.debug("AIStop Trigger fired by GPI Trigger");
-				} else if (callingClass.equals(ROSpecExecuter.class)) {
-					logger.debug("AIStop Trigger fired by end of ROSpec");
-				} else {
-					logger.debug("Unidentified class stopped AISpec: "
-							+ callingClass);
-				}
-
 				readMoreTags = false;
 
 				if (!callingClass.equals(ROSpecExecuter.class)) {

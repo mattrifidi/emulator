@@ -27,12 +27,6 @@ public class ImmediateTrigger implements Trigger {
 
 	private boolean shouldRestartAfterResume = false;
 
-	/**
-	 * The logger for this class.
-	 */
-	@SuppressWarnings("unused")
-	private static Log logger = LogFactory.getLog(ImmediateTrigger.class);
-
 	TriggerObservable rospecState;
 
 	public void setTriggerObservable(TriggerObservable specState) {
@@ -44,7 +38,6 @@ public class ImmediateTrigger implements Trigger {
 		if (suspended) {
 			shouldRestartAfterResume = true;
 		} else {
-			logger.debug("RestartRoSpec due to Immediate Trigger");
 			rospecState.fireStartTrigger(this.getClass());
 		}
 	}

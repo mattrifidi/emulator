@@ -27,12 +27,6 @@ import org.rifidi.utilities.Timer;
 public class PeriodicTrigger implements TimerTrigger, Observer {
 
 	/**
-	 * The logger for this class.
-	 */
-	@SuppressWarnings("unused")
-	private static Log logger = LogFactory.getLog(PeriodicTrigger.class);
-
-	/**
 	 * 
 	 */
 	private int period;
@@ -62,6 +56,8 @@ public class PeriodicTrigger implements TimerTrigger, Observer {
 	private long startTime;
 	
 	private boolean suspended = false;
+	
+	private final Log logger = LogFactory.getLog(PeriodicTrigger.class);
 
 	/**
 	 * Constructor for periodic start trigger if it is being used by a
@@ -97,7 +93,6 @@ public class PeriodicTrigger implements TimerTrigger, Observer {
 	}
 
 	public void startTimer() {
-		logger.debug("Starting Offset timer...");
 		stopTimer=false;
 		initial_start = new Timer(offset);
 		initial_start.addObserver(this);
@@ -136,14 +131,8 @@ public class PeriodicTrigger implements TimerTrigger, Observer {
 		if (!stopTimer) {
 			if (arg0 == this.initial_start) {
 				long realoffsetTime = System.currentTimeMillis() - startTime;
-				logger.debug("Offset timer up.  Real offset time was: "
-						+ realoffsetTime + " Execution offset time was "
-						+ (realoffsetTime - totalSuspendTime));
 			} else if (arg0 == this.recurrentTimer) {
 				long realRecurrentTime = System.currentTimeMillis() - startTime;
-				logger.debug("Periodic timer up.  Real period time was: "
-						+ realRecurrentTime + " Execution period time was "
-						+ (realRecurrentTime - totalSuspendTime));
 			}
 			specState.fireStartTrigger(this.getClass());
 			if (period > 0) {
@@ -169,8 +158,6 @@ public class PeriodicTrigger implements TimerTrigger, Observer {
 	}
 
 	public void resume() {
-		logger.debug("resumeing Periodic Trigger");
-		
 		suspended = false;
 		
 		if (initial_start != null) {
@@ -184,8 +171,6 @@ public class PeriodicTrigger implements TimerTrigger, Observer {
 	}
 
 	public void suspend() {
-		logger.debug("suspending Periodic Trigger");
-		
 		suspended = true;
 		
 		if (this.initial_start != null) {

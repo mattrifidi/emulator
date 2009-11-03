@@ -74,7 +74,8 @@ public class TagObservationTrigger implements TimerTrigger, Observer {
 	private boolean suspended = false;
 
 	/**
-	 * The total time this trigger has been suspended.  Do not modify outside of a synchronized block
+	 * The total time this trigger has been suspended. Do not modify outside of
+	 * a synchronized block
 	 */
 	private long suspendedTime = 0;
 
@@ -82,7 +83,7 @@ public class TagObservationTrigger implements TimerTrigger, Observer {
 	 * The last timer that this trigger was suspended
 	 */
 	private long lastSuspendTime = 0;
-	
+
 	private static Log logger = LogFactory.getLog(TagObservationTrigger.class);
 
 	/**
@@ -144,7 +145,8 @@ public class TagObservationTrigger implements TimerTrigger, Observer {
 	public void updateTagTrigger(int numUniqueTagsSeen) {
 		if (triggetType == 0) {
 			if (numUniqueTagsSeen >= this.numOfTags) {
-				logger.debug("Firing a stop trigger because we have seen " + numUniqueTagsSeen + " tags");
+				logger.debug("Firing a stop trigger because we have seen "
+						+ numUniqueTagsSeen + " tags");
 				specState.fireStopTrigger(this.getClass());
 
 			}
@@ -153,7 +155,10 @@ public class TagObservationTrigger implements TimerTrigger, Observer {
 				long msSinceLastUniqueTag = System.currentTimeMillis()
 						- (lastTagSeenTime - suspendedTime);
 				if (msSinceLastUniqueTag >= t) {
-					logger.debug("Firing a stop trigger because it has been over " + msSinceLastUniqueTag + " ms since last new tag read");
+					logger
+							.debug("Firing a stop trigger because it has been over "
+									+ msSinceLastUniqueTag
+									+ " ms since last new tag read");
 					specState.fireStopTrigger(this.getClass());
 				}
 			} else {

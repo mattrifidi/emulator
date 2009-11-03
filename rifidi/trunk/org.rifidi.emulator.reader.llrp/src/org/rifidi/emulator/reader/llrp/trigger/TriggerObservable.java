@@ -31,11 +31,6 @@ public class TriggerObservable extends Observable {
 	private int roSpecNum = -1;
 
 	/**
-	 * The log4j logger for this class.
-	 */
-	private static Log logger = LogFactory.getLog(TriggerObservable.class);
-
-	/**
 	 * The current state of this observable.
 	 */
 	private boolean state;
@@ -96,7 +91,6 @@ public class TriggerObservable extends Observable {
 	 *            The Class who fired this trigger
 	 */
 	private synchronized void setState(boolean newState, Class changer) {
-		logger.debug("Changing state of TriggerObservable to " + newState);
 		this.state = newState;
 		ArrayList<Object> extraInfo = new ArrayList<Object>();
 		extraInfo.add(newState);

@@ -88,8 +88,6 @@ public class LLRPReaderOperationControl {
 	public CommandObject addROSpec(CommandObject arg,
 			AbstractReaderSharedResources asr) {
 
-		logger.debug("Inside ADDROSPEC Handler");
-
 		// Change ConfigurationStateVariable
 		LLRPReaderSharedResources llrpsr = (LLRPReaderSharedResources) asr;
 
@@ -117,6 +115,11 @@ public class LLRPReaderOperationControl {
 		AddROSpec aros = (AddROSpec) m;
 
 		ROSpec roparam = aros.getROSpecParam();
+
+		if (roparam.getROSpecID() < 1) {
+			stat.setErrorCode((short) 100);
+			stat.setErrorDescription("ROSpec cannot have an ID less than 1");
+		}
 
 		// ROspec is in disabled state
 		roparam.setCurrentState((byte) 0);
@@ -436,7 +439,7 @@ public class LLRPReaderOperationControl {
 
 				} else {
 					logger
-							.error("InventoryParameterSpec found but not supported yet");
+							.warn("InventoryParameterSpec found but not supported yet");
 				}
 				// for (int numIPS = 0; numIPS < numInventoryParameterSpecs;
 				// numIPS++) {

@@ -13,6 +13,8 @@ package org.rifidi.emulator.reader.llrp.rospec;
 
 import java.util.ArrayList;
 
+import javax.swing.DebugGraphics;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.rifidi.emulator.reader.llrp.aispec._AISpec;
@@ -98,7 +100,7 @@ public class ROSpecExecuter implements Runnable {
 		try {
 			Thread.sleep(100);
 		} catch (InterruptedException e1) {
-			e1.printStackTrace();
+			Thread.currentThread().interrupt();
 		}
 
 		/* send ROSpec Start Event if enabled */
@@ -127,7 +129,8 @@ public class ROSpecExecuter implements Runnable {
 			format = llrpsr.getProperties().roReportFormat_Global;
 		}
 		int trig = format.reportTrigger;
-		if (trig == 2 && llrpsr.getTagReportDataEntries().getNumDataEntries() > 0) {
+		if (trig == 2
+				&& llrpsr.getTagReportDataEntries().getNumDataEntries() > 0) {
 			LLRPReportControllerFactory.getInstance().getReportController(
 					this.roSpec.getReaderName()).sendAllReports(llrpsr, 0);
 		}
@@ -144,14 +147,9 @@ public class ROSpecExecuter implements Runnable {
 					.getInstance().getReportController(llrpsr.getReaderName());
 			controller.sendEvent(rend);
 		}
-		
-		logger.debug("finished executing ROSpec");
-		
-		//TODO: if immediate trigger, should we restart the rospec?
-		if(roSpec.getStartTrigger() instanceof ImmediateTrigger){
-			//((ImmediateTrigger)roSpec.getStartTrigger()).restartRoSpec();
+		if (logger.isDebugEnabled()) {
+			logger.debug("ROSpec " + roSpec.getId() + "finished executing");
 		}
-
 	}
 
 	/**
@@ -167,9 +165,11 @@ public class ROSpecExecuter implements Runnable {
 			if (keepExecuting) {
 				ai.execute();
 			}
+			if (logger.isDebugEnabled()) {
+				logger.debug("AISpec" + ai.getSpecIndex()
+						+ " finished executing");
+			}
 		}
-		logger.debug("finished executing all AISpecs");
-
 	}
 
 	/**
@@ -184,9 +184,6 @@ public class ROSpecExecuter implements Runnable {
 
 	public void setSpecsToExecute(ArrayList<_AISpec> specsToExecute) {
 		this.specsToExecute = specsToExecute;
-		logger.debug("setting the specsToExecute, size is now: "
-				+ this.specsToExecute.size());
-
 	}
 
 }
