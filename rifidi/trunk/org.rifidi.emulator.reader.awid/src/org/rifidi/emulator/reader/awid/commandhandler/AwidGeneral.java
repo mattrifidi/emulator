@@ -379,6 +379,31 @@ public class AwidGeneral {
 	 * @return The CommandObject, unmodified if the command was a get, modified
 	 *         if it was a set.
 	 */
+	public CommandObject antenna_source(CommandObject arg,
+			AbstractReaderSharedResources asr) {
+		AwidReaderSharedResources arsr = (AwidReaderSharedResources) asr;
+		String source = (String) arg.getArguments().get(0);
+
+		if (source != null) {
+			if(source.equals("01")) {
+				arsr.setAntenna_source(true);
+			} else {
+				arsr.setAntenna_source(false);
+			}
+		}
+
+		return (AwidCommon.setter(arg, asr));
+	}
+
+	/**
+	 * 
+	 * 
+	 * @param arg
+	 *            The CommandObject which contains the information from the
+	 *            method.
+	 * @return The CommandObject, unmodified if the command was a get, modified
+	 *         if it was a set.
+	 */
 	public CommandObject debug_message(CommandObject arg,
 			AbstractReaderSharedResources asr) {
 		return (AwidCommon.setter(arg, asr));

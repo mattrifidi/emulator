@@ -31,11 +31,13 @@ import org.rifidi.emulator.reader.command.CommandObject;
 import org.rifidi.emulator.reader.command.controller.BasicCommandControllerOperatingState;
 import org.rifidi.emulator.reader.command.controller.autonomous.AutonomousCommandController;
 import org.rifidi.emulator.reader.command.controller.interactive.InteractiveCommandController;
-import org.rifidi.emulator.reader.command.controller.interactive.LoginAuthenticatedCommandControllerOperatingState;
+import org.rifidi.emulator.reader.command.controller.interactive.WelcomeOnlyUnconnectedCommandControllerOperatingState;
 import org.rifidi.emulator.reader.command.xml.CommandXMLDigester;
 import org.rifidi.emulator.reader.control.adapter.CommandAdapter;
 import org.rifidi.emulator.reader.control.adapter.ReflectiveCommandAdapter;
+import org.rifidi.emulator.reader.control.adapter.searcher.RawCommandSearcher;
 import org.rifidi.emulator.reader.control.adapter.searcher.RelativeCommandSearcher;
+import org.rifidi.emulator.reader.formatter.RawCommandFormatter;
 import org.rifidi.emulator.reader.module.GeneralReaderPropertyHolder;
 import org.rifidi.emulator.reader.module.ReaderModule;
 import org.rifidi.emulator.reader.module.abstract_.AbstractPowerModule;
@@ -59,6 +61,12 @@ public class AwidReaderModule extends AbstractPowerModule implements
 	public static final String XMLLOCATION = "org/rifidi/emulator/reader/awid/module/";
 
 	private boolean rf_power;
+	
+	/**
+	 * The command adapter which is used to allow for login session-based
+	 * support.
+	 */
+	private CommandAdapter loginCommandAdapter;
 
 	/**
 	 * The log4j logger for this class.
@@ -186,6 +194,11 @@ public class AwidReaderModule extends AbstractPowerModule implements
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
 		}
+		
+		/* Unauthenticated */
+		this.loginCommandAdapter = new ReflectiveCommandAdapter("Login",
+				new RawCommandFormatter(), new AwidExceptionHandler(),
+				this.sharedResources, new RawCommandSearcher());
 
 		interactiveCommandAdapter = new ReflectiveCommandAdapter("Interactive",
 				new AwidCommandFormatter(), new AwidExceptionHandler(),
@@ -197,8 +210,8 @@ public class AwidReaderModule extends AbstractPowerModule implements
 				new RelativeCommandSearcher());
 
 		interactiveCommandController = new InteractiveCommandController(
-				new LoginAuthenticatedCommandControllerOperatingState(
-						interactiveCommandAdapter), this.sharedResources
+				new WelcomeOnlyUnconnectedCommandControllerOperatingState(
+						loginCommandAdapter, interactiveCommandAdapter), this.sharedResources
 						.getInteractivePowerSignal(), this.sharedResources
 						.getInteractiveConnectionSignal(),
 				this.interactiveCommunication);

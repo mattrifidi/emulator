@@ -49,6 +49,8 @@ public class AwidReaderSharedResources extends AbstractReaderSharedResources {
 	private ControlSignal<Boolean> autonomousPowerSignal;
 
 	private boolean rf_power;
+	
+	private boolean antenna_source;
 
 	/**
 	 * Constructor for the AwidReaderSharedResouces class.
@@ -79,6 +81,8 @@ public class AwidReaderSharedResources extends AbstractReaderSharedResources {
 		this.rf_power = true;
 	}
 
+	
+	
 	/**
 	 * 
 	 * @return
@@ -115,6 +119,24 @@ public class AwidReaderSharedResources extends AbstractReaderSharedResources {
 	 */
 	public ControlSignal<Boolean> getAutonomousPowerSignal() {
 		return autonomousPowerSignal;
+	}
+
+
+
+	/**
+	 * @param antenna_source the antenna_source to set
+	 */
+	public void setAntenna_source(boolean antenna_source) {
+		this.antenna_source = antenna_source;
+	}
+
+
+
+	/**
+	 * @return the antenna_source
+	 */
+	public boolean isAntenna_source() {
+		return antenna_source;
 	}
 
 }
