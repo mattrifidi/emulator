@@ -33,7 +33,6 @@ public class AwidWelcomeCommandFormatter implements CommandFormatter {
 	public ArrayList<Object> encode(ArrayList<Object> arg) {
 		// ArrayList that holds the return value
 		ArrayList<Object> retVal = new ArrayList<Object>();
-		System.out.println(arg.get(0));
 		String[] strArray = ((String)(arg.get(0))).split(" ");
 		String value = "";
 		for (int i = 0; i < strArray.length; i++) {

@@ -38,7 +38,6 @@ import org.rifidi.emulator.reader.control.adapter.CommandAdapter;
 import org.rifidi.emulator.reader.control.adapter.ReflectiveCommandAdapter;
 import org.rifidi.emulator.reader.control.adapter.searcher.RawCommandSearcher;
 import org.rifidi.emulator.reader.control.adapter.searcher.RelativeCommandSearcher;
-import org.rifidi.emulator.reader.formatter.RawCommandFormatter;
 import org.rifidi.emulator.reader.module.GeneralReaderPropertyHolder;
 import org.rifidi.emulator.reader.module.ReaderModule;
 import org.rifidi.emulator.reader.module.abstract_.AbstractPowerModule;
