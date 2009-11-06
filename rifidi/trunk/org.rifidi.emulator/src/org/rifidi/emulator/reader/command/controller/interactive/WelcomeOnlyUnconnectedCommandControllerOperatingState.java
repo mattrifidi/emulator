@@ -5,7 +5,10 @@ package org.rifidi.emulator.reader.command.controller.interactive;
 
 import java.util.ArrayList;
 
+import org.rifidi.emulator.io.comm.Communication;
+import org.rifidi.emulator.io.comm.CommunicationException;
 import org.rifidi.emulator.reader.command.controller.CommandController;
+import org.rifidi.emulator.reader.command.controller.abstract_.AbstractCommandController;
 import org.rifidi.emulator.reader.command.controller.abstract_.AbstractCommandControllerOperatingState;
 import org.rifidi.emulator.reader.control.adapter.CommandAdapter;
 
@@ -51,13 +54,16 @@ public class WelcomeOnlyUnconnectedCommandControllerOperatingState extends
 			CommandController controller) {
 		ArrayList<Object> retList;
 		String tempMessage = "";
+		
 
 		/* Combine the welcome command handler and login prompt handlers values */
 		retList = this
 				.getCommandAdapter()
 				.executeCommand(
 						LoginUnconnectedCommandControllerOperatingState.WELCOME_COMMAND);
-
+		
+		
+		
 		for (Object obj : retList) {
 			tempMessage += (String) obj;
 		}
@@ -73,31 +79,31 @@ public class WelcomeOnlyUnconnectedCommandControllerOperatingState extends
 				.changeCommandControllerOperatingState(new LoginAuthenticatedCommandControllerOperatingState(
 						this.authenticatedAdapter));
 
+		
 		/* Return the welcome message / login prompt */
 		return retList;
-
 	}
 
-	// /**
-	// * This method initializes the LoginUnconnected Operating State by sending
-	// * the connect command.
-	// */
-	// public void initialize(AbstractCommandController controller,
-	// Communication comm) {
-	// /* Generate a connection command */
-	//
-	// ArrayList<Object> respond = this.processCommand(
-	// AbstractCommandController.CONNECTION_COMMAND, controller);
-	//
-	// for (Object obj : respond) {
-	// try {
-	// comm.sendBytes(((String) obj).getBytes());
-	// } catch (CommunicationException e) {
-	// // TODO Auto-generated catch block
-	// e.printStackTrace();
-	// }
-	// }
-	//
-	// }
+	/**
+	 * This method initializes the LoginUnconnected Operating State by sending
+	 * the connect command.
+	 */
+	public void initialize(AbstractCommandController controller,
+			Communication comm) {
+		/* Generate a connection command */
+
+		ArrayList<Object> respond = this.processCommand(
+				AbstractCommandController.CONNECTION_COMMAND, controller);
+
+		for (Object obj : respond) {
+			try {
+				comm.sendBytes(((String) obj).getBytes());
+			} catch (CommunicationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+	}
 
 }

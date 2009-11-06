@@ -28,7 +28,7 @@ public class RawCommandFormatter implements CommandFormatter {
 	 */
 	public ArrayList<Object> decode(byte[] arg) {
 		ArrayList<Object> tempArrayList = new ArrayList<Object>();
-		tempArrayList.add(arg);
+		tempArrayList.add(new String(arg));
 		return tempArrayList;
 	}
 	
@@ -36,7 +36,6 @@ public class RawCommandFormatter implements CommandFormatter {
 	 * @see org.rifidi.emulator.reader.formatter.CommandFormatter#decode(java.lang.String)
 	 */
 	public ArrayList<Object> encode(ArrayList<Object> arg) {
-		//String returnVal = (String)arg.get(0);
 		return arg;
 	}
 	

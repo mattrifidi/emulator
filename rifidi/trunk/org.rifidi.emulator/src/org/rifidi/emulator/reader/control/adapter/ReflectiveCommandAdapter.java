@@ -108,7 +108,7 @@ public class ReflectiveCommandAdapter implements CommandAdapter {
 				.decode(command);
 
 		ArrayList<Object> commandResponse = new ArrayList<Object>();
-
+		
 		// the command name is the first element
 		String commandName = (String) tempFormattedCommand.get(0);
 		commandName = commandName.toLowerCase();
