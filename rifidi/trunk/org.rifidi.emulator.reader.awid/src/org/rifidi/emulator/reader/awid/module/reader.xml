@@ -27,7 +27,7 @@
 		<commandState>Login</commandState>
 		<commandHandlerDetails>
 			<handlerClass>org.rifidi.emulator.reader.awid.commandhandler.AwidGeneral</handlerClass>
-			<handlerMethod>stop</handlerMethod>
+			<handlerMethod>welcome</handlerMethod>
 			<argumentType>String</argumentType>
 		</commandHandlerDetails>
 		<actionTag>IGNORE</actionTag>

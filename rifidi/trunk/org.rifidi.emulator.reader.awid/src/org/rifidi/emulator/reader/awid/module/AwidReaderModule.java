@@ -26,6 +26,7 @@ import org.rifidi.emulator.io.protocol.RawProtocol;
 import org.rifidi.emulator.reader.awid.command.exception.AwidExceptionHandler;
 import org.rifidi.emulator.reader.awid.formatter.AwidAutonomousCommandFormatter;
 import org.rifidi.emulator.reader.awid.formatter.AwidCommandFormatter;
+import org.rifidi.emulator.reader.awid.formatter.AwidWelcomeCommandFormatter;
 import org.rifidi.emulator.reader.awid.sharedrc.tagmemory.AwidTagMemory;
 import org.rifidi.emulator.reader.command.CommandObject;
 import org.rifidi.emulator.reader.command.controller.BasicCommandControllerOperatingState;
@@ -197,7 +198,7 @@ public class AwidReaderModule extends AbstractPowerModule implements
 		
 		/* Unauthenticated */
 		this.loginCommandAdapter = new ReflectiveCommandAdapter("Login",
-				new RawCommandFormatter(), new AwidExceptionHandler(),
+				new AwidWelcomeCommandFormatter(), new AwidExceptionHandler(),
 				this.sharedResources, new RawCommandSearcher());
 
 		interactiveCommandAdapter = new ReflectiveCommandAdapter("Interactive",

@@ -75,6 +75,22 @@ public class AwidGeneral {
 		logger.debug("Calling the system command");
 		return (AwidCommon.returnDefaultValue(arg, asr));
 	}
+	
+	/**
+	 * Welcome message for the AWID.  
+	 * 
+	 * @param arg
+	 *            The CommandObject which contains the information from the
+	 *            method.
+	 * @return The CommandObject, unmodified if the command was a get, modified
+	 *         if it was a set.
+	 */
+	public CommandObject welcome(CommandObject arg,
+			AbstractReaderSharedResources asr) {
+		System.out.println("Calling the welcome command!");
+		logger.debug("Calling the system command");
+		return (AwidCommon.returnDefaultValue(arg, asr));
+	}
 
 	/**
 	 * 
