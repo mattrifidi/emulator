@@ -87,8 +87,7 @@ public class AwidGeneral {
 	 */
 	public CommandObject welcome(CommandObject arg,
 			AbstractReaderSharedResources asr) {
-		System.out.println("Calling the welcome command!");
-		logger.debug("Calling the system command");
+		logger.debug("Calling the welcome command");
 		return (AwidCommon.returnDefaultValue(arg, asr));
 	}
 

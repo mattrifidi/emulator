@@ -121,7 +121,7 @@ public class AwidAutonomous {
 			for (RifidiTag i : tagList) {
 				
 				if (i.getTagGen().equals(TagGen.GEN2)) {
-					String returnValue = "20 00 ";
+					String returnValue = "20 1E ";
 					returnValue += AwidCommon.formatTagString("30"
 							+ "00"
 							+ ByteAndHexConvertingUtility.toHexString(

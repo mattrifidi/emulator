@@ -68,9 +68,11 @@ public class AwidCommandFormatter implements CommandFormatter {
 		ArrayList<Object> retVal = new ArrayList<Object>();
 		// byte[] byteArray = stringToByteArray((String) arg.get(0));
 
+		
 		if (!arg.isEmpty()) {
 			String str = (String) arg.get(0);
-			if (!str.equalsIgnoreCase("FF") && !str.equalsIgnoreCase("00")
+			//FIXME: Find a better way to do this, right now it sucks.  
+			if (!str.equalsIgnoreCase("FF") && !str.equalsIgnoreCase("00") && !str.equalsIgnoreCase("01")
 					&& !str.equals(new byte[] { 0x00, 0x00 })
 					&& !str.equals("00 00")) {
 				String[] strArray = str.split(" ");
