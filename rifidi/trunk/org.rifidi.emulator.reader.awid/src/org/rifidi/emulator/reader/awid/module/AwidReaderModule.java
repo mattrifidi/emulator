@@ -56,7 +56,7 @@ public class AwidReaderModule extends AbstractPowerModule implements
 
 	public static final String startupText = "<STARTUP>";
 
-	public static final String READERTYPE = "AwidMPR";
+	public static final String READERTYPE = "Awid MPR 2010";
 
 	public static final String XMLLOCATION = "org/rifidi/emulator/reader/awid/module/";
 

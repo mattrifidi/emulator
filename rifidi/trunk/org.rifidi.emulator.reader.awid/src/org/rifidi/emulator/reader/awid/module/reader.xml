@@ -3,7 +3,7 @@
 <ReaderCommand version="1.0">
 
 	<ReaderCompany>AWID</ReaderCompany>
-	<Reader>MPR</Reader>
+	<Reader>MPR 2010</Reader>
 
 	<Command>
 		<queryName>00_00</queryName>

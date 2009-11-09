@@ -1,6 +1,6 @@
 <reader>
 	<readerclassname>org.rifidi.emulator.reader.awid.module.AwidReaderModule</readerclassname>
-	<description>Emulator for the Awid MPR</description>
+	<description>Emulator for the Awid MPR 2010</description>
 	<maxantennas>2</maxantennas>
 	<maxgpis>0</maxgpis>
 	<maxgpos>0</maxgpos>
