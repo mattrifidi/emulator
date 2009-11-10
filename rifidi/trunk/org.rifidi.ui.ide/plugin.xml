@@ -115,7 +115,7 @@
          </property>
          <property
                name="aboutText"
-               value="Thank you for using Rifidi 1.5.3&#x0A;You can find more information on http://www.rifidi.org.&#x0A;Please look at the docs at http://wiki.rifidi.org for a complete User&apos;s Manual.&#x0A;&#x0A;- Rifidi Team">
+               value="Thank you for using Rifidi 1.6.0&#x0A;You can find more information on http://www.rifidi.org.&#x0A;Please look at the docs at http://wiki.rifidi.org for a complete User&apos;s Manual.&#x0A;If you run into any issues or find any bugs, please let us know at http://forums.rifidi.org&#x0A;&#x0A;- Rifidi Team">
          </property>
          <property
                name="windowImages"
