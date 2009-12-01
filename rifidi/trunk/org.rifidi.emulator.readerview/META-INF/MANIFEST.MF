@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Rifidi Readers View
 Bundle-SymbolicName: org.rifidi.emulator.readerview;singleton:=true
-Bundle-Version: 1.0.0
+Bundle-Version: 1.0.1
 Bundle-Activator: org.rifidi.emulator.readerview.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
@@ -11,5 +11,6 @@ Require-Bundle: org.eclipse.ui,
  org.rifidi.emulator;bundle-version="3.0.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Export-Package: org.rifidi.emulator.readerview.views
+Export-Package: org.rifidi.emulator.readerview.support,
+ org.rifidi.emulator.readerview.views
 Bundle-Vendor: Pramari, LLC

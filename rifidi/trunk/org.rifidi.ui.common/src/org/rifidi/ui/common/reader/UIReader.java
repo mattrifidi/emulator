@@ -44,6 +44,12 @@ import org.rifidi.ui.common.reader.callback.UIReaderCallbackManager;
 @XmlRootElement
 public class UIReader extends GeneralReaderPropertyHolder {
 
+	public static final String STATE_NEW = "NEW";
+	public static final String STATE_RUNNING = "running";
+	public static final String STATE_STOPPED = "stopped";
+	public static final String STATE_SUSPENDED = "suspended";
+	public static final String PROP_STATE = "readerstate";
+
 	/** SerialVersionUID */
 	private static final long serialVersionUID = 1L;
 
@@ -99,32 +105,32 @@ public class UIReader extends GeneralReaderPropertyHolder {
 	public void start() {
 		readerManager.start(super.getReaderName());
 		String oldstate = readerState;
-		readerState = "running";
-		pcs.firePropertyChange("readerstate", oldstate, readerState);
+		readerState = STATE_RUNNING;
+		pcs.firePropertyChange(PROP_STATE, oldstate, readerState);
 
 	}
 
 	public void stop() {
 		readerManager.stop(super.getReaderName());
 		String oldstate = readerState;
-		readerState = "stopped";
-		pcs.firePropertyChange("readerstate", oldstate, readerState);
+		readerState = STATE_STOPPED;
+		pcs.firePropertyChange(PROP_STATE, oldstate, readerState);
 
 	}
 
 	public void suspend() {
 		readerManager.suspend(super.getReaderName());
 		String oldstate = readerState;
-		readerState = "suspended";
-		pcs.firePropertyChange("readerstate", oldstate, readerState);
+		readerState = STATE_SUSPENDED;
+		pcs.firePropertyChange(PROP_STATE, oldstate, readerState);
 
 	}
 
 	public void resume() {
 		readerManager.resume(super.getReaderName());
 		String oldstate = readerState;
-		readerState = "running";
-		pcs.firePropertyChange("readerstate", oldstate, readerState);
+		readerState = STATE_RUNNING;
+		pcs.firePropertyChange(PROP_STATE, oldstate, readerState);
 
 	}
 

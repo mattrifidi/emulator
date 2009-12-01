@@ -5,11 +5,13 @@ package org.rifidi.emulator.readerview.views;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 import java.util.Map;
 
 import org.eclipse.jface.viewers.AbstractTreeViewer;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
+import org.rifidi.ui.common.reader.UIAntenna;
 import org.rifidi.ui.common.reader.UIReader;
 import org.rifidi.ui.common.registry.ReaderRegistryService;
 import org.rifidi.ui.common.registry.RegistryChangeListener;
@@ -41,8 +43,11 @@ public class ReaderViewContentProvider implements ITreeContentProvider,
 		}
 		if (parentElement instanceof UIReader) {
 			UIReader r = ((UIReader) parentElement);
-			return new Object[] { "# Antennas: " + r.getNumAntennas(),
-					"Type: " + r.getReaderType(), r.getPropertiesMap() };
+			ArrayList<Object> retVal = new ArrayList<Object>();
+			retVal.addAll(r.getAntennas().values());
+			retVal.add("Type: " + r.getReaderType());
+			retVal.add(r.getPropertiesMap() );
+			return retVal.toArray();
 		}
 		if (parentElement instanceof Map) {
 			return ((Map) parentElement).entrySet().toArray();

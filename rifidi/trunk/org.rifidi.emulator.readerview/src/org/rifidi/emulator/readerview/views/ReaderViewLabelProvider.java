@@ -8,6 +8,7 @@ import java.util.Map;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 import org.rifidi.emulator.readerview.Activator;
+import org.rifidi.ui.common.reader.UIAntenna;
 import org.rifidi.ui.common.reader.UIReader;
 
 /**
@@ -42,7 +43,10 @@ public class ReaderViewLabelProvider extends LabelProvider {
 					+ ((UIReader) element).getReaderState() + ")";
 			return ret;
 		}
-		 if (element instanceof Map)
+		if(element instanceof UIAntenna){
+			return "Antenna: " + ((UIAntenna)element).getId();
+		}
+		if (element instanceof Map)
 			return "Properties:";
 		if (element instanceof Map.Entry)
 			return (String) ((Map.Entry) element).getKey();

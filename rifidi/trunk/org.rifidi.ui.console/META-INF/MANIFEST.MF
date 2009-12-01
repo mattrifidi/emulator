@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Console
+Bundle-SymbolicName: org.rifidi.ui.console
+Bundle-Version: 1.0.0
+Bundle-Activator: org.rifidi.ui.console.Activator
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.ui.console;bundle-version="3.4.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Export-Package: org.rifidi.ui.console.service
+Bundle-ActivationPolicy: lazy

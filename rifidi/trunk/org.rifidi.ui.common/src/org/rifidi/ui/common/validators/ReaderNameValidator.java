@@ -27,10 +27,6 @@ public class ReaderNameValidator implements ICellEditorValidator {
 		if(value==null || ((String)value).length()==0){
 			return "Please enter a reader name";
 		}
-		if(((String)value).indexOf(" ") >= 0)
-		{
-			return "The reader name must not contain whitespaces";
-		}
 		return null;
 	}
 
