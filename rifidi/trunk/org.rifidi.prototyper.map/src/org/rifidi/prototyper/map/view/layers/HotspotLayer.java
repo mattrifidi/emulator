@@ -43,7 +43,7 @@ public class HotspotLayer extends Layer implements HotspotListener,
 		for (HotspotViewModel hsModel : hotspotModels) {
 			addHotspot(hsModel);
 		}
-		ServiceRegistry.getInstance().service(this);
+		//ServiceRegistry.getInstance().service(this);
 	}
 
 	private void addHotspot(HotspotViewModel hsModel) {

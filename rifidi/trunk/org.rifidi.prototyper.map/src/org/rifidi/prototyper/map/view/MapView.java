@@ -37,24 +37,40 @@ import org.rifidi.services.annotations.Inject;
 import org.rifidi.services.registry.ServiceRegistry;
 
 /**
- * @author kyle
+ * The main view. Displays the map and accepts DND operations.
+ * 
+ * @author Kyle Neumeier - kyle@pramari.com
  * 
  */
 public class MapView extends ViewPart implements DropTargetListener,
 		EditModeListener {
 
+	/** The ID for this view */
 	public static final String VIEW_ID = "org.rifidi.prototyper.map.view";
+	/** The floorplan layer */
 	private FloorplanLayer fplayer = null;
+	/** The hotspot layer */
 	private HotspotLayer hslayer = null;
+	/** The Item layer */
 	private ItemLayer ilayer = null;
-	private final static Log logger = LogFactory.getLog(MapView.class);
+	/** The canvas that holds the three layers */
 	private Canvas canvas;
+	/** The main pane */
 	private ScalableLayeredPane pane;
+	/** An object that keeps track of item-hotspot collisions */
 	private CollisionManager collisionManager;
+	/** A handler for mouse and keyboard events. */
 	private MapViewMouseHandler mouseHandler;
+	/** The service that keeps track of which items have been created */
 	private ItemService itemService;
+	/** The current state of edit mode. */
 	private boolean editMode = false;
+	/** The logger for this class */
+	private final static Log logger = LogFactory.getLog(MapView.class);
 
+	/**
+	 * 
+	 */
 	public MapView() {
 		super();
 		ServiceRegistry.getInstance().service(this);
@@ -102,7 +118,7 @@ public class MapView extends ViewPart implements DropTargetListener,
 		pane.addKeyListener(mouseHandler);
 		pane.setFocusTraversable(true);
 		ViewModelSingleton.getInstance().addListener(this);
-		//TODO: hack. Should look up the edit mode state somehow.
+		// TODO: hack. Should look up the edit mode state somehow.
 		ViewModelSingleton.getInstance().setEditMode(true);
 
 	}
@@ -212,7 +228,8 @@ public class MapView extends ViewPart implements DropTargetListener,
 			model.setY(p.y);
 			ViewModelSingleton.getInstance().addHotspot(model);
 		} else if (!editMode && ItemDNDSupport.isItem(textTransfer)) {
-			TaggedItem ti = itemService.getItem(ItemDNDSupport.getItemID(textTransfer));
+			TaggedItem ti = itemService.getItem(ItemDNDSupport
+					.getItemID(textTransfer));
 			if (ti != null) {
 				logger.debug("ADD ITEM: " + ti.getName() + " " + p);
 				ItemViewModel model = new ItemViewModel();

@@ -16,7 +16,9 @@ public class Activator extends AbstractUIPlugin {
 	// The shared instance
 	private static Activator plugin;
 
+	/** Use this to find the Antenna on image in the image registry */
 	public static final String IMG_ANT_ON = "anton";
+	/** Use this to find the Antenna off image in the image registry */
 	public static final String IMG_ANT_OFF = "antoff";
 
 	/**

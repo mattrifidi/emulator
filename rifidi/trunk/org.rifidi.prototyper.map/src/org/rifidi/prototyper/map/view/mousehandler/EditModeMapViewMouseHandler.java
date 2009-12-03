@@ -51,7 +51,7 @@ public class EditModeMapViewMouseHandler extends
 
 		if (hotspot != null) {
 			if (selectedhotspot != null && hotspot != selectedhotspot) {
-				selectedhotspot.unselect();
+				selectedhotspot.deselect();
 				selectedhotspot = null;
 				selectedHotspotOffset = null;
 			}
@@ -61,7 +61,7 @@ public class EditModeMapViewMouseHandler extends
 			hotspot.select();
 		} else {
 			if (selectedhotspot != null) {
-				selectedhotspot.unselect();
+				selectedhotspot.deselect();
 				selectedhotspot = null;
 				selectedHotspotOffset = null;
 			}
@@ -106,7 +106,7 @@ public class EditModeMapViewMouseHandler extends
 	public void keyPressed(KeyEvent ke) {
 		if (ke.character == SWT.DEL) {
 			if (selectedhotspot != null) {
-				selectedhotspot.unselect();
+				selectedhotspot.deselect();
 				ViewModelSingleton.getInstance().removeHotspot(
 						selectedhotspot.getHashstring());
 			}
@@ -124,7 +124,7 @@ public class EditModeMapViewMouseHandler extends
 	public void setEditMode(boolean toggle) {
 		if (!toggle) {
 			if (selectedhotspot != null) {
-				selectedhotspot.unselect();
+				selectedhotspot.deselect();
 			}
 		}
 

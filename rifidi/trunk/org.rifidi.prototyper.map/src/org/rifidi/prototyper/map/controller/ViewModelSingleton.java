@@ -12,30 +12,51 @@ import org.rifidi.prototyper.model.HotspotViewModel;
 import org.rifidi.prototyper.model.ItemViewModel;
 
 /**
- * @author kyle
+ * This class is a singleton that keeps track of all objects that are currently
+ * a part of the model (e.g. item models, hotspot models, etc).
+ * 
+ * Controllers that want to modify the state of the model (for example, handlers
+ * that load items either from persistance or from a DND operation) should use
+ * this singleton to add them.
+ * 
+ * 
+ * @author Kyle Neumeier - kyle@pramari.com
  * 
  */
 public class ViewModelSingleton {
 
+	/** The reference to this singleton */
 	private static ViewModelSingleton instance = null;
+	/** The Floorplan for the modelF */
 	private FloorplanViewModel floorplan;
+	/** All the hotspots in the model */
 	private HashMap<String, HotspotViewModel> hotspots;
+	/** All the items in the model */
 	private HashMap<String, ItemViewModel> items;
+	/** Listeners for items to be added and removed */
 	private Set<ItemListener> itemListeners;
-	private Set<EditModeListener> editModeListeners;
+	/** Listeners for hotspots to be added and removed */
 	private Set<HotspotListener> hotspotListeners;
+	/** Listeners for the edit mode to change */
+	private Set<EditModeListener> editModeListeners;
 
-	public ViewModelSingleton() {
+	/**
+	 * Private constructor for this singleton
+	 */
+	private ViewModelSingleton() {
 		instance = this;
 		hotspots = new HashMap<String, HotspotViewModel>();
 		items = new HashMap<String, ItemViewModel>();
-		init();
 		itemListeners = new HashSet<ItemListener>();
 		editModeListeners = new HashSet<EditModeListener>();
 		hotspotListeners = new HashSet<HotspotListener>();
+		init();
 
 	}
 
+	/**
+	 * Private method to initialize any of the layers.
+	 */
 	private void init() {
 		floorplan = new FloorplanViewModel();
 		HotspotViewModel hs_dd = new HotspotViewModel();
@@ -55,6 +76,11 @@ public class ViewModelSingleton {
 		// hotspots.put(hs_ws.getName(), hs_ws);
 	}
 
+	/**
+	 * Get an instance of this singleton
+	 * 
+	 * @return
+	 */
 	public static ViewModelSingleton getInstance() {
 		if (instance == null) {
 			new ViewModelSingleton();
@@ -62,18 +88,38 @@ public class ViewModelSingleton {
 		return instance;
 	}
 
+	/**
+	 * Get the floorplan for the model
+	 * 
+	 * @return
+	 */
 	public FloorplanViewModel getFloorplan() {
 		return floorplan;
 	}
 
+	/**
+	 * Get all the hotspots
+	 * 
+	 * @return
+	 */
 	public Set<HotspotViewModel> getHotspots() {
 		return new HashSet<HotspotViewModel>(hotspots.values());
 	}
 
+	/**
+	 * Get all the item in the model
+	 * 
+	 * @return
+	 */
 	public Set<ItemViewModel> getItems() {
 		return new HashSet<ItemViewModel>(items.values());
 	}
 
+	/**
+	 * Add a listener to this object
+	 * 
+	 * @param o
+	 */
 	public void addListener(Object o) {
 		if (o instanceof ItemListener) {
 			itemListeners.add((ItemListener) o);
@@ -86,6 +132,11 @@ public class ViewModelSingleton {
 		}
 	}
 
+	/**
+	 * Remove a listener from this class
+	 * 
+	 * @param o
+	 */
 	public void removeListener(Object o) {
 		if (o instanceof ItemListener) {
 			itemListeners.remove((ItemListener) o);
@@ -98,6 +149,11 @@ public class ViewModelSingleton {
 		}
 	}
 
+	/**
+	 * Add an item to the model.
+	 * 
+	 * @param item
+	 */
 	public void addItem(ItemViewModel item) {
 		if (items.containsKey(item.getItemID())) {
 			return;
@@ -108,6 +164,11 @@ public class ViewModelSingleton {
 		}
 	}
 
+	/**
+	 * remove an item from the model
+	 * 
+	 * @param itemID
+	 */
 	public void removeItem(String itemID) {
 		if (!items.containsKey(itemID)) {
 			return;
@@ -118,6 +179,11 @@ public class ViewModelSingleton {
 		}
 	}
 
+	/**
+	 * Add a hotspot to the model.
+	 * 
+	 * @param hotspot
+	 */
 	public void addHotspot(HotspotViewModel hotspot) {
 		if (hotspots.containsKey(hotspot.hashString())) {
 			return;
@@ -128,6 +194,11 @@ public class ViewModelSingleton {
 		}
 	}
 
+	/**
+	 * Remove a hotspot from the model.
+	 * 
+	 * @param hashstring
+	 */
 	public void removeHotspot(String hashstring) {
 		if (!hotspots.containsKey(hashstring)) {
 			return;
@@ -138,6 +209,11 @@ public class ViewModelSingleton {
 		}
 	}
 
+	/**
+	 * Toggle the edit mode.
+	 * 
+	 * @param toggle
+	 */
 	public void setEditMode(boolean toggle) {
 		for (EditModeListener listener : editModeListeners) {
 			listener.setEditMode(toggle);
