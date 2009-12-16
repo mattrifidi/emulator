@@ -38,7 +38,7 @@
                   ifEmpty="false"
                   operator="and">
                <instanceof
-                     value="org.rifidi.prototyper.items.model.TaggedItem">
+                     value="org.rifidi.prototyper.items.model.ItemModel">
                </instanceof>
             </iterate>
          </enabledWhen>

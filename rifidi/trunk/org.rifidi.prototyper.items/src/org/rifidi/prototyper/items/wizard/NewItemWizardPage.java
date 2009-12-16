@@ -15,7 +15,9 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import org.rifidi.prototyper.items.model.ItemType;
+import org.rifidi.prototyper.items.service.ItemTypeRegistry;
+import org.rifidi.services.annotations.Inject;
+import org.rifidi.services.registry.ServiceRegistry;
 
 /**
  * This page lets a user fill in the data necessary to create a new Item
@@ -31,6 +33,7 @@ public class NewItemWizardPage extends WizardPage {
 	private Text IDText;
 	/** Combo type chooser */
 	private Combo combo;
+	private ItemTypeRegistry itemTypeRegistry;
 
 	/**
 	 * Constuctor
@@ -39,7 +42,7 @@ public class NewItemWizardPage extends WizardPage {
 	 */
 	protected NewItemWizardPage(String pageName) {
 		super(pageName);
-		// TODO Auto-generated constructor stub
+		ServiceRegistry.getInstance().service(this);
 	}
 
 	/*
@@ -58,25 +61,26 @@ public class NewItemWizardPage extends WizardPage {
 
 		Label itemType = new Label(composite, SWT.NONE);
 		itemType.setText("Item Type");
-		combo = new Combo (composite, SWT.READ_ONLY);
-		combo.add(ItemType.CARGO.toString());
-		combo.add(ItemType.FORKLIFT.toString());
+		combo = new Combo(composite, SWT.READ_ONLY);
+		for (String s : itemTypeRegistry.getItemTypes()) {
+			combo.add(s);
+		}
 		combo.select(0);
 		combo.addSelectionListener(new SelectionListener() {
-			
+
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				validate();
-				
+
 			}
-			
+
 			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
 		});
-		
+
 		Label nameLabel = new Label(composite, SWT.None);
 		nameLabel.setText("Item Name");
 		nameText = new Text(composite, SWT.NONE);
@@ -139,9 +143,18 @@ public class NewItemWizardPage extends WizardPage {
 		((NewItemWizard) this.getWizard()).itemName = nameText.getText();
 		((NewItemWizard) this.getWizard()).itemID = IDText.getText();
 		String itemType = combo.getItem(combo.getSelectionIndex());
-		((NewItemWizard)this.getWizard()).itemType = ItemType.getType(itemType);
+		((NewItemWizard) this.getWizard()).itemType = itemType;
 		setPageComplete(true);
 
+	}
+
+	/**
+	 * @param itemTypeRegistry
+	 *            the itemTypeRegistry to set
+	 */
+	@Inject
+	public void setItemTypeRegistry(ItemTypeRegistry itemTypeRegistry) {
+		this.itemTypeRegistry = itemTypeRegistry;
 	}
 
 }

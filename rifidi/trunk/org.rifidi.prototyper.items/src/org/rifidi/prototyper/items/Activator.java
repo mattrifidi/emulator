@@ -1,13 +1,17 @@
 package org.rifidi.prototyper.items;
 
+import java.net.URL;
+import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.Hashtable;
+import java.util.Set;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
-import org.rifidi.prototyper.items.model.ItemType;
 import org.rifidi.prototyper.items.service.ItemService;
+import org.rifidi.prototyper.items.service.ItemTypeRegistry;
 import org.rifidi.prototyper.items.view.ItemModelProviderSingleton;
 
 /**
@@ -37,8 +41,21 @@ public class Activator extends AbstractUIPlugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
+		ItemTypeRegistry reg = new ItemTypeRegistry();
 		context.registerService(ItemService.class.getName(),
 				ItemModelProviderSingleton.getModelProvider(), new Hashtable());
+		context.registerService(ItemTypeRegistry.class.getName(), reg,
+				new Hashtable());
+
+		Enumeration e = plugin.getBundle().findEntries("/", "*ItemType.xml",
+				true);
+		Set<String> initialItemTypes = new HashSet<String>();
+		while (e.hasMoreElements()) {
+			URL url = (URL) e.nextElement();
+			initialItemTypes.add(url.getFile());
+		}
+		reg.loadItemTypes(initialItemTypes);
+
 	}
 
 	/*
@@ -76,9 +93,6 @@ public class Activator extends AbstractUIPlugin {
 	@Override
 	protected void initializeImageRegistry(ImageRegistry reg) {
 		super.initializeImageRegistry(reg);
-		reg.put(ItemType.CARGO.name(), getImageDescriptor("icons/box.png"));
-		reg.put(ItemType.FORKLIFT.name(),
-				getImageDescriptor("icons/forklift.png"));
 
 	}
 

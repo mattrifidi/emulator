@@ -24,7 +24,7 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.part.ViewPart;
 import org.rifidi.prototyper.items.model.ItemDNDSupport;
-import org.rifidi.prototyper.items.model.TaggedItem;
+import org.rifidi.prototyper.items.model.ItemModel;
 
 /**
  * The view of all the items that have been made
@@ -122,7 +122,7 @@ public class ItemView extends ViewPart implements DragSourceListener {
 		if (TextTransfer.getInstance().isSupportedType(event.dataType)) {
 			ISelection sel = treeViewer.getSelection();
 			Object o = ((TreeSelection) sel).getFirstElement();
-			event.data = ItemDNDSupport.getTextTranfer(((TaggedItem) o)
+			event.data = ItemDNDSupport.getTextTranfer(((ItemModel) o)
 					.getTag());
 		}
 
@@ -139,7 +139,7 @@ public class ItemView extends ViewPart implements DragSourceListener {
 	public void dragStart(DragSourceEvent event) {
 		ISelection sel = treeViewer.getSelection();
 		Object o = ((TreeSelection) sel).getFirstElement();
-		if (o instanceof TaggedItem) {
+		if (o instanceof ItemModel) {
 			event.doit = true;
 			return;
 		}

@@ -7,8 +7,10 @@ Bundle-Activator: org.rifidi.prototyper.items.Activator
 Bundle-Vendor: Pramari, LLC
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- org.rifidi.tags;bundle-version="1.1.0"
+ org.rifidi.tags;bundle-version="1.1.0",
+ org.rifidi.services;bundle-version="2.1.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Export-Package: org.rifidi.prototyper.items.model,
  org.rifidi.prototyper.items.service
+Import-Package: org.apache.commons.logging;version="1.0.4"

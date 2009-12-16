@@ -8,7 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import org.rifidi.prototyper.items.model.TaggedItem;
+import org.rifidi.prototyper.items.model.ItemModel;
 import org.rifidi.prototyper.items.service.ItemService;
 
 /**
@@ -22,7 +22,7 @@ public class ItemModelProviderSingleton implements ItemService {
 	/** The static singleton instance */
 	private static ItemModelProviderSingleton provider;
 	/** The list of items that this model contains */
-	private List<TaggedItem> items;
+	private List<ItemModel> items;
 	/** The listeners that need to know about changes to the model */
 	private Set<ItemModelProviderListener> listeners;
 	private ItemService itemService;
@@ -32,7 +32,7 @@ public class ItemModelProviderSingleton implements ItemService {
 	 */
 	private ItemModelProviderSingleton() {
 		provider = this;
-		items = new LinkedList<TaggedItem>();
+		items = new LinkedList<ItemModel>();
 		listeners = new HashSet<ItemModelProviderListener>();
 	}
 
@@ -53,8 +53,8 @@ public class ItemModelProviderSingleton implements ItemService {
 	 * 
 	 * @return
 	 */
-	public List<TaggedItem> getItems() {
-		return new LinkedList<TaggedItem>(items);
+	public List<ItemModel> getItems() {
+		return new LinkedList<ItemModel>(items);
 	}
 
 	/**
@@ -62,7 +62,7 @@ public class ItemModelProviderSingleton implements ItemService {
 	 * 
 	 * @param item
 	 */
-	public void addItem(TaggedItem item) {
+	public void addItem(ItemModel item) {
 		items.add(item);
 		for (ItemModelProviderListener l : listeners) {
 			l.ItemAdded(item);
@@ -74,7 +74,7 @@ public class ItemModelProviderSingleton implements ItemService {
 	 * 
 	 * @param item
 	 */
-	public void removeItem(TaggedItem item) {
+	public void removeItem(ItemModel item) {
 		items.remove(item);
 		for (ItemModelProviderListener l : listeners) {
 			l.ItemRemoved(item);
@@ -106,8 +106,8 @@ public class ItemModelProviderSingleton implements ItemService {
 	 * org.rifidi.prototyper.items.service.ItemService#getItem(java.lang.String)
 	 */
 	@Override
-	public TaggedItem getItem(String id) {
-		for(TaggedItem item : this.items){
+	public ItemModel getItem(String id) {
+		for(ItemModel item : this.items){
 			if(item.getTag().equals(id)){
 				return item;
 			}

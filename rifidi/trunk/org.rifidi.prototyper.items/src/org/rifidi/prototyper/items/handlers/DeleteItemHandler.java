@@ -7,7 +7,7 @@ import org.eclipse.core.commands.IHandler;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
-import org.rifidi.prototyper.items.model.TaggedItem;
+import org.rifidi.prototyper.items.model.ItemModel;
 import org.rifidi.prototyper.items.view.ItemModelProviderSingleton;
 
 /**
@@ -31,8 +31,8 @@ public class DeleteItemHandler extends AbstractHandler implements IHandler {
 		if (sel instanceof IStructuredSelection) {
 			IStructuredSelection ssel = (IStructuredSelection) sel;
 			for (Object o : ssel.toArray()) {
-				if (o instanceof TaggedItem) {
-					ItemModelProviderSingleton.getModelProvider().removeItem((TaggedItem) o);
+				if (o instanceof ItemModel) {
+					ItemModelProviderSingleton.getModelProvider().removeItem((ItemModel) o);
 				}
 			}
 		}

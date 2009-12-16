@@ -1,9 +1,9 @@
 package org.rifidi.prototyper.items.service;
 
-import org.rifidi.prototyper.items.model.TaggedItem;
+import org.rifidi.prototyper.items.model.ItemModel;
 
 public interface ItemService {
 	
-	public TaggedItem getItem(String id);
+	public ItemModel getItem(String id);
 
 }

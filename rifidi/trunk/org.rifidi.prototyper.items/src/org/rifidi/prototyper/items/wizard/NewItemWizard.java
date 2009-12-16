@@ -8,7 +8,7 @@ import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.rifidi.prototyper.items.model.ItemType;
-import org.rifidi.prototyper.items.model.TaggedItem;
+import org.rifidi.prototyper.items.model.ItemModel;
 import org.rifidi.prototyper.items.view.ItemModelProviderSingleton;
 
 /**
@@ -24,7 +24,7 @@ public class NewItemWizard extends Wizard implements INewWizard {
 	/** The ID of the item */
 	protected String itemID;
 	/** The type of item */
-	protected ItemType itemType;
+	protected String itemType;
 
 	/*
 	 * (non-Javadoc)
@@ -33,7 +33,7 @@ public class NewItemWizard extends Wizard implements INewWizard {
 	 */
 	@Override
 	public boolean performFinish() {
-		TaggedItem i = new TaggedItem();
+		ItemModel i = new ItemModel();
 		i.setName(itemName);
 		i.setTag(itemID);
 		i.setType(itemType);

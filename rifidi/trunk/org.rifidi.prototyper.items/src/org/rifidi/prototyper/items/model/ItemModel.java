@@ -12,14 +12,15 @@ import org.rifidi.prototyper.items.Activator;
  * @author Kyle Neumeier - kyle@pramari.com
  * 
  */
-public class TaggedItem {
+public class ItemModel {
 
 	/** The Tag ID */
 	private String tag;
 	/** The name of the item */
 	private String name;
 	/** The type of item */
-	private ItemType type;
+	private String type;
+	private String imagePath;
 
 	/**
 	 * @return the tag
@@ -54,29 +55,33 @@ public class TaggedItem {
 	/**
 	 * @return the type
 	 */
-	public ItemType getType() {
+	public String getType() {
 		return type;
 	}
 
 	/**
-	 * @param type
-	 *            the type to set
+	 * @param type the type to set
 	 */
-	public void setType(ItemType type) {
+	public void setType(String type) {
 		this.type = type;
 	}
 
+	/**
+	 * @return the imagePath
+	 */
+	public String getImagePath() {
+		return imagePath;
+	}
+
+	/**
+	 * @param imagePath the imagePath to set
+	 */
+	public void setImagePath(String imagePath) {
+		this.imagePath = imagePath;
+	}
+
 	public Image getImage() {
-		switch (type) {
-		case CARGO:
-			return Activator.getDefault().getImageRegistry().get(
-					ItemType.CARGO.name());
-		case FORKLIFT:
-			return Activator.getDefault().getImageRegistry().get(
-					ItemType.FORKLIFT.name());
-		default:
-			return null;
-		}
+		return Activator.getDefault().getImageRegistry().get(type);
 	}
 
 }

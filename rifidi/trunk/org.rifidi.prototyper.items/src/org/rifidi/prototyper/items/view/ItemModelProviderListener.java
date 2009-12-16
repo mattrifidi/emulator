@@ -3,7 +3,7 @@
  */
 package org.rifidi.prototyper.items.view;
 
-import org.rifidi.prototyper.items.model.TaggedItem;
+import org.rifidi.prototyper.items.model.ItemModel;
 
 /**
  * @author kyle
@@ -11,8 +11,8 @@ import org.rifidi.prototyper.items.model.TaggedItem;
  */
 public interface ItemModelProviderListener {
 
-	void ItemAdded(TaggedItem item);
+	void ItemAdded(ItemModel item);
 
-	void ItemRemoved(TaggedItem item);
+	void ItemRemoved(ItemModel item);
 
 }

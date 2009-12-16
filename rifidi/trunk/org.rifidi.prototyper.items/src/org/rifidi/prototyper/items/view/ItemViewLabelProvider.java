@@ -8,7 +8,7 @@ import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.swt.graphics.Image;
 import org.rifidi.prototyper.items.Activator;
 import org.rifidi.prototyper.items.model.ItemType;
-import org.rifidi.prototyper.items.model.TaggedItem;
+import org.rifidi.prototyper.items.model.ItemModel;
 
 /**
  * The label Provider for the Item View
@@ -25,16 +25,9 @@ public class ItemViewLabelProvider implements ILabelProvider {
 	 */
 	@Override
 	public Image getImage(Object element) {
-		if (element instanceof TaggedItem) {
-			TaggedItem item = (TaggedItem) element;
-			switch (item.getType()) {
-			case CARGO:
-				return Activator.getDefault().getImageRegistry().get(
-						ItemType.CARGO.name());
-			case FORKLIFT:
-				return Activator.getDefault().getImageRegistry().get(
-						ItemType.FORKLIFT.name());
-			}
+		if (element instanceof ItemModel) {
+			ItemModel item = (ItemModel) element;
+			return item.getImage();
 		}
 		return null;
 	}
@@ -46,8 +39,8 @@ public class ItemViewLabelProvider implements ILabelProvider {
 	 */
 	@Override
 	public String getText(Object element) {
-		if (element instanceof TaggedItem) {
-			TaggedItem ti = (TaggedItem)element;
+		if (element instanceof ItemModel) {
+			ItemModel ti = (ItemModel)element;
 			return ti.getName() + " (ID:"+ti.getTag()+")";
 		} else {
 			return element.toString();

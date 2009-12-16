@@ -7,7 +7,7 @@ import java.util.Collection;
 
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
-import org.rifidi.prototyper.items.model.TaggedItem;
+import org.rifidi.prototyper.items.model.ItemModel;
 
 /**
  * The content provider for the ItemView.
@@ -105,12 +105,12 @@ public class ItemViewContentProvider implements ITreeContentProvider,
 	}
 
 	@Override
-	public void ItemAdded(TaggedItem item) {
+	public void ItemAdded(ItemModel item) {
 		viewer.refresh();
 	}
 
 	@Override
-	public void ItemRemoved(TaggedItem item) {
+	public void ItemRemoved(ItemModel item) {
 		viewer.refresh();
 	}
 

@@ -22,7 +22,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.ViewPart;
 import org.rifidi.emulator.readerview.support.ReaderDNDSupport;
 import org.rifidi.prototyper.items.model.ItemDNDSupport;
-import org.rifidi.prototyper.items.model.TaggedItem;
+import org.rifidi.prototyper.items.model.ItemModel;
 import org.rifidi.prototyper.items.service.ItemService;
 import org.rifidi.prototyper.map.collision.CollisionManager;
 import org.rifidi.prototyper.map.controller.EditModeListener;
@@ -228,7 +228,7 @@ public class MapView extends ViewPart implements DropTargetListener,
 			model.setY(p.y);
 			ViewModelSingleton.getInstance().addHotspot(model);
 		} else if (!editMode && ItemDNDSupport.isItem(textTransfer)) {
-			TaggedItem ti = itemService.getItem(ItemDNDSupport
+			ItemModel ti = itemService.getItem(ItemDNDSupport
 					.getItemID(textTransfer));
 			if (ti != null) {
 				logger.debug("ADD ITEM: " + ti.getName() + " " + p);
