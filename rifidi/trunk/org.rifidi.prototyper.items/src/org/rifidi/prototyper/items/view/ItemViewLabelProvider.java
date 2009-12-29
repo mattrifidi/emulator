@@ -6,8 +6,6 @@ package org.rifidi.prototyper.items.view;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.swt.graphics.Image;
-import org.rifidi.prototyper.items.Activator;
-import org.rifidi.prototyper.items.model.ItemType;
 import org.rifidi.prototyper.items.model.ItemModel;
 
 /**

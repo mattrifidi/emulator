@@ -21,6 +21,8 @@ public class Activator extends AbstractUIPlugin {
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.rifidi.prototyper.items";
+	public static final String IMAGE_FOLDER = "folder";
+	
 
 	// The shared instance
 	private static Activator plugin;
@@ -93,6 +95,7 @@ public class Activator extends AbstractUIPlugin {
 	@Override
 	protected void initializeImageRegistry(ImageRegistry reg) {
 		super.initializeImageRegistry(reg);
+		reg.put(IMAGE_FOLDER, getImageDescriptor("icons/folder.png"));
 
 	}
 

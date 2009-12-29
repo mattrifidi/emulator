@@ -7,7 +7,6 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
-import org.rifidi.prototyper.items.model.ItemType;
 import org.rifidi.prototyper.items.model.ItemModel;
 import org.rifidi.prototyper.items.view.ItemModelProviderSingleton;
 
@@ -48,6 +47,7 @@ public class NewItemWizard extends Wizard implements INewWizard {
 	 */
 	@Override
 	public void addPages() {
+		addPage(new NewItemWizardTypeChooserPage("Type Chooser"));
 		addPage(new NewItemWizardPage("New Item"));
 	}
 

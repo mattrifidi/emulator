@@ -26,9 +26,13 @@ public class ItemTypeRegistry {
 
 	private static final Log logger = LogFactory.getLog(ItemTypeRegistry.class);
 	private final Map<String, ItemType> types;
+	private final Map<String, Set<ItemType>> categoryToTypes;
+	private final HashSet<String> defaultCategory = new HashSet<String>();
 
 	public ItemTypeRegistry() {
 		this.types = new HashMap<String, ItemType>();
+		this.categoryToTypes = new HashMap<String, Set<ItemType>>();
+		defaultCategory.add("unspecified");
 	}
 
 	public void loadItemTypes(Set<String> resources) {
@@ -50,6 +54,22 @@ public class ItemTypeRegistry {
 							itemType.getType(),
 							Activator.getImageDescriptor(pathToImage));
 					types.put(itemType.getType(), itemType);
+
+					// if the item type does not have a category, give it the
+					// default.
+					if (itemType.getCategories() == null
+							|| itemType.getCategories().isEmpty()) {
+						itemType.setCategories(defaultCategory);
+					}
+					for (String category : itemType.getCategories()) {
+						// if the category does not exist yet, create it
+						if (!categoryToTypes.containsKey(category)) {
+							categoryToTypes.put(category,
+									new HashSet<ItemType>());
+						}
+						// add this item to the category map
+						categoryToTypes.get(category).add(itemType);
+					}
 				} catch (JAXBException e) {
 					logger.warn("Cannot Unmarshal file: " + file, e);
 				}
@@ -58,8 +78,16 @@ public class ItemTypeRegistry {
 			logger.warn("JAXB Exception: ", exception);
 		}
 	}
-	
-	public Set<String> getItemTypes(){
+
+	public Set<String> getItemCategories() {
+		return new HashSet<String>(categoryToTypes.keySet());
+	}
+
+	public Set<ItemType> getItemTypes(String category) {
+		return new HashSet<ItemType>(categoryToTypes.get(category));
+	}
+
+	public Set<String> getAllItemTypes() {
 		return new HashSet<String>(types.keySet());
 	}
 

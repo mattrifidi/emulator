@@ -62,7 +62,7 @@ public class NewItemWizardPage extends WizardPage {
 		Label itemType = new Label(composite, SWT.NONE);
 		itemType.setText("Item Type");
 		combo = new Combo(composite, SWT.READ_ONLY);
-		for (String s : itemTypeRegistry.getItemTypes()) {
+		for (String s : itemTypeRegistry.getAllItemTypes()) {
 			combo.add(s);
 		}
 		combo.select(0);
