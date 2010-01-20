@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product application="org.eclipse.ui.ide.workbench" useFeatures="false" includeLaunchers="true">
+<product id="org.rifidi.ui.ide.product" application="org.eclipse.ui.ide.workbench" useFeatures="false" includeLaunchers="true">
 
    <configIni use="default">
    </configIni>
@@ -53,7 +53,7 @@
       <plugin id="org.rifidi.emulator.reader.sirit"/>
       <plugin id="org.rifidi.emulator.reader.symbol"/>
       <plugin id="org.rifidi.emulator.reader.thingmagic"/>
-      <plugin id="org.rifidi.emulator.scripting"/>
+      <plugin id="org.rifidi.emulator.scripting" fragment=""/>
       <plugin id="org.rifidi.emulator.scripting.groovy"/>
       <plugin id="org.rifidi.emulator.scripting.groovy.console"/>
       <plugin id="org.rifidi.log4j" fragment="true"/>

@@ -35,6 +35,12 @@ public class ItemTypeRegistry {
 		defaultCategory.add("unspecified");
 	}
 
+	/**
+	 * This method must be called from within the Eclipse thread since it
+	 * accesses the image registry.
+	 * 
+	 * @param resources
+	 */
 	public void loadItemTypes(Set<String> resources) {
 		try {
 			JAXBContext context = JAXBContext.newInstance(ItemType.class);

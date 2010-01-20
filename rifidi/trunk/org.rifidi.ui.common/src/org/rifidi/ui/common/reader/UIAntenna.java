@@ -2,6 +2,7 @@ package org.rifidi.ui.common.reader;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -36,7 +37,11 @@ import org.rifidi.tags.impl.RifidiTag;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class UIAntenna extends Observable implements PropertyChangeListener {
+public class UIAntenna extends Observable implements PropertyChangeListener,
+		Serializable {
+
+	/***/
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * The event that happens when a tag is added
@@ -48,9 +53,9 @@ public class UIAntenna extends Observable implements PropertyChangeListener {
 	 */
 	public static final String REMOVE_TAG_EVENT = "remove";
 
-	private Log logger = LogFactory.getLog(UIAntenna.class);
+	private transient Log logger = LogFactory.getLog(UIAntenna.class);
 
-	private ReaderManager readerManager;
+	private transient ReaderManager readerManager;
 
 	/** Number or Name of this Antenna */
 	@XmlElement
@@ -64,16 +69,16 @@ public class UIAntenna extends Observable implements PropertyChangeListener {
 	 * This are the tags which are also in the list of the real antenna of the
 	 * reader
 	 */
-	private Set<Long> tagList = new HashSet<Long>();
+	private transient Set<Long> tagList = new HashSet<Long>();
 
 	/**
 	 * This are a list of tags which are disabled and not on the real antenna of
 	 * the reader
 	 */
-	private Set<Long> inactiveTags = new HashSet<Long>();
+	private transient Set<Long> inactiveTags = new HashSet<Long>();
 
 	/** TagRegistrySerbive */
-	private ITagRegistry tagRegistry;
+	private transient ITagRegistry tagRegistry;
 
 	/**
 	 * Default constructor (needed by jaxb)

@@ -6,7 +6,9 @@ package org.rifidi.prototyper.items.view;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.swt.graphics.Image;
+import org.rifidi.prototyper.items.Activator;
 import org.rifidi.prototyper.items.model.ItemModel;
+import org.rifidi.prototyper.items.model.ItemType;
 
 /**
  * The label Provider for the Item View
@@ -23,6 +25,10 @@ public class ItemViewLabelProvider implements ILabelProvider {
 	 */
 	@Override
 	public Image getImage(Object element) {
+		if (element instanceof ItemType) {
+			return Activator.getDefault().getImageRegistry().get(
+					Activator.IMAGE_FOLDER);
+		}
 		if (element instanceof ItemModel) {
 			ItemModel item = (ItemModel) element;
 			return item.getImage();
@@ -37,9 +43,11 @@ public class ItemViewLabelProvider implements ILabelProvider {
 	 */
 	@Override
 	public String getText(Object element) {
-		if (element instanceof ItemModel) {
-			ItemModel ti = (ItemModel)element;
-			return ti.getName() + " (ID:"+ti.getTag()+")";
+		if (element instanceof ItemType) {
+			return ((ItemType) element).getType();
+		} else if (element instanceof ItemModel) {
+			ItemModel ti = (ItemModel) element;
+			return ti.getName() + " (ID:" + ti.getTag() + ")";
 		} else {
 			return element.toString();
 		}

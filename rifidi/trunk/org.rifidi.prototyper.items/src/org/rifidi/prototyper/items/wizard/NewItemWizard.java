@@ -3,12 +3,23 @@
  */
 package org.rifidi.prototyper.items.wizard;
 
+import java.util.ArrayList;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.rifidi.prototyper.items.model.ItemModel;
+import org.rifidi.prototyper.items.model.ItemType;
+import org.rifidi.prototyper.items.service.DuplicateItemException;
 import org.rifidi.prototyper.items.view.ItemModelProviderSingleton;
+import org.rifidi.tags.enums.TagGen;
+import org.rifidi.tags.factory.TagCreationPattern;
+import org.rifidi.tags.factory.TagFactory;
+import org.rifidi.tags.id.TagType;
+import org.rifidi.tags.impl.RifidiTag;
 
 /**
  * A wizard that creates a new item.
@@ -20,10 +31,12 @@ public class NewItemWizard extends Wizard implements INewWizard {
 
 	/** The name of the item */
 	protected String itemName;
-	/** The ID of the item */
-	protected String itemID;
-	/** The type of item */
-	protected String itemType;
+	protected Integer number;
+	protected ItemType itemType;
+	protected TagType tagType;
+	protected TagGen tagGen;
+	protected String tagPrefix;
+	private final static Log logger = LogFactory.getLog(NewItemWizard.class);
 
 	/*
 	 * (non-Javadoc)
@@ -32,11 +45,32 @@ public class NewItemWizard extends Wizard implements INewWizard {
 	 */
 	@Override
 	public boolean performFinish() {
-		ItemModel i = new ItemModel();
-		i.setName(itemName);
-		i.setTag(itemID);
-		i.setType(itemType);
-		ItemModelProviderSingleton.getModelProvider().addItem(i);
+		for (int i = 0; i < number; i++) {
+			TagCreationPattern pattern = new TagCreationPattern();
+			pattern.setNumberOfTags(1);
+			pattern.setTagGeneration(this.tagGen);
+			pattern.setTagType(this.tagType);
+			if (TagType.CustomEPC96.equals(this.tagType)) {
+				pattern.setPrefix(this.tagPrefix);
+			}
+
+			ArrayList<RifidiTag> tags = TagFactory.generateTags(pattern);
+
+			ItemModel itemModel = new ItemModel();
+			String itemName = this.itemName;
+			if (i > 0) {
+				itemName = itemName + "_" + i;
+			}
+			itemModel.setName(itemName);
+			itemModel.setTag(tags.get(0));
+			itemModel.setType(this.itemType);
+			try{
+				ItemModelProviderSingleton.getModelProvider().createItem(itemModel);
+			}catch(DuplicateItemException ex){
+				logger.error("DuplicateItemException: ",ex);
+			}
+		}
+
 		return true;
 	}
 
@@ -58,7 +92,8 @@ public class NewItemWizard extends Wizard implements INewWizard {
 	 */
 	@Override
 	public boolean canFinish() {
-		return (itemName != null) && (itemID != null);
+		return (itemName != null) && (number != null) && (itemType != null)
+				&& (tagType != null) && (tagGen != null);
 	}
 
 	/*

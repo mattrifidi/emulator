@@ -3,11 +3,13 @@
  */
 package org.rifidi.prototyper.items.view;
 
-import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 import org.rifidi.prototyper.items.model.ItemModel;
+import org.rifidi.prototyper.items.model.ItemType;
 
 /**
  * The content provider for the ItemView.
@@ -33,8 +35,11 @@ public class ItemViewContentProvider implements ITreeContentProvider,
 	 */
 	@Override
 	public Object[] getChildren(Object parentElement) {
-		if (parentElement instanceof Collection<?>) {
-			return ((Collection<?>) parentElement).toArray();
+		if (parentElement instanceof Map<?, ?>) {
+			return (((Map) parentElement).keySet()).toArray();
+		} else if (parentElement instanceof ItemType) {
+			return ItemModelProviderSingleton.getModelProvider().getViewerInput().get(
+					parentElement).toArray();
 		}
 		return new Object[] {};
 	}
@@ -61,10 +66,7 @@ public class ItemViewContentProvider implements ITreeContentProvider,
 	 */
 	@Override
 	public boolean hasChildren(Object element) {
-		if (element instanceof Collection<?>) {
-			return !((Collection<?>) element).isEmpty();
-		}
-		return false;
+		return getChildren(element).length>0;
 	}
 
 	/*
@@ -77,7 +79,7 @@ public class ItemViewContentProvider implements ITreeContentProvider,
 	@Override
 	public Object[] getElements(Object inputElement) {
 		return getChildren(ItemModelProviderSingleton.getModelProvider()
-				.getItems());
+				.getViewerInput());
 	}
 
 	/*

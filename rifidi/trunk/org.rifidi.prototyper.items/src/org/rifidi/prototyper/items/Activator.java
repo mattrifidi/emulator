@@ -8,6 +8,7 @@ import java.util.Set;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 import org.rifidi.prototyper.items.service.ItemService;
@@ -51,12 +52,20 @@ public class Activator extends AbstractUIPlugin {
 
 		Enumeration e = plugin.getBundle().findEntries("/", "*ItemType.xml",
 				true);
-		Set<String> initialItemTypes = new HashSet<String>();
+		final Set<String> initialItemTypes = new HashSet<String>();
 		while (e.hasMoreElements()) {
 			URL url = (URL) e.nextElement();
 			initialItemTypes.add(url.getFile());
 		}
-		reg.loadItemTypes(initialItemTypes);
+		final ItemTypeRegistry thisReg = reg;
+		Display.getDefault().syncExec(new Runnable() {
+			
+			@Override
+			public void run() {
+				thisReg.loadItemTypes(initialItemTypes);
+			}
+		});
+		
 
 	}
 

@@ -27,9 +27,10 @@ public class ItemDNDSupport {
 	 * @param textTranfer
 	 * @return
 	 */
-	public static String getItemID(String textTransfer) {
+	public static Integer getItemID(String textTransfer) {
 		try {
-			return textTransfer.split("\\|")[1].split(":")[1];
+			String ret = textTransfer.split("\\|")[1].split(":")[1];
+			return Integer.parseInt(ret);
 		} catch (Exception e) {
 			throw new IllegalArgumentException("Invalid text tranfer string: "
 					+ textTransfer);

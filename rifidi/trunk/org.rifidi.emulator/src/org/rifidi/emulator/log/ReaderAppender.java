@@ -11,10 +11,12 @@
  */
 package org.rifidi.emulator.log;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.AppenderSkeleton;
 import org.apache.log4j.Level;
 import org.apache.log4j.spi.LoggingEvent;
-import org.rifidi.services.annotations.Inject;
+import org.rifidi.emulator.Activator;
 import org.rifidi.services.registry.ServiceRegistry;
 
 /**
@@ -31,16 +33,13 @@ public class ReaderAppender extends AppenderSkeleton {
 
 	private int maxCacheLines = 2000;
 	private ReaderLogService log;
+	private final Log logger = LogFactory.getLog(ReaderAppender.class);
 	
 	public ReaderAppender(){
-		ServiceRegistry.getInstance().service(this);
+		logger.debug("SET READER LOG SERVICE");
+		log = Activator.getInstance().getReaderLogService();
 	}
 	
-	@Inject
-	public void setReaderLogService(ReaderLogService readerLogService){
-		this.log = readerLogService;
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * 

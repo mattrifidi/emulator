@@ -102,7 +102,7 @@ public class ReaderView extends ViewPart implements DragSourceListener {
 		}
 		createContextMenu();
 
-		treeViewer.addDragSupport(DND.DROP_COPY, new Transfer[] { TextTransfer
+		treeViewer.addDragSupport(DND.DROP_DEFAULT | DND.DROP_COPY | DND.DROP_MOVE, new Transfer[] { TextTransfer
 				.getInstance() }, this);
 
 		this.getSite().setSelectionProvider(treeViewer);
@@ -187,10 +187,11 @@ public class ReaderView extends ViewPart implements DragSourceListener {
 		ISelection sel = treeViewer.getSelection();
 		Object o = ((TreeSelection) sel).getFirstElement();
 		if (o instanceof UIAntenna) {
+			System.out.println("DO IT");
 			event.doit = true;
-			return;
+		}else{
+			event.doit = false;			
 		}
-		event.doit = false;
 
 	}
 

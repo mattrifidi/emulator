@@ -2,6 +2,9 @@ package org.rifidi.tags.impl;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -33,7 +36,7 @@ public class RifidiTag implements Serializable {
 
 	/** Serial version for serializable. */
 	private static final long serialVersionUID = 1L;
-	
+
 	private float speed = 0.0f;
 
 	private float rssi = 0.0f;
@@ -61,9 +64,9 @@ public class RifidiTag implements Serializable {
 	private int readCount = 0;
 	/** Status of this tag. Could be disabled and only seen by the IDE. */
 	public boolean isVisbile = true;
-	
+
 	@XmlTransient
-	protected PropertyChangeSupport propertyChangeSupport;
+	transient protected PropertyChangeSupport propertyChangeSupport;
 	/**
 	 * The quality rating of the tag. A quality rating is from 0 to 100 and
 	 * correlates to how well the tag may be read compared to a perfect tag (as
@@ -76,7 +79,31 @@ public class RifidiTag implements Serializable {
 	 * Default constructor (used by jaxb)
 	 */
 	public RifidiTag() {
-		propertyChangeSupport = new PropertyChangeSupport(this);
+		init();
+	}
+
+	/**
+	 * This method is needed so that the init method is called when the object
+	 * is deserialized.
+	 * 
+	 * @param in
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
+	private void readObject(ObjectInputStream in) throws IOException,
+			ClassNotFoundException {
+		in.defaultReadObject();
+		init();
+	}
+
+	/**
+	 * Any custom work that needs to happen when serializing can go here.
+	 * 
+	 * @param out
+	 * @throws IOException
+	 */
+	private void writeObject(ObjectOutputStream out) throws IOException {
+		out.defaultWriteObject();
 	}
 
 	/**
@@ -86,6 +113,14 @@ public class RifidiTag implements Serializable {
 	 */
 	public RifidiTag(IGen1Tag tag) {
 		this.tag = tag;
+		init();
+	}
+
+	/**
+	 * This method performs initialization of transient (those that are not
+	 * brought back to life by serizalization) objects.
+	 */
+	private void init() {
 		propertyChangeSupport = new PropertyChangeSupport(this);
 	}
 
@@ -104,7 +139,8 @@ public class RifidiTag implements Serializable {
 	}
 
 	/**
-	 * @param speed the speed to set
+	 * @param speed
+	 *            the speed to set
 	 */
 	public void setSpeed(Float speed) {
 		this.speed = speed;
@@ -118,7 +154,8 @@ public class RifidiTag implements Serializable {
 	}
 
 	/**
-	 * @param rssi the rssi to set
+	 * @param rssi
+	 *            the rssi to set
 	 */
 	public void setRssi(float rssi) {
 		this.rssi = rssi;

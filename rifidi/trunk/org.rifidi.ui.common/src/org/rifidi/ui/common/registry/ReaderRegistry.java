@@ -7,6 +7,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.rmi.ConnectException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -104,7 +105,6 @@ public class ReaderRegistry implements ReaderRegistryService {
 		String readerName = grph.getReaderName();
 
 		if (readerRegistry.containsKey(readerName)) {
-
 			throw new DuplicateReaderException("The reader with the name "
 					+ readerName + " already exists");
 		}
@@ -200,12 +200,9 @@ public class ReaderRegistry implements ReaderRegistryService {
 	 * @see org.rifidi.ui.common.registry.ReaderRegistryService#clean()
 	 */
 	public void clean() {
-		for (UIReader reader : readerRegistry.values()) {
-			try {
-				readerManager.deleteReader(reader.getReaderName());
-			} catch (Exception e) {
-
-			}
+		Collection<UIReader> readers = getReaderList();
+		for (UIReader reader : readers) {
+			remove(reader);
 		}
 		readerRegistry.clear();
 		readerBlueprints.clear();

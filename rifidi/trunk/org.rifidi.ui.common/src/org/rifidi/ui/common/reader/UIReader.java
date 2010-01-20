@@ -44,11 +44,9 @@ import org.rifidi.ui.common.reader.callback.UIReaderCallbackManager;
 @XmlRootElement
 public class UIReader extends GeneralReaderPropertyHolder {
 
-	public static final String STATE_NEW = "NEW";
-	public static final String STATE_RUNNING = "running";
-	public static final String STATE_STOPPED = "stopped";
-	public static final String STATE_SUSPENDED = "suspended";
-	public static final String PROP_STATE = "readerstate";
+	public static final String STATE_NEW = "NEW", STATE_RUNNING = "running",
+			STATE_STOPPED = "stopped", STATE_SUSPENDED = "suspended",
+			PROP_STATE = "readerstate";
 
 	/** SerialVersionUID */
 	private static final long serialVersionUID = 1L;
@@ -58,7 +56,8 @@ public class UIReader extends GeneralReaderPropertyHolder {
 	private String readerState = "NEW";
 
 	@XmlTransient
-	private PropertyChangeSupport pcs;
+	private transient PropertyChangeSupport pcs = new PropertyChangeSupport(
+			this);
 
 	/** This is the selection from the wizard Page */
 	@XmlElement
@@ -66,17 +65,17 @@ public class UIReader extends GeneralReaderPropertyHolder {
 
 	/** This holds the reference to the real reader */
 	@XmlTransient
-	private ReaderManager readerManager;
+	private transient ReaderManager readerManager;
 
 	/**
 	 * This is the callback interface implementation it is used to get response
 	 * from the reader without the need of polling it
 	 */
 	@XmlTransient
-	private UIReaderCallbackManager readerCallbackManager;
+	private transient UIReaderCallbackManager readerCallbackManager;
 
 	/** UI representation of the Antenna Fields */
-	private HashMap<Integer, UIAntenna> antennas;
+	private transient HashMap<Integer, UIAntenna> antennas;
 
 	/**
 	 * Constructor.
@@ -85,8 +84,7 @@ public class UIReader extends GeneralReaderPropertyHolder {
 	 * @param grph
 	 */
 	public UIReader(ReaderManager readerManager,
-
-	GeneralReaderPropertyHolder grph) {
+			GeneralReaderPropertyHolder grph) {
 		pcs = new PropertyChangeSupport(this);
 		this.readerManager = readerManager;
 		this.setNumAntennas(grph.getNumAntennas());

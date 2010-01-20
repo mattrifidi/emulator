@@ -7,9 +7,6 @@
 	http://www.springframework.org/schema/osgi
 	http://www.springframework.org/schema/osgi/spring-osgi.xsd">
 
-	<osgi:service ref="readerLogService"
-		interface="org.rifidi.emulator.log.ReaderLogService" />
-
 	<osgi:service id="readerManagerService" ref="readerManager"
 		interface="org.rifidi.emulator.manager.ReaderManager" />
 	

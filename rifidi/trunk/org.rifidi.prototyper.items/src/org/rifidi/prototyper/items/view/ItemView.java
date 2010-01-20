@@ -58,10 +58,11 @@ public class ItemView extends ViewPart implements DragSourceListener {
 		treeViewer.setComparator(new ViewerComparator());
 
 		treeViewer.setInput(ItemModelProviderSingleton.getModelProvider()
-				.getItems());
+				.getViewerInput());
 
-		treeViewer.addDragSupport(DND.DROP_COPY, new Transfer[] { TextTransfer
-				.getInstance() }, this);
+		treeViewer.addDragSupport(DND.DROP_DEFAULT | DND.DROP_COPY
+				| DND.DROP_MOVE, new Transfer[] { TextTransfer.getInstance() },
+				this);
 		createContextMenu();
 		this.getSite().setSelectionProvider(treeViewer);
 
@@ -107,7 +108,6 @@ public class ItemView extends ViewPart implements DragSourceListener {
 	 */
 	@Override
 	public void dragFinished(DragSourceEvent event) {
-
 	}
 
 	/*
@@ -122,8 +122,8 @@ public class ItemView extends ViewPart implements DragSourceListener {
 		if (TextTransfer.getInstance().isSupportedType(event.dataType)) {
 			ISelection sel = treeViewer.getSelection();
 			Object o = ((TreeSelection) sel).getFirstElement();
-			event.data = ItemDNDSupport.getTextTranfer(((ItemModel) o)
-					.getTag());
+			String itemID = Integer.toString(((ItemModel) o).getItemID());
+			event.data = ItemDNDSupport.getTextTranfer(itemID);
 		}
 
 	}
@@ -141,10 +141,9 @@ public class ItemView extends ViewPart implements DragSourceListener {
 		Object o = ((TreeSelection) sel).getFirstElement();
 		if (o instanceof ItemModel) {
 			event.doit = true;
-			return;
+		} else {
+			event.doit = false;
 		}
-		event.doit = false;
-
 	}
 
 }

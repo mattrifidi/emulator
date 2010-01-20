@@ -3,9 +3,14 @@
  */
 package org.rifidi.prototyper.items.wizard;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
@@ -29,6 +34,8 @@ public class NewItemWizardTypeChooserPage extends WizardPage {
 
 	private ItemTypeRegistry itemTypeRegistry;
 	private ItemType selection;
+	private final Log logger = LogFactory
+			.getLog(NewItemWizardTypeChooserPage.class);
 
 	protected NewItemWizardTypeChooserPage(String pageName) {
 		super(pageName);
@@ -72,6 +79,7 @@ public class NewItemWizardTypeChooserPage extends WizardPage {
 			}
 
 		});
+		setControl(composite);
 
 	}
 
@@ -83,7 +91,14 @@ public class NewItemWizardTypeChooserPage extends WizardPage {
 	private void fillTree(Tree tree) {
 		Map<String, TreeItem> categoriesToTreeItem = new HashMap<String, TreeItem>();
 		// step through each command.
-		for (String category : this.itemTypeRegistry.getItemCategories()) {
+		if (itemTypeRegistry == null) {
+			logger.error("item registry is null!");
+			return;
+		}
+		List<String> categories = new ArrayList<String>(this.itemTypeRegistry
+				.getItemCategories());
+		Collections.sort(categories);
+		for (String category : categories) {
 			TreeItem categoryTreeItem = categoriesToTreeItem.get(category);
 			// create a command category if one does not exist
 			if (categoryTreeItem == null) {
@@ -98,7 +113,10 @@ public class NewItemWizardTypeChooserPage extends WizardPage {
 				categoriesToTreeItem.put(category, categoryTreeItem);
 
 			}
-			for (ItemType itemType : itemTypeRegistry.getItemTypes(category)) {
+			List<ItemType> types = new ArrayList<ItemType>(itemTypeRegistry
+					.getItemTypes(category));
+			Collections.sort(types);
+			for (ItemType itemType : types) {
 				TreeItem itemTypeTreeItem = new TreeItem(categoryTreeItem,
 						SWT.None);
 				itemTypeTreeItem.setText(itemType.getType());
@@ -111,16 +129,14 @@ public class NewItemWizardTypeChooserPage extends WizardPage {
 		}
 
 	}
-	
+
 	/**
 	 * Private method called once a command has been chosen
 	 */
 	private void validate() {
 		setPageComplete(true);
-	}
-	
-	protected ItemType getSelectedItemType(){
-		return this.selection;
+		NewItemWizardPage page = (NewItemWizardPage) super.getNextPage();
+		page.setItemType(selection);
 	}
 
 	/**
