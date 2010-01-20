@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="org.rifidi.prototyper.mapeditor.view.MapViewEditor"
+            contributorClass="org.rifidi.prototyper.mapeditor.view.MapEditorActionBarContributor"
+            default="true"
+            extensions="rifidi"
+            icon="IMG/map.png"
+            id="org.rifidi.prototyper.mapeditor"
+            name="Floorplan View">
+      </editor>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            id="org.rifidi.prototyper.mapeditor.new"
+            name="New Prototype">
+      </command>
+      <command
+            id="org.rifidi.prototyper.mapeditor.open"
+            name="Open Prototype">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="org.rifidi.prototyper.mapeditor.handler.NewPrototypeHandler"
+            commandId="org.rifidi.prototyper.mapeditor.new">
+      </handler>
+      <handler
+            class="org.rifidi.prototyper.mapeditor.handler.OpenPrototypeHandler"
+            commandId="org.rifidi.prototyper.mapeditor.open">
+      </handler>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="menu:file?after=save">
+         <command
+               commandId="org.eclipse.ui.file.save"
+               style="push">
+         </command>
+         <command
+               commandId="org.eclipse.ui.file.saveAs"
+               style="push">
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="menu:file?after=new">
+         <command
+               commandId="org.rifidi.prototyper.mapeditor.new"
+               icon="IMG/wand.png"
+               label="New Prototype..."
+               style="push">
+         </command>
+         <command
+               commandId="org.rifidi.prototyper.mapeditor.open"
+               icon="IMG/map_edit.png"
+               label="Open Prototype..."
+               style="push">
+         </command>
+      </menuContribution>
+   </extension>
+
+</plugin>
