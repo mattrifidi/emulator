@@ -3,7 +3,9 @@
  */
 package org.rifidi.prototyper.mapeditor.view.figures;
 
+import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.ImageFigure;
+import org.eclipse.draw2d.LineBorder;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
@@ -23,7 +25,11 @@ public class ItemFigure extends ImageFigure {
 		setSize(element.getDimension());
 		refreshImage();
 	}
-
+	
+	public void showBorder(){
+		this.setBorder(new LineBorder(ColorConstants.black));
+	}
+	
 	public void refreshImage() {
 		if (getImage() != null) {
 			getImage().dispose();

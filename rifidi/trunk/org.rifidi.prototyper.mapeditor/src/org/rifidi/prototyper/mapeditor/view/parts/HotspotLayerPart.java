@@ -13,7 +13,7 @@ import org.eclipse.gef.EditPolicy;
 import org.rifidi.prototyper.mapeditor.model.ElementSet;
 import org.rifidi.prototyper.mapeditor.model.HotspotElement;
 import org.rifidi.prototyper.mapeditor.view.figures.MapLayer;
-import org.rifidi.prototyper.mapeditor.view.parts.policies.HotspotLayoutPolicy;
+import org.rifidi.prototyper.mapeditor.view.parts.policies.HotspotLayerLayoutPolicy;
 
 /**
  * @author Kyle Neumeier - kyle@pramari.com
@@ -40,7 +40,7 @@ public class HotspotLayerPart extends AbstractMapPart<ElementSet<HotspotElement>
 	 */
 	@Override
 	protected void createEditPolicies() {
-		installEditPolicy(EditPolicy.LAYOUT_ROLE, new HotspotLayoutPolicy());
+		installEditPolicy(EditPolicy.LAYOUT_ROLE, new HotspotLayerLayoutPolicy());
 	}
 
 	/*

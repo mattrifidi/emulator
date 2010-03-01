@@ -4,9 +4,7 @@
 package org.rifidi.prototyper.mapeditor.view.parts;
 
 import java.beans.PropertyChangeEvent;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -27,7 +25,6 @@ import org.rifidi.ui.console.service.ConsoleService;
  */
 public class HotspotPart extends AbstractMapPart<HotspotElement> {
 
-	final Set<ItemPart> containedItems = new HashSet<ItemPart>();
 	private ReaderRegistryService readerService;
 	/** A service to log output to the console */
 	private ConsoleService service;
@@ -101,28 +98,24 @@ public class HotspotPart extends AbstractMapPart<HotspotElement> {
 		Rectangle bounds = new Rectangle(item.getModelElement().getLocation(),
 				item.getModelElement().getDimension());
 		if (getFigure().intersects(bounds)) {
-			if (!containedItems.contains(item)) {
-				handleItemSeen(item);
-			}
+			handleItemSeen(item);
 		} else {
-			if (containedItems.contains(item)) {
-				handleItemUnseen(item);
-			}
+			handleItemUnseen(item);
 		}
 	}
 
 	private void handleItemSeen(ItemPart item) {
-		containedItems.add(item);
-		getModelElement().handleTagSeen(item.getModelElement().getTag());
-		service.write(CONSOLE_NAME, "Item: " + item.getHoverText()
-				+ " arrived at " + this.getHoverText() + "\n");
+		if (!getModelElement().contains(item.getModelElement())) {
+			getModelElement().handleTagSeen(item.getModelElement());
+			service.write(CONSOLE_NAME, item + " arrived at " + this + "\n");
+		}
 	}
 
 	private void handleItemUnseen(ItemPart item) {
-		containedItems.remove(item);
-		getModelElement().handleTagUnseen(item.getModelElement().getTag());
-		service.write(CONSOLE_NAME, "Item: " + item.getHoverText()
-				+ " departed from " + this.getHoverText() + "\n");
+		if (getModelElement().contains(item.getModelElement())) {
+			getModelElement().handleTagUnseen(item.getModelElement());
+			service.write(CONSOLE_NAME, item + " departed from " + this + "\n");
+		}
 	}
 
 	/*
@@ -161,7 +154,8 @@ public class HotspotPart extends AbstractMapPart<HotspotElement> {
 	 */
 	@Override
 	public String toString() {
-		return "Hotspot Part " + getModelElement();
+		return "Hotspot: " + getModelElement().getReaderName() + " ant: "
+				+ getModelElement().getAntennaID();
 	}
 
 	/*
@@ -172,8 +166,7 @@ public class HotspotPart extends AbstractMapPart<HotspotElement> {
 	 */
 	@Override
 	public String getHoverText() {
-		return "Hotspot: " + getModelElement().getReaderName() + " ant: "
-				+ getModelElement().getAntennaID();
+		return toString();
 	}
 
 	/*
@@ -193,4 +186,5 @@ public class HotspotPart extends AbstractMapPart<HotspotElement> {
 			manageCollision(itemPart);
 		}
 	}
+
 }

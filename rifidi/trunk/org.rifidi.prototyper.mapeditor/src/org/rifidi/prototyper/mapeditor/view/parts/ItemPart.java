@@ -7,12 +7,15 @@ import java.beans.PropertyChangeEvent;
 
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.gef.DragTracker;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.GraphicalEditPart;
+import org.eclipse.gef.Request;
 import org.rifidi.prototyper.mapeditor.model.AbstractMapModelElement;
 import org.rifidi.prototyper.mapeditor.model.ItemElement;
 import org.rifidi.prototyper.mapeditor.view.figures.ItemFigure;
 import org.rifidi.prototyper.mapeditor.view.parts.policies.ItemComponentEditPolicy;
+import org.rifidi.prototyper.mapeditor.view.parts.policies.ItemContainerEditPolicy;
 
 /**
  * @author Kyle Neumeier - kyle@pramari.com
@@ -29,16 +32,21 @@ public class ItemPart extends AbstractMapPart<ItemElement> {
 	protected IFigure createFigure() {
 		return new ItemFigure(getModelElement());
 	}
-	
-	/* (non-Javadoc)
-	 * @see org.rifidi.prototyper.mapeditor.view.parts.AbstractMapPart#createEditPolicies()
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.rifidi.prototyper.mapeditor.view.parts.AbstractMapPart#createEditPolicies
+	 * ()
 	 */
 	@Override
 	protected void createEditPolicies() {
-		installEditPolicy(EditPolicy.COMPONENT_ROLE, new ItemComponentEditPolicy());
+		installEditPolicy(EditPolicy.COMPONENT_ROLE,
+				new ItemComponentEditPolicy());
+		installEditPolicy(EditPolicy.CONTAINER_ROLE,
+				new ItemContainerEditPolicy());
 	}
-
-
 
 	/*
 	 * (non-Javadoc)
@@ -54,6 +62,14 @@ public class ItemPart extends AbstractMapPart<ItemElement> {
 			((MapPart) getParent().getParent()).getHotspotLayerPart()
 					.manageCollisions(this);
 		}
+		if (arg0.getPropertyName().equals(AbstractMapModelElement.PROP_CHILD)) {
+			if (arg0.getNewValue() != null) {
+				((ItemFigure) getFigure()).showBorder();
+			}
+			if (arg0.getOldValue() != null) {
+
+			}
+		}
 		super.propertyChange(arg0);
 	}
 
@@ -67,7 +83,7 @@ public class ItemPart extends AbstractMapPart<ItemElement> {
 		ItemElement model = getModelElement();
 		Rectangle bounds = new Rectangle(model.getLocation(), model
 				.getDimension());
-		((ItemFigure)getFigure()).refreshImage();
+		((ItemFigure) getFigure()).refreshImage();
 		((GraphicalEditPart) getParent()).setLayoutConstraint(this,
 				getFigure(), bounds);
 	}
@@ -79,7 +95,7 @@ public class ItemPart extends AbstractMapPart<ItemElement> {
 	 */
 	@Override
 	public String toString() {
-		return "Item Part " + getModelElement();
+		return "Item Part " + getModelElement().getName();
 	}
 
 	/*
@@ -90,7 +106,16 @@ public class ItemPart extends AbstractMapPart<ItemElement> {
 	 */
 	@Override
 	public String getHoverText() {
-		return getModelElement().getName();
+		StringBuilder builder = new StringBuilder();
+		builder.append(getModelElement().getName());
+		if (getModelElement().isContainer()) {
+			builder.append("\n-------\n");
+			for (Object o : getModelElement().getContainedItems()) {
+				if (o instanceof ItemElement)
+					builder.append("   " + ((ItemElement) o).getName() + "\n");
+			}
+		}
+		return builder.toString();
 	}
 
 	/*
@@ -102,8 +127,20 @@ public class ItemPart extends AbstractMapPart<ItemElement> {
 	@Override
 	public void activate() {
 		super.activate();
-		((MapPart) getParent().getParent()).getHotspotLayerPart()
-				.manageCollisions(this);
+		// ((MapPart) getParent().getParent()).getHotspotLayerPart()
+		// .manageCollisions(this);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.gef.editparts.AbstractGraphicalEditPart#getDragTracker(org
+	 * .eclipse.gef.Request)
+	 */
+	@Override
+	public DragTracker getDragTracker(Request request) {
+		return new ItemDragTracker(this);
 	}
 
 }

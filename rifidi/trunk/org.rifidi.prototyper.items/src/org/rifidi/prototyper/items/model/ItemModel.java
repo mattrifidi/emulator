@@ -29,6 +29,7 @@ public class ItemModel implements Serializable, Comparable<ItemModel> {
 	private ItemType type;
 	/** An internal ID used to identify this item */
 	private Integer itemID;
+	private Boolean container=null;
 
 	/**
 	 * @return the tag
@@ -96,6 +97,22 @@ public class ItemModel implements Serializable, Comparable<ItemModel> {
 
 	public Image getImage() {
 		return Activator.getDefault().getImageRegistry().get(type.getType());
+	}
+
+	/**
+	 * @return the container
+	 */
+	public Boolean getContainer() {
+		if (container==null)
+			return type.getIsContainer();
+		else return type.getIsContainer();
+	}
+
+	/**
+	 * @param container the container to set
+	 */
+	public void setContainer(Boolean container) {
+		this.container = container;
 	}
 
 	/*

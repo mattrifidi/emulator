@@ -14,7 +14,7 @@ import java.util.List;
  * 
  */
 public class ElementSet<T extends AbstractMapModelElement> extends
-		AbstractMapModelElement {
+		AbstractMapModelElement implements Container<T>{
 
 	/***/
 	private static final long serialVersionUID = 1L;
@@ -48,11 +48,31 @@ public class ElementSet<T extends AbstractMapModelElement> extends
 		return new LinkedList<T>(elements);
 	}
 
+	@Override
 	public boolean contains(T element) {
-		return elements.contains(element);
+		if(element instanceof Container<?>){
+			for(T e : elements){
+				Container<T> c = (Container<T>)e;
+				if(c.contains(element))
+					return true;
+			}
+			return false;
+		}else{
+			return elements.contains(element);
+		}
 	}
 
 	public Class<T> getType() {
 		return elementType;
 	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "Element Set<"+getType().getSimpleName()+">";
+	}
+	
+	
 }

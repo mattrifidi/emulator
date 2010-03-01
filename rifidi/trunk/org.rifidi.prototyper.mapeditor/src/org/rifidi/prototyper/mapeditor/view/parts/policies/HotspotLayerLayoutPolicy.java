@@ -27,7 +27,7 @@ import org.rifidi.prototyper.mapeditor.view.parts.HotspotPart;
  * @author Kyle Neumeier - kyle@pramari.com
  * 
  */
-public class HotspotLayoutPolicy extends XYLayoutEditPolicy {
+public class HotspotLayerLayoutPolicy extends XYLayoutEditPolicy {
 
 	/*
 	 * (non-Javadoc)

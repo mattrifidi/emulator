@@ -9,11 +9,13 @@ import java.util.List;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Layer;
 import org.eclipse.draw2d.XYLayout;
+import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPolicy;
 import org.rifidi.prototyper.mapeditor.model.ElementSet;
 import org.rifidi.prototyper.mapeditor.model.ItemElement;
 import org.rifidi.prototyper.mapeditor.view.figures.MapLayer;
-import org.rifidi.prototyper.mapeditor.view.parts.policies.ItemLayoutPolicy;
+import org.rifidi.prototyper.mapeditor.view.parts.policies.ItemLayerLayoutPolicy;
 
 /**
  * @author Kyle Neumeier - kyle@pramari.com
@@ -40,7 +42,7 @@ public class ItemLayerPart extends AbstractMapPart<ElementSet<ItemElement>> {
 	 */
 	@Override
 	protected void createEditPolicies() {
-		installEditPolicy(EditPolicy.LAYOUT_ROLE, new ItemLayoutPolicy());
+		installEditPolicy(EditPolicy.LAYOUT_ROLE, new ItemLayerLayoutPolicy());
 	}
 
 	/*
@@ -72,4 +74,23 @@ public class ItemLayerPart extends AbstractMapPart<ElementSet<ItemElement>> {
 		}
 		return retVal;
 	}
+	
+	public ItemPart getIntersectionItem(ItemPart part, Rectangle bounds){
+		for(ItemPart p : getItemParts()){
+			if(p.getFigure().intersects(bounds) && part!=p){
+				return p;
+			}
+		}
+		return null;
+	}
+	
+	public ItemPart getItemPartAt(Point point){
+		for(ItemPart p : getItemParts()){
+			if(p.getFigure().containsPoint(point)){
+				return p;
+			}
+		}
+		return null;
+	}
+
 }

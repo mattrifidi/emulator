@@ -18,9 +18,9 @@ import org.eclipse.gef.requests.CreateRequest;
 import org.eclipse.gef.requests.GroupRequest;
 import org.rifidi.prototyper.mapeditor.model.AbstractMapModelElement;
 import org.rifidi.prototyper.mapeditor.model.ElementSet;
-import org.rifidi.prototyper.mapeditor.model.ItemElement;
 import org.rifidi.prototyper.mapeditor.model.commands.DeleteCommand;
 import org.rifidi.prototyper.mapeditor.model.commands.ItemMoveCommand;
+import org.rifidi.prototyper.mapeditor.model.commands.OrphanItemCommand;
 import org.rifidi.prototyper.mapeditor.view.parts.HotspotPart;
 import org.rifidi.prototyper.mapeditor.view.parts.ItemLayerPart;
 import org.rifidi.prototyper.mapeditor.view.parts.ItemPart;
@@ -29,7 +29,7 @@ import org.rifidi.prototyper.mapeditor.view.parts.ItemPart;
  * @author Kyle Neumeier - kyle@pramari.com
  * 
  */
-public class ItemLayoutPolicy extends XYLayoutEditPolicy {
+public class ItemLayerLayoutPolicy extends XYLayoutEditPolicy {
 
 	/*
 	 * (non-Javadoc)
@@ -94,6 +94,15 @@ public class ItemLayoutPolicy extends XYLayoutEditPolicy {
 		if (child instanceof ItemPart) {
 			ItemPart part = (ItemPart) child;
 			Rectangle r = (Rectangle) constraint;
+			ItemPart containerPart = ((ItemLayerPart) getHost())
+					.getIntersectionItem(part, r);
+			if (containerPart != null) {
+				if (containerPart.getModelElement().isContainer()) {
+					// return new ItemInsertIntoContainerCommand(containerPart
+					// .getModelElement(), part.getModelElement(),
+					// ((ItemLayerPart) getHost()).getModelElement());
+				}
+			}
 			return new ItemMoveCommand(part.getModelElement(), request,
 					(Rectangle) constraint);
 		}
@@ -127,8 +136,29 @@ public class ItemLayoutPolicy extends XYLayoutEditPolicy {
 				elements.add(((ItemPart) o).getModelElement());
 			}
 		}
-		ElementSet layerModel = ((ItemLayerPart) getHost())
-				.getModelElement();
+		ElementSet layerModel = ((ItemLayerPart) getHost()).getModelElement();
 		return new DeleteCommand(layerModel, elements);
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.gef.editpolicies.LayoutEditPolicy#getOrphanChildrenCommand
+	 * (org.eclipse.gef.Request)
+	 */
+	@Override
+	protected Command getOrphanChildrenCommand(Request request) {
+		GroupRequest gRequest = (GroupRequest) request;
+		ItemPart item = null;
+		for (Object o : gRequest.getEditParts()) {
+			if (o instanceof ItemPart) {
+				item = (ItemPart) o;
+			}
+		}
+		if (item != null)
+			return new OrphanItemCommand(item, (ItemLayerPart)getHost());
+		return null;
+	}
+
 }

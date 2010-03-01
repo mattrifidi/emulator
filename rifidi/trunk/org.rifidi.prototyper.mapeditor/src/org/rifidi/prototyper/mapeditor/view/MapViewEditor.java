@@ -22,6 +22,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.draw2d.geometry.Dimension;
+import org.eclipse.gef.ContextMenuProvider;
 import org.eclipse.gef.DefaultEditDomain;
 import org.eclipse.gef.KeyHandler;
 import org.eclipse.gef.KeyStroke;
@@ -37,7 +38,6 @@ import org.eclipse.gef.ui.parts.GraphicalEditor;
 import org.eclipse.gef.ui.parts.GraphicalViewerKeyHandler;
 import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
 import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.commands.ActionHandler;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
@@ -48,7 +48,6 @@ import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.actions.WorkspaceModifyOperation;
 import org.eclipse.ui.dialogs.SaveAsDialog;
-import org.eclipse.ui.handlers.IHandlerService;
 import org.rifidi.emulator.reader.module.GeneralReaderPropertyHolder;
 import org.rifidi.prototyper.items.model.ItemModel;
 import org.rifidi.prototyper.items.service.DuplicateItemException;
@@ -108,16 +107,17 @@ public class MapViewEditor extends GraphicalEditor implements
 		getActionRegistry().registerAction(zoomIn);
 		getActionRegistry().registerAction(zoomOut);
 
-		//IHandlerService service = (IHandlerService) getEditorSite().getService(
-		//		IHandlerService.class);
-		//service.activateHandler(zoomIn.getActionDefinitionId(),
-		//		new ActionHandler(zoomIn));
-		//service.activateHandler(zoomOut.getActionDefinitionId(),
-		//		new ActionHandler(zoomOut));
-
 		getGraphicalViewer().setProperty(
 				MouseWheelHandler.KeyGenerator.getKey(SWT.MOD1),
 				MouseWheelZoomHandler.SINGLETON);
+		
+		ContextMenuProvider provider =
+			new MapContextMenu(getGraphicalViewer(), getActionRegistry());
+		getGraphicalViewer().setContextMenu(provider);
+		getSite().registerContextMenu(
+			"org.rifidi.prototyper.contextmenu", //$NON-NLS-1$
+			provider,
+			getGraphicalViewer());
 
 	}
 

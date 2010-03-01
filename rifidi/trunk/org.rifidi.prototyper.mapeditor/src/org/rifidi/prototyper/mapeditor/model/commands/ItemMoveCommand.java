@@ -49,6 +49,5 @@ public class ItemMoveCommand extends Command {
 	public void execute() {
 		model.setLocation(newBounds.getLocation());
 		model.setDimension(newBounds.getSize());
-		
 	}
 }

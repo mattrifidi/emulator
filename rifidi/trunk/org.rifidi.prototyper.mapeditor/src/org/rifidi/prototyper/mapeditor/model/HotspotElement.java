@@ -8,7 +8,9 @@ import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
@@ -24,7 +26,7 @@ import org.rifidi.ui.common.registry.ReaderRegistryService;
  * 
  */
 public class HotspotElement extends AbstractMapModelElement implements
-		PropertyChangeListener {
+		PropertyChangeListener, Container<ItemElement> {
 
 	static final long serialVersionUID = 1;
 	private Float antennaRage;
@@ -36,6 +38,7 @@ public class HotspotElement extends AbstractMapModelElement implements
 	private String readerState;
 	private transient boolean hasBeenInitialized;
 	private Dimension size;
+	private Set<ItemElement> containedItems;
 
 	public HotspotElement(GeneralReaderPropertyHolder reader, Integer antennaID) {
 		readerState = UIReader.STATE_NEW;
@@ -67,6 +70,9 @@ public class HotspotElement extends AbstractMapModelElement implements
 	 */
 	private void init() {
 		hasBeenInitialized = false;
+		if (containedItems == null) {
+			containedItems = new HashSet<ItemElement>();
+		}
 	}
 
 	/**
@@ -251,12 +257,12 @@ public class HotspotElement extends AbstractMapModelElement implements
 	 * 
 	 * @param tag
 	 */
-	public void handleTagSeen(RifidiTag tag) {
+	public void handleTagSeen(ItemElement item) {
 		if (!hasBeenInitialized) {
 			throw new IllegalStateException("Hotspot has not been initialized.");
 		}
-		List<RifidiTag> tags = new ArrayList<RifidiTag>();
-		tags.add(tag);
+		this.containedItems.add(item);
+		List<RifidiTag> tags = new ArrayList<RifidiTag>(item.getVisibleTags());
 		this.readerController.getAntenna(antennaID).addTag(tags);
 	}
 
@@ -266,13 +272,28 @@ public class HotspotElement extends AbstractMapModelElement implements
 	 * 
 	 * @param tag
 	 */
-	public void handleTagUnseen(RifidiTag tag) {
+	public void handleTagUnseen(ItemElement item) {
 		if (!hasBeenInitialized) {
 			throw new IllegalStateException("Hotspot has not been initialized.");
 		}
-		List<RifidiTag> tags = new ArrayList<RifidiTag>();
-		tags.add(tag);
+		this.containedItems.remove(item);
+		List<RifidiTag> tags = new ArrayList<RifidiTag>(item.getVisibleTags());
 		this.readerController.getAntenna(antennaID).removeTag(tags);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @seeorg.rifidi.prototyper.mapeditor.model.Container#contains(org.rifidi.
+	 * prototyper.mapeditor.model.AbstractMapModelElement)
+	 */
+	@Override
+	public boolean contains(ItemElement element) {
+		for (ItemElement item : containedItems) {
+			if (item.contains(element)) {
+				return true;
+			}
+		}
+		return false;
+	}
 }
