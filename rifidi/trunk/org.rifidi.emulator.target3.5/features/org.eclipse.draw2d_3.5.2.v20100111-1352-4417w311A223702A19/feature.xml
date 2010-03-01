@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="org.eclipse.draw2d"
+      label="%featureName"
+      version="3.5.2.v20100111-1352-4417w311A223702A19"
+      provider-name="%providerName"
+      image="eclipse_update_120.jpg">
+
+   <description>
+      %description
+   </description>
+
+   <copyright>
+      %copyright
+   </copyright>
+
+   <license url="%licenseURL">
+      %license
+   </license>
+
+   <url>
+      <update label="%updateSiteName" url="http://download.eclipse.org/tools/gef/updates/releases/site.xml"/>
+      <discovery label="%updateSiteName" url="http://download.eclipse.org/tools/gef/updates/releases/site.xml"/>
+   </url>
+
+   <plugin
+         id="org.eclipse.draw2d"
+         download-size="0"
+         install-size="0"
+         version="3.5.2.v20091126-1908"
+         unpack="false"/>
+
+</feature>

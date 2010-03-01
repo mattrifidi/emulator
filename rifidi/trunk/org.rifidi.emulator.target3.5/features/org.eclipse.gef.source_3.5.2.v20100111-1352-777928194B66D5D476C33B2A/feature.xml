@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature id="org.eclipse.gef.source" version="3.5.2.v20100111-1352-777928194B66D5D476C33B2A" label="%featureName" provider-name="%providerName" image="eclipse_update_120.jpg"    >
+	<description >
+		%description
+	</description>
+	<copyright >
+		%copyright
+	</copyright>
+	<license url="%licenseURL">
+		%license
+	</license>
+	<url>
+		<update url="http://download.eclipse.org/tools/gef/updates/releases/site.xml" label="%updateSiteName"/>
+		<discovery url="http://download.eclipse.org/tools/gef/updates/releases/site.xml" label="%updateSiteName"/>
+	</url>
+	<plugin id="org.eclipse.gef.source" version="3.5.1.v20090910-2020"     unpack="false"/>
+</feature>
