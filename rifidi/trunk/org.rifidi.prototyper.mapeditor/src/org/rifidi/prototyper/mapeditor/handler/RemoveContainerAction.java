@@ -12,12 +12,15 @@ import org.eclipse.ui.PlatformUI;
 import org.rifidi.prototyper.mapeditor.view.parts.ItemPart;
 
 /**
+ * This is an action which removes contained items from within an item.
+ * 
  * @author Kyle Neumeier - kyle@pramari.com
  * 
  */
 public class RemoveContainerAction extends Action {
 
 	private ItemPart itemToEmpty;
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -43,7 +46,7 @@ public class RemoveContainerAction extends Action {
 					&& (ssel.getFirstElement() instanceof ItemPart)) {
 				ItemPart item = (ItemPart) ssel.getFirstElement();
 				if (item.getModelElement().isContainer()
-						&& item.getModelElement().getContainedItems().size() > 0){
+						&& item.getModelElement().getContainedItems().size() > 0) {
 					itemToEmpty = item;
 					return true;
 				}
@@ -52,7 +55,9 @@ public class RemoveContainerAction extends Action {
 		return false;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.jface.action.Action#run()
 	 */
 	@Override

@@ -7,6 +7,9 @@ import org.eclipse.gef.EditPart;
 import org.eclipse.gef.tools.DragEditPartsTracker;
 
 /**
+ * We need to provide a custom DragEditPartsTracker that checks to see if we are
+ * moving one item on top of another.
+ * 
  * @author Kyle Neumeier - kyle@pramari.com
  * 
  */
@@ -39,7 +42,7 @@ public class ItemDragTracker extends DragEditPartsTracker {
 			if (editPart instanceof ItemLayerPart) {
 				ItemLayerPart itemLayer = (ItemLayerPart) editPart;
 				ItemPart item = itemLayer.getItemPartAt(getLocation());
-				if (item != null && item!=getSourceEditPart()) {
+				if (item != null && item != getSourceEditPart()) {
 					editPart = item;
 				}
 			}

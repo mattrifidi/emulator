@@ -9,13 +9,18 @@ import org.rifidi.prototyper.mapeditor.model.ItemElement;
 import org.rifidi.prototyper.mapeditor.model.ElementSet;
 
 /**
+ * This command creates a new Item
+ * 
  * @author Kyle Neumeier - kyle@pramari.com
  * 
  */
 public class ItemCreateCommand extends Command {
 
+	/** The element set of items */
 	private ElementSet<ItemElement> itemElements;
+	/** The request to create the item */
 	private CreateRequest request;
+	/** The item */
 	private ItemElement item;
 
 	/**

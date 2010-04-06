@@ -22,9 +22,8 @@ public class Activator extends AbstractUIPlugin {
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.rifidi.prototyper.items";
+	/** The Identifier of the Folder Image */
 	public static final String IMAGE_FOLDER = "folder";
-	
-
 	// The shared instance
 	private static Activator plugin;
 
@@ -44,12 +43,16 @@ public class Activator extends AbstractUIPlugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
-		ItemTypeRegistry reg = new ItemTypeRegistry();
+
+		// register the item service in OSGi
 		context.registerService(ItemService.class.getName(),
 				ItemModelProviderSingleton.getModelProvider(), new Hashtable());
+		// create the registry and register it in OSGi
+		ItemTypeRegistry reg = new ItemTypeRegistry();
 		context.registerService(ItemTypeRegistry.class.getName(), reg,
 				new Hashtable());
 
+		// look for any xmls on the classpath that end in ItemType.xml
 		Enumeration e = plugin.getBundle().findEntries("/", "*ItemType.xml",
 				true);
 		final Set<String> initialItemTypes = new HashSet<String>();
@@ -58,14 +61,15 @@ public class Activator extends AbstractUIPlugin {
 			initialItemTypes.add(url.getFile());
 		}
 		final ItemTypeRegistry thisReg = reg;
+
+		// load the items types into the registry
 		Display.getDefault().syncExec(new Runnable() {
-			
+
 			@Override
 			public void run() {
 				thisReg.loadItemTypes(initialItemTypes);
 			}
 		});
-		
 
 	}
 

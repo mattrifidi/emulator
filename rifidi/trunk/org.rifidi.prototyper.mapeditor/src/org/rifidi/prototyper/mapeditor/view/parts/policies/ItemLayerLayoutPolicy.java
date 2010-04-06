@@ -26,6 +26,9 @@ import org.rifidi.prototyper.mapeditor.view.parts.ItemLayerPart;
 import org.rifidi.prototyper.mapeditor.view.parts.ItemPart;
 
 /**
+ * This is an edit policy for the ItemLayer which assists laying out ItemParts
+ * on it.
+ * 
  * @author Kyle Neumeier - kyle@pramari.com
  * 
  */
@@ -157,7 +160,7 @@ public class ItemLayerLayoutPolicy extends XYLayoutEditPolicy {
 			}
 		}
 		if (item != null)
-			return new OrphanItemCommand(item, (ItemLayerPart)getHost());
+			return new OrphanItemCommand(item, (ItemLayerPart) getHost());
 		return null;
 	}
 

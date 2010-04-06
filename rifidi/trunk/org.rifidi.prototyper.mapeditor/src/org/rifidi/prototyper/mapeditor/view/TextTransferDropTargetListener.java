@@ -17,6 +17,8 @@ import org.rifidi.services.registry.ServiceRegistry;
 import org.rifidi.ui.common.registry.ReaderRegistryService;
 
 /**
+ * This class listens to DND events and handles them. 
+ * 
  * @author Kyle Neumeier - kyle@pramari.com
  * 
  */
@@ -49,7 +51,9 @@ public class TextTransferDropTargetListener extends
 		((CreateRequest) getTargetRequest()).setLocation(getDropLocation());
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.gef.dnd.AbstractTransferDropTargetListener#handleDrop()
 	 */
 	@Override
@@ -73,8 +77,8 @@ public class TextTransferDropTargetListener extends
 	public void setItemSerivce(ItemService service) {
 		logger.debug("ItemService set");
 		this.itemService = service;
-		if (readerService != null){
-			this.factory = new DNDElementFactory(service, readerService);			
+		if (readerService != null) {
+			this.factory = new DNDElementFactory(service, readerService);
 		}
 	}
 
@@ -82,9 +86,9 @@ public class TextTransferDropTargetListener extends
 	public void setReaderService(ReaderRegistryService service) {
 		logger.debug("ReaderService set");
 		this.readerService = service;
-		if (itemService != null){
-			this.factory = new DNDElementFactory(itemService, service);			
+		if (itemService != null) {
+			this.factory = new DNDElementFactory(itemService, service);
 		}
 	}
-	
+
 }

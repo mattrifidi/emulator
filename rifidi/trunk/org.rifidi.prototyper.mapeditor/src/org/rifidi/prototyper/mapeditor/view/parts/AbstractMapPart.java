@@ -11,6 +11,12 @@ import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.rifidi.prototyper.mapeditor.model.AbstractMapModelElement;
 
 /**
+ * An EditPart is the "controller" -- it ties the model and the view together.
+ * EditParts create items to display. Therefore each item displayed should be
+ * backed by an instance of an EditPart.
+ * 
+ * This class exists for all other EditParts to extend.
+ * 
  * @author Kyle Neumeier - kyle@pramari.com
  * 
  */
@@ -50,6 +56,11 @@ public abstract class AbstractMapPart<T extends AbstractMapModelElement>
 		}
 	}
 
+	/**
+	 * Get the underlying model object for this EditPart
+	 * 
+	 * @return
+	 */
 	public T getModelElement() {
 		return (T) getModel();
 	}
@@ -82,6 +93,12 @@ public abstract class AbstractMapPart<T extends AbstractMapModelElement>
 		getModelElement().removePropertyChangeListener(this);
 	}
 
+	/**
+	 * Gets the text to be displayed when a mouse hovers over the edit part. By
+	 * default it returns null.
+	 * 
+	 * @return
+	 */
 	public String getHoverText() {
 		return null;
 	}

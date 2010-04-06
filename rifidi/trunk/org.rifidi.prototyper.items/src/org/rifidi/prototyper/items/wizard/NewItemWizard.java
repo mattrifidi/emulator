@@ -31,11 +31,17 @@ public class NewItemWizard extends Wizard implements INewWizard {
 
 	/** The name of the item */
 	protected String itemName;
+	/** The number of items to created */
 	protected Integer number;
+	/** The type of item to created */
 	protected ItemType itemType;
+	/** The Tag Type */
 	protected TagType tagType;
+	/** GEN 1 or Gen 2 */
 	protected TagGen tagGen;
+	/** A prefix if ncessary */
 	protected String tagPrefix;
+	/** The logger for this class */
 	private final static Log logger = LogFactory.getLog(NewItemWizard.class);
 
 	/*
@@ -64,10 +70,11 @@ public class NewItemWizard extends Wizard implements INewWizard {
 			itemModel.setName(itemName);
 			itemModel.setTag(tags.get(0));
 			itemModel.setType(this.itemType);
-			try{
-				ItemModelProviderSingleton.getModelProvider().createItem(itemModel);
-			}catch(DuplicateItemException ex){
-				logger.error("DuplicateItemException: ",ex);
+			try {
+				ItemModelProviderSingleton.getModelProvider().createItem(
+						itemModel);
+			} catch (DuplicateItemException ex) {
+				logger.error("DuplicateItemException: ", ex);
 			}
 		}
 

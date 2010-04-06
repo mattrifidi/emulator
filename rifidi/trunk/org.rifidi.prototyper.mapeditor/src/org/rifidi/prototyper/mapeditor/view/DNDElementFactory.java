@@ -21,11 +21,25 @@ import org.rifidi.ui.common.registry.ReaderRegistryService;
  */
 public class DNDElementFactory implements CreationFactory {
 
-	public final static String ITEM = "item", READER = "reader";
+	/** A constant used to identify an Item */
+	public final static String ITEM = "item";
+	/** A constant used to identify a Reader */
+	public final static String READER = "reader";
+	/** The text that was dragged and drop */
 	private String text;
+	/** The item service used to look up the ItemModel */
 	private ItemService itemService;
+	/** The Reader Service used to look up the Reader */
 	private ReaderRegistryService readerService;
 
+	/**
+	 * Constructor
+	 * 
+	 * @param itemService
+	 *            The service that keeps track of available Items
+	 * @param readerService
+	 *            The service that keeps track of available Readers.
+	 */
 	public DNDElementFactory(ItemService itemService,
 			ReaderRegistryService readerService) {
 		this.itemService = itemService;

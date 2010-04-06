@@ -16,6 +16,8 @@ import org.eclipse.jface.action.Separator;
 import org.eclipse.ui.actions.RetargetAction;
 
 /**
+ * This class contributes actions to the various menu bars
+ * 
  * @author Kyle Neumeier - kyle@pramari.com
  * 
  */

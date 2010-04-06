@@ -18,6 +18,8 @@ import org.rifidi.prototyper.mapeditor.view.parts.policies.ItemComponentEditPoli
 import org.rifidi.prototyper.mapeditor.view.parts.policies.ItemContainerEditPolicy;
 
 /**
+ * This is the EditPart for Items.
+ * 
  * @author Kyle Neumeier - kyle@pramari.com
  * 
  */

@@ -4,10 +4,17 @@
 package org.rifidi.prototyper.items.service;
 
 /**
+ * Thrown if two instances of an item are registered
+ * 
  * @author Kyle Neumeier - kyle@pramari.com
- *
+ * 
  */
 public class DuplicateItemException extends Exception {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * 

@@ -12,10 +12,8 @@ public class Activator extends AbstractUIPlugin {
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.rifidi.prototyper.mapeditor";
-
 	// The shared instance
 	private static Activator plugin;
-	
 	/** Use this to find the Antenna on image in the image registry */
 	public static final String IMG_ANT_ON = "anton";
 	/** Use this to find the Antenna off image in the image registry */

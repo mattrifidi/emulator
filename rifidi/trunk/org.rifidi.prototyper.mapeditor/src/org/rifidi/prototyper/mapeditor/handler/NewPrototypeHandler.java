@@ -12,6 +12,12 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.rifidi.prototyper.mapeditor.view.wizards.PrototyperCreationWizard;
 
+/**
+ * This is a handler method for creating a new Prototype
+ * 
+ * @author Kyle Neumeier - kyle@pramari.com
+ * 
+ */
 public class NewPrototypeHandler extends AbstractHandler implements IHandler {
 
 	@Override

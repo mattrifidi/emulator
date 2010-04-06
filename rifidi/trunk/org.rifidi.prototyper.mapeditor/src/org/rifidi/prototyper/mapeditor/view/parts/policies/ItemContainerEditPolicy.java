@@ -13,6 +13,8 @@ import org.rifidi.prototyper.mapeditor.model.commands.AddItemCommand;
 import org.rifidi.prototyper.mapeditor.view.parts.ItemPart;
 
 /**
+ * This is an edit policy for ItemParts that are containers.
+ * 
  * @author Kyle Neumeier - kyle@pramari.com
  * 
  */
@@ -74,12 +76,10 @@ public class ItemContainerEditPolicy extends ContainerEditPolicy {
 		if (request.getType().equals(REQ_ADD)) {
 			return getHost();
 		}
-		if(request.getType().equals(REQ_ORPHAN_CHILDREN)){
+		if (request.getType().equals(REQ_ORPHAN_CHILDREN)) {
 			return getHost();
 		}
 		return super.getTargetEditPart(request);
 	}
-	
-	
 
 }

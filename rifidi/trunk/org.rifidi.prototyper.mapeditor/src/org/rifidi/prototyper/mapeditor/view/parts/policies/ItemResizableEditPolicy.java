@@ -24,14 +24,15 @@ import org.rifidi.prototyper.mapeditor.view.parts.HotspotPart;
 import org.rifidi.prototyper.mapeditor.view.parts.ItemPart;
 
 /**
+ * This edit part is used by both hotspots and items to provide hover text and
+ * to lock the edit parts according to edit mode.
+ * 
  * @author Kyle Neumeier - kyle@pramari.com
  * 
  */
 public class ItemResizableEditPolicy extends ResizableEditPolicy {
 
 	private RectangleFigure hoverFigure;
-	
-	
 
 	/*
 	 * (non-Javadoc)
@@ -48,8 +49,8 @@ public class ItemResizableEditPolicy extends ResizableEditPolicy {
 			super.showTargetFeedback(request);
 		}
 	}
-	
-	private void showHover(Request request){
+
+	private void showHover(Request request) {
 		LocationRequest locReq = (LocationRequest) request;
 		String hoverText = ((AbstractMapPart<?>) getHost()).getHoverText();
 		if (hoverText != null) {
@@ -64,15 +65,14 @@ public class ItemResizableEditPolicy extends ResizableEditPolicy {
 			hoverFigure.add(hoverLabel);
 			hoverLabel.setText(hoverText);
 			hoverLabel.setForegroundColor(ColorConstants.black);
-			hoverFigure
-					.setBackgroundColor(ColorConstants.tooltipBackground);
+			hoverFigure.setBackgroundColor(ColorConstants.tooltipBackground);
 			hoverFigure.setBorder(new LineBorder(ColorConstants.black, 1));
 			Point mouseLoc = new Point(locReq.getLocation().x + 10, locReq
 					.getLocation().y);
 			Dimension textDim = FigureUtilities.getTextExtents(hoverText,
 					getHostFigure().getFont());
 			hoverFigure.setBounds(new Rectangle(mouseLoc, new Dimension(
-					textDim.width + 30, textDim.height+10)));
+					textDim.width + 30, textDim.height + 10)));
 			super.addFeedback(hoverFigure);
 
 		}
@@ -133,7 +133,5 @@ public class ItemResizableEditPolicy extends ResizableEditPolicy {
 		}
 		return super.createSelectionHandles();
 	}
-	
-	
-	
+
 }

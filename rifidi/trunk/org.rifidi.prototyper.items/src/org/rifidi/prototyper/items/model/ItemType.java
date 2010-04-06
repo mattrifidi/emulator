@@ -9,7 +9,13 @@ import java.util.Set;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * @author kyle
+ * An ItemType is a class of items, such as a forklift or a box. This class is
+ * used to serialize information to an XML that can be read in to make new
+ * ItemTypes available.
+ * 
+ * Comparison is done alphabetically based on the type name.
+ * 
+ * @author Kyle Neumeier - kyle@pramari.com
  * 
  */
 @XmlRootElement
@@ -17,12 +23,19 @@ public class ItemType implements Serializable, Comparable<ItemType> {
 
 	/***/
 	private static final long serialVersionUID = 1L;
+	/** The name of the type */
 	private String type;
+	/** A category this type belongs with, such as hostpital or warehouse */
 	private Set<String> categories;
+	/** A path to the image */
 	private String imagePath;
+	/** True if this item can contain others */
 	private Boolean isContainer;
+	/** True if this readers can see items in this item */
 	private Boolean containedItemsVisible;
+	/** Default height */
 	private Integer defaultHeight;
+	/** Default width */
 	private Integer defaultWidth;
 
 	/**
@@ -166,7 +179,9 @@ public class ItemType implements Serializable, Comparable<ItemType> {
 		return "TYPE: " + type;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
 	@Override

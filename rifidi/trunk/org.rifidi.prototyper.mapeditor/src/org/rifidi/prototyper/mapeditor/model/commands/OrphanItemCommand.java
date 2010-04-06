@@ -8,14 +8,24 @@ import org.rifidi.prototyper.mapeditor.view.parts.ItemLayerPart;
 import org.rifidi.prototyper.mapeditor.view.parts.ItemPart;
 
 /**
+ * This command is used to remove an item from it's parent layer.
+ * 
  * @author Kyle Neumeier - kyle@pramari.com
  * 
  */
 public class OrphanItemCommand extends Command {
 
+	/** The layer to remove the item from */
 	private ItemLayerPart layer;
+	/** The item to remove */
 	private ItemPart itemToOrphan;
 
+	/**
+	 * Constructor
+	 * 
+	 * @param itemToOrphan
+	 * @param layer
+	 */
 	public OrphanItemCommand(ItemPart itemToOrphan, ItemLayerPart layer) {
 		this.layer = layer;
 		this.itemToOrphan = itemToOrphan;

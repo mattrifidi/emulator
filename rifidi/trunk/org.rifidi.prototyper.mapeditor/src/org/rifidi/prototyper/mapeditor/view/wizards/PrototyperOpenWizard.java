@@ -8,6 +8,7 @@ import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.IWorkbench;
 
 /**
+ * A wizard to open a new prototype.
  * @author Kyle Neumeier - kyle@pramari.com
  *
  */

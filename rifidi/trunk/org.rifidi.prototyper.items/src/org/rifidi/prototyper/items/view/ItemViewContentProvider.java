@@ -3,7 +3,6 @@
  */
 package org.rifidi.prototyper.items.view;
 
-import java.util.List;
 import java.util.Map;
 
 import org.eclipse.jface.viewers.ITreeContentProvider;
@@ -20,6 +19,7 @@ import org.rifidi.prototyper.items.model.ItemType;
 public class ItemViewContentProvider implements ITreeContentProvider,
 		ItemModelProviderListener {
 
+	/** The viewer */
 	private Viewer viewer;
 
 	public ItemViewContentProvider() {
@@ -38,8 +38,8 @@ public class ItemViewContentProvider implements ITreeContentProvider,
 		if (parentElement instanceof Map<?, ?>) {
 			return (((Map) parentElement).keySet()).toArray();
 		} else if (parentElement instanceof ItemType) {
-			return ItemModelProviderSingleton.getModelProvider().getViewerInput().get(
-					parentElement).toArray();
+			return ItemModelProviderSingleton.getModelProvider()
+					.getViewerInput().get(parentElement).toArray();
 		}
 		return new Object[] {};
 	}
@@ -66,7 +66,7 @@ public class ItemViewContentProvider implements ITreeContentProvider,
 	 */
 	@Override
 	public boolean hasChildren(Object element) {
-		return getChildren(element).length>0;
+		return getChildren(element).length > 0;
 	}
 
 	/*

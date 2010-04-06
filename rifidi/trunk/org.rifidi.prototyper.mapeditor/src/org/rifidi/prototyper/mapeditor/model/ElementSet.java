@@ -14,11 +14,13 @@ import java.util.List;
  * 
  */
 public class ElementSet<T extends AbstractMapModelElement> extends
-		AbstractMapModelElement implements Container<T>{
+		AbstractMapModelElement implements Container<T> {
 
-	/***/
+	/** The serial version ID */
 	private static final long serialVersionUID = 1L;
+	/** The elements contained in this Set */
 	private final List<T> elements;
+	/** The type of elements contained in this set */
 	private final Class<T> elementType;
 
 	/**
@@ -33,46 +35,68 @@ public class ElementSet<T extends AbstractMapModelElement> extends
 		this.elementType = elementType;
 	}
 
+	/**
+	 * Add an element to this set
+	 * 
+	 * @param element
+	 */
 	public void addElement(T element) {
 		this.elements.add(element);
 		fireChildAdded(element);
 	}
 
+	/**
+	 * Remove an element from this set
+	 * 
+	 * @param element
+	 */
 	public void removeElement(T element) {
 		boolean removed = this.elements.remove(element);
 		if (removed)
 			fireChildRemoved(element);
 	}
 
+	/***
+	 * Get all the elements in this set
+	 * 
+	 * @return
+	 */
 	public List<T> getElements() {
 		return new LinkedList<T>(elements);
 	}
 
 	@Override
 	public boolean contains(T element) {
-		if(element instanceof Container<?>){
-			for(T e : elements){
-				Container<T> c = (Container<T>)e;
-				if(c.contains(element))
+		if (element instanceof Container<?>) {
+			for (T e : elements) {
+				Container<T> c = (Container<T>) e;
+				if (c.contains(element))
 					return true;
 			}
 			return false;
-		}else{
+		} else {
 			return elements.contains(element);
 		}
 	}
 
+	/**
+	 * Return the type of elements contained in this set. Needed because java
+	 * erases type info at runtime.
+	 * 
+	 * @return
+	 */
 	public Class<T> getType() {
 		return elementType;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
-		return "Element Set<"+getType().getSimpleName()+">";
+		return "Element Set<" + getType().getSimpleName() + ">";
 	}
-	
-	
+
 }

@@ -24,6 +24,9 @@ import org.rifidi.prototyper.mapeditor.view.parts.HotspotLayerPart;
 import org.rifidi.prototyper.mapeditor.view.parts.HotspotPart;
 
 /**
+ * This EditPolicy is used for the HotspotLayer to assist with placing hotspots
+ * on the layer.
+ * 
  * @author Kyle Neumeier - kyle@pramari.com
  * 
  */

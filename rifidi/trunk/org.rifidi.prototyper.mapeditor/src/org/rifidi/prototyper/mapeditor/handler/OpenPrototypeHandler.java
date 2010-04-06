@@ -14,6 +14,8 @@ import org.eclipse.ui.handlers.HandlerUtil;
 import org.rifidi.prototyper.mapeditor.view.wizards.PrototyperOpenWizard;
 
 /**
+ * This is a handler class for opening an existing prototype
+ * 
  * @author Kyle Neumeier - kyle@pramari.com
  * 
  */

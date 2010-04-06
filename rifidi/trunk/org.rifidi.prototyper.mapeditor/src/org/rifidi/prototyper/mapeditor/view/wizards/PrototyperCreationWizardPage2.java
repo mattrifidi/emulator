@@ -16,6 +16,9 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Spinner;
 
 /**
+ * The second page when creating a new prototype. Allows a user to provide the
+ * scale of the map.
+ * 
  * @author Kyle Neumeier - kyle@pramari.com
  * 
  */
@@ -52,7 +55,7 @@ public class PrototyperCreationWizardPage2 extends WizardPage {
 
 		scaleSpinner = new Spinner(composite, SWT.BORDER);
 		scaleSpinner.setDigits(2);
-		scaleSpinner.setMaximum(1000*100);
+		scaleSpinner.setMaximum(1000 * 100);
 		scaleSpinner.setMinimum(1);
 		scaleSpinner.setIncrement(100);
 		scaleSpinner.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -67,19 +70,19 @@ public class PrototyperCreationWizardPage2 extends WizardPage {
 			}
 		});
 		scaleSpinner.addSelectionListener(new SelectionListener() {
-			
+
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				PrototyperCreationWizard wizard = (PrototyperCreationWizard) getWizard();
 				wizard.feetPer30Px = new Float(scaleSpinner.getSelection())
 						/ new Float(100);
-				
+
 			}
-			
+
 			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
 		});
 

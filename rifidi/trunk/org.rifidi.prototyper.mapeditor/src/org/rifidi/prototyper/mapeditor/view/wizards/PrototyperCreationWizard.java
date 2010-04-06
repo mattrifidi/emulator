@@ -10,6 +10,8 @@ import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 
 /**
+ * A wizard for creating a new prototype.
+ * 
  * @author Kyle Neumeier - kyle@pramari.com
  * 
  */
@@ -20,12 +22,11 @@ public class PrototyperCreationWizard extends Wizard implements INewWizard {
 	private PrototyperCreationWizardPage3 finalPage;
 	private IStructuredSelection selection;
 	private IWorkbench workbench;
-
 	protected boolean custom = false;
 	protected String projectName = "Example Project";
 	protected ProjectType exampleProject = ProjectType.WAREHOUSE;
-	protected String pathToFile="";
-	protected Float feetPer30Px=new Float(1);
+	protected String pathToFile = "";
+	protected Float feetPer30Px = new Float(1);
 
 	/*
 	 * (non-Javadoc)
@@ -107,11 +108,11 @@ public class PrototyperCreationWizard extends Wizard implements INewWizard {
 			}
 
 		};
-		
-		public static ProjectType getProjectType(String type){
-			if(type.equalsIgnoreCase(HOSPITAL.toString())){
+
+		public static ProjectType getProjectType(String type) {
+			if (type.equalsIgnoreCase(HOSPITAL.toString())) {
 				return HOSPITAL;
-			}else if(type.equalsIgnoreCase(WAREHOUSE.toString())){
+			} else if (type.equalsIgnoreCase(WAREHOUSE.toString())) {
 				return WAREHOUSE;
 			}
 			return null;

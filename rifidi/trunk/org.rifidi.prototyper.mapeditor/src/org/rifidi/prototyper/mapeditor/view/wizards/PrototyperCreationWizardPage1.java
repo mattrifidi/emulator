@@ -21,6 +21,9 @@ import org.eclipse.swt.widgets.Text;
 import org.rifidi.prototyper.mapeditor.view.wizards.PrototyperCreationWizard.ProjectType;
 
 /**
+ * The first page in the new prototype wizard. Allows users to either load their
+ * own floorplan or pick from a few defaults.
+ * 
  * @author Kyle Neumeier - kyle@pramari.com
  * 
  */
@@ -115,8 +118,7 @@ public class PrototyperCreationWizardPage1 extends WizardPage {
 			}
 		});
 		Text customDesc = new Text(projectComposite, SWT.WRAP | SWT.MULTI);
-		customDesc
-				.setText("Supply and configure your own blueprint.");
+		customDesc.setText("Supply and configure your own blueprint.");
 		customDesc.setEditable(false);
 
 		exampleProjectGroup = new Group(projectComposite, SWT.NONE);
@@ -124,7 +126,7 @@ public class PrototyperCreationWizardPage1 extends WizardPage {
 		GridData exampleProjectData = new GridData(GridData.FILL_HORIZONTAL);
 		exampleProjectData.horizontalSpan = 2;
 		exampleProjectData.verticalIndent = 10;
-		//exampleProjectData.widthHint = 500;
+		// exampleProjectData.widthHint = 500;
 		exampleProjectGroup.setLayoutData(exampleProjectData);
 		exampleProjectGroup.setLayout(new GridLayout());
 
@@ -233,7 +235,7 @@ public class PrototyperCreationWizardPage1 extends WizardPage {
 					setPageComplete(false);
 					return;
 				}
-				wizard.pathToFile=path;
+				wizard.pathToFile = path;
 
 			} else {
 				int selIndex = exampleProjectCombo.getSelectionIndex();

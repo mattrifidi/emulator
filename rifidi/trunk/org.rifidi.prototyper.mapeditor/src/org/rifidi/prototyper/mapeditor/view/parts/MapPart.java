@@ -13,6 +13,8 @@ import org.rifidi.prototyper.mapeditor.model.MapModel;
 import org.rifidi.prototyper.mapeditor.view.parts.policies.DNDDropPolicy;
 
 /**
+ * This is the EditPart for the entire Map.
+ * 
  * @author Kyle Neumeier - kyle@pramari.com
  * 
  */
@@ -56,6 +58,9 @@ public class MapPart extends AbstractMapPart<MapModel> {
 		installEditPolicy(EditPolicy.CONTAINER_ROLE, new DNDDropPolicy());
 	}
 
+	/**
+	 * @return The hotspotLayerPart
+	 */
 	public HotspotLayerPart getHotspotLayerPart() {
 		for (Object o : getChildren()) {
 			if (o instanceof HotspotLayerPart) {
@@ -64,7 +69,11 @@ public class MapPart extends AbstractMapPart<MapModel> {
 		}
 		return null;
 	}
-	
+
+	/**
+	 * 
+	 * @return the ItemLayerPart
+	 */
 	public ItemLayerPart getItemLayerPart() {
 		for (Object o : getChildren()) {
 			if (o instanceof ItemLayerPart) {

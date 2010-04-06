@@ -20,11 +20,16 @@ import org.rifidi.ui.common.registry.ReaderRegistryService;
 import org.rifidi.ui.console.service.ConsoleService;
 
 /**
+ * This is the EditPart for Hotspots. Hotspots need to keep track of when an
+ * Item intersects its bounds. This is referred to as a "collision". When an
+ * item collides with a hotspot, we need to trigger a tag read on the reader.
+ * 
  * @author Kyle Neumeier - kyle@pramari.com
  * 
  */
 public class HotspotPart extends AbstractMapPart<HotspotElement> {
 
+	/** The reader registry service */
 	private ReaderRegistryService readerService;
 	/** A service to log output to the console */
 	private ConsoleService service;
@@ -32,7 +37,7 @@ public class HotspotPart extends AbstractMapPart<HotspotElement> {
 	private final String CONSOLE_NAME = "Collisions";
 
 	/**
-	 * 
+	 * Constructor
 	 */
 	public HotspotPart() {
 		super();
@@ -94,6 +99,13 @@ public class HotspotPart extends AbstractMapPart<HotspotElement> {
 				getFigure(), bounds);
 	}
 
+	/**
+	 * This method is called to test if an ItemPart has intersected with this
+	 * Hotspot.
+	 * 
+	 * @param item
+	 *            The item to test
+	 */
 	public void manageCollision(ItemPart item) {
 		Rectangle bounds = new Rectangle(item.getModelElement().getLocation(),
 				item.getModelElement().getDimension());
@@ -104,6 +116,11 @@ public class HotspotPart extends AbstractMapPart<HotspotElement> {
 		}
 	}
 
+	/**
+	 * A private helper method to handle when a item intercets the hotspot
+	 * 
+	 * @param item
+	 */
 	private void handleItemSeen(ItemPart item) {
 		if (!getModelElement().contains(item.getModelElement())) {
 			getModelElement().handleTagSeen(item.getModelElement());

@@ -18,6 +18,8 @@ import org.rifidi.prototyper.mapeditor.view.parts.ItemPart;
 import org.rifidi.prototyper.mapeditor.view.parts.MapPart;
 
 /**
+ * This class is a factory that creates Edge Parts
+ * 
  * @author Kyle Neumeier - kyle@pramari.com
  * 
  */
@@ -32,7 +34,6 @@ public class MapEditPartFactory implements EditPartFactory {
 	 */
 	@Override
 	public EditPart createEditPart(EditPart context, Object model) {
-		System.out.println("CREATE PART FOR " + model);
 		EditPart part = null;
 		if (model instanceof MapModel) {
 			part = new MapPart();

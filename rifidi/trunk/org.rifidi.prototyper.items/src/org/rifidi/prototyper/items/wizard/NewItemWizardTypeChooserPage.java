@@ -27,16 +27,27 @@ import org.rifidi.services.annotations.Inject;
 import org.rifidi.services.registry.ServiceRegistry;
 
 /**
+ * This wizard page allows users to pick the kind of item type they want to
+ * create
+ * 
  * @author Kyle Neumeier - kyle@pramari.com
  * 
  */
 public class NewItemWizardTypeChooserPage extends WizardPage {
 
+	/** The ItemTypeRegistry */
 	private ItemTypeRegistry itemTypeRegistry;
+	/** The user's selection */
 	private ItemType selection;
+	/** The logger for this class */
 	private final Log logger = LogFactory
 			.getLog(NewItemWizardTypeChooserPage.class);
 
+	/**
+	 * Constrcutor
+	 * 
+	 * @param pageName
+	 */
 	protected NewItemWizardTypeChooserPage(String pageName) {
 		super(pageName);
 		ServiceRegistry.getInstance().service(this);

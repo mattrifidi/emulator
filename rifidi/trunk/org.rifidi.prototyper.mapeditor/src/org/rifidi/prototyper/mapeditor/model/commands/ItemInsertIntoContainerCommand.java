@@ -8,9 +8,11 @@ import org.rifidi.prototyper.mapeditor.model.ElementSet;
 import org.rifidi.prototyper.mapeditor.model.ItemElement;
 
 /**
+ * TODO: Not used
  * @author Kyle Neumeier - kyle@pramari.com
  *
  */
+@Deprecated
 public class ItemInsertIntoContainerCommand extends Command {
 	
 	private ItemElement container;

@@ -10,13 +10,16 @@ import org.eclipse.jface.action.IMenuManager;
 import org.rifidi.prototyper.mapeditor.handler.RemoveContainerAction;
 
 /**
+ * The object that provides a context menu for the map.
+ * 
  * @author Kyle Neumeier - kyle@pramari.com
- *
+ * 
  */
 public class MapContextMenu extends ContextMenuProvider {
 
+	/**The registry of actions*/
 	private ActionRegistry registry;
-	
+
 	/**
 	 * @param viewer
 	 */
@@ -25,15 +28,16 @@ public class MapContextMenu extends ContextMenuProvider {
 		this.registry = actionRegistry;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.gef.ContextMenuProvider#buildContextMenu(org.eclipse.jface.action.IMenuManager)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.gef.ContextMenuProvider#buildContextMenu(org.eclipse.jface
+	 * .action.IMenuManager)
 	 */
 	@Override
 	public void buildContextMenu(IMenuManager menu) {
 		menu.add(new RemoveContainerAction());
-
 	}
-	
-	
 
 }

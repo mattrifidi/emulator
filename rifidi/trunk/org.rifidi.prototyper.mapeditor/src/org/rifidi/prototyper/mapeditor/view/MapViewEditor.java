@@ -60,18 +60,27 @@ import org.rifidi.ui.common.registry.ReaderRegistryService;
 import org.rifidi.ui.common.wizards.reader.exceptions.DuplicateReaderException;
 
 /**
+ * The Editor for the prototype
+ * 
  * @author Kyle Neumeier - kyle@pramari.com
  * 
  */
 public class MapViewEditor extends GraphicalEditor implements
 		IPropertyChangeListener {
 
+	/** The View ID */
 	public static final String ID = "org.rifidi.prototyper.mapeditor";
+	/** The Map model to display */
 	private MapModel mapModel;
+	/** The reader registry service */
 	private ReaderRegistryService readerService;
 	private ItemService itemService;
+	/** The KeyHandler */
 	private KeyHandler sharedKeyHandler;
 
+	/**
+	 * Constructor
+	 */
 	public MapViewEditor() {
 		super();
 		setEditDomain(new DefaultEditDomain(this));
@@ -83,17 +92,19 @@ public class MapViewEditor extends GraphicalEditor implements
 	 */
 	protected void configureGraphicalViewer() {
 		super.configureGraphicalViewer();
+		// create the root edit part
 		MapScalableRootEditPart rootEditPart = new MapScalableRootEditPart();
 		getGraphicalViewer().setRootEditPart(rootEditPart);
 		getGraphicalViewer().setEditPartFactory(new MapEditPartFactory());
 		getGraphicalViewer().setKeyHandler(
 				new GraphicalViewerKeyHandler(getGraphicalViewer())
 						.setParent(getCommonKeyHandler()));
-		
+
 		IAction showGrid = new ToggleGridAction(getGraphicalViewer());
 		showGrid.addPropertyChangeListener(this);
 		getActionRegistry().registerAction(showGrid);
 
+		// Configure the ZoomManager
 		ZoomManager zoomManager = (ZoomManager) getAdapter(ZoomManager.class);
 
 		List zoomLevels = new ArrayList(3);
@@ -107,20 +118,26 @@ public class MapViewEditor extends GraphicalEditor implements
 		getActionRegistry().registerAction(zoomIn);
 		getActionRegistry().registerAction(zoomOut);
 
+		// configure the Mousewheel
 		getGraphicalViewer().setProperty(
 				MouseWheelHandler.KeyGenerator.getKey(SWT.MOD1),
 				MouseWheelZoomHandler.SINGLETON);
-		
-		ContextMenuProvider provider =
-			new MapContextMenu(getGraphicalViewer(), getActionRegistry());
+
+		ContextMenuProvider provider = new MapContextMenu(getGraphicalViewer(),
+				getActionRegistry());
 		getGraphicalViewer().setContextMenu(provider);
-		getSite().registerContextMenu(
-			"org.rifidi.prototyper.contextmenu", //$NON-NLS-1$
-			provider,
-			getGraphicalViewer());
+		getSite().registerContextMenu("org.rifidi.prototyper.contextmenu", //$NON-NLS-1$
+				provider, getGraphicalViewer());
 
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.gef.ui.parts.GraphicalEditor#getAdapter(java.lang.Class)
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
 	public Object getAdapter(Class type) {
 		if (type == ZoomManager.class)
 			return getGraphicalViewer().getProperty(
@@ -182,6 +199,14 @@ public class MapViewEditor extends GraphicalEditor implements
 
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.gef.ui.parts.GraphicalEditor#commandStackChanged(java.util
+	 * .EventObject)
+	 */
+	@Override
 	public void commandStackChanged(EventObject event) {
 		firePropertyChange(IEditorPart.PROP_DIRTY);
 		super.commandStackChanged(event);
@@ -234,6 +259,15 @@ public class MapViewEditor extends GraphicalEditor implements
 		return;
 	}
 
+	/**
+	 * Private helper method to do the work of saving a file
+	 * 
+	 * @param file
+	 * @param create
+	 * @param monitor
+	 * @throws IOException
+	 * @throws CoreException
+	 */
 	private void save(IFile file, boolean create, IProgressMonitor monitor)
 			throws IOException, CoreException {
 		mapModel.setAllReaders(getAllReaders());
@@ -255,6 +289,11 @@ public class MapViewEditor extends GraphicalEditor implements
 
 	}
 
+	/**
+	 * Private helper method to get all teh avaialble readers
+	 * 
+	 * @return
+	 */
 	private Collection<GeneralReaderPropertyHolder> getAllReaders() {
 		List<GeneralReaderPropertyHolder> readers = new LinkedList<GeneralReaderPropertyHolder>();
 		for (UIReader reader : readerService.getReaderList()) {
@@ -315,6 +354,11 @@ public class MapViewEditor extends GraphicalEditor implements
 		}
 	}
 
+	/**
+	 * Chnage the state of the edit mode
+	 * 
+	 * @param editMode
+	 */
 	public void setEditMode(boolean editMode) {
 
 		if (getGraphicalViewer() != null) {
@@ -323,11 +367,21 @@ public class MapViewEditor extends GraphicalEditor implements
 		}
 	}
 
+	/**
+	 * Called in order to inject the ReaderRegistryService
+	 * 
+	 * @param service
+	 */
 	@Inject
 	public void setReaderService(ReaderRegistryService service) {
 		this.readerService = service;
 	}
 
+	/**
+	 * Called in order to inject the ItemService
+	 * 
+	 * @param service
+	 */
 	@Inject
 	public void setItemService(ItemService service) {
 		this.itemService = service;

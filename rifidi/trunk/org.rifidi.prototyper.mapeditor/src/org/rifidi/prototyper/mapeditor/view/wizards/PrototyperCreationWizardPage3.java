@@ -29,6 +29,9 @@ import org.rifidi.prototyper.mapeditor.model.MapModel;
 import org.rifidi.prototyper.mapeditor.view.wizards.PrototyperCreationWizard.ProjectType;
 
 /**
+ * The third page in creating a new prototype. Allows a user to finalize and
+ * save the map.
+ * 
  * @author Kyle Neumeier - kyle@pramari.com
  * 
  */

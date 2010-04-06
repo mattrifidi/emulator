@@ -18,6 +18,8 @@ import org.rifidi.prototyper.mapeditor.view.figures.MapLayer;
 import org.rifidi.prototyper.mapeditor.view.parts.policies.ItemLayerLayoutPolicy;
 
 /**
+ * This is the EditPart for the Layer that contains all the ItemParts
+ * 
  * @author Kyle Neumeier - kyle@pramari.com
  * 
  */
@@ -64,29 +66,47 @@ public class ItemLayerPart extends AbstractMapPart<ElementSet<ItemElement>> {
 	public boolean isSelectable() {
 		return false;
 	}
-	
-	public List<ItemPart> getItemParts(){
+
+	/**
+	 * Get all the ItemParts in this layer.
+	 * 
+	 * @return
+	 */
+	public List<ItemPart> getItemParts() {
 		LinkedList<ItemPart> retVal = new LinkedList<ItemPart>();
-		for(Object o : getChildren()){
-			if(o instanceof ItemPart){
-				retVal.add((ItemPart)o);
+		for (Object o : getChildren()) {
+			if (o instanceof ItemPart) {
+				retVal.add((ItemPart) o);
 			}
 		}
 		return retVal;
 	}
-	
-	public ItemPart getIntersectionItem(ItemPart part, Rectangle bounds){
-		for(ItemPart p : getItemParts()){
-			if(p.getFigure().intersects(bounds) && part!=p){
+
+	/***
+	 * Return any ItemPart that intersects the given Rectangle
+	 * 
+	 * @param part
+	 * @param bounds
+	 * @return
+	 */
+	public ItemPart getIntersectionItem(ItemPart part, Rectangle bounds) {
+		for (ItemPart p : getItemParts()) {
+			if (p.getFigure().intersects(bounds) && part != p) {
 				return p;
 			}
 		}
 		return null;
 	}
-	
-	public ItemPart getItemPartAt(Point point){
-		for(ItemPart p : getItemParts()){
-			if(p.getFigure().containsPoint(point)){
+
+	/**
+	 * Get any item that contains the given point.
+	 * 
+	 * @param point
+	 * @return
+	 */
+	public ItemPart getItemPartAt(Point point) {
+		for (ItemPart p : getItemParts()) {
+			if (p.getFigure().containsPoint(point)) {
 				return p;
 			}
 		}

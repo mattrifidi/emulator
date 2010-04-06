@@ -12,6 +12,8 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.rifidi.prototyper.mapeditor.model.FloorplanElement;
 
 /**
+ * This is an EditPart for Floorplans.
+ * 
  * @author Kyle Neumeier - kyle@pramari.com
  * 
  */
@@ -26,7 +28,7 @@ public class FloorplanPart extends AbstractMapPart<FloorplanElement> {
 	protected IFigure createFigure() {
 		FloorplanElement model = getModelElement();
 		Layer floorplanLayer = new Layer();
-		if (model != null ) {
+		if (model != null) {
 			ImageFigure imageFig = new ImageFigure();
 			imageFig.setLayoutManager(new GridLayout());
 			imageFig.setImage(model.getFloorplanImage());
@@ -40,15 +42,14 @@ public class FloorplanPart extends AbstractMapPart<FloorplanElement> {
 		return floorplanLayer;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.gef.editparts.AbstractEditPart#isSelectable()
 	 */
 	@Override
 	public boolean isSelectable() {
 		return false;
 	}
-	
-	
-	
-	
+
 }

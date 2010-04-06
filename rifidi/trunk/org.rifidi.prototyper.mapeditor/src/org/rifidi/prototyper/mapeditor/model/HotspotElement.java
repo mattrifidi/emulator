@@ -22,24 +22,44 @@ import org.rifidi.ui.common.reader.UIReader;
 import org.rifidi.ui.common.registry.ReaderRegistryService;
 
 /**
+ * This class represents a Hotspot - which is a read zone on the map. There is
+ * one antenna associated to each hotspot.
+ * 
  * @author Kyle Neumeier - kyle@pramari.com
  * 
  */
 public class HotspotElement extends AbstractMapModelElement implements
 		PropertyChangeListener, Container<ItemElement> {
 
+	/** The serial version ID */
 	static final long serialVersionUID = 1;
+	/** The antenna range */
 	private Float antennaRage;
+	/** The location of this hotspot */
 	private Point location;
+	/** The general reader property holder for the emulated reader */
 	private GeneralReaderPropertyHolder readerModel;
+	/** The UI Reader object */
 	private transient UIReader readerController;
+	/** The antenna ID this hotpsot is associated with */
 	private Integer antennaID;
+	/** The logical name of this hotspot */
 	private String logicalName;
+	/** The state of the reader */
 	private String readerState;
+	/** True if this object has been initialized */
 	private transient boolean hasBeenInitialized;
+	/** The size of this hotspot */
 	private Dimension size;
+	/** Any items currently in this hotspot */
 	private Set<ItemElement> containedItems;
 
+	/***
+	 * Constructor
+	 * 
+	 * @param reader
+	 * @param antennaID
+	 */
 	public HotspotElement(GeneralReaderPropertyHolder reader, Integer antennaID) {
 		readerState = UIReader.STATE_NEW;
 		this.readerModel = reader;
@@ -102,6 +122,11 @@ public class HotspotElement extends AbstractMapModelElement implements
 		}
 	}
 
+	/**
+	 * Return true if this element has been initialized
+	 * 
+	 * @return
+	 */
 	public boolean hasBeenInitialized() {
 		return hasBeenInitialized;
 	}
@@ -186,6 +211,11 @@ public class HotspotElement extends AbstractMapModelElement implements
 		this.logicalName = logicalName;
 	}
 
+	/**
+	 * Get the image depending on the state of the reader
+	 * 
+	 * @return
+	 */
 	public Image getImage() {
 		if (readerState.equals(UIReader.STATE_RUNNING)) {
 			return (Activator.getDefault().getImageRegistry()

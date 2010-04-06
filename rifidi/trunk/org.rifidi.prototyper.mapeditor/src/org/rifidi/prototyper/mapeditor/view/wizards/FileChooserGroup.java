@@ -27,6 +27,8 @@ import org.eclipse.ui.model.WorkbenchLabelProvider;
 import org.eclipse.ui.part.DrillDownComposite;
 
 /**
+ * This is a composite for displaying files in the workspace
+ * 
  * @author Kyle Neumeier - kyle@pramari.com
  * 
  */
@@ -51,7 +53,7 @@ public class FileChooserGroup extends Composite {
 		this.listener = listener;
 		createContents();
 	}
-	
+
 	/**
 	 * Creates the contents of the composite.
 	 */
@@ -108,10 +110,10 @@ public class FileChooserGroup extends Composite {
 			public void selectionChanged(SelectionChangedEvent event) {
 				IStructuredSelection selection = (IStructuredSelection) event
 						.getSelection();
-				
-				if(selection.getFirstElement() instanceof IFile ){
+
+				if (selection.getFirstElement() instanceof IFile) {
 					fileSelectionChanged((IFile) selection.getFirstElement());
-				}else{
+				} else {
 					fileSelectionChanged(null);
 				}
 			}

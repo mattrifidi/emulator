@@ -4,7 +4,6 @@
 package org.rifidi.prototyper.items.model;
 
 import java.io.Serializable;
-import java.util.Comparator;
 
 import org.eclipse.swt.graphics.Image;
 import org.rifidi.prototyper.items.Activator;
