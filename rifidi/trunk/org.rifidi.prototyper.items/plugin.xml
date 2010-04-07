@@ -23,6 +23,10 @@
             id="org.rifidi.prototyper.items.delete"
             name="Delete Item">
       </command>
+      <command
+            id="org.rifidi.prototyper.items.export"
+            name="Export to CSV">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -43,6 +47,10 @@
             </iterate>
          </enabledWhen>
       </handler>
+      <handler
+            class="org.rifidi.prototyper.items.handlers.ExportToCSVHandler"
+            commandId="org.rifidi.prototyper.items.export">
+      </handler>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -61,6 +69,13 @@
                label="Delete"
                style="push"
                tooltip="Delete a tagged Item">
+         </command>
+         <command
+               commandId="org.rifidi.prototyper.items.export"
+               icon="icons/tag_blue-disk.png"
+               label="Export to CSV"
+               style="push"
+               tooltip="Export tags to CSV file">
          </command>
       </menuContribution>
    </extension>

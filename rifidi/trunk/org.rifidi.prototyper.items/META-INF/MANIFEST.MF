@@ -13,4 +13,5 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Export-Package: org.rifidi.prototyper.items.model,
  org.rifidi.prototyper.items.service
-Import-Package: org.apache.commons.logging;version="1.0.4"
+Import-Package: org.apache.commons.codec.binary;version="1.4.0",
+ org.apache.commons.logging;version="1.0.4"
