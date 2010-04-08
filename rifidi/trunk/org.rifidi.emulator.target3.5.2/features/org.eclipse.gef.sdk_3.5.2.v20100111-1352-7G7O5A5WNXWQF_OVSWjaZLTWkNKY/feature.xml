@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="org.eclipse.gef.sdk"
+      label="%featureName"
+      version="3.5.2.v20100111-1352-7G7O5A5WNXWQF_OVSWjaZLTWkNKY"
+      provider-name="%providerName"
+      plugin="org.eclipse.gef.source"
+      image="eclipse_update_120.jpg">
+
+   <description>
+      %description
+   </description>
+
+   <copyright>
+      %copyright
+   </copyright>
+
+   <license url="%licenseURL">
+      %license
+   </license>
+
+   <url>
+      <update label="%updateSiteName" url="http://download.eclipse.org/tools/gef/updates/releases/site.xml"/>
+      <discovery label="%updateSiteName" url="http://download.eclipse.org/tools/gef/updates/releases/site.xml"/>
+   </url>
+
+   <includes
+         id="org.eclipse.draw2d.sdk"
+         version="3.5.2.v20100111-1352-7A7E38yD6E88B9I5AELD4H8D8x42"/>
+
+   <includes
+         id="org.eclipse.gef"
+         version="3.5.2.v20100111-1352-777928194B66D5D476C33B2A"/>
+
+   <includes
+         id="org.eclipse.gef.source"
+         version="3.5.2.v20100111-1352-777928194B66D5D476C33B2A"/>
+
+   <plugin
+         id="org.eclipse.gef.examples.ui.pde"
+         download-size="0"
+         install-size="0"
+         version="3.5.0.v20090422-2346"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.gef.doc.isv"
+         download-size="0"
+         install-size="0"
+         version="3.5.0.v20090422-2346"
+         unpack="false"/>
+
+</feature>
