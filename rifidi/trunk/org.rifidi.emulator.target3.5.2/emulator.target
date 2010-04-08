@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?pde version="3.5"?>
+
+<target name="New Target">
+<locations>
+<location path="${workspace_loc}/org.rifidi.binary/thirdparty" type="Directory"/>
+<location path="${workspace_loc}/org.rifidi.emulator.target3.5/other" type="Directory"/>
+<location path="${workspace_loc}/org.rifidi.binary/rifidi" type="Directory"/>
+<location path="${workspace_loc}/org.rifidi.emulator.target3.5.2" type="Directory"/>
+</locations>
+</target>
