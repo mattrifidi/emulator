@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<itemType>
+    <categories>hospital</categories>
+    <containedItemsVisible>false</containedItemsVisible>
+    <defaultHeight>5</defaultHeight>
+    <defaultWidth>5</defaultWidth>
+    <imagePath>images/pulse-oximeter.jpg</imagePath>
+    <isContainer>false</isContainer>
+    <type>pulse oximeter</type>
+</itemType>

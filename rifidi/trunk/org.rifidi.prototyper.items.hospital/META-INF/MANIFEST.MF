@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Hospital Items
+Bundle-SymbolicName: org.rifidi.prototyper.items.hospital
+Bundle-Version: 1.0.0
+Fragment-Host: org.rifidi.prototyper.items;bundle-version="1.0.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
