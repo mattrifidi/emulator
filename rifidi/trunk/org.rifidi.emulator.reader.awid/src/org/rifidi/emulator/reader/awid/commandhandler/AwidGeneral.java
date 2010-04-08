@@ -138,6 +138,20 @@ public class AwidGeneral {
 			AbstractReaderSharedResources asr) {
 		return (AwidCommon.returnDefaultValue(arg, asr));
 	}
+	
+	/**
+	 * 
+	 * 
+	 * @param arg
+	 *            The CommandObject which contains the information from the
+	 *            method.
+	 * @return The CommandObject, unmodified if the command was a get, modified
+	 *         if it was a set.
+	 */
+	public CommandObject antenna_switch(CommandObject arg,
+			AbstractReaderSharedResources asr) {
+		return (AwidCommon.returnDefaultValue(arg, asr));
+	}
 
 	/**
 	 * The temperature of the
@@ -228,6 +242,9 @@ public class AwidGeneral {
 	 */
 	public CommandObject reader_status(CommandObject arg,
 			AbstractReaderSharedResources asr) {
+		logger.debug("Calling the status command");
+		CommandObject o = AwidCommon.returnDefaultValue(arg, asr);
+		System.out.println(o.getDefaultValue());
 		return (AwidCommon.returnDefaultValue(arg, asr));
 	}
 
@@ -380,25 +397,10 @@ public class AwidGeneral {
 	 * @return The CommandObject, unmodified if the command was a get, modified
 	 *         if it was a set.
 	 */
-	public CommandObject antenna_control(CommandObject arg,
-			AbstractReaderSharedResources asr) {
-		return (AwidCommon.returnDefaultValue(arg, asr));
-	}
-
-	/**
-	 * 
-	 * 
-	 * @param arg
-	 *            The CommandObject which contains the information from the
-	 *            method.
-	 * @return The CommandObject, unmodified if the command was a get, modified
-	 *         if it was a set.
-	 */
 	public CommandObject antenna_source(CommandObject arg,
 			AbstractReaderSharedResources asr) {
 		AwidReaderSharedResources arsr = (AwidReaderSharedResources) asr;
 		String source = (String) arg.getArguments().get(0);
-
 		if (source != null) {
 			if(source.equals("01")) {
 				arsr.setAntenna_source(true);

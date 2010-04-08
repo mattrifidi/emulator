@@ -109,6 +109,21 @@
 		<category>GENERAL</category>
 		<defaultValue>00</defaultValue>
 	</Command>
+	
+	<Command>
+		<queryName>06_00_0f</queryName>
+		<queryName>ANTENNA_SWITCH</queryName>
+		<displayName>antenna_switch</displayName>
+		<commandState>Interactive</commandState>
+		<commandHandlerDetails>
+			<handlerClass>org.rifidi.emulator.reader.awid.commandhandler.AwidGeneral</handlerClass>
+			<handlerMethod>antenna_switch</handlerMethod>
+			<argumentType>String</argumentType>
+		</commandHandlerDetails>
+		<actionTag>EDITABLE</actionTag>
+		<category>GENERAL</category>
+		<defaultValue>00</defaultValue>
+	</Command>
 
 	<Command>
 		<queryName>05_00_01</queryName>
@@ -199,6 +214,7 @@
 		<category>NONE</category>
 		<defaultValue></defaultValue>
 	</Command>
+
 
 	<Command>
 		<queryName>05_00_80</queryName>
@@ -318,21 +334,6 @@
 		<actionTag>IGNORE</actionTag>
 		<category>NONE</category>
 		<defaultValue>00</defaultValue>
-	</Command>
-
-	<Command>
-		<queryName>06_00_53</queryName>
-		<queryName>ANTENNA_CONTROL</queryName>
-		<displayName>antenna_control</displayName>
-		<commandState>Interactive</commandState>
-		<commandHandlerDetails>
-			<handlerClass>org.rifidi.emulator.reader.awid.commandhandler.AwidGeneral</handlerClass>
-			<handlerMethod>antenna_control</handlerMethod>
-			<argumentType>String</argumentType>
-		</commandHandlerDetails>
-		<actionTag>IGNORE</actionTag>
-		<category>NONE</category>
-		<defaultValue>01</defaultValue>
 	</Command>
 
 	<Command>

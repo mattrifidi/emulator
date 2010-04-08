@@ -13,6 +13,8 @@ package org.rifidi.emulator.reader.awid.formatter;
 
 import java.util.ArrayList;
 
+import org.apache.commons.codec.DecoderException;
+import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.rifidi.emulator.reader.formatter.CommandFormatter;
@@ -30,8 +32,7 @@ public class AwidAutonomousCommandFormatter implements CommandFormatter {
 	/**
 	 * Message logger
 	 */
-	private static Log logger =
-		 LogFactory.getLog(AwidCommandFormatter.class);
+	private static Log logger = LogFactory.getLog(AwidCommandFormatter.class);
 
 	/*
 	 * (non-Javadoc)
@@ -47,7 +48,9 @@ public class AwidAutonomousCommandFormatter implements CommandFormatter {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.emulator.reader.formatter.CommandFormatter#encode(java.util.ArrayList)
+	 * @see
+	 * org.rifidi.emulator.reader.formatter.CommandFormatter#encode(java.util
+	 * .ArrayList)
 	 */
 	public ArrayList<Object> encode(ArrayList<Object> arg) {
 		logger.debug("Starting the encode for awidAutonomous");
@@ -56,44 +59,38 @@ public class AwidAutonomousCommandFormatter implements CommandFormatter {
 		// byte[] byteArray = stringToByteArray((String) arg.get(0));
 		for (int x = 0; x < arg.size(); x++) {
 			String str = (String) arg.get(x);
+			// if return message is FF, or 00, we don't need to add CRC
 			if (!str.equalsIgnoreCase("FF") && !str.equalsIgnoreCase("00")) {
-				String[] strArray = str.split(" ");
-				String value = "";
-				for (int i = 0; i < strArray.length; i++) {
-					value += strArray[i];
+				String value = str.replace(" ", "");
+
+				try {
+					byte[] byteArray = Hex.decodeHex(value.toCharArray());
+					int crc = crc16(byteArray);
+
+					// create a new byte array that has space for 2 CRC bytes
+					byte[] returnByte = new byte[byteArray.length + 2];
+					for (int i = 0; i < byteArray.length; i++) {
+						returnByte[i] = (byte) byteArray[i];
+					}
+
+					// calculate CRC
+					byte[] crcBytes;
+					if (crc > 4095) {
+						crcBytes = fromHexString(Integer.toHexString(crc));
+					} else {
+						crcBytes = fromHexString("0" + Integer.toHexString(crc));
+					}
+					
+					// add CRC bytes to returnByte
+					returnByte[byteArray.length] = crcBytes[0];
+					returnByte[byteArray.length + 1] = crcBytes[1];
+					logger.debug(new String(Hex.encodeHex(returnByte)));
+					retVal.add(new String(Hex.encodeHex(returnByte)));
+				} catch (DecoderException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+
 				}
-
-				logger.debug("value = " + value);
-
-				byte[] byteArray = fromHexString(value);
-
-				logger.debug("after first byte print");
-
-				int crc = crc16(byteArray);
-
-				byte[] returnByte = new byte[byteArray.length + 2];
-				for (int i = 0; i < byteArray.length; i++) {
-					returnByte[i] = (byte) byteArray[i];
-				}
-
-				logger.debug("crc = " + Integer.toHexString(crc));
-				byte[] crcBytes;
-				if (crc > 4095) {
-					crcBytes = fromHexString(Integer.toHexString(crc));
-				} else {
-					crcBytes = fromHexString("0" + Integer.toHexString(crc));
-				}
-
-				returnByte[byteArray.length] = crcBytes[0];
-				returnByte[byteArray.length + 1] = crcBytes[1];
-
-				byte[] ackReturn = new byte[returnByte.length];
-
-				for (int i = 0; i < ackReturn.length; i++) {
-					ackReturn[i] = returnByte[i];
-				}
-
-				retVal.add(new String(ackReturn));
 			} else {
 				retVal.add(str);
 			}
@@ -105,7 +102,9 @@ public class AwidAutonomousCommandFormatter implements CommandFormatter {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.emulator.reader.formatter.CommandFormatter#getActualCommand(byte[])
+	 * @see
+	 * org.rifidi.emulator.reader.formatter.CommandFormatter#getActualCommand
+	 * (byte[])
 	 */
 	public String getActualCommand(byte[] arg) {
 		return new String(arg);
@@ -114,7 +113,8 @@ public class AwidAutonomousCommandFormatter implements CommandFormatter {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.rifidi.emulator.reader.formatter.CommandFormatter#promptSuppress()
+	 * @see
+	 * org.rifidi.emulator.reader.formatter.CommandFormatter#promptSuppress()
 	 */
 	public boolean promptSuppress() {
 		return false;

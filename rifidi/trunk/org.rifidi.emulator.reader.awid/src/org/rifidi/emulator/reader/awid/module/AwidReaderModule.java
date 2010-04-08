@@ -219,7 +219,7 @@ public class AwidReaderModule extends AbstractPowerModule implements
 		Map<byte[], Integer> autoCommands = new HashMap<byte[], Integer>();
 		autoCommands.put(null, 300);
 
-		autonomousCommandController = new AutonomousCommandController(
+		autonomousCommandController = new AwidAutonomousCommandController(
 				new BasicCommandControllerOperatingState(
 						autonomousCommandAdapter), this.sharedResources
 						.getAutonomousPowerSignal(), null,

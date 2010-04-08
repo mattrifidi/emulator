@@ -3,7 +3,7 @@ Bundle-RequiredExecutionEnvironment:  JavaSE-1.6
 Bundle-ManifestVersion: 2
 Bundle-Name: Rifidi Emulator Plug-in
 Bundle-SymbolicName: org.rifidi.emulator
-Bundle-Version: 3.1.0
+Bundle-Version: 3.1.1
 Bundle-Activator: org.rifidi.emulator.Activator
 Bundle-Vendor: Pramari, LLC
 Import-Package: gnu.io,

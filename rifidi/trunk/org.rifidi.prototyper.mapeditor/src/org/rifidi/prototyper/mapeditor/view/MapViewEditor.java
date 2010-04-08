@@ -41,6 +41,8 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
@@ -364,6 +366,7 @@ public class MapViewEditor extends GraphicalEditor implements
 		if (getGraphicalViewer() != null) {
 			((MapScalableRootEditPart) getGraphicalViewer().getRootEditPart())
 					.setEditMode(editMode);
+			getSite().getSelectionProvider().setSelection(StructuredSelection.EMPTY);
 		}
 	}
 

@@ -48,12 +48,12 @@ public class AutonomousCommandController extends AbstractCommandController {
 	/**
 	 * The autonomous executers that this controller is using.
 	 */
-	private List<AutonomousCommandExecuter> autonomousExecuters;
+	protected List<AutonomousCommandExecuter> autonomousExecuters;
 
 	/**
 	 * The control signal on whether or not the reader is connected.
 	 */
-	private ControlSignal<Boolean> connectionControlSignal;
+	protected ControlSignal<Boolean> connectionControlSignal;
 
 	/**
 	 * A constructor for an autonomous command controller which takes in a map
@@ -187,7 +187,7 @@ public class AutonomousCommandController extends AbstractCommandController {
 	 * @see org.rifidi.emulator.reader.command.controller.abstract_.AbstractCommandController#getCurCommunication()
 	 */
 	@Override
-	protected Communication getCurCommunication() {
+	public Communication getCurCommunication() {
 		/* Simply call the super method. */
 		return super.getCurCommunication();
 

@@ -28,6 +28,7 @@
    <vm>
    </vm>
 
+
    <plugins>
       <plugin id="com.ibm.icu"/>
       <plugin id="com.springsource.net.sf.cglib"/>
@@ -35,6 +36,7 @@
       <plugin id="edu.uark.csce.llrp"/>
       <plugin id="gnu.io"/>
       <plugin id="org.apache.commons.beanutils"/>
+      <plugin id="org.apache.commons.codec" version="1.4.0"/>
       <plugin id="org.apache.commons.collections"/>
       <plugin id="org.apache.commons.digester"/>
       <plugin id="org.eclipse.compare.core"/>
@@ -45,6 +47,7 @@
       <plugin id="org.eclipse.core.databinding.property"/>
       <plugin id="org.eclipse.core.expressions"/>
       <plugin id="org.eclipse.core.filesystem"/>
+      <plugin id="org.eclipse.core.filesystem.aix.ppc" fragment="true"/>
       <plugin id="org.eclipse.core.filesystem.hpux.PA_RISC" fragment="true"/>
       <plugin id="org.eclipse.core.filesystem.hpux.ia64_32" fragment="true"/>
       <plugin id="org.eclipse.core.filesystem.linux.ppc" fragment="true"/>
@@ -57,8 +60,10 @@
       <plugin id="org.eclipse.core.filesystem.win32.x86_64" fragment="true"/>
       <plugin id="org.eclipse.core.jobs"/>
       <plugin id="org.eclipse.core.resources"/>
+      <plugin id="org.eclipse.core.resources.compatibility" fragment="true"/>
       <plugin id="org.eclipse.core.resources.win32.x86" fragment="true"/>
       <plugin id="org.eclipse.core.runtime"/>
+      <plugin id="org.eclipse.core.runtime.compatibility.registry" fragment="true"/>
       <plugin id="org.eclipse.core.variables"/>
       <plugin id="org.eclipse.draw2d"/>
       <plugin id="org.eclipse.ecf"/>

@@ -4,6 +4,7 @@
 package org.rifidi.prototyper.mapeditor.view.wizards;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
@@ -12,6 +13,7 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.ide.IDE;
+import org.rifidi.prototyper.mapeditor.view.MapViewEditor;
 
 /**
  * @author Kyle Neumeier - kyle@pramari.com
@@ -53,6 +55,7 @@ public class PrototyperOpenWizardPage1 extends WizardPage implements Listener {
 			if (page != null){
 				page.closeAllEditors(true);
 				IDE.openEditor(page, file, true);
+				//page.getActiveEditor().getSite().getSelectionProvider().setSelection(StructuredSelection.EMPTY);
 			}
 		} catch (org.eclipse.ui.PartInitException e) {
 			e.printStackTrace();

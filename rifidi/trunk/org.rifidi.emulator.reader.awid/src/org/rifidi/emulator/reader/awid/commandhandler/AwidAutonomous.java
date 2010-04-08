@@ -103,13 +103,8 @@ public class AwidAutonomous {
 		AwidReaderSharedResources awidSR = (AwidReaderSharedResources) asr;
 
 		GenericRadio newRadio = awidSR.getRadio();
-		
-		
-
-		logger.debug("before scan");
 
 		newRadio.scan(null, awidSR.getTagMemory());
-		logger.debug("after scan");
 
 		AwidTagMemory memory = (AwidTagMemory) asr.getTagMemory();
 		ArrayList<RifidiTag> tagList = (ArrayList<RifidiTag>) memory
@@ -122,12 +117,20 @@ public class AwidAutonomous {
 				
 				if (i.getTagGen().equals(TagGen.GEN2)) {
 					String returnValue = "20 1E ";
+					String antennaString="";
+					if(awidSR.isAntenna_source()){
+						if(i.getAntennaLastSeen()==0){
+							antennaString="00";
+						}else{
+							antennaString="01";
+						}
+					}
 					returnValue += AwidCommon.formatTagString("30"
 							+ "00"
 							+ ByteAndHexConvertingUtility.toHexString(
 									i.getTag().readId()).replace(" ", "")
-							+ getCRC(i));
-					this.getPrefix(returnValue);
+							+ getCRC(i) + antennaString);
+	
 					retVal.add(this.getPrefix(returnValue));
 				}
 			}

@@ -41,33 +41,33 @@ public class AutonomousCommandExecuter implements Runnable {
 	/**
 	 * Interruption flag to control thread execution.
 	 */
-	private boolean interrupted;
+	protected boolean interrupted;
 
 	/**
 	 * The period between commands to send.
 	 */
-	private int period;
+	protected int period;
 
 	/**
 	 * Used to identify the number of seconds or number of cycles to run the
 	 * command
 	 */
-	private int value;
+	protected int value;
 
 	/**
 	 * The command to send for each period.
 	 */
-	private byte[] command;
+	protected byte[] command;
 
 	/**
 	 * Is the command limited somehow in running?
 	 */
-	private CommandInformation.LimitedRunningState state;
+	protected CommandInformation.LimitedRunningState state;
 
 	/**
 	 * The command controller that this is generating commands for.
 	 */
-	private AutonomousCommandController commandController;
+	protected AutonomousCommandController commandController;
 
 	/**
 	 * Creates an AutonomousCommandExectuer which generates the passed command

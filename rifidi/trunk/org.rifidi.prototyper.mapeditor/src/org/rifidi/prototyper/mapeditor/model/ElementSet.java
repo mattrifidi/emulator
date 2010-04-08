@@ -70,8 +70,12 @@ public class ElementSet<T extends AbstractMapModelElement> extends
 		if (element instanceof Container<?>) {
 			for (T e : elements) {
 				Container<T> c = (Container<T>) e;
-				if (c.contains(element))
-					return true;
+				try {
+					if (c.contains(element))
+						return true;
+				} catch (ClassCastException ex) {
+					// ignore for now
+				}
 			}
 			return false;
 		} else {

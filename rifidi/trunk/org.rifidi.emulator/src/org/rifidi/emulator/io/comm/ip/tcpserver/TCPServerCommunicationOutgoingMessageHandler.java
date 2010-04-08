@@ -106,7 +106,11 @@ public class TCPServerCommunicationOutgoingMessageHandler implements Runnable {
 					this.hostCommunication.getConsoleLogger().info(
 							"<OUTPUT> "
 									+ hostCommunication.getLogFormatter()
-											.formatMessage(dataToSend) + "</OUTPUT>");
+											.formatMessage(dataToSend)
+									+ "</OUTPUT>");
+
+					logger.debug(hostCommunication.getLogFormatter()
+							.formatMessage(dataToSend));
 
 					socketOut.write(dataToSend);
 
