@@ -152,7 +152,7 @@
 		</commandHandlerDetails>
 		<actionTag>BUTTON</actionTag>
 		<category>GENERAL</category>
-		<defaultValue></defaultValue>
+		<defaultValue>00</defaultValue>
 	</Command>
 
 	<Command>
@@ -167,7 +167,7 @@
 		</commandHandlerDetails>
 		<actionTag>IGNORE</actionTag>
 		<category>NONE</category>
-		<defaultValue></defaultValue>
+		<defaultValue>00</defaultValue>
 	</Command>
 
 	<Command>
@@ -348,7 +348,7 @@
 		</commandHandlerDetails>
 		<actionTag>IGNORE</actionTag>
 		<category>NONE</category>
-		<defaultValue>01</defaultValue>
+		<defaultValue></defaultValue>
 	</Command>
 
 	<Command>

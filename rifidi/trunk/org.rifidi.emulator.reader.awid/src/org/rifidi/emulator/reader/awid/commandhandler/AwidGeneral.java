@@ -190,14 +190,7 @@ public class AwidGeneral {
 
 		newProp.setPropertyValue(arg.getDefaultValue());
 
-		ArrayList<Object> retVal = new ArrayList<Object>();
-		// this method responds with just a "00"
-		retVal.add(new String(new byte[] { 0x00, 0x00 }));
-		// set the return value
-		arg.setReturnValue(retVal);
-
-		// add the current value to the return value
-		return (arg);
+		return (AwidCommon.returnDefaultValue(arg, asr));
 	}
 
 	/**
@@ -223,12 +216,7 @@ public class AwidGeneral {
 
 		newProp.setPropertyValue(arg.getDefaultValue());
 
-		ArrayList<Object> retVal = new ArrayList<Object>();
-		// this method responds with just a "00"
-		retVal.add(new String(new byte[] { 0x00, 0x00 }));
-		// set the return value
-		arg.setReturnValue(retVal);
-		return (arg);
+		return (AwidCommon.returnDefaultValue(arg, asr));
 	}
 
 	/**
@@ -244,7 +232,7 @@ public class AwidGeneral {
 			AbstractReaderSharedResources asr) {
 		logger.debug("Calling the status command");
 		CommandObject o = AwidCommon.returnDefaultValue(arg, asr);
-		System.out.println(o.getDefaultValue());
+		
 		return (AwidCommon.returnDefaultValue(arg, asr));
 	}
 

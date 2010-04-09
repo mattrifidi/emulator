@@ -62,7 +62,9 @@ public class AwidCommon {
 	}
 
 	/**
-	 * 
+	 * This method returns the string inside the "default" tag in the
+	 * reader.xml. If the string starts with an ACK byte (i.e. 00 or FF), divide
+	 * the return val into two elements in the return array.
 	 * 
 	 * @param arg
 	 * @param asr
@@ -71,8 +73,24 @@ public class AwidCommon {
 	public static CommandObject returnDefaultValue(CommandObject arg,
 			AbstractReaderSharedResources asr) {
 		ArrayList<Object> retVal = new ArrayList<Object>();
-
-		retVal.add(arg.getDefaultValue());
+		String defVal = arg.getDefaultValue();
+		if (defVal != null && !defVal.equals("")) {
+			// If the default return value starts with a 00, add a 00
+			if (defVal.startsWith("00") || defVal.startsWith("FF")) {
+				if (defVal.startsWith("00")) {
+					retVal.add("00");
+				} else if (defVal.startsWith("FF")) {
+					retVal.add("FF");
+				}
+				// add the rest to the next argument, if there is anything there
+				if (defVal.length() > 3) {
+					retVal.add(defVal.substring(3));
+				}
+			} else {
+				// if the default value does not start with an ACK, just add it
+				retVal.add(arg.getDefaultValue());
+			}
+		}
 
 		arg.setReturnValue(retVal);
 
@@ -101,9 +119,9 @@ public class AwidCommon {
 
 	public static CommandObject return_zero(CommandObject arg,
 			AbstractReaderSharedResources asr) {
-		
-		arg.getReturnValue().add(new byte[] {0x30,0x30});
-		
+
+		arg.getReturnValue().add(new byte[] { 0x30, 0x30 });
+
 		return arg;
 	}
 }

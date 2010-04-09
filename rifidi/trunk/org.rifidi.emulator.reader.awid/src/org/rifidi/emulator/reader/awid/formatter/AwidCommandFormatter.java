@@ -13,6 +13,8 @@ package org.rifidi.emulator.reader.awid.formatter;
 
 import java.util.ArrayList;
 
+import org.apache.commons.codec.DecoderException;
+import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.rifidi.emulator.reader.formatter.CommandFormatter;
@@ -66,56 +68,49 @@ public class AwidCommandFormatter implements CommandFormatter {
 	public ArrayList<Object> encode(ArrayList<Object> arg) {
 		// ArrayList that holds the return value
 		ArrayList<Object> retVal = new ArrayList<Object>();
-		// byte[] byteArray = stringToByteArray((String) arg.get(0));
 
-		
-		if (!arg.isEmpty()) {
-			String str = (String) arg.get(0);
-			//FIXME: Find a better way to do this, right now it sucks.  
-			if (!str.equalsIgnoreCase("FF") && !str.equalsIgnoreCase("00") && !str.equalsIgnoreCase("01")
-					&& !str.equals(new byte[] { 0x00, 0x00 })
-					&& !str.equals("00 00")) {
-				String[] strArray = str.split(" ");
-				String value = "";
-				for (int i = 1; i < strArray.length; i++) {
-					value += strArray[i];
+		// for each object in the return value
+		for (Object obj : arg) {
+			String str = (String) obj;
+			// if the value is not an ACK Byte
+			if (!str.equalsIgnoreCase("FF") && !str.equalsIgnoreCase("00")) {
+				// remove any spaces
+				String value = str.replace(" ", "");
+				try {
+
+					// convert the string to hex
+					byte[] byteArray = Hex.decodeHex(value.toCharArray());
+
+					// calculate the CRC
+					int crc = crc16(byteArray);
+
+					// create a new byte with two extra slots to hold the CRC
+					byte[] returnByte = new byte[byteArray.length + 2];
+					for (int i = 0; i < byteArray.length; i++) {
+						returnByte[i] = (byte) byteArray[i];
+					}
+
+					// Add the CRC bytes
+					byte[] crcBytes;
+					if (crc > 4095) {
+						crcBytes = fromHexString(Integer.toHexString(crc));
+					} else {
+						crcBytes = fromHexString("0" + Integer.toHexString(crc));
+					}
+					returnByte[byteArray.length] = crcBytes[0];
+					returnByte[byteArray.length + 1] = crcBytes[1];
+
+					// add the byte message
+					retVal.add(returnByte);
+				} catch (DecoderException ex) {
+
 				}
-
-				logger.debug("value = " + value);
-
-				byte[] byteArray = fromHexString(value);
-
-				logger.debug("after first byte print");
-
-				int crc = crc16(byteArray);
-
-				byte[] returnByte = new byte[byteArray.length + 2];
-				for (int i = 0; i < byteArray.length; i++) {
-					returnByte[i] = (byte) byteArray[i];
-				}
-
-				logger.debug("crc = " + Integer.toHexString(crc));
-				byte[] crcBytes;
-				if (crc > 4095) {
-					crcBytes = fromHexString(Integer.toHexString(crc));
-				} else {
-					crcBytes = fromHexString("0" + Integer.toHexString(crc));
-				}
-				returnByte[byteArray.length] = crcBytes[0];
-				returnByte[byteArray.length + 1] = crcBytes[1];
-
-				byte[] ackReturn = new byte[returnByte.length + 1];
-				ackReturn[0] = 0x00;
-				for (int i = 1; i < ackReturn.length; i++) {
-					ackReturn[i] = returnByte[i - 1];
-				}
-
-				retVal.add(new String(ackReturn));
 			} else {
+				// if the byte is an ACK byte, just add it
 				if (str.equalsIgnoreCase("FF")) {
-					retVal.add(new String(new byte[] { (byte) 0xFF }));
+					retVal.add(new byte[] { (byte) 0xFF });
 				} else {
-					retVal.add(new String(new byte[] { (byte) 0x00 }));
+					retVal.add(new byte[] { (byte) 0x00 });
 				}
 			}
 		}
