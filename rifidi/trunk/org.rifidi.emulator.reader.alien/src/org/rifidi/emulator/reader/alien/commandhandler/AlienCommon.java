@@ -37,10 +37,10 @@ public class AlienCommon {
 		 LogFactory.getLog(UDPCommunicationIncomingMessageHandler.class);
 
 	/* String to pass back for the Alien Prompt */
-	public static final String PROMPT = "Alien >\0";
+	public static final String PROMPT = "Alien>\0";
 	
 	/* String to pass back for the Alien Prompt */
-	public static final String NONZEROPROMPT = "Alien >";
+	public static final String NONZEROPROMPT = "Alien>";
 
 	/* A constant string which the reader sends out on the end of a reply */
 	public static final String ENDOFREPLY = "\r\n\0";
