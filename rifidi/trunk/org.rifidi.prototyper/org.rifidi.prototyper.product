@@ -3,7 +3,6 @@
 
 <product name="Prototyper" uid="org.rifidi.prototyper.product" id="org.rifidi.prototyper.product" application="org.rifidi.prototyper.application" useFeatures="false" includeLaunchers="true">
 
-
    <configIni use="default">
    </configIni>
 
@@ -24,10 +23,8 @@
       </win>
    </launcher>
 
-
    <vm>
    </vm>
-
 
    <plugins>
       <plugin id="com.ibm.icu"/>
@@ -132,7 +129,7 @@
       <plugin id="org.rifidi.emulator.reader.sirit"/>
       <plugin id="org.rifidi.emulator.reader.symbol"/>
       <plugin id="org.rifidi.emulator.reader.thingmagic"/>
-      <plugin id="org.rifidi.emulator.readerview"/>
+      <plugin id="org.rifidi.emulator.readerview" version="1.1.0"/>
       <plugin id="org.rifidi.log4j" fragment="true"/>
       <plugin id="org.rifidi.log4j.developer" fragment="true"/>
       <plugin id="org.rifidi.logging"/>
