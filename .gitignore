@@ -3,9 +3,9 @@
 
 ### Eclipse ###
 
-.metadata
 bin/
 tmp/
+.metadata
 *.tmp
 *.bak
 *.swp
@@ -16,14 +16,8 @@ local.properties
 .recommenders
 LLRP_CMDR/
 
-# Eclipse Core
-.project
-
 # External tool builders
 .externalToolBuilders/
-
-# Locally stored "Eclipse launch configurations"
-*.launch
 
 # PyDev specific (Python IDE for Eclipse)
 *.pydevproject
