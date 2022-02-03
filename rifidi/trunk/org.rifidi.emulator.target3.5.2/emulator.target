@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="New Target" sequenceNumber="4">
-<locations>
-<location path="${workspace_loc}/org.rifidi.binary/thirdparty" type="Directory"/>
-<location path="${workspace_loc}/org.rifidi.binary/rifidi" type="Directory"/>
-<location path="${workspace_loc}/org.rifidi.emulator.target3.5.2" type="Directory"/>
-<location path="${workspace_loc}/org.rifidi.emulator.target3.5.2/other" type="Directory"/>
-</locations>
-</target>
