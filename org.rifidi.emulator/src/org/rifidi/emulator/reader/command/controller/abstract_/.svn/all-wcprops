@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 124
+/svn/rep-external/!svn/ver/1104/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/reader/command/controller/abstract_
+END
+AbstractOffCommandControllerPowerState.java
+K 25
+svn:wc:ra_dav:version-url
+V 166
+/svn/rep-external/!svn/ver/14/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/reader/command/controller/abstract_/AbstractOffCommandControllerPowerState.java
+END
+AbstractSuspendedCommandControllerPowerState.java
+K 25
+svn:wc:ra_dav:version-url
+V 173
+/svn/rep-external/!svn/ver/323/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/reader/command/controller/abstract_/AbstractSuspendedCommandControllerPowerState.java
+END
+AbstractCommandControllerOperatingState.java
+K 25
+svn:wc:ra_dav:version-url
+V 168
+/svn/rep-external/!svn/ver/323/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/reader/command/controller/abstract_/AbstractCommandControllerOperatingState.java
+END
+AbstractOnCommandControllerPowerState.java
+K 25
+svn:wc:ra_dav:version-url
+V 166
+/svn/rep-external/!svn/ver/323/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/reader/command/controller/abstract_/AbstractOnCommandControllerPowerState.java
+END
+AbstractCommandController.java
+K 25
+svn:wc:ra_dav:version-url
+V 155
+/svn/rep-external/!svn/ver/1104/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/reader/command/controller/abstract_/AbstractCommandController.java
+END

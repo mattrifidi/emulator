@@ -1,0 +1,70 @@
+10
+
+dir
+1156
+https://svn.rifidi.org/svn/rep-external/rifidi/trunk/org.rifidi.emulator.target3.5/features
+https://svn.rifidi.org/svn/rep-external
+
+
+
+2010-03-01T21:09:42.868743Z
+1156
+kyle
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+b4039889-686d-4a2c-bca9-1a44802ef50e
+
+org.eclipse.draw2d.sdk_3.5.2.v20100111-1352-7A7E38yD6E88B9I5AELD4H8D8x42
+dir
+
+org.eclipse.draw2d.source_3.5.2.v20100111-1352-4417w311A223702A19
+dir
+
+org.eclipse.draw2d_3.5.2.v20100111-1352-4417w311A223702A19
+dir
+
+org.eclipse.equinox.executable_3.3.201.R35x_v20091211-7M-FngFELSU3Pqlv3JdZn
+dir
+
+org.eclipse.equinox.p2.user.ui.source_1.1.2.R35x_v20091106-7u6FbQFUAtsCKD5Fxz0qz0fb2932
+dir
+
+org.eclipse.equinox.p2.user.ui_1.1.2.R35x_v20091106-7u6FbQFUAtsCKD5Fxz0qz0fb2932
+dir
+
+org.eclipse.gef.sdk_3.5.2.v20100111-1352-7G7O5A5WNXWQF_OVSWjaZLTWkNKY
+dir
+
+org.eclipse.gef.source_3.5.2.v20100111-1352-777928194B66D5D476C33B2A
+dir
+
+org.eclipse.gef_3.5.2.v20100111-1352-777928194B66D5D476C33B2A
+dir
+
+org.eclipse.help_1.1.2.R35x_v20100119-7e7eFAnFEx2X_fZltJhDjz-D
+dir
+
+org.eclipse.platform.source_3.5.2.R35x_v20100210-0800-9hEiFzmFst-TiEn9hNYgDWg1XN8ulH_JvCNGB
+dir
+
+org.eclipse.platform_3.5.2.R35x_v20100210-0800-9hEiFzmFst-TiEn9hNYgDWg1XN8ulH_JvCNGB
+dir
+
+org.eclipse.rcp.source_3.5.2.R35x_v20100119-9SA0FxwFnoCU5XxWItFdXXb27BA6
+dir
+
+org.eclipse.rcp_3.5.2.R35x_v20100119-9SA0FxwFnoCU5XxWItFdXXb27BA6
+dir
+

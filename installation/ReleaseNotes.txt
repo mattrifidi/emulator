@@ -1,0 +1,27 @@
+Notes:
+In Version 1.4.2 the name of the product "Visual Rifidi" changed to "Rifidi Emulator" which comes along with the newly released "Rifidi Designer" . There are also some new features in this release mainly improving the LLRP Reader and the Alien Reader.
+
+There is a new QuickStartGuide for the LLRP Reader Emulation available. This contains the LLRPHelloWorldClient, which is a basic programm showing how to communicate with the LLRP Reader. You can get it at "www.rifidi.org/llrp/" and also on the Sourceforge Documents Section.
+
+
+Changes:
+- The name changed from "Visual Rifidi" to "Rifidi Emulator"
+- LLRP Reader added features:
+	- Event Notifications
+	- Custom Messages
+	- AccessSpecs
+	- GetROSpec
+	- GetROReport
+	- KeepAlive Messages
+- Improved features in the LLRP Reader:
+	- LLRP Configuration State Variable changes correctly
+	- State of ROSpec changes correctly
+	- Triggers work better
+- The LLRP Reader support now a client and server mode 
+- LLRP Reader has a new Administration Interface to set the operation mode (accessable via Telnet)
+- some minor Bugfixes  
+- some Alien Reader Bugixes
+	
+Known Bugs:
+- In the LLRPHelloWorldClient the output of Messages in XML might have some troubles with displaying the EPC-ID
+- The LLRPHelloWorldClient may throw a EOFException whenever you add more than 5 Tags to the LLRP Reader

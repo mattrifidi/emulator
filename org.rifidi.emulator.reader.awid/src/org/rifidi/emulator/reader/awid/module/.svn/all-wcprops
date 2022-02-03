@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/svn/rep-external/!svn/ver/1063/rifidi/trunk/org.rifidi.emulator.reader.awid/src/org/rifidi/emulator/reader/awid/module
+END
+reader.xml
+K 25
+svn:wc:ra_dav:version-url
+V 130
+/svn/rep-external/!svn/ver/1133/rifidi/trunk/org.rifidi.emulator.reader.awid/src/org/rifidi/emulator/reader/awid/module/reader.xml
+END
+AwidReaderModuleFactory.java
+K 25
+svn:wc:ra_dav:version-url
+V 148
+/svn/rep-external/!svn/ver/1081/rifidi/trunk/org.rifidi.emulator.reader.awid/src/org/rifidi/emulator/reader/awid/module/AwidReaderModuleFactory.java
+END
+AwidReaderModuleOffPowerState.java
+K 25
+svn:wc:ra_dav:version-url
+V 154
+/svn/rep-external/!svn/ver/1112/rifidi/trunk/org.rifidi.emulator.reader.awid/src/org/rifidi/emulator/reader/awid/module/AwidReaderModuleOffPowerState.java
+END
+AwidReaderModuleSuspendedPowerState.java
+K 25
+svn:wc:ra_dav:version-url
+V 160
+/svn/rep-external/!svn/ver/1104/rifidi/trunk/org.rifidi.emulator.reader.awid/src/org/rifidi/emulator/reader/awid/module/AwidReaderModuleSuspendedPowerState.java
+END
+emulator.xml
+K 25
+svn:wc:ra_dav:version-url
+V 132
+/svn/rep-external/!svn/ver/1133/rifidi/trunk/org.rifidi.emulator.reader.awid/src/org/rifidi/emulator/reader/awid/module/emulator.xml
+END
+AwidReaderModuleOnPowerState.java
+K 25
+svn:wc:ra_dav:version-url
+V 153
+/svn/rep-external/!svn/ver/1112/rifidi/trunk/org.rifidi.emulator.reader.awid/src/org/rifidi/emulator/reader/awid/module/AwidReaderModuleOnPowerState.java
+END
+AwidReaderSharedResources.java
+K 25
+svn:wc:ra_dav:version-url
+V 150
+/svn/rep-external/!svn/ver/1127/rifidi/trunk/org.rifidi.emulator.reader.awid/src/org/rifidi/emulator/reader/awid/module/AwidReaderSharedResources.java
+END
+AwidReaderModule.java
+K 25
+svn:wc:ra_dav:version-url
+V 141
+/svn/rep-external/!svn/ver/1133/rifidi/trunk/org.rifidi.emulator.reader.awid/src/org/rifidi/emulator/reader/awid/module/AwidReaderModule.java
+END

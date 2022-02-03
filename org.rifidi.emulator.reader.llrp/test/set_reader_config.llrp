@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<llrp:SET_READER_CONFIG xmlns:llrp="http://www.llrp.org/ltk/schema/core/encoding/xml/1.0" Version="1" MessageID="0">
+  <llrp:ResetToFactoryDefault>0</llrp:ResetToFactoryDefault>
+  <llrp:AntennaConfiguration>
+    <llrp:AntennaID>1</llrp:AntennaID>
+    <llrp:RFTransmitter>
+      <llrp:HopTableID>0</llrp:HopTableID>
+      <llrp:ChannelIndex>0</llrp:ChannelIndex>
+      <llrp:TransmitPower>0</llrp:TransmitPower>
+    </llrp:RFTransmitter>
+  </llrp:AntennaConfiguration>
+</llrp:SET_READER_CONFIG>
+

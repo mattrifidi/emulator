@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/rep-external/!svn/ver/14/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/io/comm/streamreader
+END
+GenericByteStreamReader.java
+K 25
+svn:wc:ra_dav:version-url
+V 136
+/svn/rep-external/!svn/ver/14/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/io/comm/streamreader/GenericByteStreamReader.java
+END
+AbstractStreamReader.java
+K 25
+svn:wc:ra_dav:version-url
+V 133
+/svn/rep-external/!svn/ver/14/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/io/comm/streamreader/AbstractStreamReader.java
+END
+GenericCharStreamReader.java
+K 25
+svn:wc:ra_dav:version-url
+V 136
+/svn/rep-external/!svn/ver/14/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/io/comm/streamreader/GenericCharStreamReader.java
+END

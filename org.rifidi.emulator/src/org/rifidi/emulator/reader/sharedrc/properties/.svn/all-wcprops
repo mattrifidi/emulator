@@ -1,0 +1,65 @@
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/svn/rep-external/!svn/ver/14/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/reader/sharedrc/properties
+END
+DoubleReaderProperty.java
+K 25
+svn:wc:ra_dav:version-url
+V 139
+/svn/rep-external/!svn/ver/14/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/reader/sharedrc/properties/DoubleReaderProperty.java
+END
+IntegerReaderProperty.java
+K 25
+svn:wc:ra_dav:version-url
+V 140
+/svn/rep-external/!svn/ver/14/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/reader/sharedrc/properties/IntegerReaderProperty.java
+END
+RangedIntegerReaderProperty.java
+K 25
+svn:wc:ra_dav:version-url
+V 146
+/svn/rep-external/!svn/ver/14/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/reader/sharedrc/properties/RangedIntegerReaderProperty.java
+END
+BooleanReaderProperty.java
+K 25
+svn:wc:ra_dav:version-url
+V 140
+/svn/rep-external/!svn/ver/14/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/reader/sharedrc/properties/BooleanReaderProperty.java
+END
+LongReaderProperty.java
+K 25
+svn:wc:ra_dav:version-url
+V 137
+/svn/rep-external/!svn/ver/14/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/reader/sharedrc/properties/LongReaderProperty.java
+END
+ReaderProperty.java
+K 25
+svn:wc:ra_dav:version-url
+V 133
+/svn/rep-external/!svn/ver/14/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/reader/sharedrc/properties/ReaderProperty.java
+END
+ShortReaderProperty.java
+K 25
+svn:wc:ra_dav:version-url
+V 138
+/svn/rep-external/!svn/ver/14/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/reader/sharedrc/properties/ShortReaderProperty.java
+END
+AbstractReaderProperty.java
+K 25
+svn:wc:ra_dav:version-url
+V 141
+/svn/rep-external/!svn/ver/14/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/reader/sharedrc/properties/AbstractReaderProperty.java
+END
+InetAddressReaderProperty.java
+K 25
+svn:wc:ra_dav:version-url
+V 144
+/svn/rep-external/!svn/ver/14/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/reader/sharedrc/properties/InetAddressReaderProperty.java
+END
+StringReaderProperty.java
+K 25
+svn:wc:ra_dav:version-url
+V 139
+/svn/rep-external/!svn/ver/14/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/reader/sharedrc/properties/StringReaderProperty.java
+END

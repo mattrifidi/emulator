@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svn/rep-external/!svn/ver/380/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/reader/control/adapter
+END
+CommandAdapter.java
+K 25
+svn:wc:ra_dav:version-url
+V 129
+/svn/rep-external/!svn/ver/14/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/reader/control/adapter/CommandAdapter.java
+END
+TestHeartbeatCommandAdapter.java
+K 25
+svn:wc:ra_dav:version-url
+V 142
+/svn/rep-external/!svn/ver/14/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/reader/control/adapter/TestHeartbeatCommandAdapter.java
+END
+RelativeReflectiveCommandAdapter.java
+K 25
+svn:wc:ra_dav:version-url
+V 147
+/svn/rep-external/!svn/ver/14/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/reader/control/adapter/RelativeReflectiveCommandAdapter.java
+END
+ReflectiveCommandAdapter.java
+K 25
+svn:wc:ra_dav:version-url
+V 141
+/svn/rep-external/!svn/ver/1131/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/reader/control/adapter/ReflectiveCommandAdapter.java
+END
+CommandNotFoundException.java
+K 25
+svn:wc:ra_dav:version-url
+V 139
+/svn/rep-external/!svn/ver/14/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/reader/control/adapter/CommandNotFoundException.java
+END
+SelectiveReflectiveCommandAdapter.java
+K 25
+svn:wc:ra_dav:version-url
+V 148
+/svn/rep-external/!svn/ver/14/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/reader/control/adapter/SelectiveReflectiveCommandAdapter.java
+END

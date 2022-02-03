@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/rep-external/!svn/ver/975/rifidi/trunk/org.rifidi.services.tags
+END
+.classpath
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/rep-external/!svn/ver/531/rifidi/trunk/org.rifidi.services.tags/.classpath
+END
+.project
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/rep-external/!svn/ver/57/rifidi/trunk/org.rifidi.services.tags/.project
+END
+build.properties
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/rep-external/!svn/ver/57/rifidi/trunk/org.rifidi.services.tags/build.properties
+END
+plugin.xml
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/rep-external/!svn/ver/970/rifidi/trunk/org.rifidi.services.tags/plugin.xml
+END

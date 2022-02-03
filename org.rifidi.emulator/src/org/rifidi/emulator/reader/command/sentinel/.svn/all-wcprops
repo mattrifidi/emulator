@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svn/rep-external/!svn/ver/14/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/reader/command/sentinel
+END
+CommandSentinel.java
+K 25
+svn:wc:ra_dav:version-url
+V 131
+/svn/rep-external/!svn/ver/14/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/reader/command/sentinel/CommandSentinel.java
+END
+CommandListHolder.java
+K 25
+svn:wc:ra_dav:version-url
+V 135
+/svn/rep-external/!svn/ver/1114/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/reader/command/sentinel/CommandListHolder.java
+END
+RawCommandSentinel.java
+K 25
+svn:wc:ra_dav:version-url
+V 134
+/svn/rep-external/!svn/ver/14/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/reader/command/sentinel/RawCommandSentinel.java
+END
+InteractiveCommandSentinel.java
+K 25
+svn:wc:ra_dav:version-url
+V 144
+/svn/rep-external/!svn/ver/1114/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/reader/command/sentinel/InteractiveCommandSentinel.java
+END

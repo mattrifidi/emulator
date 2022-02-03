@@ -1,0 +1,20 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Rifidi Sirit Reader Plug-in
+Bundle-SymbolicName: org.rifidi.emulator.reader.sirit
+Bundle-Version: 1.0.1
+Bundle-Activator: org.rifidi.emulator.reader.sirit.Activator
+Bundle-Vendor: Pramari, LLC
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Import-Package: org.apache.commons.logging,
+ org.osgi.framework;version="1.3.0"
+Require-Bundle: org.rifidi.services.tags;bundle-version="3.0.2",
+ org.rifidi.emulator;bundle-version="3.0.0",
+ org.rifidi.tags;bundle-version="1.0.1"
+Export-Package: org.rifidi.emulator.reader.sirit,
+ org.rifidi.emulator.reader.sirit.command.exception,
+ org.rifidi.emulator.reader.sirit.commandhandler,
+ org.rifidi.emulator.reader.sirit.formatter,
+ org.rifidi.emulator.reader.sirit.module,
+ org.rifidi.emulator.reader.sirit.tagbuffer
+Bundle-ActivationPolicy: lazy

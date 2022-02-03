@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 129
+/svn/rep-external/!svn/ver/1099/rifidi/trunk/org.rifidi.emulator.reader.sirit/src/org/rifidi/emulator/reader/sirit/commandhandler
+END
+SiritAntennas.java
+K 25
+svn:wc:ra_dav:version-url
+V 148
+/svn/rep-external/!svn/ver/1059/rifidi/trunk/org.rifidi.emulator.reader.sirit/src/org/rifidi/emulator/reader/sirit/commandhandler/SiritAntennas.java
+END
+SiritCommon.java
+K 25
+svn:wc:ra_dav:version-url
+V 146
+/svn/rep-external/!svn/ver/1059/rifidi/trunk/org.rifidi.emulator.reader.sirit/src/org/rifidi/emulator/reader/sirit/commandhandler/SiritCommon.java
+END
+SiritInfo.java
+K 25
+svn:wc:ra_dav:version-url
+V 144
+/svn/rep-external/!svn/ver/1059/rifidi/trunk/org.rifidi.emulator.reader.sirit/src/org/rifidi/emulator/reader/sirit/commandhandler/SiritInfo.java
+END
+SiritTag.java
+K 25
+svn:wc:ra_dav:version-url
+V 143
+/svn/rep-external/!svn/ver/1086/rifidi/trunk/org.rifidi.emulator.reader.sirit/src/org/rifidi/emulator/reader/sirit/commandhandler/SiritTag.java
+END
+SiritSetup.java
+K 25
+svn:wc:ra_dav:version-url
+V 145
+/svn/rep-external/!svn/ver/1099/rifidi/trunk/org.rifidi.emulator.reader.sirit/src/org/rifidi/emulator/reader/sirit/commandhandler/SiritSetup.java
+END
+SiritReader.java
+K 25
+svn:wc:ra_dav:version-url
+V 146
+/svn/rep-external/!svn/ver/1099/rifidi/trunk/org.rifidi.emulator.reader.sirit/src/org/rifidi/emulator/reader/sirit/commandhandler/SiritReader.java
+END

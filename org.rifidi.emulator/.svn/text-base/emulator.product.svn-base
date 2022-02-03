@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?pde version="3.5"?>
+
+<product id="org.rifidi.ui.ide.product" application="org.eclipse.ui.ide.workbench" useFeatures="false" includeLaunchers="true">
+
+   <configIni use="default">
+   </configIni>
+
+   <launcherArgs>
+      <programArgs>-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl} -console</programArgs>
+      <vmArgs>-Declipse.ignoreApp=true -Dosgi.noShutdown=true</vmArgs>
+      <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts</vmArgsMac>
+   </launcherArgs>
+
+   <launcher name="emulator">
+      <solaris/>
+      <win useIco="false">
+         <bmp/>
+      </win>
+   </launcher>
+
+   <vm>
+   </vm>
+
+   <plugins>
+      <plugin id="com.springsource.net.sf.cglib"/>
+      <plugin id="com.springsource.org.aopalliance"/>
+      <plugin id="edu.uark.csce.llrp"/>
+      <plugin id="gnu.cajo"/>
+      <plugin id="gnu.io"/>
+      <plugin id="groovy-all"/>
+      <plugin id="javax.servlet"/>
+      <plugin id="org.apache.commons.collections"/>
+      <plugin id="org.apache.commons.digester"/>
+      <plugin id="org.eclipse.core.contenttype"/>
+      <plugin id="org.eclipse.core.jobs"/>
+      <plugin id="org.eclipse.core.runtime"/>
+      <plugin id="org.eclipse.core.runtime.compatibility.auth"/>
+      <plugin id="org.eclipse.equinox.app"/>
+      <plugin id="org.eclipse.equinox.common"/>
+      <plugin id="org.eclipse.equinox.preferences"/>
+      <plugin id="org.eclipse.equinox.registry"/>
+      <plugin id="org.eclipse.equinox.simpleconfigurator"/>
+      <plugin id="org.eclipse.osgi"/>
+      <plugin id="org.eclipse.osgi.services"/>
+      <plugin id="org.rifidi.common.utilities"/>
+      <plugin id="org.rifidi.emulator"/>
+      <plugin id="org.rifidi.emulator.console.log4j" fragment="true"/>
+      <plugin id="org.rifidi.emulator.reader.alien"/>
+      <plugin id="org.rifidi.emulator.reader.awid"/>
+      <plugin id="org.rifidi.emulator.reader.epc"/>
+      <plugin id="org.rifidi.emulator.reader.llrp"/>
+      <plugin id="org.rifidi.emulator.reader.sirit"/>
+      <plugin id="org.rifidi.emulator.reader.symbol"/>
+      <plugin id="org.rifidi.emulator.reader.thingmagic"/>
+      <plugin id="org.rifidi.emulator.scripting" fragment=""/>
+      <plugin id="org.rifidi.emulator.scripting.groovy"/>
+      <plugin id="org.rifidi.emulator.scripting.groovy.console"/>
+      <plugin id="org.rifidi.log4j" fragment="true"/>
+      <plugin id="org.rifidi.log4j.developer" fragment="true"/>
+      <plugin id="org.rifidi.logging"/>
+      <plugin id="org.rifidi.services"/>
+      <plugin id="org.rifidi.services.tags"/>
+      <plugin id="org.rifidi.tags"/>
+      <plugin id="org.springframework.aop"/>
+      <plugin id="org.springframework.beans"/>
+      <plugin id="org.springframework.context"/>
+      <plugin id="org.springframework.core"/>
+      <plugin id="org.springframework.osgi.core"/>
+      <plugin id="org.springframework.osgi.extender"/>
+      <plugin id="org.springframework.osgi.io"/>
+   </plugins>
+
+   <configurations>
+      <plugin id="com.springsource.net.sf.cglib" autoStart="false" startLevel="0" />
+      <plugin id="com.springsource.org.aopalliance" autoStart="false" startLevel="0" />
+      <plugin id="edu.uark.csce.llrp" autoStart="true" startLevel="4" />
+      <plugin id="gnu.cajo" autoStart="true" startLevel="4" />
+      <plugin id="gnu.io" autoStart="true" startLevel="4" />
+      <plugin id="groovy-all" autoStart="true" startLevel="4" />
+      <plugin id="javax.servlet" autoStart="true" startLevel="4" />
+      <plugin id="org.apache.commons.collections" autoStart="true" startLevel="4" />
+      <plugin id="org.apache.commons.digester" autoStart="true" startLevel="4" />
+      <plugin id="org.eclipse.core.contenttype" autoStart="true" startLevel="4" />
+      <plugin id="org.eclipse.core.jobs" autoStart="true" startLevel="4" />
+      <plugin id="org.eclipse.core.runtime" autoStart="true" startLevel="0" />
+      <plugin id="org.eclipse.core.runtime.compatibility.auth" autoStart="true" startLevel="4" />
+      <plugin id="org.eclipse.equinox.app" autoStart="true" startLevel="4" />
+      <plugin id="org.eclipse.equinox.common" autoStart="true" startLevel="2" />
+      <plugin id="org.eclipse.equinox.preferences" autoStart="true" startLevel="4" />
+      <plugin id="org.eclipse.equinox.registry" autoStart="true" startLevel="4" />
+      <plugin id="org.eclipse.equinox.simpleconfigurator" autoStart="true" startLevel="1" />
+      <plugin id="org.eclipse.osgi" autoStart="true" startLevel="-1" />
+      <plugin id="org.eclipse.osgi.services" autoStart="true" startLevel="4" />
+      <plugin id="org.rifidi.common.utilities" autoStart="true" startLevel="4" />
+      <plugin id="org.rifidi.emulator" autoStart="true" startLevel="4" />
+      <plugin id="org.rifidi.emulator.reader.alien" autoStart="true" startLevel="4" />
+      <plugin id="org.rifidi.emulator.reader.awid" autoStart="true" startLevel="4" />
+      <plugin id="org.rifidi.emulator.reader.epc" autoStart="true" startLevel="4" />
+      <plugin id="org.rifidi.emulator.reader.llrp" autoStart="true" startLevel="4" />
+      <plugin id="org.rifidi.emulator.reader.sirit" autoStart="true" startLevel="4" />
+      <plugin id="org.rifidi.emulator.reader.symbol" autoStart="true" startLevel="4" />
+      <plugin id="org.rifidi.emulator.reader.thingmagic" autoStart="true" startLevel="4" />
+      <plugin id="org.rifidi.emulator.scripting" autoStart="true" startLevel="4" />
+      <plugin id="org.rifidi.emulator.scripting.groovy" autoStart="true" startLevel="4" />
+      <plugin id="org.rifidi.emulator.scripting.groovy.console" autoStart="true" startLevel="4" />
+      <plugin id="org.rifidi.logging" autoStart="true" startLevel="4" />
+      <plugin id="org.rifidi.services" autoStart="true" startLevel="4" />
+      <plugin id="org.rifidi.services.tags" autoStart="true" startLevel="4" />
+      <plugin id="org.rifidi.tags" autoStart="true" startLevel="4" />
+      <plugin id="org.springframework.aop" autoStart="true" startLevel="4" />
+      <plugin id="org.springframework.beans" autoStart="true" startLevel="4" />
+      <plugin id="org.springframework.context" autoStart="true" startLevel="4" />
+      <plugin id="org.springframework.core" autoStart="true" startLevel="4" />
+      <plugin id="org.springframework.osgi.core" autoStart="true" startLevel="4" />
+      <plugin id="org.springframework.osgi.extender" autoStart="true" startLevel="4" />
+      <plugin id="org.springframework.osgi.io" autoStart="true" startLevel="4" />
+   </configurations>
+
+</product>

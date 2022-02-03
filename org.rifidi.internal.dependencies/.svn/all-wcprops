@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/rep-internal/!svn/ver/313/rifidi/trunk/org.rifidi.internal.dependencies
+END
+.classpath
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/rep-internal/!svn/ver/313/rifidi/trunk/org.rifidi.internal.dependencies/.classpath
+END
+.project
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/rep-internal/!svn/ver/313/rifidi/trunk/org.rifidi.internal.dependencies/.project
+END
+AlienRFID.jar
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/rep-internal/!svn/ver/313/rifidi/trunk/org.rifidi.internal.dependencies/AlienRFID.jar
+END
+build.properties
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/rep-internal/!svn/ver/313/rifidi/trunk/org.rifidi.internal.dependencies/build.properties
+END

@@ -1,0 +1,71 @@
+9
+
+dir
+1736
+https://svn.rifidi.org/svn/rep-edge/rifidi/trunk/org.rifidi.dynamicSWTForms.ui/src/org/rifidi/dynamicswtforms/ui
+https://svn.rifidi.org/svn/rep-edge
+
+
+
+2009-01-09T10:34:54.968886Z
+1627
+tobias
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+a14bcd55-0e9e-4f3a-985f-b4f757a76820
+
+exceptions
+dir
+
+form
+dir
+
+widgets
+dir
+
+Activator.java
+file
+
+
+
+
+2009-02-03T21:39:06.609375Z
+6fe39379bb9a6e2390beb437ad150655
+2009-01-09T10:34:54.968886Z
+1627
+tobias
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+552
+

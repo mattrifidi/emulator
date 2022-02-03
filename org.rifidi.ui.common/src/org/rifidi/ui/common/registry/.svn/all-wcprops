@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/rep-external/!svn/ver/1107/rifidi/trunk/org.rifidi.ui.common/src/org/rifidi/ui/common/registry
+END
+ReaderRegistry.java
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/svn/rep-external/!svn/ver/1151/rifidi/trunk/org.rifidi.ui.common/src/org/rifidi/ui/common/registry/ReaderRegistry.java
+END
+ReaderRegistryService.java
+K 25
+svn:wc:ra_dav:version-url
+V 126
+/svn/rep-external/!svn/ver/1104/rifidi/trunk/org.rifidi.ui.common/src/org/rifidi/ui/common/registry/ReaderRegistryService.java
+END
+RegistryChangeListener.java
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/svn/rep-external/!svn/ver/20/rifidi/trunk/org.rifidi.ui.common/src/org/rifidi/ui/common/registry/RegistryChangeListener.java
+END

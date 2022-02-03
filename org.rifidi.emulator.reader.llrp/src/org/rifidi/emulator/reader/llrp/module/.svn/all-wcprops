@@ -1,0 +1,59 @@
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/svn/rep-external/!svn/ver/1063/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/module
+END
+reader.xml
+K 25
+svn:wc:ra_dav:version-url
+V 128
+/svn/rep-external/!svn/ver/35/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/module/reader.xml
+END
+LLRPReaderModule.java
+K 25
+svn:wc:ra_dav:version-url
+V 141
+/svn/rep-external/!svn/ver/1104/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/module/LLRPReaderModule.java
+END
+LLRPReaderModuleSuspendPowerState.java
+K 25
+svn:wc:ra_dav:version-url
+V 158
+/svn/rep-external/!svn/ver/1104/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/module/LLRPReaderModuleSuspendPowerState.java
+END
+emulator.xml
+K 25
+svn:wc:ra_dav:version-url
+V 130
+/svn/rep-external/!svn/ver/35/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/module/emulator.xml
+END
+ConnectionEventObserver.java
+K 25
+svn:wc:ra_dav:version-url
+V 148
+/svn/rep-external/!svn/ver/1115/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/module/ConnectionEventObserver.java
+END
+LLRPReaderModuleFactory.java
+K 25
+svn:wc:ra_dav:version-url
+V 148
+/svn/rep-external/!svn/ver/1081/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/module/LLRPReaderModuleFactory.java
+END
+LLRPReaderModuleOffPowerState.java
+K 25
+svn:wc:ra_dav:version-url
+V 154
+/svn/rep-external/!svn/ver/1115/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/module/LLRPReaderModuleOffPowerState.java
+END
+LLRPReaderModuleOnPowerState.java
+K 25
+svn:wc:ra_dav:version-url
+V 153
+/svn/rep-external/!svn/ver/1104/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/module/LLRPReaderModuleOnPowerState.java
+END
+LLRPReaderSharedResources.java
+K 25
+svn:wc:ra_dav:version-url
+V 150
+/svn/rep-external/!svn/ver/1104/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/module/LLRPReaderSharedResources.java
+END

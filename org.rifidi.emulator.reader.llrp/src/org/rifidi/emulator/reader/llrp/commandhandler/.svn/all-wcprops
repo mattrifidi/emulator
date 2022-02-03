@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 127
+/svn/rep-external/!svn/ver/1045/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/commandhandler
+END
+LLRPCustomExtension.java
+K 25
+svn:wc:ra_dav:version-url
+V 150
+/svn/rep-external/!svn/ver/35/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/commandhandler/LLRPCustomExtension.java
+END
+LLRPReaderDeviceConfiguration.java
+K 25
+svn:wc:ra_dav:version-url
+V 162
+/svn/rep-external/!svn/ver/1120/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/commandhandler/LLRPReaderDeviceConfiguration.java
+END
+LLRPErrors.java
+K 25
+svn:wc:ra_dav:version-url
+V 141
+/svn/rep-external/!svn/ver/35/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/commandhandler/LLRPErrors.java
+END
+LLRPReaderDeviceCapabilities.java
+K 25
+svn:wc:ra_dav:version-url
+V 159
+/svn/rep-external/!svn/ver/35/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/commandhandler/LLRPReaderDeviceCapabilities.java
+END
+LLRPGeneral.java
+K 25
+svn:wc:ra_dav:version-url
+V 142
+/svn/rep-external/!svn/ver/35/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/commandhandler/LLRPGeneral.java
+END
+LLRPReports.java
+K 25
+svn:wc:ra_dav:version-url
+V 143
+/svn/rep-external/!svn/ver/365/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/commandhandler/LLRPReports.java
+END
+LLRPAccessControl.java
+K 25
+svn:wc:ra_dav:version-url
+V 150
+/svn/rep-external/!svn/ver/1104/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/commandhandler/LLRPAccessControl.java
+END
+LLRPReaderOperationControl.java
+K 25
+svn:wc:ra_dav:version-url
+V 159
+/svn/rep-external/!svn/ver/1123/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/commandhandler/LLRPReaderOperationControl.java
+END

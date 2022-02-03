@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/rep-external/!svn/ver/14/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/reader/formatter
+END
+ChecksumException.java
+K 25
+svn:wc:ra_dav:version-url
+V 126
+/svn/rep-external/!svn/ver/14/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/reader/formatter/ChecksumException.java
+END
+CommandFormatter.java
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/svn/rep-external/!svn/ver/14/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/reader/formatter/CommandFormatter.java
+END
+RawCommandFormatter.java
+K 25
+svn:wc:ra_dav:version-url
+V 130
+/svn/rep-external/!svn/ver/1131/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/reader/formatter/RawCommandFormatter.java
+END

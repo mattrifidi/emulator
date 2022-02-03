@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/rep-external/!svn/ver/1104/rifidi/trunk/org.rifidi.ui.common/META-INF/spring
+END
+osgi.xml
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/rep-external/!svn/ver/1104/rifidi/trunk/org.rifidi.ui.common/META-INF/spring/osgi.xml
+END
+spring.xml
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/rep-external/!svn/ver/1104/rifidi/trunk/org.rifidi.ui.common/META-INF/spring/spring.xml
+END

@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/svn/rep-external/!svn/ver/1104/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/reader/command/controller/autonomous
+END
+AutonomousOffCommandControllerPowerState.java
+K 25
+svn:wc:ra_dav:version-url
+V 169
+/svn/rep-external/!svn/ver/14/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/reader/command/controller/autonomous/AutonomousOffCommandControllerPowerState.java
+END
+AutonomousSuspendedCommandControllerPowerState.java
+K 25
+svn:wc:ra_dav:version-url
+V 177
+/svn/rep-external/!svn/ver/1104/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/reader/command/controller/autonomous/AutonomousSuspendedCommandControllerPowerState.java
+END
+AutonomousOnCommandControllerPowerState.java
+K 25
+svn:wc:ra_dav:version-url
+V 170
+/svn/rep-external/!svn/ver/1104/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/reader/command/controller/autonomous/AutonomousOnCommandControllerPowerState.java
+END
+AutonomousCommandController.java
+K 25
+svn:wc:ra_dav:version-url
+V 156
+/svn/rep-external/!svn/ver/14/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/reader/command/controller/autonomous/AutonomousCommandController.java
+END
+AutonomousCommandExecuter.java
+K 25
+svn:wc:ra_dav:version-url
+V 156
+/svn/rep-external/!svn/ver/1104/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/reader/command/controller/autonomous/AutonomousCommandExecuter.java
+END

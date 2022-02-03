@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/rep-external/!svn/ver/20/rifidi/trunk/org.rifidi.ui.common/src/org/rifidi/ui/common/validators
+END
+ComPortValidator.java
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/svn/rep-external/!svn/ver/20/rifidi/trunk/org.rifidi.ui.common/src/org/rifidi/ui/common/validators/ComPortValidator.java
+END
+PositiveIntegerValidator.java
+K 25
+svn:wc:ra_dav:version-url
+V 129
+/svn/rep-external/!svn/ver/20/rifidi/trunk/org.rifidi.ui.common/src/org/rifidi/ui/common/validators/PositiveIntegerValidator.java
+END
+BooleanValidator.java
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/svn/rep-external/!svn/ver/20/rifidi/trunk/org.rifidi.ui.common/src/org/rifidi/ui/common/validators/BooleanValidator.java
+END
+HexValidator.java
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/svn/rep-external/!svn/ver/20/rifidi/trunk/org.rifidi.ui.common/src/org/rifidi/ui/common/validators/HexValidator.java
+END
+IpAddressValidator.java
+K 25
+svn:wc:ra_dav:version-url
+V 123
+/svn/rep-external/!svn/ver/20/rifidi/trunk/org.rifidi.ui.common/src/org/rifidi/ui/common/validators/IpAddressValidator.java
+END
+ReaderNameValidator.java
+K 25
+svn:wc:ra_dav:version-url
+V 126
+/svn/rep-external/!svn/ver/1143/rifidi/trunk/org.rifidi.ui.common/src/org/rifidi/ui/common/validators/ReaderNameValidator.java
+END

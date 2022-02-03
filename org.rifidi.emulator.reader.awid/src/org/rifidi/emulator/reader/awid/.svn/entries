@@ -1,0 +1,77 @@
+10
+
+dir
+1057
+https://svn.rifidi.org/svn/rep-external/rifidi/trunk/org.rifidi.emulator.reader.awid/src/org/rifidi/emulator/reader/awid
+https://svn.rifidi.org/svn/rep-external
+
+
+
+2008-12-17T20:28:35.283959Z
+953
+matt
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+b4039889-686d-4a2c-bca9-1a44802ef50e
+
+formatter
+dir
+
+module
+dir
+
+sharedrc
+dir
+
+commandhandler
+dir
+
+Activator.java
+file
+1063
+
+
+
+2009-07-22T21:48:43.781250Z
+5e37f9c6ff8fd6d582bda17506aabd02
+2009-07-22T21:37:53.321604Z
+1063
+kyle
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1022
+
+command
+dir
+

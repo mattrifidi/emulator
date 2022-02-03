@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 135
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/reloading
+END
+FileChangedReloadingStrategy.class
+K 25
+svn:wc:ra_dav:version-url
+V 170
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/reloading/FileChangedReloadingStrategy.class
+END
+InvariantReloadingStrategy.class
+K 25
+svn:wc:ra_dav:version-url
+V 168
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/reloading/InvariantReloadingStrategy.class
+END
+ManagedReloadingStrategy.class
+K 25
+svn:wc:ra_dav:version-url
+V 166
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/reloading/ManagedReloadingStrategy.class
+END
+ManagedReloadingStrategyMBean.class
+K 25
+svn:wc:ra_dav:version-url
+V 171
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/reloading/ManagedReloadingStrategyMBean.class
+END
+ReloadingStrategy.class
+K 25
+svn:wc:ra_dav:version-url
+V 159
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/reloading/ReloadingStrategy.class
+END

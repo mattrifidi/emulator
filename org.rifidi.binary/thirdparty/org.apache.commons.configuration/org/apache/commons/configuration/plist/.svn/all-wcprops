@@ -1,0 +1,131 @@
+K 25
+svn:wc:ra_dav:version-url
+V 131
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/plist
+END
+XMLPropertyListConfiguration$XMLPropertyListHandler.class
+K 25
+svn:wc:ra_dav:version-url
+V 189
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/plist/XMLPropertyListConfiguration$XMLPropertyListHandler.class
+END
+XMLPropertyListConfiguration$1.class
+K 25
+svn:wc:ra_dav:version-url
+V 168
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/plist/XMLPropertyListConfiguration$1.class
+END
+XMLPropertyListConfiguration$PListNode.class
+K 25
+svn:wc:ra_dav:version-url
+V 176
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/plist/XMLPropertyListConfiguration$PListNode.class
+END
+Token.class
+K 25
+svn:wc:ra_dav:version-url
+V 143
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/plist/Token.class
+END
+PropertyListParser$1.class
+K 25
+svn:wc:ra_dav:version-url
+V 158
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/plist/PropertyListParser$1.class
+END
+XMLPropertyListConfiguration.class
+K 25
+svn:wc:ra_dav:version-url
+V 166
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/plist/XMLPropertyListConfiguration.class
+END
+ParseException.class
+K 25
+svn:wc:ra_dav:version-url
+V 152
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/plist/ParseException.class
+END
+PropertyListParserTokenManager.class
+K 25
+svn:wc:ra_dav:version-url
+V 168
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/plist/PropertyListParserTokenManager.class
+END
+PropertyListParserConstants.class
+K 25
+svn:wc:ra_dav:version-url
+V 165
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/plist/PropertyListParserConstants.class
+END
+PropertyListConfiguration$DateFieldParser.class
+K 25
+svn:wc:ra_dav:version-url
+V 179
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/plist/PropertyListConfiguration$DateFieldParser.class
+END
+PropertyListConfiguration$1.class
+K 25
+svn:wc:ra_dav:version-url
+V 165
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/plist/PropertyListConfiguration$1.class
+END
+PropertyListParser.class
+K 25
+svn:wc:ra_dav:version-url
+V 156
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/plist/PropertyListParser.class
+END
+TokenMgrError.class
+K 25
+svn:wc:ra_dav:version-url
+V 151
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/plist/TokenMgrError.class
+END
+XMLPropertyListConfiguration$ArrayNode.class
+K 25
+svn:wc:ra_dav:version-url
+V 176
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/plist/XMLPropertyListConfiguration$ArrayNode.class
+END
+PropertyListConfiguration$DateTimeZoneParser.class
+K 25
+svn:wc:ra_dav:version-url
+V 182
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/plist/PropertyListConfiguration$DateTimeZoneParser.class
+END
+PropertyListParser$LookaheadSuccess.class
+K 25
+svn:wc:ra_dav:version-url
+V 173
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/plist/PropertyListParser$LookaheadSuccess.class
+END
+SimpleCharStream.class
+K 25
+svn:wc:ra_dav:version-url
+V 154
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/plist/SimpleCharStream.class
+END
+PropertyListParser$JJCalls.class
+K 25
+svn:wc:ra_dav:version-url
+V 164
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/plist/PropertyListParser$JJCalls.class
+END
+PropertyListConfiguration.class
+K 25
+svn:wc:ra_dav:version-url
+V 163
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/plist/PropertyListConfiguration.class
+END
+PropertyListConfiguration$DateSeparatorParser.class
+K 25
+svn:wc:ra_dav:version-url
+V 183
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/plist/PropertyListConfiguration$DateSeparatorParser.class
+END
+PropertyListConfiguration$DateComponentParser.class
+K 25
+svn:wc:ra_dav:version-url
+V 183
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/plist/PropertyListConfiguration$DateComponentParser.class
+END

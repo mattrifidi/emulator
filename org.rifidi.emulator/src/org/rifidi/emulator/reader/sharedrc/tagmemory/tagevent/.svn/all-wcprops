@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 122
+/svn/rep-external/!svn/ver/829/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/reader/sharedrc/tagmemory/tagevent
+END
+TagEventConsumer.java
+K 25
+svn:wc:ra_dav:version-url
+V 143
+/svn/rep-external/!svn/ver/14/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/reader/sharedrc/tagmemory/tagevent/TagEventConsumer.java
+END
+TagEventPublisher.java
+K 25
+svn:wc:ra_dav:version-url
+V 144
+/svn/rep-external/!svn/ver/14/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/reader/sharedrc/tagmemory/tagevent/TagEventPublisher.java
+END
+TagEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 136
+/svn/rep-external/!svn/ver/829/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/reader/sharedrc/tagmemory/tagevent/TagEvent.java
+END

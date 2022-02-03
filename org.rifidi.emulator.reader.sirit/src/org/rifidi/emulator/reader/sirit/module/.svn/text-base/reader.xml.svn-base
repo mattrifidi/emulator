@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ReaderCommand version="1.0">
+
+	<ReaderCompany>Sirit</ReaderCompany>
+	<Reader>INfinity 510</Reader>
+	
+	<Command>
+		<queryName>info.name</queryName>
+		<displayName>ReaderName</displayName>
+		<commandState>Interactive</commandState>
+		<commandHandlerDetails>
+			<handlerClass>org.rifidi.emulator.reader.sirit.commandhandler.SiritInfo</handlerClass>
+			<handlerMethod>info_name</handlerMethod>
+			<argumentType>String</argumentType>
+		</commandHandlerDetails>
+		<actionTag>EDITABLE</actionTag>
+		<category>NONE</category>
+		<defaultValue>unknown</defaultValue>
+	</Command>
+	
+	<Command>
+		<queryName>setup.operating_mode</queryName>
+		<displayName>OperatingMode</displayName>
+		<commandState>Interactive</commandState>
+		<commandHandlerDetails>
+			<handlerClass>org.rifidi.emulator.reader.sirit.commandhandler.SiritSetup</handlerClass>
+			<handlerMethod>setup_operatingMode</handlerMethod>
+			<argumentType>String</argumentType>
+		</commandHandlerDetails>
+		<actionTag>EDITABLE</actionTag>
+		<category>NONE</category>
+		<defaultValue>standby</defaultValue>
+	</Command>
+	
+	<Command>
+		<queryName>setup.default_login_level</queryName>
+		<displayName>DefaultLoginLevel</displayName>
+		<commandState>Interactive</commandState>
+		<commandHandlerDetails>
+			<handlerClass>org.rifidi.emulator.reader.sirit.commandhandler.SiritSetup</handlerClass>
+			<handlerMethod>setup_defaultLoginLevel</handlerMethod>
+			<argumentType>String</argumentType>
+		</commandHandlerDetails>
+		<actionTag>EDITABLE</actionTag>
+		<category>NONE</category>
+		<defaultValue>admin</defaultValue>
+	</Command>
+	
+	<Command>
+		<queryName>tag.db.get</queryName>
+		<displayName>GetDatabase</displayName>
+		<commandState>Interactive</commandState>
+		<commandHandlerDetails>
+			<handlerClass>org.rifidi.emulator.reader.sirit.commandhandler.SiritTag</handlerClass>
+			<handlerMethod>tag_db_get</handlerMethod>
+			<argumentType>String</argumentType>
+		</commandHandlerDetails>
+		<actionTag>IGNORE</actionTag>
+		<category>NONE</category>
+		<defaultValue></defaultValue>
+	</Command>
+	
+	<Command>
+		<queryName>antennas.detected</queryName>
+		<displayName>DetectedAntennas</displayName>
+		<commandState>Interactive</commandState>
+		<commandHandlerDetails>
+			<handlerClass>org.rifidi.emulator.reader.sirit.commandhandler.SiritAntennas</handlerClass>
+			<handlerMethod>antennas_detected</handlerMethod>
+			<argumentType>String</argumentType>
+		</commandHandlerDetails>
+		<actionTag>EDITABLE</actionTag>
+		<category>NONE</category>
+		<defaultValue>1 2</defaultValue>
+	</Command>
+	
+	<Command>
+		<queryName>reader.is_alive</queryName>
+		<displayName>isAlive</displayName>
+		<commandState>Interactive</commandState>
+		<commandHandlerDetails>
+			<handlerClass>org.rifidi.emulator.reader.sirit.commandhandler.SiritReader</handlerClass>
+			<handlerMethod>reader_isAlive</handlerMethod>
+			<argumentType>String</argumentType>
+		</commandHandlerDetails>
+		<actionTag>IGNORE</actionTag>
+		<category>NONE</category>
+		<defaultValue></defaultValue>
+	</Command>
+</ReaderCommand>

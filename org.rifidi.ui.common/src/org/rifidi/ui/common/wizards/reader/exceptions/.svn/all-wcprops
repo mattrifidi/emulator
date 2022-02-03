@@ -1,0 +1,11 @@
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/svn/rep-external/!svn/ver/20/rifidi/trunk/org.rifidi.ui.common/src/org/rifidi/ui/common/wizards/reader/exceptions
+END
+DuplicateReaderException.java
+K 25
+svn:wc:ra_dav:version-url
+V 144
+/svn/rep-external/!svn/ver/20/rifidi/trunk/org.rifidi.ui.common/src/org/rifidi/ui/common/wizards/reader/exceptions/DuplicateReaderException.java
+END

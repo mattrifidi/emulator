@@ -1,0 +1,117 @@
+10
+
+dir
+1111
+https://svn.rifidi.org/svn/rep-external/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator
+https://svn.rifidi.org/svn/rep-external
+
+
+
+2009-09-02T13:35:55.490360Z
+1111
+matt
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+b4039889-686d-4a2c-bca9-1a44802ef50e
+
+Activator.java
+file
+1151
+
+
+
+2010-03-04T16:48:28.000000Z
+d359165c103abcbb180545de1f68d052
+2010-01-20T21:47:45.532996Z
+1151
+kyle
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1210
+
+Globals.java
+file
+
+
+
+
+2009-02-03T23:30:44.421875Z
+ef126e28c8688c81b2877228e0ef3ace
+2008-05-05T17:58:04.868473Z
+14
+kyle
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1309
+
+common
+dir
+
+extra
+dir
+
+io
+dir
+
+log
+dir
+
+manager
+dir
+
+reader
+dir
+
+rmi
+dir
+

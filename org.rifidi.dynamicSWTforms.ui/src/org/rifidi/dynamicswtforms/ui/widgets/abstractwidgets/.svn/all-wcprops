@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 128
+/svn/rep-edge/!svn/ver/1627/rifidi/trunk/org.rifidi.dynamicSWTForms.ui/src/org/rifidi/dynamicswtforms/ui/widgets/abstractwidgets
+END
+AbstractNumberWidget.java
+K 25
+svn:wc:ra_dav:version-url
+V 154
+/svn/rep-edge/!svn/ver/1627/rifidi/trunk/org.rifidi.dynamicSWTForms.ui/src/org/rifidi/dynamicswtforms/ui/widgets/abstractwidgets/AbstractNumberWidget.java
+END
+AbstractChoiceWidget.java
+K 25
+svn:wc:ra_dav:version-url
+V 154
+/svn/rep-edge/!svn/ver/1627/rifidi/trunk/org.rifidi.dynamicSWTForms.ui/src/org/rifidi/dynamicswtforms/ui/widgets/abstractwidgets/AbstractChoiceWidget.java
+END
+AbstractStringWidget.java
+K 25
+svn:wc:ra_dav:version-url
+V 154
+/svn/rep-edge/!svn/ver/1627/rifidi/trunk/org.rifidi.dynamicSWTForms.ui/src/org/rifidi/dynamicswtforms/ui/widgets/abstractwidgets/AbstractStringWidget.java
+END

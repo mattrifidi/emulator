@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/svn/rep-external/!svn/ver/26/rifidi/trunk/org.rifidi.emulator.reader.awid/src/org/rifidi/emulator/reader/awid/formatter
+END
+AwidAutonomousCommandFormatter.java
+K 25
+svn:wc:ra_dav:version-url
+V 158
+/svn/rep-external/!svn/ver/1112/rifidi/trunk/org.rifidi.emulator.reader.awid/src/org/rifidi/emulator/reader/awid/formatter/AwidAutonomousCommandFormatter.java
+END
+AwidWelcomeCommandFormatter.java
+K 25
+svn:wc:ra_dav:version-url
+V 155
+/svn/rep-external/!svn/ver/1130/rifidi/trunk/org.rifidi.emulator.reader.awid/src/org/rifidi/emulator/reader/awid/formatter/AwidWelcomeCommandFormatter.java
+END
+AwidCommandFormatter.java
+K 25
+svn:wc:ra_dav:version-url
+V 148
+/svn/rep-external/!svn/ver/1132/rifidi/trunk/org.rifidi.emulator.reader.awid/src/org/rifidi/emulator/reader/awid/formatter/AwidCommandFormatter.java
+END

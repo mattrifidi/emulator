@@ -1,0 +1,18 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Dependencies Plug-in
+Bundle-SymbolicName: org.rifidi.internal.dependencies
+Bundle-Version: 1.0.0
+Bundle-Activator: org.rifidi.internal.dependencies.Activator
+Import-Package: org.osgi.framework;version="1.3.0"
+Eclipse-LazyStart: true
+Bundle-ClassPath: AlienRFID.jar,
+ .
+Export-Package: com.alien.enterpriseRFID.discovery,
+ com.alien.enterpriseRFID.examples,
+ com.alien.enterpriseRFID.notify,
+ com.alien.enterpriseRFID.reader,
+ com.alien.enterpriseRFID.tags,
+ com.alien.enterpriseRFID.test,
+ com.alien.enterpriseRFID.util,
+ org.rifidi.internal.dependencies

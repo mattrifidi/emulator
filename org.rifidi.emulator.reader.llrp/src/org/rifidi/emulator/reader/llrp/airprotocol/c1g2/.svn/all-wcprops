@@ -1,0 +1,155 @@
+K 25
+svn:wc:ra_dav:version-url
+V 129
+/svn/rep-external/!svn/ver/1045/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/airprotocol/c1g2
+END
+_C1G2BlockEraseOpSpecResult.java
+K 25
+svn:wc:ra_dav:version-url
+V 160
+/svn/rep-external/!svn/ver/35/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/airprotocol/c1g2/_C1G2BlockEraseOpSpecResult.java
+END
+_C1G2LLRPCapabilities.java
+K 25
+svn:wc:ra_dav:version-url
+V 154
+/svn/rep-external/!svn/ver/35/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/airprotocol/c1g2/_C1G2LLRPCapabilities.java
+END
+_C1G2ReadOpSpecResult.java
+K 25
+svn:wc:ra_dav:version-url
+V 156
+/svn/rep-external/!svn/ver/1045/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/airprotocol/c1g2/_C1G2ReadOpSpecResult.java
+END
+_C1G2TagSpec.java
+K 25
+svn:wc:ra_dav:version-url
+V 146
+/svn/rep-external/!svn/ver/837/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/airprotocol/c1g2/_C1G2TagSpec.java
+END
+C1G2Filter.java
+K 25
+svn:wc:ra_dav:version-url
+V 143
+/svn/rep-external/!svn/ver/35/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/airprotocol/c1g2/C1G2Filter.java
+END
+C1G2TagInventoryStateAwareSingulationAction.java
+K 25
+svn:wc:ra_dav:version-url
+V 176
+/svn/rep-external/!svn/ver/35/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/airprotocol/c1g2/C1G2TagInventoryStateAwareSingulationAction.java
+END
+_UHFC1G2RFModeTable.java
+K 25
+svn:wc:ra_dav:version-url
+V 152
+/svn/rep-external/!svn/ver/35/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/airprotocol/c1g2/_UHFC1G2RFModeTable.java
+END
+_C1G2Lock.java
+K 25
+svn:wc:ra_dav:version-url
+V 144
+/svn/rep-external/!svn/ver/1104/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/airprotocol/c1g2/_C1G2Lock.java
+END
+_C1G2Write.java
+K 25
+svn:wc:ra_dav:version-url
+V 145
+/svn/rep-external/!svn/ver/1104/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/airprotocol/c1g2/_C1G2Write.java
+END
+_C1G2Kill.java
+K 25
+svn:wc:ra_dav:version-url
+V 144
+/svn/rep-external/!svn/ver/1104/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/airprotocol/c1g2/_C1G2Kill.java
+END
+C1G2InventoryCommand.java
+K 25
+svn:wc:ra_dav:version-url
+V 153
+/svn/rep-external/!svn/ver/35/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/airprotocol/c1g2/C1G2InventoryCommand.java
+END
+C1G2SingulationControl.java
+K 25
+svn:wc:ra_dav:version-url
+V 155
+/svn/rep-external/!svn/ver/35/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/airprotocol/c1g2/C1G2SingulationControl.java
+END
+_C1G2LockOpSpecResult.java
+K 25
+svn:wc:ra_dav:version-url
+V 154
+/svn/rep-external/!svn/ver/35/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/airprotocol/c1g2/_C1G2LockOpSpecResult.java
+END
+_C1G2LockPayload.java
+K 25
+svn:wc:ra_dav:version-url
+V 149
+/svn/rep-external/!svn/ver/35/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/airprotocol/c1g2/_C1G2LockPayload.java
+END
+_C1G2WriteOpSpecResult.java
+K 25
+svn:wc:ra_dav:version-url
+V 155
+/svn/rep-external/!svn/ver/35/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/airprotocol/c1g2/_C1G2WriteOpSpecResult.java
+END
+_C1G2KillOpSpecResult.java
+K 25
+svn:wc:ra_dav:version-url
+V 154
+/svn/rep-external/!svn/ver/35/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/airprotocol/c1g2/_C1G2KillOpSpecResult.java
+END
+_C1G2BlockWrite.java
+K 25
+svn:wc:ra_dav:version-url
+V 149
+/svn/rep-external/!svn/ver/837/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/airprotocol/c1g2/_C1G2BlockWrite.java
+END
+C1G2RFControl.java
+K 25
+svn:wc:ra_dav:version-url
+V 146
+/svn/rep-external/!svn/ver/35/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/airprotocol/c1g2/C1G2RFControl.java
+END
+_C1G2BlockErase.java
+K 25
+svn:wc:ra_dav:version-url
+V 149
+/svn/rep-external/!svn/ver/837/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/airprotocol/c1g2/_C1G2BlockErase.java
+END
+C1G2InventoryMask.java
+K 25
+svn:wc:ra_dav:version-url
+V 150
+/svn/rep-external/!svn/ver/35/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/airprotocol/c1g2/C1G2InventoryMask.java
+END
+_C1G2Read.java
+K 25
+svn:wc:ra_dav:version-url
+V 144
+/svn/rep-external/!svn/ver/1104/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/airprotocol/c1g2/_C1G2Read.java
+END
+_C1G2BlockWriteOpSpecResult.java
+K 25
+svn:wc:ra_dav:version-url
+V 160
+/svn/rep-external/!svn/ver/35/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/airprotocol/c1g2/_C1G2BlockWriteOpSpecResult.java
+END
+C1G2TagInventoryStateAwareFilterAction.java
+K 25
+svn:wc:ra_dav:version-url
+V 171
+/svn/rep-external/!svn/ver/35/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/airprotocol/c1g2/C1G2TagInventoryStateAwareFilterAction.java
+END
+C1G2TagInventoryStateUnawareFilterAction.java
+K 25
+svn:wc:ra_dav:version-url
+V 173
+/svn/rep-external/!svn/ver/35/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/airprotocol/c1g2/C1G2TagInventoryStateUnawareFilterAction.java
+END
+_C1G2TargetTag.java
+K 25
+svn:wc:ra_dav:version-url
+V 148
+/svn/rep-external/!svn/ver/837/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/airprotocol/c1g2/_C1G2TargetTag.java
+END

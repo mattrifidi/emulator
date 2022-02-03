@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/rep-external/!svn/ver/1115/rifidi/trunk/org.rifidi.ui.ide/src/org/rifidi/ui/ide/workbench
+END
+ViewManager.java
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/svn/rep-external/!svn/ver/1115/rifidi/trunk/org.rifidi.ui.ide/src/org/rifidi/ui/ide/workbench/ViewManager.java
+END
+ApplicationActionBarAdvisor.java
+K 25
+svn:wc:ra_dav:version-url
+V 126
+/svn/rep-external/!svn/ver/786/rifidi/trunk/org.rifidi.ui.ide/src/org/rifidi/ui/ide/workbench/ApplicationActionBarAdvisor.java
+END
+ApplicationWorkbenchWindowAdvisor.java
+K 25
+svn:wc:ra_dav:version-url
+V 133
+/svn/rep-external/!svn/ver/1115/rifidi/trunk/org.rifidi.ui.ide/src/org/rifidi/ui/ide/workbench/ApplicationWorkbenchWindowAdvisor.java
+END
+ApplicationWorkbenchAdvisor.java
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/svn/rep-external/!svn/ver/22/rifidi/trunk/org.rifidi.ui.ide/src/org/rifidi/ui/ide/workbench/ApplicationWorkbenchAdvisor.java
+END

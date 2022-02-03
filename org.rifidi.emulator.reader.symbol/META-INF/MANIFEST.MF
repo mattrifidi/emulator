@@ -1,0 +1,22 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Rifidi Symbol Reader Plug-in
+Bundle-SymbolicName: org.rifidi.emulator.reader.symbol
+Bundle-Version: 2.3.0
+Bundle-Activator: org.rifidi.emulator.reader.symbol.Activator
+Bundle-Vendor: Pramari, LLC
+Bundle-Localization: plugin
+Import-Package: org.apache.commons.logging;version="1.0.4",
+ org.osgi.framework;version="1.3.0",
+ org.rifidi.tags;version="1.0.0",
+ org.rifidi.tags.enums;version="1.0.0",
+ org.rifidi.tags.impl;version="1.0.0"
+Require-Bundle: org.rifidi.emulator;bundle-version="3.0.0",
+ org.rifidi.services.tags;bundle-version="2.1.0"
+Export-Package: org.rifidi.emulator.reader.symbol,
+ org.rifidi.emulator.reader.symbol.command.exception,
+ org.rifidi.emulator.reader.symbol.commandhandler,
+ org.rifidi.emulator.reader.symbol.formatter,
+ org.rifidi.emulator.reader.symbol.module,
+ org.rifidi.emulator.reader.symbol.tagbuffer
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6

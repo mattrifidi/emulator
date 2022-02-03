@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/rep-external/!svn/ver/828/rifidi/trunk/org.rifidi.tags/src/org/rifidi/tags/enums
+END
+TagEncodings.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/rep-external/!svn/ver/828/rifidi/trunk/org.rifidi.tags/src/org/rifidi/tags/enums/TagEncodings.java
+END
+TagGen.java
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svn/rep-external/!svn/ver/828/rifidi/trunk/org.rifidi.tags/src/org/rifidi/tags/enums/TagGen.java
+END
+TagConstants.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/rep-external/!svn/ver/828/rifidi/trunk/org.rifidi.tags/src/org/rifidi/tags/enums/TagConstants.java
+END
+TagErrors.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/rep-external/!svn/ver/828/rifidi/trunk/org.rifidi.tags/src/org/rifidi/tags/enums/TagErrors.java
+END
+LockStates.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/rep-external/!svn/ver/828/rifidi/trunk/org.rifidi.tags/src/org/rifidi/tags/enums/LockStates.java
+END

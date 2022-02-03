@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/rep-external/!svn/ver/32/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/io/comm/logFormatter
+END
+LogFormatter.java
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/svn/rep-external/!svn/ver/14/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/io/comm/logFormatter/LogFormatter.java
+END
+GenericByteLogFormatter.java
+K 25
+svn:wc:ra_dav:version-url
+V 136
+/svn/rep-external/!svn/ver/32/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/io/comm/logFormatter/GenericByteLogFormatter.java
+END
+GenericStringLogFormatter.java
+K 25
+svn:wc:ra_dav:version-url
+V 138
+/svn/rep-external/!svn/ver/14/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/io/comm/logFormatter/GenericStringLogFormatter.java
+END

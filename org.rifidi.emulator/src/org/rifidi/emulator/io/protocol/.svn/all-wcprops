@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/rep-external/!svn/ver/14/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/io/protocol
+END
+Protocol.java
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/svn/rep-external/!svn/ver/14/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/io/protocol/Protocol.java
+END
+ProtocolValidationException.java
+K 25
+svn:wc:ra_dav:version-url
+V 131
+/svn/rep-external/!svn/ver/14/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/io/protocol/ProtocolValidationException.java
+END
+RawProtocol.java
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/svn/rep-external/!svn/ver/14/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/io/protocol/RawProtocol.java
+END

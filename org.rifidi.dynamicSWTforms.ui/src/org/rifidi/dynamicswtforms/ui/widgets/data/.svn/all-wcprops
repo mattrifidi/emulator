@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/svn/rep-edge/!svn/ver/1627/rifidi/trunk/org.rifidi.dynamicSWTForms.ui/src/org/rifidi/dynamicswtforms/ui/widgets/data
+END
+AbstractWidgetData.java
+K 25
+svn:wc:ra_dav:version-url
+V 141
+/svn/rep-edge/!svn/ver/1627/rifidi/trunk/org.rifidi.dynamicSWTForms.ui/src/org/rifidi/dynamicswtforms/ui/widgets/data/AbstractWidgetData.java
+END
+FloatWidgetData.java
+K 25
+svn:wc:ra_dav:version-url
+V 138
+/svn/rep-edge/!svn/ver/1627/rifidi/trunk/org.rifidi.dynamicSWTForms.ui/src/org/rifidi/dynamicswtforms/ui/widgets/data/FloatWidgetData.java
+END
+StringWidgetData.java
+K 25
+svn:wc:ra_dav:version-url
+V 139
+/svn/rep-edge/!svn/ver/1627/rifidi/trunk/org.rifidi.dynamicSWTForms.ui/src/org/rifidi/dynamicswtforms/ui/widgets/data/StringWidgetData.java
+END
+ChoiceWidgetData.java
+K 25
+svn:wc:ra_dav:version-url
+V 139
+/svn/rep-edge/!svn/ver/1627/rifidi/trunk/org.rifidi.dynamicSWTForms.ui/src/org/rifidi/dynamicswtforms/ui/widgets/data/ChoiceWidgetData.java
+END
+IntegerWidgetData.java
+K 25
+svn:wc:ra_dav:version-url
+V 140
+/svn/rep-edge/!svn/ver/1627/rifidi/trunk/org.rifidi.dynamicSWTForms.ui/src/org/rifidi/dynamicswtforms/ui/widgets/data/IntegerWidgetData.java
+END

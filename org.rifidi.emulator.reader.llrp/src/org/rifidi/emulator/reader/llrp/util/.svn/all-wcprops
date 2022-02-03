@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/svn/rep-external/!svn/ver/35/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/util
+END
+LogInputScraper.java
+K 25
+svn:wc:ra_dav:version-url
+V 138
+/svn/rep-external/!svn/ver/1104/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/util/LogInputScraper.java
+END
+LLRPUtilities.java
+K 25
+svn:wc:ra_dav:version-url
+V 136
+/svn/rep-external/!svn/ver/1104/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/util/LLRPUtilities.java
+END
+LLRPReadThread.java
+K 25
+svn:wc:ra_dav:version-url
+V 135
+/svn/rep-external/!svn/ver/35/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/util/LLRPReadThread.java
+END

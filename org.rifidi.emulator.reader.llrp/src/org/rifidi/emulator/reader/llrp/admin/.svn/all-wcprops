@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/svn/rep-external/!svn/ver/35/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/admin
+END
+LLRPReaderModuleConnectionType.java
+K 25
+svn:wc:ra_dav:version-url
+V 152
+/svn/rep-external/!svn/ver/35/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/admin/LLRPReaderModuleConnectionType.java
+END
+LLRPReaderModuleAdministration.java
+K 25
+svn:wc:ra_dav:version-url
+V 154
+/svn/rep-external/!svn/ver/1115/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/admin/LLRPReaderModuleAdministration.java
+END
+LLRPReaderModuleAdministrationCommands.java
+K 25
+svn:wc:ra_dav:version-url
+V 160
+/svn/rep-external/!svn/ver/35/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/admin/LLRPReaderModuleAdministrationCommands.java
+END
+LLRPReaderModuleAdministrationConsole.java
+K 25
+svn:wc:ra_dav:version-url
+V 159
+/svn/rep-external/!svn/ver/35/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/admin/LLRPReaderModuleAdministrationConsole.java
+END

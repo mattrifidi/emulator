@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 135
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/beanutils
+END
+BeanDeclaration.class
+K 25
+svn:wc:ra_dav:version-url
+V 157
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/beanutils/BeanDeclaration.class
+END
+XMLBeanDeclaration.class
+K 25
+svn:wc:ra_dav:version-url
+V 160
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/beanutils/XMLBeanDeclaration.class
+END
+BeanFactory.class
+K 25
+svn:wc:ra_dav:version-url
+V 153
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/beanutils/BeanFactory.class
+END
+DefaultBeanFactory.class
+K 25
+svn:wc:ra_dav:version-url
+V 160
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/beanutils/DefaultBeanFactory.class
+END
+BeanHelper.class
+K 25
+svn:wc:ra_dav:version-url
+V 152
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/beanutils/BeanHelper.class
+END
+ConfigurationDynaBean.class
+K 25
+svn:wc:ra_dav:version-url
+V 163
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/beanutils/ConfigurationDynaBean.class
+END
+ConfigurationDynaClass.class
+K 25
+svn:wc:ra_dav:version-url
+V 164
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/beanutils/ConfigurationDynaClass.class
+END

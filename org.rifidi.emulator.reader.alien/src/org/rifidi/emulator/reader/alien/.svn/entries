@@ -1,0 +1,101 @@
+10
+
+dir
+994
+https://svn.rifidi.org/svn/rep-external/rifidi/trunk/org.rifidi.emulator.reader.alien/src/org/rifidi/emulator/reader/alien
+https://svn.rifidi.org/svn/rep-external
+
+
+
+2008-12-16T13:34:23.044627Z
+831
+jochen
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+b4039889-686d-4a2c-bca9-1a44802ef50e
+
+heartbeat
+dir
+
+speed
+dir
+
+rssi
+dir
+
+formatter
+dir
+
+uptime
+dir
+
+module
+dir
+
+io
+dir
+
+thread
+dir
+
+autonomous
+dir
+
+sharedrc
+dir
+
+commandhandler
+dir
+
+Activator.java
+file
+1063
+
+
+
+2009-07-22T21:48:49.812500Z
+50363ab43bc5aaa62f5d84b233fef98b
+2009-07-22T21:37:53.321604Z
+1063
+kyle
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1028
+
+command
+dir
+
+gpio
+dir
+

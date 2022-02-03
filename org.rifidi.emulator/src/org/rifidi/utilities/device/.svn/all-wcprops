@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/rep-external/!svn/ver/323/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/utilities/device
+END
+SystemNetworkInterface.java
+K 25
+svn:wc:ra_dav:version-url
+V 122
+/svn/rep-external/!svn/ver/14/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/utilities/device/SystemNetworkInterface.java
+END
+DeviceAddressManager.java
+K 25
+svn:wc:ra_dav:version-url
+V 122
+/svn/rep-external/!svn/ver/1114/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/utilities/device/DeviceAddressManager.java
+END
+PropertyMap.java
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/svn/rep-external/!svn/ver/14/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/utilities/device/PropertyMap.java
+END
+SystemDevice.java
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/svn/rep-external/!svn/ver/14/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/utilities/device/SystemDevice.java
+END
+ReaderPropertyMap.java
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/svn/rep-external/!svn/ver/323/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/utilities/device/ReaderPropertyMap.java
+END
+IPCreator.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svn/rep-external/!svn/ver/14/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/utilities/device/IPCreator.java
+END
+SystemSerialPort.java
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/svn/rep-external/!svn/ver/14/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/utilities/device/SystemSerialPort.java
+END

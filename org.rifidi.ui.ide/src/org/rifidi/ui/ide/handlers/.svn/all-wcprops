@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/rep-external/!svn/ver/1115/rifidi/trunk/org.rifidi.ui.ide/src/org/rifidi/ui/ide/handlers
+END
+OpenIDEConfigurationHandler.java
+K 25
+svn:wc:ra_dav:version-url
+V 126
+/svn/rep-external/!svn/ver/1115/rifidi/trunk/org.rifidi.ui.ide/src/org/rifidi/ui/ide/handlers/OpenIDEConfigurationHandler.java
+END
+AddTagHandler.java
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/svn/rep-external/!svn/ver/786/rifidi/trunk/org.rifidi.ui.ide/src/org/rifidi/ui/ide/handlers/AddTagHandler.java
+END
+SaveIDEConfigurationHandler.java
+K 25
+svn:wc:ra_dav:version-url
+V 126
+/svn/rep-external/!svn/ver/1104/rifidi/trunk/org.rifidi.ui.ide/src/org/rifidi/ui/ide/handlers/SaveIDEConfigurationHandler.java
+END
+SwitchViewHandler.java
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/svn/rep-external/!svn/ver/786/rifidi/trunk/org.rifidi.ui.ide/src/org/rifidi/ui/ide/handlers/SwitchViewHandler.java
+END

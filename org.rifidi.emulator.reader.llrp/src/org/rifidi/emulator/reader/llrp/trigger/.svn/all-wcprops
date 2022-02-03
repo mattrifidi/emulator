@@ -1,0 +1,59 @@
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/svn/rep-external/!svn/ver/599/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/trigger
+END
+ImmediateTrigger.java
+K 25
+svn:wc:ra_dav:version-url
+V 142
+/svn/rep-external/!svn/ver/1123/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/trigger/ImmediateTrigger.java
+END
+PeriodicTrigger.java
+K 25
+svn:wc:ra_dav:version-url
+V 141
+/svn/rep-external/!svn/ver/1123/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/trigger/PeriodicTrigger.java
+END
+Trigger.java
+K 25
+svn:wc:ra_dav:version-url
+V 131
+/svn/rep-external/!svn/ver/35/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/trigger/Trigger.java
+END
+TimerTrigger.java
+K 25
+svn:wc:ra_dav:version-url
+V 136
+/svn/rep-external/!svn/ver/35/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/trigger/TimerTrigger.java
+END
+GPIWithTimeoutTrigger.java
+K 25
+svn:wc:ra_dav:version-url
+V 147
+/svn/rep-external/!svn/ver/1115/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/trigger/GPIWithTimeoutTrigger.java
+END
+TriggerObservable.java
+K 25
+svn:wc:ra_dav:version-url
+V 143
+/svn/rep-external/!svn/ver/1123/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/trigger/TriggerObservable.java
+END
+DurationTrigger.java
+K 25
+svn:wc:ra_dav:version-url
+V 139
+/svn/rep-external/!svn/ver/35/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/trigger/DurationTrigger.java
+END
+TagObservationTrigger.java
+K 25
+svn:wc:ra_dav:version-url
+V 147
+/svn/rep-external/!svn/ver/1123/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/trigger/TagObservationTrigger.java
+END
+NullTrigger.java
+K 25
+svn:wc:ra_dav:version-url
+V 135
+/svn/rep-external/!svn/ver/35/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/trigger/NullTrigger.java
+END

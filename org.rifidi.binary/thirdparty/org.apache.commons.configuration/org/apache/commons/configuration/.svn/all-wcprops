@@ -1,0 +1,599 @@
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration
+END
+ConfigurationXMLReader.class
+K 25
+svn:wc:ra_dav:version-url
+V 154
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/ConfigurationXMLReader.class
+END
+ConfigurationMap$ConfigurationSet.class
+K 25
+svn:wc:ra_dav:version-url
+V 165
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/ConfigurationMap$ConfigurationSet.class
+END
+ConfigurationUtils$1.class
+K 25
+svn:wc:ra_dav:version-url
+V 152
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/ConfigurationUtils$1.class
+END
+AbstractConfiguration$1.class
+K 25
+svn:wc:ra_dav:version-url
+V 155
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/AbstractConfiguration$1.class
+END
+AbstractHierarchicalFileConfiguration$FileConfigurationDelegate.class
+K 25
+svn:wc:ra_dav:version-url
+V 195
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/AbstractHierarchicalFileConfiguration$FileConfigurationDelegate.class
+END
+AbstractConfiguration$3.class
+K 25
+svn:wc:ra_dav:version-url
+V 155
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/AbstractConfiguration$3.class
+END
+XMLConfiguration$XMLNode.class
+K 25
+svn:wc:ra_dav:version-url
+V 156
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/XMLConfiguration$XMLNode.class
+END
+ConfigurationException.class
+K 25
+svn:wc:ra_dav:version-url
+V 154
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/ConfigurationException.class
+END
+XMLConfiguration.class
+K 25
+svn:wc:ra_dav:version-url
+V 148
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/XMLConfiguration.class
+END
+ConfigurationFactory$SystemConfigurationFactory.class
+K 25
+svn:wc:ra_dav:version-url
+V 179
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/ConfigurationFactory$SystemConfigurationFactory.class
+END
+XMLPropertiesConfiguration$1.class
+K 25
+svn:wc:ra_dav:version-url
+V 160
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/XMLPropertiesConfiguration$1.class
+END
+DefaultConfigurationBuilder$ConfigurationBeanFactory.class
+K 25
+svn:wc:ra_dav:version-url
+V 184
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/DefaultConfigurationBuilder$ConfigurationBeanFactory.class
+END
+ConfigurationFactory.class
+K 25
+svn:wc:ra_dav:version-url
+V 152
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/ConfigurationFactory.class
+END
+ConfigurationConverter.class
+K 25
+svn:wc:ra_dav:version-url
+V 154
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/ConfigurationConverter.class
+END
+HierarchicalConfiguration$NodeVisitor.class
+K 25
+svn:wc:ra_dav:version-url
+V 169
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/HierarchicalConfiguration$NodeVisitor.class
+END
+DataConfiguration.class
+K 25
+svn:wc:ra_dav:version-url
+V 149
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/DataConfiguration.class
+END
+BaseConfiguration.class
+K 25
+svn:wc:ra_dav:version-url
+V 149
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/BaseConfiguration.class
+END
+ConfigurationMap.class
+K 25
+svn:wc:ra_dav:version-url
+V 148
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/ConfigurationMap.class
+END
+FileConfiguration.class
+K 25
+svn:wc:ra_dav:version-url
+V 149
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/FileConfiguration.class
+END
+Configuration.class
+K 25
+svn:wc:ra_dav:version-url
+V 145
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/Configuration.class
+END
+CombinedConfiguration.class
+K 25
+svn:wc:ra_dav:version-url
+V 153
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/CombinedConfiguration.class
+END
+HierarchicalConfiguration$DefinedVisitor.class
+K 25
+svn:wc:ra_dav:version-url
+V 172
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/HierarchicalConfiguration$DefinedVisitor.class
+END
+HierarchicalConfigurationXMLReader.class
+K 25
+svn:wc:ra_dav:version-url
+V 166
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/HierarchicalConfigurationXMLReader.class
+END
+DefaultConfigurationBuilder$XMLConfigurationProvider.class
+K 25
+svn:wc:ra_dav:version-url
+V 184
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/DefaultConfigurationBuilder$XMLConfigurationProvider.class
+END
+PropertyConverter.class
+K 25
+svn:wc:ra_dav:version-url
+V 149
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/PropertyConverter.class
+END
+SystemConfiguration.class
+K 25
+svn:wc:ra_dav:version-url
+V 151
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/SystemConfiguration.class
+END
+DynamicCombinedConfiguration.class
+K 25
+svn:wc:ra_dav:version-url
+V 160
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/DynamicCombinedConfiguration.class
+END
+BaseConfigurationXMLReader$SAXConverter.class
+K 25
+svn:wc:ra_dav:version-url
+V 171
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/BaseConfigurationXMLReader$SAXConverter.class
+END
+PropertiesConfigurationLayout$PropertyLayoutData.class
+K 25
+svn:wc:ra_dav:version-url
+V 180
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/PropertiesConfigurationLayout$PropertyLayoutData.class
+END
+SubsetConfiguration$2.class
+K 25
+svn:wc:ra_dav:version-url
+V 153
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/SubsetConfiguration$2.class
+END
+DefaultConfigurationBuilder.class
+K 25
+svn:wc:ra_dav:version-url
+V 159
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/DefaultConfigurationBuilder.class
+END
+ConfigurationFactory$FileConfigurationFactory.class
+K 25
+svn:wc:ra_dav:version-url
+V 177
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/ConfigurationFactory$FileConfigurationFactory.class
+END
+DefaultConfigurationBuilder$FileExtensionConfigurationProvider.class
+K 25
+svn:wc:ra_dav:version-url
+V 194
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/DefaultConfigurationBuilder$FileExtensionConfigurationProvider.class
+END
+StrictConfigurationComparator.class
+K 25
+svn:wc:ra_dav:version-url
+V 161
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/StrictConfigurationComparator.class
+END
+PropertiesConfiguration$PropertiesReader.class
+K 25
+svn:wc:ra_dav:version-url
+V 172
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/PropertiesConfiguration$PropertiesReader.class
+END
+ConfigurationUtils.class
+K 25
+svn:wc:ra_dav:version-url
+V 150
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/ConfigurationUtils.class
+END
+ConfigurationMap$1.class
+K 25
+svn:wc:ra_dav:version-url
+V 150
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/ConfigurationMap$1.class
+END
+AbstractHierarchicalFileConfiguration.class
+K 25
+svn:wc:ra_dav:version-url
+V 169
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/AbstractHierarchicalFileConfiguration.class
+END
+CompositeConfiguration.class
+K 25
+svn:wc:ra_dav:version-url
+V 154
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/CompositeConfiguration.class
+END
+DefaultConfigurationBuilder$ConfigurationProvider.class
+K 25
+svn:wc:ra_dav:version-url
+V 181
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/DefaultConfigurationBuilder$ConfigurationProvider.class
+END
+DefaultConfigurationBuilder$FileConfigurationProvider.class
+K 25
+svn:wc:ra_dav:version-url
+V 185
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/DefaultConfigurationBuilder$FileConfigurationProvider.class
+END
+HierarchicalConfiguration$1.class
+K 25
+svn:wc:ra_dav:version-url
+V 159
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/HierarchicalConfiguration$1.class
+END
+DatabaseConfiguration.class
+K 25
+svn:wc:ra_dav:version-url
+V 153
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/DatabaseConfiguration.class
+END
+EnvironmentConfiguration.class
+K 25
+svn:wc:ra_dav:version-url
+V 156
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/EnvironmentConfiguration.class
+END
+HierarchicalConfiguration$3.class
+K 25
+svn:wc:ra_dav:version-url
+V 159
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/HierarchicalConfiguration$3.class
+END
+HierarchicalConfigurationConverter.class
+K 25
+svn:wc:ra_dav:version-url
+V 166
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/HierarchicalConfigurationConverter.class
+END
+XMLConfiguration$XMLFileConfigurationDelegate.class
+K 25
+svn:wc:ra_dav:version-url
+V 177
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/XMLConfiguration$XMLFileConfigurationDelegate.class
+END
+ConfigurationFactory$PropertiesConfigurationFactory.class
+K 25
+svn:wc:ra_dav:version-url
+V 183
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/ConfigurationFactory$PropertiesConfigurationFactory.class
+END
+DynamicCombinedConfiguration$1.class
+K 25
+svn:wc:ra_dav:version-url
+V 162
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/DynamicCombinedConfiguration$1.class
+END
+ConfigurationMap$ConfigurationSet$Entry.class
+K 25
+svn:wc:ra_dav:version-url
+V 171
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/ConfigurationMap$ConfigurationSet$Entry.class
+END
+XMLConfiguration$XMLBuilderVisitor.class
+K 25
+svn:wc:ra_dav:version-url
+V 166
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/XMLConfiguration$XMLBuilderVisitor.class
+END
+XMLPropertiesConfiguration$XMLPropertiesHandler.class
+K 25
+svn:wc:ra_dav:version-url
+V 179
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/XMLPropertiesConfiguration$XMLPropertiesHandler.class
+END
+HierarchicalConfiguration$DefinedKeysVisitor.class
+K 25
+svn:wc:ra_dav:version-url
+V 176
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/HierarchicalConfiguration$DefinedKeysVisitor.class
+END
+MultiFileHierarchicalConfiguration$2.class
+K 25
+svn:wc:ra_dav:version-url
+V 168
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/MultiFileHierarchicalConfiguration$2.class
+END
+HierarchicalConfiguration$CloneVisitor.class
+K 25
+svn:wc:ra_dav:version-url
+V 170
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/HierarchicalConfiguration$CloneVisitor.class
+END
+AbstractConfiguration$2.class
+K 25
+svn:wc:ra_dav:version-url
+V 155
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/AbstractConfiguration$2.class
+END
+PropertiesConfigurationLayout.class
+K 25
+svn:wc:ra_dav:version-url
+V 161
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/PropertiesConfigurationLayout.class
+END
+PropertiesConfiguration.class
+K 25
+svn:wc:ra_dav:version-url
+V 155
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/PropertiesConfiguration.class
+END
+ConfigurationFactory$PropertyListConfigurationFactory.class
+K 25
+svn:wc:ra_dav:version-url
+V 185
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/ConfigurationFactory$PropertyListConfigurationFactory.class
+END
+PatternSubtreeConfigurationWrapper$1.class
+K 25
+svn:wc:ra_dav:version-url
+V 168
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/PatternSubtreeConfigurationWrapper$1.class
+END
+SubnodeConfiguration.class
+K 25
+svn:wc:ra_dav:version-url
+V 152
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/SubnodeConfiguration.class
+END
+ConfigurationFactory$JNDIConfigurationFactory.class
+K 25
+svn:wc:ra_dav:version-url
+V 177
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/ConfigurationFactory$JNDIConfigurationFactory.class
+END
+SubsetConfiguration.class
+K 25
+svn:wc:ra_dav:version-url
+V 151
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/SubsetConfiguration.class
+END
+ConfigurationComparator.class
+K 25
+svn:wc:ra_dav:version-url
+V 155
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/ConfigurationComparator.class
+END
+HierarchicalConfiguration$BuilderVisitor.class
+K 25
+svn:wc:ra_dav:version-url
+V 172
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/HierarchicalConfiguration$BuilderVisitor.class
+END
+DynamicCombinedConfiguration$ConfigData.class
+K 25
+svn:wc:ra_dav:version-url
+V 171
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/DynamicCombinedConfiguration$ConfigData.class
+END
+MapConfiguration.class
+K 25
+svn:wc:ra_dav:version-url
+V 148
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/MapConfiguration.class
+END
+BaseConfigurationXMLReader.class
+K 25
+svn:wc:ra_dav:version-url
+V 158
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/BaseConfigurationXMLReader.class
+END
+HierarchicalConfiguration.class
+K 25
+svn:wc:ra_dav:version-url
+V 157
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/HierarchicalConfiguration.class
+END
+HierarchicalINIConfiguration.class
+K 25
+svn:wc:ra_dav:version-url
+V 160
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/HierarchicalINIConfiguration.class
+END
+ConfigurationKey$KeyIterator.class
+K 25
+svn:wc:ra_dav:version-url
+V 160
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/ConfigurationKey$KeyIterator.class
+END
+JNDIConfiguration.class
+K 25
+svn:wc:ra_dav:version-url
+V 149
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/JNDIConfiguration.class
+END
+XMLConfiguration$1.class
+K 25
+svn:wc:ra_dav:version-url
+V 150
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/XMLConfiguration$1.class
+END
+ConfigurationBuilder.class
+K 25
+svn:wc:ra_dav:version-url
+V 152
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/ConfigurationBuilder.class
+END
+ConfigurationFactory$AdditionalConfigurationData.class
+K 25
+svn:wc:ra_dav:version-url
+V 180
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/ConfigurationFactory$AdditionalConfigurationData.class
+END
+HierarchicalConfiguration$Node.class
+K 25
+svn:wc:ra_dav:version-url
+V 162
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/HierarchicalConfiguration$Node.class
+END
+ConfigurationKey.class
+K 25
+svn:wc:ra_dav:version-url
+V 148
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/ConfigurationKey.class
+END
+MultiFileHierarchicalConfiguration.class
+K 25
+svn:wc:ra_dav:version-url
+V 166
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/MultiFileHierarchicalConfiguration.class
+END
+SubsetConfiguration$1.class
+K 25
+svn:wc:ra_dav:version-url
+V 153
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/SubsetConfiguration$1.class
+END
+DefaultConfigurationBuilder$ConfigurationDeclaration.class
+K 25
+svn:wc:ra_dav:version-url
+V 184
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/DefaultConfigurationBuilder$ConfigurationDeclaration.class
+END
+HierarchicalXMLConfiguration.class
+K 25
+svn:wc:ra_dav:version-url
+V 160
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/HierarchicalXMLConfiguration.class
+END
+ConfigurationRuntimeException.class
+K 25
+svn:wc:ra_dav:version-url
+V 161
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/ConfigurationRuntimeException.class
+END
+AbstractFileConfiguration.class
+K 25
+svn:wc:ra_dav:version-url
+V 157
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/AbstractFileConfiguration.class
+END
+AbstractConfiguration.class
+K 25
+svn:wc:ra_dav:version-url
+V 153
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/AbstractConfiguration.class
+END
+HierarchicalConfiguration$2.class
+K 25
+svn:wc:ra_dav:version-url
+V 159
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/HierarchicalConfiguration$2.class
+END
+CombinedConfiguration$ConfigData.class
+K 25
+svn:wc:ra_dav:version-url
+V 164
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/CombinedConfiguration$ConfigData.class
+END
+HierarchicalConfiguration$4.class
+K 25
+svn:wc:ra_dav:version-url
+V 159
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/HierarchicalConfiguration$4.class
+END
+ConfigurationFactory$CallOptionalMethodRule.class
+K 25
+svn:wc:ra_dav:version-url
+V 175
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/ConfigurationFactory$CallOptionalMethodRule.class
+END
+ConfigurationMap$ConfigurationSet$ConfigurationSetIterator.class
+K 25
+svn:wc:ra_dav:version-url
+V 190
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/ConfigurationMap$ConfigurationSet$ConfigurationSetIterator.class
+END
+PatternSubtreeConfigurationWrapper.class
+K 25
+svn:wc:ra_dav:version-url
+V 166
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/PatternSubtreeConfigurationWrapper.class
+END
+DefaultConfigurationBuilder$ConfigurationBuilderProvider.class
+K 25
+svn:wc:ra_dav:version-url
+V 188
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/DefaultConfigurationBuilder$ConfigurationBuilderProvider.class
+END
+ConfigurationFactory$ConfigurationBuilder.class
+K 25
+svn:wc:ra_dav:version-url
+V 173
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/ConfigurationFactory$ConfigurationBuilder.class
+END
+PropertiesConfiguration$PropertiesWriter.class
+K 25
+svn:wc:ra_dav:version-url
+V 172
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/PropertiesConfiguration$PropertiesWriter.class
+END
+ConversionException.class
+K 25
+svn:wc:ra_dav:version-url
+V 151
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/ConversionException.class
+END
+XMLPropertiesConfiguration.class
+K 25
+svn:wc:ra_dav:version-url
+V 158
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/XMLPropertiesConfiguration.class
+END
+MultiFileHierarchicalConfiguration$1.class
+K 25
+svn:wc:ra_dav:version-url
+V 168
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/MultiFileHierarchicalConfiguration$1.class
+END
+INIConfiguration.class
+K 25
+svn:wc:ra_dav:version-url
+V 148
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/INIConfiguration.class
+END
+ConfigurationFactory$DigesterConfigurationFactory.class
+K 25
+svn:wc:ra_dav:version-url
+V 181
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/ConfigurationFactory$DigesterConfigurationFactory.class
+END
+HierarchicalConfigurationXMLReader$SAXVisitor.class
+K 25
+svn:wc:ra_dav:version-url
+V 177
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/HierarchicalConfigurationXMLReader$SAXVisitor.class
+END

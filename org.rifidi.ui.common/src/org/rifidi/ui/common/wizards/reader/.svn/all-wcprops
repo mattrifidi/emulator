@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svn/rep-external/!svn/ver/1104/rifidi/trunk/org.rifidi.ui.common/src/org/rifidi/ui/common/wizards/reader
+END
+NewReaderDynamicWizardPage.java
+K 25
+svn:wc:ra_dav:version-url
+V 137
+/svn/rep-external/!svn/ver/1104/rifidi/trunk/org.rifidi.ui.common/src/org/rifidi/ui/common/wizards/reader/NewReaderDynamicWizardPage.java
+END
+NewReaderWizardSelectionPage.java
+K 25
+svn:wc:ra_dav:version-url
+V 138
+/svn/rep-external/!svn/ver/786/rifidi/trunk/org.rifidi.ui.common/src/org/rifidi/ui/common/wizards/reader/NewReaderWizardSelectionPage.java
+END
+NewReaderGPIOWizardPage.java
+K 25
+svn:wc:ra_dav:version-url
+V 133
+/svn/rep-external/!svn/ver/786/rifidi/trunk/org.rifidi.ui.common/src/org/rifidi/ui/common/wizards/reader/NewReaderGPIOWizardPage.java
+END
+NewReaderWizard.java
+K 25
+svn:wc:ra_dav:version-url
+V 126
+/svn/rep-external/!svn/ver/1104/rifidi/trunk/org.rifidi.ui.common/src/org/rifidi/ui/common/wizards/reader/NewReaderWizard.java
+END
+ReaderWizardData.java
+K 25
+svn:wc:ra_dav:version-url
+V 126
+/svn/rep-external/!svn/ver/797/rifidi/trunk/org.rifidi.ui.common/src/org/rifidi/ui/common/wizards/reader/ReaderWizardData.java
+END

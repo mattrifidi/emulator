@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/rep-external/!svn/ver/1111/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/io/comm/ip/udp
+END
+UDPCommunicationIncomingMessageHandler.java
+K 25
+svn:wc:ra_dav:version-url
+V 147
+/svn/rep-external/!svn/ver/1114/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/io/comm/ip/udp/UDPCommunicationIncomingMessageHandler.java
+END
+UDPConnectionlessCommunicationConnectionState.java
+K 25
+svn:wc:ra_dav:version-url
+V 152
+/svn/rep-external/!svn/ver/14/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/io/comm/ip/udp/UDPConnectionlessCommunicationConnectionState.java
+END
+UDPOffCommunicationPowerState.java
+K 25
+svn:wc:ra_dav:version-url
+V 138
+/svn/rep-external/!svn/ver/1114/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/io/comm/ip/udp/UDPOffCommunicationPowerState.java
+END
+UDPSuspendedCommunicationPowerState.java
+K 25
+svn:wc:ra_dav:version-url
+V 144
+/svn/rep-external/!svn/ver/1114/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/io/comm/ip/udp/UDPSuspendedCommunicationPowerState.java
+END
+UDPOnCommunicationPowerState.java
+K 25
+svn:wc:ra_dav:version-url
+V 137
+/svn/rep-external/!svn/ver/1114/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/io/comm/ip/udp/UDPOnCommunicationPowerState.java
+END
+UDPCommunicationOutgoingMessageHandler.java
+K 25
+svn:wc:ra_dav:version-url
+V 147
+/svn/rep-external/!svn/ver/1114/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/io/comm/ip/udp/UDPCommunicationOutgoingMessageHandler.java
+END
+UDPCommunication.java
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/svn/rep-external/!svn/ver/1114/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/io/comm/ip/udp/UDPCommunication.java
+END

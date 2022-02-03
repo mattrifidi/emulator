@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/rep-external/!svn/ver/1104/rifidi/trunk/org.rifidi.ui.common/src/org/rifidi/ui/common/reader/callback
+END
+TagIDChangedCallbackInterface.java
+K 25
+svn:wc:ra_dav:version-url
+V 140
+/svn/rep-external/!svn/ver/843/rifidi/trunk/org.rifidi.ui.common/src/org/rifidi/ui/common/reader/callback/TagIDChangedCallbackInterface.java
+END
+ReaderTurnOffCallbackInterface.java
+K 25
+svn:wc:ra_dav:version-url
+V 140
+/svn/rep-external/!svn/ver/20/rifidi/trunk/org.rifidi.ui.common/src/org/rifidi/ui/common/reader/callback/ReaderTurnOffCallbackInterface.java
+END
+GPOEventCallbackInterface.java
+K 25
+svn:wc:ra_dav:version-url
+V 135
+/svn/rep-external/!svn/ver/20/rifidi/trunk/org.rifidi.ui.common/src/org/rifidi/ui/common/reader/callback/GPOEventCallbackInterface.java
+END
+UIReaderCallbackManager.java
+K 25
+svn:wc:ra_dav:version-url
+V 135
+/svn/rep-external/!svn/ver/1104/rifidi/trunk/org.rifidi.ui.common/src/org/rifidi/ui/common/reader/callback/UIReaderCallbackManager.java
+END

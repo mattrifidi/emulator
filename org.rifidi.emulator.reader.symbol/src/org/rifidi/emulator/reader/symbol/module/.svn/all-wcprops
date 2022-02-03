@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 123
+/svn/rep-external/!svn/ver/1063/rifidi/trunk/org.rifidi.emulator.reader.symbol/src/org/rifidi/emulator/reader/symbol/module
+END
+reader.xml
+K 25
+svn:wc:ra_dav:version-url
+V 132
+/svn/rep-external/!svn/ver/29/rifidi/trunk/org.rifidi.emulator.reader.symbol/src/org/rifidi/emulator/reader/symbol/module/reader.xml
+END
+SymbolReaderModuleFactory.java
+K 25
+svn:wc:ra_dav:version-url
+V 154
+/svn/rep-external/!svn/ver/1081/rifidi/trunk/org.rifidi.emulator.reader.symbol/src/org/rifidi/emulator/reader/symbol/module/SymbolReaderModuleFactory.java
+END
+SymbolReaderModuleOffPowerState.java
+K 25
+svn:wc:ra_dav:version-url
+V 159
+/svn/rep-external/!svn/ver/537/rifidi/trunk/org.rifidi.emulator.reader.symbol/src/org/rifidi/emulator/reader/symbol/module/SymbolReaderModuleOffPowerState.java
+END
+SymbolReaderModuleSuspendedPowerState.java
+K 25
+svn:wc:ra_dav:version-url
+V 166
+/svn/rep-external/!svn/ver/1104/rifidi/trunk/org.rifidi.emulator.reader.symbol/src/org/rifidi/emulator/reader/symbol/module/SymbolReaderModuleSuspendedPowerState.java
+END
+emulator.xml
+K 25
+svn:wc:ra_dav:version-url
+V 134
+/svn/rep-external/!svn/ver/29/rifidi/trunk/org.rifidi.emulator.reader.symbol/src/org/rifidi/emulator/reader/symbol/module/emulator.xml
+END
+SymbolReaderModuleOnPowerState.java
+K 25
+svn:wc:ra_dav:version-url
+V 159
+/svn/rep-external/!svn/ver/1104/rifidi/trunk/org.rifidi.emulator.reader.symbol/src/org/rifidi/emulator/reader/symbol/module/SymbolReaderModuleOnPowerState.java
+END
+SymbolReaderSharedResources.java
+K 25
+svn:wc:ra_dav:version-url
+V 154
+/svn/rep-external/!svn/ver/29/rifidi/trunk/org.rifidi.emulator.reader.symbol/src/org/rifidi/emulator/reader/symbol/module/SymbolReaderSharedResources.java
+END
+SymbolReaderModule.java
+K 25
+svn:wc:ra_dav:version-url
+V 147
+/svn/rep-external/!svn/ver/1104/rifidi/trunk/org.rifidi.emulator.reader.symbol/src/org/rifidi/emulator/reader/symbol/module/SymbolReaderModule.java
+END

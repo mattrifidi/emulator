@@ -1,0 +1,113 @@
+10
+
+dir
+1053
+https://svn.rifidi.org/svn/rep-external/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp
+https://svn.rifidi.org/svn/rep-external
+
+
+
+2009-05-20T15:02:22.428980Z
+1045
+kyle
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+b4039889-686d-4a2c-bca9-1a44802ef50e
+
+module
+dir
+
+admin
+dir
+
+rospec
+dir
+
+properties
+dir
+
+airprotocol
+dir
+
+exception
+dir
+
+trigger
+dir
+
+formatter
+dir
+
+aispec
+dir
+
+keepalive
+dir
+
+tagbuffer
+dir
+
+io
+dir
+
+report
+dir
+
+accessspec
+dir
+
+commandhandler
+dir
+
+Activator.java
+file
+1063
+
+
+
+2009-07-22T21:48:55.609375Z
+b6649858a05cb53b1c6ce61781267637
+2009-07-22T21:37:53.321604Z
+1063
+kyle
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+989
+
+util
+dir
+
+command
+dir
+

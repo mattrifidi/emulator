@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/rep-external/!svn/ver/1104/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/common
+END
+DataBuffer.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svn/rep-external/!svn/ver/14/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/common/DataBuffer.java
+END
+DataBufferInterruptedException.java
+K 25
+svn:wc:ra_dav:version-url
+V 129
+/svn/rep-external/!svn/ver/14/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/common/DataBufferInterruptedException.java
+END
+PowerControllable.java
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/svn/rep-external/!svn/ver/1104/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/common/PowerControllable.java
+END
+PowerState.java
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/svn/rep-external/!svn/ver/1104/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/common/PowerState.java
+END
+ControlSignal.java
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/svn/rep-external/!svn/ver/14/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/common/ControlSignal.java
+END

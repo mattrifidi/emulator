@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 129
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/web
+END
+ServletConfiguration.class
+K 25
+svn:wc:ra_dav:version-url
+V 156
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/web/ServletConfiguration.class
+END
+AppletConfiguration.class
+K 25
+svn:wc:ra_dav:version-url
+V 155
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/web/AppletConfiguration.class
+END
+BaseWebConfiguration.class
+K 25
+svn:wc:ra_dav:version-url
+V 156
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/web/BaseWebConfiguration.class
+END
+ServletContextConfiguration.class
+K 25
+svn:wc:ra_dav:version-url
+V 163
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/web/ServletContextConfiguration.class
+END
+ServletFilterConfiguration.class
+K 25
+svn:wc:ra_dav:version-url
+V 162
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/web/ServletFilterConfiguration.class
+END
+ServletRequestConfiguration.class
+K 25
+svn:wc:ra_dav:version-url
+V 163
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/org/apache/commons/configuration/web/ServletRequestConfiguration.class
+END

@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/rep-external/!svn/ver/14/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/io/comm/abstract_
+END
+AbstractConnectionlessCommunicationConnectionState.java
+K 25
+svn:wc:ra_dav:version-url
+V 160
+/svn/rep-external/!svn/ver/14/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/io/comm/abstract_/AbstractConnectionlessCommunicationConnectionState.java
+END
+AbstractOffCommunicationPowerState.java
+K 25
+svn:wc:ra_dav:version-url
+V 144
+/svn/rep-external/!svn/ver/14/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/io/comm/abstract_/AbstractOffCommunicationPowerState.java
+END
+AbstractSuspendedCommunicationPowerState.java
+K 25
+svn:wc:ra_dav:version-url
+V 150
+/svn/rep-external/!svn/ver/14/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/io/comm/abstract_/AbstractSuspendedCommunicationPowerState.java
+END
+AbstractOnCommunicationPowerState.java
+K 25
+svn:wc:ra_dav:version-url
+V 143
+/svn/rep-external/!svn/ver/14/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/io/comm/abstract_/AbstractOnCommunicationPowerState.java
+END
+AbstractCommunication.java
+K 25
+svn:wc:ra_dav:version-url
+V 131
+/svn/rep-external/!svn/ver/14/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/io/comm/abstract_/AbstractCommunication.java
+END
+AbstractConnectedCommunicationConnectionState.java
+K 25
+svn:wc:ra_dav:version-url
+V 155
+/svn/rep-external/!svn/ver/14/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/io/comm/abstract_/AbstractConnectedCommunicationConnectionState.java
+END
+AbstractDisconnectedCommunicationConnectionState.java
+K 25
+svn:wc:ra_dav:version-url
+V 158
+/svn/rep-external/!svn/ver/14/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/io/comm/abstract_/AbstractDisconnectedCommunicationConnectionState.java
+END

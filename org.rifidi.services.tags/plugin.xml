@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="org.rifidi.services.singletonServices">
+      <singletonService
+            class="org.rifidi.services.tags.impl.TagServiceImpl"
+            interface="org.rifidi.services.tags.IRifidiTagService">
+      </singletonService>
+   </extension>
+
+</plugin>

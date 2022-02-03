@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration
+END
+.classpath
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/.classpath
+END
+digesterRules.xml
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/digesterRules.xml
+END
+.project
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/.project
+END
+PropertyList-1.0.dtd
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/PropertyList-1.0.dtd
+END
+properties.dtd
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/properties.dtd
+END
+build.properties
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svn/rep-external/!svn/ver/999/org.rifidi.binary/thirdparty/org.apache.commons.configuration/build.properties
+END

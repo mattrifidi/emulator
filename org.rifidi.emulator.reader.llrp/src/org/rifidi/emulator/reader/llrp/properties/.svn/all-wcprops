@@ -1,0 +1,65 @@
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/svn/rep-external/!svn/ver/35/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/properties
+END
+AntennaList.java
+K 25
+svn:wc:ra_dav:version-url
+V 138
+/svn/rep-external/!svn/ver/35/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/properties/AntennaList.java
+END
+EventNotificationTable.java
+K 25
+svn:wc:ra_dav:version-url
+V 149
+/svn/rep-external/!svn/ver/35/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/properties/EventNotificationTable.java
+END
+FrequencyHopTable.java
+K 25
+svn:wc:ra_dav:version-url
+V 144
+/svn/rep-external/!svn/ver/35/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/properties/FrequencyHopTable.java
+END
+GPISettings.java
+K 25
+svn:wc:ra_dav:version-url
+V 138
+/svn/rep-external/!svn/ver/35/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/properties/GPISettings.java
+END
+AntennaSettings.java
+K 25
+svn:wc:ra_dav:version-url
+V 142
+/svn/rep-external/!svn/ver/35/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/properties/AntennaSettings.java
+END
+ReceiveSensitivityTable.java
+K 25
+svn:wc:ra_dav:version-url
+V 150
+/svn/rep-external/!svn/ver/35/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/properties/ReceiveSensitivityTable.java
+END
+GPOSettings.java
+K 25
+svn:wc:ra_dav:version-url
+V 138
+/svn/rep-external/!svn/ver/35/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/properties/GPOSettings.java
+END
+TransmitPowerTable.java
+K 25
+svn:wc:ra_dav:version-url
+V 145
+/svn/rep-external/!svn/ver/35/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/properties/TransmitPowerTable.java
+END
+FixedFrequencyTable.java
+K 25
+svn:wc:ra_dav:version-url
+V 146
+/svn/rep-external/!svn/ver/35/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/properties/FixedFrequencyTable.java
+END
+Properties.java
+K 25
+svn:wc:ra_dav:version-url
+V 137
+/svn/rep-external/!svn/ver/35/rifidi/trunk/org.rifidi.emulator.reader.llrp/src/org/rifidi/emulator/reader/llrp/properties/Properties.java
+END

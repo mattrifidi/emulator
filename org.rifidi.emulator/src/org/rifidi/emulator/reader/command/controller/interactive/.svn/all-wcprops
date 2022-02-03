@@ -1,0 +1,65 @@
+K 25
+svn:wc:ra_dav:version-url
+V 126
+/svn/rep-external/!svn/ver/1104/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/reader/command/controller/interactive
+END
+InteractiveCommandController.java
+K 25
+svn:wc:ra_dav:version-url
+V 158
+/svn/rep-external/!svn/ver/14/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/reader/command/controller/interactive/InteractiveCommandController.java
+END
+WelcomeOnlyUnconnectedCommandControllerOperatingState.java
+K 25
+svn:wc:ra_dav:version-url
+V 185
+/svn/rep-external/!svn/ver/1131/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/reader/command/controller/interactive/WelcomeOnlyUnconnectedCommandControllerOperatingState.java
+END
+InteractiveCommandExecuter.java
+K 25
+svn:wc:ra_dav:version-url
+V 158
+/svn/rep-external/!svn/ver/1114/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/reader/command/controller/interactive/InteractiveCommandExecuter.java
+END
+LoginUsernameCommandControllerOperatingState.java
+K 25
+svn:wc:ra_dav:version-url
+V 176
+/svn/rep-external/!svn/ver/1114/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/reader/command/controller/interactive/LoginUsernameCommandControllerOperatingState.java
+END
+LoginAuthenticatedCommandControllerOperatingState.java
+K 25
+svn:wc:ra_dav:version-url
+V 179
+/svn/rep-external/!svn/ver/14/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/reader/command/controller/interactive/LoginAuthenticatedCommandControllerOperatingState.java
+END
+LoginPasswordCommandControllerOperatingState.java
+K 25
+svn:wc:ra_dav:version-url
+V 176
+/svn/rep-external/!svn/ver/1114/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/reader/command/controller/interactive/LoginPasswordCommandControllerOperatingState.java
+END
+InteractiveOffCommandControllerPowerState.java
+K 25
+svn:wc:ra_dav:version-url
+V 171
+/svn/rep-external/!svn/ver/14/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/reader/command/controller/interactive/InteractiveOffCommandControllerPowerState.java
+END
+InteractiveSuspendedCommandControllerPowerState.java
+K 25
+svn:wc:ra_dav:version-url
+V 179
+/svn/rep-external/!svn/ver/1104/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/reader/command/controller/interactive/InteractiveSuspendedCommandControllerPowerState.java
+END
+InteractiveOnCommandControllerPowerState.java
+K 25
+svn:wc:ra_dav:version-url
+V 172
+/svn/rep-external/!svn/ver/1104/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/reader/command/controller/interactive/InteractiveOnCommandControllerPowerState.java
+END
+LoginUnconnectedCommandControllerOperatingState.java
+K 25
+svn:wc:ra_dav:version-url
+V 177
+/svn/rep-external/!svn/ver/14/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/reader/command/controller/interactive/LoginUnconnectedCommandControllerOperatingState.java
+END

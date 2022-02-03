@@ -1,0 +1,39 @@
+<reader>
+	<readerclassname>org.rifidi.emulator.reader.alien.module.AlienReaderModule</readerclassname>
+	<description>Emulator for the Alien 9800</description>
+	<maxantennas>4</maxantennas>
+	<maxgpis>4</maxgpis>
+	<maxgpos>8</maxgpos>
+	<property>
+		<required>1</required>
+		<name>inet_address</name>
+		<display>ip address</display>
+		<tooltip>The address the reader should be reachable through</tooltip>
+		<defaultvalue>127.0.0.1:20000</defaultvalue>		
+		<validatorclassname>IpAddressValidator</validatorclassname>
+	</property>
+	<property>
+		<required>1</required>
+		<name>heartbeat_address</name>
+		<display>heartbeat address</display>
+		<tooltip>The address the heartbeat should bind to</tooltip>
+		<defaultvalue>255.255.255.255:3988</defaultvalue>
+		<validatorclassname>IpAddressValidator</validatorclassname>
+	</property>
+		<property>
+		<required>0</required>
+		<name>heartbeat_power</name>
+		<display>Enable Heartbeat for this reader</display>
+		<tooltip>Whether or not the heartbeat is activated</tooltip>
+		<defaultvalue>0</defaultvalue>
+		<validatorclassname>BooleanValidator</validatorclassname>
+	</property>
+		<property>
+		<required>0</required>
+		<name>heartbeat_port</name>
+		<display>Heartbeat binding port</display>
+		<tooltip>Enter the port the hearbeat broadcast should bind to</tooltip>
+		<defaultvalue>3989</defaultvalue>
+		<validatorclassname>PositiveIntegerValidator</validatorclassname>
+	</property>
+</reader>

@@ -1,0 +1,59 @@
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svn/rep-external/!svn/ver/1104/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/io/comm/ip/tcpserver
+END
+TCPServerCommunicationOutgoingMessageHandler.java
+K 25
+svn:wc:ra_dav:version-url
+V 158
+/svn/rep-external/!svn/ver/323/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/io/comm/ip/tcpserver/TCPServerCommunicationOutgoingMessageHandler.java
+END
+TCPServerCommunication.java
+K 25
+svn:wc:ra_dav:version-url
+V 136
+/svn/rep-external/!svn/ver/323/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/io/comm/ip/tcpserver/TCPServerCommunication.java
+END
+TCPServerCommunicationIncomingConnectionHandler.java
+K 25
+svn:wc:ra_dav:version-url
+V 162
+/svn/rep-external/!svn/ver/1104/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/io/comm/ip/tcpserver/TCPServerCommunicationIncomingConnectionHandler.java
+END
+TCPServerConnectedCommunicationConnectionState.java
+K 25
+svn:wc:ra_dav:version-url
+V 159
+/svn/rep-external/!svn/ver/14/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/io/comm/ip/tcpserver/TCPServerConnectedCommunicationConnectionState.java
+END
+TCPServerDisconnectedCommunicationConnectionState.java
+K 25
+svn:wc:ra_dav:version-url
+V 162
+/svn/rep-external/!svn/ver/14/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/io/comm/ip/tcpserver/TCPServerDisconnectedCommunicationConnectionState.java
+END
+TCPServerCommunicationIncomingMessageHandler.java
+K 25
+svn:wc:ra_dav:version-url
+V 158
+/svn/rep-external/!svn/ver/323/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/io/comm/ip/tcpserver/TCPServerCommunicationIncomingMessageHandler.java
+END
+TCPServerOffCommunicationPowerState.java
+K 25
+svn:wc:ra_dav:version-url
+V 148
+/svn/rep-external/!svn/ver/14/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/io/comm/ip/tcpserver/TCPServerOffCommunicationPowerState.java
+END
+TCPServerSuspendedCommunicationPowerState.java
+K 25
+svn:wc:ra_dav:version-url
+V 156
+/svn/rep-external/!svn/ver/1104/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/io/comm/ip/tcpserver/TCPServerSuspendedCommunicationPowerState.java
+END
+TCPServerOnCommunicationPowerState.java
+K 25
+svn:wc:ra_dav:version-url
+V 149
+/svn/rep-external/!svn/ver/1114/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/io/comm/ip/tcpserver/TCPServerOnCommunicationPowerState.java
+END

@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/svn/rep-external/!svn/ver/1104/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/reader/module/abstract_
+END
+AbstractPowerModule.java
+K 25
+svn:wc:ra_dav:version-url
+V 137
+/svn/rep-external/!svn/ver/1104/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/reader/module/abstract_/AbstractPowerModule.java
+END
+AbstractReaderSharedResources.java
+K 25
+svn:wc:ra_dav:version-url
+V 147
+/svn/rep-external/!svn/ver/1104/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/reader/module/abstract_/AbstractReaderSharedResources.java
+END
+AbstractOffPowerState.java
+K 25
+svn:wc:ra_dav:version-url
+V 139
+/svn/rep-external/!svn/ver/1104/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/reader/module/abstract_/AbstractOffPowerState.java
+END
+AbstractSuspendedPowerState.java
+K 25
+svn:wc:ra_dav:version-url
+V 143
+/svn/rep-external/!svn/ver/14/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/reader/module/abstract_/AbstractSuspendedPowerState.java
+END
+AbstractOnPowerState.java
+K 25
+svn:wc:ra_dav:version-url
+V 136
+/svn/rep-external/!svn/ver/14/rifidi/trunk/org.rifidi.emulator/src/org/rifidi/emulator/reader/module/abstract_/AbstractOnPowerState.java
+END

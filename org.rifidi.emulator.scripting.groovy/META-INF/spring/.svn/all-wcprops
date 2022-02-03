@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svn/rep-external/!svn/ver/1075/rifidi/trunk/org.rifidi.emulator.scripting.groovy/META-INF/spring
+END
+osgi.xml
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/rep-external/!svn/ver/1104/rifidi/trunk/org.rifidi.emulator.scripting.groovy/META-INF/spring/osgi.xml
+END
+spring.xml
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svn/rep-external/!svn/ver/1075/rifidi/trunk/org.rifidi.emulator.scripting.groovy/META-INF/spring/spring.xml
+END
